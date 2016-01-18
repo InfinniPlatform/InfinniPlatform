@@ -9,12 +9,13 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
         {
             // TODO: Сделать строготипизированный ответ.
 
-            dynamic result = new DynamicWrapper();
-            result.IsValid = false;
-            result.IsInternalServerError = true;
-            result.ValidationMessage = message;
+            var error = new DynamicWrapper
+            {
+                ["IsValid"] = false,
+                ["ValidationMessage"] = message
+            };
 
-            return new JsonHttpResponse(result) { StatusCode = 400 };
+            return new JsonHttpResponse(error) { StatusCode = 400 };
         }
     }
 }

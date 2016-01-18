@@ -6,7 +6,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 {
     public sealed class ActionUnitWithException
     {
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             ThrowOne();
         }

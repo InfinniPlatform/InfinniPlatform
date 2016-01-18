@@ -15,7 +15,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
         private readonly IRegisterApi _registerApi;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             var isInfoRegister = (target.Item.Info != null);
             var registerName = isInfoRegister ? RegistersBehavior.InfoRegister : RegistersBehavior.AvailableBedsRegister;
@@ -30,7 +30,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
                     isInfoRegister));
         }
 
-        private void CreateRegisterEntry(IApplyContext target, string registerName, Func<IRegisterApi, dynamic> createEntry)
+        private void CreateRegisterEntry(IActionContext target, string registerName, Func<IRegisterApi, dynamic> createEntry)
         {
             var registerEntry = createEntry(_registerApi);
             registerEntry.EntryType = RegisterEntryType.Income;

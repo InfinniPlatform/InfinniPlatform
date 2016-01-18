@@ -15,7 +15,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 
         private readonly IDocumentApi _documentApi;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             string configuration = target.Item.ConfigId;
             string documentType = target.Item.DocumentId;

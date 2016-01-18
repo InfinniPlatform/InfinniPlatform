@@ -105,11 +105,7 @@
     <Compile Include="BlobStorage\BlobData.cs" />
     <Compile Include="BlobStorage\BlobInfo.cs" />
     <Compile Include="BlobStorage\IBlobStorage.cs" />
-    <Compile Include="Contracts\IApplyContext.cs" />
-    <Compile Include="Contracts\ICommonContext.cs" />
-    <Compile Include="Contracts\ISearchContext.cs" />
-    <Compile Include="Contracts\IUploadContext.cs" />
-    <Compile Include="Contracts\IUrlEncodedDataContext.cs" />
+    <Compile Include="Contracts\IActionContext.cs" />
     <Compile Include="Dynamic\DynamicWrapper.cs" />
     <Compile Include="Dynamic\DynamicWrapperExtensions.cs" />
     <Compile Include="Dynamic\DynamicWrapperJsonConverter.cs" />

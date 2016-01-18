@@ -13,7 +13,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
         private readonly IRegisterApi _registerApi;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             dynamic incomeEntry = null;
             dynamic consumptionEntry = null;

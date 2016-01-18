@@ -80,12 +80,8 @@
     <Compile Include="Metadata\IConfigurationObjectBuilder.cs" />
     <Compile Include="Metadata\IMetadataComponent.cs" />
     <Compile Include="Metadata\IMetadataConfigurationProvider.cs" />
-    <Compile Include="ContextComponents\MetadataComponent.cs" />
-    <Compile Include="ContextTypes\ApplyContext.cs" />
-    <Compile Include="ContextTypes\CommonContext.cs" />
-    <Compile Include="ContextTypes\SearchContext.cs" />
-    <Compile Include="ContextTypes\UploadContext.cs" />
-    <Compile Include="ContextTypes\UrlEncodedDataContext.cs" />
+    <Compile Include="Metadata\MetadataComponent.cs" />
+    <Compile Include="Contracts\ActionContext.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />
     <Compile Include="Factories\IIntegrationBusFactory.cs" />
     <Compile Include="Factories\IIntegrationBusStorageFactory.cs" />

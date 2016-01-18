@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Contracts;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Services;
 
@@ -8,12 +8,12 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
     internal sealed class ChangeHttpRequestHandler : IHttpRequestHandler
     {
-        public ChangeHttpRequestHandler(Action<IApplyContext> action)
+        public ChangeHttpRequestHandler(Action<IActionContext> action)
         {
             _action = action;
         }
 
-        private readonly Action<IApplyContext> _action;
+        private readonly Action<IActionContext> _action;
 
         public object Action(IHttpRequest request)
         {
@@ -24,13 +24,12 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
             changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document };
 
-            var context = new ApplyContext
+            var context = new ActionContext
             {
-                Item = changesObject,
-                Result = changesObject,
                 Configuration = configuration,
                 Metadata = documentType,
-                Type = documentType
+                Item = changesObject,
+                Result = changesObject
             };
 
             _action(context);

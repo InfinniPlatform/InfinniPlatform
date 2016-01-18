@@ -14,7 +14,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 
         private readonly ISetDocumentExecutor _setDocumentExecutor;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             string configuration = target.Item.Configuration;
             string documentType = target.Item.Metadata;

@@ -1,9 +1,9 @@
 ﻿namespace InfinniPlatform.Sdk.Contracts
 {
     /// <summary>
-    /// Общий контекст выполнения всех точек расширения
+    /// Контекст обработчика бизнес-логики.
     /// </summary>
-    public interface ICommonContext
+    public interface IActionContext
     {
         /// <summary>
         /// Конфигурация текущего запроса.
@@ -16,9 +16,9 @@
         string Metadata { get; set; }
 
         /// <summary>
-        /// Тип действия текущего запроса.
+        /// Данные для обработки.
         /// </summary>
-        string Action { get; set; }
+        dynamic Item { get; set; }
 
         /// <summary>
         /// Признак успешности обработки.
@@ -26,18 +26,13 @@
         bool IsValid { get; set; }
 
         /// <summary>
-        /// Признак системной ошибки сервера.
+        /// Результат обработки.
         /// </summary>
-        bool IsInternalServerError { get; set; }
+        dynamic Result { get; set; }
 
         /// <summary>
         /// Результат фильтрации событий.
         /// </summary>
         dynamic ValidationMessage { get; set; }
-
-        /// <summary>
-        /// Результат обработки.
-        /// </summary>
-        dynamic Result { get; set; }
     }
 }

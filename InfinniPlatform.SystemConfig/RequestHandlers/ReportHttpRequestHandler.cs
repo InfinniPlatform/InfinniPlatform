@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Contracts;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
@@ -60,7 +60,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
                 if (!string.IsNullOrEmpty(actionId))
                 {
-                    var context = new ApplyContext { Item = new DynamicWrapper() };
+                    var context = new ActionContext { Item = new DynamicWrapper() };
                     context.Item.Parameters = form;
                     context.Item.PrintViewSource = printViewSource;
 

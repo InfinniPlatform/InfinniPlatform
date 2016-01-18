@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.ContextTypes;
+using InfinniPlatform.Core.Contracts;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Runtime;
@@ -76,7 +76,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 if (!string.IsNullOrEmpty(onValidateAction))
                 {
                     // Вызов прикладного скрипта для проверки документа
-                    ApplyContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
+                    ActionContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
                     _scriptProcessor.InvokeScript(onValidateAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
@@ -90,7 +90,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 if (!string.IsNullOrEmpty(onSuccessAction))
                 {
                     // Вызов скрипта для пост-обработки документа перед его сохранением
-                    ApplyContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
+                    ActionContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
                     _scriptProcessor.InvokeScript(onSuccessAction, actionContext);
 
                     // Предполагается, что скрипт может заменить оригинальный документ
@@ -132,7 +132,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 if (!string.IsNullOrEmpty(onValidateAction))
                 {
                     // Вызов прикладного скрипта для проверки документа
-                    ApplyContext actionContext = CreateActionContext(configuration, documentType, documentId);
+                    ActionContext actionContext = CreateActionContext(configuration, documentType, documentId);
                     _scriptProcessor.InvokeScript(onValidateAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
@@ -147,7 +147,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 if (!string.IsNullOrEmpty(onSuccessAction))
                 {
                     // Вызов скрипта для пост-обработки документа перед его сохранением
-                    ApplyContext actionContext = CreateActionContext(configuration, documentType, documentId);
+                    ActionContext actionContext = CreateActionContext(configuration, documentType, documentId);
                     _scriptProcessor.InvokeScript(onSuccessAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
@@ -161,18 +161,19 @@ namespace InfinniPlatform.SystemConfig.Executors
         }
 
 
-        private ApplyContext CreateActionContext(string configuration, string documentType, object actionItem)
+        private ActionContext CreateActionContext(string configuration, string documentType, object actionItem)
         {
-            var actionContext = new ApplyContext { Item = actionItem, IsValid = true };
-
-            // TODO: Скорей всего, эта информация не нужна
-            actionContext.Configuration = configuration;
-            actionContext.Metadata = documentType;
+            var actionContext = new ActionContext
+                                {
+                                    Configuration = configuration,
+                                    Metadata = documentType,
+                                    Item = actionItem
+                                };
 
             return actionContext;
         }
 
-        private static bool CheckActionResult(ApplyContext actionContext, DocumentExecutorResult setDocumentResult)
+        private static bool CheckActionResult(ActionContext actionContext, DocumentExecutorResult setDocumentResult)
         {
             setDocumentResult.IsValid = actionContext.IsValid;
             setDocumentResult.ValidationMessage = actionContext.ValidationMessage;

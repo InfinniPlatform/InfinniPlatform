@@ -19,7 +19,7 @@ namespace InfinniPlatform.SystemConfig.Services
     /// </remarks>
     internal class SystemHttpService : IHttpService
     {
-        public delegate ChangeHttpRequestHandler ChangeHttpRequestHandlerFactory(Action<IApplyContext> action);
+        public delegate ChangeHttpRequestHandler ChangeHttpRequestHandlerFactory(Action<IActionContext> action);
 
 
         public SystemHttpService(IContainerResolver containerResolver,
@@ -95,10 +95,10 @@ namespace InfinniPlatform.SystemConfig.Services
             return handler;
         }
 
-        private Action<IApplyContext> CreateAction<TActionUnit>() where TActionUnit : class
+        private Action<IActionContext> CreateAction<TActionUnit>() where TActionUnit : class
         {
             var actionUnit = _containerResolver.Resolve<TActionUnit>();
-            var action = (Action<IApplyContext>)ReflectionExtensions.GetMemberValue(actionUnit, "Action");
+            var action = (Action<IActionContext>)ReflectionExtensions.GetMemberValue(actionUnit, "Action");
             return action;
         }
     }

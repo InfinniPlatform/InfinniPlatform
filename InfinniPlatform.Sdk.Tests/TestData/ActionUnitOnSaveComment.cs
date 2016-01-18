@@ -13,7 +13,7 @@ namespace InfinniPlatform.Sdk.Tests.TestData
 
         private readonly DocumentApi _documentApi;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             target.Item.Text = target.Item.Text + "123";
 

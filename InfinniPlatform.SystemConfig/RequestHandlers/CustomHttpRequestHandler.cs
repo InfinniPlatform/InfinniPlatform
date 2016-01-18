@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.ContextTypes;
+﻿using InfinniPlatform.Core.Contracts;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Services;
 
@@ -25,13 +25,12 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
             changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document };
 
-            var context = new ApplyContext
+            var context = new ActionContext
             {
-                Item = changesObject,
-                Result = changesObject,
                 Configuration = configuration,
                 Metadata = documentType,
-                Type = documentType
+                Item = changesObject,
+                Result = changesObject
             };
 
             _scriptProcessor.InvokeScriptByType(actionName, context);

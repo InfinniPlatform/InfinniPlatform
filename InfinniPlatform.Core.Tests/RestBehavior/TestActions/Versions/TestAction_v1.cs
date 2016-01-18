@@ -13,7 +13,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions.Versions
 
         private readonly DocumentApi _documentApi;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             if (target.Item.Name != "Name_TestAction_v1")
             {

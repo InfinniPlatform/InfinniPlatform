@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 
-namespace InfinniPlatform.Core.ContextComponents
+namespace InfinniPlatform.Core.Metadata
 {
     /// <summary>
     /// Контракт API для получения компонента, отвечающего за работу с метаданными

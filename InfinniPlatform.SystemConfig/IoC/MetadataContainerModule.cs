@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Core.ContextComponents;
-using InfinniPlatform.Core.Metadata;
+﻿using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.SystemConfig.Metadata;

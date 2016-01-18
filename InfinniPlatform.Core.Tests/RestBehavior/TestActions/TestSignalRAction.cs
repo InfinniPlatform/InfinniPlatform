@@ -13,7 +13,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
         private readonly IWebClientNotificationService _webClientNotificationComponent;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             dynamic testObject = new DynamicWrapper();
             testObject.TestProperty = "Hello world";

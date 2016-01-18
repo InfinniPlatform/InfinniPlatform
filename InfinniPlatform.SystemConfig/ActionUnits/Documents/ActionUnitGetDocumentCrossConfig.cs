@@ -16,7 +16,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 
         private readonly IGetDocumentExecutor _getDocumentExecutor;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             IEnumerable<object> configs = DynamicWrapperExtensions.ToEnumerable(target.Item.Configurations);
             IEnumerable<object> documents = DynamicWrapperExtensions.ToEnumerable(target.Item.Documents);

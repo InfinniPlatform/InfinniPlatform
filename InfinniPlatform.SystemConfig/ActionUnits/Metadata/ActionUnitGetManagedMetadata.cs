@@ -17,7 +17,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Metadata
 
         private readonly IMetadataComponent _metadataComponent;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             Func<dynamic, bool> predicate;
 

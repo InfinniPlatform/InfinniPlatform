@@ -1,10 +1,10 @@
 ﻿using InfinniPlatform.Sdk.Contracts;
 
-namespace InfinniPlatform.Core.ContextTypes
+namespace InfinniPlatform.Core.Contracts
 {
-    public abstract class CommonContext : ICommonContext
+    public sealed class ActionContext : IActionContext
     {
-        protected CommonContext()
+        public ActionContext()
         {
             IsValid = true;
         }
@@ -13,14 +13,12 @@ namespace InfinniPlatform.Core.ContextTypes
 
         public string Metadata { get; set; }
 
-        public string Action { get; set; }
+        public dynamic Item { get; set; }
 
         public bool IsValid { get; set; }
 
-        public bool IsInternalServerError { get; set; }
+        public dynamic Result { get; set; }
 
         public dynamic ValidationMessage { get; set; }
-
-        public dynamic Result { get; set; }
     }
 }

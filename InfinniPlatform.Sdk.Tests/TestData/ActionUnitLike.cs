@@ -14,7 +14,7 @@ namespace InfinniPlatform.Sdk.Tests.TestData
 
         private readonly DocumentApi _documentApi;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             dynamic document = _documentApi.GetDocument("Gameshop", "review", f => f.AddCriteria(c => c.Property("Id").IsEquals(target.Item.DocumentId)), 0, 1).FirstOrDefault();
 

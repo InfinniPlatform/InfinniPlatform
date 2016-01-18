@@ -17,7 +17,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Documents
 
         private readonly IGetDocumentExecutor _getDocumentExecutor;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             var criteriaFilters = target.Item.Filter as IEnumerable<dynamic>;
             var criteriaSortings = target.Item.Sorting as IEnumerable<dynamic>;

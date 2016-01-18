@@ -80,8 +80,6 @@
     <Compile Include="ActionUnits\Session\ActionUnitGetSessionData.cs" />
     <Compile Include="ActionUnits\Session\ActionUnitRemoveSessionData.cs" />
     <Compile Include="ActionUnits\Session\ActionUnitSetSessionData.cs" />
-    <Compile Include="ActionUnits\Binary\ActionUnitDownloadBinaryContent.cs" />
-    <Compile Include="ActionUnits\Binary\ActionUnitUploadBinaryContent.cs" />
     <Compile Include="Executors\DocumentTransactionAction.cs" />
     <Compile Include="Executors\DocumentTransactionCommand.cs" />
     <Compile Include="Executors\DocumentTransactionLog.cs" />

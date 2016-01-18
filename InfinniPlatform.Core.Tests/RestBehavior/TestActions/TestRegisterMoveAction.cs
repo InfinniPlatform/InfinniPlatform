@@ -13,7 +13,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
         private readonly DocumentApi _documentApi;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             if (target.Item.RegisterMoveValue != "RegisterMove" &&
                 target.Item.TestValue != "Test")

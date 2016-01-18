@@ -16,7 +16,7 @@ namespace InfinniPlatform.SystemConfig.ActionUnits.Session
 
         private readonly ISessionManager _sessionManager;
 
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             _sessionManager.SetSessionData(target.Item.ClaimType, null);
 
