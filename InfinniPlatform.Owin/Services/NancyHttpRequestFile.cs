@@ -7,11 +7,11 @@ using Nancy;
 namespace InfinniPlatform.Owin.Services
 {
     /// <summary>
-    /// Информация о файле запроса.
+    /// Реализация <see cref="IHttpRequestFile"/> на базе Nancy.
     /// </summary>
-    internal sealed class HttpRequestFile : IHttpRequestFile
+    internal sealed class NancyHttpRequestFile : IHttpRequestFile
     {
-        public HttpRequestFile(HttpFile nancyFile)
+        public NancyHttpRequestFile(HttpFile nancyFile)
         {
             _nancyFile = nancyFile;
         }

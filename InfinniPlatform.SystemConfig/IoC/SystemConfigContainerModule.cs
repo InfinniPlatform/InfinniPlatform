@@ -63,12 +63,11 @@ namespace InfinniPlatform.SystemConfig.IoC
 
             // Прикладные сервисы
             builder.RegisterType<ChangeHttpRequestHandler>().AsSelf().InstancePerDependency();
-            builder.RegisterType<SearchHttpRequestHandler>().AsSelf().SingleInstance();
             builder.RegisterType<CustomHttpRequestHandler>().AsSelf().SingleInstance();
             builder.RegisterType<AttachHttpRequestHandler>().AsSelf().SingleInstance();
             builder.RegisterType<DownloadHttpRequestHandler>().AsSelf().SingleInstance();
             builder.RegisterType<ReportHttpRequestHandler>().AsSelf().SingleInstance();
-            builder.RegisterType<DocumentTransactionScopeOnAfterHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<DocumentTransactionScopeHttpGlobalHandler>().As<IHttpGlobalHandler>().SingleInstance();
             builder.RegisterHttpServices(GetType().Assembly);
         }
     }

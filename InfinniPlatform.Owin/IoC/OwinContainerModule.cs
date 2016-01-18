@@ -5,16 +5,46 @@ using InfinniPlatform.Owin.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Security;
 
+using Nancy;
+using Nancy.Bootstrapper;
+
 namespace InfinniPlatform.Owin.IoC
 {
     internal sealed class OwinContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {
-            // Сервис получения идентификационных данных текущего пользователя
+            // Модуль Nancy
+
+            builder.RegisterType<NancyOwinHostingModule>()
+                   .As<IOwinHostingModule>()
+                   .SingleInstance();
+
+            builder.RegisterType<HttpServiceNancyBootstrapper>()
+                   .As<INancyBootstrapper>()
+                   .SingleInstance();
+
+            builder.RegisterType<HttpServiceNancyModuleCatalog>()
+                   .As<INancyModuleCatalog>()
+                   .SingleInstance();
+
+            builder.RegisterGeneric(typeof(HttpServiceNancyModule<>))
+                   .As(typeof(HttpServiceNancyModule<>))
+                   .InstancePerDependency();
+
+            builder.RegisterType<HttpServiceNancyModuleInitializer>()
+                   .AsSelf()
+                   .SingleInstance();
+
             builder.RegisterType<OwinUserIdentityProvider>()
                    .As<IUserIdentityProvider>()
                    .SingleInstance();
+
+            builder.RegisterType<HttpRequestExcutorFactory>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            // Остальные модули
 
             builder.RegisterType<ErrorHandlingOwinHostingModule>()
                    .As<IOwinHostingModule>()
@@ -30,10 +60,6 @@ namespace InfinniPlatform.Owin.IoC
 
             builder.RegisterType<SystemInfoOwinMiddleware>()
                    .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<ApplicationOwinHostingModule>()
-                   .As<IOwinHostingModule>()
                    .SingleInstance();
         }
     }

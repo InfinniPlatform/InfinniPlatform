@@ -27,8 +27,7 @@ namespace InfinniPlatform.SystemConfig.Services
                                  AttachHttpRequestHandler attachHandler,
                                  DownloadHttpRequestHandler downloadHandler,
                                  ReportHttpRequestHandler reportHandler,
-                                 CustomHttpRequestHandler customHandler,
-                                 DocumentTransactionScopeOnAfterHandler onAfterHandler)
+                                 CustomHttpRequestHandler customHandler)
         {
             _containerResolver = containerResolver;
             _onChangeHandlerFactory = onChangeHandlerFactory;
@@ -36,7 +35,6 @@ namespace InfinniPlatform.SystemConfig.Services
             _downloadHandler = downloadHandler;
             _reportHandler = reportHandler;
             _customHandler = customHandler;
-            _onAfterHandler = onAfterHandler;
         }
 
 
@@ -46,7 +44,6 @@ namespace InfinniPlatform.SystemConfig.Services
         private readonly DownloadHttpRequestHandler _downloadHandler;
         private readonly ReportHttpRequestHandler _reportHandler;
         private readonly CustomHttpRequestHandler _customHandler;
-        private readonly DocumentTransactionScopeOnAfterHandler _onAfterHandler;
 
 
         public void Load(IHttpServiceBuilder builder)
@@ -86,8 +83,6 @@ namespace InfinniPlatform.SystemConfig.Services
             // Прикладные сервисы
             builder.Post
                    .Action("/{configuration}/StandardApi/{documentType}/{actionName}", _customHandler);
-
-            builder.OnAfter += _onAfterHandler.OnAfter;
         }
 
 

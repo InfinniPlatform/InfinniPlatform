@@ -4,7 +4,7 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
-    internal sealed class CustomHttpRequestHandler : SimpleHttpRequestHandler
+    internal sealed class CustomHttpRequestHandler : IHttpRequestHandler
     {
         public CustomHttpRequestHandler(IScriptProcessor scriptProcessor)
         {
@@ -13,7 +13,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
         private readonly IScriptProcessor _scriptProcessor;
 
-        protected override object ActionResult(IHttpRequest request)
+        public object Action(IHttpRequest request)
         {
             // TODO: Это наивное предположение, нужно изменить после рефакторинга метаданных сервисов.
             string actionName = $"ActionUnit{request.Parameters.ActionName}";
@@ -26,13 +26,13 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
             changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document };
 
             var context = new ApplyContext
-                          {
-                              Item = changesObject,
-                              Result = changesObject,
-                              Configuration = configuration,
-                              Metadata = documentType,
-                              Type = documentType
-                          };
+            {
+                Item = changesObject,
+                Result = changesObject,
+                Configuration = configuration,
+                Metadata = documentType,
+                Type = documentType
+            };
 
             _scriptProcessor.InvokeScriptByType(actionName, context);
 

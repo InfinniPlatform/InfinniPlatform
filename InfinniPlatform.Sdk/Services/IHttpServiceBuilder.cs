@@ -8,38 +8,53 @@ namespace InfinniPlatform.Sdk.Services
     public interface IHttpServiceBuilder
     {
         /// <summary>
+        /// Базовый путь сервиса.
+        /// </summary>
+        string ServicePath { get; set; }
+
+        /// <summary>
         /// Правила обработки GET-запросов.
         /// </summary>
-        IHttpRouteBuilder Get { get; }
+        IHttpServiceRouteBuilder Get { get; }
 
         /// <summary>
         /// Правила обработки POST-запросов.
         /// </summary>
-        IHttpRouteBuilder Post { get; }
+        IHttpServiceRouteBuilder Post { get; }
 
         /// <summary>
         /// Правила обработки PUT-запросов.
         /// </summary>
-        IHttpRouteBuilder Put { get; }
+        IHttpServiceRouteBuilder Put { get; }
 
         /// <summary>
         /// Правила обработки PATCH-запросов.
         /// </summary>
-        IHttpRouteBuilder Patch { get; }
+        IHttpServiceRouteBuilder Patch { get; }
 
         /// <summary>
         /// Правила обработки DELETE-запросов.
         /// </summary>
-        IHttpRouteBuilder Delete { get; }
+        IHttpServiceRouteBuilder Delete { get; }
 
         /// <summary>
         /// Предобработчик запросов.
         /// </summary>
-        Action<IHttpRequest> OnBefore { get; set; }
+        Func<IHttpRequest, object> OnBefore { get; set; }
 
         /// <summary>
         /// Постобработчик запросов.
         /// </summary>
-        Action<IHttpRequest, IHttpResponse, Exception> OnAfter { get; set; }
+        Func<IHttpRequest, object, object> OnAfter { get; set; }
+
+        /// <summary>
+        /// Обработчик исключений.
+        /// </summary>
+        Func<IHttpRequest, Exception, object> OnError { get; set; }
+
+        /// <summary>
+        /// Конвертер результата.
+        /// </summary>
+        Func<object, IHttpResponse> ResultConverter { get; set; }
     }
 }

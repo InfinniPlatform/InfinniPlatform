@@ -9,7 +9,7 @@
         /// Обрабатывает запрос.
         /// </summary>
         /// <param name="request">Запрос.</param>
-        /// <returns>Ответ.</returns>
-        IHttpResponse Action(IHttpRequest request);
+        /// <returns>Результат выполнения запроса.</returns>
+        object Action(IHttpRequest request);
     }
 }

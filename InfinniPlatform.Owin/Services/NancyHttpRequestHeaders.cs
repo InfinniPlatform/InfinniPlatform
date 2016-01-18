@@ -8,11 +8,11 @@ using Nancy;
 namespace InfinniPlatform.Owin.Services
 {
     /// <summary>
-    /// Заголовок запроса.
+    /// Реализация <see cref="IHttpRequestHeaders"/> на базе Nancy.
     /// </summary>
-    internal sealed class HttpRequestHeaders : IHttpRequestHeaders
+    internal sealed class NancyHttpRequestHeaders : IHttpRequestHeaders
     {
-        public HttpRequestHeaders(RequestHeaders nancyHeaders)
+        public NancyHttpRequestHeaders(RequestHeaders nancyHeaders)
         {
             _nancyHeaders = nancyHeaders;
         }

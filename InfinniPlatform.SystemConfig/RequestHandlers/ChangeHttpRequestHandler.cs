@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
-    internal sealed class ChangeHttpRequestHandler : SimpleHttpRequestHandler
+    internal sealed class ChangeHttpRequestHandler : IHttpRequestHandler
     {
         public ChangeHttpRequestHandler(Action<IApplyContext> action)
         {
@@ -15,7 +15,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
         private readonly Action<IApplyContext> _action;
 
-        protected override object ActionResult(IHttpRequest request)
+        public object Action(IHttpRequest request)
         {
             dynamic requestForm = request.Form;
             dynamic changesObject = requestForm.changesObject;

@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
-    internal sealed class DownloadHttpRequestHandler : SimpleHttpRequestHandler
+    internal sealed class DownloadHttpRequestHandler : IHttpRequestHandler
     {
         public DownloadHttpRequestHandler(IBlobStorage blobStorage)
         {
@@ -15,7 +15,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
         private readonly IBlobStorage _blobStorage;
 
-        protected override object ActionResult(IHttpRequest request)
+        public object Action(IHttpRequest request)
         {
             string formString = request.Query.Form;
 

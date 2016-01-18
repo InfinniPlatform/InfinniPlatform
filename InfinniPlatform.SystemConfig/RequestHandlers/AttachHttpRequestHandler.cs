@@ -7,7 +7,7 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
-    internal sealed class AttachHttpRequestHandler : SimpleHttpRequestHandler
+    internal sealed class AttachHttpRequestHandler : IHttpRequestHandler
     {
         public AttachHttpRequestHandler(IDocumentApi documentApi)
         {
@@ -16,7 +16,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
 
         private readonly IDocumentApi _documentApi;
 
-        protected override object ActionResult(IHttpRequest request)
+        public object Action(IHttpRequest request)
         {
             string linkedDataString = request.Query.LinkedData;
 

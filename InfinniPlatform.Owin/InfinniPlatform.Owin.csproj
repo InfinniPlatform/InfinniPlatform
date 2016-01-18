@@ -74,12 +74,16 @@
     <Compile Include="Formatting\JsonBodyFormatter.cs" />
     <Compile Include="Hosting\OwinHostingServiceFactory.cs" />
     <Compile Include="Security\OwinUserIdentityProvider.cs" />
-    <Compile Include="Services\ApplicationOwinHostingModule.cs" />
+    <Compile Include="Services\HttpServiceNancyBootstrapper.cs" />
+    <Compile Include="Services\HttpServiceNancyModule.cs" />
+    <Compile Include="Services\NancyOwinHostingModule.cs" />
+    <Compile Include="Services\HttpRequestExcutorFactory.cs" />
+    <Compile Include="Services\HttpServiceRoute.cs" />
     <Compile Include="Services\HttpServiceBuilder.cs" />
-    <Compile Include="Services\HttpRequest.cs" />
-    <Compile Include="Services\HttpRequestHeaders.cs" />
-    <Compile Include="Services\HttpRouteBuilder.cs" />
-    <Compile Include="Services\HttpRequestFile.cs" />
+    <Compile Include="Services\NancyHttpRequest.cs" />
+    <Compile Include="Services\NancyHttpRequestHeaders.cs" />
+    <Compile Include="Services\HttpServiceRouteBuilder.cs" />
+    <Compile Include="Services\NancyHttpRequestFile.cs" />
     <Compile Include="IoC\OwinContainerModule.cs" />
     <Compile Include="Middleware\CurrentPrincipalTransmitter.cs" />
     <Compile Include="Middleware\EmptyRequestHandlerResult.cs" />
@@ -111,6 +115,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Middleware\RoutingOwinMiddleware.cs" />
+    <Compile Include="Services\HttpServiceNancyModuleCatalog.cs" />
+    <Compile Include="Services\HttpServiceNancyModuleInitializer.cs" />
     <Compile Include="UrlBuilder.cs" />
     <Compile Include="Middleware\ValueRequestHandlerResult.cs" />
   </ItemGroup>

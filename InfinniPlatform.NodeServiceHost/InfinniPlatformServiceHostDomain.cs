@@ -4,183 +4,197 @@ using System.Threading;
 
 namespace InfinniPlatform.NodeServiceHost
 {
-	public sealed class InfinniPlatformServiceHostDomain : IDisposable
-	{
-		public InfinniPlatformServiceHostDomain()
-		{
-			_domain = new Lazy<AppDomain>(CreateWorkerServiceDomain);
-		}
+    public sealed class InfinniPlatformServiceHostDomain : IDisposable
+    {
+        public InfinniPlatformServiceHostDomain()
+        {
+            _domain = new Lazy<AppDomain>(CreateWorkerServiceDomain);
+        }
 
 
-		private readonly Lazy<AppDomain> _domain;
+        private readonly Lazy<AppDomain> _domain;
 
 
-		private volatile bool _started;
-		private readonly object _syncStarted = new object();
+        private volatile bool _started;
+        private readonly object _syncStarted = new object();
 
 
-		public string GetStatus()
-		{
-			const string cGetStatusReturn = "GetStatus_return";
+        public string GetStatus()
+        {
+            const string cGetStatusReturn = "GetStatus_return";
 
-			_domain.Value.DoCallBack(() =>
-									 {
-										 var worker = GetWorkerServiceHost();
-										 var status = worker.GetStatus();
-										 SetDomainData(AppDomain.CurrentDomain, cGetStatusReturn, status);
-									 });
+            _domain.Value.DoCallBack(() => HandleDomainException(() =>
+                                                                 {
+                                                                     var worker = GetWorkerServiceHost();
+                                                                     var status = worker.GetStatus();
+                                                                     SetDomainData(AppDomain.CurrentDomain, cGetStatusReturn, status);
+                                                                 }));
 
-			return GetDomainData<string>(_domain.Value, cGetStatusReturn);
-		}
+            return GetDomainData<string>(_domain.Value, cGetStatusReturn);
+        }
 
-		public void Start()
-		{
-			if (!_started)
-			{
-				lock (_syncStarted)
-				{
-					if (!_started)
-					{
-						_domain.Value.DoCallBack(() =>
-												 {
-													 var worker = GetWorkerServiceHost();
-													 worker.Start(Timeout.InfiniteTimeSpan);
-												 });
+        public void Start()
+        {
+            if (!_started)
+            {
+                lock (_syncStarted)
+                {
+                    if (!_started)
+                    {
+                        _domain.Value.DoCallBack(() => HandleDomainException(() =>
+                                                                             {
+                                                                                 var worker = GetWorkerServiceHost();
+                                                                                 worker.Start(Timeout.InfiniteTimeSpan);
+                                                                             }));
 
-						_started = true;
-					}
-				}
-			}
-		}
+                        _started = true;
+                    }
+                }
+            }
+        }
 
-		public void Stop()
-		{
-			if (_started)
-			{
-				lock (_syncStarted)
-				{
-					if (_started)
-					{
-						_domain.Value.DoCallBack(() =>
-												 {
-													 var worker = GetWorkerServiceHost();
-													 worker.Stop(Timeout.InfiniteTimeSpan);
-												 });
+        public void Stop()
+        {
+            if (_started)
+            {
+                lock (_syncStarted)
+                {
+                    if (_started)
+                    {
+                        _domain.Value.DoCallBack(() => HandleDomainException(() =>
+                                                                             {
+                                                                                 var worker = GetWorkerServiceHost();
+                                                                                 worker.Stop(Timeout.InfiniteTimeSpan);
+                                                                             }));
 
-						_started = false;
-					}
-				}
-			}
-		}
+                        _started = false;
+                    }
+                }
+            }
+        }
 
-		public void Dispose()
-		{
-			if (_domain.IsValueCreated)
-			{
-				Stop();
+        public void Dispose()
+        {
+            if (_domain.IsValueCreated)
+            {
+                Stop();
 
-				DeleteWorkerServiceDomain(_domain.Value);
-			}
-		}
-
-
-		private static AppDomain CreateWorkerServiceDomain()
-		{
-			var currentDomainInfo = AppDomain.CurrentDomain.SetupInformation;
-			var domainFriendlyName = typeof(InfinniPlatformServiceHostDomain).Name;
-
-			// Создание домена приложения
-			var domain = AppDomain.CreateDomain(domainFriendlyName, null, new AppDomainSetup
-																		  {
-																			  LoaderOptimization = LoaderOptimization.MultiDomainHost,
-																			  ApplicationBase = currentDomainInfo.ApplicationBase,
-																			  ConfigurationFile = currentDomainInfo.ConfigurationFile
-																		  });
-
-			DomainAssemblyResolver.Setup(domain);
-
-			// Установка рабочего каталога
-			SetCurrentDirectory(domain, currentDomainInfo.ApplicationBase);
-
-			// Установка обработчика службы
-			SetWorkerServiceHost(domain);
-
-			return domain;
-		}
-
-		private static void DeleteWorkerServiceDomain(AppDomain domain)
-		{
-			try
-			{
-				AppDomain.Unload(domain);
-			}
-			catch
-			{
-			}
-		}
+                DeleteWorkerServiceDomain(_domain.Value);
+            }
+        }
 
 
-		private static void SetCurrentDirectory(AppDomain domain, string currentDirectory)
-		{
-			const string cCurrentDirectory = "CurrentDirectory";
+        private static AppDomain CreateWorkerServiceDomain()
+        {
+            var currentDomainInfo = AppDomain.CurrentDomain.SetupInformation;
+            var domainFriendlyName = typeof(InfinniPlatformServiceHostDomain).Name;
 
-			SetDomainData(domain, cCurrentDirectory, currentDirectory);
+            // Создание домена приложения
+            var domain = AppDomain.CreateDomain(domainFriendlyName, null, new AppDomainSetup
+            {
+                LoaderOptimization = LoaderOptimization.MultiDomainHost,
+                ApplicationBase = currentDomainInfo.ApplicationBase,
+                ConfigurationFile = currentDomainInfo.ConfigurationFile
+            });
 
-			domain.DoCallBack(() =>
-							  {
-								  var currentDirectoryValue = GetDomainData<string>(AppDomain.CurrentDomain, cCurrentDirectory);
-								  Directory.SetCurrentDirectory(currentDirectoryValue);
-							  });
-		}
+            DomainAssemblyResolver.Setup(domain);
 
+            // Установка рабочего каталога
+            SetCurrentDirectory(domain, currentDomainInfo.ApplicationBase);
 
-		private static void SetWorkerServiceHost(AppDomain domain)
-		{
-			domain.DoCallBack(() =>
-							  {
-								  var worker = new Lazy<InfinniPlatformServiceHost>(() => new InfinniPlatformServiceHost());
-								  SetDomainData(AppDomain.CurrentDomain, "Instance", worker);
-							  });
-		}
+            // Установка обработчика службы
+            SetWorkerServiceHost(domain);
 
-		private static InfinniPlatformServiceHost GetWorkerServiceHost()
-		{
-			var domain = AppDomain.CurrentDomain;
-			var worker = GetDomainData<Lazy<InfinniPlatformServiceHost>>(domain, "Instance");
-			return worker.Value;
-		}
+            return domain;
+        }
 
-
-		private static void SetDomainData(AppDomain domain, string name, object data)
-		{
-			var dataKey = GetDomainDataKey(name);
-			domain.SetData(dataKey, data);
-		}
-
-		private static T GetDomainData<T>(AppDomain domain, string name)
-		{
-			var dataKey = GetDomainDataKey(name);
-			return (T)domain.GetData(dataKey);
-		}
+        private static void DeleteWorkerServiceDomain(AppDomain domain)
+        {
+            try
+            {
+                AppDomain.Unload(domain);
+            }
+            catch
+            {
+            }
+        }
 
 
-		private static string GetDomainDataKey(string name)
-		{
-			return string.Format("InfinniPlatformServiceHostDomain.{0}", name);
-		}
+        private static void SetCurrentDirectory(AppDomain domain, string currentDirectory)
+        {
+            const string cCurrentDirectory = "CurrentDirectory";
+
+            SetDomainData(domain, cCurrentDirectory, currentDirectory);
+
+            domain.DoCallBack(() => HandleDomainException(() =>
+                                                          {
+                                                              var currentDirectoryValue = GetDomainData<string>(AppDomain.CurrentDomain, cCurrentDirectory);
+                                                              Directory.SetCurrentDirectory(currentDirectoryValue);
+                                                          }));
+        }
 
 
-		internal sealed class DomainAssemblyResolver
-		{
-			static DomainAssemblyResolver()
-			{
-				AppDomain.CurrentDomain.AssemblyResolve += (s, e) => typeof(DomainAssemblyResolver).Assembly;
-			}
+        private static void SetWorkerServiceHost(AppDomain domain)
+        {
+            domain.DoCallBack(() => HandleDomainException(() =>
+                                                          {
+                                                              var worker = new Lazy<InfinniPlatformServiceHost>(() => new InfinniPlatformServiceHost());
+                                                              SetDomainData(AppDomain.CurrentDomain, "Instance", worker);
+                                                          }));
+        }
 
-			public static void Setup(AppDomain domain)
-			{
-				domain.CreateInstanceFrom(typeof(DomainAssemblyResolver).Assembly.Location, typeof(DomainAssemblyResolver).FullName);
-			}
-		}
-	}
+        private static InfinniPlatformServiceHost GetWorkerServiceHost()
+        {
+            var domain = AppDomain.CurrentDomain;
+            var worker = GetDomainData<Lazy<InfinniPlatformServiceHost>>(domain, "Instance");
+            return worker.Value;
+        }
+
+
+        private static void SetDomainData(AppDomain domain, string name, object data)
+        {
+            var dataKey = GetDomainDataKey(name);
+            domain.SetData(dataKey, data);
+        }
+
+        private static T GetDomainData<T>(AppDomain domain, string name)
+        {
+            var dataKey = GetDomainDataKey(name);
+            return (T)domain.GetData(dataKey);
+        }
+
+
+        private static string GetDomainDataKey(string name)
+        {
+            return $"InfinniPlatformServiceHostDomain.{name}";
+        }
+
+
+        private static void HandleDomainException(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                // Так как не все исключения могут быть сериализованы, генерируем новое
+                throw new InvalidOperationException(e.ToString());
+            }
+        }
+
+
+        private sealed class DomainAssemblyResolver
+        {
+            static DomainAssemblyResolver()
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += (s, e) => typeof(DomainAssemblyResolver).Assembly;
+            }
+
+            public static void Setup(AppDomain domain)
+            {
+                domain.CreateInstanceFrom(typeof(DomainAssemblyResolver).Assembly.Location, typeof(DomainAssemblyResolver).FullName);
+            }
+        }
+    }
 }

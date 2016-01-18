@@ -10,7 +10,7 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.RequestHandlers
 {
-    internal sealed class ReportHttpRequestHandler : SimpleHttpRequestHandler
+    internal sealed class ReportHttpRequestHandler : IHttpRequestHandler
     {
         public ReportHttpRequestHandler(IDocumentApi documentApi, IPrintViewApi printViewApi, IScriptProcessor scriptProcessor)
         {
@@ -23,7 +23,7 @@ namespace InfinniPlatform.SystemConfig.RequestHandlers
         private readonly IPrintViewApi _printViewApi;
         private readonly IScriptProcessor _scriptProcessor;
 
-        protected override object ActionResult(IHttpRequest request)
+        public object Action(IHttpRequest request)
         {
             string formString = request.Form.Form;
 

@@ -94,10 +94,9 @@
     <Compile Include="RequestHandlers\AttachHttpRequestHandler.cs" />
     <Compile Include="RequestHandlers\CustomHttpRequestHandler.cs" />
     <Compile Include="RequestHandlers\ChangeHttpRequestHandler.cs" />
-    <Compile Include="RequestHandlers\DocumentTransactionScopeOnAfterHandler.cs" />
+    <Compile Include="RequestHandlers\DocumentTransactionScopeHttpGlobalHandler.cs" />
     <Compile Include="RequestHandlers\DownloadHttpRequestHandler.cs" />
     <Compile Include="RequestHandlers\ReportHttpRequestHandler.cs" />
-    <Compile Include="RequestHandlers\SearchHttpRequestHandler.cs" />
     <Compile Include="Services\SystemHttpService.cs" />
     <Compile Include="StartupInitializers\DocumentSchemaHelper.cs" />
     <Compile Include="StartupInitializers\FileHistoryHelper.cs" />

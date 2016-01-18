@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Text;
 
 namespace InfinniPlatform.Sdk.Logging
 {
     public static class ExceptionExtensions
     {
-        public static T AddContextData<T>(this T exception, IDictionary contextData) where T : Exception
-        {
-            foreach (var key in contextData.Keys)
-            {
-                exception.Data.Add(key, contextData[key]);
-            }
-
-            return exception;
-        }
-
         public static string GetMessage(this Exception exception)
         {
             if (exception != null)

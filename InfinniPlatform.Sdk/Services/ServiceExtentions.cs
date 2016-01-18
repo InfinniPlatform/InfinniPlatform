@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 using InfinniPlatform.Sdk.IoC;
 
@@ -25,20 +24,6 @@ namespace InfinniPlatform.Sdk.Services
                 r => r.As<IHttpService>().SingleInstance());
         }
 
-
-        /// <summary>
-        /// Устанавливает обработчик запросов.
-        /// </summary>
-        /// <example>
-        /// <code>
-        /// Action("/method", request => 200);
-        /// </code>
-        /// </example>
-        public static IHttpRouteBuilder Action(this IHttpRouteBuilder target, string path, Func<IHttpRequest, object> action)
-        {
-            return Action(target, path, new LambdaHttpRequestHandler(action));
-        }
-
         /// <summary>
         /// Устанавливает обработчик запросов.
         /// </summary>
@@ -47,26 +32,10 @@ namespace InfinniPlatform.Sdk.Services
         /// Action("/method", new THandler());
         /// </code>
         /// </example>
-        public static IHttpRouteBuilder Action<THandler>(this IHttpRouteBuilder target, string path, THandler handler) where THandler : IHttpRequestHandler
+        public static IHttpServiceRouteBuilder Action<THandler>(this IHttpServiceRouteBuilder target, string path, THandler handler) where THandler : IHttpRequestHandler
         {
             target[path] = handler.Action;
             return target;
-        }
-
-
-        private class LambdaHttpRequestHandler : SimpleHttpRequestHandler
-        {
-            public LambdaHttpRequestHandler(Func<IHttpRequest, object> action)
-            {
-                _action = action;
-            }
-
-            private readonly Func<IHttpRequest, object> _action;
-
-            protected override object ActionResult(IHttpRequest request)
-            {
-                return _action(request);
-            }
         }
     }
 }

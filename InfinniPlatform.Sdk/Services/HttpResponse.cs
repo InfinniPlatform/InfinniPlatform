@@ -9,11 +9,34 @@ namespace InfinniPlatform.Sdk.Services
     /// </summary>
     public class HttpResponse : IHttpResponse
     {
-        public HttpResponse()
+        /// <summary>
+        /// Запрос выполнен успешно.
+        /// </summary>
+        public static readonly IHttpResponse Ok = new HttpResponse();
+
+        /// <summary>
+        /// Запрашиваемый ресурс не найден.
+        /// </summary>
+        public static readonly IHttpResponse NotFound = new HttpResponse(404);
+
+        /// <summary>
+        /// Ответ не имеет содержимого.
+        /// </summary>
+        public static readonly Action<Stream> NoContent = responseStream => { };
+
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="statusCode">Код состояния.</param>
+        /// <param name="contentType">Тип содержимого тела ответа.</param>
+        public HttpResponse(int statusCode = 200, string contentType = HttpConstants.JsonContentType)
         {
-            StatusCode = 200;
-            ContentType = HttpConstants.JsonContentType;
+            StatusCode = statusCode;
+            ContentType = contentType;
+            Content = NoContent;
         }
+
 
         /// <summary>
         /// Код состояния.
@@ -36,7 +59,7 @@ namespace InfinniPlatform.Sdk.Services
         public string ContentType { get; set; }
 
         /// <summary>
-        /// Содержимое тела ответа.
+        /// Метод записи содержимого тела ответа.
         /// </summary>
         public Action<Stream> Content { get; set; }
     }

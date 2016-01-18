@@ -13,11 +13,11 @@ using Nancy;
 namespace InfinniPlatform.Owin.Services
 {
     /// <summary>
-    /// Запрос.
+    /// Реализация <see cref="IHttpRequest"/> на базе Nancy.
     /// </summary>
-    internal sealed class HttpRequest : IHttpRequest
+    internal sealed class NancyHttpRequest : IHttpRequest
     {
-        public HttpRequest(NancyContext nancyContext, Func<IIdentity> userIdentityProvider)
+        public NancyHttpRequest(NancyContext nancyContext, Func<IIdentity> userIdentityProvider)
         {
             _nancyRequest = nancyContext.Request;
             _userIdentityProvider = userIdentityProvider;
@@ -25,8 +25,8 @@ namespace InfinniPlatform.Owin.Services
             Parameters = nancyContext.Parameters;
 
             _form = new Lazy<dynamic>(() => ParseRequestForm());
-            _headers = new Lazy<IHttpRequestHeaders>(() => new HttpRequestHeaders(_nancyRequest.Headers));
-            _files = new Lazy<IEnumerable<IHttpRequestFile>>(() => _nancyRequest.Files.Select(i => new HttpRequestFile(i)));
+            _headers = new Lazy<IHttpRequestHeaders>(() => new NancyHttpRequestHeaders(_nancyRequest.Headers));
+            _files = new Lazy<IEnumerable<IHttpRequestFile>>(() => _nancyRequest.Files.Select(i => new NancyHttpRequestFile(i)));
         }
 
 
