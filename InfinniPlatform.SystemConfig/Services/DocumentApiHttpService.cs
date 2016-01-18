@@ -54,8 +54,8 @@ namespace InfinniPlatform.SystemConfig.Services
             IEnumerable<dynamic> dynamicFilters = target.Item.Filter;
             var filter = dynamicFilters?.Select(o => new FilterCriteria(o.Property, o.Value, (CriteriaType)o.CriteriaType)) ?? Enumerable.Empty<FilterCriteria>();
 
-            int pageNumber = Math.Max((int)target.Item.PageNumber, 0);
-            int pageSize = Math.Min((int)target.Item.PageSize, 1000);
+            int pageNumber = Math.Max((int)(target.Item?.PageNumber ?? 0), 0);
+            int pageSize = Math.Min((int)(target.Item?.PageSize ?? 0), 1000);
 
             IEnumerable<dynamic> dynamicSorting = target.Item.Sorting;
             var sorting = dynamicSorting?.Select(o => new SortingCriteria(o.PropertyName, o.SortingOrder));

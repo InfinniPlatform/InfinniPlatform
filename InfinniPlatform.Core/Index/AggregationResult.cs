@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Registers;
 
 namespace InfinniPlatform.Core.Index
@@ -43,5 +44,11 @@ namespace InfinniPlatform.Core.Index
         {
             get { return _backets; }
         }
+
+        //TODO Избавиться в процессе рефакторинга регистров.
+        /// <remarks>
+        /// Раньше появлялось только в динамическом контексте. Поведение до конца не изучено.
+        /// </remarks>
+        public DynamicWrapper DenormalizationResult { get; set; }
     }
 }
