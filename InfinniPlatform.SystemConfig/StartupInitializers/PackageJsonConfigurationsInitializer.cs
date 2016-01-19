@@ -108,7 +108,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             foreach (var document in documentList)
             {
                 var processes = document.Processes as IEnumerable<dynamic>;
-                var transitions = processes?.FirstOrDefault()?.Transitions as IEnumerable<dynamic>;
+                var transitions = processes?.FirstOrDefault(i => string.Equals(i.Name, "Default", StringComparison.OrdinalIgnoreCase))?.Transitions as IEnumerable<dynamic>;
 
                 document.Events = transitions?.FirstOrDefault();
             }
