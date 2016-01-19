@@ -115,7 +115,14 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestFilters
             // http://www.elasticsearch.org/guide/en/elasticsearch/guide/current/_finding_exact_values.html#_term_filter_with_numbers
             // Заменяем их пробелы
 
-            var processedValue = "*" + value.ToString().Replace(" ", "?").Replace("-", "?").Replace("#", "?").Trim() + "*";
+            var valueString = value.ToString();
+
+            if (string.IsNullOrEmpty(valueString))
+            {
+                return null;
+            }
+
+            var processedValue = "*" + valueString.Replace(" ", "?").Replace("-", "?").Replace("#", "?").Trim() + "*";
 
             //TODO: полнотекстовый поиск будет работать корректно только в случае использования match query:
             //		        return new NestFilter(
