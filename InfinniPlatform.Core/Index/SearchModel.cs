@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.Sdk.Documents;
 
@@ -39,14 +40,17 @@ namespace InfinniPlatform.Core.Index
 
         public void AddFilter(IFilter filterCriteria)
         {
-            Filter = Filter == null
-                ? filterCriteria
-                : Filter.And(filterCriteria);
+            if (filterCriteria != null)
+            {
+                Filter = Filter == null
+                             ? filterCriteria
+                             : Filter.And(filterCriteria);
+            }
         }
 
         public void AddFilters(IEnumerable<IFilter> filterCriterias)
         {
-            foreach (var criteria in filterCriterias)
+            foreach (var criteria in filterCriterias.Where(filter => filter != null))
             {
                 Filter = Filter == null
                              ? criteria
