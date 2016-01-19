@@ -20,7 +20,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.Get["/SystemConfig/UrlEncodedData/configuration/DownloadBinaryContent"] = DownloadFile;
+            builder.Get["/RestfulApi/UrlEncodedData/configuration/DownloadBinaryContent"] = DownloadFile;
         }
 
         private object DownloadFile(IHttpRequest request)

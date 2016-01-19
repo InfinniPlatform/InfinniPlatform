@@ -24,12 +24,12 @@ namespace InfinniPlatform.SystemConfig.Services
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.Post["/SystemConfig/StandardApi/configuration/GetDocumentById"] = CreateHandler(GetDocumentById);
-            builder.Post["/SystemConfig/StandardApi/configuration/GetDocument"] = CreateHandler(GetDocuments);
-            builder.Post["/SystemConfig/StandardApi/configuration/GetNumberOfDocuments"] = CreateHandler(GetNumberOfDocuments);
-            builder.Post["/SystemConfig/StandardApi/configuration/SetDocument"] = CreateHandler(SaveDocuments);
-            builder.Post["/SystemConfig/StandardApi/configuration/DeleteDocument"] = CreateHandler(DeleteDocument);
-            builder.Post["/SystemConfig/Upload/configuration/UploadBinaryContent"] = AttachFile;
+            builder.Post["/RestfulApi/StandardApi/configuration/GetDocumentById"] = CreateHandler(GetDocumentById);
+            builder.Post["/RestfulApi/StandardApi/configuration/GetDocument"] = CreateHandler(GetDocuments);
+            builder.Post["/RestfulApi/StandardApi/configuration/GetNumberOfDocuments"] = CreateHandler(GetNumberOfDocuments);
+            builder.Post["/RestfulApi/StandardApi/configuration/SetDocument"] = CreateHandler(SaveDocuments);
+            builder.Post["/RestfulApi/StandardApi/configuration/DeleteDocument"] = CreateHandler(DeleteDocument);
+            builder.Post["/RestfulApi/Upload/configuration/UploadBinaryContent"] = AttachFile;
         }
 
         private static Func<IHttpRequest, object> CreateHandler(Action<IActionContext> action)
@@ -52,7 +52,7 @@ namespace InfinniPlatform.SystemConfig.Services
             string documentType = target.Item.Metadata;
 
             IEnumerable<dynamic> dynamicFilters = target.Item.Filter;
-            var filter = dynamicFilters?.Select(o => new FilterCriteria(o.Property, o.Value, (CriteriaType)o.CriteriaType)) ?? Enumerable.Empty<FilterCriteria>();
+            var filter = dynamicFilters?.Select(o => new FilterCriteria(o.Property, o.Value, (CriteriaType)Enum.Parse(typeof(CriteriaType), o.CriteriaType.ToString()))) ?? Enumerable.Empty<FilterCriteria>();
 
             int pageNumber = Math.Max((int)(target.Item?.PageNumber ?? 0), 0);
             int pageSize = Math.Min((int)(target.Item?.PageSize ?? 0), 1000);

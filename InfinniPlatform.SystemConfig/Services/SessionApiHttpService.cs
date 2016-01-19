@@ -21,7 +21,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.ServicePath = "/SystemConfig/StandardApi/authorization";
+            builder.ServicePath = "/RestfulApi/StandardApi/authorization";
 
             builder.Post["/GetSessionData"] = CreateHandler(GetSessionData);
             builder.Post["/SetSessionData"] = CreateHandler(SetSessionData);

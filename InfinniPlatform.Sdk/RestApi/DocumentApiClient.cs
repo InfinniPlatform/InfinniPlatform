@@ -19,7 +19,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public dynamic GetDocumentById(string configuration, string documentType, string instanceId)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/GetDocumentById");
+            var requestUri = BuildRequestUri("/RestfulApi/StandardApi/configuration/GetDocumentById");
 
             var requestData = new DynamicWrapper
                               {
@@ -61,7 +61,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public IEnumerable<dynamic> GetDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/GetDocument");
+            var requestUri = BuildRequestUri("/RestfulApi/StandardApi/configuration/GetDocument");
 
             var requestData = new DynamicWrapper
                               {
@@ -86,7 +86,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documents)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/SetDocument");
+            var requestUri = BuildRequestUri("/RestfulApi/StandardApi/configuration/SetDocument");
 
             var requestData = new DynamicWrapper
                               {
@@ -103,7 +103,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public dynamic DeleteDocument(string configuration, string documentType, string instanceId)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/DeleteDocument");
+            var requestUri = BuildRequestUri("/RestfulApi/StandardApi/configuration/DeleteDocument");
 
             var requestData = new DynamicWrapper
                               {
@@ -135,7 +135,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public long GetNumberOfDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/configuration/GetNumberOfDocuments");
+            var requestUri = BuildRequestUri("/RestfulApi/StandardApi/configuration/GetNumberOfDocuments");
 
             var requestData = new DynamicWrapper
                               {
@@ -154,7 +154,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public void AttachFile(string configuration, string documentType, string documentId, string fileProperty, Stream fileStream)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/Upload/configuration/UploadBinaryContent");
+            var requestUri = BuildRequestUri("/RestfulApi/Upload/configuration/UploadBinaryContent");
 
             var requestData = new DynamicWrapper
                               {

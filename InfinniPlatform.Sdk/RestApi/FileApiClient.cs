@@ -16,7 +16,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public dynamic DownloadFile(string contentId)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/UrlEncodedData/configuration/DownloadBinaryContent");
+            var requestUri = BuildRequestUri("/RestfulApi/UrlEncodedData/configuration/DownloadBinaryContent");
 
             var requestData = new DynamicWrapper
                               {

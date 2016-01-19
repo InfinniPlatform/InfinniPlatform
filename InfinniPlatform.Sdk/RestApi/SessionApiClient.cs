@@ -13,7 +13,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public dynamic GetSessionData(string claimType)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/authorization/GetSessionData");
+            var requestUri = BuildRequestUri("/RestfulApi/StandardApi/authorization/GetSessionData");
 
             var requestData = new DynamicWrapper
                               {
@@ -28,7 +28,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public void SetSessionData(string claimType, string claimValue)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/authorization/SetSessionData");
+            var requestUri = BuildRequestUri("/RestfulApi/StandardApi/authorization/SetSessionData");
 
             var requestData = new DynamicWrapper
                               {
@@ -44,7 +44,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public void RemoveSessionData(string claimType)
         {
-            var requestUri = BuildRequestUri("/SystemConfig/StandardApi/authorization/RemoveSessionData");
+            var requestUri = BuildRequestUri("/RestfulApi/StandardApi/authorization/RemoveSessionData");
 
             var requestData = new DynamicWrapper
                               {

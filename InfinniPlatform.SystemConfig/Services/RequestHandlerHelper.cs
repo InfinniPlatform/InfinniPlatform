@@ -5,7 +5,7 @@ namespace InfinniPlatform.SystemConfig.Services
 {
     internal static class RequestHandlerHelper
     {
-        public static IHttpResponse BadRequest(string message)
+        public static IHttpResponse BadRequest(object message)
         {
             // TODO: Сделать строготипизированный ответ.
 

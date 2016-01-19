@@ -36,7 +36,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
             if (!context.IsValid)
             {
-                return RequestHandlerHelper.BadRequest((string)context.ValidationMessage);
+                return RequestHandlerHelper.BadRequest(context.ValidationMessage);
             }
 
             return new JsonHttpResponse(context.Result);
