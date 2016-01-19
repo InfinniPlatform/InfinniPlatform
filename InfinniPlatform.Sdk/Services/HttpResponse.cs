@@ -10,14 +10,24 @@ namespace InfinniPlatform.Sdk.Services
     public class HttpResponse : IHttpResponse
     {
         /// <summary>
-        /// Запрос выполнен успешно.
+        /// Запрос успешен.
         /// </summary>
         public static readonly IHttpResponse Ok = new HttpResponse();
 
         /// <summary>
-        /// Запрашиваемый ресурс не найден.
+        /// Ресурс не найден.
         /// </summary>
         public static readonly IHttpResponse NotFound = new HttpResponse(404);
+
+        /// <summary>
+        /// Запрос не авторизован.
+        /// </summary>
+        public static readonly IHttpResponse Unauthorized = new HttpResponse(401);
+
+        /// <summary>
+        /// Запрос запрещен.
+        /// </summary>
+        public static readonly IHttpResponse Forbidden = new HttpResponse(403);
 
         /// <summary>
         /// Ответ не имеет содержимого.
