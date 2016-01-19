@@ -14,7 +14,7 @@ namespace InfinniPlatform.SystemConfig.Executors
     public class GetDocumentExecutor : IGetDocumentExecutor
     {
         public GetDocumentExecutor(IConfigurationObjectBuilder configurationObjectBuilder,
-                                   IMetadataComponent metadataComponent,
+                                   IMetadataApi metadataComponent,
                                    IReferenceResolver referenceResolver,
                                    IIndexFactory indexFactory)
         {
@@ -25,7 +25,7 @@ namespace InfinniPlatform.SystemConfig.Executors
         }
 
         private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IMetadataApi _metadataComponent;
         private readonly IReferenceResolver _referenceResolver;
         private readonly IIndexFactory _indexFactory;
 
@@ -46,14 +46,14 @@ namespace InfinniPlatform.SystemConfig.Executors
                 return numberOfDocuments;
             }
 
-            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName).MetadataConfiguration;
+            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName).ConfigurationMetadata;
 
             if (metadataConfiguration == null)
             {
                 return numberOfDocuments;
             }
 
-            var schema = metadataConfiguration.GetSchemaVersion(documentType);
+            var schema = metadataConfiguration.GetDocumentSchema(documentType);
 
             var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
 
@@ -78,14 +78,14 @@ namespace InfinniPlatform.SystemConfig.Executors
             if (documentProvider != null)
             {
                 var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName)
-                                                                       .MetadataConfiguration;
+                                                                       .ConfigurationMetadata;
 
                 if (metadataConfiguration == null)
                 {
                     return new List<dynamic>();
                 }
 
-                dynamic schema = metadataConfiguration.GetSchemaVersion(documentType);
+                dynamic schema = metadataConfiguration.GetDocumentSchema(documentType);
 
                 SortingCriteria[] sortingFields = null;
 

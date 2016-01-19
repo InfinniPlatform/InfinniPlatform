@@ -126,12 +126,6 @@
   <data name="RequestHasUnsupportedContentType" xml:space="preserve">
     <value>Request has unsupported content type '{0}'.</value>
   </data>
-  <data name="RequestPostprocessingWithUnexpectedException" xml:space="preserve">
-    <value>Request postprocessing completed with unexpected exception.</value>
-  </data>
-  <data name="RequestPreprocessingCompletedWithUnexpectedException" xml:space="preserve">
-    <value>Request preprocessing completed with unexpected exception.</value>
-  </data>
   <data name="RequestProcessingCompletedWithUnexpectedException" xml:space="preserve">
     <value>Request processing completed with unexpected exception.</value>
   </data>

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Runtime;
-using InfinniPlatform.Runtime.Properties;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.SystemConfig.Properties;
 
-namespace InfinniPlatform.Runtime.Implementation
+namespace InfinniPlatform.SystemConfig.Runtime
 {
     internal sealed class ScriptProcessor : IScriptProcessor
     {
@@ -14,16 +15,16 @@ namespace InfinniPlatform.Runtime.Implementation
         private const string PerformanceLogMethod = "Invoke";
 
 
-        public ScriptProcessor(IScriptMetadataProvider scriptMetadataProvider, ActionUnitFactory actionUnitFactory, IPerformanceLog performanceLog, ILog log)
+        public ScriptProcessor(IMetadataApi metadataApi, ActionUnitFactory actionUnitFactory, IPerformanceLog performanceLog, ILog log)
         {
-            _scriptMetadataProvider = scriptMetadataProvider;
+            _metadataApi = metadataApi;
             _actionUnitFactory = actionUnitFactory;
             _performanceLog = performanceLog;
             _log = log;
         }
 
 
-        private readonly IScriptMetadataProvider _scriptMetadataProvider;
+        private readonly IMetadataApi _metadataApi;
         private readonly ActionUnitFactory _actionUnitFactory;
         private readonly IPerformanceLog _performanceLog;
         private readonly ILog _log;
@@ -39,14 +40,14 @@ namespace InfinniPlatform.Runtime.Implementation
             {
                 // TODO: Уже нет смысла хранить скрипты, как сущность конфигурации
 
-                var scriptMetadata = _scriptMetadataProvider.GetScriptMetadata(actionUnitId);
+                var scriptMetadata = _metadataApi.GetAction(actionUnitContext.Configuration, actionUnitContext.DocumentType, actionUnitId);
 
                 if (scriptMetadata == null)
                 {
-                    throw new ArgumentException(string.Format(Resources.ScriptMetadataIsNotRegistered, actionUnitId));
+                    throw new ArgumentException(string.Format(Resources.ActionUnitMetadataIsNotRegistered, actionUnitId));
                 }
 
-                actionUnitType = scriptMetadata.Type;
+                actionUnitType = scriptMetadata.Name;
 
                 var actionUnit = _actionUnitFactory.CreateActionUnit(actionUnitType);
 
@@ -56,7 +57,7 @@ namespace InfinniPlatform.Runtime.Implementation
             }
             catch (Exception e)
             {
-                LogErrorComplete(actionUnitId, actionUnitType, start, Resources.ScriptCompletedWithError, e);
+                LogErrorComplete(actionUnitId, actionUnitType, start, Resources.ActionUnitCompletedWithError, e);
 
                 throw;
             }
@@ -76,7 +77,7 @@ namespace InfinniPlatform.Runtime.Implementation
             }
             catch (Exception e)
             {
-                LogErrorComplete(actionUnitType, actionUnitType, start, Resources.ScriptCompletedWithError, e);
+                LogErrorComplete(actionUnitType, actionUnitType, start, Resources.ActionUnitCompletedWithError, e);
 
                 throw;
             }

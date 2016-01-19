@@ -7,7 +7,7 @@ namespace InfinniPlatform.Core.Metadata
         /// <summary>
         /// Метаданные конфигурации
         /// </summary>
-        IMetadataConfiguration MetadataConfiguration { get; }
+        IConfigurationMetadata ConfigurationMetadata { get; }
 
         /// <summary>
         /// Предоставить провайдер версий документа для работы в прикладных скриптах

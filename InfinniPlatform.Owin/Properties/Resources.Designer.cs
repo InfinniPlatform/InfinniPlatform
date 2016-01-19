@@ -88,24 +88,6 @@ namespace InfinniPlatform.Owin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Request postprocessing completed with unexpected exception..
-        /// </summary>
-        internal static string RequestPostprocessingWithUnexpectedException {
-            get {
-                return ResourceManager.GetString("RequestPostprocessingWithUnexpectedException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request preprocessing completed with unexpected exception..
-        /// </summary>
-        internal static string RequestPreprocessingCompletedWithUnexpectedException {
-            get {
-                return ResourceManager.GetString("RequestPreprocessingCompletedWithUnexpectedException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Request processing completed with unexpected exception..
         /// </summary>
         internal static string RequestProcessingCompletedWithUnexpectedException {

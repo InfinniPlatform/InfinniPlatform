@@ -234,4 +234,13 @@
   <data name="DocumentProviderNotRegisteredError" xml:space="preserve">
     <value>Document provider not registered for metadata: "{0}"</value>
   </data>
+  <data name="ActionUnitIsNotRegistered" xml:space="preserve">
+    <value>ActionUnit is not registered.</value>
+  </data>
+  <data name="ActionUnitCompletedWithError" xml:space="preserve">
+    <value>ActionUnit completed with error.</value>
+  </data>
+  <data name="ActionUnitMetadataIsNotRegistered" xml:space="preserve">
+    <value>ActionUnit metadata '{0}' is not registered.</value>
+  </data>
 </root>

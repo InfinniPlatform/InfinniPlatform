@@ -10,10 +10,11 @@ namespace InfinniPlatform.SystemConfig.Utils
     public sealed class MetadataOperator
     {
         private readonly DocumentLinkMap _linkMap;
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IMetadataApi _metadataComponent;
         private readonly List<dynamic> _typeInfoChain;
 
-        public MetadataOperator(IMetadataComponent metadataComponent, DocumentLinkMap linkMap,
+        public MetadataOperator(IMetadataApi metadataComponent,
+                                DocumentLinkMap linkMap,
                                 IEnumerable<dynamic> typeInfoChain = null)
         {
             _metadataComponent = metadataComponent;
@@ -47,10 +48,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                 return;
             }
 
-
-            IEnumerable<dynamic> metadataList = _metadataComponent.GetMetadataList(typeInfo.ConfigId, typeInfo.DocumentId, "Schema");
-
-            dynamic schema = metadataList.FirstOrDefault();
+            dynamic schema = _metadataComponent.GetDocumentSchema(typeInfo.ConfigId, typeInfo.DocumentId);
 
             //обрабатываем связанные документы
             if (schema != null && schema.Properties != null)

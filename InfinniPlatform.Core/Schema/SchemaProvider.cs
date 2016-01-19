@@ -6,9 +6,9 @@ namespace InfinniPlatform.Core.Schema
 {
     public sealed class SchemaProvider : ISchemaProvider
     {
-        private readonly IMetadataComponent _metadataComponent;
+        private readonly IMetadataApi _metadataComponent;
 
-        public SchemaProvider(IMetadataComponent metadataComponent)
+        public SchemaProvider(IMetadataApi metadataComponent)
         {
             _metadataComponent = metadataComponent;
         }
@@ -21,8 +21,7 @@ namespace InfinniPlatform.Core.Schema
         /// <returns>Схема документа</returns>
         public dynamic GetSchema(string configId, string documentId)
         {
-            var schemaMetadata = _metadataComponent.GetMetadataList(configId, documentId, "Schema");
-			return schemaMetadata?.FirstOrDefault();
+            return _metadataComponent.GetDocumentSchema(configId, documentId);
         }
     }
 }

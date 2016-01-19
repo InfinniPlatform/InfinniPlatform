@@ -61,12 +61,12 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                         string metadataIdentifier = documentLink.ConfigId.ToString();
 
                         var builder = configurationObjectBuilder.GetConfigurationObject(metadataIdentifier);
-                        var inlineMetadataConfiguration = builder.MetadataConfiguration;
+                        var inlineMetadataConfiguration = builder.ConfigurationMetadata;
 
                         if (inlineMetadataConfiguration != null)
                         {
                             string documentId = documentLink.DocumentId.ToString();
-                            dynamic inlineDocumentSchema = inlineMetadataConfiguration.GetSchemaVersion(documentId);
+                            dynamic inlineDocumentSchema = inlineMetadataConfiguration.GetDocumentSchema(documentId);
 
                             if (inlineDocumentSchema != null)
                             {

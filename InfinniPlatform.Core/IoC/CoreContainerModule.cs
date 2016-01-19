@@ -37,7 +37,6 @@ namespace InfinniPlatform.Core.IoC
                    .As<IPerformanceLog>()
                    .SingleInstance();
 
-
             builder.OnCreateInstance(new Log4NetContainerParameterResolver());
             builder.OnActivateInstance(new Log4NetContainerInstanceActivator());
 
