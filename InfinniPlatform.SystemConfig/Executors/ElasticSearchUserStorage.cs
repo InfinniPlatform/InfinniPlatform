@@ -28,9 +28,9 @@ namespace InfinniPlatform.SystemConfig.Executors
                                               .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value.ToLower()))
                                               .Size(1));
 
-            return (searchResponse.Total > 0)
-                       ? searchResponse.Documents?.FirstOrDefault()?.Values
-                       : null;
+            return (searchResponse.Total > 0 && searchResponse.Documents != null)
+                ? searchResponse.Documents.FirstOrDefault()?.Values
+                : null;
         }
 
         public void Save(object userId, object userInfo)
