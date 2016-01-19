@@ -10,6 +10,7 @@ using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin;
 using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;

@@ -152,7 +152,6 @@
     <Compile Include="Security\IApplicationUserPasswordHasher.cs" />
     <Compile Include="Security\IApplicationUserStore.cs" />
     <Compile Include="Security\MemoryApplicationUserStore.cs" />
-    <Compile Include="Security\SecurityExtensions.cs" />
     <Compile Include="Security\StringHasher.cs" />
     <Compile Include="Settings\AppConfiguration.cs" />
     <Compile Include="Settings\AppSettings.cs" />
