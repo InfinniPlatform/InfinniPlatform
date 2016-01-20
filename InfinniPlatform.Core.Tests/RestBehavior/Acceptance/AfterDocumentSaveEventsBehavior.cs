@@ -42,7 +42,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             var documents = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("Test")), 0, 1);
 
             // Then
-            Assert.AreEqual("Test", documents?.FirstOrDefault()?.TestValue);
+            Assert.IsNotNull(documents);
+            Assert.AreEqual("Test", documents.FirstOrDefault()?.TestValue);
         }
     }
 }
