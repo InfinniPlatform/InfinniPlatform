@@ -36,18 +36,17 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 user.Id = CreateUnique();
             }
 
-            InsertUser(user);
+            SaveUser(user);
             UpdateUserInCache(user);
         }
 
         public void UpdateUser(ApplicationUser user)
         {
-            DeleteUser(user);
-            InsertUser(user);
+            SaveUser(user);
             UpdateUserInCache(user);
         }
 
-        private void InsertUser(ApplicationUser user)
+        private void SaveUser(ApplicationUser user)
         {
             user.SecurityStamp = CreateUnique();
 
