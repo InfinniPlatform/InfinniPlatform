@@ -50,7 +50,7 @@ namespace InfinniPlatform.SystemConfig.Services
                 }
             }
 
-            return null;
+            return HttpResponse.NotFound;
         }
     }
 }
