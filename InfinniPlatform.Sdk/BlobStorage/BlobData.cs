@@ -1,4 +1,7 @@
-﻿namespace InfinniPlatform.Sdk.BlobStorage
+﻿using System;
+using System.IO;
+
+namespace InfinniPlatform.Sdk.BlobStorage
 {
     /// <summary>
     /// Данные BLOB.
@@ -13,6 +16,6 @@
         /// <summary>
         /// Данные BLOB.
         /// </summary>
-        public byte[] Data { get; set; }
+        public Func<Stream> Data { get; set; }
     }
 }

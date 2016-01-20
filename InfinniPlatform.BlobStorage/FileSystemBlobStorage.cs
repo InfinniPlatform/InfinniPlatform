@@ -4,6 +4,7 @@ using System.IO;
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.BlobStorage
 {
@@ -34,22 +35,21 @@ namespace InfinniPlatform.BlobStorage
         private const string LogComponentName = "FileSystemBlobStorage";
 
 
-        public FileSystemBlobStorage(FileSystemBlobStorageSettings settings, IPerformanceLog performanceLog)
+        public FileSystemBlobStorage(FileSystemBlobStorageSettings settings, IMimeTypeResolver mimeTypeResolver, IPerformanceLog performanceLog)
         {
             _baseDirectory = settings.BaseDirectory;
+            _mimeTypeResolver = mimeTypeResolver;
             _performanceLog = performanceLog;
 
-            // TODO: Refactor
-            // Получать эти зависимости через конструктор
+            // TODO: Получать эти зависимости через конструктор.
             _serializer = JsonObjectSerializer.Default;
-            _typeProvider = FileExtensionTypeProvider.Default;
         }
 
 
         private readonly string _baseDirectory;
         private readonly IPerformanceLog _performanceLog;
         private readonly IObjectSerializer _serializer;
-        private readonly FileExtensionTypeProvider _typeProvider;
+        private readonly IMimeTypeResolver _mimeTypeResolver;
 
 
         public BlobInfo GetBlobInfo(string blobId)
@@ -86,10 +86,10 @@ namespace InfinniPlatform.BlobStorage
 
             var result = (blobInfo != null || blobData != null)
                 ? new BlobData
-                  {
-                      Info = blobInfo,
-                      Data = blobData
-                  }
+                {
+                    Info = blobInfo,
+                    Data = blobData
+                }
                 : null;
 
             _performanceLog.Log(LogComponentName, "GetBlobData", start, null);
@@ -97,7 +97,7 @@ namespace InfinniPlatform.BlobStorage
             return result;
         }
 
-        public string CreateBlob(string blobName, string blobType, byte[] blobData)
+        public string CreateBlob(string blobName, string blobType, Stream blobData)
         {
             var blobId = GenerateBlobId();
 
@@ -106,7 +106,7 @@ namespace InfinniPlatform.BlobStorage
             return blobId;
         }
 
-        public void UpdateBlob(string blobId, string blobName, string blobType, byte[] blobData)
+        public void UpdateBlob(string blobId, string blobName, string blobType, Stream blobData)
         {
             if (string.IsNullOrEmpty(blobId))
             {
@@ -124,17 +124,17 @@ namespace InfinniPlatform.BlobStorage
 
             if (string.IsNullOrEmpty(blobType))
             {
-                blobType = _typeProvider.GetBlobType(blobName);
+                blobType = _mimeTypeResolver.GetMimeType(blobName);
             }
 
             var blobInfo = new BlobInfo
-                           {
-                               Id = blobId,
-                               Name = blobName,
-                               Type = blobType,
-                               Size = blobData.LongLength,
-                               Time = DateTime.UtcNow
-                           };
+            {
+                Id = blobId,
+                Name = blobName,
+                Type = blobType,
+                Size = blobData.Length,
+                Time = DateTime.UtcNow
+            };
 
             WriteBlobInfo(blobId, blobInfo);
             WriteBlobData(blobId, blobData);
@@ -182,13 +182,13 @@ namespace InfinniPlatform.BlobStorage
                 if (dataFileInfo.Exists)
                 {
                     blobInfo = new BlobInfo
-                               {
-                                   Id = blobId,
-                                   Name = blobId,
-                                   Type = _typeProvider.GetBlobType(blobId),
-                                   Size = dataFileInfo.Length,
-                                   Time = dataFileInfo.LastWriteTime
-                               };
+                    {
+                        Id = blobId,
+                        Name = blobId,
+                        Type = _mimeTypeResolver.GetMimeType(blobId),
+                        Size = dataFileInfo.Length,
+                        Time = dataFileInfo.LastWriteTimeUtc
+                    };
                 }
             }
 
@@ -213,19 +213,19 @@ namespace InfinniPlatform.BlobStorage
         }
 
 
-        private byte[] ReadBlobData(string blobId)
+        private Func<Stream> ReadBlobData(string blobId)
         {
             var dataFilePath = GetBlobDataFilePath(blobId);
 
             if (File.Exists(dataFilePath))
             {
-                return File.ReadAllBytes(dataFilePath);
+                return () => File.OpenRead(dataFilePath);
             }
 
             return null;
         }
 
-        private void WriteBlobData(string blobId, byte[] blobData)
+        private void WriteBlobData(string blobId, Stream blobData)
         {
             var blobDir = GetBlobDirectoryPath(blobId);
 
@@ -236,7 +236,11 @@ namespace InfinniPlatform.BlobStorage
 
             var dataFilePath = GetBlobDataFilePath(blobId);
 
-            File.WriteAllBytes(dataFilePath, blobData);
+            using (var dataFile = File.Create(dataFilePath))
+            {
+                blobData.CopyTo(dataFile);
+                dataFile.Flush();
+            }
         }
 
         private void DeleteBlobData(string blobId)

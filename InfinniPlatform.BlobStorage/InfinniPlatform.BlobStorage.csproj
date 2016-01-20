@@ -43,7 +43,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileExtensionTypeProvider.cs" />
     <Compile Include="FileSystemBlobStorage.cs" />
     <Compile Include="FileSystemBlobStorageSettings.cs" />
     <Compile Include="IoC\BlobStorageContainerModule.cs" />

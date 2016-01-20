@@ -56,7 +56,9 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BlobStorage\BlobStorageExtensions.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
+    <Compile Include="Services\IMimeTypeProvider.cs" />
     <Compile Include="Settings\IAppEnvironment.cs" />
     <Compile Include="Security\IUserIdentityProvider.cs" />
     <Compile Include="Serialization\SerializationExtensions.cs" />

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+
 using InfinniPlatform.FastReport.Serialization;
 using InfinniPlatform.FastReport.Templates.Reports;
 
@@ -8,9 +9,10 @@ namespace InfinniPlatform.ReportDesigner.Services
     {
         public ReportTemplate Load(string fileName)
         {
-            var data = File.ReadAllBytes(fileName);
-
-            return ReportTemplateSerializer.Instance.Deserialize(data);
+            using (var data = File.OpenRead(fileName))
+            {
+                return ReportTemplateSerializer.Instance.Deserialize(data);
+            }
         }
 
         public void Save(string fileName, ReportTemplate template)

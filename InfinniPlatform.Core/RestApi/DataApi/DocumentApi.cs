@@ -113,29 +113,17 @@ namespace InfinniPlatform.Core.RestApi.DataApi
 
             string fileId = filePropertyValue.Info.ContentId;
 
-            // Получение данных
-
-            byte[] fileData;
-
-            using (var reader = new MemoryStream())
-            {
-                fileStream.CopyTo(reader);
-                reader.Flush();
-
-                fileData = reader.ToArray();
-            }
-
             // Сохранение файла
 
             if (string.IsNullOrEmpty(fileId))
             {
-                fileId = _blobStorage.CreateBlob(fileProperty, string.Empty, fileData);
+                fileId = _blobStorage.CreateBlob(fileProperty, string.Empty, fileStream);
 
                 filePropertyValue.Info.ContentId = fileId;
             }
             else
             {
-                _blobStorage.UpdateBlob(fileId, fileProperty, string.Empty, fileData);
+                _blobStorage.UpdateBlob(fileId, fileProperty, string.Empty, fileStream);
             }
 
             // Сохранение документа

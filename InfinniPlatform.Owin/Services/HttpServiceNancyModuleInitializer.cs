@@ -7,6 +7,7 @@ using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;
+using Nancy.Helpers;
 
 namespace InfinniPlatform.Owin.Services
 {
@@ -22,11 +23,13 @@ namespace InfinniPlatform.Owin.Services
     /// </remarks>
     internal sealed class HttpServiceNancyModuleInitializer
     {
-        public HttpServiceNancyModuleInitializer(IUserIdentityProvider userIdentityProvider,
+        public HttpServiceNancyModuleInitializer(IMimeTypeResolver mimeTypeResolver,
+                                                 IUserIdentityProvider userIdentityProvider,
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
                                                  IEnumerable<IHttpService> httpServices)
         {
+            _mimeTypeResolver = mimeTypeResolver;
             _userIdentityProvider = userIdentityProvider;
             _httpRequestExcutorFactory = httpRequestExcutorFactory;
             _httpGlobalHandlers = httpGlobalHandlers;
@@ -36,6 +39,7 @@ namespace InfinniPlatform.Owin.Services
         }
 
 
+        private readonly IMimeTypeResolver _mimeTypeResolver;
         private readonly IUserIdentityProvider _userIdentityProvider;
         private readonly HttpRequestExcutorFactory _httpRequestExcutorFactory;
         private readonly IEnumerable<IHttpGlobalHandler> _httpGlobalHandlers;
@@ -172,7 +176,7 @@ namespace InfinniPlatform.Owin.Services
                                                          {
                                                              var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider);
                                                              var result = onHandleGlobal(httpRequest);
-                                                             return CreateNancyHttpResponse(result);
+                                                             return CreateNancyHttpResponse(nancyContext, result);
                                                          };
 
                 var nancyRoute = new NancyHttpServiceRoute
@@ -185,7 +189,7 @@ namespace InfinniPlatform.Owin.Services
             }
         }
 
-        private static object CreateNancyHttpResponse(object result)
+        private object CreateNancyHttpResponse(NancyContext nancyContext, object result)
         {
             var httpResponse = result as IHttpResponse;
 
@@ -194,20 +198,71 @@ namespace InfinniPlatform.Owin.Services
                 var nancyResponse = new Response
                 {
                     StatusCode = (HttpStatusCode)httpResponse.StatusCode,
-                    ReasonPhrase = httpResponse.ReasonPhrase,
-                    ContentType = httpResponse.ContentType,
-                    Contents = httpResponse.Content
+                    ReasonPhrase = httpResponse.ReasonPhrase
                 };
 
+                // Установка заголовков
                 if (httpResponse.Headers != null)
                 {
                     nancyResponse.Headers = httpResponse.Headers;
+                }
+
+                // Установка содержимого
+                if (httpResponse.Content != null)
+                {
+                    nancyResponse.Contents = httpResponse.Content;
+                }
+
+                // Установка типа содержимого
+                nancyResponse.ContentType = httpResponse.ContentType;
+
+                // Установка заголовка для файлов (если применимо)
+
+                var streamHttpResponse = result as StreamHttpResponse;
+
+                if (streamHttpResponse != null)
+                {
+                    SetNancyStreamHttpResponse(nancyContext, nancyResponse, streamHttpResponse);
                 }
 
                 return nancyResponse;
             }
 
             return result;
+        }
+
+        private void SetNancyStreamHttpResponse(NancyContext nancyContext, Response nancyResponse, StreamHttpResponse streamHttpResponse)
+        {
+            var lastWriteTimeUtc = streamHttpResponse.LastWriteTimeUtc;
+
+            if (lastWriteTimeUtc != null)
+            {
+                var eTag = "\"" + lastWriteTimeUtc.Value.Ticks.ToString("x") + "\"";
+
+                // Если файл не изменился, возвращается статус NotModified
+                if (CacheHelpers.ReturnNotModified(eTag, streamHttpResponse.LastWriteTimeUtc, nancyContext))
+                {
+                    nancyResponse.StatusCode = HttpStatusCode.NotModified;
+                    nancyResponse.Contents = Response.NoBody;
+                    nancyResponse.ContentType = null;
+                    return;
+                }
+
+                nancyResponse.Headers["ETag"] = eTag;
+                nancyResponse.Headers["Last-Modified"] = lastWriteTimeUtc.Value.ToString("R");
+            }
+
+            var fileName = streamHttpResponse.FileName;
+
+            // Если тип содержимого файла не задан, определяем его автоматически
+            if (!string.IsNullOrEmpty(fileName)
+                && (string.IsNullOrEmpty(streamHttpResponse.ContentType)
+                    || string.Equals(streamHttpResponse.ContentType, HttpConstants.StreamContentType, StringComparison.OrdinalIgnoreCase)))
+            {
+                nancyResponse.ContentType = _mimeTypeResolver.GetMimeType(fileName);
+            }
+
+            nancyResponse.Headers["Content-Length"] = streamHttpResponse.ContentLength.ToString();
         }
 
 

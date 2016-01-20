@@ -85,5 +85,41 @@ namespace InfinniPlatform.Sdk.Services
         /// Метод записи содержимого тела ответа.
         /// </summary>
         public Action<Stream> Content { get; set; }
+
+
+        /// <summary>
+        /// Возвращает значение заголовка.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        public string GetHeader(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            string value;
+
+            return (Headers != null && Headers.TryGetValue(key, out value)) ? value : null;
+        }
+
+        /// <summary>
+        /// Устанавливает значение заголовка.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        public void SetHeader(string key, string value)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (Headers == null)
+            {
+                Headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            }
+
+            Headers[key] = value;
+        }
     }
 }

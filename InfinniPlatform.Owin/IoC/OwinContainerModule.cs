@@ -4,6 +4,7 @@ using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Owin.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Sdk.Services;
 
 using Nancy;
 using Nancy.Bootstrapper;
@@ -34,6 +35,10 @@ namespace InfinniPlatform.Owin.IoC
 
             builder.RegisterType<HttpServiceNancyModuleInitializer>()
                    .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<NancyMimeTypeResolver>()
+                   .As<IMimeTypeResolver>()
                    .SingleInstance();
 
             builder.RegisterType<OwinUserIdentityProvider>()

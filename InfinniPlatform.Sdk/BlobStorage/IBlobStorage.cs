@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Sdk.BlobStorage
+﻿using System.IO;
+
+namespace InfinniPlatform.Sdk.BlobStorage
 {
     /// <summary>
     /// Сервис для работы хранилищем BLOB (Binary Large OBject).
@@ -26,7 +28,7 @@
         /// <param name="blobType">Формат данных BLOB.</param>
         /// <param name="blobData">Данные BLOB.</param>
         /// <returns>Идентификатор BLOB. </returns>
-        string CreateBlob(string blobName, string blobType, byte[] blobData);
+        string CreateBlob(string blobName, string blobType, Stream blobData);
 
         /// <summary>
         /// Обновляет BLOB.
@@ -36,7 +38,7 @@
         /// <param name="blobType">Формат данных BLOB.</param>
         /// <param name="blobData">Данные BLOB.</param>
         /// <returns>Идентификатор BLOB. </returns>
-        void UpdateBlob(string blobId, string blobName, string blobType, byte[] blobData);
+        void UpdateBlob(string blobId, string blobName, string blobType, Stream blobData);
 
         /// <summary>
         /// Удаляет BLOB.

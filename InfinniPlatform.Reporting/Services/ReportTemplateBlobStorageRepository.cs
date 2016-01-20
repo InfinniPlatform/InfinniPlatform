@@ -31,7 +31,7 @@ namespace InfinniPlatform.Reporting.Services
 
             var reportTemplateData = _blobStorage.GetBlobData(templateId);
 
-            return _reportTemplateSerializer.Deserialize(reportTemplateData.Data);
+            return _reportTemplateSerializer.Deserialize(reportTemplateData.Data());
         }
 
         public void SaveReportTemplate(string templateId, ReportTemplate template)

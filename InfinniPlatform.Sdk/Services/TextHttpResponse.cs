@@ -2,8 +2,17 @@
 
 namespace InfinniPlatform.Sdk.Services
 {
+    /// <summary>
+    /// Ответ в виде текста.
+    /// </summary>
     public sealed class TextHttpResponse : HttpResponse
     {
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="content">Содержимое тела ответа.</param>
+        /// <param name="contentType">Тип содержимого тела ответа.</param>
+        /// <param name="encoding">Кодировка содержимого тела ответа.</param>
         public TextHttpResponse(string content, string contentType = HttpConstants.TextContentType, Encoding encoding = null)
         {
             ContentType = contentType;
