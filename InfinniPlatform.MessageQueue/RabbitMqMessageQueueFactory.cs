@@ -6,6 +6,7 @@ using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.RabbitMq;
 using InfinniPlatform.RabbitMq.Client;
 using InfinniPlatform.RabbitMq.Policies;
+using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.MessageQueue
 {
@@ -14,11 +15,11 @@ namespace InfinniPlatform.MessageQueue
     /// </summary>
     public sealed class RabbitMqMessageQueueFactory : IMessageQueueFactory
     {
-        public RabbitMqMessageQueueFactory(RabbitMqSettings settings) : this(settings, new RabbitMqMessageQueueDefaultConfig())
+        public RabbitMqMessageQueueFactory(RabbitMqSettings settings, ILog log) : this(settings, log, new RabbitMqMessageQueueDefaultConfig(log))
         {
         }
 
-        public RabbitMqMessageQueueFactory(RabbitMqSettings settings, IRabbitMqMessageQueueConfig config)
+        public RabbitMqMessageQueueFactory(RabbitMqSettings settings, ILog log, IRabbitMqMessageQueueConfig config)
         {
             if (settings == null)
             {
@@ -104,21 +105,29 @@ namespace InfinniPlatform.MessageQueue
 
             private static readonly IRejectPolicy DefaultRejectPolicy = new NeverRejectPolicy();
 
-            private static void DefaultWorkerThreadErrorHandler(Exception error)
+
+            public RabbitMqMessageQueueDefaultConfig(ILog log)
             {
-                Logger.Log.Error(error.Message, null, error);
+                _log = log;
             }
 
-            private static void DefaultConsumerErrorHandler(Exception error)
+            private readonly ILog _log;
+
+            private void DefaultWorkerThreadErrorHandler(Exception error)
             {
-                Logger.Log.Error(error.Message, null, error);
+                _log.Error(error.Message, null, error);
+            }
+
+            private void DefaultConsumerErrorHandler(Exception error)
+            {
+                _log.Error(error.Message, null, error);
             }
 
             private static void DefaultExchangeConfigAction(IExchangeConfig config)
             {
             }
 
-            private static void DefaultQueueConfigAction(IQueueConfig config)
+            private void DefaultQueueConfigAction(IQueueConfig config)
             {
                 config.PrefetchCount(10)
                       .WorkerThreadCount(2)

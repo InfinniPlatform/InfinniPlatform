@@ -10,6 +10,16 @@ namespace InfinniPlatform.Sdk.Security
     public static class SecurityExtensions
     {
         /// <summary>
+        /// Возвращает уникальный идентификатор пользователя.
+        /// </summary>
+        /// <param name="identity">Объект идентификации.</param>
+        public static string GetUserId(this IIdentity identity)
+        {
+            return (identity != null && identity.IsAuthenticated) ? FindFirstClaim(identity, ClaimTypes.NameIdentifier) : null;
+        }
+
+
+        /// <summary>
         /// Проверяет наличие заданного типа утверждения.
         /// </summary>
         /// <param name="identity">Объект идентификации.</param>

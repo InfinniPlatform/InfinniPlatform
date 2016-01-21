@@ -294,7 +294,7 @@ namespace InfinniPlatform.Authentication.Middleware
 
                                                                   // Определение текущего пользователя
                                                                   var userIdentity = GetIdentity(context);
-                                                                  var userId = userIdentity.GetUserId();
+                                                                  var userId = SecurityExtensions.GetUserId(userIdentity);
 
                                                                   // Добавление имени входа пользователя
                                                                   var addLoginTask = userManager.AddLoginAsync(userId, loginInfo.Login);
@@ -325,7 +325,7 @@ namespace InfinniPlatform.Authentication.Middleware
 
             // Определение текущего пользователя
             var userIdentity = GetIdentity(context);
-            var userId = userIdentity.GetUserId();
+            var userId = SecurityExtensions.GetUserId(userIdentity);
 
             // Удаление имени входа пользователя
             var removeLoginTask = userManager.RemoveLoginAsync(userId, new UserLoginInfo(provider, providerKey));
@@ -521,7 +521,7 @@ namespace InfinniPlatform.Authentication.Middleware
         private static IdentityApplicationUser FindCurrentUser(IOwinContext context)
         {
             var userIdentity = GetIdentity(context);
-            var userId = userIdentity.GetUserId();
+            var userId = SecurityExtensions.GetUserId(userIdentity);
 
             if (userId != null)
             {

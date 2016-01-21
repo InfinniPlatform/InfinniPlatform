@@ -3,6 +3,9 @@ using System.Threading;
 
 using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.Helpers;
+using InfinniPlatform.Sdk.Logging;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -75,7 +78,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 
 			ThreadPool.QueueUserWorkItem(state =>
 											 {
-												 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
+												 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default, new Mock<ILog>().Object);
 												 var publisher = factory.CreateMessageQueuePublisher();
 
 												 // Публикация сообщений
@@ -103,7 +106,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 
 			ThreadPool.QueueUserWorkItem(state =>
 											 {
-												 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
+												 var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default, new Mock<ILog>().Object);
 												 var listener = factory.CreateMessageQueueListener();
 												 var subscribtions = factory.CreateMessageQueueManager();
 

@@ -486,10 +486,8 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         private IIdentity GetCurrentIdentity()
         {
             var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
-            var currentUserId = currentIdentity?.FindFirstClaim(ClaimTypes.NameIdentifier);
-            var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
 
-            if (isNotAuthenticated)
+            if (currentIdentity != null && currentIdentity.IsAuthenticated)
             {
                 throw new InvalidOperationException(Resources.RequestIsNotAuthenticated);
             }

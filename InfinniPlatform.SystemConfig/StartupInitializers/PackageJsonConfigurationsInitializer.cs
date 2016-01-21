@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.SystemConfig.Metadata;
@@ -16,9 +16,10 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
-        public PackageJsonConfigurationsInitializer(ConfigurationMetadataProvider configurationMetadataProvider, IAppConfiguration appConfiguration)
+        public PackageJsonConfigurationsInitializer(ConfigurationMetadataProvider configurationMetadataProvider, IAppConfiguration appConfiguration, ILog log)
         {
             _configurationMetadataProvider = configurationMetadataProvider;
+            _log = log;
 
             _contentDirectory = appConfiguration.GetSection("metadata")?.ContentDirectory as string ?? "content";
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
@@ -36,9 +37,11 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         }
 
 
+        private readonly ConfigurationMetadataProvider _configurationMetadataProvider;
+        private readonly ILog _log;
+
         private readonly string _contentDirectory;
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
-        private readonly ConfigurationMetadataProvider _configurationMetadataProvider;
 
 
         public int Order => 0;
@@ -82,7 +85,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 }
                 catch (Exception e)
                 {
-                    Logger.Log.Error("Error during metadata update.", null, e);
+                    _log.Error("Error during metadata update.", null, e);
                 }
             }
         }

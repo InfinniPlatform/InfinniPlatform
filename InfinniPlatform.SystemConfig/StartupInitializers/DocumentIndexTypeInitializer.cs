@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.ElasticSearch.Factories;
+using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
@@ -12,25 +12,24 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     internal sealed class DocumentIndexTypeInitializer : IStartupInitializer
     {
-        public DocumentIndexTypeInitializer(Lazy<IIndexFactory> indexFactory, IConfigurationMetadataProvider configurationMetadataProvider, IConfigurationObjectBuilder configurationBuilder)
+        public DocumentIndexTypeInitializer(Lazy<IIndexFactory> indexFactory, IConfigurationMetadataProvider configurationMetadataProvider, IConfigurationObjectBuilder configurationBuilder, ILog log)
         {
+            _indexFactory = indexFactory;
             _configurationMetadataProvider = configurationMetadataProvider;
             _configurationBuilder = configurationBuilder;
-            _indexFactory = indexFactory;
+            _log = log;
         }
 
-
-        private readonly IConfigurationMetadataProvider _configurationMetadataProvider;
-        private readonly IConfigurationObjectBuilder _configurationBuilder;
         private readonly Lazy<IIndexFactory> _indexFactory;
-
+        private readonly IConfigurationObjectBuilder _configurationBuilder;
+        private readonly IConfigurationMetadataProvider _configurationMetadataProvider;
+        private readonly ILog _log;
 
         public int Order => 1;
 
-
         public void OnStart()
         {
-            Logger.Log.Info("Creating indexes started.");
+            _log.Info("Creating indexes started.");
 
             var configurationNames = _configurationMetadataProvider.GetConfigurationNames();
 
@@ -49,9 +48,8 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 }
             }
 
-            Logger.Log.Info("Creating indexes successfully completed.");
+            _log.Info("Creating indexes successfully completed.");
         }
-
 
         private void CreateStorage(string configId, string documentId)
         {
@@ -61,11 +59,11 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             if (message != null)
             {
-                Logger.Log.Info("Creating index.", new Dictionary<string, object>
-                                                   {
-                                                       { "configurationId", configId },
-                                                       { "documentId", documentId }
-                                                   });
+                _log.Info("Creating index.", new Dictionary<string, object>
+                                             {
+                                                 { "configurationId", configId },
+                                                 { "documentId", documentId }
+                                             });
             }
         }
     }

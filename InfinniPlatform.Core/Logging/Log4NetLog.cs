@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Security;
 
 using log4net;
-
-using ILog = InfinniPlatform.Sdk.Logging.ILog;
-using ILog4NetLog = log4net.ILog;
 
 namespace InfinniPlatform.Core.Logging
 {
     /// <summary>
-    /// Сервис <see cref="ILog" /> на базе log4net.
+    /// Сервис <see cref="Sdk.Logging.ILog" /> на базе log4net.
     /// </summary>
-    public sealed class Log4NetLog : Sdk.Logging.ILog
+    internal sealed class Log4NetLog : Sdk.Logging.ILog
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="log">Сервис log4net для записи сообщений в лог.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public Log4NetLog(ILog4NetLog log)
+        public Log4NetLog(log4net.ILog log)
         {
             if (log == null)
             {
@@ -30,7 +29,7 @@ namespace InfinniPlatform.Core.Logging
             _log = log;
         }
 
-        private readonly ILog4NetLog _log;
+        private readonly log4net.ILog _log;
 
         public void Info(string message, Dictionary<string, object> context, Exception exception = null)
         {
@@ -57,13 +56,19 @@ namespace InfinniPlatform.Core.Logging
             _log.Fatal(new JsonEvent(message, context, exception));
         }
 
-        public void InitThreadLoggingContext(IDictionary<string, object> context)
+        public void InitThreadLoggingContext(IIdentity user, IDictionary<string, object> context)
         {
             ThreadContext.Properties.Clear();
 
             foreach (var pair in context)
             {
                 ThreadContext.Properties[pair.Key] = pair.Value;
+            }
+
+            if (user != null)
+            {
+                ThreadContext.Properties["app.UserId"] = user.GetUserId();
+                ThreadContext.Properties["app.UserName"] = user.Name;
             }
         }
     }

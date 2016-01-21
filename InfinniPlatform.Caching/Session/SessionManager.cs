@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Security.Claims;
 
 using InfinniPlatform.Caching.Properties;
-using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 
@@ -62,7 +60,7 @@ namespace InfinniPlatform.Caching.Session
         private string GetCurrentUserId()
         {
             var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
-            var currentUserId = currentIdentity?.FindFirstClaim(ClaimTypes.NameIdentifier);
+            var currentUserId = currentIdentity.GetUserId();
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
 
             if (isNotAuthenticated)

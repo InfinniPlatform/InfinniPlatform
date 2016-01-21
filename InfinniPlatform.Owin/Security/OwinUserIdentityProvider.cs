@@ -23,7 +23,14 @@ namespace InfinniPlatform.Owin.Security
         {
             var owinContext = _containerResolver.ResolveOptional<IOwinContext>();
 
-            return owinContext?.Request?.User?.Identity;
+            return GetUserIdentity(owinContext);
+        }
+
+        public static IIdentity GetUserIdentity(IOwinContext owinContext)
+        {
+            return (owinContext != null && owinContext.Request != null && owinContext.Request.User != null)
+                ? owinContext.Request.User.Identity
+                : null;
         }
     }
 }

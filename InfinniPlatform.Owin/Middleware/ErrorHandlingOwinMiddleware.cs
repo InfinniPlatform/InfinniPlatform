@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Owin.Properties;
+using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.Owin;
@@ -32,11 +33,14 @@ namespace InfinniPlatform.Owin.Middleware
 
             try
             {
-                _log.InitThreadLoggingContext(context.Environment);
+                var requestUser = OwinUserIdentityProvider.GetUserIdentity(context);
+                var requestContext = context.Environment;
+                
+                _log.InitThreadLoggingContext(requestUser, requestContext);
 
                 return Next.Invoke(context).ContinueWith(task =>
                                                          {
-                                                             _log.InitThreadLoggingContext(context.Environment);
+                                                             _log.InitThreadLoggingContext(requestUser, requestContext);
 
                                                              if (task.IsFaulted)
                                                              {

@@ -6,7 +6,7 @@ using ILog = log4net.ILog;
 
 namespace InfinniPlatform.Core.Logging
 {
-    public class PerformanceLog : IPerformanceLog
+    internal sealed class PerformanceLog : IPerformanceLog
     {
         public PerformanceLog(ILog log)
         {

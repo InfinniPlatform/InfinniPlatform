@@ -1,7 +1,5 @@
-﻿using System.Security.Claims;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 
-using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 
@@ -66,7 +64,7 @@ namespace InfinniPlatform.Core.Transactions
         private IIdentity GetCurrentIdentity()
         {
             var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
-            var currentUserId = currentIdentity?.FindFirstClaim(ClaimTypes.NameIdentifier);
+            var currentUserId = currentIdentity.GetUserId();
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
             return isNotAuthenticated ? null : currentIdentity;
         }

@@ -6,6 +6,9 @@ using System.Threading;
 
 using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.Helpers;
+using InfinniPlatform.Sdk.Logging;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -58,11 +61,11 @@ namespace InfinniPlatform.MessageQueue.Tests
 			const int totalMessages = IterationCount;
 			var totalSeconds = stopwatch.Elapsed.TotalSeconds;
 
-			Console.WriteLine("Message size: {0} Kb", messageSize / 1024);
-			Console.WriteLine("Total time: {0:N4} sec", totalSeconds);
-			Console.WriteLine("Publish time: {0:N4} ms/message", 1000 * totalSeconds / totalMessages);
-			Console.WriteLine("Publish speed: {0:N4} message/sec", totalMessages / totalSeconds);
-			Console.WriteLine("Publish bitrate: {0:N4} kbps", 8.0 * messageSize * totalMessages / (1024 * totalSeconds));
+			Console.WriteLine(@"Message size: {0} Kb", messageSize / 1024);
+			Console.WriteLine(@"Total time: {0:N4} sec", totalSeconds);
+			Console.WriteLine(@"Publish time: {0:N4} ms/message", 1000 * totalSeconds / totalMessages);
+			Console.WriteLine(@"Publish speed: {0:N4} message/sec", totalMessages / totalSeconds);
+			Console.WriteLine(@"Publish bitrate: {0:N4} kbps", 8.0 * messageSize * totalMessages / (1024 * totalSeconds));
 		}
 
 		[Test]
@@ -127,11 +130,11 @@ namespace InfinniPlatform.MessageQueue.Tests
 			const int totalMessages = threadCount * IterationCount;
 			var totalSeconds = result.Sum(i => i.TotalSeconds);
 
-			Console.WriteLine("Message size: {0} Kb", messageSize / 1024);
-			Console.WriteLine("Total time: {0:N4} sec", totalSeconds);
-			Console.WriteLine("Publish time: {0:N4} ms/message", 1000 * totalSeconds / totalMessages);
-			Console.WriteLine("Publish speed: {0:N4} message/sec", totalMessages / totalSeconds);
-			Console.WriteLine("Publish bitrate: {0:N4} kbps", 8.0 * messageSize * totalMessages / (1024 * totalSeconds));
+			Console.WriteLine(@"Message size: {0} Kb", messageSize / 1024);
+			Console.WriteLine(@"Total time: {0:N4} sec", totalSeconds);
+			Console.WriteLine(@"Publish time: {0:N4} ms/message", 1000 * totalSeconds / totalMessages);
+			Console.WriteLine(@"Publish speed: {0:N4} message/sec", totalMessages / totalSeconds);
+			Console.WriteLine(@"Publish bitrate: {0:N4} kbps", 8.0 * messageSize * totalMessages / (1024 * totalSeconds));
 		}
 
 
@@ -147,7 +150,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 			var stopwatch = new Stopwatch();
 			var message = CreateMessage(messageSize);
 
-			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
+			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default, new Mock<ILog>().Object);
 			var publisher = factory.CreateMessageQueuePublisher();
 			var listener = factory.CreateMessageQueueListener();
 			var subscriptions = factory.CreateMessageQueueManager();
@@ -177,11 +180,11 @@ namespace InfinniPlatform.MessageQueue.Tests
 			const int totalMessages = IterationCount;
 			var totalSeconds = stopwatch.Elapsed.TotalSeconds;
 
-			Console.WriteLine("Message size: {0} Kb", messageSize / 1024);
-			Console.WriteLine("Total time: {0:N4} sec", totalSeconds);
-			Console.WriteLine("Publish time: {0:N4} ms/message", 1000 * totalSeconds / totalMessages);
-			Console.WriteLine("Publish speed: {0:N4} message/sec", totalMessages / totalSeconds);
-			Console.WriteLine("Publish bitrate: {0:N4} kbps", 8.0 * messageSize * totalMessages / (1024 * totalSeconds));
+			Console.WriteLine(@"Message size: {0} Kb", messageSize / 1024);
+			Console.WriteLine(@"Total time: {0:N4} sec", totalSeconds);
+			Console.WriteLine(@"Publish time: {0:N4} ms/message", 1000 * totalSeconds / totalMessages);
+			Console.WriteLine(@"Publish speed: {0:N4} message/sec", totalMessages / totalSeconds);
+			Console.WriteLine(@"Publish bitrate: {0:N4} kbps", 8.0 * messageSize * totalMessages / (1024 * totalSeconds));
 		}
 
 		[Test]
@@ -197,7 +200,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 			var stopwatch = new Stopwatch();
 			var message = CreateMessage(messageSize);
 
-			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
+			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default, new Mock<ILog>().Object);
 			var publisher = factory.CreateMessageQueuePublisher();
 			var listener = factory.CreateMessageQueueListener();
 			var subscriptions = factory.CreateMessageQueueManager();
@@ -239,11 +242,11 @@ namespace InfinniPlatform.MessageQueue.Tests
 			const int totalMessages = threadCount * IterationCount;
 			var totalSeconds = stopwatch.Elapsed.TotalSeconds;
 
-			Console.WriteLine("Message size: {0} Kb", messageSize / 1024);
-			Console.WriteLine("Total time: {0:N4} sec", totalSeconds);
-			Console.WriteLine("Publish time: {0:N4} ms/message", 1000 * totalSeconds / totalMessages);
-			Console.WriteLine("Publish speed: {0:N4} message/sec", totalMessages / totalSeconds);
-			Console.WriteLine("Publish bitrate: {0:N4} kbps", 8.0 * messageSize * totalMessages / (1024 * totalSeconds));
+			Console.WriteLine(@"Message size: {0} Kb", messageSize / 1024);
+			Console.WriteLine(@"Total time: {0:N4} sec", totalSeconds);
+			Console.WriteLine(@"Publish time: {0:N4} ms/message", 1000 * totalSeconds / totalMessages);
+			Console.WriteLine(@"Publish speed: {0:N4} message/sec", totalMessages / totalSeconds);
+			Console.WriteLine(@"Publish bitrate: {0:N4} kbps", 8.0 * messageSize * totalMessages / (1024 * totalSeconds));
 		}
 
 
@@ -256,7 +259,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 
 		private static IMessageQueuePublisher GetMessageQueuePublisher()
 		{
-			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
+			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default, new Mock<ILog>().Object);
 			var publisher = factory.CreateMessageQueuePublisher();
 			var subscriptions = factory.CreateMessageQueueManager();
 			subscriptions.CreateExchangeFanout(ExchangeName).Subscribe(QueueName, () => null);
