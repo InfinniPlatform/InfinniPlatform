@@ -5,19 +5,19 @@ using System.Linq;
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Registers;
+using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.Sdk.RestApi;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
+namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 {
     /// <summary>
     /// В тесте воспроизводится сценарий накопления информации по свободным койкам стационара с последующей агрегацией по различным критериям.
     /// </summary>
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-    [Ignore("Temporary because it works in REST context only")]
-    public sealed class RegistersBehavior
+    public sealed class RegisterApiAcceptanceTest
     {
         public const string ConfigurationId = "TestConfiguration";
 
@@ -28,19 +28,28 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         public const string AvailableBedsRegister = "RegisterTest_AvailableBedsRegister";
         public const string ConfigurationRegistersCommonInfo = ConfigurationId + RegisterConstants.RegistersCommonInfo;
 
-        private IDocumentApi _documentApi;
-        private IRegisterApi _registerApi;
+
+        private IDisposable _server;
+        private DocumentApiClient _documentApi;
+        private RegisterApiClient _registerApi;
+
 
         [TestFixtureSetUp]
-        public void FixtureSetup()
+        public void SetUp()
         {
-            var containerResolver = InfinniPlatformInprocessHost.CreateContainerResolver();
-
-            _documentApi = containerResolver.Resolve<IDocumentApi>();
-            _registerApi = containerResolver.Resolve<IRegisterApi>();
+            _server = InfinniPlatformInprocessHost.Start();
+            _documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            _registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             InitTestData();
         }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            _server.Dispose();
+        }
+
 
         private void InitTestData()
         {

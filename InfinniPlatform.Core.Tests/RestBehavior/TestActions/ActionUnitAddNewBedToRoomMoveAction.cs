@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Tests.RestBehavior.Acceptance;
+using InfinniPlatform.Core.Tests.RestBehavior.Registers;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Registers;
 
@@ -17,16 +17,16 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
         public void Action(IActionContext target)
         {
-            var isInfoRegister = (target.Item.Info != null);
-            var registerName = isInfoRegister ? RegistersBehavior.InfoRegister : RegistersBehavior.AvailableBedsRegister;
+            bool isInfoRegister = (target.Item.Info != null);
+            string registerName = isInfoRegister ? RegisterApiAcceptanceTest.InfoRegister : RegisterApiAcceptanceTest.AvailableBedsRegister;
 
             CreateRegisterEntry(target, registerName,
                 r => r.CreateEntry(
                     target.Configuration,
-                    RegistersBehavior.AvailableBedsRegister,
+                    RegisterApiAcceptanceTest.AvailableBedsRegister,
                     target.DocumentType,
-                    target.Item,
-                    target.Item.Date,
+                    (DateTime?)target.Item.Date,
+                    (object)target.Item,
                     isInfoRegister));
         }
 

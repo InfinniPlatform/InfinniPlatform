@@ -97,9 +97,12 @@
     <Compile Include="RestBehavior\Acceptance\AfterDocumentSaveEventsBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ActionUnitExceptionHandlingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ContentUploadBehavior.cs" />
+    <Compile Include="RestBehavior\Registers\RegisterApiClient.cs" />
+    <Compile Include="RestBehavior\Registers\RegisterApiHttpService.cs" />
+    <Compile Include="RestBehavior\Registers\RegisterApiRequest.cs" />
     <Compile Include="RestBehavior\Acceptance\SaaSBehaivor.cs" />
     <Compile Include="RestBehavior\Acceptance\SortingBehavior.cs" />
-    <Compile Include="RestBehavior\Acceptance\RegistersBehavior.cs" />
+    <Compile Include="RestBehavior\Registers\RegisterApiAcceptanceTest.cs" />
     <Compile Include="RestBehavior\Acceptance\DeleteReferencedDocumentBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ReportingBehavior.cs" />
     <Compile Include="RestBehavior\Acceptance\ValidationDocumentBehavior.cs" />
