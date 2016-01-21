@@ -17,7 +17,7 @@ namespace InfinniPlatform.Sdk.Services
     /// <item><term><c>null</c></term><description> - возвращается как <see cref="HttpResponse.Ok"/></description></item>
     /// <item><term><see cref="int"/></term><description> - возвращается как <see cref="HttpResponse.StatusCode"/></description></item>
     /// <item><term><see cref="string"/></term><description> - возвращается как текст в формате <see cref="TextHttpResponse"/></description></item>
-    /// <item><term><see cref="T:byte[]"/> и <see cref="Stream"/></term><description> - возвращается как поток в формате <see cref="StreamHttpResponse"/></description></item>
+    /// <item><term><see cref="T:byte[]"/>, <see cref="Stream"/>, <see cref="T:Func&lt;Stream&gt;"/></term><description> - возвращается как поток в формате <see cref="StreamHttpResponse"/></description></item>
     /// <item><term><see cref="Exception"/></term><description> - возвращается как <c>InternalServerError</c> с текстом исключения в формате <see cref="TextHttpResponse"/></description></item>
     /// <item><term>иные типы</term><description> - возвращается как объект в формате <see cref="JsonHttpResponse"/></description></item>
     /// </list>
@@ -64,7 +64,12 @@ namespace InfinniPlatform.Sdk.Services
 
                 if (result is Stream)
                 {
-                    return new StreamHttpResponse((Stream)result);
+                    return new StreamHttpResponse(() => (Stream)result);
+                }
+
+                if (result is Func<Stream>)
+                {
+                    return new StreamHttpResponse((Func<Stream>)result);
                 }
 
                 return new JsonHttpResponse(result);

@@ -45,7 +45,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
                     if (blobData != null)
                     {
-                        var fileResponse = new StreamHttpResponse(blobData.Data(), blobData.Info.Type)
+                        var fileResponse = new StreamHttpResponse(blobData.Data, blobData.Info.Type)
                                            {
                                                FileName = blobData.Info.Name,
                                                LastWriteTimeUtc = blobData.Info.Time

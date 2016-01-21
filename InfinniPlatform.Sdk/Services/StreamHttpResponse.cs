@@ -39,13 +39,7 @@ namespace InfinniPlatform.Sdk.Services
 
                 if (fileLength > 0)
                 {
-                    Content = stream =>
-                    {
-                        using (var fileStream = File.OpenRead(filePath))
-                        {
-                            CopyStream(fileStream, stream, fileLength);
-                        }
-                    };
+                    Content = stream => CopyStream(File.OpenRead(filePath), stream, fileLength);
                 }
             }
         }
@@ -56,25 +50,16 @@ namespace InfinniPlatform.Sdk.Services
         /// <param name="fileStream">Содержимое файла.</param>
         /// <param name="contentType">Тип содержимого тела ответа.</param>
         /// <exception cref="ArgumentNullException">Параметр <paramref name="fileStream"/> не задан.</exception>
-        public StreamHttpResponse(Stream fileStream, string contentType = HttpConstants.StreamContentType)
+        public StreamHttpResponse(Func<Stream> fileStream, string contentType = HttpConstants.StreamContentType)
         {
             if (fileStream == null)
             {
                 throw new ArgumentNullException(nameof(fileStream));
             }
 
-            var fileLength = fileStream.Length;
-
             ContentType = contentType;
-            ContentLength = fileLength;
 
-            if (fileLength > 0)
-            {
-                Content = stream =>
-                          {
-                              CopyStream(fileStream, stream, fileLength);
-                          };
-            }
+            Content = stream => CopyStream(fileStream(), stream, HttpConstants.FileBufferSize);
         }
 
         public StreamHttpResponse(byte[] fileContent, string contentType = HttpConstants.StreamContentType)
@@ -91,13 +76,7 @@ namespace InfinniPlatform.Sdk.Services
 
             if (fileLength > 0)
             {
-                Content = stream =>
-                          {
-                              using (var fileStream = new MemoryStream(fileContent))
-                              {
-                                  CopyStream(fileStream, stream, fileLength);
-                              }
-                          };
+                Content = stream => CopyStream(new MemoryStream(fileContent), stream, fileLength);
             }
         }
 
@@ -110,7 +89,7 @@ namespace InfinniPlatform.Sdk.Services
         /// <summary>
         /// Размер файла в байтах.
         /// </summary>
-        public long ContentLength { get; set; }
+        public long? ContentLength { get; set; }
 
         /// <summary>
         /// Время последнего изменения файла.
@@ -120,7 +99,10 @@ namespace InfinniPlatform.Sdk.Services
 
         private static void CopyStream(Stream source, Stream destination, long sourseLength)
         {
-            source.CopyTo(destination, (sourseLength < HttpConstants.FileBufferSize) ? (int)sourseLength : HttpConstants.FileBufferSize);
+            using (source)
+            {
+                source.CopyTo(destination, (sourseLength < HttpConstants.FileBufferSize) ? (int)sourseLength : HttpConstants.FileBufferSize);
+            }
         }
     }
 }

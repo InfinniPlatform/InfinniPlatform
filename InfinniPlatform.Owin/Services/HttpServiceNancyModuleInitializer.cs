@@ -239,7 +239,7 @@ namespace InfinniPlatform.Owin.Services
             {
                 var eTag = "\"" + lastWriteTimeUtc.Value.Ticks.ToString("x") + "\"";
 
-                // Если файл не изменился, возвращается статус NotModified
+                // Если файл не изменился, возвращается статус NotModified (304)
                 if (CacheHelpers.ReturnNotModified(eTag, streamHttpResponse.LastWriteTimeUtc, nancyContext))
                 {
                     nancyResponse.StatusCode = HttpStatusCode.NotModified;
@@ -254,7 +254,7 @@ namespace InfinniPlatform.Owin.Services
 
             var fileName = streamHttpResponse.FileName;
 
-            // Если тип содержимого файла не задан, определяем его автоматически
+            // Если тип содержимого файла не задан, он определяется автоматически
             if (!string.IsNullOrEmpty(fileName)
                 && (string.IsNullOrEmpty(streamHttpResponse.ContentType)
                     || string.Equals(streamHttpResponse.ContentType, HttpConstants.StreamContentType, StringComparison.OrdinalIgnoreCase)))
@@ -262,7 +262,13 @@ namespace InfinniPlatform.Owin.Services
                 nancyResponse.ContentType = _mimeTypeResolver.GetMimeType(fileName);
             }
 
-            nancyResponse.Headers["Content-Length"] = streamHttpResponse.ContentLength.ToString();
+            var contentLength = streamHttpResponse.ContentLength;
+
+            // Установка информация о размере файла
+            if (contentLength != null)
+            {
+                nancyResponse.Headers["Content-Length"] = contentLength.ToString();
+            }
         }
 
 
