@@ -50,11 +50,9 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 if (typeName == "Object")
                 {
                     // Свойство типа 'объект' может являться inline ссылкой на документ
-                    var documentLink = propertyModel.Value.TypeInfo?.DocumentLink;
+                    var documentLink = (propertyModel.Value.TypeInfo != null) ? propertyModel.Value.TypeInfo.DocumentLink : null;
 
-                    if (documentLink != null &&
-                        documentLink.Inline != null &&
-                        documentLink.Inline == true)
+                    if (documentLink != null && documentLink.Inline != null && documentLink.Inline == true)
                     {
                         // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
                         // чтобы получить сортировочные поля 
@@ -111,13 +109,11 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                         linkInfoToCheck = propertyModel.Value.Items;
                     }
 
-                    var documentLink = linkInfoToCheck?.TypeInfo?.DocumentLink;
+                    var documentLink = (linkInfoToCheck != null && linkInfoToCheck.TypeInfo != null) ? linkInfoToCheck.TypeInfo.DocumentLink : null;
 
-                    if (documentLink?.Inline != null)
+                    if (documentLink != null)
                     {
-                        if (documentLink.Inline == true &&
-                            documentLink.ConfigId == configId &&
-                            documentLink.DocumentId == documentId)
+                        if (documentLink.Inline == true && documentLink.ConfigId == configId && documentLink.DocumentId == documentId)
                         {
                             return true;
                         }

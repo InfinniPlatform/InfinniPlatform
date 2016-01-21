@@ -36,27 +36,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public IEnumerable<dynamic> GetDocument(string configuration, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            IEnumerable<FilterCriteria> filterCriterias = null;
-
-            if (filter != null)
-            {
-                var filterBuilder = new FilterBuilder();
-                filter(filterBuilder);
-
-                filterCriterias = filterBuilder.CriteriaList;
-            }
-
-            IEnumerable<SortingCriteria> sortingCriterias = null;
-
-            if (sorting != null)
-            {
-                var sortingBuilder = new SortingBuilder();
-                sorting(sortingBuilder);
-
-                sortingCriterias = sortingBuilder.SortingList;
-            }
-
-            return GetDocuments(configuration, documentType, filterCriterias, pageNumber, pageSize, sortingCriterias);
+            return GetDocuments(configuration, documentType, filter.ToFilterCriterias(), pageNumber, pageSize, sorting.ToSortingCriterias());
         }
 
         public IEnumerable<dynamic> GetDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
@@ -120,17 +100,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
         public long GetNumberOfDocuments(string configuration, string documentType, Action<FilterBuilder> filter)
         {
-            IEnumerable<FilterCriteria> filterCriterias = null;
-
-            if (filter != null)
-            {
-                var filterBuilder = new FilterBuilder();
-                filter(filterBuilder);
-
-                filterCriterias = filterBuilder.CriteriaList;
-            }
-
-            return GetNumberOfDocuments(configuration, documentType, filterCriterias);
+            return GetNumberOfDocuments(configuration, documentType, filter.ToFilterCriterias());
         }
 
         public long GetNumberOfDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter)
@@ -149,7 +119,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
             dynamic result = RequestExecutor.PostObject(requestUri, requestData);
 
-            return result?.NumberOfDocuments;
+            return (result != null) ? result.NumberOfDocuments : 0;
         }
 
         public void AttachFile(string configuration, string documentType, string documentId, string fileProperty, Stream fileStream)

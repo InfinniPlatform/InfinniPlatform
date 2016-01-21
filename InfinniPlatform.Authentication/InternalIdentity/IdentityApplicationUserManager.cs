@@ -339,22 +339,28 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         public void AddToRoles(IEnumerable<string> roles)
         {
-            var arrayRoles = roles?.ToArray();
-
-            if (arrayRoles?.Length > 0)
+            if (roles != null)
             {
-                InvokeUserManager((m, userId) => m.AddToRolesAsync(userId, arrayRoles));
-                AddRolesToClaims(arrayRoles);
+                var arrayRoles = roles.ToArray();
+
+                if (arrayRoles.Length > 0)
+                {
+                    InvokeUserManager((m, userId) => m.AddToRolesAsync(userId, arrayRoles));
+                    AddRolesToClaims(arrayRoles);
+                }
             }
         }
 
         public void AddToRoles(string userName, IEnumerable<string> roles)
         {
-            var arrayRoles = roles?.ToArray();
-
-            if (arrayRoles?.Length > 0)
+            if (roles != null)
             {
-                InvokeUserManager((m, u) => m.AddToRolesAsync(u.Id, arrayRoles), userName);
+                var arrayRoles = roles.ToArray();
+
+                if (arrayRoles.Length > 0)
+                {
+                    InvokeUserManager((m, u) => m.AddToRolesAsync(u.Id, arrayRoles), userName);
+                }
             }
         }
 
@@ -402,22 +408,28 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         public void RemoveFromRoles(IEnumerable<string> roles)
         {
-            var rolesArray = roles?.ToArray();
-
-            if (rolesArray?.Length > 0)
+            if (roles != null)
             {
-                InvokeUserManager((m, userId) => m.RemoveFromRolesAsync(userId, rolesArray));
-                RemoveRolesFromClaims(rolesArray);
+                var rolesArray = roles.ToArray();
+
+                if (rolesArray.Length > 0)
+                {
+                    InvokeUserManager((m, userId) => m.RemoveFromRolesAsync(userId, rolesArray));
+                    RemoveRolesFromClaims(rolesArray);
+                }
             }
         }
 
         public void RemoveFromRoles(string userName, IEnumerable<string> roles)
         {
-            var rolesArray = roles?.ToArray();
-
-            if (rolesArray?.Length > 0)
+            if (roles != null)
             {
-                InvokeUserManager((m, u) => m.RemoveFromRolesAsync(u.Id, rolesArray), userName);
+                var rolesArray = roles.ToArray();
+
+                if (rolesArray.Length > 0)
+                {
+                    InvokeUserManager((m, u) => m.RemoveFromRolesAsync(u.Id, rolesArray), userName);
+                }
             }
         }
 

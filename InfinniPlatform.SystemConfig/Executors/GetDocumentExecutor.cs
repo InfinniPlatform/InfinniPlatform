@@ -37,118 +37,102 @@ namespace InfinniPlatform.SystemConfig.Executors
 
         public int GetNumberOfDocuments(string configurationName, string documentType, IEnumerable<FilterCriteria> filter)
         {
-            var numberOfDocuments = 0;
+            var configurationObject = _configurationObjectBuilder.GetConfigurationObject(configurationName);
 
-            var documentProvider = _configurationObjectBuilder.GetConfigurationObject(configurationName)?.GetDocumentProvider(documentType);
+            if (configurationObject == null)
+            {
+                throw new ArgumentException(configurationName, nameof(configurationName));
+            }
+
+            var documentProvider = configurationObject.GetDocumentProvider(documentType);
 
             if (documentProvider == null)
             {
-                return numberOfDocuments;
+                throw new ArgumentException(documentType, nameof(documentType));
             }
 
-            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName).ConfigurationMetadata;
-
-            if (metadataConfiguration == null)
-            {
-                return numberOfDocuments;
-            }
-
-            var schema = metadataConfiguration.GetDocumentSchema(documentType);
+            var schema = _metadataComponent.GetDocumentSchema(configurationName, documentType);
 
             var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
 
-            numberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
+            var numberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
 
             return numberOfDocuments;
         }
 
         public int GetNumberOfDocuments(string configurationName, string documentType, Action<FilterBuilder> filter)
         {
-            var filterBuilder = new FilterBuilder();
-
-            filter?.Invoke(filterBuilder);
-
-            return GetNumberOfDocuments(configurationName, documentType, filterBuilder.CriteriaList);
+            return GetNumberOfDocuments(configurationName, documentType, filter.ToFilterCriterias());
         }
 
         public IEnumerable<object> GetDocument(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null, IEnumerable<dynamic> ignoreResolve = null)
         {
-            var documentProvider = _configurationObjectBuilder.GetConfigurationObject(configurationName)?.GetDocumentProvider(documentType);
+            var configurationObject = _configurationObjectBuilder.GetConfigurationObject(configurationName);
 
-            if (documentProvider != null)
+            if (configurationObject == null)
             {
-                var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName)
-                                                                       .ConfigurationMetadata;
-
-                if (metadataConfiguration == null)
-                {
-                    return new List<dynamic>();
-                }
-
-                dynamic schema = metadataConfiguration.GetDocumentSchema(documentType);
-
-                SortingCriteria[] sortingFields = null;
-
-                if (schema != null)
-                {
-                    // Извлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
-                    sortingFields = SortingPropertiesExtractor.ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
-                }
-
-                var sortingArray = sorting?.ToArray() ?? new SortingCriteria[] {};
-
-                if (sortingArray.Any())
-                {
-                    // Поля сортировки заданы в запросе. 
-                    // Берем только те поля, которые разрешены в соответствии с метаданными
-
-                    var filteredSortingFields = new List<SortingCriteria>();
-
-                    foreach (var sortingProperty in sortingArray)
-                    {
-                        if (sortingFields != null && sortingFields.Any(validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
-                        {
-                            filteredSortingFields.Add(sortingProperty);
-                        }
-                    }
-
-                    sorting = filteredSortingFields;
-                }
-                else if (sortingFields != null && sortingFields.Any())
-                {
-                    sorting = sortingFields;
-                }
-
-                //делаем выборку документов для последующего Resolve и фильтрации по полям Resolved объектов
-                var pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
-
-                var filterArray = filter.ToArray();
-
-                IEnumerable<dynamic> result = documentProvider.GetDocument(filterArray, 0, Convert.ToInt32(pageSizeUnresolvedDocuments), sorting, pageNumber > 0
-                                                                                                                                                      ? pageNumber * pageSize
-                                                                                                                                                      : 0);
-
-                _referenceResolver.ResolveReferences(configurationName, documentType, result, ignoreResolve);
-
-                return result.Take(pageSize == 0
-                                       ? 10
-                                       : pageSize);
+                throw new ArgumentException(configurationName, nameof(configurationName));
             }
 
-            return new List<dynamic>();
+            var documentProvider = configurationObject.GetDocumentProvider(documentType);
+
+            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configurationName)
+                                                                   .ConfigurationMetadata;
+
+            if (metadataConfiguration == null)
+            {
+                return new List<dynamic>();
+            }
+
+            dynamic schema = metadataConfiguration.GetDocumentSchema(documentType);
+
+            SortingCriteria[] sortingFields = null;
+
+            if (schema != null)
+            {
+                // Извлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
+                sortingFields = SortingPropertiesExtractor.ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
+            }
+
+            var sortingArray = (sorting != null) ? sorting.ToArray() : new SortingCriteria[] { };
+
+            if (sortingArray.Any())
+            {
+                // Поля сортировки заданы в запросе. 
+                // Берем только те поля, которые разрешены в соответствии с метаданными
+
+                var filteredSortingFields = new List<SortingCriteria>();
+
+                foreach (var sortingProperty in sortingArray)
+                {
+                    if (sortingFields != null && sortingFields.Any(validProperty => validProperty.PropertyName == sortingProperty.PropertyName))
+                    {
+                        filteredSortingFields.Add(sortingProperty);
+                    }
+                }
+
+                sorting = filteredSortingFields;
+            }
+            else if (sortingFields != null && sortingFields.Any())
+            {
+                sorting = sortingFields;
+            }
+
+            //делаем выборку документов для последующего Resolve и фильтрации по полям Resolved объектов
+            var pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
+
+            IEnumerable<dynamic> result = documentProvider.GetDocument(filter, 0, Convert.ToInt32(pageSizeUnresolvedDocuments), sorting, pageNumber > 0
+                                                                                                                                                  ? pageNumber * pageSize
+                                                                                                                                                  : 0);
+
+            _referenceResolver.ResolveReferences(configurationName, documentType, result, ignoreResolve);
+
+            return result.Take(pageSize == 0 ? 10 : pageSize);
         }
 
         public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null, IEnumerable<dynamic> ignoreResolve = null)
         {
-            var filterBuilder = new FilterBuilder();
-
-            filter?.Invoke(filterBuilder);
-
-            var sortingBuilder = new SortingBuilder();
-
-            sorting?.Invoke(sortingBuilder);
-
-            return GetDocument(configurationName, documentType, filterBuilder.CriteriaList, pageNumber, pageSize, sortingBuilder.SortingList, ignoreResolve);
+            return GetDocument(configurationName, documentType, filter.ToFilterCriterias(), pageNumber, pageSize, sorting.ToSortingCriterias(), ignoreResolve);
         }
     }
 }

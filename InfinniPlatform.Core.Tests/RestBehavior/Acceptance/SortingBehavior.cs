@@ -77,8 +77,10 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             Assert.IsNotNull(ascPage0);
             Assert.IsNotNull(descPage0);
-            Assert.AreEqual(1, ascPage0.FirstOrDefault()?.IntProperty);
-            Assert.AreEqual(3, descPage0.FirstOrDefault()?.IntProperty);
+            Assert.IsNotNull(ascPage0.FirstOrDefault());
+            Assert.IsNotNull(descPage0.FirstOrDefault());
+            Assert.AreEqual(1, ascPage0.FirstOrDefault().IntProperty);
+            Assert.AreEqual(3, descPage0.FirstOrDefault().IntProperty);
         }
 
         [Test]
@@ -111,13 +113,17 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             Assert.IsNotNull(ascPage0);
             Assert.IsNotNull(ascPage1);
-            Assert.AreEqual(startDate.AddDays(0), ascPage0.FirstOrDefault()?.SortableDateProperty);
-            Assert.AreEqual(startDate.AddDays(10), ascPage1.FirstOrDefault()?.SortableDateProperty);
+            Assert.IsNotNull(ascPage0.FirstOrDefault());
+            Assert.IsNotNull(ascPage1.FirstOrDefault());
+            Assert.AreEqual(startDate.AddDays(0), ascPage0.FirstOrDefault().SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(10), ascPage1.FirstOrDefault().SortableDateProperty);
 
             Assert.IsNotNull(descPage0);
             Assert.IsNotNull(descPage1);
-            Assert.AreEqual(startDate.AddDays(99), descPage0.FirstOrDefault()?.SortableDateProperty);
-            Assert.AreEqual(startDate.AddDays(89), descPage1.FirstOrDefault()?.SortableDateProperty);
+            Assert.IsNotNull(descPage0.FirstOrDefault());
+            Assert.IsNotNull(descPage1.FirstOrDefault());
+            Assert.AreEqual(startDate.AddDays(99), descPage0.FirstOrDefault().SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(89), descPage1.FirstOrDefault().SortableDateProperty);
         }
 
         [Test]
@@ -161,8 +167,10 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             Assert.IsNotNull(ascPage0);
             Assert.IsNotNull(descPage0);
-            Assert.AreEqual(1, ascPage0.FirstOrDefault()?.IntProperty);
-            Assert.AreEqual(3, descPage0.FirstOrDefault()?.IntProperty);
+            Assert.IsNotNull(ascPage0.FirstOrDefault());
+            Assert.IsNotNull(descPage0.FirstOrDefault());
+            Assert.AreEqual(1, ascPage0.FirstOrDefault().IntProperty);
+            Assert.AreEqual(3, descPage0.FirstOrDefault().IntProperty);
         }
 
         [Test]
@@ -191,8 +199,10 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             Assert.IsNotNull(ascPage0);
             Assert.IsNotNull(descPage0);
-            Assert.AreEqual(0, ascPage0.FirstOrDefault()?.SortableIntProperty);
-            Assert.AreEqual(99, descPage0.FirstOrDefault()?.SortableIntProperty);
+            Assert.IsNotNull(ascPage0.FirstOrDefault());
+            Assert.IsNotNull(descPage0.FirstOrDefault());
+            Assert.AreEqual(0, ascPage0.FirstOrDefault().SortableIntProperty);
+            Assert.AreEqual(99, descPage0.FirstOrDefault().SortableIntProperty);
         }
 
         [Test]
@@ -236,8 +246,10 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             Assert.IsNotNull(ascPage0);
             Assert.IsNotNull(descPage0);
-            Assert.AreEqual(1, ascPage0.FirstOrDefault()?.IntProperty);
-            Assert.AreEqual(3, descPage0.FirstOrDefault()?.IntProperty);
+            Assert.IsNotNull(ascPage0.FirstOrDefault());
+            Assert.IsNotNull(descPage0.FirstOrDefault());
+            Assert.AreEqual(1, ascPage0.FirstOrDefault().IntProperty);
+            Assert.AreEqual(3, descPage0.FirstOrDefault().IntProperty);
         }
 
         [Test]
@@ -266,8 +278,10 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             Assert.IsNotNull(ascPage0);
             Assert.IsNotNull(descPage0);
-            Assert.AreEqual("эюя абв где 0", ascPage0.FirstOrDefault()?.SortableStringProperty);
-            Assert.AreEqual("эюя абв где 99", descPage0.FirstOrDefault()?.SortableStringProperty);
+            Assert.IsNotNull(ascPage0.FirstOrDefault());
+            Assert.IsNotNull(descPage0.FirstOrDefault());
+            Assert.AreEqual("эюя абв где 0", ascPage0.FirstOrDefault().SortableStringProperty);
+            Assert.AreEqual("эюя абв где 99", descPage0.FirstOrDefault().SortableStringProperty);
         }
 
         [Test]
@@ -330,13 +344,17 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // Then
 
-            var firstAscItem = ascPage0?.FirstOrDefault();
-            Assert.AreEqual(100, firstAscItem?.SortableIntProperty);
-            Assert.AreEqual("aaaaa", firstAscItem?.SortableStringProperty);
+            Assert.IsNotNull(ascPage0);
+            var firstAscItem = ascPage0.FirstOrDefault();
+            Assert.IsNotNull(firstAscItem);
+            Assert.AreEqual(100, firstAscItem.SortableIntProperty);
+            Assert.AreEqual("aaaaa", firstAscItem.SortableStringProperty);
 
-            var firstDescItem = descPage0?.FirstOrDefault();
-            Assert.AreEqual(100, firstDescItem?.SortableIntProperty);
-            Assert.AreEqual("bbbbb", firstDescItem?.SortableStringProperty);
+            Assert.IsNotNull(descPage0);
+            var firstDescItem = descPage0.FirstOrDefault();
+            Assert.IsNotNull(firstDescItem);
+            Assert.AreEqual(100, firstDescItem.SortableIntProperty);
+            Assert.AreEqual("bbbbb", firstDescItem.SortableStringProperty);
         }
     }
 }

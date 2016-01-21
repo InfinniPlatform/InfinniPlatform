@@ -53,8 +53,9 @@ namespace InfinniPlatform.Owin.Services
         /// </summary>
         public IEnumerable<Type> GetModuleTypes()
         {
-            return _httpServices?.Select(s => typeof(HttpServiceNancyModule<>).MakeGenericType(s.GetType())) ?? Type.EmptyTypes;
-
+            return (_httpServices != null)
+                ? _httpServices.Select(s => typeof(HttpServiceNancyModule<>).MakeGenericType(s.GetType()))
+                : Type.EmptyTypes;
         }
 
         /// <summary>

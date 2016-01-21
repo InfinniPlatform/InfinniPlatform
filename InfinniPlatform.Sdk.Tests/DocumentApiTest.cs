@@ -496,8 +496,11 @@ namespace InfinniPlatform.Sdk.Tests
 
             //When
             dynamic item = _documentApiClient.GetDocument("gameshop", "review", f => f.AddCriteria(cr => cr.Property("Comments.Id").IsEquals(childCommentId)), 0, 1).FirstOrDefault();
+            
             //Then
-            Assert.AreEqual(item?.Comments?.Count, 3);
+            Assert.IsNotNull(item);
+            Assert.IsNotNull(item.Comments);
+            Assert.AreEqual(item.Comments.Count, 3);
         }
 
         [Test]

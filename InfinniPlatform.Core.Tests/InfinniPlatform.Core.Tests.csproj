@@ -227,10 +227,7 @@
     <None Include="packages.config" />
     <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="RestBehavior\ConfiguratorApiBehavior\" />
-    <Folder Include="RestBehavior\DataSources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

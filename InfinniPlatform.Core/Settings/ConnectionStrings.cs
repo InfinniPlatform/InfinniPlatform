@@ -16,7 +16,7 @@ namespace InfinniPlatform.Core.Settings
         {
             var value = ConfigurationManager.ConnectionStrings[name];
 
-            return value?.ConnectionString;
+            return (value != null) ? value.ConnectionString : null;
         }
     }
 }

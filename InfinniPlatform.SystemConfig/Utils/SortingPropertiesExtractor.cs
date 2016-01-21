@@ -24,9 +24,9 @@ namespace InfinniPlatform.SystemConfig.Utils
                     {
                         var childProps = new SortingCriteria[] { };
 
-                        var documentLink = propertyMapping.Value.TypeInfo?.DocumentLink;
+                        var documentLink = (propertyMapping.Value.TypeInfo != null) ? propertyMapping.Value.TypeInfo.DocumentLink : null;
 
-                        if (documentLink?.Inline == true)
+                        if (documentLink != null && documentLink.Inline == true)
                         {
                             string configId = documentLink.ConfigId;
                             string documentType = documentLink.DocumentId;

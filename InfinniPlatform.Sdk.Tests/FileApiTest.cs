@@ -63,7 +63,10 @@ namespace InfinniPlatform.Sdk.Tests
 
             dynamic actualDocument = _documentApiClient.GetDocumentById("Gameshop", "UserProfile", document.Id);
 
-            Assert.IsNotNull(actualDocument?.Avatar?.Info?.ContentId);
+            Assert.IsNotNull(actualDocument);
+            Assert.IsNotNull(actualDocument.Avatar);
+            Assert.IsNotNull(actualDocument.Avatar.Info);
+            Assert.IsNotNull(actualDocument.Avatar.Info.ContentId);
 
             var contentId = actualDocument.Avatar.Info.ContentId;
 

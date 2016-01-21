@@ -61,11 +61,14 @@ namespace InfinniPlatform.Sdk.Serialization
             {
                 var objProperty = objType.GetProperty(jProperty.Name);
 
-                var objPropertyValue = objProperty?.GetValue(value);
-
-                if (objPropertyValue != null)
+                if (objProperty != null)
                 {
-                    jProperty.Value = JToken.FromObject(objPropertyValue, serializer);
+                    var objPropertyValue = objProperty.GetValue(value);
+
+                    if (objPropertyValue != null)
+                    {
+                        jProperty.Value = JToken.FromObject(objPropertyValue, serializer);
+                    }
                 }
             }
         }

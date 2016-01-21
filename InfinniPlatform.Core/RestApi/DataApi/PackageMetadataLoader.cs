@@ -142,7 +142,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic configurationInfo = GetConfigurationInfo(configId);
 
-            return configurationInfo?.Content;
+            return (configurationInfo != null) ? configurationInfo.Content : null;
         }
 
         public static IEnumerable<object> GetConfigurations()
@@ -189,7 +189,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic menuInfo = GetMenuInfo(configId, menuId);
 
-            return menuInfo?.Content;
+            return (menuInfo != null) ? menuInfo.Content : null;
         }
 
         public static IEnumerable<object> GetMenus(string configId)
@@ -241,7 +241,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic registerInfo = GetRegisterInfo(configId, registerId);
 
-            return registerInfo?.Content;
+            return (registerInfo != null) ? registerInfo.Content : null;
         }
 
         public static IEnumerable<object> GetRegisters(string configId)
@@ -292,7 +292,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic documentInfo = GetDocumentInfo(configId, documentId);
 
-            return documentInfo?.Content;
+            return (documentInfo != null) ? documentInfo.Content : null;
         }
 
         public static IEnumerable<object> GetDocuments(string configId)
@@ -343,7 +343,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic viewInfo = GetViewInfo(configId, documentId, viewId);
 
-            return viewInfo?.Content;
+            return (viewInfo != null) ? viewInfo.Content : null;
         }
 
         public static IEnumerable<object> GetViews(string configId, string documentId)
@@ -394,7 +394,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic printViewInfo = GetPrintViewInfo(configId, documentId, printViewId);
 
-            return printViewInfo?.Content;
+            return (printViewInfo != null) ? printViewInfo.Content : null;
         }
 
         public static IEnumerable<object> GetPrintViews(string configId, string documentId)
@@ -445,7 +445,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic processInfo = GetProcessInfo(configId, documentId, processId);
 
-            return processInfo?.Content;
+            return (processInfo != null) ? processInfo.Content : null;
         }
 
         public static IEnumerable<object> GetProcesses(string configId, string documentId)
@@ -496,7 +496,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic serviceInfo = GetServiceInfo(configId, documentId, serviceId);
 
-            return serviceInfo?.Content;
+            return (serviceInfo != null) ? serviceInfo.Content : null;
         }
 
         public static IEnumerable<object> GetServices(string configId, string documentId)
@@ -547,7 +547,7 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         {
             dynamic scenarioInfo = GetScenarioInfo(configId, documentId, scenarioId);
 
-            return scenarioInfo?.Content;
+            return (scenarioInfo != null) ? scenarioInfo.Content : null;
         }
 
         public static IEnumerable<object> GetScenarios(string configId, string documentId)

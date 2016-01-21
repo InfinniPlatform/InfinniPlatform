@@ -21,16 +21,25 @@ namespace InfinniPlatform.SystemConfig.Executors
         {
             var indexName = _elasticConnection.GetIndexName(AuthorizationStorageExtensions.AuthorizationConfigId);
 
-            // TODO: Load only UserInfo (without header)
+            // TODO: Load only UserInfo (without header).
+            // TODO: Set specific types, not AllTypes().
             var searchResponse = _elasticConnection
                 .Client.Search<dynamic>(d => d.Index(indexName)
                                               .AllTypes()
                                               .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value.ToLower()))
                                               .Size(1));
 
-            return (searchResponse.Total > 0 && searchResponse.Documents != null)
-                ? searchResponse.Documents.FirstOrDefault()?.Values
-                : null;
+            if (searchResponse.Total > 0 && searchResponse.Documents != null)
+            {
+                var document = searchResponse.Documents.FirstOrDefault();
+
+                if (document != null)
+                {
+                    return document.Values;
+                }
+            }
+
+            return null;
         }
 
         public void Save(object userId, object userInfo)

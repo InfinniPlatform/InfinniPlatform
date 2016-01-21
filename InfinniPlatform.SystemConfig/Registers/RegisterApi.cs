@@ -81,7 +81,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             {
                 // Дата документа явно не задана, используем дату из содержимого переданного документа
                 dynamic documentEvents = _metadataApi.GetDocumentEvents(configuration, documentId);
-                string dateFieldName = documentEvents?.RegisterPoint?.DocumentDateProperty;
+                string dateFieldName = (documentEvents.RegisterPoint != null) ? documentEvents.RegisterPoint.DocumentDateProperty : null;
 
                 if (!string.IsNullOrEmpty(dateFieldName))
                 {
@@ -770,7 +770,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         private static bool CheckTimezone(string timezone)
         {
             // Временная зона задаётся в виде "+05:00"
-            return (Regex.IsMatch(timezone, "^[+-]?[0-9]*:00$"));
+            return (Regex.IsMatch(timezone, "^[+-]{0,1}[0-9]*:00$"));
         }
     }
 }

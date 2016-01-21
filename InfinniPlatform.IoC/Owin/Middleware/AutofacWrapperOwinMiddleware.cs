@@ -25,7 +25,18 @@ namespace InfinniPlatform.IoC.Owin.Middleware
             var requestContainer = context.Get<ILifetimeScope>(AutofacOwinConstants.LifetimeScopeKey);
 
             // Попытка получения OWIN слоя через контейнер зависимостей запроса
-            var realMiddleware = requestContainer?.ResolveOptional<T>(TypedParameter.From(Next) as Parameter) ?? Next;
+
+            OwinMiddleware realMiddleware = null;
+
+            if (requestContainer != null)
+            {
+                realMiddleware = requestContainer.ResolveOptional<T>(TypedParameter.From(Next) as Parameter);
+            }
+
+            if (realMiddleware == null)
+            {
+                realMiddleware = Next;
+            }
 
             // Направление запроса реальному слою OWIN
             return realMiddleware.Invoke(context);
