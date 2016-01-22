@@ -53,7 +53,7 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
         /// </summary>
         public static void ApplyIndexTypeMapping(ElasticClient elasticClient, string indexName, string schemaversionname, IList<PropertyMapping> properties, SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
         {
-            var propertiesDictionary = properties?.ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticType) ?? new Dictionary<PropertyNameMarker, IElasticType>();
+            var propertiesDictionary = (properties != null) ? properties.ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticType) : new Dictionary<PropertyNameMarker, IElasticType>();
 
             elasticClient.Map<dynamic>(m => m.Index(indexName.ToLowerInvariant())
                                              .Type(schemaversionname)

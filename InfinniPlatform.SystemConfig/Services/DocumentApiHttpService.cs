@@ -52,13 +52,13 @@ namespace InfinniPlatform.SystemConfig.Services
             string documentType = target.Item.Metadata;
 
             IEnumerable<dynamic> dynamicFilters = target.Item.Filter;
-            var filter = dynamicFilters?.Select(o => new FilterCriteria(o.Property, o.Value, (CriteriaType)Enum.Parse(typeof(CriteriaType), o.CriteriaType.ToString()))) ?? Enumerable.Empty<FilterCriteria>();
+            var filter = (dynamicFilters != null) ? dynamicFilters.Select(o => new FilterCriteria(o.Property, o.Value, (CriteriaType)Enum.Parse(typeof(CriteriaType), o.CriteriaType.ToString()))) : null;
 
-            int pageNumber = Math.Max((int)(target.Item?.PageNumber ?? 0), 0);
-            int pageSize = Math.Min((int)(target.Item?.PageSize ?? 0), 1000);
+            int pageNumber = Math.Max((int)(target.Item.PageNumber ?? 0), 0);
+            int pageSize = Math.Min((int)(target.Item.PageSize ?? 0), 1000);
 
             IEnumerable<dynamic> dynamicSorting = target.Item.Sorting;
-            var sorting = dynamicSorting?.Select(o => new SortingCriteria(o.PropertyName, o.SortingOrder));
+            var sorting = (dynamicSorting != null) ? dynamicSorting.Select(o => new SortingCriteria(o.PropertyName, o.SortingOrder)) : null;
 
             target.Result = _documentApi.GetDocuments(configuration, documentType, filter, pageNumber, pageSize, sorting);
         }
@@ -125,9 +125,18 @@ namespace InfinniPlatform.SystemConfig.Services
             string documentType = linkedData.Metadata;
             string documentId = linkedData.DocumentId;
             string fileProperty = linkedData.FieldName;
-            var fileStream = request.Files?.FirstOrDefault()?.Value;
 
-            _documentApi.AttachFile(configuration, documentType, documentId, fileProperty, fileStream);
+            var files = request.Files;
+
+            if (files != null)
+            {
+                var firstFile = files.FirstOrDefault();
+
+                if (firstFile != null)
+                {
+                    _documentApi.AttachFile(configuration, documentType, documentId, fileProperty, firstFile.Value);
+                }
+            }
 
             return null;
         }

@@ -27,8 +27,8 @@ namespace InfinniPlatform.PrintViewDesigner.ViewModel.Inlines
             var imageControl = new Image();
 
             imageControl.BeginInit();
-            imageControl.Width = element.Size?.Width ?? imageSource.Width;
-            imageControl.Height = element.Size?.Height ?? imageSource.Height;
+            imageControl.Width = (element.Size != null ? element.Size.Width : null) ?? imageSource.Width;
+            imageControl.Height = (element.Size != null ? element.Size.Height : null) ?? imageSource.Height;
             imageControl.Source = imageSource;
             imageControl.Stretch = Stretch.Fill;
             imageControl.EndInit();

@@ -202,11 +202,30 @@ namespace InfinniPlatform.SystemConfig.Executors
             }
         }
 
-        private static void CheckDatabaseResponse(IResponse databaseResponse)
+        private static void CheckDatabaseResponse(IResponse response)
         {
-            if (!databaseResponse.IsValid)
+            if (!response.IsValid)
             {
-                var elasticMessage = databaseResponse.ConnectionStatus?.OriginalException?.Message;
+                string elasticMessage = null;
+
+                if (response.ConnectionStatus != null && response.ConnectionStatus.OriginalException != null)
+                {
+                    elasticMessage = response.ConnectionStatus.OriginalException.Message;
+                }
+                else
+                {
+                    var balkResponse = response as IBulkResponse;
+
+                    if (balkResponse != null && balkResponse.ItemsWithErrors != null)
+                    {
+                        var errorItem = balkResponse.ItemsWithErrors.FirstOrDefault();
+
+                        if (errorItem != null)
+                        {
+                            elasticMessage = errorItem.Error;
+                        }
+                    }
+                }
 
                 throw new InvalidOperationException($"Cannot complete transaction. {elasticMessage}");
             }

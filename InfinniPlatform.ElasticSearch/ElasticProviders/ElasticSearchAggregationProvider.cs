@@ -393,7 +393,9 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
         private static FilterContainer GetFilter(IFilter filters)
         {
-            return (filters as IFilter<FilterContainer>)?.GetFilterObject();
+            var filterContainer = filters as IFilter<FilterContainer>;
+
+            return (filterContainer != null) ? filterContainer.GetFilterObject() : null;
         }
 
         /// <summary>

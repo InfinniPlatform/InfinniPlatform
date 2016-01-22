@@ -234,10 +234,12 @@ namespace InfinniPlatform.Sdk.Security
 
         private static T GetClaimValue<T>(Claim claim)
         {
-            if (!string.IsNullOrEmpty(claim?.Value))
+            var claimValue = GetClaimValue(claim);
+
+            if (!string.IsNullOrEmpty(claimValue))
             {
                 var converter = TypeDescriptor.GetConverter(typeof(T));
-                return (T)converter.ConvertFromInvariantString(claim.Value);
+                return (T)converter.ConvertFromInvariantString(claimValue);
             }
 
             return default(T);
@@ -245,7 +247,7 @@ namespace InfinniPlatform.Sdk.Security
 
         private static string GetClaimValue(Claim claim)
         {
-            return claim?.Value;
+            return (claim != null) ? claim.Value : null;
         }
     }
 }

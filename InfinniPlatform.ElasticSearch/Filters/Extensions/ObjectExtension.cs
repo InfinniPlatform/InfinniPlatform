@@ -40,7 +40,7 @@ namespace InfinniPlatform.ElasticSearch.Filters.Extensions
             }
 
             //поскольку установлен режим поиска по умолчанию lower_case (в настройках конфига elasticsearch - config.yml), приводим к нижнему регистру строку запроса
-            return filterValue?.ToString().ToLowerInvariant() ?? string.Empty;
+            return (filterValue != null) ? filterValue.ToString().ToLower() : string.Empty;
         }
     }
 }

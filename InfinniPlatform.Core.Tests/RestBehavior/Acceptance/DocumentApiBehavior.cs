@@ -64,7 +64,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // Then
 
             Assert.IsNotNull(afterSave);
-            Assert.AreEqual(document.Id, afterSave.FirstOrDefault()?.Id);
+            Assert.IsNotEmpty(afterSave);
+            Assert.IsNotNull(afterSave.FirstOrDefault());
+            Assert.AreEqual(document.Id, afterSave.FirstOrDefault().Id);
 
             Assert.IsNotNull(afterDelete);
             Assert.AreEqual(0, afterDelete.Count());
@@ -96,7 +98,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // Then
 
             Assert.IsNotNull(afterSave);
-            Assert.AreEqual(document.Id, afterSave.FirstOrDefault()?.Id);
+            Assert.IsNotEmpty(afterSave);
+            Assert.IsNotNull(afterSave.FirstOrDefault());
+            Assert.AreEqual(document.Id, afterSave.FirstOrDefault().Id);
 
             Assert.IsNotNull(afterDelete);
             Assert.AreEqual(0, afterDelete.Count());
@@ -213,9 +217,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             var error = Assert.Catch(() => documentApi.SetDocument(ConfigurationId, DocumentType, badDocument));
 
             // Then
-
-            // Сообщение об ошибке должно содержать фразы вида:
-            // Expected value for field 'StringProperty' should have String type, but value has System.Int64 type ('1')
 
             Assert.IsTrue(error.Message.Contains("Cannot complete transaction"));
         }

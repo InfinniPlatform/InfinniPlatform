@@ -39,7 +39,10 @@ namespace InfinniPlatform.IoC.WebApi
 
         public void Dispose()
         {
-            LifetimeScope?.Dispose();
+            if (LifetimeScope != null)
+            {
+                LifetimeScope.Dispose();
+            }
         }
     }
 }

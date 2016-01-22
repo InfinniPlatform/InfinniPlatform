@@ -114,7 +114,10 @@ namespace InfinniPlatform.Owin.Hosting
 
                         _host = WebApp.Start(_baseAddress, Startup);
 
-                        OnStart?.Invoke(this, EventArgs.Empty);
+                        if (OnStart != null)
+                        {
+                            OnStart.Invoke(this, EventArgs.Empty);
+                        }
                     }
                 }
             }
@@ -130,7 +133,10 @@ namespace InfinniPlatform.Owin.Hosting
                     {
                         try
                         {
-                            OnStop?.Invoke(this, EventArgs.Empty);
+                            if (OnStop != null)
+                            {
+                                OnStop.Invoke(this, EventArgs.Empty);
+                            }
 
                             _host.Dispose();
                         }

@@ -49,9 +49,8 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         {
             return QueryOverObject(searchModel, (item, index, type) =>
                                                 {
+                                                    // TODO: ЧТо это за извращение? Нельзя было нормально решить проблему?
                                                     dynamic result = DynamicWrapperExtensions.ToDynamic(item.Values);
-                                                    result.__ConfigId = index;
-                                                    result.__DocumentId = type;
                                                     result.TimeStamp = item.TimeStamp;
                                                     return result;
                                                 });
@@ -73,7 +72,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             var documentsResponse = _elasticConnection.Client.Count(desc);
 
-            return documentsResponse?.Count ?? 0;
+            return (documentsResponse != null) ? documentsResponse.Count : 0;
         }
 
         /// <summary>
@@ -93,11 +92,15 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             var documentsResponse = _elasticConnection.Client.Search(desc);
 
-            var hitsCount = documentsResponse?.Hits?.Count() ?? 0;
+            var hitsCount = (documentsResponse != null && documentsResponse.Hits != null) 
+                ? documentsResponse.Hits.Count() 
+                : 0;
 
-            var documentResponseCount = documentsResponse?.Hits?.Select(r => convert(r.Source, r.Index, ToDocumentId(r.Type))).ToList() ?? new List<dynamic>();
+            var hitItems = (hitsCount > 0) 
+                ? documentsResponse.Hits.Select(r => convert(r.Source, r.Index, ToDocumentId(r.Type))).ToList()
+                : new List<dynamic>();
 
-            return new SearchViewModel(searchModel.FromPage, searchModel.PageSize, hitsCount, documentResponseCount);
+            return new SearchViewModel(searchModel.FromPage, searchModel.PageSize, hitsCount, hitItems);
         }
 
         /// <summary>

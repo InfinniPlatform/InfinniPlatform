@@ -284,16 +284,15 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                                         ? indexMappings.Where(mapping => mapping.TypeName.GetTypeBaseName() == typeName)
                                         : indexMappings.Where(mapping => mapping.TypeName == typeName);
 
-            var typeMapping = mappingsByVersion.OrderByDescending(mapping => mapping.TypeName.GetTypeVersion());
-            var rootObjectMapping = typeMapping.FirstOrDefault()?.Mapping;
+            var typeMapping = mappingsByVersion.OrderByDescending(mapping => mapping.TypeName.GetTypeVersion()).FirstOrDefault();
 
-            if (rootObjectMapping != null && rootObjectMapping.Properties.ContainsKey("Values"))
+            if (typeMapping.Mapping != null && typeMapping.Mapping.Properties.ContainsKey("Values"))
             {
-                var properties = (rootObjectMapping.Properties["Values"] as ObjectMapping)?.Properties;
+                var objectMapping = typeMapping.Mapping.Properties["Values"] as ObjectMapping;
 
-                if (properties != null)
+                if (objectMapping != null && objectMapping.Properties != null)
                 {
-                    propertyMappings.AddRange(properties.Select(ExtractProperty));
+                    propertyMappings.AddRange(objectMapping.Properties.Select(ExtractProperty));
                 }
 
                 return propertyMappings;
@@ -315,7 +314,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                 {
                     var objectMapping = property.Value as ObjectMapping;
 
-                    if (objectMapping?.Properties != null)
+                    if (objectMapping != null && objectMapping.Properties != null)
                     {
                         var propertiesList = objectMapping.Properties.Select(ExtractProperty).ToList();
 
@@ -330,7 +329,9 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                 throw new ArgumentOutOfRangeException($"Не найдено соответствие для типа {propertyType}.");
             }
 
-            var hasSortingFiled = (property.Value as MultiFieldMapping)?.Fields.Any() == true;
+            var multiFieldMapping = property.Value as MultiFieldMapping;
+
+            var hasSortingFiled = (multiFieldMapping != null) && multiFieldMapping.Fields.Any();
 
             return new PropertyMapping(propertyName, dataType, hasSortingFiled);
         }
@@ -391,7 +392,10 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                 }
             }
 
-            mappings?.TryGetValue(indexName, out result);
+            if (mappings != null)
+            {
+                mappings.TryGetValue(indexName, out result);
+            }
 
             return result;
         }

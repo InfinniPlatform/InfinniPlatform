@@ -21,7 +21,9 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             _configurationMetadataProvider = configurationMetadataProvider;
             _log = log;
 
-            _contentDirectory = appConfiguration.GetSection("metadata")?.ContentDirectory as string ?? "content";
+            dynamic metadataSection = appConfiguration.GetSection("metadata");
+
+            _contentDirectory = ((metadataSection != null) ? metadataSection.ContentDirectory as string : null) ?? "content";
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
             var watcher = new FileSystemWatcher(_contentDirectory, "*.json")
@@ -111,10 +113,21 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             foreach (var document in documentList)
             {
                 var processes = document.Processes as IEnumerable<dynamic>;
-                var defaultProcess = processes?.FirstOrDefault(i => string.Equals(i.Name, "Default", StringComparison.OrdinalIgnoreCase));
-                var transitions = defaultProcess?.Transitions as IEnumerable<dynamic>;
 
-                document.Events = transitions?.FirstOrDefault();
+                if (processes != null)
+                {
+                    var defaultProcess = processes.FirstOrDefault(i => string.Equals(i.Name, "Default", StringComparison.OrdinalIgnoreCase));
+
+                    if (defaultProcess != null)
+                    {
+                        var transitions = defaultProcess.Transitions as IEnumerable<dynamic>;
+
+                        if (transitions != null)
+                        {
+                            document.Events = transitions.FirstOrDefault();
+                        }
+                    }
+                }
             }
 
             metadataConfiguration.AddDocuments(documentList);

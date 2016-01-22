@@ -43,7 +43,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // Then
             Assert.IsNotNull(documents);
-            Assert.AreEqual("Test", documents.FirstOrDefault()?.TestValue);
+            Assert.IsNotNull(documents.FirstOrDefault());
+            Assert.AreEqual("Test", documents.FirstOrDefault().TestValue);
         }
     }
 }

@@ -162,38 +162,38 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             // 01.02.2014 - Все койки свободны, ни одного пациента еще не было
             IEnumerable<dynamic> aggregationInfo1 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), dimensionsProperties: new[] { "Room", "Bed" }).ToArray();
-            Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
-            Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo1.First(i => i.Room == "палата 54" && i.Bed == "койка 3").Value);
+            Assert.AreEqual(1d, aggregationInfo1.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
 
             // 12.08.2014 - Свободные койки по палатам: "Палата 33" - 2 пациента, "Палата 54" - свободна
             IEnumerable<dynamic> aggregationInfo2 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Room" }).ToArray();
-            Assert.AreEqual(3d, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 54")?.Value);
-            Assert.AreEqual(1d, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 33")?.Value);
+            Assert.AreEqual(3d, aggregationInfo2.First(i => i.Room == "палата 54").Value);
+            Assert.AreEqual(1d, aggregationInfo2.First(i => i.Room == "палата 33").Value);
 
             // 12.08.2014 - Свободные койки по номерам
             IEnumerable<dynamic> aggregationInfo3 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Bed" }, valueProperties: new[] { "Value" }).ToArray();
-            Assert.AreEqual(2d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 1")?.Value);
-            Assert.AreEqual(1d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 2")?.Value);
-            Assert.AreEqual(1d, aggregationInfo3.FirstOrDefault(i => i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(2d, aggregationInfo3.First(i => i.Bed == "койка 1").Value);
+            Assert.AreEqual(1d, aggregationInfo3.First(i => i.Bed == "койка 2").Value);
+            Assert.AreEqual(1d, aggregationInfo3.First(i => i.Bed == "койка 3").Value);
 
             // 12-14.08.2014 - Изменение занятости коек за период - освободилась "Койка 1" в "Палата 33"
             IEnumerable<dynamic> aggregationInfo4 = _registerApi.GetValuesBetweenDates(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new DateTime(2014, 08, 14));
-            Assert.AreEqual(1, aggregationInfo4.FirstOrDefault(a => a.Room == "палата 33" && a.Bed == "койка 1")?.Value);
+            Assert.AreEqual(1, aggregationInfo4.First(a => a.Room == "палата 33" && a.Bed == "койка 1").Value);
 
             // Получение информации по типу регистратора - были добавлены все койки
             //var aggregationInfo5 = registerApi.GetValuesBуRegistrarType(ConfigurationId, AvailableBedsRegister, BedsRegistrationDocument).ToArray();
-            //Assert.AreEqual(1d, aggregationInfo5.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
-            //Assert.AreEqual(1d, aggregationInfo5.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
+            //Assert.AreEqual(1d, aggregationInfo5.First(i => i.Room == "палата 54" && i.Bed == "койка 3").Value);
+            //Assert.AreEqual(1d, aggregationInfo5.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
 
             // 18.08.2014 - "Палата 54" свободна, в "Палата 33" занято 2 койки
             IEnumerable<dynamic> aggregationInfo6 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 8, 18)).ToArray();
-            Assert.AreEqual(1d, aggregationInfo6.FirstOrDefault(a => a.Room == "палата 54" && a.Bed == "койка 3")?.Value);
-            Assert.AreEqual(0d, aggregationInfo6.FirstOrDefault(a => a.Room == "палата 33" && a.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo6.First(a => a.Room == "палата 54" && a.Bed == "койка 3").Value);
+            Assert.AreEqual(0d, aggregationInfo6.First(a => a.Room == "палата 33" && a.Bed == "койка 3").Value);
 
             // 01.10.2014 - Все койки свободны
             IEnumerable<dynamic> aggregationInfo7 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 10, 1)).ToArray();
-            Assert.AreEqual(1d, aggregationInfo7.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
-            Assert.AreEqual(1d, aggregationInfo7.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo7.First(i => i.Room == "палата 54" && i.Bed == "койка 3").Value);
+            Assert.AreEqual(1d, aggregationInfo7.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
 
             // Получение агрегации с группировкой по месяцам
             //var aggregationInfo8 = registerApi.GetValuesByPeriods(ConfigurationId, AvailableBedsRegister, DateTime.MinValue, DateTime.MaxValue, RegisterPeriod.Month);
@@ -217,8 +217,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             // 01.02.2014 - Все койки свободны, ни одного пациента еще не было
             IEnumerable<dynamic> aggregationInfo1 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), dimensionsProperties: new[] { "Room", "Bed" }).ToArray();
-            Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
-            Assert.AreEqual(1d, aggregationInfo1.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo1.First(i => i.Room == "палата 54" && i.Bed == "койка 3").Value);
+            Assert.AreEqual(1d, aggregationInfo1.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
 
             // When & Then
 
@@ -226,7 +226,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             // 12.08.2014 - Занята только первая койка в "Палата 6"
             IEnumerable<dynamic> aggregationInfo2 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Room" }).ToArray();
-            Assert.AreEqual(2, aggregationInfo2.FirstOrDefault(i => i.Room == "палата 6")?.Value);
+            Assert.AreEqual(2, aggregationInfo2.First(i => i.Room == "палата 6").Value);
         }
 
         [Test(Description = "Тестирование функционала таблицы итогов")]
@@ -246,8 +246,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             // Then
 
-            Assert.AreEqual(1d, aggregationInfo.FirstOrDefault(i => i.Room == "палата 54" && i.Bed == "койка 3")?.Value);
-            Assert.AreEqual(10d, aggregationInfo.FirstOrDefault(i => i.Room == "палата 33" && i.Bed == "койка 3")?.Value);
+            Assert.AreEqual(1d, aggregationInfo.First(i => i.Room == "палата 54" && i.Bed == "койка 3").Value);
+            Assert.AreEqual(10d, aggregationInfo.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
         }
 
         [Test]

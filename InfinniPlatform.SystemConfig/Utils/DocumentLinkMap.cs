@@ -100,12 +100,9 @@ namespace InfinniPlatform.SystemConfig.Utils
 
         private List<dynamic> GetResolvedLinks(IGrouping<dynamic, DocumentLink> groupsLink, Action<FilterBuilder> filterAction, List<dynamic> typeInfoChainUpdated)
         {
-            var filterBuilder = new FilterBuilder();
-            filterAction?.Invoke(filterBuilder);
-
             string configuration = groupsLink.Key.ConfigId;
             string documentType = groupsLink.Key.DocumentId;
-            var filter = filterBuilder.CriteriaList;
+            var filter = filterAction.ToFilterCriterias();
 
             IEnumerable<dynamic> result = _getDocuments(configuration, documentType, filter, 0, 100);
 
