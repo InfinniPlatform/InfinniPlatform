@@ -52,7 +52,7 @@ namespace InfinniPlatform.Sdk.Logging
                 message.AppendLine().Append(new string('-', nested)).Append("> ");
             }
 
-            message.AppendLine(exception.GetType().FullName).Append(": ").AppendLine().Append(exception.Message);
+            message.Append(exception.GetType().FullName).Append(": ").Append(exception.Message);
 
             var aggregateException = exception as AggregateException;
 
@@ -95,7 +95,7 @@ namespace InfinniPlatform.Sdk.Logging
                 stackTrace.AppendLine().Append(new string('-', nested)).Append("> ");
             }
 
-            stackTrace.AppendLine(exception.GetType().FullName).Append(": ").AppendLine().Append(exception.StackTrace ?? "null");
+            stackTrace.Append(exception.GetType().FullName).Append(": ").AppendLine().Append(exception.StackTrace ?? "null");
 
             var aggregateException = exception as AggregateException;
 

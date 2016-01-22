@@ -1,6 +1,4 @@
-﻿using System;
-
-using InfinniPlatform.Sdk.IoC;
+﻿using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Core.Transactions
 {
@@ -17,16 +15,16 @@ namespace InfinniPlatform.Core.Transactions
             // он должен быть зарегистрирован со стратегией InstancePerRequest, как и все зависимые от
             // него классы.
 
-            _transactionScopeFactory = containerResolver.Resolve<IDocumentTransactionScope>;
+            _containerResolver = containerResolver;
         }
 
 
-        private readonly Func<IDocumentTransactionScope> _transactionScopeFactory;
+        private readonly IContainerResolver _containerResolver;
 
 
         public IDocumentTransactionScope GetTransactionScope()
         {
-            return _transactionScopeFactory();
+            return _containerResolver.Resolve<IDocumentTransactionScope>();
         }
     }
 }
