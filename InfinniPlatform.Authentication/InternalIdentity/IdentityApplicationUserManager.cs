@@ -499,7 +499,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         {
             var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
 
-            if (currentIdentity != null && currentIdentity.IsAuthenticated)
+            if (currentIdentity != null && !currentIdentity.IsAuthenticated)
             {
                 throw new InvalidOperationException(Resources.RequestIsNotAuthenticated);
             }
