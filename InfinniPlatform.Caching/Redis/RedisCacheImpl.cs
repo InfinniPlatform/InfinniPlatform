@@ -136,7 +136,7 @@ namespace InfinniPlatform.Caching.Redis
 
                 _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, method, startTime, exception.GetMessage());
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, method, startTime, exception.GetFullMessage());
 
                 throw;
             }

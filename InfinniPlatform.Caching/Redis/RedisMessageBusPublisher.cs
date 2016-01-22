@@ -70,7 +70,7 @@ namespace InfinniPlatform.Caching.Redis
 
                 _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisPublishMethod, startTime, exception.GetMessage());
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisPublishMethod, startTime, exception.GetFullMessage());
 
                 throw;
             }

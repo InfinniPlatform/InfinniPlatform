@@ -155,7 +155,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                 }
                 catch (Exception exception)
                 {
-                    _performanceLog.Log(PerformanceLogComponent, PerformanceLogComplete, startTime, exception.GetMessage());
+                    _performanceLog.Log(PerformanceLogComponent, PerformanceLogComplete, startTime, exception.GetFullMessage());
 
                     throw;
                 }

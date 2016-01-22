@@ -209,8 +209,7 @@ namespace InfinniPlatform.Core.Metadata.Validation
 
             if (schemaObject == null)
             {
-                throw new ArgumentException(string.Format(Resources.SchemaIncorrectOrNotDeclared, schemaResource),
-                    schemaObjectError);
+                throw new ArgumentException(string.Format(Resources.SchemaIncorrectOrNotDeclared, schemaResource), schemaObjectError);
             }
 
             return schemaObject;

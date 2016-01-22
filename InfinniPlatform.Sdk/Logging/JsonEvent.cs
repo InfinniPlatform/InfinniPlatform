@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Sdk.Logging
 {
@@ -10,18 +10,12 @@ namespace InfinniPlatform.Sdk.Logging
     [Serializable]
     public class JsonEvent
     {
-        public JsonEvent(string message, Dictionary<string, object> context)
-        {
-            msg = message;
-            ctx = context;
-        }
-
-        public JsonEvent(string message, Dictionary<string, object> context, Exception exception)
+        public JsonEvent(string message, Dictionary<string, object> context, Exception exception = null)
         {
             msg = message;
             ctx = context;
 
-            ex = exception != null ? new ExceptionWrapper(exception) : null;
+            ex = (exception != null) ? new ExceptionWrapper(exception) : null;
         }
 
         [NonSerialized]
@@ -33,7 +27,7 @@ namespace InfinniPlatform.Sdk.Logging
 
         public override string ToString()
         {
-            return _toString ?? (_toString = JsonConvert.SerializeObject(this));
+            return _toString ?? (_toString = JsonObjectSerializer.Default.ConvertToString(this));
         }
 
 
@@ -42,15 +36,14 @@ namespace InfinniPlatform.Sdk.Logging
         {
             public ExceptionWrapper(Exception ex)
             {
-                msg = ex.GetMessage();
-                stackTrace = ex.StackTrace;
+                msg = ex.GetFullMessage();
+                stackTrace = ex.GetFullStackTrace();
             }
 
             public string msg;
             public string stackTrace;
         }
     }
-
 
     // ReSharper restore InconsistentNaming
 }

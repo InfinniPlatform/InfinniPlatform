@@ -84,7 +84,7 @@ namespace InfinniPlatform.Caching.Redis
 
                 _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisSubscribeMethod, startTime, exception.GetMessage());
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisSubscribeMethod, startTime, exception.GetFullMessage());
 
                 throw;
             }
@@ -114,7 +114,7 @@ namespace InfinniPlatform.Caching.Redis
 
                     _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
 
-                    _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisHandleMethod, startTime, exception.GetMessage());
+                    _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisHandleMethod, startTime, exception.GetFullMessage());
 
                     // Не пробрасываем исключение, так как ошибка в одном обработчике не должна влиять на другой
                 }

@@ -69,7 +69,7 @@ namespace InfinniPlatform.Owin.Middleware
 
         private void LogPerformance(string method, DateTime start, Exception exception)
         {
-            _performanceLog.Log("OWIN", method, start, exception.GetMessage());
+            _performanceLog.Log("OWIN", method, start, exception.GetFullMessage());
         }
     }
 }

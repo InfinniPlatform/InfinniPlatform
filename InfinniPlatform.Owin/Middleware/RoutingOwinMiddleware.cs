@@ -61,12 +61,12 @@ namespace InfinniPlatform.Owin.Middleware
                     }
                     catch (TargetInvocationException error)
                     {
-                        result = new ErrorRequestHandlerResult(error.InnerException.GetMessage());
+                        result = new ErrorRequestHandlerResult(error.InnerException.GetFullMessage());
                         result = OnRequestExecuted(result);
                     }
                     catch (Exception error)
                     {
-                        result = new ErrorRequestHandlerResult(error.GetMessage());
+                        result = new ErrorRequestHandlerResult(error.GetFullMessage());
                         result = OnRequestExecuted(result);
                     }
                 }
