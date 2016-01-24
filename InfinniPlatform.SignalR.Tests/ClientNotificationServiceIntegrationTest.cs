@@ -18,7 +18,7 @@ namespace InfinniPlatform.SignalR.Tests
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
     [Ignore("Sometimes SignalR stops asynchronously")]
-    public sealed class SignalROwinHostingModuleIntegrationTest
+    public sealed class ClientNotificationServiceIntegrationTest
     {
         private static IOwinHostingContext CreateTestOwinHostingContext(params IOwinHostingModule[] owinHostingModules)
         {
@@ -75,7 +75,7 @@ namespace InfinniPlatform.SignalR.Tests
 
                     var receiveEvent = new CountdownEvent(3);
 
-                    var server = new WebClientNotificationProxy();
+                    var server = new ClientNotificationService();
 
                     var client1 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent, "someEvent1");
                     var client2 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent, "someEvent1");
@@ -103,7 +103,7 @@ namespace InfinniPlatform.SignalR.Tests
                     var receiveEvent2 = new CountdownEvent(1);
                     var receiveEvent3 = new CountdownEvent(1);
 
-                    var server = new WebClientNotificationProxy();
+                    var server = new ClientNotificationService();
 
                     var client1 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent1, "someEvent1");
                     var client2 = new WebClientNotification(owinHostingContext.Configuration, receiveEvent2, "someEvent2");
@@ -138,7 +138,7 @@ namespace InfinniPlatform.SignalR.Tests
             public WebClientNotification(HostingConfig hostingConfig, CountdownEvent receiveEvent, string routingKey)
             {
                 var hubConnection = new HubConnection($"{hostingConfig.Scheme}://{hostingConfig.Name}:{hostingConfig.Port}/");
-                var hubProxy = hubConnection.CreateHubProxy("WebClientNotificationHub");
+                var hubProxy = hubConnection.CreateHubProxy("ClientNotificationServiceHub");
                 hubProxy.On<object>(routingKey, OnReceive);
                 hubConnection.Start().Wait();
 

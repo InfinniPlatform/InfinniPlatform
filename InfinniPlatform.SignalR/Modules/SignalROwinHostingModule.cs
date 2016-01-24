@@ -18,7 +18,8 @@ namespace InfinniPlatform.SignalR.Modules
         {
             var config = new HubConfiguration
             {
-                EnableDetailedErrors = true
+                EnableDetailedErrors = true,
+                Resolver = SignalRGlobalHost.Resolver
             };
 
             builder.MapSignalR(config);

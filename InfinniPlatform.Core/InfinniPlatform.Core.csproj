@@ -59,7 +59,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientNotification\IWebClientNotificationService.cs" />
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="Metadata\IMetadataApi.cs" />

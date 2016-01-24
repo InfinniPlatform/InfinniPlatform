@@ -53,10 +53,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Owin.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.SignalR.Tests", "InfinniPlatform.SignalR.Tests\InfinniPlatform.SignalR.Tests.csproj", "{A0310B59-9025-4394-90FF-777194481CDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ClientNotification", "InfinniPlatform.ClientNotification\InfinniPlatform.ClientNotification.csproj", "{2A8817D6-A7D4-4AA7-885F-11A789C80975}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ClientNotification.Tests", "InfinniPlatform.ClientNotification.Tests\InfinniPlatform.ClientNotification.Tests.csproj", "{AE7EA24B-36A3-40BA-94F0-4A70EA1445FF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Reporting", "InfinniPlatform.Reporting\InfinniPlatform.Reporting.csproj", "{CDF6744F-CDDE-4A4F-90EA-64286D86695D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.FastReport", "InfinniPlatform.FastReport\InfinniPlatform.FastReport.csproj", "{774D0E71-1848-4074-B537-F182FEFED717}"
@@ -244,14 +240,6 @@ Global
 		{A0310B59-9025-4394-90FF-777194481CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0310B59-9025-4394-90FF-777194481CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0310B59-9025-4394-90FF-777194481CDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A8817D6-A7D4-4AA7-885F-11A789C80975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A8817D6-A7D4-4AA7-885F-11A789C80975}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A8817D6-A7D4-4AA7-885F-11A789C80975}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A8817D6-A7D4-4AA7-885F-11A789C80975}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE7EA24B-36A3-40BA-94F0-4A70EA1445FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE7EA24B-36A3-40BA-94F0-4A70EA1445FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE7EA24B-36A3-40BA-94F0-4A70EA1445FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE7EA24B-36A3-40BA-94F0-4A70EA1445FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CDF6744F-CDDE-4A4F-90EA-64286D86695D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CDF6744F-CDDE-4A4F-90EA-64286D86695D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDF6744F-CDDE-4A4F-90EA-64286D86695D}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,14 +1,15 @@
 ﻿using System;
 
 using InfinniPlatform.NodeServiceHost;
+using InfinniPlatform.SignalR.Modules;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.ClientNotification.Tests
+namespace InfinniPlatform.SignalR.Tests
 {
     [TestFixture]
     [Category(TestCategories.AcceptanceTest)]
-    public sealed class SignalRWebClientNotificationServiceIntegrationTest
+    public sealed class ClientNotificationServiceAcceptanceTest
     {
         private IDisposable _server;
 
@@ -28,7 +29,7 @@ namespace InfinniPlatform.ClientNotification.Tests
         public void ShouldNotifyClients()
         {
             // Given
-            var notificationService = new SignalRWebClientNotificationService();
+            var notificationService = new ClientNotificationService();
 
             // When
             TestDelegate notifyClients = () => notificationService.Notify("someEvent1", "eventBody1");

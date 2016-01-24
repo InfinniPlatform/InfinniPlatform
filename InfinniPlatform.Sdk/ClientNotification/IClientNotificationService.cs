@@ -1,9 +1,9 @@
-﻿namespace InfinniPlatform.Core.ClientNotification
+﻿namespace InfinniPlatform.Sdk.ClientNotification
 {
     /// <summary>
     /// Сервис оповещения Web-клиентов.
     /// </summary>
-    public interface IWebClientNotificationService
+    public interface IClientNotificationService
     {
         /// <summary>
         /// Оповестить клиентов.
