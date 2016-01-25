@@ -65,18 +65,12 @@ namespace InfinniPlatform.Core.Settings
         {
             if (File.Exists(configPath))
             {
-                try
+                using (var reader = new StreamReader(configPath, Encoding.UTF8))
                 {
-                    using (var reader = new StreamReader(configPath, Encoding.UTF8))
+                    using (var jReader = new JsonTextReader(reader))
                     {
-                        using (var jReader = new JsonTextReader(reader))
-                        {
-                            return JObject.Load(jReader);
-                        }
+                        return JObject.Load(jReader);
                     }
-                }
-                catch
-                {
                 }
             }
 
