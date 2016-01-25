@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.Owin.Modules;
 
-using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Owin;
 
