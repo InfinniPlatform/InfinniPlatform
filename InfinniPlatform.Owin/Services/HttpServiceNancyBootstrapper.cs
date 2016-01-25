@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Sdk.Services;
 
 using Nancy;
+using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 
 namespace InfinniPlatform.Owin.Services
@@ -16,6 +17,16 @@ namespace InfinniPlatform.Owin.Services
         }
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
+
+        protected override NancyInternalConfiguration InternalConfiguration
+        {
+            get
+            {
+                var internalConfiguration = base.InternalConfiguration;
+                internalConfiguration.CultureService = typeof(HttpServiceNancyCultureService);
+                return internalConfiguration;
+            }
+        }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
