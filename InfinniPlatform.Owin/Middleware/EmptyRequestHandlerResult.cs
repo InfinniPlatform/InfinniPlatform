@@ -13,8 +13,6 @@ namespace InfinniPlatform.Owin.Middleware
 
         private static readonly Task EmptyTask = Task.FromResult<object>(null);
 
-        public bool IsSuccess => true;
-
         public Task GetResult(IOwinContext context)
         {
             return EmptyTask;

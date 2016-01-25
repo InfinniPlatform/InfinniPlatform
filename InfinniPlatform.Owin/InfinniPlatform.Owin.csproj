@@ -73,6 +73,7 @@
     <Compile Include="Formatting\IBodyFormatter.cs" />
     <Compile Include="Formatting\JsonBodyFormatter.cs" />
     <Compile Include="Hosting\OwinHostingServiceFactory.cs" />
+    <Compile Include="Middleware\StatusCodeHandlerResult.cs" />
     <Compile Include="Security\OwinUserIdentityProvider.cs" />
     <Compile Include="Services\HttpServiceNancyBootstrapper.cs" />
     <Compile Include="Services\HttpServiceNancyModule.cs" />
