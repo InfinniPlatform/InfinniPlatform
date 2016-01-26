@@ -4,7 +4,7 @@ using InfinniPlatform.Core.RestApi.Auth;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 
-namespace InfinniPlatform.SystemConfig.Executors
+namespace InfinniPlatform.SystemConfig.UserStorage
 {
     public sealed class ElasticSearchUserStorage
     {
@@ -29,17 +29,26 @@ namespace InfinniPlatform.SystemConfig.Executors
                                               .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value.ToLower()))
                                               .Size(1));
 
+            object userInfo = null;
+
             if (searchResponse.Total > 0 && searchResponse.Documents != null)
             {
                 var document = searchResponse.Documents.FirstOrDefault();
 
                 if (document != null)
                 {
-                    return document.Values;
+                    userInfo = document.Values;
                 }
             }
 
-            return null;
+            if (userInfo != null)
+            {
+                var transactionScope = _transactionScopeProvider.GetTransactionScope();
+
+                userInfo = transactionScope.GetDocuments(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, new[] { userInfo }).FirstOrDefault();
+            }
+
+            return userInfo;
         }
 
         public void Save(object userId, object userInfo)

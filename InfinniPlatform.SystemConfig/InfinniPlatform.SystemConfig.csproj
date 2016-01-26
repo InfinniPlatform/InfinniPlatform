@@ -73,7 +73,7 @@
     <Compile Include="Registers\RegisterApi.cs" />
     <Compile Include="Transactions\DocumentTransactionLog.cs" />
     <Compile Include="Transactions\DocumentTransactionScope.cs" />
-    <Compile Include="Executors\ElasticSearchUserStorage.cs" />
+    <Compile Include="UserStorage\ElasticSearchUserStorage.cs" />
     <Compile Include="Executors\GetDocumentExecutor.cs" />
     <Compile Include="Executors\SetDocumentExecutor.cs" />
     <Compile Include="Metadata\ICrossConfigSearcher.cs" />
