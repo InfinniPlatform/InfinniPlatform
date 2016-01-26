@@ -91,9 +91,14 @@ namespace InfinniPlatform.SystemConfig.Services
             string documentType = requestForm.Metadata;
             IEnumerable<dynamic> documents = requestForm.Documents ?? new object[] { requestForm.Document };
 
-            SetSynchronous(request.Form.Synchronous);
+            SetSynchronous(request.Form.Synchronous == true);
 
             var result = _documentApi.SetDocuments(configuration, documentType, documents);
+
+            if (result.IsValid == false)
+            {
+                result = new JsonHttpResponse(result) { StatusCode = 400 };
+            }
 
             return result;
         }
@@ -105,9 +110,14 @@ namespace InfinniPlatform.SystemConfig.Services
             string documentType = requestForm.Metadata;
             string documentId = requestForm.Id;
 
-            SetSynchronous(request.Form.Synchronous);
+            SetSynchronous(request.Form.Synchronous == true);
 
             var result = _documentApi.DeleteDocument(configuration, documentType, documentId);
+
+            if (result.IsValid == false)
+            {
+                result = new JsonHttpResponse(result) { StatusCode = 400 };
+            }
 
             return result;
         }
@@ -142,7 +152,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
                 if (firstFile != null)
                 {
-                    SetSynchronous(linkedData.Synchronous);
+                    SetSynchronous(linkedData.Synchronous == true);
 
                     _documentApi.AttachFile(configuration, documentType, documentId, fileProperty, firstFile.Value);
                 }
@@ -152,9 +162,9 @@ namespace InfinniPlatform.SystemConfig.Services
         }
 
 
-        private void SetSynchronous(bool? synchronous)
+        private void SetSynchronous(bool synchronous)
         {
-            if (synchronous == true)
+            if (synchronous)
             {
                 var transactionScope = _transactionScopeProvider.GetTransactionScope();
 
