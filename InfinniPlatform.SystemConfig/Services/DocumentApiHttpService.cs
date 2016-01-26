@@ -91,7 +91,7 @@ namespace InfinniPlatform.SystemConfig.Services
             string documentType = requestForm.Metadata;
             IEnumerable<dynamic> documents = requestForm.Documents ?? new object[] { requestForm.Document };
 
-            SetSynchronous(requestForm.Synchronous);
+            SetSynchronous(request.Form.Synchronous);
 
             var result = _documentApi.SetDocuments(configuration, documentType, documents);
 
@@ -105,7 +105,7 @@ namespace InfinniPlatform.SystemConfig.Services
             string documentType = requestForm.Metadata;
             string documentId = requestForm.Id;
 
-            SetSynchronous(requestForm.Synchronous);
+            SetSynchronous(request.Form.Synchronous);
 
             var result = _documentApi.DeleteDocument(configuration, documentType, documentId);
 
