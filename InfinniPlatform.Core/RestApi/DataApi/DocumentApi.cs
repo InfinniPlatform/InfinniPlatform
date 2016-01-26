@@ -21,9 +21,9 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         private readonly IGetDocumentExecutor _getDocumentExecutor;
         private readonly IBlobStorage _blobStorage;
         
-        public dynamic GetDocumentById(string applicationId, string documentType, string instanceId)
+        public dynamic GetDocumentById(string configuration, string documentType, string documentId)
         {
-            return GetDocument(instanceId);
+            return _getDocumentExecutor.GetDocumentById(configuration, documentType, documentId);
         }
 
         public dynamic DeleteDocument(string configuration, string documentType, string documentId)
@@ -31,14 +31,14 @@ namespace InfinniPlatform.Core.RestApi.DataApi
             return _setDocumentExecutor.DeleteDocument(configuration, documentType, documentId);
         }
 
-        long IDocumentApi.GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter)
+        long IDocumentApi.GetNumberOfDocuments(string configuration, string documentType, Action<FilterBuilder> filter)
         {
-            return GetNumberOfDocuments(applicationId, documentType, filter);
+            return GetNumberOfDocuments(configuration, documentType, filter);
         }
 
-        long IDocumentApi.GetNumberOfDocuments(string applicationId, string documentType, IEnumerable<FilterCriteria> filter)
+        long IDocumentApi.GetNumberOfDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter)
         {
-            return _getDocumentExecutor.GetNumberOfDocuments(applicationId, documentType, filter);
+            return _getDocumentExecutor.GetNumberOfDocuments(configuration, documentType, filter);
         }
 
         public IEnumerable<dynamic> GetDocuments(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
@@ -54,11 +54,6 @@ namespace InfinniPlatform.Core.RestApi.DataApi
         public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances)
         {
             return _setDocumentExecutor.SaveDocuments(configuration, documentType, documentInstances);
-        }
-
-        public dynamic GetDocument(string id)
-        {
-            return _getDocumentExecutor.GetDocument(id);
         }
 
         public int GetNumberOfDocuments(string configurationName, string documentType, dynamic filter)

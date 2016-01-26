@@ -9,80 +9,80 @@ namespace InfinniPlatform.Sdk.Documents
         /// <summary>
         /// Получить документ по указанному идентификатору
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="configuration">Идентификатор приложения</param>
         /// <param name="documentType">Тип документа</param>
-        /// <param name="instanceId">Идентификатор документа</param>
+        /// <param name="documentId">Идентификатор документа</param>
         /// <returns>Документ с указанным идентификатором</returns>
-        dynamic GetDocumentById(string applicationId, string documentType, string instanceId);
+        dynamic GetDocumentById(string configuration, string documentType, string documentId);
 
         /// <summary>
         /// Получить документы по указанным фильтрам
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="configuration">Идентификатор приложения</param>
         /// <param name="documentType">Тип документа</param>
         /// <param name="filter">Выражение для фильтрации документов</param>
         /// <param name="pageNumber">Номер страницы</param>
         /// <param name="pageSize">Размер страницы</param>
         /// <param name="sorting">Выражение для сортировки документов</param>
         /// <returns>Список документов, удовлетворяющих указанному фильтру</returns>
-        IEnumerable<dynamic> GetDocument(string applicationId, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null);
+        IEnumerable<dynamic> GetDocument(string configuration, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null);
 
         /// <summary>
         /// Получить документы по указанным фильтрам
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="configuration">Идентификатор приложения</param>
         /// <param name="documentType">Тип документа</param>
         /// <param name="filter">Выражение для фильтрации документов</param>
         /// <param name="pageNumber">Номер страницы</param>
         /// <param name="pageSize">Размер страницы</param>
         /// <param name="sorting">Выражение для сортировки документов</param>
         /// <returns>Список документов, удовлетворяющих указанному фильтру</returns>
-        IEnumerable<dynamic> GetDocuments(string applicationId, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null);
+        IEnumerable<dynamic> GetDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null);
 
         /// <summary>
         /// Вставить или полностью заменить существующий документ
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="configuration">Идентификатор приложения</param>
         /// <param name="documentType">Тип документа</param>
         /// <param name="document">Экземпляр сохраняемого документа</param>
         /// <returns>Идентификатор сохраненного документа</returns>
-        dynamic SetDocument(string applicationId, string documentType, object document);
+        dynamic SetDocument(string configuration, string documentType, object document);
 
         /// <summary>
         /// Вставить или полностью заменить документы в переданном списке
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="configuration">Идентификатор приложения</param>
         /// <param name="documentType">Тип документа</param>
         /// <param name="documents">Список сохраняемых документов</param>
         /// <returns>Идентификатор сохраненного документа</returns>
-        dynamic SetDocuments(string applicationId, string documentType, IEnumerable<object> documents);
+        dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documents);
 
         /// <summary>
         /// Удалить документ
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="configuration">Идентификатор приложения</param>
         /// <param name="documentType">Идентификатор типа документа</param>
         /// <param name="instanceId">Идентификатор экземпляра документа</param>
         /// <returns>Результат удаления документа</returns>
-        dynamic DeleteDocument(string applicationId, string documentType, string instanceId);
+        dynamic DeleteDocument(string configuration, string documentType, string instanceId);
 
         /// <summary>
         /// Получить количество документов по указанному фильтру
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="configuration">Идентификатор приложения</param>
         /// <param name="documentType">Идентификатор типа документа</param>
         /// <param name="filter">Фильтр документов</param>
         /// <returns>Количество документов</returns>
-        long GetNumberOfDocuments(string applicationId, string documentType, Action<FilterBuilder> filter);
+        long GetNumberOfDocuments(string configuration, string documentType, Action<FilterBuilder> filter);
 
         /// <summary>
         /// Получить количество документов по указанному фильтру
         /// </summary>
-        /// <param name="applicationId">Идентификатор приложения</param>
+        /// <param name="configuration">Идентификатор приложения</param>
         /// <param name="documentType">Идентификатор типа документа</param>
         /// <param name="filter">Фильтр документов</param>
         /// <returns>Количество документов</returns>
-        long GetNumberOfDocuments(string applicationId, string documentType, IEnumerable<FilterCriteria> filter);
+        long GetNumberOfDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter);
 
         /// <summary>
         /// Прикрепляет файл к свойству документа.
