@@ -1,7 +1,4 @@
-﻿using System;
-
-using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Sdk.Contracts;
+﻿using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.Services
@@ -22,23 +19,19 @@ namespace InfinniPlatform.SystemConfig.Services
         {
             builder.ServicePath = "/SystemConfig/StandardApi/metadata";
 
-            builder.Post["/GetManagedMetadata"] = CreateHandler(GetMetadataItem);
+            builder.Post["/GetManagedMetadata"] = GetMetadataItem;
         }
 
-        private static Func<IHttpRequest, object> CreateHandler(Action<IActionContext> action)
+        private object GetMetadataItem(IHttpRequest request)
         {
-            return new ChangeHttpRequestHandler(action).Action;
-        }
+            dynamic requestForm = request.Form.changesObject;
+            string configuration = requestForm.Configuration;
+            string documentType = requestForm.MetadataObject;
+            string viewName = requestForm.MetadataName;
 
-        private void GetMetadataItem(IActionContext target)
-        {
-            string configuration = target.Item.Configuration;
-            string documentType = target.Item.MetadataObject;
-            string viewName = target.Item.MetadataName;
+            var result = _metadataApi.GetView(configuration, documentType, viewName);
 
-            var view = _metadataApi.GetView(configuration, documentType, viewName);
-
-            target.Result = view;
+            return result;
         }
     }
 }

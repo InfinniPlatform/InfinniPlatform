@@ -36,7 +36,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             var mainDocumentId = Guid.NewGuid();
             var referenceDocumentId = Guid.NewGuid();

@@ -18,7 +18,7 @@ namespace InfinniPlatform.Sdk.Tests
         public void SetupApi()
         {
             _fileApiClient = new FileApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-            _documentApiClient = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            _documentApiClient = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
         }
 
         [Test]

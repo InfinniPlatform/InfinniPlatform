@@ -1,7 +1,4 @@
-﻿using System;
-
-using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Dynamic;
+﻿using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Session;
 
@@ -23,38 +20,46 @@ namespace InfinniPlatform.SystemConfig.Services
         {
             builder.ServicePath = "/RestfulApi/StandardApi/authorization";
 
-            builder.Post["/GetSessionData"] = CreateHandler(GetSessionData);
-            builder.Post["/SetSessionData"] = CreateHandler(SetSessionData);
-            builder.Post["/RemoveSessionData"] = CreateHandler(RemoveSessionData);
+            builder.Post["/GetSessionData"] = GetSessionData;
+            builder.Post["/SetSessionData"] = SetSessionData;
+            builder.Post["/RemoveSessionData"] = RemoveSessionData;
         }
 
-        private static Func<IHttpRequest, object> CreateHandler(Action<IActionContext> action)
+        private object GetSessionData(IHttpRequest request)
         {
-            return new ChangeHttpRequestHandler(action).Action;
+            dynamic requestForm = request.Form.changesObject;
+            string sessionKey = requestForm.ClaimType;
+
+            var sessionData = _sessionManager.GetSessionData(sessionKey);
+
+            var result = new DynamicWrapper { ["ClaimValue"] = sessionData };
+
+            return result;
         }
 
-        private void GetSessionData(IActionContext target)
+        private object SetSessionData(IHttpRequest request)
         {
-            var tenantId = _sessionManager.GetSessionData(target.Item.ClaimType);
+            dynamic requestForm = request.Form.changesObject;
+            string sessionKey = requestForm.ClaimType;
+            string sessionData = requestForm.ClaimValue;
 
-            target.Result = new DynamicWrapper();
-            target.Result.ClaimValue = tenantId;
+            _sessionManager.SetSessionData(sessionKey, sessionData);
+
+            var result = new DynamicWrapper { ["IsValid"] = true };
+
+            return result;
         }
 
-        private void SetSessionData(IActionContext target)
+        private object RemoveSessionData(IHttpRequest request)
         {
-            _sessionManager.SetSessionData(target.Item.ClaimType, target.Item.ClaimValue);
+            dynamic requestForm = request.Form.changesObject;
+            string sessionKey = requestForm.ClaimType;
 
-            target.Result = new DynamicWrapper();
-            target.Result.IsValid = true;
-        }
+            _sessionManager.SetSessionData(sessionKey, null);
 
-        private void RemoveSessionData(IActionContext target)
-        {
-            _sessionManager.SetSessionData(target.Item.ClaimType, null);
+            var result = new DynamicWrapper { ["IsValid"] = true };
 
-            target.Result = new DynamicWrapper();
-            target.Result.IsValid = true;
+            return result;
         }
     }
 }

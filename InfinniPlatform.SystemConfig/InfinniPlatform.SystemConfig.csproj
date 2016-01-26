@@ -81,7 +81,6 @@
     <Compile Include="Runtime\ActionUnitFactory.cs" />
     <Compile Include="Runtime\ScriptProcessor.cs" />
     <Compile Include="Services\CustomApiHttpService.cs" />
-    <Compile Include="Services\ChangeHttpRequestHandler.cs" />
     <Compile Include="Services\DocumentTransactionScopeHttpGlobalHandler.cs" />
     <Compile Include="Services\DocumentApiHttpService.cs" />
     <Compile Include="Services\FileApiHttpService.cs" />
@@ -99,7 +98,6 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Services\RequestHandlerHelper.cs" />
     <Compile Include="Metadata\ConfigurationObject.cs" />
     <Compile Include="Metadata\ConfigurationObjectBuilder.cs" />
     <Compile Include="Metadata\CrossConfigSearcher.cs" />

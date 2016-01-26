@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
@@ -15,93 +15,101 @@ namespace InfinniPlatform.SystemConfig.Services
     /// </summary>
     internal sealed class DocumentApiHttpService : IHttpService
     {
-        public DocumentApiHttpService(IDocumentApi documentApi)
+        public DocumentApiHttpService(IDocumentApi documentApi, IDocumentTransactionScopeProvider transactionScopeProvider)
         {
             _documentApi = documentApi;
+            _transactionScopeProvider = transactionScopeProvider;
         }
 
+
         private readonly IDocumentApi _documentApi;
+        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
+
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.Post["/RestfulApi/StandardApi/configuration/GetDocumentById"] = CreateHandler(GetDocumentById);
-            builder.Post["/RestfulApi/StandardApi/configuration/GetDocument"] = CreateHandler(GetDocuments);
-            builder.Post["/RestfulApi/StandardApi/configuration/GetNumberOfDocuments"] = CreateHandler(GetNumberOfDocuments);
-            builder.Post["/RestfulApi/StandardApi/configuration/SetDocument"] = CreateHandler(SaveDocuments);
-            builder.Post["/RestfulApi/StandardApi/configuration/DeleteDocument"] = CreateHandler(DeleteDocument);
+            builder.Post["/RestfulApi/StandardApi/configuration/GetDocumentById"] = GetDocumentById;
+            builder.Post["/RestfulApi/StandardApi/configuration/GetDocument"] = GetDocuments;
+            builder.Post["/RestfulApi/StandardApi/configuration/GetNumberOfDocuments"] = GetNumberOfDocuments;
+            builder.Post["/RestfulApi/StandardApi/configuration/SetDocument"] = SaveDocuments;
+            builder.Post["/RestfulApi/StandardApi/configuration/DeleteDocument"] = DeleteDocument;
             builder.Post["/RestfulApi/Upload/configuration/UploadBinaryContent"] = AttachFile;
         }
 
-        private static Func<IHttpRequest, object> CreateHandler(Action<IActionContext> action)
+
+        private object GetDocumentById(IHttpRequest request)
         {
-            return new ChangeHttpRequestHandler(action).Action;
+            dynamic requestForm = request.Form.changesObject;
+            string configuration = requestForm.ConfigId;
+            string documentType = requestForm.DocumentId;
+            string documentId = requestForm.Id;
+
+            var result = _documentApi.GetDocumentById(configuration, documentType, documentId);
+
+            return result;
         }
 
-        private void GetDocumentById(IActionContext target)
+        private object GetDocuments(IHttpRequest request)
         {
-            string configuration = target.Item.ConfigId;
-            string documentType = target.Item.DocumentId;
-            string documentId = target.Item.Id;
+            dynamic requestForm = request.Form.changesObject;
+            string configuration = requestForm.Configuration;
+            string documentType = requestForm.Metadata;
+            object filter = requestForm.Filter;
+            object sorting = requestForm.Sorting;
 
-            target.Result = _documentApi.GetDocumentById(configuration, documentType, documentId);
+            var filterCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<FilterCriteria[]>(filter);
+            var sortingCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<SortingCriteria[]>(sorting);
+
+            int pageNumber = Math.Max((int)(requestForm.PageNumber ?? 0), 0);
+            int pageSize = Math.Min((int)(requestForm.PageSize ?? 0), 1000);
+
+            var result = _documentApi.GetDocuments(configuration, documentType, filterCriterias, pageNumber, pageSize, sortingCriterias);
+
+            return result;
         }
 
-        private void GetDocuments(IActionContext target)
+        private object GetNumberOfDocuments(IHttpRequest request)
         {
-            string configuration = target.Item.Configuration;
-            string documentType = target.Item.Metadata;
-
-            IEnumerable<dynamic> dynamicFilters = target.Item.Filter;
-            var filter = (dynamicFilters != null) ? dynamicFilters.Select(o => new FilterCriteria(o.Property, o.Value, (CriteriaType)Enum.Parse(typeof(CriteriaType), o.CriteriaType.ToString()))) : null;
-
-            int pageNumber = Math.Max((int)(target.Item.PageNumber ?? 0), 0);
-            int pageSize = Math.Min((int)(target.Item.PageSize ?? 0), 1000);
-
-            IEnumerable<dynamic> dynamicSorting = target.Item.Sorting;
-            var sorting = (dynamicSorting != null) ? dynamicSorting.Select(o => new SortingCriteria(o.PropertyName, o.SortingOrder)) : null;
-
-            target.Result = _documentApi.GetDocuments(configuration, documentType, filter, pageNumber, pageSize, sorting);
-        }
-
-        private void GetNumberOfDocuments(IActionContext target)
-        {
-            string configuration = target.Item.Configuration;
-            string documentType = target.Item.Metadata;
-            object filter = target.Item.Filter;
+            dynamic requestForm = request.Form.changesObject;
+            string configuration = requestForm.Configuration;
+            string documentType = requestForm.Metadata;
+            object filter = requestForm.Filter;
 
             var filterCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<FilterCriteria[]>(filter);
 
             var numberOfDocuments = _documentApi.GetNumberOfDocuments(configuration, documentType, filterCriterias);
 
-            target.Result = new DynamicWrapper();
-            target.Result.IsValid = true;
-            target.Result.NumberOfDocuments = numberOfDocuments;
+            var result = new DynamicWrapper { ["NumberOfDocuments"] = numberOfDocuments };
+
+            return result;
         }
 
-        private void SaveDocuments(IActionContext target)
+        private object SaveDocuments(IHttpRequest request)
         {
-            string configuration = target.Item.Configuration;
-            string documentType = target.Item.Metadata;
-            IEnumerable<dynamic> documents = target.Item.Documents;
+            dynamic requestForm = request.Form.changesObject;
+            string configuration = requestForm.Configuration;
+            string documentType = requestForm.Metadata;
+            IEnumerable<dynamic> documents = requestForm.Documents ?? new object[] { requestForm.Document };
+
+            SetSynchronous(requestForm.Synchronous);
 
             var result = _documentApi.SetDocuments(configuration, documentType, documents);
 
-            target.IsValid = result.IsValid;
-            target.ValidationMessage = result.ValidationMessage;
-            target.Result = result;
+            return result;
         }
 
-        private void DeleteDocument(IActionContext target)
+        private object DeleteDocument(IHttpRequest request)
         {
-            string configuration = target.Item.Configuration;
-            string documentType = target.Item.Metadata;
-            string documentId = target.Item.Id;
+            dynamic requestForm = request.Form.changesObject;
+            string configuration = requestForm.Configuration;
+            string documentType = requestForm.Metadata;
+            string documentId = requestForm.Id;
+
+            SetSynchronous(requestForm.Synchronous);
 
             var result = _documentApi.DeleteDocument(configuration, documentType, documentId);
 
-            target.IsValid = result.IsValid;
-            target.ValidationMessage = result.ValidationMessage;
-            target.Result = result;
+            return result;
         }
 
         private object AttachFile(IHttpRequest request)
@@ -134,11 +142,27 @@ namespace InfinniPlatform.SystemConfig.Services
 
                 if (firstFile != null)
                 {
+                    SetSynchronous(linkedData.Synchronous);
+
                     _documentApi.AttachFile(configuration, documentType, documentId, fileProperty, firstFile.Value);
                 }
             }
 
             return null;
+        }
+
+
+        private void SetSynchronous(bool? synchronous)
+        {
+            if (synchronous == true)
+            {
+                var transactionScope = _transactionScopeProvider.GetTransactionScope();
+
+                if (transactionScope != null)
+                {
+                    transactionScope.Synchronous();
+                }
+            }
         }
     }
 }

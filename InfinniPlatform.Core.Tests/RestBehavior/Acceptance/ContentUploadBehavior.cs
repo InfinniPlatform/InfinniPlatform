@@ -39,7 +39,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
             var fileApi = new FileApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var contentBytes = Resources.UploadBinaryContent;

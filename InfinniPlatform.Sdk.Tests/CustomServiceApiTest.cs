@@ -21,7 +21,7 @@ namespace InfinniPlatform.Sdk.Tests
 		{
 			_server = InfinniPlatformInprocessHost.Start();
 			_customApiClient = new CustomApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
-			_documentApiClient = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+			_documentApiClient = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 		}
 
 		[TestFixtureTearDown]

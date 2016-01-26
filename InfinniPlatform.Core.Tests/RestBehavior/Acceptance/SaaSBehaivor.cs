@@ -36,7 +36,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // TODO: Пользователь добавляется напрямую в базу данных, так как на текущий момент в тестовой инфраструктуре очень сложно это сделать по всем "правилам".
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
             var passwordHasher = new DefaultApplicationUserPasswordHasher();
 
             var user = new ApplicationUser
@@ -66,7 +66,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
             var signInApi = new AuthApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var tenant1 = Guid.NewGuid().ToString("N");

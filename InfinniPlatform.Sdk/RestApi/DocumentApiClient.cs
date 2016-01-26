@@ -13,9 +13,12 @@ namespace InfinniPlatform.Sdk.RestApi
     /// </summary>
     public sealed class DocumentApiClient : BaseRestClient
     {
-        public DocumentApiClient(string server, int port) : base(server, port)
+        public DocumentApiClient(string server, int port, bool synchronous = false) : base(server, port)
         {
+            _synchronous = synchronous;
         }
+
+        private readonly bool _synchronous;
 
         public dynamic GetDocumentById(string configuration, string documentType, string instanceId)
         {
@@ -75,7 +78,8 @@ namespace InfinniPlatform.Sdk.RestApi
                                                           ["Configuration"] = configuration,
                                                           ["Metadata"] = documentType,
                                                           ["Documents"] = documents
-                                                      }
+                                                      },
+                                  ["Synchronous"] = _synchronous
                               };
 
             return RequestExecutor.PostObject(requestUri, requestData);
@@ -92,7 +96,8 @@ namespace InfinniPlatform.Sdk.RestApi
                                                           ["Configuration"] = configuration,
                                                           ["Metadata"] = documentType,
                                                           ["Id"] = instanceId
-                                                      }
+                                                      },
+                                  ["Synchronous"] = _synchronous
                               };
 
             return RequestExecutor.PostObject(requestUri, requestData);
@@ -131,7 +136,8 @@ namespace InfinniPlatform.Sdk.RestApi
                                   ["Configuration"] = configuration,
                                   ["Metadata"] = documentType,
                                   ["DocumentId"] = documentId,
-                                  ["FieldName"] = fileProperty
+                                  ["FieldName"] = fileProperty,
+                                  ["Synchronous"] = _synchronous
                               };
 
             var pathArguments = $"/?linkedData={Uri.EscapeDataString(JsonObjectSerializer.Default.ConvertToString(requestData))}";

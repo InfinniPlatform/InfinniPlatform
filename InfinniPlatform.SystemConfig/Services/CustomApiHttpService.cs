@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Core.Contracts;
 using InfinniPlatform.Core.Runtime;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.Services
@@ -34,18 +35,24 @@ namespace InfinniPlatform.SystemConfig.Services
             changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document };
 
             var context = new ActionContext
-                          {
-                              Configuration = configuration,
-                              DocumentType = documentType,
-                              Item = changesObject,
-                              Result = changesObject
-                          };
+            {
+                Configuration = configuration,
+                DocumentType = documentType,
+                Item = changesObject,
+                Result = changesObject
+            };
 
             _scriptProcessor.InvokeScriptByType(actionName, context);
 
             if (!context.IsValid)
             {
-                return RequestHandlerHelper.BadRequest(context.ValidationMessage);
+                var error = new DynamicWrapper
+                {
+                    ["IsValid"] = false,
+                    ["ValidationMessage"] = context.ValidationMessage
+                };
+
+                return new JsonHttpResponse(error) { StatusCode = 400 };
             }
 
             return new JsonHttpResponse(context.Result);

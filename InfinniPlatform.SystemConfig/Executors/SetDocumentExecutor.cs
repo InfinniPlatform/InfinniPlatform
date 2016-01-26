@@ -52,9 +52,6 @@ namespace InfinniPlatform.SystemConfig.Executors
 
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
 
-            // TODO: Разрешить вызов данной операции только для REST-запросов с соответствующим параметром
-            transactionScope.Synchronous();
-
             // События документа
             var documentEvents = _metadataComponent.GetDocumentEvents(configuration, documentType);
 
@@ -114,9 +111,6 @@ namespace InfinniPlatform.SystemConfig.Executors
             var result = new DocumentExecutorResult { IsValid = true };
 
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
-
-            // TODO: Разрешить вызов данной операции только для REST-запросов с соответствующим параметром
-            transactionScope.Synchronous();
 
             // События документа
             var documentEvents = _metadataComponent.GetDocumentEvents(configuration, documentType);

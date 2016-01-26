@@ -38,7 +38,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // Given
 
             var stopwatch = new Stopwatch();
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             var document = new
             {
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             var document = new
             {
@@ -111,7 +111,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             var testProperty = Guid.NewGuid().ToString();
 
@@ -143,7 +143,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             // When
 
@@ -187,7 +187,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             var rightDocument1 = new
             {
@@ -226,7 +226,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             var testProperty = Guid.NewGuid().ToString();
 
@@ -279,7 +279,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             var testProperty = Guid.NewGuid().ToString();
 
@@ -329,7 +329,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             var testProperty = Guid.NewGuid().ToString();
 

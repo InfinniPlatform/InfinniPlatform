@@ -34,7 +34,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         {
             // Given
 
-            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            var documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
             var printViewApi = new PrintViewApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
 
             var document = new { TestProperty = Guid.NewGuid() };
