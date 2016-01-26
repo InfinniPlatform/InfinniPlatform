@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InfinniPlatform.SystemConfig.Executors
+namespace InfinniPlatform.SystemConfig.Transactions
 {
     /// <summary>
     /// Журнал операций над документами при выполнении транзакции.
@@ -21,11 +21,28 @@ namespace InfinniPlatform.SystemConfig.Executors
 
 
         /// <summary>
+        /// Возвращает запись журнала.
+        /// </summary>
+        public DocumentTransactionCommand GetEntry(string configuration, string documentType, object documentId)
+        {
+            DocumentTransactionCommand entry;
+
+            var documentUid = GetDocumentUid(configuration, documentType, documentId);
+
+            lock (_entriesSync)
+            {
+                _entries.TryGetValue(documentUid, out entry);
+            }
+
+            return entry;
+        }
+
+        /// <summary>
         /// Добавляет запись в журнал.
         /// </summary>
         public void EnqueueEntry(DocumentTransactionCommand entry)
         {
-            var documentUid = $"{entry.Configuration}.{entry.DocumentType}.{entry.DocumentId}";
+            var documentUid = GetDocumentUid(entry.Configuration, entry.DocumentType, entry.DocumentId);
 
             lock (_entriesSync)
             {
@@ -50,6 +67,12 @@ namespace InfinniPlatform.SystemConfig.Executors
 
                 return entries;
             }
+        }
+
+
+        private static string GetDocumentUid(string configuration, string documentType, object documentId)
+        {
+            return $"{configuration}.{documentType}.{documentId}";
         }
     }
 }

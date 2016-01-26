@@ -1,10 +1,20 @@
-﻿namespace InfinniPlatform.Core.Transactions
+﻿using System.Collections.Generic;
+
+namespace InfinniPlatform.Core.Transactions
 {
     /// <summary>
     /// Предоставляет методы управления транзакцией.
     /// </summary>
     public interface IDocumentTransactionScope
     {
+        /// <summary>
+        /// Возвращает актуальный список документов.
+        /// </summary>
+        /// <param name="configuration">Имя конфигурации.</param>
+        /// <param name="documentType">Тип документа.</param>
+        /// <param name="documents">Список документов.</param>
+        IEnumerable<object> GetDocuments(string configuration, string documentType, IEnumerable<object> documents);
+
         /// <summary>
         /// Регистрирует запрос сохранения документа.
         /// </summary>

@@ -18,6 +18,7 @@ using InfinniPlatform.SystemConfig.Runtime;
 using InfinniPlatform.SystemConfig.Services;
 using InfinniPlatform.SystemConfig.StartupInitializers;
 using InfinniPlatform.SystemConfig.SystemInfo;
+using InfinniPlatform.SystemConfig.Transactions;
 using InfinniPlatform.SystemConfig.UserStorage;
 using InfinniPlatform.SystemConfig.Utils;
 
@@ -70,7 +71,7 @@ namespace InfinniPlatform.SystemConfig.IoC
 
             // Transactions
 
-            builder.RegisterType<ElasticDocumentTransactionScope>()
+            builder.RegisterType<DocumentTransactionScope>()
                    .As<IDocumentTransactionScope>()
                    .InstancePerRequest();
 

@@ -71,10 +71,8 @@
     <Compile Include="Metadata\MetadataApi.cs" />
     <Compile Include="Registers\AggregationUtils.cs" />
     <Compile Include="Registers\RegisterApi.cs" />
-    <Compile Include="Executors\DocumentTransactionAction.cs" />
-    <Compile Include="Executors\DocumentTransactionCommand.cs" />
-    <Compile Include="Executors\DocumentTransactionLog.cs" />
-    <Compile Include="Executors\ElasticDocumentTransactionScope.cs" />
+    <Compile Include="Transactions\DocumentTransactionLog.cs" />
+    <Compile Include="Transactions\DocumentTransactionScope.cs" />
     <Compile Include="Executors\ElasticSearchUserStorage.cs" />
     <Compile Include="Executors\GetDocumentExecutor.cs" />
     <Compile Include="Executors\SetDocumentExecutor.cs" />
@@ -115,6 +113,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SystemInfo\SystemInfoProvider.cs" />
+    <Compile Include="Transactions\DocumentTransactionAction.cs" />
+    <Compile Include="Transactions\DocumentTransactionCommand.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
     <Compile Include="UserStorage\UserStorageSettings.cs" />

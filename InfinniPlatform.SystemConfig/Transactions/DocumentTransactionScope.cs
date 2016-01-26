@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Index;
@@ -9,18 +10,18 @@ using InfinniPlatform.Sdk.Logging;
 
 using Nest;
 
-namespace InfinniPlatform.SystemConfig.Executors
+namespace InfinniPlatform.SystemConfig.Transactions
 {
     /// <summary>
     /// Предоставляет методы управления транзакцией.
     /// </summary>
-    internal sealed class ElasticDocumentTransactionScope : IDocumentTransactionScope
+    internal sealed class DocumentTransactionScope : IDocumentTransactionScope
     {
         private const string PerformanceLogComponent = "TransactionScope";
         private const string PerformanceLogComplete = "Complete";
 
 
-        public ElasticDocumentTransactionScope(ITenantProvider tenantProvider, ElasticConnection elasticConnection, ElasticTypeManager elasticTypeManager, IPerformanceLog performanceLog)
+        public DocumentTransactionScope(ITenantProvider tenantProvider, ElasticConnection elasticConnection, ElasticTypeManager elasticTypeManager, IPerformanceLog performanceLog)
         {
             _tenantProvider = tenantProvider;
             _elasticConnection = elasticConnection;
@@ -39,6 +40,38 @@ namespace InfinniPlatform.SystemConfig.Executors
 
         private bool _needRefresh;
 
+
+        public IEnumerable<object> GetDocuments(string configuration, string documentType, IEnumerable<object> documents)
+        {
+            foreach (dynamic document in documents)
+            {
+                object actualDocument = document;
+
+                object documentId = document.Id;
+
+                if (documentId != null)
+                {
+                    var transactionCommand = _transactionLog.GetEntry(configuration, documentType, documentId);
+
+                    if (transactionCommand != null)
+                    {
+                        if (transactionCommand.Action == DocumentTransactionAction.Save)
+                        {
+                            actualDocument = transactionCommand.Document;
+                        }
+                        else if (transactionCommand.Action == DocumentTransactionAction.Delete)
+                        {
+                            actualDocument = null;
+                        }
+                    }
+                }
+
+                if (actualDocument != null)
+                {
+                    yield return actualDocument;
+                }
+            }
+        }
 
         public void SaveDocument(string configuration, string documentType, object documentId, object document)
         {
@@ -151,7 +184,7 @@ namespace InfinniPlatform.SystemConfig.Executors
                         }
                     }
 
-                    _performanceLog.Log(PerformanceLogComponent, PerformanceLogComplete, startTime, null);
+                    _performanceLog.Log(PerformanceLogComponent, PerformanceLogComplete, startTime);
                 }
                 catch (Exception exception)
                 {

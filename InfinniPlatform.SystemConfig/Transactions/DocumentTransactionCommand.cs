@@ -1,9 +1,9 @@
-﻿namespace InfinniPlatform.SystemConfig.Executors
+﻿namespace InfinniPlatform.SystemConfig.Transactions
 {
     /// <summary>
-    /// Команда над документом.
+    /// Команда над документом при выполнении транзакции.
     /// </summary>
-    internal sealed class DocumentTransactionCommand
+    public sealed class DocumentTransactionCommand
     {
         /// <summary>
         /// Конструктор.
