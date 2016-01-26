@@ -32,7 +32,7 @@ namespace InfinniPlatform.Caching.Redis
                 ? RedisConnectionSettings.DefaultWriteBufferSize
                 : connectionSettings.WriteBufferSize;
 
-            var connectionTimeout = (connectionSettings.ConnectionTimeout <= 0)
+            var connectionTimeout = (connectionSettings.ConnectionTimeout < 0)
                 ? RedisConnectionSettings.DefaultConnectionTimeout
                 : connectionSettings.ConnectionTimeout;
 

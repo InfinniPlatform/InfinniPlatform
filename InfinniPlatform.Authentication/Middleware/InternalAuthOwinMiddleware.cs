@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -118,9 +119,18 @@ namespace InfinniPlatform.Authentication.Middleware
         /// </summary>
         private static IRequestHandlerResult GetCurrentUser(IOwinContext context)
         {
-            var user = FindCurrentUser(context);
-            var userInfo = BuildUserInfo(context, user, null);
-            return new ValueRequestHandlerResult(userInfo);
+            try
+            {
+                var user = FindCurrentUser(context);
+                var userInfo = BuildUserInfo(context, user, null);
+                return new ValueRequestHandlerResult(userInfo);
+            }
+            catch (SecurityException)
+            {
+                // TODO:
+                // return new StatusCodeHandlerResult(401);
+                throw;
+            }
         }
 
         /// <summary>
@@ -608,7 +618,7 @@ namespace InfinniPlatform.Authentication.Middleware
 
             if (principal == null)
             {
-                throw new InvalidOperationException(Resources.RequestIsNotAuthenticated);
+                throw new SecurityException(Resources.RequestIsNotAuthenticated);
             }
 
             return principal.Identity;

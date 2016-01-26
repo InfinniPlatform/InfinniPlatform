@@ -21,9 +21,6 @@ namespace InfinniPlatform.Owin.Middleware
 
         private readonly object _error;
 
-
-        public bool IsSuccess => false;
-
         public Task GetResult(IOwinContext context)
         {
             // TODO: Сейчас все обработчики ожидают именно такой формат ответа
@@ -31,7 +28,6 @@ namespace InfinniPlatform.Owin.Middleware
             var error = new DynamicWrapper
             {
                 ["IsValid"] = false,
-                ["IsInternalServerError"] = true,
                 ["ValidationMessage"] = _error
             };
 

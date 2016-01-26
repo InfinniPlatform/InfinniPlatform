@@ -10,11 +10,6 @@ namespace InfinniPlatform.Owin.Middleware
     public interface IRequestHandlerResult
     {
         /// <summary>
-        /// Запрос успешно обработан.
-        /// </summary>
-        bool IsSuccess { get; }
-
-        /// <summary>
         /// Получить результат.
         /// </summary>
         Task GetResult(IOwinContext context);
