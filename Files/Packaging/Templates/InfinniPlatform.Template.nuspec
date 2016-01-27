@@ -18,5 +18,8 @@
         <file target="lib\net45\AppExtension.json" src="AppExtension.json"/>
         <file target="content\metadata\Administration" src="content\InfinniPlatform\metadata\Administration\**\*.*"/>
         <file target="content\metadata\Authorization" src="content\InfinniPlatform\metadata\Authorization\**\*.*"/>
+        <!-- For Linux debugging -->
+        <file target="lib\net45\InfinniPlatform.ServiceHost.exe" src="InfinniPlatform.ServiceHost.exe"/>
+        <!-- For Linux debugging -->
     </files>
 </package>

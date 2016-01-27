@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
@@ -16,16 +17,20 @@ namespace InfinniPlatform.SystemConfig.Services
     /// </summary>
     internal sealed class DocumentApiHttpService : IHttpService
     {
-        public DocumentApiHttpService(IDocumentApi documentApi, IDocumentTransactionScopeProvider transactionScopeProvider)
+        public DocumentApiHttpService(IDocumentApi documentApi,
+                                      IDocumentTransactionScopeProvider transactionScopeProvider,
+                                      IPerformanceLog performanceLog)
         {
             _documentApi = documentApi;
             _transactionScopeProvider = transactionScopeProvider;
+            _performanceLog = performanceLog;
         }
 
 
         private readonly IDocumentApi _documentApi;
         private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
-
+        private readonly IPerformanceLog _performanceLog;
+        private const string ComponentName = "DocumentApiHttpService";
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -47,11 +52,12 @@ namespace InfinniPlatform.SystemConfig.Services
 
             var result = _documentApi.GetDocumentById(configuration, documentType, documentId);
 
-            return Task.FromResult<object>(result);
+            return result;
         }
 
         private Task<object> GetDocuments(IHttpRequest request)
         {
+            var start = DateTime.Now;
             dynamic requestForm = request.Form.changesObject;
             string configuration = requestForm.Configuration;
             string documentType = requestForm.Metadata;
@@ -65,6 +71,8 @@ namespace InfinniPlatform.SystemConfig.Services
             int pageSize = Math.Min((int)(requestForm.PageSize ?? 0), 1000);
 
             var result = _documentApi.GetDocuments(configuration, documentType, filterCriterias, pageNumber, pageSize, sortingCriterias);
+
+            _performanceLog.Log(ComponentName, "GetDocuments", start);
 
             return Task.FromResult<object>(result);
         }
@@ -87,6 +95,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
         private Task<object> SaveDocuments(IHttpRequest request)
         {
+            var start = DateTime.Now;
             dynamic requestForm = request.Form.changesObject;
             string configuration = requestForm.Configuration;
             string documentType = requestForm.Metadata;
@@ -101,11 +110,14 @@ namespace InfinniPlatform.SystemConfig.Services
                 result = new JsonHttpResponse(result) { StatusCode = 400 };
             }
 
+            _performanceLog.Log(ComponentName, "SaveDocuments", start);
+
             return Task.FromResult<object>(result);
         }
 
         private Task<object> DeleteDocument(IHttpRequest request)
         {
+            var start = DateTime.Now;
             dynamic requestForm = request.Form.changesObject;
             string configuration = requestForm.Configuration;
             string documentType = requestForm.Metadata;
@@ -119,6 +131,8 @@ namespace InfinniPlatform.SystemConfig.Services
             {
                 result = new JsonHttpResponse(result) { StatusCode = 400 };
             }
+
+            _performanceLog.Log(ComponentName, "DeleteDocument", start);
 
             return Task.FromResult<object>(result);
         }
