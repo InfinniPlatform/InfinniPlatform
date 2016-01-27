@@ -34,7 +34,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             var connectionPool = new SniffingConnectionPool(nodeAddresses);
 
             var connectionSettings = new ConnectionSettings(connectionPool);
-            
+
             if (!string.IsNullOrEmpty(settings.Login) && !string.IsNullOrEmpty(settings.Password))
             {
                 connectionSettings.SetBasicAuthentication(settings.Login, settings.Password);
@@ -42,6 +42,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             connectionSettings.SetDefaultPropertyNameInferrer(i => i);
             connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
+            connectionSettings.EnableTrace(settings.EnableTrace);
 
             var client = new ElasticClient(connectionSettings);
 

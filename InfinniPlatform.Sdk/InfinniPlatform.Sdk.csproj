@@ -104,7 +104,6 @@
     <Compile Include="Session\ISessionManager.cs" />
     <Compile Include="Hosting\IApplicationEventHandler.cs" />
     <Compile Include="Logging\IPerformanceLog.cs" />
-    <Compile Include="Logging\JsonEvent.cs" />
     <Compile Include="Settings\IAppConfiguration.cs" />
     <Compile Include="BlobStorage\BlobData.cs" />
     <Compile Include="BlobStorage\BlobInfo.cs" />

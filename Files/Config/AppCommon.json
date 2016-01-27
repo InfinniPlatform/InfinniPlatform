@@ -94,7 +94,10 @@
     /* Логин для доступа к ElasticSearch через Shield (значения по умолчанию нет) */
     "Login": "",
     /* Пароль для доступа к ElasticSearch через Shield (значения по умолчанию нет) */
-    "Password": ""
+    "Password": "",
+    /* Разрешить трассировку запросов к ElasticSearch (значение по умолчанию - false) */
+    /* При включении желательно указать уровень DEBUG в AppLog.config */
+    "EnableTrace": false
   },
   /* Настройки хранения BLOB и файлов */
   "blobStorage": {

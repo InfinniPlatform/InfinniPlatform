@@ -1,6 +1,6 @@
-﻿using log4net;
+﻿using System.Diagnostics;
 
-using ILog = InfinniPlatform.Sdk.Logging.ILog;
+using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Core.Logging
 {
@@ -9,12 +9,20 @@ namespace InfinniPlatform.Core.Logging
     /// </summary>
     public static class Logger
     {
+        static Logger()
+        {
+            Log = new Log4NetLog(log4net.LogManager.GetLogger("InfinniPlatform"));
+
+            // Интеграция с System.Diagnostics.Trace
+            Trace.Listeners.Add(new LogTraceListener(Log));
+        }
+
         /// <summary>
         /// Сервис регистрации событий.
         /// </summary>
         /// <remarks>
         /// Используется только в статическом контексте, где недоступен IoC.
         /// </remarks>
-        public static readonly ILog Log = new Log4NetLog(LogManager.GetLogger("InfinniPlatform"));
+        public static readonly ILog Log;
     }
 }

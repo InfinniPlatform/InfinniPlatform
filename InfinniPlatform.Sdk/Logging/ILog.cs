@@ -15,7 +15,7 @@ namespace InfinniPlatform.Sdk.Logging
         /// <param name="message">Сообщение.</param>
         /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Info(string message, Dictionary<string, object> context = null, Exception exception = null);
+        void Info(object message, Dictionary<string, object> context = null, Exception exception = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем WARN.
@@ -23,7 +23,7 @@ namespace InfinniPlatform.Sdk.Logging
         /// <param name="message">Сообщение.</param>
         /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Warn(string message, Dictionary<string, object> context = null, Exception exception = null);
+        void Warn(object message, Dictionary<string, object> context = null, Exception exception = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем DEBUG.
@@ -31,7 +31,7 @@ namespace InfinniPlatform.Sdk.Logging
         /// <param name="message">Сообщение.</param>
         /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Debug(string message, Dictionary<string, object> context = null, Exception exception = null);
+        void Debug(object message, Dictionary<string, object> context = null, Exception exception = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем ERROR.
@@ -39,7 +39,7 @@ namespace InfinniPlatform.Sdk.Logging
         /// <param name="message">Сообщение.</param>
         /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Error(string message, Dictionary<string, object> context = null, Exception exception = null);
+        void Error(object message, Dictionary<string, object> context = null, Exception exception = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем FATAL.
@@ -47,7 +47,7 @@ namespace InfinniPlatform.Sdk.Logging
         /// <param name="message">Сообщение.</param>
         /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Fatal(string message, Dictionary<string, object> context = null, Exception exception = null);
+        void Fatal(object message, Dictionary<string, object> context = null, Exception exception = null);
 
         /// <summary>
         /// Инициализирует контекст логирования текущего потока информацией из словаря.
