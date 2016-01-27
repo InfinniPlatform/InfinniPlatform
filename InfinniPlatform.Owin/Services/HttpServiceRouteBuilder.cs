@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Services;
 
@@ -11,7 +12,7 @@ namespace InfinniPlatform.Owin.Services
 
         public IEnumerable<IHttpServiceRoute> Routes => _routes.AsReadOnly();
 
-        public Func<IHttpRequest, object> this[string path]
+        public Func<IHttpRequest, Task<object>> this[string path]
         {
             set
             {

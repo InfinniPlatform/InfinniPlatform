@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace InfinniPlatform.Sdk.Services
 {
@@ -13,11 +14,11 @@ namespace InfinniPlatform.Sdk.Services
         /// </summary>
         IEnumerable<IHttpServiceRoute> Routes { get; }
 
-            /// <summary>
+        /// <summary>
         /// Устанавливает обработчик запросов.
         /// </summary>
         /// <param name="path">Путь запроса.</param>
         /// <returns>Обработчик запроса.</returns>
-        Func<IHttpRequest, object> this[string path] { set; }
+        Func<IHttpRequest, Task<object>> this[string path] { set; }
     }
 }

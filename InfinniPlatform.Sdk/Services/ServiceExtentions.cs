@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Security;
@@ -30,21 +31,6 @@ namespace InfinniPlatform.Sdk.Services
 
 
         /// <summary>
-        /// Устанавливает обработчик запросов.
-        /// </summary>
-        /// <example>
-        /// <code>
-        /// Action("/method", new THandler());
-        /// </code>
-        /// </example>
-        public static IHttpServiceRouteBuilder Action<THandler>(this IHttpServiceRouteBuilder target, string path, THandler handler) where THandler : IHttpRequestHandler
-        {
-            target[path] = handler.Action;
-            return target;
-        }
-
-
-        /// <summary>
         /// Устанавливает необходимость аутентификации пользователя.
         /// </summary>
         /// <remarks>
@@ -52,7 +38,7 @@ namespace InfinniPlatform.Sdk.Services
         /// </remarks>
         public static void RequiresAuthentication(this IHttpServiceBuilder target)
         {
-            target.OnBefore += request => (request.User == null || !request.User.IsAuthenticated) ? HttpResponse.Unauthorized : null;
+            target.OnBefore += request => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated) ? HttpResponse.Unauthorized : null);
         }
 
         /// <summary>
@@ -65,11 +51,11 @@ namespace InfinniPlatform.Sdk.Services
         public static void RequiresClaim(this IHttpServiceBuilder target, string claimType)
         {
             target.OnBefore += request
-                => (request.User == null || !request.User.IsAuthenticated)
+                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
                     ? HttpResponse.Unauthorized
                     : !request.User.HasClaim(claimType)
                         ? HttpResponse.Forbidden
-                        : null;
+                        : null);
         }
 
         /// <summary>
@@ -82,11 +68,11 @@ namespace InfinniPlatform.Sdk.Services
         public static void RequiresClaim(this IHttpServiceBuilder target, string claimType, string claimValue)
         {
             target.OnBefore += request
-                => (request.User == null || !request.User.IsAuthenticated)
+                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
                     ? HttpResponse.Unauthorized
                     : !request.User.HasClaim(claimType, claimValue)
                         ? HttpResponse.Forbidden
-                        : null;
+                        : null);
         }
 
         /// <summary>
@@ -99,11 +85,11 @@ namespace InfinniPlatform.Sdk.Services
         public static void RequiresAllClaims(this IHttpServiceBuilder target, IEnumerable<string> claimTypes)
         {
             target.OnBefore += request
-                => (request.User == null || !request.User.IsAuthenticated)
+                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
                     ? HttpResponse.Unauthorized
                     : !request.User.HasAllClaims(claimTypes)
                         ? HttpResponse.Forbidden
-                        : null;
+                        : null);
         }
 
         /// <summary>
@@ -128,11 +114,11 @@ namespace InfinniPlatform.Sdk.Services
         public static void RequiresAnyClaims(this IHttpServiceBuilder target, IEnumerable<string> claimTypes)
         {
             target.OnBefore += request
-                => (request.User == null || !request.User.IsAuthenticated)
+                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
                     ? HttpResponse.Unauthorized
                     : !request.User.HasAnyClaims(claimTypes)
                         ? HttpResponse.Forbidden
-                        : null;
+                        : null);
         }
 
         /// <summary>
@@ -157,11 +143,11 @@ namespace InfinniPlatform.Sdk.Services
         public static void RequiresValidUser(this IHttpServiceBuilder target, Func<IIdentity, bool> userMatch)
         {
             target.OnBefore += request
-                => (request.User == null || !request.User.IsAuthenticated)
+                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
                     ? HttpResponse.Unauthorized
                     : !userMatch(request.User)
                         ? HttpResponse.Forbidden
-                        : null;
+                        : null);
         }
     }
 }

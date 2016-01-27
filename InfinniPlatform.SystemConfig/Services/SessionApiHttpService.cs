@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Dynamic;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Session;
 
@@ -25,7 +27,7 @@ namespace InfinniPlatform.SystemConfig.Services
             builder.Post["/RemoveSessionData"] = RemoveSessionData;
         }
 
-        private object GetSessionData(IHttpRequest request)
+        private Task<object> GetSessionData(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
             string sessionKey = requestForm.ClaimType;
@@ -34,10 +36,10 @@ namespace InfinniPlatform.SystemConfig.Services
 
             var result = new DynamicWrapper { ["ClaimValue"] = sessionData };
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
-        private object SetSessionData(IHttpRequest request)
+        private Task<object> SetSessionData(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
             string sessionKey = requestForm.ClaimType;
@@ -47,10 +49,10 @@ namespace InfinniPlatform.SystemConfig.Services
 
             var result = new DynamicWrapper { ["IsValid"] = true };
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
-        private object RemoveSessionData(IHttpRequest request)
+        private Task<object> RemoveSessionData(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
             string sessionKey = requestForm.ClaimType;
@@ -59,7 +61,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
             var result = new DynamicWrapper { ["IsValid"] = true };
 
-            return result;
+            return Task.FromResult<object>(result);
         }
     }
 }

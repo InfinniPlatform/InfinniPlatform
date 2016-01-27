@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Services;
 
@@ -6,7 +7,7 @@ namespace InfinniPlatform.Owin.Services
 {
     internal sealed class HttpServiceRoute : IHttpServiceRoute
     {
-        public HttpServiceRoute(string path, Func<IHttpRequest, object> action)
+        public HttpServiceRoute(string path, Func<IHttpRequest, Task<object>> action)
         {
             Path = path;
             Action = action;
@@ -14,6 +15,6 @@ namespace InfinniPlatform.Owin.Services
 
         public string Path { get; }
 
-        public Func<IHttpRequest, object> Action { get; }
+        public Func<IHttpRequest, Task<object>> Action { get; }
     }
 }

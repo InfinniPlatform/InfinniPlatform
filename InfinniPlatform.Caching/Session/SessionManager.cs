@@ -59,7 +59,7 @@ namespace InfinniPlatform.Caching.Session
 
         private string GetCurrentUserId()
         {
-            var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
+            var currentIdentity = _userIdentityProvider.GetUserIdentity();
             var currentUserId = currentIdentity.GetUserId();
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
 

@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Registers;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.Sdk.Registers;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
@@ -22,7 +24,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             builder.Post["/RecalculateTotals"] = RecalculateTotals;
         }
 
-        private object GetEntries(IHttpRequest request)
+        private Task<object> GetEntries(IHttpRequest request)
         {
             var registerRequest = GetRegisterRequest(request);
 
@@ -33,10 +35,10 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
                 registerRequest.PageNumber.Value,
                 registerRequest.PageSize.Value);
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
-        private object GetValuesByDate(IHttpRequest request)
+        private Task<object> GetValuesByDate(IHttpRequest request)
         {
             var registerRequest = GetRegisterRequest(request);
 
@@ -49,10 +51,10 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
                 registerRequest.ValueProperties,
                 registerRequest.AggregationTypes);
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
-        private object GetValuesBetweenDates(IHttpRequest request)
+        private Task<object> GetValuesBetweenDates(IHttpRequest request)
         {
             var registerRequest = GetRegisterRequest(request);
 
@@ -66,16 +68,16 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
                 registerRequest.ValueProperties,
                 registerRequest.AggregationTypes);
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
-        private object RecalculateTotals(IHttpRequest request)
+        private Task<object> RecalculateTotals(IHttpRequest request)
         {
             string configuration = request.Form.Configuration;
 
             _registerApi.RecalculateTotals(configuration);
 
-            return null;
+            return Task.FromResult<object>(null);
         }
 
         private static RegisterApiRequest GetRegisterRequest(IHttpRequest request)

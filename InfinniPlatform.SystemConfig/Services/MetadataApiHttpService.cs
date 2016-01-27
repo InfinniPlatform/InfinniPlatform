@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Core.Metadata;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.Services
@@ -22,7 +24,7 @@ namespace InfinniPlatform.SystemConfig.Services
             builder.Post["/GetManagedMetadata"] = GetMetadataItem;
         }
 
-        private object GetMetadataItem(IHttpRequest request)
+        private Task<object> GetMetadataItem(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
             string configuration = requestForm.Configuration;
@@ -31,7 +33,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
             var result = _metadataApi.GetView(configuration, documentType, viewName);
 
-            return result;
+            return Task.FromResult<object>(result);
         }
     }
 }

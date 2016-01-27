@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace InfinniPlatform.Sdk.Services
 {
@@ -40,17 +41,17 @@ namespace InfinniPlatform.Sdk.Services
         /// <summary>
         /// Предобработчик запросов.
         /// </summary>
-        Func<IHttpRequest, object> OnBefore { get; set; }
+        Func<IHttpRequest, Task<object>> OnBefore { get; set; }
 
         /// <summary>
         /// Постобработчик запросов.
         /// </summary>
-        Func<IHttpRequest, object, object> OnAfter { get; set; }
+        Func<IHttpRequest, object, Task<object>> OnAfter { get; set; }
 
         /// <summary>
         /// Обработчик исключений.
         /// </summary>
-        Func<IHttpRequest, Exception, object> OnError { get; set; }
+        Func<IHttpRequest, Exception, Task<object>> OnError { get; set; }
 
         /// <summary>
         /// Конвертер результата.

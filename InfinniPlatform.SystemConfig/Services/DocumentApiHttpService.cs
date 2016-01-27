@@ -73,7 +73,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
             _performanceLog.Log(ComponentName, "GetDocuments", start);
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
         private object GetNumberOfDocuments(IHttpRequest request)
@@ -111,7 +111,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
             _performanceLog.Log(ComponentName, "SaveDocuments", start);
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
         private object DeleteDocument(IHttpRequest request)
@@ -133,7 +133,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
             _performanceLog.Log(ComponentName, "DeleteDocument", start);
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
         private object AttachFile(IHttpRequest request)

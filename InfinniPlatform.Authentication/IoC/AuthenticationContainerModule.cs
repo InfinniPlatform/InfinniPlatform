@@ -5,6 +5,7 @@ using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Sdk.Services;
 
 using Microsoft.AspNet.Identity;
 
@@ -61,6 +62,10 @@ namespace InfinniPlatform.Authentication.IoC
             builder.RegisterType<InternalAuthOwinMiddleware>()
                    .AsSelf()
                    .SingleInstance();
+
+            // Сервисы аутентификации
+
+            builder.RegisterHttpServices(GetType().Assembly);
         }
 
         private static UserManager<IdentityApplicationUser> CreateUserManager(IContainerResolver resolver)

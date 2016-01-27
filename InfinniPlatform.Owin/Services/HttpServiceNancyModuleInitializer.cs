@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
@@ -124,9 +125,9 @@ namespace InfinniPlatform.Owin.Services
 
         private NancyHttpGlobalHandler CreateNancyHttpGlobalHandler()
         {
-            Func<IHttpRequest, object> onBeforeGlobal = null;
-            Func<IHttpRequest, object, object> onAfterGlobal = null;
-            Func<IHttpRequest, Exception, object> onErrorGlobal = null;
+            Func<IHttpRequest, Task<object>> onBeforeGlobal = null;
+            Func<IHttpRequest, object, Task<object>> onAfterGlobal = null;
+            Func<IHttpRequest, Exception, Task<object>> onErrorGlobal = null;
             Func<object, IHttpResponse> resultConverterGlobal = null;
 
             if (_httpGlobalHandlers != null)
@@ -162,7 +163,7 @@ namespace InfinniPlatform.Owin.Services
             var resultConverter = httpService.ResultConverter;
             var httpServiceRoutes = httpServiceRoutesSelector(httpService);
 
-            Func<IIdentity> userIdentityProvider = _userIdentityProvider.GetCurrentUserIdentity;
+            Func<IIdentity> userIdentityProvider = _userIdentityProvider.GetUserIdentity;
 
             foreach (var route in httpServiceRoutes.Routes)
             {
@@ -173,12 +174,12 @@ namespace InfinniPlatform.Owin.Services
                 var onHandleGlobal = _httpRequestExcutorFactory.CreateExecutor(httpGlobalHandler.OnBefore, onHandle, httpGlobalHandler.OnAfter, httpGlobalHandler.OnError, httpGlobalHandler.ResultConverter);
 
                 // Функция обработки метода сервиса в контексте выполнения Nancy
-                Func<NancyContext, object> nancyAction = nancyContext =>
-                                                         {
-                                                             var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider);
-                                                             var result = onHandleGlobal(httpRequest);
-                                                             return CreateNancyHttpResponse(nancyContext, result);
-                                                         };
+                Func<NancyContext, Task<object>> nancyAction = async nancyContext =>
+                                                                     {
+                                                                         var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider);
+                                                                         var result = await onHandleGlobal(httpRequest);
+                                                                         return CreateNancyHttpResponse(nancyContext, result);
+                                                                     };
 
                 var nancyRoute = new NancyHttpServiceRoute
                 {
@@ -277,16 +278,16 @@ namespace InfinniPlatform.Owin.Services
         {
             foreach (var route in nancyHttpServiceRoutes)
             {
-                nancyRouteBuilder[route.Path] = p => route.Action(nancyContext());
+                nancyRouteBuilder[route.Path, true] = (p, t) => route.Action(nancyContext());
             }
         }
 
 
         private sealed class NancyHttpGlobalHandler
         {
-            public Func<IHttpRequest, object> OnBefore;
-            public Func<IHttpRequest, object, object> OnAfter;
-            public Func<IHttpRequest, Exception, object> OnError;
+            public Func<IHttpRequest, Task<object>> OnBefore;
+            public Func<IHttpRequest, object, Task<object>> OnAfter;
+            public Func<IHttpRequest, Exception, Task<object>> OnError;
             public Func<object, IHttpResponse> ResultConverter;
         }
 
@@ -304,8 +305,8 @@ namespace InfinniPlatform.Owin.Services
 
         private sealed class NancyHttpServiceRoute
         {
-            public Func<NancyContext, object> Action;
             public string Path;
+            public Func<NancyContext, Task<object>> Action;
         }
     }
 }

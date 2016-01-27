@@ -10,6 +10,6 @@ namespace InfinniPlatform.Sdk.Security
         /// <summary>
         /// Возвращает идентификационные данные текущего пользователя.
         /// </summary>
-        IIdentity GetCurrentUserIdentity();
+        IIdentity GetUserIdentity();
     }
 }

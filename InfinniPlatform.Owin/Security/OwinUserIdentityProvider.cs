@@ -15,7 +15,7 @@ namespace InfinniPlatform.Owin.Security
 
         private readonly IOwinContextProvider _owinContextProvider;
 
-        public IIdentity GetCurrentUserIdentity()
+        public IIdentity GetUserIdentity()
         {
             var owinContext = _owinContextProvider.GetOwinContext();
 
