@@ -29,7 +29,7 @@ namespace InfinniPlatform.Authentication.Middleware
 
 
         public static readonly PathString BasePath
-            = new PathString("/Auth");
+            = new PathString("/Auth2");
 
         // GetCurrentUser
 

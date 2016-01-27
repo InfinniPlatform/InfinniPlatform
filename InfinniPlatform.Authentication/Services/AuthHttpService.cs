@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -7,7 +8,9 @@ using System.Threading.Tasks;
 using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Core.Security;
+using InfinniPlatform.Owin;
 using InfinniPlatform.Owin.Security;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
 
@@ -43,8 +46,7 @@ namespace InfinniPlatform.Authentication.Services
 
         public void Load(IHttpServiceBuilder builder)
         {
-            // TODO: Изменить базовый адрес после тестирования.
-            builder.ServicePath = "/Auth2";
+            builder.ServicePath = "/Auth";
 
             // Методы работы с учетной записью пользователя
             builder.Post["/GetCurrentUser"] = GetCurrentUser;
@@ -78,7 +80,7 @@ namespace InfinniPlatform.Authentication.Services
 
             var user = await GetUserInfo();
 
-            var userInfo = BuildSafeUserInfo(user);
+            var userInfo = BuildSafeUserInfo(user, Identity);
 
             return userInfo;
         }
@@ -108,47 +110,142 @@ namespace InfinniPlatform.Authentication.Services
                 ? await ApplicationUserManager.AddPasswordAsync(user.Id, newPassword)
                 : await ApplicationUserManager.ChangePasswordAsync(user.Id, oldPassword, newPassword);
 
-            return CreateRequest(changePasswordTask);
+            return CreateResponse(changePasswordTask);
         }
 
-        private Task<object> SignInInternal(IHttpRequest request)
+        private async Task<object> SignInInternal(IHttpRequest request)
         {
-            throw new NotImplementedException();
+            dynamic signInForm = request.Form;
+            string userName = signInForm.UserName;
+            string password = signInForm.Password;
+            bool? remember = signInForm.Remember;
+
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return BadRequest(Resources.UserNameCannotBeNullOrWhiteSpace);
+            }
+
+            var user = await ApplicationUserManager.FindAsync(userName, password);
+
+            if (user == null)
+            {
+                return BadRequest(Resources.InvalidUsernameOrPassword);
+            }
+
+            return SignIn(user, remember);
         }
 
         private Task<object> SignInExternal(IHttpRequest request)
         {
-            throw new NotImplementedException();
+            return Task.FromResult<object>(ChallengeExternalProvider(request, "/SignInExternalCallback"));
         }
 
         private Task<object> SignInExternalCallback(IHttpRequest request)
         {
-            throw new NotImplementedException();
+            return ChallengeExternalProviderCallback(request, async loginInfo =>
+            {
+                var user = await ApplicationUserManager.FindAsync(loginInfo.Login);
+
+                // Если пользователь не найден в хранилище пользователей системы
+                if (user == null)
+                {
+                    user = CreateUserByLoginInfo(loginInfo);
+
+                    // Создание записи о пользователе
+                    var createUserTask = await ApplicationUserManager.CreateAsync(user);
+
+                    if (!createUserTask.Succeeded)
+                    {
+                        return BuildErrorMessage(createUserTask);
+                    }
+
+                    // Добавление имени входа пользователя
+                    var addLoginTask = await ApplicationUserManager.AddLoginAsync(user.Id, loginInfo.Login);
+
+                    if (!addLoginTask.Succeeded)
+                    {
+                        return BuildErrorMessage(createUserTask);
+                    }
+                }
+
+                await SignIn(user, false);
+
+                return null;
+            });
         }
 
         private Task<object> LinkExternalLogin(IHttpRequest request)
         {
-            throw new NotImplementedException();
+            if (!IsAuthenticated())
+            {
+                return Task.FromResult<object>(NotAuthenticated());
+            }
+
+            return Task.FromResult<object>(ChallengeExternalProvider(request, "/LinkExternalLoginCallback"));
         }
 
         private Task<object> LinkExternalLoginCallback(IHttpRequest request)
         {
-            throw new NotImplementedException();
+            if (!IsAuthenticated())
+            {
+                return Task.FromResult<object>(NotAuthenticated());
+            }
+
+            return ChallengeExternalProviderCallback(request, async loginInfo =>
+            {
+                // Определение текущего пользователя
+                var userId = SecurityExtensions.GetUserId(Identity);
+
+                // Добавление имени входа пользователя
+                var addLoginTask = await ApplicationUserManager.AddLoginAsync(userId, loginInfo.Login);
+
+                return BuildErrorMessage(addLoginTask);
+            });
         }
 
-        private Task<object> UnlinkExternalLogin(IHttpRequest request)
+        private async Task<object> UnlinkExternalLogin(IHttpRequest request)
         {
-            throw new NotImplementedException();
+            if (!IsAuthenticated())
+            {
+                return NotAuthenticated();
+            }
+
+            dynamic unlinkExternalLoginForm = request.Form;
+            string provider = unlinkExternalLoginForm.Provider;
+            string providerKey = unlinkExternalLoginForm.ProviderKey;
+
+            if (string.IsNullOrWhiteSpace(provider))
+            {
+                return BadRequest(Resources.ExternalProviderCannotBeNullOrWhiteSpace);
+            }
+
+            if (string.IsNullOrWhiteSpace(providerKey))
+            {
+                return BadRequest(Resources.ExternalProviderKeyCannotBeNullOrWhiteSpace);
+            }
+
+            // Определение текущего пользователя
+            var userId = SecurityExtensions.GetUserId(Identity);
+
+            // Удаление имени входа пользователя
+            var removeLoginTask = await ApplicationUserManager.RemoveLoginAsync(userId, new UserLoginInfo(provider, providerKey));
+
+            return CreateResponse(removeLoginTask);
         }
 
         private Task<object> GetExternalProviders(IHttpRequest request)
         {
-            throw new NotImplementedException();
+            var loginProviders = AuthenticationManager.GetExternalAuthenticationTypes();
+            var loginProvidersList = (loginProviders != null) ? loginProviders.Select(i => new { Type = i.AuthenticationType, Name = i.Caption }).ToArray() : null;
+            return Task.FromResult<object>(CreateResponse(loginProvidersList));
         }
 
         private Task<object> SignOut(IHttpRequest request)
         {
-            throw new NotImplementedException();
+            // Выход из системы
+            AuthenticationManager.SignOut();
+
+            return Task.FromResult<object>(HttpResponse.Ok);
         }
 
 
@@ -168,7 +265,134 @@ namespace InfinniPlatform.Authentication.Services
             return userInfo;
         }
 
-        private object BuildSafeUserInfo(IdentityApplicationUser user)
+
+        private async Task<object> SignIn(IdentityApplicationUser user, bool? remember)
+        {
+            // Выход из системы
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+
+            // Создание новых учетных данных
+            var identity = await ApplicationUserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+            // Вход в систему с новыми учетными данными
+            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = (remember == true) }, identity);
+
+            var userInfo = BuildSafeUserInfo(user, identity);
+
+            return CreateResponse(userInfo);
+        }
+
+        private static IdentityApplicationUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
+        {
+            var userName = loginInfo.DefaultUserName;
+
+            if (loginInfo.Login != null)
+            {
+                userName = $"{loginInfo.Login.LoginProvider}{loginInfo.Login.ProviderKey}".Replace(" ", "");
+            }
+
+            var user = new IdentityApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = userName,
+                Email = loginInfo.Email,
+                EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
+            };
+
+            if (loginInfo.ExternalIdentity != null && loginInfo.ExternalIdentity.Claims != null)
+            {
+                user.Claims = loginInfo.ExternalIdentity.Claims.Select(CreateUserClaim);
+            }
+
+            return user;
+        }
+
+        /// <summary>
+        /// Осуществляет переход на страницу входа внешнего провайдера.
+        /// </summary>
+        private IHttpResponse ChallengeExternalProvider(IHttpRequest request, string callbackPath)
+        {
+            dynamic signInForm = request.Form;
+            string provider = signInForm.Provider;
+            string successUrl = signInForm.SuccessUrl;
+            string failureUrl = signInForm.FailureUrl;
+
+            if (string.IsNullOrWhiteSpace(provider))
+            {
+                return BadRequest(Resources.ExternalProviderCannotBeNullOrWhiteSpace);
+            }
+
+            if (string.IsNullOrWhiteSpace(successUrl))
+            {
+                return BadRequest(Resources.SuccessUrlCannotBeNullOrWhiteSpace);
+            }
+
+            if (string.IsNullOrWhiteSpace(failureUrl))
+            {
+                return BadRequest(Resources.FailureUrlCannotBeNullOrWhiteSpace);
+            }
+
+            // Адрес возврата для приема подтверждения от внешнего провайдера
+            var callbackUri = new UrlBuilder()
+                .Relative(callbackPath)
+                .AddQuery("SuccessUrl", successUrl)
+                .AddQuery("FailureUrl", failureUrl)
+                .ToString();
+
+            // Перенаправление пользователя на страницу входа внешнего провайдера
+            var authProperties = new AuthenticationProperties { RedirectUri = callbackUri };
+            AuthenticationManager.Challenge(authProperties, provider);
+
+            var response = CreateResponse(OwinContext.Response);
+
+            return response;
+        }
+
+        private async Task<object> ChallengeExternalProviderCallback(IHttpRequest request, Func<ExternalLoginInfo, Task<string>> callbackAction)
+        {
+            var successUrl = request.Query.SuccessUrl;
+            var failureUrl = request.Query.FailureUrl;
+
+            string errorMessage;
+
+            try
+            {
+                var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+
+                // Если пользователь прошел аутентификацию через внешний провайдер
+                if (loginInfo != null)
+                {
+                    errorMessage = await callbackAction(loginInfo);
+                }
+                else
+                {
+                    errorMessage = Resources.UnsuccessfulSignInWithExternalProvider;
+                }
+            }
+            catch (AggregateException error)
+            {
+                errorMessage = error.GetFullMessage();
+            }
+
+            // Перенаправление пользователя на страницу приложения
+
+            RedirectHttpResponse response;
+
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                response = new RedirectHttpResponse(new UrlBuilder(failureUrl).AddQuery("error", errorMessage).ToString());
+                response.SetHeader("Warning", errorMessage);
+            }
+            else
+            {
+                response = new RedirectHttpResponse(successUrl);
+            }
+
+            return response;
+        }
+
+
+        private static object BuildSafeUserInfo(IdentityApplicationUser user, IIdentity identity)
         {
             var claims = new List<ApplicationUserClaim>();
 
@@ -183,13 +407,14 @@ namespace InfinniPlatform.Authentication.Services
                 }
             }
 
-            var identity = Identity as ClaimsIdentity;
+            var claimsIdentity = identity as ClaimsIdentity;
 
-            if (identity != null && identity.Claims != null)
+            if (claimsIdentity != null && claimsIdentity.Claims != null)
             {
-                foreach (var claim in identity.Claims)
+                foreach (var claim in claimsIdentity.Claims)
                 {
-                    if (claim.Type != null && !claims.Exists(c => string.Equals(c.Type.Id, claim.Type, StringComparison.OrdinalIgnoreCase) && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
+                    if (claim.Type != null && !claims.Exists(c => string.Equals(c.Type.Id, claim.Type, StringComparison.OrdinalIgnoreCase)
+                                                                  && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
                     {
                         claims.Add(CreateUserClaim(claim));
                     }
@@ -231,14 +456,45 @@ namespace InfinniPlatform.Authentication.Services
             return new TextHttpResponse(message) { StatusCode = 400 };
         }
 
-        private static IHttpResponse CreateRequest(IdentityResult result)
+        private static IHttpResponse CreateResponse(object result)
         {
-            if (!result.Succeeded)
+            if (result != null)
             {
-                return BadRequest(string.Join(Environment.NewLine, result.Errors));
+                return new JsonHttpResponse(result) { StatusCode = 200 };
             }
 
             return HttpResponse.Ok;
+        }
+
+        private static IHttpResponse CreateResponse(IOwinResponse response)
+        {
+            return new HttpResponse(response.StatusCode, response.ContentType)
+            {
+                ReasonPhrase = response.ReasonPhrase,
+                Headers = response.Headers.ToDictionary(i => i.Key, kv => string.Join(";", kv.Value))
+            };
+        }
+
+        private static IHttpResponse CreateResponse(IdentityResult result)
+        {
+            if (!result.Succeeded)
+            {
+                var errorMessage = BuildErrorMessage(result);
+
+                return BadRequest(errorMessage);
+            }
+
+            return HttpResponse.Ok;
+        }
+
+        private static string BuildErrorMessage(IdentityResult result)
+        {
+            if (!result.Succeeded)
+            {
+                return string.Join(Environment.NewLine, result.Errors);
+            }
+
+            return null;
         }
     }
 }
