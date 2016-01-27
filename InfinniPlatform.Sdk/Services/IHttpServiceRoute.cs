@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace InfinniPlatform.Sdk.Services
 {
@@ -15,6 +16,6 @@ namespace InfinniPlatform.Sdk.Services
         /// <summary>
         /// Обработчик запросов.
         /// </summary>
-        Func<IHttpRequest, object> Action { get; }
+        Func<IHttpRequest, Task<object>> Action { get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Serialization;
@@ -23,7 +24,7 @@ namespace InfinniPlatform.SystemConfig.Services
             builder.Get["/RestfulApi/UrlEncodedData/configuration/DownloadBinaryContent"] = DownloadFile;
         }
 
-        private object DownloadFile(IHttpRequest request)
+        private Task<object> DownloadFile(IHttpRequest request)
         {
             string formString = request.Query.Form;
 
@@ -51,12 +52,12 @@ namespace InfinniPlatform.SystemConfig.Services
                                                LastWriteTimeUtc = blobData.Info.Time
                                            };
 
-                        return fileResponse;
+                        return Task.FromResult<object>(fileResponse);
                     }
                 }
             }
 
-            return HttpResponse.NotFound;
+            return Task.FromResult<object>(HttpResponse.NotFound);
         }
     }
 }

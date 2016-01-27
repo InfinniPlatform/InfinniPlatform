@@ -68,7 +68,6 @@
     <Compile Include="Services\HttpConstants.cs" />
     <Compile Include="Services\HttpResponse.cs" />
     <Compile Include="Services\IHttpGlobalHandler.cs" />
-    <Compile Include="Services\IHttpRequestHandler.cs" />
     <Compile Include="Services\IHttpServiceRoute.cs" />
     <Compile Include="Services\IHttpService.cs" />
     <Compile Include="Services\IHttpServiceBuilder.cs" />

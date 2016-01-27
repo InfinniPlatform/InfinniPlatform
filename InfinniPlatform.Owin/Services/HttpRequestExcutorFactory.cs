@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Owin.Properties;
 using InfinniPlatform.Sdk.Logging;
@@ -33,11 +34,11 @@ namespace InfinniPlatform.Owin.Services
         /// Функция обработки запросов выполнена по принципу Chain of Responsibility.
         /// На каждом шаге обработки запроса принимается решение, какой шаг будет вызван далее.
         /// </remarks>
-        public Func<IHttpRequest, object> CreateExecutor(Func<IHttpRequest, object> onBefore,
-                                                         Func<IHttpRequest, object> onHandle,
-                                                         Func<IHttpRequest, object, object> onAfter,
-                                                         Func<IHttpRequest, Exception, object> onError,
-                                                         Func<object, IHttpResponse> resultConverter)
+        public Func<IHttpRequest, Task<object>> CreateExecutor(Func<IHttpRequest, Task<object>> onBefore,
+                                                               Func<IHttpRequest, Task<object>> onHandle,
+                                                               Func<IHttpRequest, object, Task<object>> onAfter,
+                                                               Func<IHttpRequest, Exception, Task<object>> onError,
+                                                               Func<object, IHttpResponse> resultConverter)
         {
             // Создание цепочки обработки запроса
 
@@ -78,18 +79,18 @@ namespace InfinniPlatform.Owin.Services
             {
                 if (resultConverter != null)
                 {
-                    return request =>
+                    return async request =>
                            {
                                var context = new HttpRequestExcutorContext(request);
-                               firstExcutor.Execute(context);
+                               await firstExcutor.Execute(context);
                                return resultConverter(context.Result);
                            };
                 }
 
-                return request =>
+                return async request =>
                        {
                            var context = new HttpRequestExcutorContext(request);
-                           firstExcutor.Execute(context);
+                           await firstExcutor.Execute(context);
                            return context.Result;
                        };
             }
@@ -100,7 +101,7 @@ namespace InfinniPlatform.Owin.Services
 
         private interface IHttpRequestExcutor
         {
-            void Execute(HttpRequestExcutorContext context);
+            Task Execute(HttpRequestExcutorContext context);
         }
 
 
@@ -119,30 +120,30 @@ namespace InfinniPlatform.Owin.Services
 
         private sealed class BeforeHttpRequestExcutor : IHttpRequestExcutor
         {
-            public BeforeHttpRequestExcutor(Func<IHttpRequest, object> onBefore)
+            public BeforeHttpRequestExcutor(Func<IHttpRequest, Task<object>> onBefore)
             {
                 _onBefore = onBefore;
             }
 
-            private readonly Func<IHttpRequest, object> _onBefore;
+            private readonly Func<IHttpRequest, Task<object>> _onBefore;
 
             public IHttpRequestExcutor After;
             public IHttpRequestExcutor Error;
             public IHttpRequestExcutor Handler;
 
-            public void Execute(HttpRequestExcutorContext context)
+            public async Task Execute(HttpRequestExcutorContext context)
             {
                 if (_onBefore != null)
                 {
                     try
                     {
-                        context.Result = _onBefore(context.Request);
+                        context.Result = await _onBefore(context.Request);
                     }
                     catch (Exception error)
                     {
                         context.Error = error;
 
-                        Error.Execute(context);
+                        await Error.Execute(context);
 
                         return;
                     }
@@ -150,11 +151,11 @@ namespace InfinniPlatform.Owin.Services
 
                 if (context.Result == null)
                 {
-                    Handler.Execute(context);
+                    await Handler.Execute(context);
                 }
                 else
                 {
-                    After.Execute(context);
+                    await After.Execute(context);
                 }
             }
         }
@@ -162,63 +163,63 @@ namespace InfinniPlatform.Owin.Services
 
         private sealed class HandlerHttpRequestExcutor : IHttpRequestExcutor
         {
-            public HandlerHttpRequestExcutor(Func<IHttpRequest, object> onHandle)
+            public HandlerHttpRequestExcutor(Func<IHttpRequest, Task<object>> onHandle)
             {
                 _onHandle = onHandle;
             }
 
-            private readonly Func<IHttpRequest, object> _onHandle;
+            private readonly Func<IHttpRequest, Task<object>> _onHandle;
 
             public IHttpRequestExcutor After;
             public IHttpRequestExcutor Error;
 
-            public void Execute(HttpRequestExcutorContext context)
+            public async Task Execute(HttpRequestExcutorContext context)
             {
                 if (_onHandle != null)
                 {
                     try
                     {
-                        context.Result = _onHandle(context.Request);
+                        context.Result = await _onHandle(context.Request);
                     }
                     catch (Exception error)
                     {
                         context.Error = error;
 
-                        Error.Execute(context);
+                        await Error.Execute(context);
 
                         return;
                     }
                 }
 
-                After.Execute(context);
+                await After.Execute(context);
             }
         }
 
 
         private sealed class AfterHttpRequestExcutor : IHttpRequestExcutor
         {
-            public AfterHttpRequestExcutor(Func<IHttpRequest, object, object> onAfter)
+            public AfterHttpRequestExcutor(Func<IHttpRequest, object, Task<object>> onAfter)
             {
                 _onAfter = onAfter;
             }
 
-            private readonly Func<IHttpRequest, object, object> _onAfter;
+            private readonly Func<IHttpRequest, object, Task<object>> _onAfter;
 
             public IHttpRequestExcutor Error;
 
-            public void Execute(HttpRequestExcutorContext context)
+            public async Task Execute(HttpRequestExcutorContext context)
             {
                 if (_onAfter != null)
                 {
                     try
                     {
-                        context.Result = _onAfter(context.Request, context.Result);
+                        context.Result = await _onAfter(context.Request, context.Result);
                     }
                     catch (Exception error)
                     {
                         context.Error = error;
 
-                        Error.Execute(context);
+                        await Error.Execute(context);
                     }
                 }
             }
@@ -227,16 +228,16 @@ namespace InfinniPlatform.Owin.Services
 
         private sealed class ErrorHttpRequestExcutor : IHttpRequestExcutor
         {
-            public ErrorHttpRequestExcutor(Func<IHttpRequest, Exception, object> onError, ILog log)
+            public ErrorHttpRequestExcutor(Func<IHttpRequest, Exception, Task<object>> onError, ILog log)
             {
                 _onError = onError;
                 _log = log;
             }
 
-            private readonly Func<IHttpRequest, Exception, object> _onError;
+            private readonly Func<IHttpRequest, Exception, Task<object>> _onError;
             private readonly ILog _log;
 
-            public void Execute(HttpRequestExcutorContext context)
+            public async Task Execute(HttpRequestExcutorContext context)
             {
                 var error = context.Error;
 
@@ -247,7 +248,7 @@ namespace InfinniPlatform.Owin.Services
 
                     if (_onError != null)
                     {
-                        context.Result = _onError(context.Request, context.Error);
+                        context.Result = await _onError(context.Request, context.Error);
                     }
                     else
                     {

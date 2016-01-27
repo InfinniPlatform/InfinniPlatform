@@ -497,7 +497,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         private IIdentity GetCurrentIdentity()
         {
-            var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
+            var currentIdentity = _userIdentityProvider.GetUserIdentity();
 
             if (currentIdentity != null && !currentIdentity.IsAuthenticated)
             {

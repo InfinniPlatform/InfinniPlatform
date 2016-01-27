@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Core.Contracts;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.Core.Contracts;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Services;
@@ -22,7 +24,7 @@ namespace InfinniPlatform.SystemConfig.Services
             builder.Post["/{configuration}/StandardApi/{documentType}/{actionName}"] = CustomAction;
         }
 
-        private object CustomAction(IHttpRequest request)
+        private Task<object> CustomAction(IHttpRequest request)
         {
             // TODO: Это наивное предположение, нужно изменить после рефакторинга метаданных сервисов.
             string actionName = $"ActionUnit{request.Parameters.ActionName}";
@@ -52,10 +54,10 @@ namespace InfinniPlatform.SystemConfig.Services
                     ["ValidationMessage"] = context.ValidationMessage
                 };
 
-                return new JsonHttpResponse(error) { StatusCode = 400 };
+                return Task.FromResult<object>(new JsonHttpResponse(error) { StatusCode = 400 });
             }
 
-            return new JsonHttpResponse(context.Result);
+            return Task.FromResult<object>(new JsonHttpResponse(context.Result));
         }
     }
 }

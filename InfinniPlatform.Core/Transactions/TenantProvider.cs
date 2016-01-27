@@ -63,7 +63,7 @@ namespace InfinniPlatform.Core.Transactions
 
         private IIdentity GetCurrentIdentity()
         {
-            var currentIdentity = _userIdentityProvider.GetCurrentUserIdentity();
+            var currentIdentity = _userIdentityProvider.GetUserIdentity();
             var currentUserId = currentIdentity.GetUserId();
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
             return isNotAuthenticated ? null : currentIdentity;

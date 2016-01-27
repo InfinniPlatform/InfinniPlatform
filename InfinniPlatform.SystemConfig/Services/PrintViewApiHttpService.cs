@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Contracts;
 using InfinniPlatform.Core.Runtime;
@@ -33,7 +34,7 @@ namespace InfinniPlatform.SystemConfig.Services
             builder.Post["/GetPrintView"] = GetPrintView;
         }
 
-        private object GetPrintView(IHttpRequest request)
+        private Task<object> GetPrintView(IHttpRequest request)
         {
             string formString = request.Form.Form;
 
@@ -81,10 +82,10 @@ namespace InfinniPlatform.SystemConfig.Services
 
                 var printView = _printViewApi.Build(configuration, documentType, printViewName, printViewSource);
 
-                return new StreamHttpResponse(printView ?? new byte[] { }, HttpConstants.PdfContentType);
+                Task.FromResult<object>(new StreamHttpResponse(printView ?? new byte[] { }, HttpConstants.PdfContentType));
             }
 
-            return null;
+            return Task.FromResult<object>(null);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Services;
@@ -19,16 +20,16 @@ namespace InfinniPlatform.SystemConfig.Services
         private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
 
 
-        public Func<IHttpRequest, object> OnBefore { get; set; }
+        public Func<IHttpRequest, Task<object>> OnBefore { get; set; }
 
-        public Func<IHttpRequest, object, object> OnAfter { get; set; }
+        public Func<IHttpRequest, object, Task<object>> OnAfter { get; set; }
 
-        public Func<IHttpRequest, Exception, object> OnError { get; set; }
+        public Func<IHttpRequest, Exception, Task<object>> OnError { get; set; }
 
         public Func<object, IHttpResponse> ResultConverter { get; set; }
 
 
-        private object OnCompleteRequest(object result, Exception error)
+        private Task<object> OnCompleteRequest(object result, Exception error)
         {
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
 
@@ -49,8 +50,9 @@ namespace InfinniPlatform.SystemConfig.Services
                 }
             }
 
-            return result ?? error;
+            return Task.FromResult(result ?? error);
         }
+
 
         private static bool IsSuccessResult(object result)
         {
