@@ -1,27 +1,23 @@
 ﻿using System.Security.Principal;
 
-using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Security;
 
 using Microsoft.Owin;
 
 namespace InfinniPlatform.Owin.Security
 {
-    /// <summary>
-    /// Предоставляет метод для получения идентификационных данных текущего пользователя.
-    /// </summary>
     internal sealed class OwinUserIdentityProvider : IUserIdentityProvider
     {
-        public OwinUserIdentityProvider(IContainerResolver containerResolver)
+        public OwinUserIdentityProvider(IOwinContextProvider owinContextProvider)
         {
-            _containerResolver = containerResolver;
+            _owinContextProvider = owinContextProvider;
         }
 
-        private readonly IContainerResolver _containerResolver;
+        private readonly IOwinContextProvider _owinContextProvider;
 
         public IIdentity GetCurrentUserIdentity()
         {
-            var owinContext = _containerResolver.ResolveOptional<IOwinContext>();
+            var owinContext = _owinContextProvider.GetOwinContext();
 
             return GetUserIdentity(owinContext);
         }

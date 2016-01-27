@@ -45,6 +45,10 @@ namespace InfinniPlatform.Owin.IoC
                    .As<IUserIdentityProvider>()
                    .SingleInstance();
 
+            builder.RegisterType<OwinContextProvider>()
+                   .As<IOwinContextProvider>()
+                   .SingleInstance();
+
             builder.RegisterType<HttpRequestExcutorFactory>()
                    .AsSelf()
                    .SingleInstance();
