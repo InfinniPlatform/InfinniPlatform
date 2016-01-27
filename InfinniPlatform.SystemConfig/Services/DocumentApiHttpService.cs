@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Documents;
@@ -42,7 +43,7 @@ namespace InfinniPlatform.SystemConfig.Services
         }
 
 
-        private object GetDocumentById(IHttpRequest request)
+        private Task<object> GetDocumentById(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
             string configuration = requestForm.ConfigId;
@@ -54,7 +55,7 @@ namespace InfinniPlatform.SystemConfig.Services
             return result;
         }
 
-        private object GetDocuments(IHttpRequest request)
+        private Task<object> GetDocuments(IHttpRequest request)
         {
             var start = DateTime.Now;
             dynamic requestForm = request.Form.changesObject;
@@ -76,7 +77,7 @@ namespace InfinniPlatform.SystemConfig.Services
             return Task.FromResult<object>(result);
         }
 
-        private object GetNumberOfDocuments(IHttpRequest request)
+        private Task<object> GetNumberOfDocuments(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
             string configuration = requestForm.Configuration;
@@ -89,10 +90,10 @@ namespace InfinniPlatform.SystemConfig.Services
 
             var result = new DynamicWrapper { ["NumberOfDocuments"] = numberOfDocuments };
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
-        private object SaveDocuments(IHttpRequest request)
+        private Task<object> SaveDocuments(IHttpRequest request)
         {
             var start = DateTime.Now;
             dynamic requestForm = request.Form.changesObject;
@@ -114,7 +115,7 @@ namespace InfinniPlatform.SystemConfig.Services
             return Task.FromResult<object>(result);
         }
 
-        private object DeleteDocument(IHttpRequest request)
+        private Task<object> DeleteDocument(IHttpRequest request)
         {
             var start = DateTime.Now;
             dynamic requestForm = request.Form.changesObject;
@@ -136,7 +137,7 @@ namespace InfinniPlatform.SystemConfig.Services
             return Task.FromResult<object>(result);
         }
 
-        private object AttachFile(IHttpRequest request)
+        private Task<object> AttachFile(IHttpRequest request)
         {
             string linkedDataString = request.Query.LinkedData;
 
@@ -172,7 +173,7 @@ namespace InfinniPlatform.SystemConfig.Services
                 }
             }
 
-            return null;
+            return Task.FromResult<object>(null);
         }
 
 
