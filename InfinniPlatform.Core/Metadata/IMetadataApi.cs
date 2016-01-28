@@ -4,6 +4,8 @@ namespace InfinniPlatform.Core.Metadata
 {
     public interface IMetadataApi
     {
+        IEnumerable<string> GetConfigurationNames();
+
         IEnumerable<string> GetMenuNames(string configuration);
 
         dynamic GetMenu(string configuration, string menuName);

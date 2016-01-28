@@ -18,7 +18,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 		[TestFixtureSetUp]
 		public void SetupFixture()
 		{
-			new TestPersonIndexBuilder().BuildIndexObjectForSearchModelAndSetItems("testperson");
+			TestPersonIndexBuilder.BuildIndexObjectForSearchModelAndSetItems("testperson", "testperson");
 		}
         
 		[Test]

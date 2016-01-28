@@ -47,11 +47,11 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         public void ShouldReindexWithoutDataLostTest()
         {
             var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
-            elasticTypeManager.DeleteType("testperson", "testperson");
-            elasticTypeManager.CreateType("testperson", "testperson");
+            var indexName = "testperson";
+            elasticTypeManager.DeleteType(indexName, indexName);
+            elasticTypeManager.CreateType(indexName, indexName);
 
-            var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider("testperson", "testperson");
-
+            
             dynamic person1 = new DynamicWrapper();
             person1.Id = "11111";
             person1.LastName = "Иванов";
@@ -64,22 +64,20 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             person2.FirstName = "Иван";
             person2.Patronimic = "Степанович";
 
-            elasticSearchProvider.Set(person1);
-            elasticSearchProvider.Set(person2);
-
-
-            var queryExecutor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor("testperson", "testperson");
             var elasticConnection = ElasticFactoryBuilder.ElasticConnection.Value;
+            elasticConnection.Client.Index((object)person1, i => i.Index(indexName.ToLower()).Type(indexName.ToLower()));
+            elasticConnection.Client.Index((object)person2, i => i.Index(indexName.ToLower()).Type(indexName.ToLower()));
             elasticConnection.Refresh();
 
+            var queryExecutor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(indexName, indexName);
+            
             Assert.AreEqual(2, queryExecutor.Query(new SearchModel()).HitsCount);
-
 
             // Количество документов в индексе не должно измениться
             Assert.AreEqual(2, queryExecutor.Query(new SearchModel()).HitsCount);
 
-            elasticTypeManager.DeleteType("testperson", "testperson");
-            elasticTypeManager.CreateType("testperson", "testperson");
+            elasticTypeManager.DeleteType(indexName, indexName);
+            elasticTypeManager.CreateType(indexName, indexName);
             elasticConnection.Refresh();
 
             // Документы должны пропасть из индекса

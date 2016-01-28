@@ -38,10 +38,6 @@ namespace InfinniPlatform.ElasticSearch.IoC
                    .As<IVersionBuilder>()
                    .InstancePerDependency();
 
-            builder.RegisterType<ElasticSearchProvider>()
-                   .As<ICrudOperationProvider>()
-                   .InstancePerDependency();
-
             builder.RegisterType<ElasticSearchAggregationProvider>()
                    .As<IAggregationProvider>()
                    .InstancePerDependency();

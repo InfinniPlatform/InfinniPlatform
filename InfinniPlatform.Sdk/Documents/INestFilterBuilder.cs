@@ -9,7 +9,7 @@
         /// Создать фильтр для одного поля с указанным значением и методом сравнения
         /// </summary>
         IFilter Get(string field, dynamic value, CriteriaType compareMethod);
-
+        
         /// <summary>
         /// Создать скрипт-фильтр
         /// </summary>

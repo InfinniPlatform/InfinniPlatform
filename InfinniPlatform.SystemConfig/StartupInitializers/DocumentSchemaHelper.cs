@@ -15,7 +15,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         /// <summary>
         /// Метод преобразует схему данных документа в схему, применимую к контейнеру документов
         /// </summary>
-        public static IEnumerable<PropertyMapping> ExtractProperties(dynamic schemaProperties, IConfigurationObjectBuilder configurationObjectBuilder)
+        public static IEnumerable<PropertyMapping> ExtractProperties(dynamic schemaProperties, IMetadataApi metadataApi)
         {
             var properties = new List<PropertyMapping>();
 
@@ -56,32 +56,26 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                     {
                         // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
                         // чтобы получить сортировочные поля 
-                        string metadataIdentifier = documentLink.ConfigId.ToString();
+                        string configurationName = documentLink.ConfigId.ToString();
 
-                        var builder = configurationObjectBuilder.GetConfigurationObject(metadataIdentifier);
-                        var inlineMetadataConfiguration = builder.ConfigurationMetadata;
+                        string documentName = documentLink.DocumentId.ToString();
+                        dynamic inlineDocumentSchema = metadataApi.GetDocumentSchema(configurationName, documentName);
 
-                        if (inlineMetadataConfiguration != null)
+                        if (inlineDocumentSchema != null)
                         {
-                            string documentId = documentLink.DocumentId.ToString();
-                            dynamic inlineDocumentSchema = inlineMetadataConfiguration.GetDocumentSchema(documentId);
-
-                            if (inlineDocumentSchema != null)
-                            {
-                                properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(inlineDocumentSchema.Properties, configurationObjectBuilder)));
-                            }
+                            properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(inlineDocumentSchema.Properties, metadataApi)));
                         }
                     }
                     else
                     {
-                        properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Properties, configurationObjectBuilder)));
+                        properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Properties, metadataApi)));
                     }
                 }
                 else
                 {
                     if (typeName == "Array")
                     {
-                        properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Items.Properties, configurationObjectBuilder)));
+                        properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Items.Properties, metadataApi)));
                     }
                 }
             }

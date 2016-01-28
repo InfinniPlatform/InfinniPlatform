@@ -98,8 +98,6 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Metadata\ConfigurationObject.cs" />
-    <Compile Include="Metadata\ConfigurationObjectBuilder.cs" />
     <Compile Include="Metadata\CrossConfigSearcher.cs" />
     <Compile Include="Metadata\ConfigurationMetadata.cs" />
     <Compile Include="Metadata\ConfigurationMetadataProvider.cs" />

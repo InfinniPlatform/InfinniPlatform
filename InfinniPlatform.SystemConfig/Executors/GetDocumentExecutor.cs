@@ -7,6 +7,7 @@ using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.Factories;
+using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.SystemConfig.Utils;
 
@@ -15,25 +16,24 @@ namespace InfinniPlatform.SystemConfig.Executors
     internal sealed class GetDocumentExecutor : IGetDocumentExecutor
     {
         public GetDocumentExecutor(IDocumentTransactionScopeProvider transactionScopeProvider,
-                                   IConfigurationObjectBuilder configurationObjectBuilder,
-                                   IMetadataApi metadataComponent,
+                                   IMetadataApi metadataApi,
                                    IReferenceResolver referenceResolver,
-                                   IIndexFactory indexFactory)
+                                   IIndexFactory indexFactory,
+                                   IIndexQueryExecutor indexQueryExecutor)
         {
             _transactionScopeProvider = transactionScopeProvider;
-            _configurationObjectBuilder = configurationObjectBuilder;
-            _metadataComponent = metadataComponent;
+            _metadataApi = metadataApi;
             _referenceResolver = referenceResolver;
             _indexFactory = indexFactory;
+            _indexQueryExecutor = indexQueryExecutor;
         }
 
+        private readonly IIndexFactory _indexFactory;
+        private readonly IIndexQueryExecutor _indexQueryExecutor;
+        private readonly IMetadataApi _metadataApi;
+        private readonly IReferenceResolver _referenceResolver;
 
         private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
-        private readonly IConfigurationObjectBuilder _configurationObjectBuilder;
-        private readonly IMetadataApi _metadataComponent;
-        private readonly IReferenceResolver _referenceResolver;
-        private readonly IIndexFactory _indexFactory;
-
 
         public dynamic GetDocumentById(string configuration, string documentType, string documentId)
         {
@@ -49,7 +49,6 @@ namespace InfinniPlatform.SystemConfig.Executors
             return document;
         }
 
-
         public int GetNumberOfDocuments(string configuration,
                                         string documentType,
                                         Action<FilterBuilder> filter)
@@ -61,77 +60,52 @@ namespace InfinniPlatform.SystemConfig.Executors
                                         string documentType,
                                         IEnumerable<FilterCriteria> filter)
         {
-            var configurationObject = _configurationObjectBuilder.GetConfigurationObject(configuration);
+            var schema = _metadataApi.GetDocumentSchema(configuration, documentType);
 
-            if (configurationObject == null)
-            {
-                throw new ArgumentException(configuration, nameof(configuration));
-            }
+            var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataApi, schema);
 
-            var documentProvider = configurationObject.GetDocumentProvider(documentType);
+            var queryFactory = QueryBuilderFactory.GetInstance();
+            var filterCriteria = queryAnalyzer.GetBeforeResolveCriteriaList(filter);
+            var searchModel = filterCriteria.ExtractSearchModel(queryFactory);
 
-            if (documentProvider == null)
-            {
-                throw new ArgumentException(documentType, nameof(documentType));
-            }
-
-            var schema = _metadataComponent.GetDocumentSchema(configuration, documentType);
-
-            var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataComponent, schema);
-
-            var numberOfDocuments = documentProvider.GetNumberOfDocuments(queryAnalyzer.GetBeforeResolveCriteriaList(filter));
+            // вряд ли документов в одном индексе будет больше чем 2 147 483 647, конвертируем в int
+            var numberOfDocuments = Convert.ToInt32(_indexQueryExecutor.CalculateCountQuery(searchModel));
 
             return numberOfDocuments;
         }
 
-
-        public IEnumerable<dynamic> GetDocument(string configuration,
-                                                string documentType,
+        public IEnumerable<dynamic> GetDocument(string configurationName,
+                                                string documentName,
                                                 Action<FilterBuilder> filter,
                                                 int pageNumber,
                                                 int pageSize,
                                                 Action<SortingBuilder> sorting = null,
                                                 IEnumerable<dynamic> ignoreResolve = null)
         {
-            return GetDocument(configuration, documentType, filter.ToFilterCriterias(), pageNumber, pageSize, sorting.ToSortingCriterias(), ignoreResolve);
+            return GetDocument(configurationName, documentName, filter.ToFilterCriterias(), pageNumber, pageSize, sorting.ToSortingCriterias(), ignoreResolve);
         }
 
-        public IEnumerable<object> GetDocument(string configuration,
-                                               string documentType,
+        public IEnumerable<object> GetDocument(string configurationName,
+                                               string documentName,
                                                IEnumerable<FilterCriteria> filter,
                                                int pageNumber,
                                                int pageSize,
                                                IEnumerable<SortingCriteria> sorting = null,
                                                IEnumerable<dynamic> ignoreResolve = null)
         {
-            var configurationObject = _configurationObjectBuilder.GetConfigurationObject(configuration);
-
-            if (configurationObject == null)
-            {
-                throw new ArgumentException(configuration, nameof(configuration));
-            }
-
-            var documentProvider = configurationObject.GetDocumentProvider(documentType);
-
-            var metadataConfiguration = _configurationObjectBuilder.GetConfigurationObject(configuration)
-                                                                   .ConfigurationMetadata;
-
-            if (metadataConfiguration == null)
-            {
-                return new List<dynamic>();
-            }
-
-            dynamic schema = metadataConfiguration.GetDocumentSchema(documentType);
+            dynamic schema = _metadataApi.GetDocumentSchema(configurationName, documentName);
 
             SortingCriteria[] sortingFields = null;
 
             if (schema != null)
             {
                 // Извлекаем информацию о полях, по которым можно проводить сортировку из метаданных документа
-                sortingFields = SortingPropertiesExtractor.ExtractSortingProperties(string.Empty, schema.Properties, _configurationObjectBuilder);
+                sortingFields = SortingPropertiesExtractor.ExtractSortingProperties(string.Empty, schema.Properties, _metadataApi);
             }
 
-            var sortingArray = (sorting != null) ? sorting.ToArray() : new SortingCriteria[] { };
+            var sortingArray = sorting != null
+                                   ? sorting.ToArray()
+                                   : new SortingCriteria[] { };
 
             if (sortingArray.Any())
             {
@@ -158,17 +132,32 @@ namespace InfinniPlatform.SystemConfig.Executors
             // делаем выборку документов для последующего Resolve и фильтрации по полям Resolved объектов
             var pageSizeUnresolvedDocuments = Math.Min(pageSize, 1000);
 
-            IEnumerable<dynamic> result = documentProvider.GetDocument(filter, 0, Convert.ToInt32(pageSizeUnresolvedDocuments), sorting, pageNumber > 0
-                ? pageNumber * pageSize
-                : 0);
+            var filterFactory = FilterBuilderFactory.GetInstance();
+            var searchModel = filter.ExtractSearchModel(filterFactory);
+            searchModel.SetPageSize(Convert.ToInt32(pageSizeUnresolvedDocuments));
+            searchModel.SetSkip(pageNumber > 0
+                                    ? pageNumber * pageSize
+                                    : 0);
+            searchModel.SetFromPage(0);
 
-            _referenceResolver.ResolveReferences(configuration, documentType, result, ignoreResolve);
+            if (sorting != null)
+            {
+                foreach (var sorting1 in sorting)
+                {
+                    searchModel.AddSort(sorting1.PropertyName, sorting1.SortingOrder);
+                }
+            }
 
-            var documents = result.Take(pageSize == 0 ? 10 : pageSize);
+            IEnumerable<dynamic> result = _indexQueryExecutor.Query(searchModel).Items.ToList();
 
-            return GetActualDocuments(configuration, documentType, documents);
+            _referenceResolver.ResolveReferences(configurationName, documentName, result, ignoreResolve);
+
+            var documents = result.Take(pageSize == 0
+                                            ? 10
+                                            : pageSize);
+
+            return GetActualDocuments(configurationName, documentName, documents);
         }
-
 
         private IEnumerable<object> GetActualDocuments(string configuration, string documentType, IEnumerable<object> documents)
         {

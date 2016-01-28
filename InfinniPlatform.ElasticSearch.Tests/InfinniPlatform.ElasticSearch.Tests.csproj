@@ -75,12 +75,9 @@
     <Compile Include="Builders\TestPersonIndexBuilder.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchAggregationExecutorTests.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchBehavior.cs" />
-    <Compile Include="ElasticWrappers\ElasticSearchChangingMappingTests.cs" />
-    <Compile Include="ElasticWrappers\ElasticSearchCrudProviderBehavior.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchFilterBuilderCriteriaTests.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchIndexStateBehavior.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchModelExpressionBehavior.cs" />
-    <Compile Include="ElasticWrappers\ElasticSearchPerformanceIntegrationBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

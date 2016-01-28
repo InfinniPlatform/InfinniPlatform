@@ -22,14 +22,13 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
     {
         private const string IndexName = "aggrunittestindex";
         
-        private ICrudOperationProvider _elasticSearchProvider;
         private ElasticConnection _elasticConnection;
         
         [SetUp]
         public void InitializeElasticSearch()
         {
             ElasticFactoryBuilder.ElasticTypeManager.Value.CreateType(IndexName, IndexName);
-			_elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+            _elasticConnection = ElasticFactoryBuilder.ElasticConnection.Value;
 
             foreach (var school in SchoolsFactory.CreateSchoolsForFacetsTesting())
             {
@@ -41,10 +40,10 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
                 dynamic dynSchool = expando as ExpandoObject;
                 dynSchool.Id = Guid.NewGuid().ToString().ToLowerInvariant();
 
-                _elasticSearchProvider.Set(dynSchool);
+                _elasticConnection.Client.Index((object)dynSchool, i => i.Index(IndexName.ToLower()).Type(IndexName.ToLower()));
             }
 
-            _elasticSearchProvider.Refresh();
+            _elasticConnection.Refresh();
         }
 
         [Test]
@@ -137,16 +136,15 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             {
                 elasticTypeManager.CreateType(aggrindex, aggrindex);
 
-				var elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(aggrindex, aggrindex);
-
-                foreach (var school in SchoolsFactory.CreateRandomSchools(300000))
+				foreach (var school in SchoolsFactory.CreateRandomSchools(300000))
                 {
                     dynamic dynSchool = school.ToDynamic();
                     dynSchool.Id = Guid.NewGuid().ToString().ToLowerInvariant();
-                    elasticSearchProvider.Set(dynSchool);
+                    
+                    _elasticConnection.Client.Index((object)dynSchool, i => i.Index(aggrindex.ToLower()).Type(aggrindex.ToLower()));
                 }
 
-                elasticSearchProvider.Refresh();
+                _elasticConnection.Refresh();
             }
 
             var factory = ElasticFactoryBuilder.GetElasticFactory();

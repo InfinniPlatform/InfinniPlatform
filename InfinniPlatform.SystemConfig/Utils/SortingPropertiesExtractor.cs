@@ -8,7 +8,7 @@ namespace InfinniPlatform.SystemConfig.Utils
 {
     public static class SortingPropertiesExtractor
     {
-        public static IEnumerable<SortingCriteria> ExtractSortingProperties(string rootName, dynamic properties, IConfigurationObjectBuilder configurationObjectBuilder)
+        public static IEnumerable<SortingCriteria> ExtractSortingProperties(string rootName, dynamic properties, IMetadataApi metadataApi)
         {
             var sortingProperties = new List<SortingCriteria>();
 
@@ -28,30 +28,24 @@ namespace InfinniPlatform.SystemConfig.Utils
 
                         if (documentLink != null && documentLink.Inline == true)
                         {
-                            string configId = documentLink.ConfigId;
-                            string documentType = documentLink.DocumentId;
+                            string configurationName = documentLink.ConfigId;
+                            string documentName = documentLink.DocumentId;
 
                             // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка, чтобы получить сортировочные поля 
-                            IConfigurationObject configurationObject = configurationObjectBuilder.GetConfigurationObject(configId);
-                            IConfigurationMetadata inlineMetadataConfiguration =configurationObject.ConfigurationMetadata;
+                            dynamic inlineDocumentSchema = metadataApi.GetDocumentSchema(configurationName, documentName);
 
-                            if (inlineMetadataConfiguration != null)
+                            if (inlineDocumentSchema != null)
                             {
-                                dynamic inlineDocumentSchema = inlineMetadataConfiguration.GetDocumentSchema(documentType);
-
-                                if (inlineDocumentSchema != null)
-                                {
-                                    childProps = ExtractSortingProperties(formattedPropertyName,
-                                                                          inlineDocumentSchema.Properties,
-                                                                          configurationObjectBuilder);
-                                }
+                                childProps = ExtractSortingProperties(formattedPropertyName,
+                                                                      inlineDocumentSchema.Properties,
+                                                                      metadataApi);
                             }
                         }
                         else
                         {
                             childProps = ExtractSortingProperties(formattedPropertyName,
                                                                   propertyMapping.Value.Properties,
-                                                                  configurationObjectBuilder);
+                                                                  metadataApi);
                         }
 
                         sortingProperties.AddRange(childProps);
@@ -63,7 +57,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                             sortingProperties.AddRange(
                                                        ExtractSortingProperties(formattedPropertyName,
                                                                                 propertyMapping.Value.Items.Properties,
-                                                                                configurationObjectBuilder));
+                                                                                metadataApi));
                         }
                     }
                     else
