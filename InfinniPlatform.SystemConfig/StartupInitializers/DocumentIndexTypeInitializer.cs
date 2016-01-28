@@ -12,17 +12,15 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     internal sealed class DocumentIndexTypeInitializer : IStartupInitializer
     {
-        public DocumentIndexTypeInitializer(Lazy<IIndexFactory> indexFactory, IConfigurationMetadataProvider configurationMetadataProvider, IConfigurationObjectBuilder configurationBuilder, ILog log)
+        public DocumentIndexTypeInitializer(Lazy<IIndexFactory> indexFactory, IMetadataApi metadataApi, ILog log)
         {
             _indexFactory = indexFactory;
-            _configurationMetadataProvider = configurationMetadataProvider;
-            _configurationBuilder = configurationBuilder;
+            _metadataApi = metadataApi;
             _log = log;
         }
 
         private readonly Lazy<IIndexFactory> _indexFactory;
-        private readonly IConfigurationObjectBuilder _configurationBuilder;
-        private readonly IConfigurationMetadataProvider _configurationMetadataProvider;
+        private readonly IMetadataApi _metadataApi;
         private readonly ILog _log;
 
         public int Order => 1;
@@ -31,20 +29,15 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         {
             _log.Info("Creating indexes started.");
 
-            var configurationNames = _configurationMetadataProvider.GetConfigurationNames();
+            var configurationNames = _metadataApi.GetConfigurationNames();
 
             foreach (var configurationName in configurationNames)
             {
-                var configuration = _configurationMetadataProvider.GetConfiguration(configurationName);
+                var documentNames = _metadataApi.GetDocumentNames(configurationName);
 
-                if (configuration != null)
+                foreach (var documentName in documentNames)
                 {
-                    var documentNames = configuration.GetDocumentNames();
-
-                    foreach (var documentName in documentNames)
-                    {
-                        CreateStorage(configurationName, documentName);
-                    }
+                    CreateStorage(configurationName, documentName);
                 }
             }
 
@@ -53,9 +46,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         private void CreateStorage(string configId, string documentId)
         {
-            var configurationMetadata = _configurationMetadataProvider.GetConfiguration(configId);
-
-            var message = MigrationHelper.TryUpdateDocumentMappings(configurationMetadata, _configurationBuilder, _indexFactory.Value, documentId);
+            var message = MigrationHelper.TryUpdateDocumentMappings(_metadataApi, _indexFactory.Value, configId, documentId);
 
             if (message != null)
             {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.ElasticSearch.IndexTypeVersions;
+using InfinniPlatform.ElasticSearch.Versioning;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
@@ -12,21 +13,21 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     public static class MigrationHelper
     {
-        public static string TryUpdateDocumentMappings(IConfigurationMetadata configurationMetadata,
-                                                       IConfigurationObjectBuilder configurationObjectBuilder,
+        public static string TryUpdateDocumentMappings(IMetadataApi metadataApi,
                                                        IIndexFactory indexFactory,
-                                                       string documentId)
+                                                       string configurationName,
+                                                       string documentName)
         {
-            var versionBuilder = indexFactory.BuildVersionBuilder(configurationMetadata.Configuration, documentId);
+            IVersionBuilder versionBuilder = indexFactory.BuildVersionBuilder(configurationName, documentName);
 
-            dynamic schema = configurationMetadata.GetDocumentSchema(documentId);
+            dynamic schema = metadataApi.GetDocumentSchema(configurationName, documentName);
 
             var props = new List<PropertyMapping>();
 
             if (schema != null)
             {
                 // convert document schema to index mapping
-                props = DocumentSchemaHelper.ExtractProperties(schema.Properties, configurationObjectBuilder);
+                props = DocumentSchemaHelper.ExtractProperties(schema.Properties, metadataApi);
             }
 
             var indexTypeMapping = props.Count > 0
@@ -37,33 +38,34 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             if (!versionBuilder.VersionExists(indexTypeMapping))
             {
-                resultMessage = $"Created new version of {documentId} document.";
+                resultMessage = $"Created new version of {documentName} document.";
 
                 versionBuilder.CreateVersion(false, indexTypeMapping);
 
                 // Необходимо создать новые версии для контейнеров документов, имеющих inline ссылки на измененный документ
-                resultMessage += UpdateContainersWithInlineLinks(configurationObjectBuilder, indexFactory, configurationMetadata.Configuration, documentId);
+                resultMessage += UpdateContainersWithInlineLinks(metadataApi, indexFactory, configurationName, documentName);
             }
 
             return resultMessage;
         }
 
-        private static string UpdateContainersWithInlineLinks(IConfigurationObjectBuilder configurationObjectBuilder,
+        private static string UpdateContainersWithInlineLinks(IMetadataApi metadataApi,
                                                               IIndexFactory indexFactory,
                                                               string configId,
                                                               string documentId)
         {
-            var configList = configurationObjectBuilder.GetConfigurationList();
+            //MetadataApi
+            var configurationNames = metadataApi.GetConfigurationNames();
 
-            foreach (var metadataConfiguration in configList)
+            foreach (var configurationName in configurationNames)
             {
-                var documents = metadataConfiguration.GetDocumentNames();
+                var documentNames = metadataApi.GetDocumentNames(configurationName);
 
-                foreach (var documentName in documents)
+                foreach (var documentName in documentNames)
                 {
-                    var versionBuilder = indexFactory.BuildVersionBuilder(metadataConfiguration.Configuration, documentName);
+                    var versionBuilder = indexFactory.BuildVersionBuilder(configurationName, documentName);
 
-                    var schema = metadataConfiguration.GetDocumentSchema(documentName);
+                    var schema = metadataApi.GetDocumentSchema(configurationName, documentName);
 
                     if (schema != null)
                     {
@@ -72,8 +74,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                         if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, configId, documentId))
                         {
                             // convert document schema to index mapping
-                            List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties,
-                                configurationObjectBuilder);
+                            List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties, metadataApi);
 
                             versionBuilder.CreateVersion(false, props.Count > 0
                                 ? props

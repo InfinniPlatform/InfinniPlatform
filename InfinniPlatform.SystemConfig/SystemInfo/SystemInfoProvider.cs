@@ -43,5 +43,7 @@ namespace InfinniPlatform.SystemConfig.SystemInfo
         {
             return _elasticConnection.GetStatus();
         }
+
+
     }
 }

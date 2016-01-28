@@ -38,7 +38,6 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
     {
         private const string IndexName = "filterunittestindex";
 
-        private ICrudOperationProvider _elasticSearchProvider;
         private ElasticTypeManager _elasticTypeManager;
         private readonly INestFilterBuilder _filterFactory = FilterBuilderFactory.GetInstance();
         private readonly INestFilterBuilder _queryFactory = QueryBuilderFactory.GetInstance();
@@ -49,7 +48,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             _elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
 
             _elasticTypeManager.CreateType(IndexName,IndexName, deleteExistingVersion: true);
-			_elasticSearchProvider = ElasticFactoryBuilder.GetElasticFactory().BuildCrudOperationProvider(IndexName, IndexName);
+            var elasticConnection = ElasticFactoryBuilder.ElasticConnection.Value;
 
             foreach (var school in SchoolsFactory.CreateSchools())
             {
@@ -60,10 +59,10 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
                 expando["Id"] = Guid.NewGuid().ToString().ToLowerInvariant();
                 
-                _elasticSearchProvider.Set(expando);
+                elasticConnection.Client.Index((object)expando, i => i.Index(IndexName.ToLower()).Type(IndexName.ToLower()));
             }
 
-            _elasticSearchProvider.Refresh();
+            elasticConnection.Refresh();
         }
 
 

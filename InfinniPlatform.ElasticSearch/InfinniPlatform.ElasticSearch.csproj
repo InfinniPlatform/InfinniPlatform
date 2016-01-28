@@ -62,9 +62,7 @@
     <Compile Include="ElasticProviders\ElasticConnection.cs" />
     <Compile Include="ElasticProviders\ElasticConstants.cs" />
     <Compile Include="ElasticProviders\ElasticSearchAggregationProvider.cs" />
-    <Compile Include="ElasticProviders\ElasticSearchProvider.cs" />
     <Compile Include="ElasticProviders\ElasticSearchProviderAllIndexes.cs" />
-    <Compile Include="ElasticProviders\ElasticSearchProviderInfo.cs" />
     <Compile Include="ElasticProviders\ElasticSearchSettings.cs" />
     <Compile Include="ElasticProviders\ElasticTypeManager.cs" />
     <Compile Include="ElasticProviders\IndexQueryExecutor.cs" />
@@ -103,7 +101,6 @@
     <Compile Include="SortBuilders\SortContainer.cs" />
     <Compile Include="Versioning\IVersionBuilder.cs" />
     <Compile Include="Versioning\VersionBuilder.cs" />
-    <Compile Include="Versioning\VersionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

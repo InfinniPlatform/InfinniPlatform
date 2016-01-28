@@ -13,6 +13,11 @@ namespace InfinniPlatform.SystemConfig.Metadata
             _configurationMetadataProvider = configurationMetadataProvider;
         }
 
+        public IEnumerable<string> GetConfigurationNames()
+        {
+            return _configurationMetadataProvider.GetConfigurationNames();
+        }
+
         public IEnumerable<string> GetMenuNames(string configuration)
         {
             return _configurationMetadataProvider.GetConfiguration(configuration).GetMenuNames();

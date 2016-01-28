@@ -31,7 +31,6 @@ namespace InfinniPlatform.ElasticSearch.Tests.Builders
             return new ElasticFactory(
                 (indexName, typeName) => new IndexQueryExecutor(ElasticConnection.Value, TenantProvider.Value, ElasticTypeManager.Value, indexName, typeName),
                 (indexName, typeName) => new VersionBuilder(ElasticTypeManager.Value, indexName, typeName),
-                (indexName, typeName) => new ElasticSearchProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
                 (indexName, typeName) => new ElasticSearchAggregationProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
                 new ElasticSearchProviderAllIndexes(ElasticConnection.Value));
         }

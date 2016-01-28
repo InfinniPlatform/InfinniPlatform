@@ -39,10 +39,6 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<ConfigurationObjectBuilder>()
-                   .As<IConfigurationObjectBuilder>()
-                   .SingleInstance();
-
             // Documents
 
             builder.RegisterType<SystemInfoProvider>()
