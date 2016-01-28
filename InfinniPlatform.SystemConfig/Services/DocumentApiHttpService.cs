@@ -17,9 +17,7 @@ namespace InfinniPlatform.SystemConfig.Services
     /// </summary>
     internal sealed class DocumentApiHttpService : IHttpService
     {
-        public DocumentApiHttpService(IDocumentApi documentApi,
-                                      IDocumentTransactionScopeProvider transactionScopeProvider,
-                                      IPerformanceLog performanceLog)
+        public DocumentApiHttpService(IDocumentApi documentApi, IDocumentTransactionScopeProvider transactionScopeProvider, IPerformanceLog performanceLog)
         {
             _documentApi = documentApi;
             _transactionScopeProvider = transactionScopeProvider;

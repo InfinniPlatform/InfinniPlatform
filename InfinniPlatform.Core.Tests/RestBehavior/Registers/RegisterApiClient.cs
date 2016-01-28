@@ -9,9 +9,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 {
     internal sealed class RegisterApiClient : BaseRestClient
     {
-        public RegisterApiClient(string server, int port) : base(server, port)
+        public RegisterApiClient(string server, int port, bool synchronous = false) : base(server, port)
         {
+            _synchronous = synchronous;
         }
+
+        private readonly bool _synchronous;
 
         public IEnumerable<object> GetEntries(
             string configuration,
@@ -94,7 +97,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             var requestData = new RegisterApiRequest
                               {
-                                  Configuration = configuration
+                                  Configuration = configuration,
+                                  Synchronous = _synchronous
                               };
 
             RequestExecutor.PostObject(requestUri, requestData);

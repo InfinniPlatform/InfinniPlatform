@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Registers;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
@@ -8,12 +9,14 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 {
     internal sealed class RegisterApiHttpService : IHttpService
     {
-        public RegisterApiHttpService(IRegisterApi registerApi)
+        public RegisterApiHttpService(IRegisterApi registerApi, IDocumentTransactionScopeProvider transactionScopeProvider)
         {
             _registerApi = registerApi;
+            _transactionScopeProvider = transactionScopeProvider;
         }
 
         private readonly IRegisterApi _registerApi;
+        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -75,6 +78,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         {
             string configuration = request.Form.Configuration;
 
+            SetSynchronous(request.Form.Synchronous);
+
             _registerApi.RecalculateTotals(configuration);
 
             return Task.FromResult<object>(null);
@@ -83,6 +88,19 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         private static RegisterApiRequest GetRegisterRequest(IHttpRequest request)
         {
             return JsonObjectSerializer.Default.ConvertFromDynamic<RegisterApiRequest>((object)request.Form);
+        }
+
+        private void SetSynchronous(bool synchronous)
+        {
+            if (synchronous)
+            {
+                var transactionScope = _transactionScopeProvider.GetTransactionScope();
+
+                if (transactionScope != null)
+                {
+                    transactionScope.Synchronous();
+                }
+            }
         }
     }
 }

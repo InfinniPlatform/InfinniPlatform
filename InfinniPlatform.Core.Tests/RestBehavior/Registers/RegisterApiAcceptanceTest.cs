@@ -39,7 +39,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         {
             _server = InfinniPlatformInprocessHost.Start();
             _documentApi = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
-            _registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);
+            _registerApi = new RegisterApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
 
             InitTestData();
         }
