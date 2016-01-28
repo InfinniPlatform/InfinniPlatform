@@ -7,26 +7,32 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core.Threading;
+using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 
 namespace InfinniPlatform.Authentication.InternalIdentity
 {
     internal sealed class IdentityApplicationUserManager : IApplicationUserManager
     {
-        private const int TaskTimeout = 60 * 1000;
-
-
-        public IdentityApplicationUserManager(IUserIdentityProvider userIdentityProvider, UserManager<IdentityApplicationUser> userManager)
+        public IdentityApplicationUserManager(IOwinContextProvider owinContextProvider, IUserIdentityProvider userIdentityProvider)
         {
+            _owinContextProvider = owinContextProvider;
             _userIdentityProvider = userIdentityProvider;
-            _userManager = userManager;
         }
 
 
+        private readonly IOwinContextProvider _owinContextProvider;
         private readonly IUserIdentityProvider _userIdentityProvider;
-        private readonly UserManager<IdentityApplicationUser> _userManager;
+
+
+        private IOwinContext OwinContext => _owinContextProvider.GetOwinContext();
+
+        private UserManager<IdentityApplicationUser> UserManager => OwinContext.GetUserManager<UserManager<IdentityApplicationUser>>();
 
 
         public object GetCurrentUser()
@@ -44,7 +50,8 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         public void CreateUser(string userName, string password, string email = null)
         {
-            ThrowIfError(_userManager.CreateAsync(new IdentityApplicationUser { UserName = userName, Email = email }, password));
+            var result = AsyncHelper.RunSync(() => UserManager.CreateAsync(new IdentityApplicationUser { UserName = userName, Email = email }, password));
+            ThrowIfError(result);
         }
 
         public void DeleteUser(string userName)
@@ -452,27 +459,27 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         private TResult InvokeUserManager<TResult>(ProcessCurrentUserFunc<TResult> actionOnCurrentUser)
         {
             var currentUserId = GetCurrentUserId();
-            var task = actionOnCurrentUser(_userManager, currentUserId);
-            return task.Result;
+            var result = AsyncHelper.RunSync(() => actionOnCurrentUser(UserManager, currentUserId));
+            return result;
         }
 
         private void InvokeUserManager(ProcessCurrentUserFunc<IdentityResult> actionOnCurrentUser)
         {
             var currentUserId = GetCurrentUserId();
-            var task = actionOnCurrentUser(_userManager, currentUserId);
-            ThrowIfError(task);
+            var result = AsyncHelper.RunSync(() => actionOnCurrentUser(UserManager, currentUserId));
+            ThrowIfError(result);
         }
 
         private TResult InvokeUserManager<TResult>(ProcessSpecifiedUserFunc<TResult> actionOnSpecifiedUser, string userName)
         {
-            var task = ProcessSpecifiedUser(actionOnSpecifiedUser, _userManager, userName);
-            return task.Result;
+            var result = AsyncHelper.RunSync(() => ProcessSpecifiedUser(actionOnSpecifiedUser, UserManager, userName));
+            return result;
         }
 
         private void InvokeUserManager(ProcessSpecifiedUserFunc<IdentityResult> actionOnSpecifiedUser, string userName)
         {
-            var task = ProcessSpecifiedUser(actionOnSpecifiedUser, _userManager, userName);
-            ThrowIfError(task);
+            var result = AsyncHelper.RunSync(() => ProcessSpecifiedUser(actionOnSpecifiedUser, UserManager, userName));
+            ThrowIfError(result);
         }
 
         private static async Task<T> ProcessSpecifiedUser<T>(ProcessSpecifiedUserFunc<T> actionOnSpecifiedUser, UserManager<IdentityApplicationUser> userManager, string userName)
@@ -508,16 +515,11 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         }
 
 
-        private static void ThrowIfError(Task<IdentityResult> task)
+        private static void ThrowIfError(IdentityResult result)
         {
-            if (!task.Wait(TaskTimeout))
+            if (!result.Succeeded)
             {
-                throw new InvalidOperationException(Resources.OperationHasCancelledByTimeout);
-            }
-
-            if (!task.Result.Succeeded)
-            {
-                throw new InvalidOperationException(string.Join(Environment.NewLine, task.Result.Errors));
+                throw new InvalidOperationException(string.Join(Environment.NewLine, result.Errors));
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 
 using Autofac;
@@ -50,40 +51,23 @@ namespace InfinniPlatform.IoC.Owin.Middleware
         }
 
 
-        [ThreadStatic]
-        private static WeakReference<ILifetimeScope> _requestContainerReference;
-
-        /// <summary>
-        /// Возвращает слабую ссылку на контейнер зависимостей запроса.
-        /// </summary>
-        /// <remarks>
-        /// Во-первых, хранится только слабая ссылка на контейнер зависимостей запроса, поскольку он создается только
-        /// на время обработки запроса и уничтожается автоматически (using). В противном случае будет нарушен жизненный
-        /// цикл контейнеров. Во-вторых, ссылка хранится, как ThreadStatic, так как запросы обрабатываются параллельно,
-        /// но при этом есть необходимость в доступе к контейнеру запроса, например, чтобы была возможность сделать
-        /// абстракцию единого контейнера так и не задумываться о ILifetimeScope в прикладном коде. В-третьих, ссылка
-        /// устанавливается перед началом обработки запроса и сбрасывается (null) в конце, так как поток обработки
-        /// запроса берется из пула и может быть использован повторно.
-        /// </remarks>
-        private static WeakReference<ILifetimeScope> RequestContainerReference
-        {
-            get
-            {
-                if (_requestContainerReference == null)
-                {
-                    _requestContainerReference = new WeakReference<ILifetimeScope>(null);
-                }
-
-                return _requestContainerReference;
-            }
-        }
+        private const string RequestContainerKey = "RequestContainer";
 
         /// <summary>
         /// Устанавливает контейнер зависимостей запроса.
         /// </summary>
+        /// <remarks>
+        /// Во-первых, хранится только слабая ссылка на контейнер зависимостей запроса, поскольку он создается только
+        /// на время обработки запроса и уничтожается автоматически (using). В противном случае будет нарушен жизненный
+        /// цикл контейнера. Во-вторых, ссылка хранится в CallContext, чтобы она была доступна в любом месте обработки
+        /// запроса, включая места распараллеливания через async/await. В-третьих, ссылка устанавливается перед началом
+        /// обработки запроса и сбрасывается (null) в конце, так как поток обработки запроса берется из пула и может быть
+        /// использован повторно.
+        /// </remarks>
         private static void SetRequestContainer(ILifetimeScope requestContainer)
         {
-            RequestContainerReference.SetTarget(requestContainer);
+            var requestContainerReference = new WeakReference<ILifetimeScope>(requestContainer);
+            CallContext.LogicalSetData(RequestContainerKey, requestContainerReference);
         }
 
         /// <summary>
@@ -92,8 +76,8 @@ namespace InfinniPlatform.IoC.Owin.Middleware
         public static ILifetimeScope TryGetRequestContainer()
         {
             ILifetimeScope requestContainer;
-
-            return RequestContainerReference.TryGetTarget(out requestContainer) ? requestContainer : null;
+            var requestContainerReference = CallContext.LogicalGetData(RequestContainerKey) as WeakReference<ILifetimeScope>;
+            return (requestContainerReference != null && requestContainerReference.TryGetTarget(out requestContainer)) ? requestContainer : null;
         }
     }
 }

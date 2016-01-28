@@ -27,7 +27,8 @@ namespace InfinniPlatform.Authentication.IoC
 
             // Менеджер работы с учетными записями пользователей на уровне приложения
             builder.RegisterType<IdentityApplicationUserManager>()
-                   .As<IApplicationUserManager>();
+                   .As<IApplicationUserManager>()
+                   .SingleInstance();
 
             // Модули аутентификации
 

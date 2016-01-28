@@ -21,6 +21,9 @@ using Microsoft.Owin.Security;
 
 namespace InfinniPlatform.Authentication.Services
 {
+    /// <summary>
+    /// Сервис аутентификации пользователей системы.
+    /// </summary>
     internal class AuthHttpService : IHttpService
     {
         public AuthHttpService(IOwinContextProvider owinContextProvider, IUserIdentityProvider userIdentityProvider)
@@ -48,24 +51,25 @@ namespace InfinniPlatform.Authentication.Services
         {
             builder.ServicePath = "/Auth";
 
-            // Методы работы с учетной записью пользователя
+            // Методы работы с учетной записью
             builder.Post["/GetCurrentUser"] = GetCurrentUser;
             builder.Post["/ChangePassword"] = ChangePassword;
 
-            // Методы входа пользователя в систему
+            // Методы входа и выхода в систему
             builder.Post["/SignInInternal"] = SignInInternal;
             builder.Post["/SignInExternal"] = SignInExternal;
             builder.Get["/SignInExternalCallback"] = SignInExternalCallback;
+            builder.Post["/SignOut"] = SignOut;
 
             // Методы для работы с внешними провайдерами аутентификации
             builder.Post["/GetExternalProviders"] = GetExternalProviders;
             builder.Post["/LinkExternalLogin"] = LinkExternalLogin;
             builder.Get["/LinkExternalLoginCallback"] = LinkExternalLoginCallback;
             builder.Post["/UnlinkExternalLogin"] = UnlinkExternalLogin;
-
-            // Метод выхода из системы
-            builder.Post["/SignOut"] = SignOut;
         }
+
+
+        // ACCOUNT
 
 
         /// <summary>
@@ -113,6 +117,13 @@ namespace InfinniPlatform.Authentication.Services
             return CreateResponse(changePasswordTask);
         }
 
+
+        // SIGNIN & SIGNOUT
+
+
+        /// <summary>
+        /// Осуществляет вход пользователя в систему через внутренний провайдер.
+        /// </summary>
         private async Task<object> SignInInternal(IHttpRequest request)
         {
             dynamic signInForm = request.Form;
@@ -132,14 +143,22 @@ namespace InfinniPlatform.Authentication.Services
                 return BadRequest(Resources.InvalidUsernameOrPassword);
             }
 
-            return SignIn(user, remember);
+            return await SignIn(user, remember);
         }
 
+        /// <summary>
+        /// Осуществляет вход пользователя в систему через внешний провайдер.
+        /// </summary>
         private Task<object> SignInExternal(IHttpRequest request)
         {
-            return Task.FromResult<object>(ChallengeExternalProvider(request, "/SignInExternalCallback"));
+            var challengeResult = ChallengeExternalProvider(request, "/SignInExternalCallback");
+
+            return Task.FromResult<object>(challengeResult);
         }
 
+        /// <summary>
+        /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
+        /// </summary>
         private Task<object> SignInExternalCallback(IHttpRequest request)
         {
             return ChallengeExternalProviderCallback(request, async loginInfo =>
@@ -174,6 +193,82 @@ namespace InfinniPlatform.Authentication.Services
             });
         }
 
+        /// <summary>
+        /// Осуществляет вход указанного пользователя в систему.
+        /// </summary>
+        private async Task<object> SignIn(IdentityApplicationUser user, bool? remember)
+        {
+            // Выход из системы
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+
+            // Создание новых учетных данных
+            var identity = await ApplicationUserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+            // Вход в систему с новыми учетными данными
+            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = (remember == true) }, identity);
+
+            var userInfo = BuildSafeUserInfo(user, identity);
+
+            return CreateResponse(userInfo);
+        }
+
+        /// <summary>
+        /// Создает учетную запись пользователя по информации внешнего провайдера.
+        /// </summary>
+        private static IdentityApplicationUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
+        {
+            var userName = loginInfo.DefaultUserName;
+
+            if (loginInfo.Login != null)
+            {
+                userName = $"{loginInfo.Login.LoginProvider}{loginInfo.Login.ProviderKey}".Replace(" ", "");
+            }
+
+            var user = new IdentityApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = userName,
+                Email = loginInfo.Email,
+                EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
+            };
+
+            if (loginInfo.ExternalIdentity != null && loginInfo.ExternalIdentity.Claims != null)
+            {
+                user.Claims = loginInfo.ExternalIdentity.Claims.Select(CreateUserClaim);
+            }
+
+            return user;
+        }
+
+        /// <summary>
+        /// Осуществляет выход пользователя из системы.
+        /// </summary>
+        private Task<object> SignOut(IHttpRequest request)
+        {
+            // Выход из системы
+            AuthenticationManager.SignOut();
+
+            return Task.FromResult<object>(HttpResponse.Ok);
+        }
+
+
+        // EXTERNAL PROVIDERS
+
+
+        /// <summary>
+        /// Возвращает список внешних провайдеров входа в систему.
+        /// </summary>
+        private Task<object> GetExternalProviders(IHttpRequest request)
+        {
+            var loginProviders = AuthenticationManager.GetExternalAuthenticationTypes();
+            var loginProvidersList = (loginProviders != null) ? loginProviders.Select(i => new { Type = i.AuthenticationType, Name = i.Caption }).ToArray() : null;
+
+            return Task.FromResult<object>(CreateResponse(loginProvidersList));
+        }
+
+        /// <summary>
+        /// Добавляет текущему пользователю имя входа у внешнего провайдера.
+        /// </summary>
         private Task<object> LinkExternalLogin(IHttpRequest request)
         {
             if (!IsAuthenticated())
@@ -181,16 +276,16 @@ namespace InfinniPlatform.Authentication.Services
                 return Task.FromResult<object>(NotAuthenticated());
             }
 
-            return Task.FromResult<object>(ChallengeExternalProvider(request, "/LinkExternalLoginCallback"));
+            var challengeResult = ChallengeExternalProvider(request, "/LinkExternalLoginCallback");
+
+            return Task.FromResult<object>(challengeResult);
         }
 
+        /// <summary>
+        /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
+        /// </summary>
         private Task<object> LinkExternalLoginCallback(IHttpRequest request)
         {
-            if (!IsAuthenticated())
-            {
-                return Task.FromResult<object>(NotAuthenticated());
-            }
-
             return ChallengeExternalProviderCallback(request, async loginInfo =>
             {
                 // Определение текущего пользователя
@@ -203,6 +298,9 @@ namespace InfinniPlatform.Authentication.Services
             });
         }
 
+        /// <summary>
+        /// Удаляет у текущего пользователя имя входа у внешнего провайдера.
+        /// </summary>
         private async Task<object> UnlinkExternalLogin(IHttpRequest request)
         {
             if (!IsAuthenticated())
@@ -233,89 +331,19 @@ namespace InfinniPlatform.Authentication.Services
             return CreateResponse(removeLoginTask);
         }
 
-        private Task<object> GetExternalProviders(IHttpRequest request)
-        {
-            var loginProviders = AuthenticationManager.GetExternalAuthenticationTypes();
-            var loginProvidersList = (loginProviders != null) ? loginProviders.Select(i => new { Type = i.AuthenticationType, Name = i.Caption }).ToArray() : null;
-            return Task.FromResult<object>(CreateResponse(loginProvidersList));
-        }
 
-        private Task<object> SignOut(IHttpRequest request)
-        {
-            // Выход из системы
-            AuthenticationManager.SignOut();
+        // CHALLENGE
 
-            return Task.FromResult<object>(HttpResponse.Ok);
-        }
-
-
-        // HELPERS
-
-        private bool IsAuthenticated()
-        {
-            return (Identity != null && Identity.IsAuthenticated);
-        }
-
-        private Task<IdentityApplicationUser> GetUserInfo()
-        {
-            var userId = SecurityExtensions.GetUserId(Identity);
-
-            var userInfo = ApplicationUserManager.FindByIdAsync(userId);
-
-            return userInfo;
-        }
-
-
-        private async Task<object> SignIn(IdentityApplicationUser user, bool? remember)
-        {
-            // Выход из системы
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-
-            // Создание новых учетных данных
-            var identity = await ApplicationUserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-
-            // Вход в систему с новыми учетными данными
-            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = (remember == true) }, identity);
-
-            var userInfo = BuildSafeUserInfo(user, identity);
-
-            return CreateResponse(userInfo);
-        }
-
-        private static IdentityApplicationUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
-        {
-            var userName = loginInfo.DefaultUserName;
-
-            if (loginInfo.Login != null)
-            {
-                userName = $"{loginInfo.Login.LoginProvider}{loginInfo.Login.ProviderKey}".Replace(" ", "");
-            }
-
-            var user = new IdentityApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserName = userName,
-                Email = loginInfo.Email,
-                EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
-            };
-
-            if (loginInfo.ExternalIdentity != null && loginInfo.ExternalIdentity.Claims != null)
-            {
-                user.Claims = loginInfo.ExternalIdentity.Claims.Select(CreateUserClaim);
-            }
-
-            return user;
-        }
 
         /// <summary>
         /// Осуществляет переход на страницу входа внешнего провайдера.
         /// </summary>
         private IHttpResponse ChallengeExternalProvider(IHttpRequest request, string callbackPath)
         {
-            dynamic signInForm = request.Form;
-            string provider = signInForm.Provider;
-            string successUrl = signInForm.SuccessUrl;
-            string failureUrl = signInForm.FailureUrl;
+            dynamic challengeForm = request.Form;
+            string provider = challengeForm.Provider;
+            string successUrl = challengeForm.SuccessUrl;
+            string failureUrl = challengeForm.FailureUrl;
 
             if (string.IsNullOrWhiteSpace(provider))
             {
@@ -348,6 +376,9 @@ namespace InfinniPlatform.Authentication.Services
             return response;
         }
 
+        /// <summary>
+        /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
+        /// </summary>
         private async Task<object> ChallengeExternalProviderCallback(IHttpRequest request, Func<ExternalLoginInfo, Task<string>> callbackAction)
         {
             var successUrl = request.Query.SuccessUrl;
@@ -378,19 +409,36 @@ namespace InfinniPlatform.Authentication.Services
 
             RedirectHttpResponse response;
 
-            if (!string.IsNullOrEmpty(errorMessage))
+            if (string.IsNullOrEmpty(errorMessage))
             {
-                response = new RedirectHttpResponse(new UrlBuilder(failureUrl).AddQuery("error", errorMessage).ToString());
-                response.SetHeader("Warning", errorMessage);
+                response = new RedirectHttpResponse(successUrl);
             }
             else
             {
-                response = new RedirectHttpResponse(successUrl);
+                response = new RedirectHttpResponse(new UrlBuilder(failureUrl).AddQuery("error", errorMessage).ToString());
+                response.SetHeader("Warning", errorMessage);
             }
 
             return response;
         }
 
+
+        // USER INFO
+
+
+        private bool IsAuthenticated()
+        {
+            return (Identity != null && Identity.IsAuthenticated);
+        }
+
+        private Task<IdentityApplicationUser> GetUserInfo()
+        {
+            var userId = SecurityExtensions.GetUserId(Identity);
+
+            var userInfo = ApplicationUserManager.FindByIdAsync(userId);
+
+            return userInfo;
+        }
 
         private static object BuildSafeUserInfo(IdentityApplicationUser user, IIdentity identity)
         {
@@ -444,20 +492,25 @@ namespace InfinniPlatform.Authentication.Services
         }
 
 
+        // RESPONSES
+
+
         private static IHttpResponse NotAuthenticated()
         {
-            // TODO: 401
+            // TODO: Следует возвращать статус 401.
             return new TextHttpResponse(Resources.RequestIsNotAuthenticated) { StatusCode = 400 };
         }
 
         private static IHttpResponse BadRequest(string message)
         {
-            // TODO: Unify
+            // TODO: Следует унифицировать ответ об ошибке.
             return new TextHttpResponse(message) { StatusCode = 400 };
         }
 
         private static IHttpResponse CreateResponse(object result)
         {
+            // TODO: Следует унифицировать ответ с результатом.
+
             if (result != null)
             {
                 return new JsonHttpResponse(result) { StatusCode = 200 };
