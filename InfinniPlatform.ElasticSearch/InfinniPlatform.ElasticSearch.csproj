@@ -99,8 +99,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SortBuilders\SortContainer.cs" />
-    <Compile Include="Versioning\IVersionBuilder.cs" />
-    <Compile Include="Versioning\VersionBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
 
@@ -28,13 +29,15 @@ namespace InfinniPlatform.Owin.Services
                                                  IUserIdentityProvider userIdentityProvider,
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
-                                                 IEnumerable<IHttpService> httpServices)
+                                                 IEnumerable<IHttpService> httpServices,
+                                                 IPerformanceLog performanceLog)
         {
             _mimeTypeResolver = mimeTypeResolver;
             _userIdentityProvider = userIdentityProvider;
             _httpRequestExcutorFactory = httpRequestExcutorFactory;
             _httpGlobalHandlers = httpGlobalHandlers;
             _httpServices = httpServices;
+            _performanceLog = performanceLog;
 
             _nancyHttpServices = new Lazy<Dictionary<Type, NancyHttpService>>(CreateNancyHttpServices);
         }
@@ -45,6 +48,7 @@ namespace InfinniPlatform.Owin.Services
         private readonly HttpRequestExcutorFactory _httpRequestExcutorFactory;
         private readonly IEnumerable<IHttpGlobalHandler> _httpGlobalHandlers;
         private readonly IEnumerable<IHttpService> _httpServices;
+        private readonly IPerformanceLog _performanceLog;
 
         private readonly Lazy<Dictionary<Type, NancyHttpService>> _nancyHttpServices;
 
@@ -176,9 +180,12 @@ namespace InfinniPlatform.Owin.Services
                 // Функция обработки метода сервиса в контексте выполнения Nancy
                 Func<NancyContext, Task<object>> nancyAction = async nancyContext =>
                                                                      {
+                                                                         var start = DateTime.Now;
                                                                          var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider);
                                                                          var result = await onHandleGlobal(httpRequest);
-                                                                         return CreateNancyHttpResponse(nancyContext, result);
+                                                                         var nancyHttpResponse = CreateNancyHttpResponse(nancyContext, result);
+                                                                         _performanceLog.Log("HttpServiceNancyModuleInitializer", "CreateNancyHttpServiceRoutes", start);
+                                                                         return nancyHttpResponse;
                                                                      };
 
                 var nancyRoute = new NancyHttpServiceRoute

@@ -78,6 +78,7 @@
     <Compile Include="ElasticWrappers\ElasticSearchFilterBuilderCriteriaTests.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchIndexStateBehavior.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchModelExpressionBehavior.cs" />
+    <Compile Include="ElasticDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
