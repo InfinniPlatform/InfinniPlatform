@@ -33,14 +33,15 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             foreach (var school in SchoolsFactory.CreateSchoolsForFacetsTesting())
             {
                 // Преобразование школы в объект типа dynamic
-                IDictionary<string, object> expando = new ExpandoObject();
+                dynamic dynamicSchool = ElasticDocument.Create();
                 foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(school.GetType()))
-                    expando.Add(property.Name, property.GetValue(school));
+                {
+                    dynamicSchool.Values[property.Name] = property.GetValue(school);
+                }
 
-                dynamic dynSchool = expando as ExpandoObject;
-                dynSchool.Id = Guid.NewGuid().ToString().ToLowerInvariant();
+                dynamicSchool.Values["Id"] = Guid.NewGuid().ToString().ToLowerInvariant();
 
-                _elasticConnection.Client.Index((object)dynSchool, i => i.Index(IndexName.ToLower()).Type(IndexName.ToLower()));
+                _elasticConnection.Client.Index((object)dynamicSchool, i => i.Index(IndexName.ToLower()).Type(IndexName.ToLower()));
             }
 
             _elasticConnection.Refresh();
@@ -57,9 +58,6 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             var count = result.First(s => s.Name == "badschool").DocCount;
 
             Assert.IsTrue(count > 0);
-
-            // Получение списка имен школ
-            var names = result.Select(school => school.Name).ToList();
 
             var ratings = new List<string>();
 
@@ -80,13 +78,13 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 	        points.Value = string.Format("{0}\n{1}", 2.5, 4.5);
 
             // Пример агрегации по диапазонам
-            var rangeDim = new
-            {
-                Label = "grouping_by_rating",
-                FieldName = "Rating",
-                DimensionType = DimensionType.Range,
-                ValueSet = points
-            }.ToDynamic();
+            var rangeDim = new DynamicWrapper
+                           {
+                               ["Label"] = "grouping_by_rating",
+                               ["FieldName"] = "Rating",
+                               ["DimensionType"] = DimensionType.Range,
+                               ["ValueSet"] = points
+                           };
 
             result = executor.ExecuteAggregation(new[] { rangeDim }, new[] { AggregationType.Min, AggregationType.Max }, new[] { "Principal.Grade", "Principal.KnowledgeRating" });
 

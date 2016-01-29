@@ -53,11 +53,11 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             foreach (var school in SchoolsFactory.CreateSchools())
             {
                 // Преобразование школы в объект типа dynamic
-                var expando = new DynamicWrapper();
+                var expando = ElasticDocument.Create();
                 foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(school.GetType()))
-                    expando[property.Name] = property.GetValue(school);
+                    expando.Values[property.Name] = property.GetValue(school);
 
-                expando["Id"] = Guid.NewGuid().ToString().ToLowerInvariant();
+                expando.Values["Id"] = Guid.NewGuid().ToString().ToLowerInvariant();
                 
                 elasticConnection.Client.Index((object)expando, i => i.Index(IndexName.ToLower()).Type(IndexName.ToLower()));
             }
