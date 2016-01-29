@@ -72,7 +72,6 @@
     <Compile Include="Builders\ElasticFactoryBuilder.cs" />
     <Compile Include="Builders\SchoolsFactory.cs" />
     <Compile Include="Builders\TestPerson.cs" />
-    <Compile Include="Builders\TestPersonIndexBuilder.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchAggregationExecutorTests.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchBehavior.cs" />
     <Compile Include="ElasticWrappers\ElasticSearchFilterBuilderCriteriaTests.cs" />

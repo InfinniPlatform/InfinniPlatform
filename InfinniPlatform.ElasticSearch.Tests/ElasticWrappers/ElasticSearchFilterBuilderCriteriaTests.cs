@@ -59,7 +59,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
                 expando.Values["Id"] = Guid.NewGuid().ToString().ToLowerInvariant();
                 
-                elasticConnection.Client.Index((object)expando, i => i.Index(IndexName.ToLower()).Type(IndexName.ToLower()));
+                elasticConnection.Client.Index((object)expando, i => i.Index(IndexName).Type(IndexName + "_typeschema_0"));
             }
 
             elasticConnection.Refresh();
