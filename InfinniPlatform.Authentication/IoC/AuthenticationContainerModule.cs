@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Authentication.InternalIdentity;
-using InfinniPlatform.Authentication.Middleware;
 using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin.Modules;
@@ -58,10 +57,6 @@ namespace InfinniPlatform.Authentication.IoC
 
             builder.RegisterType<InternalAuthOwinHostingModule>()
                    .As<IOwinHostingModule>()
-                   .SingleInstance();
-
-            builder.RegisterType<InternalAuthOwinMiddleware>()
-                   .AsSelf()
                    .SingleInstance();
 
             // Сервисы аутентификации

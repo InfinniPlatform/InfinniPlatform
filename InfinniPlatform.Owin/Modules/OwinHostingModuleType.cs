@@ -22,33 +22,28 @@
         Cors = 2,
 
         /// <summary>
-        /// Уровень обработки запросов информации о системе.
-        /// </summary>
-        SystemInfo = 4,
-
-        /// <summary>
         /// Уровень обработки аутентификации через Cookie.
         /// </summary>
-        CookieAuth = 8,
+        CookieAuth = 4,
 
         /// <summary>
         /// Уровень обработки аутентификации через внешний провайдер.
         /// </summary>
-        ExternalAuth = 16,
+        ExternalAuth = 8,
 
         /// <summary>
         /// Уровень обработки аутентификации через внутренний провайдер.
         /// </summary>
-        InternalAuth = 32,
+        InternalAuth = 16,
 
         /// <summary>
         /// Уровень обработки запросов ASP.NET SignalR.
         /// </summary>
-        AspNetSignalR = 64,
+        AspNetSignalR = 32,
 
         /// <summary>
         /// Уровень обработки прикладных запросов.
         /// </summary>
-        Application = 128
+        Application = 64
     }
 }

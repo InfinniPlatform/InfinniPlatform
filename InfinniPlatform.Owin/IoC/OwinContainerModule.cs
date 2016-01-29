@@ -62,14 +62,6 @@ namespace InfinniPlatform.Owin.IoC
             builder.RegisterType<ErrorHandlingOwinMiddleware>()
                    .AsSelf()
                    .SingleInstance();
-
-            builder.RegisterType<SystemInfoOwinHostingModule>()
-                   .As<IOwinHostingModule>()
-                   .SingleInstance();
-
-            builder.RegisterType<SystemInfoOwinMiddleware>()
-                   .AsSelf()
-                   .SingleInstance();
         }
     }
 }

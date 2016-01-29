@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+
 using InfinniPlatform.Owin.Properties;
 
 namespace InfinniPlatform.Owin
@@ -11,7 +12,7 @@ namespace InfinniPlatform.Owin
         private static readonly Guid ApplicationId = new Guid("{a6c54cea-f380-42d3-b1d5-d71d2de1a02f}");
 
         /// <summary>
-        ///     Определяет, является ли адрес локальным.
+        /// Определяет, является ли адрес локальным.
         /// </summary>
         public static bool IsLocalAddress(this string address, out string normalizeAddress)
         {
@@ -62,7 +63,7 @@ namespace InfinniPlatform.Owin
         }
 
         /// <summary>
-        ///     Осуществляет привязку сертификата к порту.
+        /// Осуществляет привязку сертификата к порту.
         /// </summary>
         public static void BindCertificate(int port, string certificate)
         {
@@ -81,18 +82,17 @@ namespace InfinniPlatform.Owin
             try
             {
                 var normalizeCertificate = certificate.Trim().Replace(" ", "");
-                var certificateBytes =
-                    Enumerable.Range(0, normalizeCertificate.Length)
-                        .Where(i => i%2 == 0)
-                        .Select(i => Convert.ToByte(normalizeCertificate.Substring(i, 2), 16))
-                        .ToArray();
+
+                var certificateBytes = Enumerable.Range(0, normalizeCertificate.Length)
+                                                 .Where(i => i % 2 == 0)
+                                                 .Select(i => Convert.ToByte(normalizeCertificate.Substring(i, 2), 16))
+                                                 .ToArray();
 
                 NativeHttpApi.CreateBindCertificate(endPoint, certificateBytes, StoreName.My, ApplicationId);
             }
             catch (Exception error)
             {
-                throw new InvalidOperationException(
-                    string.Format(Resources.ServerCertificateCannotBindOnPort, certificate, port), error);
+                throw new InvalidOperationException(string.Format(Resources.ServerCertificateCannotBindOnPort, certificate, port), error);
             }
         }
     }

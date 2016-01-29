@@ -69,11 +69,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Formatting\FormBodyFormatter.cs" />
-    <Compile Include="Formatting\IBodyFormatter.cs" />
-    <Compile Include="Formatting\JsonBodyFormatter.cs" />
     <Compile Include="Hosting\OwinHostingServiceFactory.cs" />
-    <Compile Include="Middleware\StatusCodeHandlerResult.cs" />
     <Compile Include="Security\IOwinContextProvider.cs" />
     <Compile Include="Security\OwinContextProvider.cs" />
     <Compile Include="Security\OwinUserIdentityProvider.cs" />
@@ -89,21 +85,11 @@
     <Compile Include="Services\HttpServiceRouteBuilder.cs" />
     <Compile Include="Services\NancyHttpRequestFile.cs" />
     <Compile Include="IoC\OwinContainerModule.cs" />
-    <Compile Include="Middleware\CurrentPrincipalTransmitter.cs" />
-    <Compile Include="Middleware\EmptyRequestHandlerResult.cs" />
-    <Compile Include="Middleware\ErrorRequestHandlerResult.cs" />
-    <Compile Include="Middleware\HandlerRouting.cs" />
-    <Compile Include="Middleware\IHandlerRegistration.cs" />
-    <Compile Include="Middleware\IRequestHandlerResult.cs" />
-    <Compile Include="Middleware\PathStringProvider.cs" />
-    <Compile Include="Middleware\RegistrationHandlerBase.cs" />
-    <Compile Include="Middleware\SystemInfoOwinMiddleware.cs" />
     <Compile Include="Middleware\ErrorHandlingOwinMiddleware.cs" />
     <Compile Include="Modules\IOwinHostingContext.cs" />
     <Compile Include="Modules\IOwinMiddlewareResolver.cs" />
     <Compile Include="Modules\OwinHostingContext.cs" />
     <Compile Include="Modules\OwinHostingModuleType.cs" />
-    <Compile Include="Modules\SystemInfoOwinHostingModule.cs" />
     <Compile Include="Modules\ErrorHandlingOwinHostingModule.cs" />
     <Compile Include="NativeHttpApi.cs" />
     <Compile Include="OwinExtensions.cs" />
@@ -118,11 +104,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Middleware\RoutingOwinMiddleware.cs" />
     <Compile Include="Services\HttpServiceNancyModuleCatalog.cs" />
     <Compile Include="Services\HttpServiceNancyModuleInitializer.cs" />
     <Compile Include="UrlBuilder.cs" />
-    <Compile Include="Middleware\ValueRequestHandlerResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -71,6 +71,7 @@
     <Compile Include="Metadata\MetadataApi.cs" />
     <Compile Include="Registers\AggregationUtils.cs" />
     <Compile Include="Registers\RegisterApi.cs" />
+    <Compile Include="Services\SystemInfoHttpService.cs" />
     <Compile Include="Transactions\DocumentTransactionLog.cs" />
     <Compile Include="Transactions\DocumentTransactionScope.cs" />
     <Compile Include="UserStorage\ElasticSearchUserStorage.cs" />
