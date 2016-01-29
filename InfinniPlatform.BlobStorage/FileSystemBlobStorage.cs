@@ -40,11 +40,9 @@ namespace InfinniPlatform.BlobStorage
     /// ошибок, а доступ к каждому файлу контролировать механизмом, подобным
     /// <see cref="System.Threading.ReaderWriterLockSlim"/>, но более простым.
     /// </remarks>
+    [LoggerName("BlobStorage")]
     internal sealed class FileSystemBlobStorage : IBlobStorage
     {
-        private const string LogComponentName = "FileSystemBlobStorage";
-
-
         public FileSystemBlobStorage(FileSystemBlobStorageSettings settings, IMimeTypeResolver mimeTypeResolver, IPerformanceLog performanceLog)
         {
             _baseDirectory = settings.BaseDirectory;
@@ -75,13 +73,13 @@ namespace InfinniPlatform.BlobStorage
 
                 var result = ReadBlobInfo(blobId);
 
-                _performanceLog.Log(LogComponentName, "GetBlobInfo", start);
+                _performanceLog.Log("GetBlobInfo", start);
 
                 return result;
             }
             catch (Exception e)
             {
-                _performanceLog.Log(LogComponentName, "GetBlobInfo", start, e);
+                _performanceLog.Log("GetBlobInfo", start, e);
 
                 throw;
             }
@@ -109,13 +107,13 @@ namespace InfinniPlatform.BlobStorage
                     }
                     : null;
 
-                _performanceLog.Log(LogComponentName, "GetBlobData", start);
+                _performanceLog.Log("GetBlobData", start);
 
                 return result;
             }
             catch (Exception e)
             {
-                _performanceLog.Log(LogComponentName, "GetBlobData", start, e);
+                _performanceLog.Log("GetBlobData", start, e);
 
                 throw;
             }
@@ -163,11 +161,11 @@ namespace InfinniPlatform.BlobStorage
                 WriteBlobInfo(blobId, blobInfo);
                 WriteBlobData(blobId, blobData);
 
-                _performanceLog.Log(LogComponentName, "UpdateBlob", start);
+                _performanceLog.Log("UpdateBlob", start);
             }
             catch (Exception e)
             {
-                _performanceLog.Log(LogComponentName, "UpdateBlob", start, e);
+                _performanceLog.Log("UpdateBlob", start, e);
 
                 throw;
             }
@@ -186,11 +184,11 @@ namespace InfinniPlatform.BlobStorage
 
                 TryDeleteDirectory(blobId);
 
-                _performanceLog.Log(LogComponentName, "DeleteBlob", start);
+                _performanceLog.Log("DeleteBlob", start);
             }
             catch (Exception e)
             {
-                _performanceLog.Log(LogComponentName, "DeleteBlob", start, e);
+                _performanceLog.Log("DeleteBlob", start, e);
 
                 throw;
             }

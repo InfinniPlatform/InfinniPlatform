@@ -15,12 +15,9 @@ namespace InfinniPlatform.SystemConfig.Transactions
     /// <summary>
     /// Предоставляет методы управления транзакцией.
     /// </summary>
+    [LoggerName("TransactionScope")]
     internal sealed class DocumentTransactionScope : IDocumentTransactionScope
     {
-        private const string PerformanceLogComponent = "TransactionScope";
-        private const string PerformanceLogComplete = "Complete";
-
-
         public DocumentTransactionScope(ITenantProvider tenantProvider, ElasticConnection elasticConnection, ElasticTypeManager elasticTypeManager, IPerformanceLog performanceLog)
         {
             _tenantProvider = tenantProvider;
@@ -184,11 +181,11 @@ namespace InfinniPlatform.SystemConfig.Transactions
                         }
                     }
 
-                    _performanceLog.Log(PerformanceLogComponent, PerformanceLogComplete, startTime);
+                    _performanceLog.Log("Complete", startTime);
                 }
                 catch (Exception exception)
                 {
-                    _performanceLog.Log(PerformanceLogComponent, PerformanceLogComplete, startTime, exception.GetFullMessage());
+                    _performanceLog.Log("Complete", startTime, exception);
 
                     throw;
                 }

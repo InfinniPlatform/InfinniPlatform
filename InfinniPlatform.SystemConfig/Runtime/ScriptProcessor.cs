@@ -9,9 +9,9 @@ using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.Runtime
 {
+    [LoggerName("ScriptProcessor")]
     internal sealed class ScriptProcessor : IScriptProcessor
     {
-        private const string PerformanceLogComponent = "ScriptProcessor";
         private const string PerformanceLogMethod = "Invoke";
 
 
@@ -86,7 +86,7 @@ namespace InfinniPlatform.SystemConfig.Runtime
 
         private void LogSuccessComplete(string actionUnitId, string actionUnitType, DateTime start)
         {
-            _performanceLog.Log(PerformanceLogComponent, actionUnitType ?? actionUnitId ?? PerformanceLogMethod, start, null);
+            _performanceLog.Log(actionUnitType ?? actionUnitId ?? PerformanceLogMethod, start);
         }
 
         private void LogErrorComplete(string actionUnitId, string actionUnitType, DateTime start, string message, Exception error)
@@ -99,7 +99,7 @@ namespace InfinniPlatform.SystemConfig.Runtime
 
             _log.Error(message, errorContext, error);
 
-            _performanceLog.Log(PerformanceLogComponent, PerformanceLogMethod, start, message);
+            _performanceLog.Log(actionUnitType ?? actionUnitId ?? PerformanceLogMethod, start, message);
         }
     }
 }

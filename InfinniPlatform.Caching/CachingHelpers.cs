@@ -5,7 +5,6 @@
         public const string RedisStarWildcards = "*";
 
         // IPerformanceLog
-        public const string PerformanceLogRedisComponent = "Redis";
         public const string PerformanceLogRedisContainsMethod = "Contains";
         public const string PerformanceLogRedisGetMethod = "Get";
         public const string PerformanceLogRedisSetMethod = "Set";

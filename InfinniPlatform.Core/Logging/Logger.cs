@@ -11,10 +11,11 @@ namespace InfinniPlatform.Core.Logging
     {
         static Logger()
         {
-            Log = new Log4NetLog(log4net.LogManager.GetLogger("InfinniPlatform"));
+            Log = LogManagerCache.GetLog(typeof(Logger));
 
             // Интеграция с System.Diagnostics.Trace
-            Trace.Listeners.Add(new LogTraceListener(Log));
+            var traceLog = LogManagerCache.GetLog(typeof(LogTraceListener));
+            Trace.Listeners.Add(new LogTraceListener(traceLog));
         }
 
         /// <summary>

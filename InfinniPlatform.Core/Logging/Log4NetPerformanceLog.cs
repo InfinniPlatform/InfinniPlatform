@@ -16,14 +16,14 @@ namespace InfinniPlatform.Core.Logging
 
         private readonly log4net.ILog _internalLog;
 
-        public void Log(string component, string method, TimeSpan duration, string outcome = null)
+        public void Log(string method, TimeSpan duration, string outcome = null)
         {
             _internalLog.InfoFormat("{0} {1} {2}", method, (long)duration.TotalMilliseconds, outcome ?? "<null>");
         }
 
-        public void Log(string component, string method, DateTime start, string outcome = null)
+        public void Log(string method, DateTime start, string outcome = null)
         {
-            Log(component, method, DateTime.Now - start, outcome);
+            Log(method, DateTime.Now - start, outcome);
         }
     }
 }

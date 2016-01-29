@@ -60,6 +60,7 @@
     <Compile Include="ClientNotification\IClientNotificationService.cs" />
     <Compile Include="Documents\DocumentExtensions.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
+    <Compile Include="Logging\LoggerNameAttribute.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
     <Compile Include="Services\IMimeTypeProvider.cs" />
     <Compile Include="Settings\IAppEnvironment.cs" />

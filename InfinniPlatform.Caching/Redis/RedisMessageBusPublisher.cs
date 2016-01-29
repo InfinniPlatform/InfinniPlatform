@@ -10,6 +10,7 @@ namespace InfinniPlatform.Caching.Redis
     /// <summary>
     /// Реализует интерфейс публикации сообщений в шину на базе Redis.
     /// </summary>
+    [LoggerName("Redis")]
     internal sealed class RedisMessageBusPublisher : IMessageBusPublisher
     {
         /// <summary>
@@ -58,7 +59,7 @@ namespace InfinniPlatform.Caching.Redis
             {
                 _connectionFactory.GetClient().Publish(wrappedKey, value);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisPublishMethod, startTime, null);
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisPublishMethod, startTime);
             }
             catch (Exception exception)
             {
@@ -70,7 +71,7 @@ namespace InfinniPlatform.Caching.Redis
 
                 _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisPublishMethod, startTime, exception.GetFullMessage());
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisPublishMethod, startTime, exception);
 
                 throw;
             }

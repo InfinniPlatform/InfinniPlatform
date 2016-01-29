@@ -23,6 +23,7 @@ namespace InfinniPlatform.Owin.Services
     /// конвертируя правила маршрутизации системы в правила маршрутизации Nancy таким образом, чтобы этап инициализации
     /// модулей Nancy был максимально простым и быстрым.
     /// </remarks>
+    [LoggerName("Nancy")]
     internal sealed class HttpServiceNancyModuleInitializer
     {
         public HttpServiceNancyModuleInitializer(IMimeTypeResolver mimeTypeResolver,
@@ -181,11 +182,25 @@ namespace InfinniPlatform.Owin.Services
                 Func<NancyContext, Task<object>> nancyAction = async nancyContext =>
                                                                      {
                                                                          var start = DateTime.Now;
-                                                                         var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider);
-                                                                         var result = await onHandleGlobal(httpRequest);
-                                                                         var nancyHttpResponse = CreateNancyHttpResponse(nancyContext, result);
-                                                                         _performanceLog.Log("HttpServiceNancyModuleInitializer", "CreateNancyHttpServiceRoutes", start);
-                                                                         return nancyHttpResponse;
+
+                                                                         var method = $"{nancyContext.Request.Method}::{nancyContext.Request.Path}";
+
+                                                                         try
+                                                                         {
+                                                                             var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider);
+                                                                             var result = await onHandleGlobal(httpRequest);
+                                                                             var nancyHttpResponse = CreateNancyHttpResponse(nancyContext, result);
+
+                                                                             _performanceLog.Log(method, start);
+
+                                                                             return nancyHttpResponse;
+                                                                         }
+                                                                         catch (Exception exception)
+                                                                         {
+                                                                             _performanceLog.Log(method, start, exception);
+
+                                                                             throw;
+                                                                         }
                                                                      };
 
                 var nancyRoute = new NancyHttpServiceRoute

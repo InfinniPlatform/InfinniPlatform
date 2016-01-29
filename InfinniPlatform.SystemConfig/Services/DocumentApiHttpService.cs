@@ -15,6 +15,7 @@ namespace InfinniPlatform.SystemConfig.Services
     /// <summary>
     /// Реализует REST-сервис для DocumentApi.
     /// </summary>
+    [LoggerName("DocumentApiHttpService")]
     internal sealed class DocumentApiHttpService : IHttpService
     {
         public DocumentApiHttpService(IDocumentApi documentApi, IDocumentTransactionScopeProvider transactionScopeProvider, IPerformanceLog performanceLog)
@@ -28,7 +29,7 @@ namespace InfinniPlatform.SystemConfig.Services
         private readonly IDocumentApi _documentApi;
         private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
         private readonly IPerformanceLog _performanceLog;
-        private const string ComponentName = "DocumentApiHttpService";
+
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -56,23 +57,33 @@ namespace InfinniPlatform.SystemConfig.Services
         private Task<object> GetDocuments(IHttpRequest request)
         {
             var start = DateTime.Now;
-            dynamic requestForm = request.Form.changesObject;
-            string configuration = requestForm.Configuration;
-            string documentType = requestForm.Metadata;
-            object filter = requestForm.Filter;
-            object sorting = requestForm.Sorting;
 
-            var filterCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<FilterCriteria[]>(filter);
-            var sortingCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<SortingCriteria[]>(sorting);
+            try
+            {
+                dynamic requestForm = request.Form.changesObject;
+                string configuration = requestForm.Configuration;
+                string documentType = requestForm.Metadata;
+                object filter = requestForm.Filter;
+                object sorting = requestForm.Sorting;
 
-            int pageNumber = Math.Max((int)(requestForm.PageNumber ?? 0), 0);
-            int pageSize = Math.Min((int)(requestForm.PageSize ?? 0), 1000);
+                var filterCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<FilterCriteria[]>(filter);
+                var sortingCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<SortingCriteria[]>(sorting);
 
-            var result = _documentApi.GetDocuments(configuration, documentType, filterCriterias, pageNumber, pageSize, sortingCriterias);
+                int pageNumber = Math.Max((int)(requestForm.PageNumber ?? 0), 0);
+                int pageSize = Math.Min((int)(requestForm.PageSize ?? 0), 1000);
 
-            _performanceLog.Log(ComponentName, "GetDocuments", start);
+                var result = _documentApi.GetDocuments(configuration, documentType, filterCriterias, pageNumber, pageSize, sortingCriterias);
 
-            return Task.FromResult<object>(result);
+                _performanceLog.Log("GetDocuments", start);
+
+                return Task.FromResult<object>(result);
+            }
+            catch (Exception exception)
+            {
+                _performanceLog.Log("GetDocuments", start, exception);
+
+                throw;
+            }
         }
 
         private Task<object> GetNumberOfDocuments(IHttpRequest request)
@@ -94,45 +105,65 @@ namespace InfinniPlatform.SystemConfig.Services
         private Task<object> SaveDocuments(IHttpRequest request)
         {
             var start = DateTime.Now;
-            dynamic requestForm = request.Form.changesObject;
-            string configuration = requestForm.Configuration;
-            string documentType = requestForm.Metadata;
-            IEnumerable<dynamic> documents = requestForm.Documents ?? new object[] { requestForm.Document };
 
-            SetSynchronous(request.Form.Synchronous == true);
-
-            var result = _documentApi.SetDocuments(configuration, documentType, documents);
-
-            if (result.IsValid == false)
+            try
             {
-                result = new JsonHttpResponse(result) { StatusCode = 400 };
+                dynamic requestForm = request.Form.changesObject;
+                string configuration = requestForm.Configuration;
+                string documentType = requestForm.Metadata;
+                IEnumerable<dynamic> documents = requestForm.Documents ?? new object[] { requestForm.Document };
+
+                SetSynchronous(request.Form.Synchronous == true);
+
+                var result = _documentApi.SetDocuments(configuration, documentType, documents);
+
+                if (result.IsValid == false)
+                {
+                    result = new JsonHttpResponse(result) { StatusCode = 400 };
+                }
+
+                _performanceLog.Log("SaveDocuments", start);
+
+                return Task.FromResult<object>(result);
             }
+            catch (Exception exception)
+            {
+                _performanceLog.Log("SaveDocuments", start, exception);
 
-            _performanceLog.Log(ComponentName, "SaveDocuments", start);
-
-            return Task.FromResult<object>(result);
+                throw;
+            }
         }
 
         private Task<object> DeleteDocument(IHttpRequest request)
         {
             var start = DateTime.Now;
-            dynamic requestForm = request.Form.changesObject;
-            string configuration = requestForm.Configuration;
-            string documentType = requestForm.Metadata;
-            string documentId = requestForm.Id;
 
-            SetSynchronous(request.Form.Synchronous == true);
-
-            var result = _documentApi.DeleteDocument(configuration, documentType, documentId);
-
-            if (result.IsValid == false)
+            try
             {
-                result = new JsonHttpResponse(result) { StatusCode = 400 };
+                dynamic requestForm = request.Form.changesObject;
+                string configuration = requestForm.Configuration;
+                string documentType = requestForm.Metadata;
+                string documentId = requestForm.Id;
+
+                SetSynchronous(request.Form.Synchronous == true);
+
+                var result = _documentApi.DeleteDocument(configuration, documentType, documentId);
+
+                if (result.IsValid == false)
+                {
+                    result = new JsonHttpResponse(result) { StatusCode = 400 };
+                }
+
+                _performanceLog.Log("DeleteDocument", start);
+
+                return Task.FromResult<object>(result);
             }
+            catch (Exception exception)
+            {
+                _performanceLog.Log("DeleteDocument", start, exception);
 
-            _performanceLog.Log(ComponentName, "DeleteDocument", start);
-
-            return Task.FromResult<object>(result);
+                throw;
+            }
         }
 
         private Task<object> AttachFile(IHttpRequest request)

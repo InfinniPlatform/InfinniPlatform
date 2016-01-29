@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Reflection;
 
 using InfinniPlatform.Sdk.Logging;
 
@@ -54,7 +55,7 @@ namespace InfinniPlatform.Core.Logging
         {
             log4net.ILog internalLog;
 
-            var loggerName = $"{prefix}.{type.FullName}";
+            var loggerName = GetInternalLoggerName(prefix, type);
 
             if (!InternalLogs.TryGetValue(loggerName, out internalLog))
             {
@@ -64,6 +65,16 @@ namespace InfinniPlatform.Core.Logging
             }
 
             return internalLog;
+        }
+
+
+        private static string GetInternalLoggerName(string prefix, Type type)
+        {
+            var loggerInfo = type.GetCustomAttribute<LoggerNameAttribute>();
+
+            return (loggerInfo != null && !string.IsNullOrWhiteSpace(loggerInfo.Name))
+                ? $"{prefix}.{loggerInfo.Name.Trim()}"
+                : $"{prefix}.{type.FullName}";
         }
     }
 }
