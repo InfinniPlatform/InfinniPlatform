@@ -10,6 +10,40 @@ namespace InfinniPlatform.Sdk.Logging
     public interface ILog
     {
         /// <summary>
+        /// Разрешены ли события с уровнем DEBUG.
+        /// </summary>
+        bool IsDebugEnabled { get; }
+
+        /// <summary>
+        /// Разрешены ли события с уровнем INFO.
+        /// </summary>
+        bool IsInfoEnabled { get; }
+
+        /// <summary>
+        /// Разрешены ли события с уровнем WARN.
+        /// </summary>
+        bool IsWarnEnabled { get; }
+
+        /// <summary>
+        /// Разрешены ли события с уровнем ERROR.
+        /// </summary>
+        bool IsErrorEnabled { get; }
+
+        /// <summary>
+        /// Разрешены ли события с уровнем FATAL.
+        /// </summary>
+        bool IsFatalEnabled { get; }
+
+
+        /// <summary>
+        /// Записывает в журнал событие с уровнем DEBUG.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        /// <param name="exception">Исключение.</param>
+        void Debug(object message, Dictionary<string, object> context = null, Exception exception = null);
+
+        /// <summary>
         /// Записывает в журнал событие с уровнем INFO.
         /// </summary>
         /// <param name="message">Сообщение.</param>
@@ -24,14 +58,6 @@ namespace InfinniPlatform.Sdk.Logging
         /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
         void Warn(object message, Dictionary<string, object> context = null, Exception exception = null);
-
-        /// <summary>
-        /// Записывает в журнал событие с уровнем DEBUG.
-        /// </summary>
-        /// <param name="message">Сообщение.</param>
-        /// <param name="context">Контекстная информация.</param>
-        /// <param name="exception">Исключение.</param>
-        void Debug(object message, Dictionary<string, object> context = null, Exception exception = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем ERROR.

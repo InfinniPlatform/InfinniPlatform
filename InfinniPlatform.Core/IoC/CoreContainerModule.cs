@@ -29,16 +29,11 @@ namespace InfinniPlatform.Core.IoC
 
             // Logging
 
-            builder.RegisterType<Log4NetLog>()
-                   .As<ILog>()
-                   .SingleInstance();
+            builder.OnCreateInstance(new LogContainerParameterResolver<ILog>(LogManagerCache.GetLog));
+            builder.OnActivateInstance(new LogContainerInstanceActivator<ILog>(LogManagerCache.GetLog));
 
-            builder.RegisterType<PerformanceLog>()
-                   .As<IPerformanceLog>()
-                   .SingleInstance();
-
-            builder.OnCreateInstance(new Log4NetContainerParameterResolver());
-            builder.OnActivateInstance(new Log4NetContainerInstanceActivator());
+            builder.OnCreateInstance(new LogContainerParameterResolver<IPerformanceLog>(LogManagerCache.GetPerformanceLog));
+            builder.OnActivateInstance(new LogContainerInstanceActivator<IPerformanceLog>(LogManagerCache.GetPerformanceLog));
 
             // SaaS
 

@@ -1,25 +1,31 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 
 using InfinniPlatform.Sdk.IoC;
 
-using log4net;
-
 namespace InfinniPlatform.Core.Logging
 {
-    internal sealed class Log4NetContainerInstanceActivator : IContainerInstanceActivator
+    internal sealed class LogContainerInstanceActivator<T> : IContainerInstanceActivator
     {
+        public LogContainerInstanceActivator(Func<Type, T> logFactory)
+        {
+            _logFactory = logFactory;
+        }
+
+        private readonly Func<Type, T> _logFactory;
+
         public void Activate(object instance, IContainerResolver resolver)
         {
             var instanceType = instance.GetType();
 
             var properties = instanceType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                         .Where(p => p.PropertyType == typeof(ILog) && p.CanWrite
+                                         .Where(p => p.PropertyType == typeof(T) && p.CanWrite
                                                      && p.GetIndexParameters().Length == 0);
 
             foreach (var propToSet in properties)
             {
-                propToSet.SetValue(instance, Log4NetLogManagerCache.GetLog(instanceType), null);
+                propToSet.SetValue(instance, _logFactory(instanceType), null);
             }
         }
     }

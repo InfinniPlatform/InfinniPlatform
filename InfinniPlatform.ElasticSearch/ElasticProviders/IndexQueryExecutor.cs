@@ -23,21 +23,24 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
     public sealed class IndexQueryExecutor : IIndexQueryExecutor
     {
         public IndexQueryExecutor(ElasticConnection elasticConnection,
-                                  ITenantProvider tenantProvider,
                                   ElasticTypeManager elasticTypeManager,
-                                  string indexName,
-                                  string typeName)
+                                  ITenantProvider tenantProvider,
+                                  string configuration,
+                                  string documentType)
         {
             _elasticConnection = elasticConnection;
             _tenantProvider = tenantProvider;
-            _indexName = indexName.ToLower();
-            _typeNames = elasticTypeManager.GetTypeMappings(indexName, typeName)
-                                           .GetMappingsTypeNames();
+
+            var indexName = elasticConnection.GetIndexName(configuration);
+            var indexTypeName = elasticTypeManager.GetActualTypeName(configuration, documentType);
+
+            _indexName = indexName;
+            _typeNames = elasticTypeManager.GetTypeMappings(indexName, indexTypeName).GetMappingsTypeNames();
         }
 
         private readonly ElasticConnection _elasticConnection;
-        private readonly string _indexName;
         private readonly ITenantProvider _tenantProvider;
+        private readonly string _indexName;
         private readonly IEnumerable<string> _typeNames;
 
         /// <summary>

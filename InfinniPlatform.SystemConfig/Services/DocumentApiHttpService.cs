@@ -50,7 +50,7 @@ namespace InfinniPlatform.SystemConfig.Services
 
             var result = _documentApi.GetDocumentById(configuration, documentType, documentId);
 
-            return result;
+            return Task.FromResult<object>(result);
         }
 
         private Task<object> GetDocuments(IHttpRequest request)

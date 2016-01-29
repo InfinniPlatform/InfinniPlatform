@@ -12,48 +12,49 @@ namespace InfinniPlatform.Core.Logging
     /// </summary>
     internal sealed class Log4NetLog : ILog
     {
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="log">Сервис log4net для записи сообщений в лог.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public Log4NetLog(log4net.ILog log)
+        public Log4NetLog(log4net.ILog internalLog)
         {
-            if (log == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            _log = log;
+            _internalLog = internalLog;
         }
 
 
-        private readonly log4net.ILog _log;
+        private readonly log4net.ILog _internalLog;
 
+
+        public bool IsDebugEnabled => _internalLog.IsDebugEnabled;
+
+        public bool IsInfoEnabled => _internalLog.IsInfoEnabled;
+
+        public bool IsWarnEnabled => _internalLog.IsWarnEnabled;
+
+        public bool IsErrorEnabled => _internalLog.IsErrorEnabled;
+
+        public bool IsFatalEnabled => _internalLog.IsFatalEnabled;
+
+
+        public void Debug(object message, Dictionary<string, object> context = null, Exception exception = null)
+        {
+            _internalLog.Debug(new JsonEvent(message, context, exception));
+        }
 
         public void Info(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Info(new JsonEvent(message, context, exception));
+            _internalLog.Info(new JsonEvent(message, context, exception));
         }
 
         public void Warn(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Warn(new JsonEvent(message, context, exception));
-        }
-
-        public void Debug(object message, Dictionary<string, object> context = null, Exception exception = null)
-        {
-            _log.Debug(new JsonEvent(message, context, exception));
+            _internalLog.Warn(new JsonEvent(message, context, exception));
         }
 
         public void Error(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Error(new JsonEvent(message, context, exception));
+            _internalLog.Error(new JsonEvent(message, context, exception));
         }
 
         public void Fatal(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Fatal(new JsonEvent(message, context, exception));
+            _internalLog.Fatal(new JsonEvent(message, context, exception));
         }
 
 

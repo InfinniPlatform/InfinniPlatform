@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-
-using InfinniPlatform.Core.Index;
-using InfinniPlatform.ElasticSearch.ElasticProviders;
+﻿using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.Versioning;
-
-using Nest;
 
 namespace InfinniPlatform.ElasticSearch.Factories
 {

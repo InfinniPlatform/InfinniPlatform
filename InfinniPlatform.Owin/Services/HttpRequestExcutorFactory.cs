@@ -243,15 +243,15 @@ namespace InfinniPlatform.Owin.Services
 
                 if (error != null)
                 {
-                    // Вне зависимости от наличия прикладных обработчиков, фиксируем событие ошибки
-                    _log.Error(Resources.RequestProcessingCompletedWithUnexpectedException, null, error);
-
                     if (_onError != null)
                     {
                         context.Result = await _onError(context.Request, context.Error);
                     }
                     else
                     {
+                        // Вне зависимости от наличия прикладных обработчиков, фиксируем событие ошибки
+                        _log.Error(Resources.RequestProcessingCompletedWithUnexpectedException, null, error);
+
                         throw new InvalidOperationException(Resources.RequestProcessingCompletedWithUnexpectedException, error);
                     }
                 }

@@ -93,11 +93,11 @@
     <Compile Include="Index\QueryCriteriaInterpreter.cs" />
     <Compile Include="Index\SearchModelBuilder.cs" />
     <Compile Include="IoC\CoreContainerModule.cs" />
-    <Compile Include="Logging\Log4NetContainerInstanceActivator.cs" />
-    <Compile Include="Logging\Log4NetContainerParameterResolver.cs" />
+    <Compile Include="Logging\LogContainerInstanceActivator.cs" />
+    <Compile Include="Logging\LogContainerParameterResolver.cs" />
     <Compile Include="Logging\Log4NetLog.cs" />
-    <Compile Include="Logging\Log4NetLogManagerCache.cs" />
-    <Compile Include="Logging\PerformanceLog.cs" />
+    <Compile Include="Logging\LogManagerCache.cs" />
+    <Compile Include="Logging\Log4NetPerformanceLog.cs" />
     <Compile Include="MessageQueue\Integration\IIntegrationBus.cs" />
     <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorage.cs" />
     <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorageManager.cs" />

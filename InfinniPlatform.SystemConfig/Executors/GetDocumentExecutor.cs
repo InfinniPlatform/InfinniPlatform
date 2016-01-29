@@ -15,25 +15,27 @@ namespace InfinniPlatform.SystemConfig.Executors
 {
     internal sealed class GetDocumentExecutor : IGetDocumentExecutor
     {
+        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(string configuration, string documentType);
+
+
         public GetDocumentExecutor(IDocumentTransactionScopeProvider transactionScopeProvider,
                                    IMetadataApi metadataApi,
                                    IReferenceResolver referenceResolver,
                                    IIndexFactory indexFactory,
-                                   IIndexQueryExecutor indexQueryExecutor)
+                                   IndexQueryExecutorFactory indexQueryExecutorFactory)
         {
             _transactionScopeProvider = transactionScopeProvider;
             _metadataApi = metadataApi;
             _referenceResolver = referenceResolver;
             _indexFactory = indexFactory;
-            _indexQueryExecutor = indexQueryExecutor;
+            _indexQueryExecutorFactory = indexQueryExecutorFactory;
         }
 
+        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
         private readonly IIndexFactory _indexFactory;
-        private readonly IIndexQueryExecutor _indexQueryExecutor;
         private readonly IMetadataApi _metadataApi;
         private readonly IReferenceResolver _referenceResolver;
-
-        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
+        private readonly IndexQueryExecutorFactory _indexQueryExecutorFactory;
 
         public dynamic GetDocumentById(string configuration, string documentType, string documentId)
         {
@@ -68,8 +70,10 @@ namespace InfinniPlatform.SystemConfig.Executors
             var filterCriteria = queryAnalyzer.GetBeforeResolveCriteriaList(filter);
             var searchModel = filterCriteria.ExtractSearchModel(queryFactory);
 
+            var indexQueryExecutor = _indexQueryExecutorFactory(configuration, documentType);
+
             // вряд ли документов в одном индексе будет больше чем 2 147 483 647, конвертируем в int
-            var numberOfDocuments = Convert.ToInt32(_indexQueryExecutor.CalculateCountQuery(searchModel));
+            var numberOfDocuments = Convert.ToInt32(indexQueryExecutor.CalculateCountQuery(searchModel));
 
             return numberOfDocuments;
         }
@@ -148,7 +152,9 @@ namespace InfinniPlatform.SystemConfig.Executors
                 }
             }
 
-            IEnumerable<dynamic> result = _indexQueryExecutor.Query(searchModel).Items.ToList();
+            var indexQueryExecutor = _indexQueryExecutorFactory(configurationName, documentName);
+
+            IEnumerable<dynamic> result = indexQueryExecutor.Query(searchModel).Items.ToList();
 
             _referenceResolver.ResolveReferences(configurationName, documentName, result, ignoreResolve);
 
