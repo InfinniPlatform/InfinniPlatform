@@ -3,7 +3,6 @@
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.Factories;
-using InfinniPlatform.ElasticSearch.Versioning;
 
 using Moq;
 
@@ -30,7 +29,6 @@ namespace InfinniPlatform.ElasticSearch.Tests.Builders
         {
             return new ElasticFactory(
                 (indexName, typeName) => new IndexQueryExecutor(ElasticConnection.Value, TenantProvider.Value, ElasticTypeManager.Value, indexName, typeName),
-                (indexName, typeName) => new VersionBuilder(ElasticTypeManager.Value, indexName, typeName),
                 (indexName, typeName) => new ElasticSearchAggregationProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
                 new ElasticSearchProviderAllIndexes(ElasticConnection.Value));
         }

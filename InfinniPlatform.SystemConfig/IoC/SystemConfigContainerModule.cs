@@ -39,6 +39,10 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .AsSelf()
                    .SingleInstance();
 
+            builder.RegisterType<MigrationHelper>()
+                   .AsSelf()
+                   .SingleInstance();
+
             // Documents
 
             builder.RegisterType<SystemInfoProvider>()

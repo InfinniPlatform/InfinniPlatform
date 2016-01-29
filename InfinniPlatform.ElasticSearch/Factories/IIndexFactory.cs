@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Core.Index;
-using InfinniPlatform.ElasticSearch.Versioning;
 
 namespace InfinniPlatform.ElasticSearch.Factories
 {
@@ -8,13 +7,6 @@ namespace InfinniPlatform.ElasticSearch.Factories
     /// </summary>
     public interface IIndexFactory
     {
-        /// <summary>
-        /// Создать конструктор версий хранилища документов
-        /// </summary>
-        /// <param name="indexName">Наименование индекса</param>
-        /// <param name="typeName">Наименование типа</param>
-        IVersionBuilder BuildVersionBuilder(string indexName, string typeName);
-        
         /// <summary>
         /// Создать исполнитель запросов к индексу
         /// </summary>

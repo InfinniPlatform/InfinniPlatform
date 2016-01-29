@@ -1,7 +1,6 @@
 ﻿using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.Factories;
-using InfinniPlatform.ElasticSearch.Versioning;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
 
@@ -32,10 +31,6 @@ namespace InfinniPlatform.ElasticSearch.IoC
 
             builder.RegisterType<IndexQueryExecutor>()
                    .As<IIndexQueryExecutor>()
-                   .InstancePerDependency();
-
-            builder.RegisterType<VersionBuilder>()
-                   .As<IVersionBuilder>()
                    .InstancePerDependency();
 
             builder.RegisterType<ElasticSearchAggregationProvider>()

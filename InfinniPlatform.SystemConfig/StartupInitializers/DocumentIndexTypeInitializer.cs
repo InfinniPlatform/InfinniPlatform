@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
@@ -12,16 +10,19 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     internal sealed class DocumentIndexTypeInitializer : IStartupInitializer
     {
-        public DocumentIndexTypeInitializer(Lazy<IIndexFactory> indexFactory, IMetadataApi metadataApi, ILog log)
+        public DocumentIndexTypeInitializer(IMetadataApi metadataApi,
+                                            ILog log,
+                                            MigrationHelper migrationHelper)
         {
-            _indexFactory = indexFactory;
             _metadataApi = metadataApi;
             _log = log;
+            _migrationHelper = migrationHelper;
         }
 
-        private readonly Lazy<IIndexFactory> _indexFactory;
-        private readonly IMetadataApi _metadataApi;
         private readonly ILog _log;
+
+        private readonly IMetadataApi _metadataApi;
+        private readonly MigrationHelper _migrationHelper;
 
         public int Order => 1;
 
@@ -46,7 +47,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         private void CreateStorage(string configId, string documentId)
         {
-            var message = MigrationHelper.TryUpdateDocumentMappings(_metadataApi, _indexFactory.Value, configId, documentId);
+            var message = _migrationHelper.TryUpdateDocumentMappings(configId, documentId);
 
             if (message != null)
             {
