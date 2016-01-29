@@ -49,7 +49,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             string resultMessage = null;
 
-            if (!VersionExists(documentName, configurationName, indexTypeMapping))
+            if (!VersionExists(configurationName, documentName, indexTypeMapping))
             {
                 resultMessage = $"Created new version of {documentName} document.";
                 _elasticTypeManager.CreateType(configurationName, documentName, indexTypeMapping);

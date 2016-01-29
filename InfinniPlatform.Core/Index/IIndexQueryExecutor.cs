@@ -31,24 +31,4 @@ namespace InfinniPlatform.Core.Index
         /// <returns>Результаты поиска</returns>
         SearchViewModel QueryOverObject(SearchModel searchModel, Func<dynamic, string, string, object> convert);
     }
-
-    public static class IndexQueryExtensions
-    {
-        public static SearchViewModel QueryAsJObject(this IIndexQueryExecutor indexQueryExecutor,
-            SearchModel searchModel)
-        {
-            return indexQueryExecutor.QueryOverObject(searchModel, (item, index, type) =>
-            {
-                var objectToReturn = item.Values;
-
-                if (objectToReturn != null)
-                {
-                    objectToReturn.__ConfigId = index;
-                    objectToReturn.__DocumentId = type;
-                }
-
-                return objectToReturn;
-            });
-        }
-    }
 }
