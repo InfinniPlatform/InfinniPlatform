@@ -151,7 +151,7 @@ namespace InfinniPlatform.Authentication.Services
         /// </summary>
         private Task<object> SignInExternal(IHttpRequest request)
         {
-            var challengeResult = ChallengeExternalProvider(request, "/SignInExternalCallback");
+            var challengeResult = ChallengeExternalProvider(request, "/Auth/SignInExternalCallback");
 
             return Task.FromResult<object>(challengeResult);
         }
@@ -278,7 +278,7 @@ namespace InfinniPlatform.Authentication.Services
                 return Task.FromResult<object>(NotAuthenticated());
             }
 
-            var challengeResult = ChallengeExternalProvider(request, "/LinkExternalLoginCallback");
+            var challengeResult = ChallengeExternalProvider(request, "/Auth/LinkExternalLoginCallback");
 
             return Task.FromResult<object>(challengeResult);
         }
