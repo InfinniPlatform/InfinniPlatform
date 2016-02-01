@@ -1,9 +1,7 @@
 ﻿using InfinniPlatform.Core.Compression;
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Core.Transactions;
-using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
@@ -45,13 +43,6 @@ namespace InfinniPlatform.Core.IoC
 
             builder.RegisterType<DocumentTransactionScopeProvider>()
                    .As<IDocumentTransactionScopeProvider>()
-                   .SingleInstance();
-
-            // DocumentApi
-
-            builder.RegisterType<DocumentApi>()
-                   .AsSelf()
-                   .As<IDocumentApi>()
                    .SingleInstance();
         }
     }

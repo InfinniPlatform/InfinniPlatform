@@ -5,12 +5,9 @@ using System.Linq;
 
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Registers;
-using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
-using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.Sdk.Dynamic;
 
 using Newtonsoft.Json.Linq;

@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Documents\DocumentApi.cs" />
     <Compile Include="Metadata\MetadataApi.cs" />
     <Compile Include="Registers\AggregationUtils.cs" />
     <Compile Include="Registers\RegisterApi.cs" />
@@ -75,8 +76,8 @@
     <Compile Include="Transactions\DocumentTransactionLog.cs" />
     <Compile Include="Transactions\DocumentTransactionScope.cs" />
     <Compile Include="UserStorage\ElasticSearchUserStorage.cs" />
-    <Compile Include="Executors\GetDocumentExecutor.cs" />
-    <Compile Include="Executors\SetDocumentExecutor.cs" />
+    <Compile Include="Documents\GetDocumentExecutor.cs" />
+    <Compile Include="Documents\SetDocumentExecutor.cs" />
     <Compile Include="Metadata\ICrossConfigSearcher.cs" />
     <Compile Include="PrintView\PrintViewApi.cs" />
     <Compile Include="Runtime\ActionUnitFactory.cs" />

@@ -1,17 +1,17 @@
-﻿using InfinniPlatform.Core.RestApi.DataApi;
-using InfinniPlatform.Sdk.Contracts;
+﻿using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Sdk.Tests.TestData
 {
     public sealed class ActionUnitOnSaveComment
     {
-        public ActionUnitOnSaveComment(DocumentApi documentApi)
+        public ActionUnitOnSaveComment(IDocumentApi documentApi)
         {
             _documentApi = documentApi;
         }
 
-        private readonly DocumentApi _documentApi;
+        private readonly IDocumentApi _documentApi;
 
         public void Action(IActionContext target)
         {

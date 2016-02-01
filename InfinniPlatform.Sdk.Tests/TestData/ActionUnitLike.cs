@@ -1,18 +1,18 @@
 ﻿using System.Linq;
 
-using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Sdk.Tests.TestData
 {
     public sealed class ActionUnitLike
     {
-        public ActionUnitLike(DocumentApi documentApi)
+        public ActionUnitLike(IDocumentApi documentApi)
         {
             _documentApi = documentApi;
         }
 
-        private readonly DocumentApi _documentApi;
+        private readonly IDocumentApi _documentApi;
 
         public void Action(IActionContext target)
         {

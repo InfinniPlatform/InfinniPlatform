@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 
+using InfinniPlatform.Core.Documents;
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
-namespace InfinniPlatform.Core.RestApi.DataApi
+namespace InfinniPlatform.SystemConfig.Documents
 {
-    public sealed class DocumentApi : IDocumentApi
+    internal sealed class DocumentApi : IDocumentApi
     {
         public DocumentApi(ISetDocumentExecutor setDocumentExecutor, IGetDocumentExecutor getDocumentExecutor, IBlobStorage blobStorage)
         {

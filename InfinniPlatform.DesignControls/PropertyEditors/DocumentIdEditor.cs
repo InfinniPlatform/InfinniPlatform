@@ -6,8 +6,6 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
 
-using InfinniPlatform.Core.RestApi.DataApi;
-
 namespace InfinniPlatform.DesignControls.PropertyEditors
 {
     public sealed class DocumentIdEditor : IPropertyEditor
