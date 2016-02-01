@@ -114,29 +114,28 @@ namespace InfinniPlatform.SystemConfig.Transactions
                     {
                         // Сохранение документов можно сделать за один запрос, так как имя типа для каждого документа известно
 
-                        var saveResponse = _elasticConnection
-                            .Client.Bulk(d =>
-                                         {
-                                             foreach (var command in saveCommands)
-                                             {
-                                                 var indexName = _elasticConnection.GetIndexName(command.Configuration);
-                                                 var indexTypeName = _elasticTypeManager.GetActualTypeName(command.Configuration, command.DocumentType);
+                        var saveResponse = _elasticConnection.Bulk(d =>
+                                                                   {
+                                                                       foreach (var command1 in saveCommands)
+                                                                       {
+                                                                           var indexName1 = _elasticConnection.GetIndexName(command1.Configuration);
+                                                                           var indexTypeName1 = _elasticTypeManager.GetActualTypeName(command1.Configuration, command1.DocumentType);
 
-                                                 var indexObjectId = CreateIndexObjectId(command.DocumentId);
-                                                 var indexObject = CreateIndexObject(tenantId, indexObjectId, command.Document);
+                                                                           var indexObjectId1 = CreateIndexObjectId(command1.DocumentId);
+                                                                           var indexObject1 = CreateIndexObject(tenantId, indexObjectId1, command1.Document);
 
-                                                 d.Index<IndexObject>(i => i.Index(indexName)
-                                                                            .Type(indexTypeName)
-                                                                            .Document(indexObject));
-                                             }
+                                                                           d.Index<IndexObject>(i => i.Index(indexName1)
+                                                                                                      .Type(indexTypeName1)
+                                                                                                      .Document(indexObject1));
+                                                                       }
 
-                                             if (_needRefresh)
-                                             {
-                                                 d.Refresh();
-                                             }
+                                                                       if (_needRefresh)
+                                                                       {
+                                                                           d.Refresh();
+                                                                       }
 
-                                             return d;
-                                         });
+                                                                       return d;
+                                                                   });
 
                         CheckDatabaseResponse(saveResponse);
                     }
@@ -148,34 +147,32 @@ namespace InfinniPlatform.SystemConfig.Transactions
                         var indexNames = deleteCommands.Select(i => _elasticConnection.GetIndexName(i.Configuration));
                         var indexObjectIds = deleteCommands.Select(i => CreateIndexObjectId(i.DocumentId));
 
-                        var searchResponse = _elasticConnection
-                            .Client.Search<IndexObject>(d => d.Indices(indexNames)
-                                                              .AllTypes()
-                                                              .Filter(f => f.Terms(i => i.Id, indexObjectIds) && f.Term(i => i.TenantId, tenantId))
-                                                              .Size(deleteCommands.Length)
-                                                              .Source(false));
+                        var searchResponse = _elasticConnection.Search<IndexObject>(d => d.Indices(indexNames)
+                                                                                          .AllTypes()
+                                                                                          .Filter(f => f.Terms(i => i.Id, indexObjectIds) && f.Term(i => i.TenantId, tenantId))
+                                                                                          .Size(deleteCommands.Length)
+                                                                                          .Source(false));
 
                         CheckDatabaseResponse(searchResponse);
 
                         if (searchResponse.Total > 0 && searchResponse.Hits != null)
                         {
-                            var deleteResponse = _elasticConnection
-                                .Client.Bulk(d =>
-                                             {
-                                                 foreach (var hit in searchResponse.Hits)
-                                                 {
-                                                     d.Delete<IndexObject>(i => i.Index(hit.Index)
-                                                                                 .Type(hit.Type)
-                                                                                 .Id(hit.Id));
-                                                 }
+                            var deleteResponse = _elasticConnection.Bulk(d =>
+                                                                         {
+                                                                             foreach (var hit in searchResponse.Hits)
+                                                                             {
+                                                                                 d.Delete<IndexObject>(i => i.Index(hit.Index)
+                                                                                                             .Type(hit.Type)
+                                                                                                             .Id(hit.Id));
+                                                                             }
 
-                                                 if (_needRefresh)
-                                                 {
-                                                     d.Refresh();
-                                                 }
+                                                                             if (_needRefresh)
+                                                                             {
+                                                                                 d.Refresh();
+                                                                             }
 
-                                                 return d;
-                                             });
+                                                                             return d;
+                                                                         });
 
                             CheckDatabaseResponse(deleteResponse);
                         }
