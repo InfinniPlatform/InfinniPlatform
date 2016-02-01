@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Core.RestApi.DataApi
+namespace InfinniPlatform.Core.Metadata
 {
     public static class MetadataLoaderHelper
     {

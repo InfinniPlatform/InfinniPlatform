@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Core.Contracts;
+using InfinniPlatform.Core.Documents;
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Core.Transactions;
 
-namespace InfinniPlatform.SystemConfig.Executors
+namespace InfinniPlatform.SystemConfig.Documents
 {
     internal class SetDocumentExecutor : ISetDocumentExecutor
     {

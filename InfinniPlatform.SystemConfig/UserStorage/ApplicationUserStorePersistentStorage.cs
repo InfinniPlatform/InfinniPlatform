@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
 
-using InfinniPlatform.Core.RestApi.Auth;
-using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.SystemConfig.Executors;
+using InfinniPlatform.SystemConfig.Documents;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.UserStorage

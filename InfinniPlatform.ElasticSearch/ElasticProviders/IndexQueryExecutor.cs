@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Index;
-using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders.SchemaIndexVersion;
 using InfinniPlatform.ElasticSearch.ElasticSearchModels;

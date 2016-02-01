@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 

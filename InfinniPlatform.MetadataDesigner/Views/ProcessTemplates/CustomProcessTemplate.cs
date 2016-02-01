@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Core.RestApi.Auth;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 
 namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates

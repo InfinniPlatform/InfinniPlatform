@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Documents;
 
-namespace InfinniPlatform.Core.RestApi.DataApi
+namespace InfinniPlatform.Core.Documents
 {
     public interface IGetDocumentExecutor
     {

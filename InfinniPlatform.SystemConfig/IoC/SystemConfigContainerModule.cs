@@ -1,16 +1,17 @@
-﻿using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Core.RestApi.DataApi;
+﻿using InfinniPlatform.Core.Documents;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.SystemInfo;
 using InfinniPlatform.Core.Transactions;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.PrintView;
 using InfinniPlatform.Sdk.Registers;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
-using InfinniPlatform.SystemConfig.Executors;
+using InfinniPlatform.SystemConfig.Documents;
 using InfinniPlatform.SystemConfig.Metadata;
 using InfinniPlatform.SystemConfig.PrintView;
 using InfinniPlatform.SystemConfig.Registers;
@@ -28,6 +29,12 @@ namespace InfinniPlatform.SystemConfig.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            // Info
+
+            builder.RegisterType<SystemInfoProvider>()
+                   .As<ISystemInfoProvider>()
+                   .SingleInstance();
+
             // Metadata
 
             builder.RegisterType<MetadataApi>()
@@ -45,8 +52,9 @@ namespace InfinniPlatform.SystemConfig.IoC
 
             // Documents
 
-            builder.RegisterType<SystemInfoProvider>()
-                   .As<ISystemInfoProvider>()
+            builder.RegisterType<DocumentApi>()
+                   .AsSelf()
+                   .As<IDocumentApi>()
                    .SingleInstance();
 
             builder.RegisterType<DocumentLinkMap>()

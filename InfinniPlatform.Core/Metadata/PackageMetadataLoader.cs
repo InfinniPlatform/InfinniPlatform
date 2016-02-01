@@ -6,7 +6,7 @@ using System.Linq;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 
-namespace InfinniPlatform.Core.RestApi.DataApi
+namespace InfinniPlatform.Core.Metadata
 {
     /// <summary>
     /// Кэш метаданных для конфигуратора (UserInterface.exe).

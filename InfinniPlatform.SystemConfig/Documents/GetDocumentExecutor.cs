@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Documents;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
-using InfinniPlatform.Core.RestApi.DataApi;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.SystemConfig.Utils;
 
-namespace InfinniPlatform.SystemConfig.Executors
+namespace InfinniPlatform.SystemConfig.Documents
 {
     internal sealed class GetDocumentExecutor : IGetDocumentExecutor
     {

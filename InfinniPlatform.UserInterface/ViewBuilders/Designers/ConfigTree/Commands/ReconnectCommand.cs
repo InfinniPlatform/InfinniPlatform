@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-using InfinniPlatform.Core.RestApi.DataApi;
+﻿using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.RestApi.DataApi
+﻿namespace InfinniPlatform.Core.Documents
 {
     public sealed class DocumentExecutorResult
     {
