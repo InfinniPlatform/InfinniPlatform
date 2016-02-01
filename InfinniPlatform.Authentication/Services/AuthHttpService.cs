@@ -248,7 +248,9 @@ namespace InfinniPlatform.Authentication.Services
             // Выход из системы
             AuthenticationManager.SignOut();
 
-            return Task.FromResult<object>(HttpResponse.Ok);
+            var response = CreateResponse(OwinContext.Response);
+
+            return Task.FromResult<object>(response);
         }
 
 
