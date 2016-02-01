@@ -1,14 +1,12 @@
-﻿using InfinniPlatform.Api.Security;
-
-namespace InfinniPlatform.Security
+﻿namespace InfinniPlatform.Core.Security
 {
     /// <summary>
-    ///     Предоставляет методы хэширования пароля.
+    /// Предоставляет методы хэширования пароля.
     /// </summary>
     public sealed class DefaultApplicationUserPasswordHasher : IApplicationUserPasswordHasher
     {
         /// <summary>
-        ///     Возвращает хэш пароля.
+        /// Возвращает хэш пароля.
         /// </summary>
         public string HashPassword(string password)
         {
@@ -16,7 +14,7 @@ namespace InfinniPlatform.Security
         }
 
         /// <summary>
-        ///     Проверяет, что пароль соответствует хэшу.
+        /// Проверяет, что пароль соответствует хэшу.
         /// </summary>
         public bool VerifyHashedPassword(string hashedPassword, string providedPassword)
         {

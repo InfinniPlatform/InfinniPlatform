@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Caching.Properties;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Caching.Redis
 {
     /// <summary>
     /// Реализует интерфейс управления подписками шины сообщений на базе Redis.
     /// </summary>
+    [LoggerName("Redis")]
     internal sealed class RedisMessageBusManager : IMessageBusManager
     {
         /// <summary>
@@ -71,7 +72,7 @@ namespace InfinniPlatform.Caching.Redis
                 var messageBusObserver = new RedisMessageBusObserver();
                 keyspaceObservable.Subscribe(messageBusObserver);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisSubscribeMethod, startTime, null);
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisSubscribeMethod, startTime);
 
                 return messageBusObserver;
             }
@@ -84,7 +85,7 @@ namespace InfinniPlatform.Caching.Redis
 
                 _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisSubscribeMethod, startTime, exception.GetMessage());
+                _performanceLog.Log(CachingHelpers.PerformanceLogRedisSubscribeMethod, startTime, exception);
 
                 throw;
             }
@@ -102,7 +103,7 @@ namespace InfinniPlatform.Caching.Redis
                 {
                     handler(unwrappedKey, value);
 
-                    _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisHandleMethod, startTime, null);
+                    _performanceLog.Log(CachingHelpers.PerformanceLogRedisHandleMethod, startTime);
                 }
                 catch (Exception exception)
                 {
@@ -114,7 +115,7 @@ namespace InfinniPlatform.Caching.Redis
 
                     _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
 
-                    _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, CachingHelpers.PerformanceLogRedisHandleMethod, startTime, exception.GetMessage());
+                    _performanceLog.Log(CachingHelpers.PerformanceLogRedisHandleMethod, startTime, exception);
 
                     // Не пробрасываем исключение, так как ошибка в одном обработчике не должна влиять на другой
                 }

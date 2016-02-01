@@ -7,61 +7,59 @@ using InfinniPlatform.FlowDocument.Model.Views;
 
 namespace InfinniPlatform.FlowDocument.PrintView
 {
-	public sealed class FlowDocumentPrintViewFactory : IFlowDocumentPrintViewFactory
-	{
-		static FlowDocumentPrintViewFactory()
-		{
-			ElementBuilder = new PrintElementBuilder();
+    public sealed class FlowDocumentPrintViewFactory : IFlowDocumentPrintViewFactory
+    {
+        private static readonly PrintElementBuilder ElementBuilder;
 
-			// DisplayFormats
-			ElementBuilder.Register("BooleanFormat", new BooleanFormatFactory());
-			ElementBuilder.Register("DateTimeFormat", new DateTimeFormatFactory());
-			ElementBuilder.Register("NumberFormat", new NumberFormatFactory());
-			ElementBuilder.Register("ObjectFormat", new ObjectFormatFactory());
+        static FlowDocumentPrintViewFactory()
+        {
+            ElementBuilder = new PrintElementBuilder();
 
-			// Blocks
-			ElementBuilder.Register("Section", new PrintElementSectionFactory());
-			ElementBuilder.Register("Paragraph", new PrintElementParagraphFactory());
-			ElementBuilder.Register("List", new PrintElementListFactory());
-			ElementBuilder.Register("Table", new PrintElementTableFactory());
-			ElementBuilder.Register("Line", new PrintElementLineFactory());
-			ElementBuilder.Register("PageBreak", new PrintElementPageBreakFactory());
+            // DisplayFormats
+            ElementBuilder.Register("BooleanFormat", new BooleanFormatFactory());
+            ElementBuilder.Register("DateTimeFormat", new DateTimeFormatFactory());
+            ElementBuilder.Register("NumberFormat", new NumberFormatFactory());
+            ElementBuilder.Register("ObjectFormat", new ObjectFormatFactory());
 
-			// Inlines
-			ElementBuilder.Register("Span", new PrintElementSpanFactory());
-			ElementBuilder.Register("Bold", new PrintElementBoldFactory());
-			ElementBuilder.Register("Italic", new PrintElementItalicFactory());
-			ElementBuilder.Register("Underline", new PrintElementUnderlineFactory());
-			ElementBuilder.Register("Hyperlink", new PrintElementHyperlinkFactory());
-			ElementBuilder.Register("LineBreak", new PrintElementLineBreakFactory());
-			ElementBuilder.Register("Run", new PrintElementRunFactory());
-			ElementBuilder.Register("Image", new PrintElementImageFactory());
+            // Blocks
+            ElementBuilder.Register("Section", new PrintElementSectionFactory());
+            ElementBuilder.Register("Paragraph", new PrintElementParagraphFactory());
+            ElementBuilder.Register("List", new PrintElementListFactory());
+            ElementBuilder.Register("Table", new PrintElementTableFactory());
+            ElementBuilder.Register("Line", new PrintElementLineFactory());
+            ElementBuilder.Register("PageBreak", new PrintElementPageBreakFactory());
 
-			// Barcodes
-			ElementBuilder.Register("BarcodeEan13", new PrintElementBarcodeEan13Factory());
-			ElementBuilder.Register("BarcodeQr", new PrintElementBarcodeQrFactory());
+            // Inlines
+            ElementBuilder.Register("Span", new PrintElementSpanFactory());
+            ElementBuilder.Register("Bold", new PrintElementBoldFactory());
+            ElementBuilder.Register("Italic", new PrintElementItalicFactory());
+            ElementBuilder.Register("Underline", new PrintElementUnderlineFactory());
+            ElementBuilder.Register("Hyperlink", new PrintElementHyperlinkFactory());
+            ElementBuilder.Register("LineBreak", new PrintElementLineBreakFactory());
+            ElementBuilder.Register("Run", new PrintElementRunFactory());
+            ElementBuilder.Register("Image", new PrintElementImageFactory());
 
-			// Views
-			ElementBuilder.Register("PrintView", new PrintViewFactory());
-		}
+            // Barcodes
+            ElementBuilder.Register("BarcodeEan13", new PrintElementBarcodeEan13Factory());
+            ElementBuilder.Register("BarcodeQr", new PrintElementBarcodeQrFactory());
 
-
-		private static readonly PrintElementBuilder ElementBuilder;
-
+            // Views
+            ElementBuilder.Register("PrintView", new PrintViewFactory());
+        }
 
         public PrintViewDocument Create(object printView, object printViewSource, PrintElementMetadataMap elementMetadataMap = null)
-		{
-			var buildContext = new PrintElementBuildContext
-				{
-					IsDesignMode = false,
-					PrintViewSource = printViewSource,
-					ElementBuilder = ElementBuilder,
-					ElementMetadataMap = elementMetadataMap
-				};
+        {
+            var buildContext = new PrintElementBuildContext
+                               {
+                                   IsDesignMode = false,
+                                   PrintViewSource = printViewSource,
+                                   ElementBuilder = ElementBuilder,
+                                   ElementMetadataMap = elementMetadataMap
+                               };
 
             var document = ElementBuilder.BuildElement(buildContext, printView, "PrintView") as PrintViewDocument;
 
-			return document;
-		}
-	}
+            return document;
+        }
+    }
 }

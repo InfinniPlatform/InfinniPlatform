@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Reflection;
 
-using InfinniPlatform.Api.RestQuery;
+using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.NodeServiceHost
 {
@@ -29,13 +29,18 @@ namespace InfinniPlatform.NodeServiceHost
         }
 
 
+        public static IContainerResolver CreateContainerResolver()
+        {
+            var hostingContext = InfinniPlatformServiceHost.GetOwinHostingContext();
+            return hostingContext.ContainerResolver;
+        }
+
+
         private static void TryStart()
         {
             try
             {
                 ServerInstance.Start();
-
-                ControllerRoutingFactory.Instance = new ControllerRoutingFactory(InfinniPlatformServiceHost.GetHostingConfig());
             }
             catch (TargetInvocationException e)
             {

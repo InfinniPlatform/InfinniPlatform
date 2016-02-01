@@ -6,10 +6,10 @@ using System.Data.SqlClient;
 
 using FirebirdSql.Data.FirebirdClient;
 
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.Reporting.DataProviders;
 using InfinniPlatform.Reporting.Properties;
-using InfinniPlatform.Sdk.Environment.Settings;
 
 using Newtonsoft.Json.Linq;
 

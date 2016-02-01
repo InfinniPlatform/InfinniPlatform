@@ -6,10 +6,10 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 
-using InfinniPlatform.Api.Schema;
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.TemplatesFluent.Reports;
 using InfinniPlatform.Reporting.DataSources;
-using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Hosting;
 
 using Newtonsoft.Json.Linq;
 

@@ -2,10 +2,10 @@
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-namespace InfinniPlatform.Security
+namespace InfinniPlatform.Core.Security
 {
     /// <summary>
-    ///     Предоставляет методы хэширования.
+    /// Предоставляет методы хэширования.
     /// </summary>
     internal static class StringHasher
     {
@@ -15,13 +15,13 @@ namespace InfinniPlatform.Security
         private const int HashLength = SaltLength + SubkeyLength + 1;
 
         /// <summary>
-        ///     Вычислить хэш строки.
+        /// Вычислить хэш строки.
         /// </summary>
         public static string HashValue(string value)
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             byte[] salt;
@@ -41,7 +41,7 @@ namespace InfinniPlatform.Security
         }
 
         /// <summary>
-        ///     Проверить, что строка соответствует хэшу.
+        /// Проверить, что строка соответствует хэшу.
         /// </summary>
         public static bool VerifyValue(string hash, string value)
         {
@@ -52,7 +52,7 @@ namespace InfinniPlatform.Security
 
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
 
             var hashBytes = Convert.FromBase64String(hash);

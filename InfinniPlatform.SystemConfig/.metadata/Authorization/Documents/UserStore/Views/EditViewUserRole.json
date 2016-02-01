@@ -136,7 +136,7 @@
     {
       "DocumentDataSource": {
         "Name": "AddUserRoleDataSource",
-        "ConfigId": "RestfulApi",
+        "ConfigId": "SystemConfig",
         "DocumentId": "Authorization",
         "UpdateAction": "AddUserRole"
       }

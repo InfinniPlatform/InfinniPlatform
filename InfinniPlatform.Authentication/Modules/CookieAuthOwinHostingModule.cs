@@ -1,11 +1,11 @@
 ﻿using System;
 
 using InfinniPlatform.Authentication.DataProtectors;
-using InfinniPlatform.Authentication.Middleware;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataProtection;
 
@@ -43,8 +43,8 @@ namespace InfinniPlatform.Authentication.Modules
             var cookieAuthOptions = new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = InternalAuthOwinMiddleware.SignInInternalPath,
-                LogoutPath = InternalAuthOwinMiddleware.SignOutPath,
+                LoginPath = new PathString("/Auth/SignInInternal"),
+                LogoutPath = new PathString("/Auth/SignOut"),
                 ExpireTimeSpan = TimeSpan.FromDays(1),
                 SlidingExpiration = true
             };

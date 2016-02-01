@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.MessageQueue;
+﻿using InfinniPlatform.Core.MessageQueue;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;

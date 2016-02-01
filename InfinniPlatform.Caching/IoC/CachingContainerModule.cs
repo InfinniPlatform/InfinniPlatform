@@ -4,9 +4,9 @@ using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Sdk.ContextComponents;
-using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Session;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.IoC
 {
@@ -106,11 +106,12 @@ namespace InfinniPlatform.Caching.IoC
 
         private static ICache GetCache(IContainerResolver resolver)
         {
+            var appSettings = resolver.Resolve<IAppEnvironment>();
             var cacheSettings = resolver.Resolve<CacheSettings>();
 
             ICache cache;
 
-            var keyspace = cacheSettings.Name;
+            var keyspace = appSettings.Name;
 
             if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase))
             {
@@ -138,9 +139,10 @@ namespace InfinniPlatform.Caching.IoC
 
         private static IMessageBusManager GetMessageBusManager(IContainerResolver resolver)
         {
+            var appSettings = resolver.Resolve<IAppEnvironment>();
             var cacheSettings = resolver.Resolve<CacheSettings>();
 
-            var keyspace = cacheSettings.Name;
+            var keyspace = appSettings.Name;
 
             IMessageBusManager messageBusManager;
 
@@ -161,9 +163,10 @@ namespace InfinniPlatform.Caching.IoC
 
         private static IMessageBusPublisher GetMessageBusPublisher(IContainerResolver resolver)
         {
+            var appSettings = resolver.Resolve<IAppEnvironment>();
             var cacheSettings = resolver.Resolve<CacheSettings>();
 
-            var keyspace = cacheSettings.Name;
+            var keyspace = appSettings.Name;
 
             IMessageBusPublisher messageBusPublisher;
 

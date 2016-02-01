@@ -1,9 +1,7 @@
-﻿using InfinniPlatform.Api.Validation;
-using InfinniPlatform.Api.Validation.BooleanValidators;
+﻿using System;
 
-using System;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Validations;
+using InfinniPlatform.Core.Validation;
+using InfinniPlatform.Core.Validation.BooleanValidators;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Validation.Builders
 {

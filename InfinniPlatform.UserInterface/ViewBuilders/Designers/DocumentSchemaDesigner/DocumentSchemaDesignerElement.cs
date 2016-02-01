@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using InfinniPlatform.Api.Metadata;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.ActionElements.ContextMenu;

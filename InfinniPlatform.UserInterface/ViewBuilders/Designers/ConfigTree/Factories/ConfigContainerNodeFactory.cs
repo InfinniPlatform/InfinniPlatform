@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.IO;
 
-using InfinniPlatform.Api.Metadata;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands;
 

@@ -2,12 +2,14 @@
 using System.ComponentModel.Composition;
 using System.Threading;
 
-using InfinniPlatform.Api.Settings;
-using InfinniPlatform.Hosting;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.IoC.Owin;
-using InfinniPlatform.Logging;
 using InfinniPlatform.NodeServiceHost.Properties;
-using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Owin.Hosting;
+using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Hosting;
 
 namespace InfinniPlatform.NodeServiceHost
 {
@@ -97,11 +99,7 @@ namespace InfinniPlatform.NodeServiceHost
 
         private static IHostingService CreateHostingService()
         {
-            var hostingConfig = GetHostingConfig();
-
-            var owinHostingContextFactory = new AutofacOwinHostingContextFactory();
-            var owinHostingContext = owinHostingContextFactory.CreateOwinHostingContext(hostingConfig);
-
+            var owinHostingContext = GetOwinHostingContext();
             var owinHostingServiceFactory = new OwinHostingServiceFactory(owinHostingContext);
             var owinHostingService = owinHostingServiceFactory.CreateHostingService();
 
@@ -109,11 +107,15 @@ namespace InfinniPlatform.NodeServiceHost
         }
 
 
-        public static HostingConfig GetHostingConfig()
+        public static IOwinHostingContext GetOwinHostingContext()
         {
             // Поскольку в данном контексте IoC еще не доступен, настройки читаются напрямую
+            var hostingConfig = AppConfiguration.Instance.GetSection<HostingConfig>(HostingConfig.SectionName);
 
-            return AppConfiguration.Instance.GetSection<HostingConfig>(HostingConfig.SectionName);
+            var owinHostingContextFactory = new AutofacOwinHostingContextFactory();
+            var owinHostingContext = owinHostingContextFactory.CreateOwinHostingContext(hostingConfig);
+
+            return owinHostingContext;
         }
 
 

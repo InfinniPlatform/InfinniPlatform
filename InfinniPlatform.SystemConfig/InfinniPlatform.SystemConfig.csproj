@@ -40,6 +40,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elasticsearch.Net.1.7.1\lib\net45\Elasticsearch.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <HintPath>..\packages\NEST.1.7.1\lib\net45\Nest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -60,84 +68,60 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configurator\ActionUnitGetIrrelevantVersions.cs" />
-    <Compile Include="Configurator\ActionUnitGetPrintView.cs" />
-    <Compile Include="Configurator\ActionUnitClearControllersCache.cs" />
-    <Compile Include="Configurator\ActionUnitSetRelevantVersion.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetSolutionList.cs" />
-    <Compile Include="Configurator\ActionUnitUpdateSolutionFromJson.cs" />
-    <Compile Include="Initializers\FileHistoryHelper.cs" />
-    <Compile Include="Initializers\IStartupInitializer.cs" />
-    <Compile Include="Initializers\PackageJsonConfigurationInstaller.cs" />
-    <Compile Include="Initializers\PackageJsonConfigurationsInitializer.cs" />
-    <Compile Include="Initializers\SystemConfigApplicationEventHandler.cs" />
-    <Compile Include="Configurator\ActionUnitDeleteConfig.cs" />
-    <Compile Include="Configurator\ActionUnitDeleteMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitExportDataToJson.cs" />
-    <Compile Include="Configurator\ActionUnitFilterMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitGetManagedMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitGetMigrations.cs" />
-    <Compile Include="Configurator\ActionUnitGetReport.cs" />
-    <Compile Include="Configurator\ActionUnitGetVerifications.cs" />
-    <Compile Include="Configurator\ActionUnitImportDataFromJson.cs" />
-    <Compile Include="Configurator\ActionUnitRefreshMetadataCache.cs" />
-    <Compile Include="Configurator\ActionUnitRevertMigration.cs" />
-    <Compile Include="Configurator\ActionUnitRunMigration.cs" />
-    <Compile Include="Configurator\ActionUnitRunVerification.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetConfigurationMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentElementListMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentElementMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetDocumentListMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetMenuListMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetValidationErrorMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetValidationWarningMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitsPrefillItems\ActionUnitGetFillItems.cs" />
-    <Compile Include="Configurator\ActionUnitsPrefillItems\ActionUnitPrefillDateTimeNow.cs" />
-    <Compile Include="Configurator\ActionUnitPostRegisterEntries.cs" />
-    <Compile Include="Configurator\ActionUnitCreateRegisterEntry.cs" />
-    <Compile Include="Configurator\ActionUnitDeleteRegisterEntry.cs" />
-    <Compile Include="Configurator\ActionUnitGetMigrationDetails.cs" />
-    <Compile Include="Configurator\Generators\ActionUnitCreateGenerator.cs" />
-    <Compile Include="Configurator\Generators\ActionUnitDeleteGeneratedService.cs" />
-    <Compile Include="Configurator\Generators\ActionUnitDeleteGenerator.cs" />
-    <Compile Include="Configurator\Generators\ActionUnitGenerateMetadata.cs" />
-    <Compile Include="Configurator\Generators\ActionUnitGenerateServiceWithoutState.cs" />
-    <Compile Include="Configurator\ActionUnitGetInstalledConfigurations.cs" />
-    <Compile Include="Configurator\ActionUnitGetItemId.cs" />
-    <Compile Include="Configurator\ActionUnitsMetadataDataSource\ActionUnitGetConfigList.cs" />
-    <Compile Include="Configurator\ActionUnitGetMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitChangeMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitGetServiceMetadata.cs" />
-    <Compile Include="Configurator\ActionUnitGetStandardExtensionPoints.cs" />
-    <Compile Include="Configurator\ActionUnitRemoveAssembly.cs" />
-    <Compile Include="Configurator\ActionUnitShowScript.cs" />
-    <Compile Include="Configurator\ActionUnitUpdateConfigFromJson.cs" />
-    <Compile Include="Configurator\RegisterQueries\ActionUnitGetRegisterValuesByDate.cs" />
-    <Compile Include="Configurator\RegisterQueries\AggregationUtils.cs" />
-    <Compile Include="Configurator\RegisterQueries\ActionUnitGetRegisterValuesBetweenDates.cs" />
-    <Compile Include="Configurator\RegisterQueries\ActionUnitGetRegisterValuesByRegistrarType.cs" />
-    <Compile Include="Configurator\RegisterQueries\ActionUnitGetRegisterValuesByRegistrar.cs" />
-    <Compile Include="Configurator\RegisterQueries\ActionUnitGetClosestDateTimeOfTotalCalculation.cs" />
-    <Compile Include="Configurator\RegisterQueries\ActionUnitRecarryingRegisterEntries.cs" />
-    <Compile Include="Configurator\RegisterQueries\ActionUnitGetRegisterValuesByPeriods.cs" />
-    <Compile Include="HelpSystem\ActionUnitGenerateHelpConfiguration.cs" />
-    <Compile Include="HelpSystem\ActionUnitHelpConfiguration.cs" />
-    <Compile Include="Installers\ActionUnitsEntryList.cs" />
-    <Compile Include="Installers\SystemConfigInstaller.cs" />
-    <Compile Include="Initializers\DocumentIndexTypeInitializer.cs" />
+    <Compile Include="Documents\DocumentApi.cs" />
+    <Compile Include="Metadata\MetadataApi.cs" />
+    <Compile Include="Registers\AggregationUtils.cs" />
+    <Compile Include="Registers\RegisterApi.cs" />
+    <Compile Include="Services\SystemInfoHttpService.cs" />
+    <Compile Include="Transactions\DocumentTransactionLog.cs" />
+    <Compile Include="Transactions\DocumentTransactionScope.cs" />
+    <Compile Include="UserStorage\ElasticSearchUserStorage.cs" />
+    <Compile Include="Documents\GetDocumentExecutor.cs" />
+    <Compile Include="Documents\SetDocumentExecutor.cs" />
+    <Compile Include="Metadata\ICrossConfigSearcher.cs" />
+    <Compile Include="PrintView\PrintViewApi.cs" />
+    <Compile Include="Runtime\ActionUnitFactory.cs" />
+    <Compile Include="Runtime\ScriptProcessor.cs" />
+    <Compile Include="Services\CustomApiHttpService.cs" />
+    <Compile Include="Services\DocumentTransactionScopeHttpGlobalHandler.cs" />
+    <Compile Include="Services\DocumentApiHttpService.cs" />
+    <Compile Include="Services\FileApiHttpService.cs" />
+    <Compile Include="Services\MetadataApiHttpService.cs" />
+    <Compile Include="Services\PrintViewApiHttpService.cs" />
+    <Compile Include="Services\SessionApiHttpService.cs" />
+    <Compile Include="StartupInitializers\DocumentSchemaHelper.cs" />
+    <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
+    <Compile Include="StartupInitializers\IStartupInitializer.cs" />
+    <Compile Include="StartupInitializers\MigrationHelper.cs" />
+    <Compile Include="StartupInitializers\PackageJsonConfigurationsInitializer.cs" />
+    <Compile Include="StartupInitializers\SystemConfigApplicationEventHandler.cs" />
+    <Compile Include="StartupInitializers\DocumentIndexTypeInitializer.cs" />
     <Compile Include="IoC\SystemConfigContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Metadata\CrossConfigSearcher.cs" />
+    <Compile Include="Metadata\ConfigurationMetadata.cs" />
+    <Compile Include="Metadata\ConfigurationMetadataProvider.cs" />
+    <Compile Include="Metadata\MetadataContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SystemInfo\SystemInfoProvider.cs" />
+    <Compile Include="Transactions\DocumentTransactionAction.cs" />
+    <Compile Include="Transactions\DocumentTransactionCommand.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
     <Compile Include="UserStorage\UserStorageSettings.cs" />
+    <Compile Include="Utils\DocumentLink.cs" />
+    <Compile Include="Utils\DocumentLinkMap.cs" />
+    <Compile Include="Utils\IReferenceResolver.cs" />
+    <Compile Include="Utils\MetadataOperator.cs" />
+    <Compile Include="Utils\ReferenceResolver.cs" />
+    <Compile Include="Utils\SortingPropertiesExtractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -147,14 +131,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj">
-      <Project>{3BCBCD4C-1155-464E-B020-51FA57B5E9B3}</Project>
-      <Name>InfinniPlatform.BlobStorage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj">
       <Project>{BD628B04-C2DF-458A-8406-6BB60729FC1C}</Project>
       <Name>InfinniPlatform.Caching</Name>
@@ -163,33 +139,13 @@
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.FastReport\InfinniPlatform.FastReport.csproj">
-      <Project>{774D0E71-1848-4074-B537-F182FEFED717}</Project>
-      <Name>InfinniPlatform.FastReport</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Hosting\InfinniPlatform.Hosting.csproj">
-      <Project>{D6FBC1D7-48E7-4819-8C8B-DD7FA398D2CC}</Project>
-      <Name>InfinniPlatform.Hosting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Index.ElasticSearch\InfinniPlatform.Index.ElasticSearch.csproj">
-      <Project>{2B2F3FA6-F434-4FCF-A4C7-323FFC602F0C}</Project>
-      <Name>InfinniPlatform.Index.ElasticSearch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Index.QueryLanguage\InfinniPlatform.Index.QueryLanguage.csproj">
-      <Project>{25CCB048-C239-4A2D-8090-39AE34514884}</Project>
-      <Name>InfinniPlatform.Index.QueryLanguage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Reporting\InfinniPlatform.Reporting.csproj">
-      <Project>{CDF6744F-CDDE-4A4F-90EA-64286D86695D}</Project>
-      <Name>InfinniPlatform.Reporting</Name>
+    <ProjectReference Include="..\InfinniPlatform.ElasticSearch\InfinniPlatform.ElasticSearch.csproj">
+      <Project>{F7EC0A7A-49CD-4D63-B755-BF539ADCF688}</Project>
+      <Name>InfinniPlatform.ElasticSearch</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.WebApi\InfinniPlatform.WebApi.csproj">
-      <Project>{86AB4502-9B73-43B5-8A20-F01AADE0EDA4}</Project>
-      <Name>InfinniPlatform.WebApi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +299,7 @@
       <Visible>false</Visible>
     </MetadataFiles>
   </ItemGroup>
+  <ItemGroup />
   <Target Name="AfterBuild">
     <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
   </Target>

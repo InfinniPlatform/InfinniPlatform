@@ -1,9 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Factories;
 using InfinniPlatform.FastReport.Serialization;
 using InfinniPlatform.FastReport.Templates.Reports;
-using InfinniPlatform.Sdk.Environment.Binary;
+using InfinniPlatform.Sdk.BlobStorage;
 
 namespace InfinniPlatform.Reporting.Services
 {
@@ -14,14 +13,9 @@ namespace InfinniPlatform.Reporting.Services
     {
         private const string Report = "Report.json";
 
-        public ReportTemplateBlobStorageRepository(IBlobStorageFactory blobStorageFactory)
+        public ReportTemplateBlobStorageRepository(IBlobStorage blobStorage)
         {
-            if (blobStorageFactory == null)
-            {
-                throw new ArgumentNullException("blobStorageFactory");
-            }
-
-            _blobStorage = blobStorageFactory.CreateBlobStorage();
+            _blobStorage = blobStorage;
             _reportTemplateSerializer = new ReportTemplateSerializer();
         }
 
@@ -37,7 +31,7 @@ namespace InfinniPlatform.Reporting.Services
 
             var reportTemplateData = _blobStorage.GetBlobData(templateId);
 
-            return _reportTemplateSerializer.Deserialize(reportTemplateData.Data);
+            return _reportTemplateSerializer.Deserialize(reportTemplateData.Data());
         }
 
         public void SaveReportTemplate(string templateId, ReportTemplate template)

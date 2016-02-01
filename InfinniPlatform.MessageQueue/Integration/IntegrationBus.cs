@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Factories;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.MessageQueue;
+using InfinniPlatform.Core.MessageQueue.Integration;
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.RabbitMq;
 

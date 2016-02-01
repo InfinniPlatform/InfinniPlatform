@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Index
+﻿namespace InfinniPlatform.Core.Index
 {
     public static class IndexObjectStatus
     {

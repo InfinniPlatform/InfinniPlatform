@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Sdk.Api;
+﻿using InfinniPlatform.Sdk.Hosting;
 
 namespace InfinniPlatform.MetadataDesigner.Views.Update
 {

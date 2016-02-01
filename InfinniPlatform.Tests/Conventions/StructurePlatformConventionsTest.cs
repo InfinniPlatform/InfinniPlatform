@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 using NUnit.Framework;
@@ -22,7 +23,7 @@ namespace InfinniPlatform.Conventions
             = ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
 
         private static readonly string[] SolutionProjects
-            = Directory.GetDirectories(SolutionDir, string.Format("{0}.*", SolutionName))
+            = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*")
                        .Where(p => !p.EndsWith(".Deploy")).ToArray();
 
         private static readonly string[] SolutionCodeProjects
@@ -36,7 +37,7 @@ namespace InfinniPlatform.Conventions
 
 
         [Test]
-        [TestCaseSource("SolutionCodeProjects")]
+        [TestCaseSource(nameof(SolutionCodeProjects))]
         [Description(@"Проект должен иметь тестовый проект")]
         public void CodeProjectShouldHaveTestProject(string project)
         {
@@ -50,8 +51,8 @@ namespace InfinniPlatform.Conventions
                          || project.EndsWith("InfinniPlatform.QueryDesigner")
                          || project.EndsWith("InfinniPlatform.ReportDesigner")
                          || project.EndsWith("InfinniPlatform.PrintViewDesigner")
-                         || project.EndsWith("InfinniPlatform.Utils")
-                         || project.Contains(".SystemConfig.")
+                         || project.EndsWith("InfinniPlatform.DesignControls")
+                         || project.EndsWith("InfinniPlatform.UserInterface")
                          || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
 
             // Then
@@ -59,7 +60,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionProjects")]
+        [TestCaseSource(nameof(SolutionProjects))]
         [Description(@"Проект должен иметь файл ""packages.config""")]
         public void ProjectShouldHavePackages(string project)
         {
@@ -71,7 +72,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionCodeProjects")]
+        [TestCaseSource(nameof(SolutionCodeProjects))]
         [Description(@"Проект должен иметь файл ресурсов ""Properties\Resources""")]
         public void CodeProjectShouldHaveResources(string project)
         {
@@ -84,13 +85,13 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionProjects")]
+        [TestCaseSource(nameof(SolutionProjects))]
         [Description(@"Проект должен компилироваться в один каталог (в Debug и Release)")]
         public void ProjectShouldHaveCommonOutputPath(string project)
         {
             // Given
-            var coreOutPath = @"..\Assemblies\";
-            var designerOutPath = @"..\DesignerBin\";
+            const string coreOutPath = @"..\Assemblies\";
+            const string designerOutPath = @"..\DesignerBin\";
 
             // When
             var result = LoadProject(project)
@@ -104,7 +105,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionProjects")]
+        [TestCaseSource(nameof(SolutionProjects))]
         [Description(@"Проект может ссылаться только на ""C:\Program Files"" или ""..\packages\""")]
         public void ProjectShouldReferenceOnlyPackages(string project)
         {
@@ -123,7 +124,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionProjects")]
+        [TestCaseSource(nameof(SolutionProjects))]
         [Description(@"Проект может ссылаться только на проекты решения")]
         public void ProjectShouldReferenceOnlySolutionProjects(string project)
         {
@@ -143,7 +144,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionProjects")]
+        [TestCaseSource(nameof(SolutionProjects))]
         [Description(@"Проект должен иметь файл ""packages.config"" со всеми используемыми пакетами")]
         public void PackageReferencesShouldBeInPackageConfig(string project)
         {
@@ -173,7 +174,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionProjects")]
+        [TestCaseSource(nameof(SolutionProjects))]
         [Description(@"Проект должен иметь файл ""packages.config"" только с используемыми пакетами")]
         public void PackageConfigShouldContainsOnlyUsedPackageReferences(string project)
         {
@@ -242,7 +243,7 @@ namespace InfinniPlatform.Conventions
                                                 string.Join(Environment.NewLine,
                                                             usedPackages.Where(i => i.Package == p.Package)
                                                                         .OrderBy(i => i.Version)
-                                                                        .Select(i => string.Format("   {0}.{1} - {2}", i.Package, i.Version, i.Project))))));
+                                                                        .Select(i => $"   {i.Package}.{i.Version} - {i.Project}")))));
 
                 Assert.Fail(@"Все проекты должны использовать пакеты одной версии:{0}{1}", Environment.NewLine, errorMessage);
             }
@@ -306,7 +307,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionTestProjects")]
+        [TestCaseSource(nameof(SolutionTestProjects))]
         [Description(@"Проект должен ссылаться на общий файл конфигурации для тестов")]
         public void TestProjectShouldReferenceOnCommonAppConfig(string project)
         {
@@ -326,7 +327,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
-        [TestCaseSource("SolutionCodeProjects")]
+        [TestCaseSource(nameof(SolutionCodeProjects))]
         [Description(@"Проект должен ссылаться на общий файл конфигурации для платформы")]
         public void CodeProjectShouldReferenceOnCommonAppConfig(string project)
         {
@@ -358,10 +359,39 @@ namespace InfinniPlatform.Conventions
             Assert.AreEqual(ToNormPath(appConfig), ToNormPath(result), @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для платформы ""{1}""", project, appConfig);
         }
 
+        [Test]
+        [Description(@"В коде нельзя использовать операторы ?. и ?[] из-за отсутствия их поддержки в Mono 4.2")]
+        public void CodeCannotUseMaybeOperatorBecauseMono()
+        {
+            // Given
+
+            var codeFiles = Directory.EnumerateFiles(SolutionDir, "*.cs", SearchOption.AllDirectories)
+                                     .Where(i => !i.Contains(@"\obj\Debug\"))
+                                     .Where(i => !i.EndsWith(@"\SyntaxTest.cs"));
+
+            // When
+
+            var result = new List<string>();
+            var operatorMatch = new Regex(@"\S+((\?\.)|(\?\[))\S+", RegexOptions.Compiled);
+
+            foreach (var codeFile in codeFiles)
+            {
+                var codeText = File.ReadAllText(codeFile);
+
+                if (operatorMatch.IsMatch(codeText))
+                {
+                    result.Add(codeFile);
+                }
+            }
+
+            // Then
+            Assert.IsTrue(result.Count == 0, Environment.NewLine + string.Join(Environment.NewLine, result));
+        }
+
 
         private static XElement LoadProject(string project)
         {
-            return XDocument.Load(Path.Combine(project, string.Format("{0}.csproj", Path.GetFileName(project)))).Root;
+            return XDocument.Load(Path.Combine(project, $"{Path.GetFileName(project)}.csproj")).Root;
         }
 
         private static XElement LoadPackageConfig(string project)

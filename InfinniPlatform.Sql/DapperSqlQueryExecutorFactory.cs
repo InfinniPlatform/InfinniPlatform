@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.Sql;
 
 namespace InfinniPlatform.Sql
 {

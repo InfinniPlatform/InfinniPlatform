@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Validation;
+
+using InfinniPlatform.Core.Validation;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Validations;
 
 namespace InfinniPlatform.DesignControls.PropertyDesigner
 {

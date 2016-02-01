@@ -1,7 +1,8 @@
 ﻿using System;
-using InfinniPlatform.Api.Serialization;
 
-namespace InfinniPlatform.MessageQueue
+using InfinniPlatform.Sdk.Serialization;
+
+namespace InfinniPlatform.Core.MessageQueue
 {
     /// <summary>
     ///     Методы расширения для работы с абстракциями очереди сообщений.

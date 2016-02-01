@@ -1,5 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.ReportObjectBuilders;
 using InfinniPlatform.FastReport.ReportObjectBuilders.Data;
 using InfinniPlatform.FastReport.Templates.Data;

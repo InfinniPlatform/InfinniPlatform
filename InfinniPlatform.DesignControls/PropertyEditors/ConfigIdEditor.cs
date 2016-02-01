@@ -5,7 +5,6 @@ using System.Linq;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
-using InfinniPlatform.Api.RestApi.DataApi;
 
 namespace InfinniPlatform.DesignControls.PropertyEditors
 {
@@ -82,7 +81,7 @@ namespace InfinniPlatform.DesignControls.PropertyEditors
 
         private IEnumerable<dynamic> GetConfigList()
         {
-            return new MetadataApi().GetMetadataList();
+            return Enumerable.Empty<object>();
         }
 
         public sealed class ConfigIdValue

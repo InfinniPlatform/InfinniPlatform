@@ -5,6 +5,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
+
+using InfinniPlatform.Core.Sql;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Sql

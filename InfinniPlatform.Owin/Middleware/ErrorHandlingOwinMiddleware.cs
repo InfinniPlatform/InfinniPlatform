@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Owin.Properties;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Owin.Security;
+using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.Owin;
 
@@ -11,6 +12,7 @@ namespace InfinniPlatform.Owin.Middleware
     /// <summary>
     /// Обработчик HTTP-запросов для обработки ошибок выполнения запросов.
     /// </summary>
+    [LoggerName("OWIN")]
     internal sealed class ErrorHandlingOwinMiddleware : OwinMiddleware
     {
         private static readonly Task EmptyTask = Task.FromResult<object>(null);
@@ -32,11 +34,14 @@ namespace InfinniPlatform.Owin.Middleware
 
             try
             {
-                _log.InitThreadLoggingContext(context.Environment);
+                var requestUser = OwinUserIdentityProvider.GetUserIdentity(context);
+                var requestContext = context.Environment;
+
+                _log.InitThreadLoggingContext(requestUser, requestContext);
 
                 return Next.Invoke(context).ContinueWith(task =>
                                                          {
-                                                             _log.InitThreadLoggingContext(context.Environment);
+                                                             _log.InitThreadLoggingContext(requestUser, requestContext);
 
                                                              if (task.IsFaulted)
                                                              {
@@ -65,7 +70,7 @@ namespace InfinniPlatform.Owin.Middleware
 
         private void LogPerformance(string method, DateTime start, Exception exception)
         {
-            _performanceLog.Log("OWIN", method, start, exception.GetMessage());
+            _performanceLog.Log(method, start, exception);
         }
     }
 }

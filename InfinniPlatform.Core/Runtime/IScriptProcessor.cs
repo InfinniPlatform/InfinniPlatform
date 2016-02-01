@@ -1,9 +1,20 @@
-﻿using InfinniPlatform.Api.ContextTypes;
+﻿using InfinniPlatform.Sdk.Contracts;
 
-namespace InfinniPlatform.Runtime
+namespace InfinniPlatform.Core.Runtime
 {
-	public interface IScriptProcessor
-	{
-		object InvokeScript(string scriptIdentifier, dynamic scriptContext);
-	}
+    /// <summary>
+    /// Обработчик прикладных скриптов.
+    /// </summary>
+    public interface IScriptProcessor
+    {
+        /// <summary>
+        /// Выполняет прикладной скрипт.
+        /// </summary>
+        void InvokeScript(string actionUnitId, IActionContext actionUnitContext);
+
+        /// <summary>
+        /// Выполняет прикладной скрипт.
+        /// </summary>
+        void InvokeScriptByType(string actionUnitType, IActionContext actionUnitContext);
+    }
 }

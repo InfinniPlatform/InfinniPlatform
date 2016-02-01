@@ -1,6 +1,5 @@
 ﻿using System;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Extensions;
 
 namespace InfinniPlatform.Expressions.CompiledExpressions
 {

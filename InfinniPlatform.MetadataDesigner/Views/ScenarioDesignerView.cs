@@ -5,13 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Controls;
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.Deprecated;
+
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Settings;
+
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views
@@ -76,15 +75,6 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			TextEditScenarioCaption.EditValue = typeName;
 
 			ComboBoxScenarioContextType.EditValue = descriptionItem.ContextTypeCode;
-
-			if (descriptionItem.MethodName == "Action")
-			{
-				ComboBoxScenarioActionType.EditValue = ScriptUnitType.Action;
-			}
-			else
-			{
-				ComboBoxScenarioActionType.EditValue = ScriptUnitType.Validator;
-			}
 		}
 
 		private void RefreshUnits()
@@ -134,16 +124,17 @@ namespace InfinniPlatform.MetadataDesigner.Views
 		private void CreateScenarioButton_Click(object sender, EventArgs e)
 		{
 			var scriptDescription = ((ScriptDescription)ComboBoxScenarioIdentifier.EditValue);
-			_scenario = new DynamicWrapper().BuildId(Guid.NewGuid().ToString())
-									 .BuildName(scriptDescription.TypeName)
-									 .BuildCaption(TextEditScenarioCaption.Text)
-									 .BuildDescription(TextEditScenarioDescription.Text)
-									 .BuildProperty("ScenarioId", scriptDescription.TypeName)
-									 .BuildProperty("ContextType",
-													(int)ComboBoxScenarioContextType.EditValue)
-									 .BuildProperty("ScriptUnitType",
-													(int)ComboBoxScenarioActionType.EditValue);
-			MessageBox.Show("Scenario metadata created successfully.");
+
+		    _scenario = new DynamicWrapper();
+		    _scenario.Id = Guid.NewGuid().ToString();
+            _scenario.Name = scriptDescription.TypeName;
+		    _scenario.Caption = TextEditScenarioCaption.Text;
+		    _scenario.Description = TextEditScenarioDescription.Text;
+		    _scenario.ScenarioId = scriptDescription.TypeName;
+		    _scenario.ContextType = ComboBoxScenarioContextType.EditValue;
+		    _scenario.ScriptUnitType = ComboBoxScenarioActionType.EditValue;
+
+            MessageBox.Show("Scenario metadata created successfully.");
 
 			OnValueChanged(_scenario, new EventArgs());
 		}

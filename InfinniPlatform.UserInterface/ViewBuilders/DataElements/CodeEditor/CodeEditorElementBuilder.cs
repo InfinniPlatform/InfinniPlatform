@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Api.Metadata.Validation;
+﻿using InfinniPlatform.Core.Metadata.Validation;
 using InfinniPlatform.UserInterface.ViewBuilders.Data;
 using InfinniPlatform.UserInterface.ViewBuilders.Elements;
 using InfinniPlatform.UserInterface.ViewBuilders.Views;

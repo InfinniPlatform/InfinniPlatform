@@ -62,15 +62,15 @@
   <ItemGroup>
     <None Include="..\Files\Config\AppCommon.json">
       <Link>AppCommon.json</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Files\Config\AppExtension.json">
       <Link>AppExtension.json</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Files\Monitoring\AppLog.config">
       <Link>AppLog.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
     <None Include="..\Files\Config\App.config">

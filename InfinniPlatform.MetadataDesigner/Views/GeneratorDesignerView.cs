@@ -4,20 +4,13 @@ using System.Windows.Forms;
 
 using DevExpress.XtraEditors.Controls;
 
-
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.MetadataManagers;
-using InfinniPlatform.Api.RestApi.CommonApi.RouteTraces;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
 using InfinniPlatform.MetadataDesigner.Views.GeneratorResult;
 using InfinniPlatform.MetadataDesigner.Views.JsonEditor;
 using InfinniPlatform.MetadataDesigner.Views.Status;
-using InfinniPlatform.MetadataDesigner.Views.Update;
 using InfinniPlatform.MetadataDesigner.Views.ViewModel;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Settings;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.MetadataDesigner.Views
 {
@@ -100,30 +93,7 @@ namespace InfinniPlatform.MetadataDesigner.Views
 				return;
 			}
 
-			var process = new StatusProcess();
-			process.StartOperation(() =>
-			{
-				var generatorBroker = new GeneratorBroker(_configurationName, _documentName);
-
-				var generator = new
-									{
-										GeneratorName = TextEditGeneratorName.Text,
-										ActionUnit = ((ScriptDescription)ComboBoxSelectGeneratorScenario.EditValue).TypeName,
-										MetadataType = ComboBoxSelectViewType.EditValue.ToString(),
-									};
-
-
-				generatorBroker.CreateGenerator(generator);
-
-				var manager =
-					new ManagerFactoryDocument(_configurationName, _documentName).BuildManagerByType(MetadataType.Generator);
-
-				_generator = manager.MetadataReader.GetItem(TextEditGeneratorName.Text);
-				
-
-			});
-			process.EndOperation();
-			OnValueChanged(_generator, new EventArgs());
+            OnValueChanged(_generator, new EventArgs());
 		}
 
 
@@ -138,16 +108,14 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 			}
 
-			var tracer = new RouteTraceSaveQueryLog();
-
 			var result = ViewModelExtension.CheckGetView(Version(), ConfigId(), DocumentId(), "", ComboBoxSelectViewType.EditValue.ToString(), jsonParams);
 
 
 			var checkForm = new CheckForm
 							{
 								MemoText = result,
-								BodyText = tracer.GetCatchedData().Select(r => r.Body).FirstOrDefault(),
-								UrlText = tracer.GetCatchedData().Select(r => r.Url).FirstOrDefault()
+								BodyText = "",
+								UrlText = ""
 							};
 
 			checkForm.ShowDialog();

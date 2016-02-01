@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Api.Metadata;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Commands;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factories

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Hosting
+namespace InfinniPlatform.Core.Hosting
 {
     /// <summary>
     /// Сервис хостинга приложения.

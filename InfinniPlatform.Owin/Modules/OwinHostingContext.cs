@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Api;
+﻿using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Owin.Modules

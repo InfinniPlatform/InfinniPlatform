@@ -3,7 +3,7 @@
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 using Moq;
 

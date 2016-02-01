@@ -5,7 +5,7 @@ namespace InfinniPlatform.SystemConfig.Tests.TestData
 {
     public sealed class ActionUnitWrapGeneratorTest
     {
-        public void Action(IApplyContext target)
+        public void Action(IActionContext target)
         {
             target.Result = new DynamicWrapper();
             target.Result.TestValue = "Test";

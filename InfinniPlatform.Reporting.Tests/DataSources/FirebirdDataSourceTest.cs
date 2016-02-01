@@ -3,7 +3,8 @@ using System.IO;
 using System.Linq;
 
 using FirebirdSql.Data.FirebirdClient;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.FastReport.TemplatesFluent.Reports;
 using InfinniPlatform.Reporting.DataSources;

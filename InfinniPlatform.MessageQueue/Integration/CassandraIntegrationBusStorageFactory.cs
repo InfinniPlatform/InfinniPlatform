@@ -1,6 +1,7 @@
-﻿using InfinniPlatform.Api.Serialization;
-using InfinniPlatform.Cassandra;
-using InfinniPlatform.Factories;
+﻿using InfinniPlatform.Cassandra;
+using InfinniPlatform.Core.Factories;
+using InfinniPlatform.Core.MessageQueue.Integration;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.MessageQueue.Integration
 {

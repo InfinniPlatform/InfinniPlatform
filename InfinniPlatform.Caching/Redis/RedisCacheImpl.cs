@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Caching.Properties;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 using Sider;
 
@@ -11,6 +11,7 @@ namespace InfinniPlatform.Caching.Redis
     /// <summary>
     /// Реализует интерфейс для управления распределенным кэшем на базе Redis.
     /// </summary>
+    [LoggerName("Redis")]
     internal sealed class RedisCacheImpl : ICache
     {
         /// <summary>
@@ -122,7 +123,7 @@ namespace InfinniPlatform.Caching.Redis
             {
                 var result = action(_connectionFactory.GetClient(), wrappedKey);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, method, startTime, null);
+                _performanceLog.Log(method, startTime);
 
                 return result;
             }
@@ -136,7 +137,7 @@ namespace InfinniPlatform.Caching.Redis
 
                 _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
 
-                _performanceLog.Log(CachingHelpers.PerformanceLogRedisComponent, method, startTime, exception.GetMessage());
+                _performanceLog.Log(method, startTime, exception);
 
                 throw;
             }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.Cors.Modules;
 using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Api;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 
 using Microsoft.Owin;

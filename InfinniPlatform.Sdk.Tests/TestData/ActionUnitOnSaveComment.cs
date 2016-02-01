@@ -1,19 +1,23 @@
-﻿using InfinniPlatform.Sdk.ApiContracts;
-using InfinniPlatform.Sdk.Contracts;
-using InfinniPlatform.Sdk.Global;
+﻿using InfinniPlatform.Sdk.Contracts;
+using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Sdk.Tests.TestData
 {
     public sealed class ActionUnitOnSaveComment
     {
-        public void Action(IApplyContext target)
+        public ActionUnitOnSaveComment(IDocumentApi documentApi)
+        {
+            _documentApi = documentApi;
+        }
+
+        private readonly IDocumentApi _documentApi;
+
+        public void Action(IActionContext target)
         {
             target.Item.Text = target.Item.Text + "123";
-            target.Context.GetComponent<IDocumentApi>()
-                .SetDocument("gameshop", "review", new
-                {
-                    Text = "test"
-                });
+
+            _documentApi.SetDocument("gameshop", "review", new DynamicWrapper { ["Text"] = "test" });
         }
     }
 }

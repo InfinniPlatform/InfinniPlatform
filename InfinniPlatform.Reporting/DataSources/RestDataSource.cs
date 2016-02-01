@@ -4,7 +4,7 @@ using System.IO;
 using System.Net;
 using System.Xml.Linq;
 
-using InfinniPlatform.Api.Schema;
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 using InfinniPlatform.Reporting.DataProviders;
 using InfinniPlatform.Reporting.Properties;

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Sdk.Environment.Settings;
 using InfinniPlatform.UserInterface.AppHost;
 
 namespace InfinniPlatform.UserInterface

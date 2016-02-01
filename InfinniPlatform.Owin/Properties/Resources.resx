@@ -126,6 +126,9 @@
   <data name="RequestHasUnsupportedContentType" xml:space="preserve">
     <value>Request has unsupported content type '{0}'.</value>
   </data>
+  <data name="RequestProcessingCompletedWithUnexpectedException" xml:space="preserve">
+    <value>Request processing completed with unexpected exception.</value>
+  </data>
   <data name="ServerCertificateCannotBeNullOrWhiteSpace" xml:space="preserve">
     <value>Server certificate cannot be null or whitespace when using 'https' scheme.</value>
   </data>

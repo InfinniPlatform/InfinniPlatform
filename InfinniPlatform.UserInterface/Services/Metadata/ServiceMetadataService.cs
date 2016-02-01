@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.Serialization;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.UserInterface.Services.Metadata
 {

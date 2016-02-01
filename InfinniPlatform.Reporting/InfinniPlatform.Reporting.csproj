@@ -73,7 +73,6 @@
     <Compile Include="DataSources\SqlDataSource.cs" />
     <Compile Include="ParameterValueProviders\ParameterDataSourceValueProvider.cs" />
     <Compile Include="ParameterValueProviders\GenericParameterValueProvider.cs" />
-    <Compile Include="PrintView\FlowDocumentPrintViewBuilderFactory.cs" />
     <Compile Include="Services\IReportService.cs" />
     <Compile Include="Services\IReportServiceFactory.cs" />
     <Compile Include="Services\IReportTemplateRepository.cs" />
@@ -98,10 +97,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
@@ -121,6 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PrintView\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

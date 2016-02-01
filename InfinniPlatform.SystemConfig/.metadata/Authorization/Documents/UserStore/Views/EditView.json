@@ -161,7 +161,7 @@
     {
       "DocumentDataSource": {
         "Name": "AddUserDataSource",
-        "ConfigId": "RestfulApi",
+        "ConfigId": "SystemConfig",
         "DocumentId": "Authorization",
         "UpdateAction": "AddUser"
       }
@@ -169,7 +169,7 @@
     {
       "DocumentDataSource": {
         "Name": "AddUserRoleDataSource",
-        "ConfigId": "RestfulApi",
+        "ConfigId": "SystemConfig",
         "DocumentId": "Authorization",
         "UpdateAction": "AddUserRole"
       }

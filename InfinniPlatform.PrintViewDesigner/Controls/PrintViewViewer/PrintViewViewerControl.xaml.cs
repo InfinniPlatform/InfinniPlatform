@@ -7,7 +7,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-using InfinniPlatform.Api.PrintView;
+using InfinniPlatform.Core.PrintView;
 using InfinniPlatform.FlowDocument;
 using InfinniPlatform.FlowDocument.PrintView;
 using InfinniPlatform.PrintViewDesigner.ViewModel;

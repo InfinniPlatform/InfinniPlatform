@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.MessageQueue;
+using InfinniPlatform.Core.MessageQueue;
 
 using RabbitMQ.Client;
 

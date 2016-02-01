@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Deprecated;
+
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MetadataDesigner.Views
@@ -60,83 +60,76 @@ namespace InfinniPlatform.MetadataDesigner.Views
 			object validationPointWarning, object actionPoint, object successPoint, object registerPoint, object failPoint, object deletePoint,
 			string validationRuleWarning, string validationRuleError, object deletingDocumentValidationRuleError, string defaultValuesSchema, string credentialsType, object credentialsPoint)
 		{
-			object transition = null;
+			dynamic transition;
 			try
 			{
-				transition = new DynamicWrapper().BuildId(Guid.NewGuid().ToString())
-					.BuildName(transitionName);
-
-				if (stateFrom != null)
-				{
-                    //TODO Убрать комбо-бокс для статусов
-                    //transition.BuildProperty("StateFrom",
-                    //    ViewModelExtension.BuildStatusByName(ConfigId(), DocumentId(), stateFrom));
-				}
+				transition = new DynamicWrapper();
+                transition.Id = Guid.NewGuid().ToString();
+                transition.Name = transitionName;
 
 				if (validationPointError != null)
 				{
-					transition.BuildProperty("ValidationPointError", validationPointError);
+                    transition.ValidationPointError = validationPointError;
 				}
 
 				if (validationPointWarning != null)
 				{
-					transition.BuildProperty("ValidationPointWarning", validationPointWarning);
+                    transition.ValidationPointWarning = validationPointWarning;
 				}
-
 
 				if (actionPoint != null)
 				{
-					transition.BuildProperty("ActionPoint", actionPoint);
+                    transition.ActionPoint = actionPoint;
 				}
 
 				if (successPoint != null)
 				{
-					transition.BuildProperty("SuccessPoint", successPoint);
+                    transition.SuccessPoint = successPoint;
 				}
 
 				if (registerPoint != null)
 				{
-					transition.BuildProperty("RegisterPoint", registerPoint);
+                    transition.RegisterPoint = registerPoint;
 				}
 
 				if (failPoint != null)
 				{
-					transition.BuildProperty("FailPoint", failPoint);
+                    transition.FailPoint = failPoint;
 				}
 
 				if (deletePoint != null)
 				{
-					transition.BuildProperty("DeletePoint", deletePoint);
+                    transition.DeletePoint = deletePoint;
 				}
 
 				if (validationRuleWarning != null)
 				{
-					transition.BuildProperty("ValidationRuleWarning", validationRuleWarning);
+                    transition.ValidationRuleWarning = validationRuleWarning;
 				}
 
 				if (validationRuleError != null)
 				{
-					transition.BuildProperty("ValidationRuleError", validationRuleError);
+                    transition.ValidationRuleError = validationRuleError;
 				}
 
                 if (deletingDocumentValidationRuleError != null)
                 {
-                    transition.BuildProperty("DeletingDocumentValidationPoint", deletingDocumentValidationRuleError);
+                    transition.DeletingDocumentValidationPoint = deletingDocumentValidationRuleError;
                 }
 
 				if (defaultValuesSchema != null)
 				{
-					transition.BuildProperty("SchemaPrefill", defaultValuesSchema);
+                    transition.SchemaPrefill = defaultValuesSchema;
 				}
 
 				if (credentialsPoint != null)
 				{
-					transition.BuildProperty("CredentialsPoint", credentialsPoint);
+                    transition.CredentialsPoint = credentialsPoint;
 				}
 
 				if (credentialsType != null)
 				{
-					transition.BuildProperty("CredentialsType", credentialsType);
+                    transition.CredentialsType = credentialsType;
 				}
 
 				_process.Transitions.Add(transition);
@@ -179,10 +172,11 @@ namespace InfinniPlatform.MetadataDesigner.Views
 
 		public void BuildProcess(string id, string name, string caption, int workflowType)
 		{
-			_process = new DynamicWrapper().BuildId(id)
-										   .BuildName(name)
-										   .BuildCaption(caption)
-										   .BuildProperty("Type", workflowType);
+			_process = new DynamicWrapper();
+            _process.Id = id;
+            _process.Name = name;
+            _process.Caption = caption;
+            _process.Type = workflowType;
 			_process.Transitions = new List<dynamic>();
 			_process.SettingsType = ProcessTemplateEditor.EditValue;
 

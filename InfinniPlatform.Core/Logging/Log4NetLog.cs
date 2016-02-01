@@ -1,69 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Security;
 
-using log4net;
-
-using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
-using ILog4NetLog = log4net.ILog;
-
-namespace InfinniPlatform.Logging
+namespace InfinniPlatform.Core.Logging
 {
     /// <summary>
-    /// Сервис <see cref="Sdk.Environment.Log.ILog" /> на базе log4net.
+    /// Сервис <see cref="ILog" /> на базе log4net.
     /// </summary>
-    public sealed class Log4NetLog : ILog
+    internal sealed class Log4NetLog : ILog
     {
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="log">Сервис log4net для записи сообщений в лог.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public Log4NetLog(ILog4NetLog log)
+        public Log4NetLog(log4net.ILog internalLog)
         {
-            if (log == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            _log = log;
+            _internalLog = internalLog;
         }
 
-        private readonly ILog4NetLog _log;
 
-        public void Info(string message, Dictionary<string, object> context, Exception exception = null)
+        private readonly log4net.ILog _internalLog;
+
+
+        public bool IsDebugEnabled => _internalLog.IsDebugEnabled;
+
+        public bool IsInfoEnabled => _internalLog.IsInfoEnabled;
+
+        public bool IsWarnEnabled => _internalLog.IsWarnEnabled;
+
+        public bool IsErrorEnabled => _internalLog.IsErrorEnabled;
+
+        public bool IsFatalEnabled => _internalLog.IsFatalEnabled;
+
+
+        public void Debug(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Info(new JsonEvent(message, context, exception));
+            _internalLog.Debug(new JsonEvent(message, context, exception));
         }
 
-        public void Warn(string message, Dictionary<string, object> context, Exception exception = null)
+        public void Info(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Warn(new JsonEvent(message, context, exception));
+            _internalLog.Info(new JsonEvent(message, context, exception));
         }
 
-        public void Debug(string message, Dictionary<string, object> context, Exception exception = null)
+        public void Warn(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Debug(new JsonEvent(message, context, exception));
+            _internalLog.Warn(new JsonEvent(message, context, exception));
         }
 
-        public void Error(string message, Dictionary<string, object> context, Exception exception = null)
+        public void Error(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Error(new JsonEvent(message, context, exception));
+            _internalLog.Error(new JsonEvent(message, context, exception));
         }
 
-        public void Fatal(string message, Dictionary<string, object> context, Exception exception = null)
+        public void Fatal(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
-            _log.Fatal(new JsonEvent(message, context, exception));
+            _internalLog.Fatal(new JsonEvent(message, context, exception));
         }
 
-        public void InitThreadLoggingContext(IDictionary<string, object> context)
+
+        public void InitThreadLoggingContext(IIdentity user, IDictionary<string, object> context)
         {
-            ThreadContext.Properties.Clear();
+            log4net.ThreadContext.Properties.Clear();
 
             foreach (var pair in context)
             {
-                ThreadContext.Properties[pair.Key] = pair.Value;
+                log4net.ThreadContext.Properties[pair.Key] = pair.Value;
+            }
+
+            if (user != null)
+            {
+                log4net.ThreadContext.Properties["app.UserId"] = user.GetUserId();
+                log4net.ThreadContext.Properties["app.UserName"] = user.Name;
             }
         }
     }

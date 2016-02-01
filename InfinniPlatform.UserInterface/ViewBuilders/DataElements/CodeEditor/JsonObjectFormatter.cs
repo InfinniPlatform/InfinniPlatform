@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Api.Metadata.Validation;
+
+using InfinniPlatform.Core.Metadata.Validation;
 using InfinniPlatform.Sdk.Dynamic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

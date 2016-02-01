@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 using InfinniPlatform.FastReport.Templates.Data;
 
 namespace InfinniPlatform.FastReport.TemplatesFluent.Data

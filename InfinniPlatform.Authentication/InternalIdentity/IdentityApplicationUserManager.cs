@@ -3,29 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Authentication.Properties;
-using InfinniPlatform.Sdk.ContextComponents;
+using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core.Threading;
+using InfinniPlatform.Owin.Security;
+using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 
 namespace InfinniPlatform.Authentication.InternalIdentity
 {
     internal sealed class IdentityApplicationUserManager : IApplicationUserManager
     {
-        private const int TaskTimeout = 60 * 1000;
-
-
-        public IdentityApplicationUserManager(UserManager<IdentityApplicationUser> userManager)
+        public IdentityApplicationUserManager(IOwinContextProvider owinContextProvider, IUserIdentityProvider userIdentityProvider)
         {
-            _userManager = userManager;
+            _owinContextProvider = owinContextProvider;
+            _userIdentityProvider = userIdentityProvider;
         }
 
 
-        private readonly UserManager<IdentityApplicationUser> _userManager;
+        private readonly IOwinContextProvider _owinContextProvider;
+        private readonly IUserIdentityProvider _userIdentityProvider;
+
+
+        private IOwinContext OwinContext => _owinContextProvider.GetOwinContext();
+
+        private UserManager<IdentityApplicationUser> UserManager => OwinContext.GetUserManager<UserManager<IdentityApplicationUser>>();
 
 
         public object GetCurrentUser()
@@ -41,9 +48,10 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             return InvokeUserManager((m, u) => Task.FromResult(u), userName);
         }
 
-        public void CreateUser(string userName, string password)
+        public void CreateUser(string userName, string password, string email = null)
         {
-            ThrowIfError(_userManager.CreateAsync(new IdentityApplicationUser { UserName = userName }, password));
+            var result = AsyncHelper.RunSync(() => UserManager.CreateAsync(new IdentityApplicationUser { UserName = userName, Email = email }, password));
+            ThrowIfError(result);
         }
 
         public void DeleteUser(string userName)
@@ -338,27 +346,33 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         public void AddToRoles(IEnumerable<string> roles)
         {
-            var arrayRoles = roles?.ToArray();
-
-            if (arrayRoles?.Length > 0)
+            if (roles != null)
             {
-                InvokeUserManager((m, userId) => m.AddToRolesAsync(userId, arrayRoles));
-                AddRolesToClaims(arrayRoles);
+                var arrayRoles = roles.ToArray();
+
+                if (arrayRoles.Length > 0)
+                {
+                    InvokeUserManager((m, userId) => m.AddToRolesAsync(userId, arrayRoles));
+                    AddRolesToClaims(arrayRoles);
+                }
             }
         }
 
         public void AddToRoles(string userName, IEnumerable<string> roles)
         {
-            var arrayRoles = roles?.ToArray();
-
-            if (arrayRoles?.Length > 0)
+            if (roles != null)
             {
-                InvokeUserManager((m, u) => m.AddToRolesAsync(u.Id, arrayRoles), userName);
+                var arrayRoles = roles.ToArray();
+
+                if (arrayRoles.Length > 0)
+                {
+                    InvokeUserManager((m, u) => m.AddToRolesAsync(u.Id, arrayRoles), userName);
+                }
             }
         }
 
 
-        private static void AddRolesToClaims(params string[] roles)
+        private void AddRolesToClaims(params string[] roles)
         {
             var currentIdentity = GetCurrentIdentity();
 
@@ -401,27 +415,33 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         public void RemoveFromRoles(IEnumerable<string> roles)
         {
-            var rolesArray = roles?.ToArray();
-
-            if (rolesArray?.Length > 0)
+            if (roles != null)
             {
-                InvokeUserManager((m, userId) => m.RemoveFromRolesAsync(userId, rolesArray));
-                RemoveRolesFromClaims(rolesArray);
+                var rolesArray = roles.ToArray();
+
+                if (rolesArray.Length > 0)
+                {
+                    InvokeUserManager((m, userId) => m.RemoveFromRolesAsync(userId, rolesArray));
+                    RemoveRolesFromClaims(rolesArray);
+                }
             }
         }
 
         public void RemoveFromRoles(string userName, IEnumerable<string> roles)
         {
-            var rolesArray = roles?.ToArray();
-
-            if (rolesArray?.Length > 0)
+            if (roles != null)
             {
-                InvokeUserManager((m, u) => m.RemoveFromRolesAsync(u.Id, rolesArray), userName);
+                var rolesArray = roles.ToArray();
+
+                if (rolesArray.Length > 0)
+                {
+                    InvokeUserManager((m, u) => m.RemoveFromRolesAsync(u.Id, rolesArray), userName);
+                }
             }
         }
 
 
-        private static void RemoveRolesFromClaims(params string[] roles)
+        private void RemoveRolesFromClaims(params string[] roles)
         {
             var currentIdentity = GetCurrentIdentity();
             currentIdentity.RemoveClaims(ClaimTypes.Role, roles.Contains);
@@ -439,27 +459,27 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         private TResult InvokeUserManager<TResult>(ProcessCurrentUserFunc<TResult> actionOnCurrentUser)
         {
             var currentUserId = GetCurrentUserId();
-            var task = actionOnCurrentUser(_userManager, currentUserId);
-            return task.Result;
+            var result = AsyncHelper.RunSync(() => actionOnCurrentUser(UserManager, currentUserId));
+            return result;
         }
 
         private void InvokeUserManager(ProcessCurrentUserFunc<IdentityResult> actionOnCurrentUser)
         {
             var currentUserId = GetCurrentUserId();
-            var task = actionOnCurrentUser(_userManager, currentUserId);
-            ThrowIfError(task);
+            var result = AsyncHelper.RunSync(() => actionOnCurrentUser(UserManager, currentUserId));
+            ThrowIfError(result);
         }
 
         private TResult InvokeUserManager<TResult>(ProcessSpecifiedUserFunc<TResult> actionOnSpecifiedUser, string userName)
         {
-            var task = ProcessSpecifiedUser(actionOnSpecifiedUser, _userManager, userName);
-            return task.Result;
+            var result = AsyncHelper.RunSync(() => ProcessSpecifiedUser(actionOnSpecifiedUser, UserManager, userName));
+            return result;
         }
 
         private void InvokeUserManager(ProcessSpecifiedUserFunc<IdentityResult> actionOnSpecifiedUser, string userName)
         {
-            var task = ProcessSpecifiedUser(actionOnSpecifiedUser, _userManager, userName);
-            ThrowIfError(task);
+            var result = AsyncHelper.RunSync(() => ProcessSpecifiedUser(actionOnSpecifiedUser, UserManager, userName));
+            ThrowIfError(result);
         }
 
         private static async Task<T> ProcessSpecifiedUser<T>(ProcessSpecifiedUserFunc<T> actionOnSpecifiedUser, UserManager<IdentityApplicationUser> userManager, string userName)
@@ -475,20 +495,18 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         }
 
 
-        private static string GetCurrentUserId()
+        private string GetCurrentUserId()
         {
             var currentIdentity = GetCurrentIdentity();
             var currentUserId = currentIdentity.FindFirstClaim(ClaimTypes.NameIdentifier);
             return currentUserId;
         }
 
-        private static IIdentity GetCurrentIdentity()
+        private IIdentity GetCurrentIdentity()
         {
-            var currentIdentity = Thread.CurrentPrincipal?.Identity;
-            var currentUserId = currentIdentity?.FindFirstClaim(ClaimTypes.NameIdentifier);
-            var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
+            var currentIdentity = _userIdentityProvider.GetUserIdentity();
 
-            if (isNotAuthenticated)
+            if (currentIdentity != null && !currentIdentity.IsAuthenticated)
             {
                 throw new InvalidOperationException(Resources.RequestIsNotAuthenticated);
             }
@@ -497,16 +515,11 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         }
 
 
-        private static void ThrowIfError(Task<IdentityResult> task)
+        private static void ThrowIfError(IdentityResult result)
         {
-            if (!task.Wait(TaskTimeout))
+            if (!result.Succeeded)
             {
-                throw new InvalidOperationException(Resources.OperationHasCancelledByTimeout);
-            }
-
-            if (!task.Result.Succeeded)
-            {
-                throw new InvalidOperationException(string.Join(Environment.NewLine, task.Result.Errors));
+                throw new InvalidOperationException(string.Join(Environment.NewLine, result.Errors));
             }
         }
     }

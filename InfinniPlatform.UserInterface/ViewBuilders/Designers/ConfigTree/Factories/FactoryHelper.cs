@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Metadata;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.UserInterface.Properties;
 using InfinniPlatform.UserInterface.ViewBuilders.Commands;
@@ -22,17 +23,12 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Designers.ConfigTree.Factor
                 {MetadataType.Menu, Resources.MetadataTypeMenu},
                 {MetadataType.Document, Resources.MetadataTypeDocument},
                 {MetadataType.Register, Resources.MetadataTypeRegister},
-                {MetadataType.Assembly, Resources.MetadataTypeAssembly},
                 {MetadataType.View, Resources.MetadataTypeView},
                 {MetadataType.PrintView, Resources.MetadataTypePrintView},
-                {MetadataType.ValidationError, Resources.MetadataTypeValidationError},
-                {MetadataType.ValidationWarning, Resources.MetadataTypeValidationWarning},
                 {MetadataType.Scenario, Resources.MetadataTypeScenario},
                 {MetadataType.Process, Resources.MetadataTypeProcess},
                 {MetadataType.Service, Resources.MetadataTypeService},
-                {MetadataType.Generator, Resources.MetadataTypeGenerator},
                 {MetadataType.Report, Resources.MetadataTypeReport},
-                {MetadataType.Status, Resources.MetadataTypeStatus}
             };
 
         public static void AddEmptyElement(ICollection<ConfigElementNode> elements, ConfigElementNode elementParent)

@@ -3,7 +3,7 @@
   "Secured": true,
   "Name": "OnSaveComment",
   "Type": {
-    "Name": "apiapplyjson",
+    "Name": "applyjson",
     "WorkflowExtensionPoints": [
       {
         "Name": "FilterEvents",

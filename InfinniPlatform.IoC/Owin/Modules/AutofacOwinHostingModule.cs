@@ -1,6 +1,4 @@
-﻿using System;
-
-using Autofac;
+﻿using Autofac;
 
 using InfinniPlatform.IoC.Owin.Middleware;
 using InfinniPlatform.Owin.Modules;
@@ -11,14 +9,21 @@ namespace InfinniPlatform.IoC.Owin.Modules
 {
     internal sealed class AutofacOwinHostingModule : IOwinHostingModule
     {
+        public AutofacOwinHostingModule(IContainer container)
+        {
+            _container = container;
+        }
+
+
+        private readonly IContainer _container;
+
+
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.IoC;
 
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            var container = context.ContainerResolver.Resolve<Func<IContainer>>()();
-
-            builder.Use(typeof(AutofacRequestLifetimeScopeOwinMiddleware), container);
+            builder.Use(typeof(AutofacRequestLifetimeScopeOwinMiddleware), _container);
         }
     }
 }

@@ -61,6 +61,69 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to В регистрируемом классе скрипта отсутствует объявление метода Action.
+        /// </summary>
+        internal static string ActionMethodNotSpecified {
+            get {
+                return ResourceManager.GetString("ActionMethodNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ActionUnit completed with error..
+        /// </summary>
+        internal static string ActionUnitCompletedWithError {
+            get {
+                return ResourceManager.GetString("ActionUnitCompletedWithError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ActionUnit is not registered..
+        /// </summary>
+        internal static string ActionUnitIsNotRegistered {
+            get {
+                return ResourceManager.GetString("ActionUnitIsNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ActionUnit metadata &apos;{0}&apos; is not registered..
+        /// </summary>
+        internal static string ActionUnitMetadataIsNotRegistered {
+            get {
+                return ResourceManager.GetString("ActionUnitMetadataIsNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blob storage already created..
+        /// </summary>
+        internal static string BlobStorageAlreadyCreated {
+            get {
+                return ResourceManager.GetString("BlobStorageAlreadyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blob storage created..
+        /// </summary>
+        internal static string BlobStorageCreated {
+            get {
+                return ResourceManager.GetString("BlobStorageCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot run test server..
+        /// </summary>
+        internal static string CannotStartTestServer {
+            get {
+                return ResourceManager.GetString("CannotStartTestServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t add unsaved user to role..
         /// </summary>
         internal static string CantAddUnsavedUserToRole {
@@ -97,6 +160,24 @@ namespace InfinniPlatform.SystemConfig.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration created: {0}.
+        /// </summary>
+        internal static string ConfigurationCreated {
+            get {
+                return ResourceManager.GetString("ConfigurationCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration {0} not found in: {1}. See AppSettings.ConfigurationPath setting and set to directory where config files stored..
+        /// </summary>
+        internal static string ConfigurationFileNotFound {
+            get {
+                return ResourceManager.GetString("ConfigurationFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Need to specify ConfigurationId to set configuration from JSON..
         /// </summary>
         internal static string ConfigurationIdNotFound {
@@ -120,6 +201,15 @@ namespace InfinniPlatform.SystemConfig.Properties {
         internal static string ConfigurationVersionShouldSpecified {
             get {
                 return ResourceManager.GetString("ConfigurationVersionShouldSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document provider not registered for metadata: &quot;{0}&quot;.
+        /// </summary>
+        internal static string DocumentProviderNotRegisteredError {
+            get {
+                return ResourceManager.GetString("DocumentProviderNotRegisteredError", resourceCulture);
             }
         }
         
@@ -210,6 +300,24 @@ namespace InfinniPlatform.SystemConfig.Properties {
         internal static string ErrorParsingJsonConfiguration {
             get {
                 return ResourceManager.GetString("ErrorParsingJsonConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event storage already created..
+        /// </summary>
+        internal static string EventStorageAlreadyCreated {
+            get {
+                return ResourceManager.GetString("EventStorageAlreadyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event storage created..
+        /// </summary>
+        internal static string EventStorageCreated {
+            get {
+                return ResourceManager.GetString("EventStorageCreated", resourceCulture);
             }
         }
         

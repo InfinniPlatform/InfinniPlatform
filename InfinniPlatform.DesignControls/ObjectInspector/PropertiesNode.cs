@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Properties;
 using InfinniPlatform.DesignControls.Layout;
 using InfinniPlatform.DesignControls.PropertyDesigner;
 
@@ -145,7 +144,7 @@ namespace InfinniPlatform.DesignControls.ObjectInspector
                 var resultRemove = OnRemoveChild(child.GetControl());
                 if (!resultRemove)
                 {
-                    MessageBox.Show(Resources.CantRemoveItemFromParent, Resources.FailToRemoveParent,
+                    MessageBox.Show("CantRemoveItemFromParent", "FailToRemoveParent",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }

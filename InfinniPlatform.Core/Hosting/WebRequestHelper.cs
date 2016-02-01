@@ -3,9 +3,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Web;
-using InfinniPlatform.Api.Serialization;
 
-namespace InfinniPlatform.Hosting
+using InfinniPlatform.Sdk.Serialization;
+
+namespace InfinniPlatform.Core.Hosting
 {
     public static class WebRequestHelper
     {

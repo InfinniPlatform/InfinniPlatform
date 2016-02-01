@@ -66,7 +66,10 @@ namespace InfinniPlatform.Cassandra.Client
         {
             var cluster = _cluster;
 
-            cluster?.Dispose();
+            if (cluster != null)
+            {
+                cluster.Dispose();
+            }
         }
 
 

@@ -7,7 +7,6 @@ using DevExpress.XtraBars;
 using DevExpress.XtraTab;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
-using InfinniPlatform.Api.Properties;
 using InfinniPlatform.DesignControls.Controls.Alignment;
 using InfinniPlatform.DesignControls.DesignerSurface;
 using InfinniPlatform.DesignControls.Layout;
@@ -176,7 +175,7 @@ namespace InfinniPlatform.DesignControls.ObjectInspector
         {
             if (ControlsTree.FocusedNode == null)
             {
-                MessageBox.Show(Resources.NoItemSelected, Resources.NeedToSelectItem, MessageBoxButtons.OK,
+                MessageBox.Show("NoItemSelected", "NeedToSelectItem", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 return;
             }
@@ -230,7 +229,7 @@ namespace InfinniPlatform.DesignControls.ObjectInspector
         {
             if (ControlsTree.FocusedNode == null)
             {
-                MessageBox.Show(Resources.NoItemSelected, Resources.NeedToSelectItem, MessageBoxButtons.OK,
+                MessageBox.Show("NoItemSelected", "NeedToSelectItem", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 return;
             }
@@ -243,15 +242,15 @@ namespace InfinniPlatform.DesignControls.ObjectInspector
         {
             if (ControlsTree.FocusedNode == null)
             {
-                MessageBox.Show(Resources.NoItemSelected, Resources.NeedToSelectItem, MessageBoxButtons.OK,
+                MessageBox.Show("NoItemSelected", "NeedToSelectItem", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 return;
             }
 
             var focusedPropertiesNode = ((PropertiesNode) ControlsTree.FocusedNode.Tag);
 
-            if (MessageBox.Show(string.Format(Resources.ConfirmDeleteDocument, focusedPropertiesNode.ControlName),
-                Resources.NeedConfirm, MessageBoxButtons.OKCancel, MessageBoxIcon.Question,
+            if (MessageBox.Show(string.Format("ConfirmDeleteDocument", focusedPropertiesNode.ControlName),
+                "NeedConfirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2) ==
                 DialogResult.Cancel)
             {
@@ -289,14 +288,14 @@ namespace InfinniPlatform.DesignControls.ObjectInspector
         {
             if (ControlsTree.FocusedNode == null)
             {
-                MessageBox.Show(Resources.NoItemSelected, Resources.NeedToSelectItem, MessageBoxButtons.OK,
+                MessageBox.Show("NoItemSelected", "NeedToSelectItem", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 return;
             }
 
             if (_clipboardNode == null)
             {
-                MessageBox.Show(Resources.ClipboardIsEmpty, Resources.Warnings, MessageBoxButtons.OK,
+                MessageBox.Show("ClipboardIsEmpty", "Warnings", MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation,
                     MessageBoxDefaultButton.Button1);
                 return;
@@ -322,7 +321,7 @@ namespace InfinniPlatform.DesignControls.ObjectInspector
         {
             if (ControlsTree.FocusedNode == null || ControlsTree.FocusedNode.ParentNode == null)
             {
-                MessageBox.Show(Resources.NoItemSelected, Resources.NeedToSelectItem, MessageBoxButtons.OK,
+                MessageBox.Show("NoItemSelected", "NeedToSelectItem", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 return;
             }
@@ -330,8 +329,8 @@ namespace InfinniPlatform.DesignControls.ObjectInspector
             var focusedPropertiesNode = ((PropertiesNode) ControlsTree.FocusedNode.Tag);
 
 
-            if (MessageBox.Show(string.Format(Resources.ConfirmDeleteDocument, focusedPropertiesNode.ControlName),
-                Resources.NeedConfirm, MessageBoxButtons.OKCancel, MessageBoxIcon.Question,
+            if (MessageBox.Show(string.Format("ConfirmDeleteDocument", focusedPropertiesNode.ControlName),
+                "NeedConfirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2) ==
                 DialogResult.Cancel)
             {

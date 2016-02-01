@@ -1,19 +1,29 @@
-﻿using log4net;
+﻿using System.Diagnostics;
 
-using ILog = InfinniPlatform.Sdk.Environment.Log.ILog;
+using InfinniPlatform.Sdk.Logging;
 
-namespace InfinniPlatform.Logging
+namespace InfinniPlatform.Core.Logging
 {
     /// <summary>
-    /// Предоставляет статическую точку доступа к <see cref="Sdk.Environment.Log.ILog" />.
+    /// Предоставляет статическую точку доступа к <see cref="ILog" />.
     /// </summary>
     public static class Logger
     {
-        // TODO: Перевести на IoC
+        static Logger()
+        {
+            Log = LogManagerCache.GetLog(typeof(Logger));
+
+            // Интеграция с System.Diagnostics.Trace
+            var traceLog = LogManagerCache.GetLog(typeof(LogTraceListener));
+            Trace.Listeners.Add(new LogTraceListener(traceLog));
+        }
 
         /// <summary>
         /// Сервис регистрации событий.
         /// </summary>
-        public static readonly ILog Log = new Log4NetLog(LogManager.GetLogger("InfinniPlatform"));
+        /// <remarks>
+        /// Используется только в статическом контексте, где недоступен IoC.
+        /// </remarks>
+        public static readonly ILog Log;
     }
 }

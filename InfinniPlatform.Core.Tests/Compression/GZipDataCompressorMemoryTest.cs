@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Compression;
+using InfinniPlatform.Core.Compression;
 
 using NUnit.Framework;
 

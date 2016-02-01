@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
-using InfinniPlatform.Api.RestApi.DataApi;
 using InfinniPlatform.FastReport.Templates.Data;
+using InfinniPlatform.Sdk.Documents;
 
 using Newtonsoft.Json.Linq;
 
@@ -14,14 +13,14 @@ namespace InfinniPlatform.Reporting.DataSources
     /// </summary>
     internal sealed class RegisterDataSource : IDataSource
     {
-        public RegisterDataSource(DocumentApi documentApi)
+        public RegisterDataSource(IDocumentApi documentApi)
         {
             _documentApi = documentApi;
 
             ProviderType = typeof(RegisterDataProviderInfo);
         }
 
-        private readonly DocumentApi _documentApi;
+        private readonly IDocumentApi _documentApi;
 
         public Type ProviderType { get; }
 
@@ -50,9 +49,11 @@ namespace InfinniPlatform.Reporting.DataSources
                 }
             }
 
-            var result = _documentApi.GetDocumentByQuery(requestBody);
+            // TODO
+            // var result = _documentApi.GetDocumentByQuery(requestBody);
+            // return JArray.FromObject(result.Select(r => r.Result));
 
-            return JArray.FromObject(result.Select(r => r.Result));
+            return new JArray();
         }
     }
 }

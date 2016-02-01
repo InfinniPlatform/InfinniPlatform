@@ -1,17 +1,17 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Api.Serialization;
-using InfinniPlatform.Logging;
-using InfinniPlatform.Sdk.Environment.Binary;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.BlobStorage;
+using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
     /// Реализует сервис для работы хранилищем BLOB (Binary Large OBject) на основе файловой системы.
     /// </summary>
-    /// <returns>
+    /// <remarks>
     /// Достаточно простая реализация. Хранилище представляет собой каталог с файлами. Для обеспечения
     /// быстрого доступа к файлам - log(N) - каталог организован в виден набора вложенных друг в друга
     /// подкаталогов. Нулевой уровень - корневая папка хранилища, первый уровень - первые 2 символа
@@ -21,7 +21,8 @@ namespace InfinniPlatform.BlobStorage
     /// (идентификатор, наименование, MIME-тип, размер, дата изменения и т.п.). Наличие файла info
     /// в текущей реализации не обязательно. В файле data хранятся данные BLOB. Наличие файла data
     /// обязательно.
-    /// 
+    /// <br/>
+    /// <br/>
     /// Выбор в пользу использования обычной файловой системы был сделан не случайно. Во-первых,
     /// это самый простой и гибкий способ. Во-вторых, некоторые распределенные файловые системы
     /// имеют FUSE (Filesystem in Userspace) адаптеры, поддерживающие POSIX-стандарт, что дает
@@ -29,76 +30,96 @@ namespace InfinniPlatform.BlobStorage
     /// том, что на самом деле работа идет с распределенным хранилищем. В-третьих, пока трудно
     /// судить о том, какое распределенное хранилище (из тех, которые не имеют FUSE) подойдет
     /// лучше других.
-    /// </returns>
-    public sealed class FileSystemBlobStorage : IBlobStorage
+    /// <br/>
+    /// <br/>
+    /// ЗАМЕЧАНИЕ. В настоящее время чтение и запись выполняются в режиме <see cref="FileShare.ReadWrite"/>,
+    /// что сделано для решения проблемы с блокировки доступа к файлам в многопоточном режиме,
+    /// однако появляется вероятность грязного чтения и грязной записи. Если предложенный подход
+    /// не решит проблему с блокировками доступа или создаст неудобство с доступом на запись,
+    /// следует организовать очередь на запись с возможностью повтора записи при возникновении
+    /// ошибок, а доступ к каждому файлу контролировать механизмом, подобным
+    /// <see cref="System.Threading.ReaderWriterLockSlim"/>, но более простым.
+    /// </remarks>
+    [LoggerName("BlobStorage")]
+    internal sealed class FileSystemBlobStorage : IBlobStorage
     {
-        private const string LogComponentName = "FileSystemBlobStorage";
-
-
-        public FileSystemBlobStorage(string baseDirectory, IPerformanceLog performanceLog)
+        public FileSystemBlobStorage(FileSystemBlobStorageSettings settings, IMimeTypeResolver mimeTypeResolver, IPerformanceLog performanceLog)
         {
-            _baseDirectory = baseDirectory;
+            _baseDirectory = settings.BaseDirectory;
+            _mimeTypeResolver = mimeTypeResolver;
             _performanceLog = performanceLog;
 
-            // TODO: Refactor
-            // Получать эти зависимости через конструктор
+            // TODO: Получать JsonObjectSerializer через конструктор.
             _serializer = JsonObjectSerializer.Default;
-            _typeProvider = FileExtensionTypeProvider.Default;
         }
 
 
         private readonly string _baseDirectory;
         private readonly IPerformanceLog _performanceLog;
         private readonly IObjectSerializer _serializer;
-        private readonly FileExtensionTypeProvider _typeProvider;
+        private readonly IMimeTypeResolver _mimeTypeResolver;
 
 
         public BlobInfo GetBlobInfo(string blobId)
         {
-            if (string.IsNullOrEmpty(blobId))
-            {
-                throw new ArgumentNullException(nameof(blobId));
-            }
-
             var start = DateTime.Now;
 
-            blobId = NormalizeBlobId(blobId);
+            try
+            {
+                if (string.IsNullOrEmpty(blobId))
+                {
+                    throw new ArgumentNullException(nameof(blobId));
+                }
 
-            var result = ReadBlobInfo(blobId);
+                var result = ReadBlobInfo(blobId);
 
-            _performanceLog.Log(LogComponentName, "GetBlobInfo", start, null);
+                _performanceLog.Log("GetBlobInfo", start);
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                _performanceLog.Log("GetBlobInfo", start, e);
+
+                throw;
+            }
         }
 
         public BlobData GetBlobData(string blobId)
         {
-            if (string.IsNullOrEmpty(blobId))
-            {
-                throw new ArgumentNullException(nameof(blobId));
-            }
-
             var start = DateTime.Now;
 
-            blobId = NormalizeBlobId(blobId);
+            try
+            {
+                if (string.IsNullOrEmpty(blobId))
+                {
+                    throw new ArgumentNullException(nameof(blobId));
+                }
 
-            var blobInfo = ReadBlobInfo(blobId);
-            var blobData = ReadBlobData(blobId);
+                var blobInfo = ReadBlobInfo(blobId);
+                var blobData = ReadBlobData(blobId);
 
-            var result = (blobInfo != null || blobData != null)
-                ? new BlobData
-                  {
-                      Info = blobInfo,
-                      Data = blobData
-                  }
-                : null;
+                var result = (blobInfo != null || blobData != null)
+                    ? new BlobData
+                    {
+                        Info = blobInfo,
+                        Data = blobData
+                    }
+                    : null;
 
-            _performanceLog.Log(LogComponentName, "GetBlobData", start, null);
+                _performanceLog.Log("GetBlobData", start);
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                _performanceLog.Log("GetBlobData", start, e);
+
+                throw;
+            }
         }
 
-        public string CreateBlob(string blobName, string blobType, byte[] blobData)
+        public string CreateBlob(string blobName, string blobType, Stream blobData)
         {
             var blobId = GenerateBlobId();
 
@@ -107,58 +128,73 @@ namespace InfinniPlatform.BlobStorage
             return blobId;
         }
 
-        public void UpdateBlob(string blobId, string blobName, string blobType, byte[] blobData)
+        public void UpdateBlob(string blobId, string blobName, string blobType, Stream blobData)
         {
-            if (string.IsNullOrEmpty(blobId))
-            {
-                throw new ArgumentNullException(nameof(blobId));
-            }
-
-            if (blobData == null)
-            {
-                throw new ArgumentNullException(nameof(blobData));
-            }
-
             var start = DateTime.Now;
 
-            blobId = NormalizeBlobId(blobId);
-
-            if (string.IsNullOrEmpty(blobType))
+            try
             {
-                blobType = _typeProvider.GetBlobType(blobName);
+                if (string.IsNullOrEmpty(blobId))
+                {
+                    throw new ArgumentNullException(nameof(blobId));
+                }
+
+                if (blobData == null)
+                {
+                    throw new ArgumentNullException(nameof(blobData));
+                }
+
+                if (string.IsNullOrEmpty(blobType))
+                {
+                    blobType = _mimeTypeResolver.GetMimeType(blobName);
+                }
+
+                var blobInfo = new BlobInfo
+                {
+                    Id = blobId,
+                    Name = blobName,
+                    Type = blobType,
+                    Size = blobData.Length,
+                    Time = DateTime.UtcNow
+                };
+
+                WriteBlobInfo(blobId, blobInfo);
+                WriteBlobData(blobId, blobData);
+
+                _performanceLog.Log("UpdateBlob", start);
             }
+            catch (Exception e)
+            {
+                _performanceLog.Log("UpdateBlob", start, e);
 
-            var blobInfo = new BlobInfo
-                           {
-                               Id = blobId,
-                               Name = blobName,
-                               Type = blobType,
-                               Size = blobData.LongLength,
-                               Time = DateTime.UtcNow
-                           };
-
-            WriteBlobInfo(blobId, blobInfo);
-            WriteBlobData(blobId, blobData);
-
-            _performanceLog.Log(LogComponentName, "UpdateBlob", start, null);
+                throw;
+            }
         }
 
         public void DeleteBlob(string blobId)
         {
-            if (string.IsNullOrEmpty(blobId))
-            {
-                throw new ArgumentNullException(nameof(blobId));
-            }
-
             var start = DateTime.Now;
 
-            blobId = NormalizeBlobId(blobId);
+            try
+            {
+                if (string.IsNullOrEmpty(blobId))
+                {
+                    throw new ArgumentNullException(nameof(blobId));
+                }
 
-            DeleteBlobData(blobId);
+                TryDeleteDirectory(blobId);
 
-            _performanceLog.Log(LogComponentName, "DeleteBlob", start, null);
+                _performanceLog.Log("DeleteBlob", start);
+            }
+            catch (Exception e)
+            {
+                _performanceLog.Log("DeleteBlob", start, e);
+
+                throw;
+            }
         }
 
+        // BlobInfo
 
         private BlobInfo ReadBlobInfo(string blobId)
         {
@@ -167,9 +203,9 @@ namespace InfinniPlatform.BlobStorage
             var infoFilePath = GetBlobInfoFilePath(blobId);
 
             // Если файл с мета-информацией существует
-            if (File.Exists(infoFilePath))
+            if (IsFileExists(infoFilePath))
             {
-                using (var infoFile = File.OpenRead(infoFilePath))
+                using (var infoFile = OpenReadFileStream(infoFilePath))
                 {
                     blobInfo = _serializer.Deserialize(infoFile, typeof(BlobInfo)) as BlobInfo;
                 }
@@ -183,13 +219,13 @@ namespace InfinniPlatform.BlobStorage
                 if (dataFileInfo.Exists)
                 {
                     blobInfo = new BlobInfo
-                               {
-                                   Id = blobId,
-                                   Name = blobId,
-                                   Type = _typeProvider.GetBlobType(blobId),
-                                   Size = dataFileInfo.Length,
-                                   Time = dataFileInfo.LastWriteTime
-                               };
+                    {
+                        Id = blobId,
+                        Name = blobId,
+                        Type = _mimeTypeResolver.GetMimeType(blobId),
+                        Size = dataFileInfo.Length,
+                        Time = dataFileInfo.LastWriteTimeUtc
+                    };
                 }
             }
 
@@ -198,66 +234,48 @@ namespace InfinniPlatform.BlobStorage
 
         private void WriteBlobInfo(string blobId, BlobInfo blobInfo)
         {
-            var blobDir = GetBlobDirectoryPath(blobId);
-
-            if (!Directory.Exists(blobDir))
-            {
-                Directory.CreateDirectory(blobDir);
-            }
+            TryCreateDirectory(blobId);
 
             var infoFilePath = GetBlobInfoFilePath(blobId);
 
-            using (var infoFile = File.Create(infoFilePath))
+            using (var infoFile = OpenWriteFileStream(infoFilePath))
             {
                 _serializer.Serialize(infoFile, blobInfo);
             }
         }
 
+        // BlobData
 
-        private byte[] ReadBlobData(string blobId)
+        private Func<Stream> ReadBlobData(string blobId)
         {
             var dataFilePath = GetBlobDataFilePath(blobId);
 
-            if (File.Exists(dataFilePath))
+            if (IsFileExists(dataFilePath))
             {
-                return File.ReadAllBytes(dataFilePath);
+                return () => OpenReadFileStream(dataFilePath);
             }
 
             return null;
         }
 
-        private void WriteBlobData(string blobId, byte[] blobData)
+        private void WriteBlobData(string blobId, Stream blobData)
         {
-            var blobDir = GetBlobDirectoryPath(blobId);
-
-            if (!Directory.Exists(blobDir))
-            {
-                Directory.CreateDirectory(blobDir);
-            }
+            TryCreateDirectory(blobId);
 
             var dataFilePath = GetBlobDataFilePath(blobId);
 
-            File.WriteAllBytes(dataFilePath, blobData);
-        }
-
-        private void DeleteBlobData(string blobId)
-        {
-            var blobDir = GetBlobDirectoryPath(blobId);
-
-            if (Directory.Exists(blobDir))
+            using (var dataFile = OpenWriteFileStream(dataFilePath))
             {
-                Directory.Delete(blobDir, true);
+                blobData.CopyTo(dataFile);
+                dataFile.Flush();
             }
         }
 
+        // File paths
 
-        private string GetBlobDirectoryPath(string blobId)
+        private static string GenerateBlobId()
         {
-            var level1 = blobId.Substring(0, 2);
-            var level2 = blobId.Substring(2, 2);
-            var level3 = blobId.Substring(4);
-
-            return Path.Combine(_baseDirectory, level1, level2, level3);
+            return Guid.NewGuid().ToString("N");
         }
 
         private string GetBlobInfoFilePath(string blobId)
@@ -270,28 +288,50 @@ namespace InfinniPlatform.BlobStorage
             return Path.Combine(GetBlobDirectoryPath(blobId), "data");
         }
 
-
-        private static string GenerateBlobId()
+        private string GetBlobDirectoryPath(string blobId)
         {
-            return Guid.NewGuid().ToString("N");
+            var level1 = blobId.Substring(0, 2);
+            var level2 = blobId.Substring(2, 2);
+            var level3 = blobId.Substring(4);
+
+            return Path.Combine(_baseDirectory, level1, level2, level3);
         }
 
-        private static string NormalizeBlobId(string blobId)
+        // File system
+
+        private void TryCreateDirectory(string blobId)
         {
-            Guid blobGuid;
+            var blobDir = GetBlobDirectoryPath(blobId);
 
-            if (Guid.TryParse(blobId, out blobGuid))
+            if (!Directory.Exists(blobDir))
             {
-                // TODO: Refactor
-                // Ниже осуществляется переформатирование ссылки на файл.
-                // Есть старые документы, которые хранят ссылки на файлы в ином формате.
-                // Нужно сделать миграцию этих данных, чтобы отказаться от данного кода.
-                // Код был добавлен при переносе файлов с Cassandra в файловую систему.
-
-                blobId = blobGuid.ToString("N");
+                Directory.CreateDirectory(blobDir);
             }
+        }
 
-            return blobId;
+        private void TryDeleteDirectory(string blobId)
+        {
+            var blobDir = GetBlobDirectoryPath(blobId);
+
+            if (Directory.Exists(blobDir))
+            {
+                Directory.Delete(blobDir, true);
+            }
+        }
+
+        private static bool IsFileExists(string path)
+        {
+            return File.Exists(path);
+        }
+
+        private static Stream OpenWriteFileStream(string path)
+        {
+            return new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+        }
+
+        private static Stream OpenReadFileStream(string path)
+        {
+            return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
     }
 }

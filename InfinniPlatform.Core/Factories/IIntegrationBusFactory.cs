@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.MessageQueue.Integration;
+﻿using InfinniPlatform.Core.MessageQueue.Integration;
 
-namespace InfinniPlatform.Factories
+namespace InfinniPlatform.Core.Factories
 {
     /// <summary>
     ///     Фабрика для создания интеграционной шины.

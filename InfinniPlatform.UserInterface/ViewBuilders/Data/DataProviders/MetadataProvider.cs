@@ -1,74 +1,32 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using InfinniPlatform.Api.Metadata;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.UserInterface.Services.Metadata;
 
 namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
 {
     /// <summary>
-    ///     Провайдер данных для метаданных.
+    /// Провайдер данных для метаданных.
     /// </summary>
     public sealed class MetadataProvider : IDataProvider
     {
-	    private readonly Dictionary<string, Func<string, string, string, IMetadataService>> _metadataServices
-		    = new Dictionary<string, Func<string, string, string, IMetadataService>>();
-
-	    private string _configId;
-	    private string _documentId;
-	    private IMetadataService _metadataService;
-	    private string _versionId;
-	    private readonly string _metadataType;
-
-        /// <summary>
-        ///   VersionRoute не является идентификатором версии конфигурации, это идентификатор роутинга
-        /// сервера (например "1.5") по которому nginx выполнит сопоставление урла в случае нескольких серверов приложения
-        /// </summary>
         public MetadataProvider(string metadataType)
         {
             FillServices();
+
             _metadataType = metadataType;
         }
 
-        private void FillServices()
-        {
-            _metadataServices.Add(
-                    MetadataType.Solution,
-                    (version, configId, documentId) => new SolutionMetadataService()
-            );
-            _metadataServices.Add(
-                    MetadataType.Configuration,
-                    (version, configId, documentId) => new ConfigurationMetadataService()                
-            );
-            _metadataServices.Add(
-                    MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(configId)
-            );
-            _metadataServices.Add(
-                    MetadataType.Assembly, (version, configId, documentId) => new AssemblyMetadataService(configId)
-            );
-            _metadataServices.Add(
-                    MetadataType.Register, (version, configId, documentId) => new RegisterMetadataService(configId)
-            );
-            _metadataServices.Add(
-                    MetadataType.Document, (version, configId, documentId) => new DocumentMetadataService(configId)
-            );
+        private readonly Dictionary<string, Func<string, string, string, IMetadataService>> _metadataServices
+            = new Dictionary<string, Func<string, string, string, IMetadataService>>();
 
-            _metadataServices.Add(
-                    MetadataType.PrintView, (version, configId, documentId) => new PrintViewMetadataService(configId, documentId)
-            );
-            _metadataServices.Add(
-                    MetadataType.View, (version, configId, documentId) => new ViewMetadataService(configId, documentId)
-            );
-            _metadataServices.Add(
-                    MetadataType.Service, (version, configId, documentId) => new ServiceMetadataService(configId, documentId)
-            );
-            _metadataServices.Add(
-                    MetadataType.Process, (version, configId, documentId) => new ProcessMetadataService(configId, documentId)
-            );
-            _metadataServices.Add(
-                    MetadataType.Scenario, (version, configId, documentId) => new ScenarioMetadataService(configId, documentId)
-            );
-        }
+        private readonly string _metadataType;
+        private string _configId;
+        private string _documentId;
+        private IMetadataService _metadataService;
+        private string _versionId;
 
         public string GetConfigId()
         {
@@ -143,6 +101,20 @@ namespace InfinniPlatform.UserInterface.ViewBuilders.Data.DataProviders
         public IEnumerable GetItems(IEnumerable criterias, int pageNumber, int pageSize)
         {
             return GetMetadataService().GetItems();
+        }
+
+        private void FillServices()
+        {
+            _metadataServices.Add(MetadataType.Solution, (version, configId, documentId) => new SolutionMetadataService());
+            _metadataServices.Add(MetadataType.Configuration, (version, configId, documentId) => new ConfigurationMetadataService());
+            _metadataServices.Add(MetadataType.Menu, (version, configId, documentId) => new MenuMetadataService(configId));
+            _metadataServices.Add(MetadataType.Register, (version, configId, documentId) => new RegisterMetadataService(configId));
+            _metadataServices.Add(MetadataType.Document, (version, configId, documentId) => new DocumentMetadataService(configId));
+            _metadataServices.Add(MetadataType.PrintView, (version, configId, documentId) => new PrintViewMetadataService(configId, documentId));
+            _metadataServices.Add(MetadataType.View, (version, configId, documentId) => new ViewMetadataService(configId, documentId));
+            _metadataServices.Add(MetadataType.Service, (version, configId, documentId) => new ServiceMetadataService(configId, documentId));
+            _metadataServices.Add(MetadataType.Process, (version, configId, documentId) => new ProcessMetadataService(configId, documentId));
+            _metadataServices.Add(MetadataType.Scenario, (version, configId, documentId) => new ScenarioMetadataService(configId, documentId));
         }
 
         private void ResetMetadataService()

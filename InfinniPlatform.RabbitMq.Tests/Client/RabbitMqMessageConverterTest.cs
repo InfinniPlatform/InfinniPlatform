@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.MessageQueue;
+using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.RabbitMq.Client;
 
 using Moq;

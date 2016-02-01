@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.MessageQueue
+namespace InfinniPlatform.Core.MessageQueue
 {
     /// <summary>
     ///     Политика подтверждения окончания выполнения действия.

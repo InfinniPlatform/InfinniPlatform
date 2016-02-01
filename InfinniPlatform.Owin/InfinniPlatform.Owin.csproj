@@ -53,6 +53,14 @@
       <HintPath>..\packages\Microsoft.Owin.Hosting.3.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Nancy, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.1.4.1\lib\net40\Nancy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nancy.Owin, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.Owin.1.4.1\lib\net40\Nancy.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
@@ -61,25 +69,27 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Formatting\FormBodyFormatter.cs" />
-    <Compile Include="Formatting\IBodyFormatter.cs" />
-    <Compile Include="Formatting\JsonBodyFormatter.cs" />
+    <Compile Include="Hosting\OwinHostingServiceFactory.cs" />
+    <Compile Include="Security\IOwinContextProvider.cs" />
+    <Compile Include="Security\OwinContextProvider.cs" />
+    <Compile Include="Security\OwinUserIdentityProvider.cs" />
+    <Compile Include="Services\HttpServiceNancyBootstrapper.cs" />
+    <Compile Include="Services\HttpServiceNancyModule.cs" />
+    <Compile Include="Services\NancyMimeTypeResolver.cs" />
+    <Compile Include="Services\NancyOwinHostingModule.cs" />
+    <Compile Include="Services\HttpRequestExcutorFactory.cs" />
+    <Compile Include="Services\HttpServiceRoute.cs" />
+    <Compile Include="Services\HttpServiceBuilder.cs" />
+    <Compile Include="Services\NancyHttpRequest.cs" />
+    <Compile Include="Services\NancyHttpRequestHeaders.cs" />
+    <Compile Include="Services\HttpServiceRouteBuilder.cs" />
+    <Compile Include="Services\NancyHttpRequestFile.cs" />
     <Compile Include="IoC\OwinContainerModule.cs" />
-    <Compile Include="Middleware\CurrentPrincipalTransmitter.cs" />
-    <Compile Include="Middleware\EmptyRequestHandlerResult.cs" />
-    <Compile Include="Middleware\ErrorRequestHandlerResult.cs" />
-    <Compile Include="Middleware\HandlerRouting.cs" />
-    <Compile Include="Middleware\IHandlerRegistration.cs" />
-    <Compile Include="Middleware\IRequestHandlerResult.cs" />
-    <Compile Include="Middleware\PathStringProvider.cs" />
-    <Compile Include="Middleware\RegistrationHandlerBase.cs" />
-    <Compile Include="Middleware\SystemInfoOwinMiddleware.cs" />
     <Compile Include="Middleware\ErrorHandlingOwinMiddleware.cs" />
     <Compile Include="Modules\IOwinHostingContext.cs" />
     <Compile Include="Modules\IOwinMiddlewareResolver.cs" />
     <Compile Include="Modules\OwinHostingContext.cs" />
     <Compile Include="Modules\OwinHostingModuleType.cs" />
-    <Compile Include="Modules\SystemInfoOwinHostingModule.cs" />
     <Compile Include="Modules\ErrorHandlingOwinHostingModule.cs" />
     <Compile Include="NativeHttpApi.cs" />
     <Compile Include="OwinExtensions.cs" />
@@ -94,9 +104,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Middleware\RoutingOwinMiddleware.cs" />
+    <Compile Include="Services\HttpServiceNancyModuleCatalog.cs" />
+    <Compile Include="Services\HttpServiceNancyModuleInitializer.cs" />
     <Compile Include="UrlBuilder.cs" />
-    <Compile Include="Middleware\ValueRequestHandlerResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -106,10 +116,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
-using InfinniPlatform.Api.Schema;
+
+using InfinniPlatform.Core.Schema;
 
 namespace InfinniPlatform.QueryDesigner.Forms
 {

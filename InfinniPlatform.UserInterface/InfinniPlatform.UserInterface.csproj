@@ -261,10 +261,6 @@
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\DocumentContainerNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\DocumentElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\FactoryHelper.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\GeneratorContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\GeneratorElementNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\AssemblyContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\AssemblyElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\PrintViewContainerNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\PrintViewElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ProcessContainerNodeFactory.cs" />
@@ -273,12 +269,6 @@
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ScenarioElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ServiceContainerNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ServiceElementNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\StatusContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\StatusElementNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ValidationErrorContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ValidationErrorElementNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ValidationWarningContainerNodeFactory.cs" />
-    <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ValidationWarningElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ViewContainerNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\Factories\ViewElementNodeFactory.cs" />
     <Compile Include="ViewBuilders\Designers\ConfigTree\IConfigElementNodeFactory.cs" />
@@ -681,9 +671,9 @@
     <Resource Include="Images\System\Help_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.MetadataDesigner\InfinniPlatform.MetadataDesigner.csproj">
       <Project>{b5108924-dda4-4857-8e15-1abb0d49c6f6}</Project>

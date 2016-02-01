@@ -2,6 +2,9 @@
 using System.Threading;
 
 using InfinniPlatform.Helpers;
+using InfinniPlatform.Sdk.Logging;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -34,7 +37,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 		{
 			// Given
 
-			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default);
+			var factory = new RabbitMqMessageQueueFactory(RabbitMqSettings.Default, new Mock<ILog>().Object);
 			var publisher = factory.CreateMessageQueuePublisher();
 			var listener = factory.CreateMessageQueueListener();
 			var subscriptions = factory.CreateMessageQueueManager();
@@ -67,9 +70,9 @@ namespace InfinniPlatform.MessageQueue.Tests
 			var memoryLeak = (memoryAfter - memoryBefore) / 1024.0;
 			var memeryLeakPercent = 100 * memoryLeak / transferSize;
 
-			Console.WriteLine("Message size: {0} Kb", messageSize / 1024);
-			Console.WriteLine("Transfer messages: {0} messages ({1:N0} Kb)", IterationCount, transferSize);
-			Console.WriteLine("Memory leak: {0:N0} Kb ({1:N0}%)", memoryLeak, memeryLeakPercent);
+			Console.WriteLine(@"Message size: {0} Kb", messageSize / 1024);
+			Console.WriteLine(@"Transfer messages: {0} messages ({1:N0} Kb)", IterationCount, transferSize);
+			Console.WriteLine(@"Memory leak: {0:N0} Kb ({1:N0}%)", memoryLeak, memeryLeakPercent);
 
 			Assert.LessOrEqual(memeryLeakPercent, 10);
 		}

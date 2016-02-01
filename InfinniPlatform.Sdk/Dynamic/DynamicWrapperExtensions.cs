@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -10,13 +11,16 @@ namespace InfinniPlatform.Sdk.Dynamic
     /// DynamicInstance. В настоящее время DynamicInstance заменен на DynamicWrapper,
     /// но для совместимости некоторые методы DynamicInstance перенесены сюда в виде методов расширений
     /// </summary>
+    [Obsolete]
     public static class DynamicWrapperExtensions
     {
+        [Obsolete]
         public static dynamic ToDynamic(this string instance)
         {
             return ConvertFromJsonToken(JToken.Parse(instance));
         }
 
+        [Obsolete]
         public static IEnumerable<dynamic> ToDynamicList(this string instance)
         {
             var jarray = JArray.Parse(instance);
@@ -24,6 +28,7 @@ namespace InfinniPlatform.Sdk.Dynamic
             return jarray.Select(ConvertFromJsonToken).ToList();
         }
 
+        [Obsolete]
         public static dynamic ToDynamic(this object objectInstance)
         {
             if (objectInstance is DynamicWrapper)
@@ -34,6 +39,7 @@ namespace InfinniPlatform.Sdk.Dynamic
             return ConvertFromJsonToken(JToken.FromObject(objectInstance));
         }
 
+        [Obsolete]
         public static IEnumerable<dynamic> ToEnumerable(this object sourceObject)
         {
             if (sourceObject == null)
@@ -52,11 +58,13 @@ namespace InfinniPlatform.Sdk.Dynamic
             return new List<dynamic> { ToDynamic(objectInstance) };
         }
 
+        [Obsolete]
         public static string DynamicEnumerableToString(this IEnumerable<dynamic> sourceObject)
         {
             return JArray.FromObject(sourceObject).ToString();
         }
 
+        [Obsolete]
         public static object ConvertFromJsonObject(JObject value)
         {
             DynamicWrapper result = null;
@@ -77,6 +85,7 @@ namespace InfinniPlatform.Sdk.Dynamic
             return result;
         }
 
+        [Obsolete]
         public static object ConvertFromJsonToken(JToken value)
         {
             object result = null;

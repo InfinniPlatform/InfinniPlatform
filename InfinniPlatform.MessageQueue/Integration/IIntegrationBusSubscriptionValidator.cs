@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.MessageQueue.Integration
+﻿using InfinniPlatform.Core.MessageQueue.Integration;
+
+namespace InfinniPlatform.MessageQueue.Integration
 {
 	/// <summary>
 	/// Осуществляет проверку информации о подписке на очередь сообщений интеграционной шины.

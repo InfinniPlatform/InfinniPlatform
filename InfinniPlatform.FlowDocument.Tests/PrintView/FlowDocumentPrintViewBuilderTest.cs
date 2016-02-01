@@ -6,7 +6,7 @@ using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.PrintView;
 using InfinniPlatform.FlowDocument.Tests.Properties;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment;
+using InfinniPlatform.Sdk.PrintView;
 
 using NUnit.Framework;
 
@@ -23,7 +23,7 @@ namespace InfinniPlatform.FlowDocument.Tests.PrintView
         public void ShouldBuildFile(PrintViewFileFormat printViewFileFormat)
         {
             // Given
-            var target = new FlowDocumentPrintViewBuilder();
+            var target = new FlowDocumentPrintViewBuilder(new FlowDocumentPrintViewFactory(), new FlowDocumentPrintViewConverter(PrintViewSettings.Default));
             var printView = CreateTestPrintView();
 
             // When
@@ -42,7 +42,7 @@ namespace InfinniPlatform.FlowDocument.Tests.PrintView
         public void ShouldBuildFileAndThenOpenIt(PrintViewFileFormat printViewFileFormat)
         {
             // Given
-            var target = new FlowDocumentPrintViewBuilder();
+            var target = new FlowDocumentPrintViewBuilder(new FlowDocumentPrintViewFactory(), new FlowDocumentPrintViewConverter(PrintViewSettings.Default));
             var printView = CreateTestPrintView();
 
             // When
@@ -558,8 +558,8 @@ namespace InfinniPlatform.FlowDocument.Tests.PrintView
             dynamic imageItem = new DynamicWrapper();
             imageItem.Image = new DynamicWrapper();
             imageItem.Image.Size = new DynamicWrapper();
-            imageItem.Image.Size.Width = Resources.Image.Width/3;
-            imageItem.Image.Size.Height = Resources.Image.Height/3;
+            imageItem.Image.Size.Width = Resources.Image.Width / 3;
+            imageItem.Image.Size.Height = Resources.Image.Height / 3;
             imageItem.Image.Size.SizeUnit = "Px";
             imageItem.Image.Data = ImageTestHelper.BitmapToBase64(Resources.Image);
             imageItem.Image.Rotation = rotation;

@@ -1,8 +1,6 @@
 ﻿using System;
-using InfinniPlatform.Api.Properties;
-using InfinniPlatform.Api.Validation;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Validations;
+
+using InfinniPlatform.Core.Validation;
 
 namespace InfinniPlatform.DesignControls.Controls.Properties
 {
@@ -23,7 +21,7 @@ namespace InfinniPlatform.DesignControls.Controls.Properties
                 validationResult.IsValid = false;
             }
 
-            validationResult.Items.Add(string.Format(Resources.PropertyShouldntBeEmpty, propertyName, objectValidateName));
+            validationResult.Items.Add(string.Format("PropertyShouldntBeEmpty", propertyName, objectValidateName));
             return validationResult;
         }
 

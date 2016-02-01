@@ -32,7 +32,7 @@ namespace InfinniPlatform.Caching.Redis
                 ? RedisConnectionSettings.DefaultWriteBufferSize
                 : connectionSettings.WriteBufferSize;
 
-            var connectionTimeout = (connectionSettings.ConnectionTimeout <= 0)
+            var connectionTimeout = (connectionSettings.ConnectionTimeout < 0)
                 ? RedisConnectionSettings.DefaultConnectionTimeout
                 : connectionSettings.ConnectionTimeout;
 
@@ -88,7 +88,10 @@ namespace InfinniPlatform.Caching.Redis
         {
             var client = _clientsPool.Value.GetClient();
 
-            _clientInitializer?.Invoke(client);
+            if (_clientInitializer != null)
+            {
+                _clientInitializer.Invoke(client);
+            }
 
             return client;
         }

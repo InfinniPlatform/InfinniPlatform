@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-using InfinniPlatform.Compression;
+using InfinniPlatform.Core.Compression;
 
 using NUnit.Framework;
 

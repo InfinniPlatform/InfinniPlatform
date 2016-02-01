@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Extensions;
 
 namespace InfinniPlatform.Expressions.CompiledExpressions
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -10,7 +11,7 @@ namespace InfinniPlatform.Sdk.Dynamic
     /// </summary>
     internal sealed class DynamicWrapperJsonConverter : JsonConverter
     {
-        private static readonly Type DynamicWrapperType = typeof (DynamicWrapper);
+        private static readonly Type DynamicWrapperType = typeof(DynamicWrapper);
 
 
         public override bool CanRead
@@ -53,8 +54,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         }
 
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObj = JObject.Load(reader);
 

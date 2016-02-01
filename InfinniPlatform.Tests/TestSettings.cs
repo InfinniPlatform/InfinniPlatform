@@ -1,7 +1,4 @@
-﻿using InfinniPlatform.Api.Hosting;
-using InfinniPlatform.Sdk.Api;
-
-namespace InfinniPlatform
+﻿namespace InfinniPlatform
 {
 	/// <summary>
 	/// Предоставляет настройки окружения для тестов.

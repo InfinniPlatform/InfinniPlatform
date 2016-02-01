@@ -1,7 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Sdk.Logging;
 
 using Moq;
 

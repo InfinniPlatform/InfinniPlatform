@@ -5,7 +5,6 @@ using System.Linq;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
-using InfinniPlatform.Api.RestApi.DataApi;
 
 namespace InfinniPlatform.DesignControls.PropertyEditors
 {
@@ -97,7 +96,7 @@ namespace InfinniPlatform.DesignControls.PropertyEditors
         {
             if (!string.IsNullOrEmpty(configId))
             {
-                return new MetadataApi().GetMetadataList();
+                return Enumerable.Empty<object>();
             }
             return new List<string>();
         }

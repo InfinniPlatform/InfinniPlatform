@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using InfinniPlatform.Expressions.CompiledExpressions;
 using InfinniPlatform.Expressions.Properties;
-using InfinniPlatform.Sdk.Extensions;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Expressions.Parser
 {

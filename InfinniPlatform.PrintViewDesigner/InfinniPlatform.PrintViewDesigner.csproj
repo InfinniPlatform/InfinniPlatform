@@ -455,9 +455,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7ca0f96c-7ff4-44b2-9d44-851984df4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.FlowDocument\InfinniPlatform.FlowDocument.csproj">
       <Project>{e47f0c5b-f775-44b4-9e2e-e4c044864125}</Project>

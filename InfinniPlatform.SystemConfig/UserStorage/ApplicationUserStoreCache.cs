@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
 
-using InfinniPlatform.Api.Security;
 using InfinniPlatform.Caching;
-using InfinniPlatform.Sdk.Environment.Log;
+using InfinniPlatform.Core.Security;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.UserStorage
@@ -14,6 +15,8 @@ namespace InfinniPlatform.SystemConfig.UserStorage
     internal sealed class ApplicationUserStoreCache
     {
         private const string ApplicationUserStoreCacheEvent = nameof(ApplicationUserStoreCache);
+
+        private static readonly string ApplicationUserStoreCacheId = Guid.NewGuid().ToString("N");
 
 
         public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, IMessageBus messageBus, ILog log)
@@ -148,8 +151,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 _cacheLockSlim.ExitWriteLock();
             }
 
-            // Оповещаем другие узлы об изменении сведений пользователя
-            _messageBus.Publish(ApplicationUserStoreCacheEvent, user.Id);
+            NotifyUserChanged(user.Id);
         }
 
         /// <summary>
@@ -200,11 +202,30 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         }
 
 
-        private void OnApplicationUserStoreCacheEvent(string key, string userId)
+        private void NotifyUserChanged(string userId)
         {
-            if (!string.IsNullOrEmpty(userId))
+            // Оповещаем другие узлы об изменении сведений пользователя
+
+            var userChangedEvent = $"{ApplicationUserStoreCacheId}:{userId}";
+
+            _messageBus.Publish(ApplicationUserStoreCacheEvent, userChangedEvent);
+        }
+
+        private void OnApplicationUserStoreCacheEvent(string key, string userChangedEvent)
+        {
+            // Обрабатываем сообщение о том, что сведения пользователя изменились
+
+            if (!string.IsNullOrEmpty(userChangedEvent))
             {
-                RemoveUser(userId);
+                if (!userChangedEvent.StartsWith(ApplicationUserStoreCacheId + ':'))
+                {
+                    var userId = userChangedEvent.Substring(ApplicationUserStoreCacheId.Length);
+
+                    if (!string.IsNullOrEmpty(userId))
+                    {
+                        RemoveUser(userId);
+                    }
+                }
             }
         }
 

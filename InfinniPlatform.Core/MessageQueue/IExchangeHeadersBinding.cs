@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.MessageQueue
+namespace InfinniPlatform.Core.MessageQueue
 {
     /// <summary>
     ///     Интерфейс для объявления очередей, связанных с точкой обмена сообщениями типа "Headers".

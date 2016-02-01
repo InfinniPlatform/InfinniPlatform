@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
+using InfinniPlatform.Core.MessageQueue;
+
 namespace InfinniPlatform.MessageQueue.Tests
 {
 	sealed class TestConsumer : IQueueConsumer

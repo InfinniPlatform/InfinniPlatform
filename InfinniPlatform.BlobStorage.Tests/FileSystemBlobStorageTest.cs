@@ -1,8 +1,9 @@
 ﻿using System;
+using System.IO;
 
-using InfinniPlatform.Sdk.Environment.Binary;
-using InfinniPlatform.Sdk.Environment.Log;
-using InfinniPlatform.Sdk.Environment.Settings;
+using InfinniPlatform.Sdk.BlobStorage;
+using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Services;
 
 using Moq;
 
@@ -17,13 +18,10 @@ namespace InfinniPlatform.BlobStorage.Tests
         [TestFixtureSetUp]
         public void Setup()
         {
+            var mimeTypeResolverMock = new Mock<IMimeTypeResolver>();
             var performanceLogMock = new Mock<IPerformanceLog>();
-            var appConfigurationMock = new Mock<IAppConfiguration>();
-            appConfigurationMock.Setup(m => m.GetSection<FileSystemBlobStorageSettings>(FileSystemBlobStorageSettings.SectionName)).Returns(new FileSystemBlobStorageSettings());
 
-            var blobStorageFactory = new FileSystemBlobStorageFactory(appConfigurationMock.Object, performanceLogMock.Object);
-
-            _blobStorage = blobStorageFactory.CreateBlobStorage();
+            _blobStorage = new FileSystemBlobStorage(new FileSystemBlobStorageSettings(), mimeTypeResolverMock.Object, performanceLogMock.Object);
         }
 
 
@@ -57,6 +55,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             var timeV1 = DateTime.UtcNow;
             var infoV1 = _blobStorage.GetBlobInfo(blobId);
             var dataV1 = _blobStorage.GetBlobData(blobId);
+            var dataV1Bytes = GetBlobDataBytes(dataV1.Data);
 
             // Update
             _blobStorage.UpdateBlob(blobId, blobNameV2, blobTypeV2, blobDataV2);
@@ -65,6 +64,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             var timeV2 = DateTime.UtcNow;
             var infoV2 = _blobStorage.GetBlobInfo(blobId);
             var dataV2 = _blobStorage.GetBlobData(blobId);
+            var dataV2Bytes = GetBlobDataBytes(dataV2.Data);
 
             // Delete
             _blobStorage.DeleteBlob(blobId);
@@ -89,7 +89,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             Assert.AreEqual(blobDataV1.LongLength, dataV1.Info.Size);
             Assert.AreEqual(infoV1.Time, dataV1.Info.Time);
             AssertDateTime(timeV1, infoV1.Time);
-            CollectionAssert.AreEqual(blobDataV1, dataV1.Data);
+            CollectionAssert.AreEqual(blobDataV1, dataV1Bytes);
 
             Assert.IsNotNull(infoV2);
             Assert.IsNotNull(dataV2);
@@ -105,12 +105,29 @@ namespace InfinniPlatform.BlobStorage.Tests
             Assert.AreEqual(blobDataV2.LongLength, dataV2.Info.Size);
             Assert.AreEqual(infoV2.Time, dataV2.Info.Time);
             AssertDateTime(timeV2, infoV2.Time);
-            CollectionAssert.AreEqual(blobDataV2, dataV2.Data);
+            CollectionAssert.AreEqual(blobDataV2, dataV2Bytes);
 
             Assert.GreaterOrEqual(infoV2.Time, infoV1.Time);
 
             Assert.IsNull(infoV3);
             Assert.IsNull(dataV3);
+        }
+
+        private static byte[] GetBlobDataBytes(Func<Stream> blobData)
+        {
+            if (blobData != null)
+            {
+                using (var result = new MemoryStream())
+                using (var dataStream = blobData())
+                {
+                    dataStream.CopyTo(result);
+                    result.Flush();
+
+                    return result.ToArray();
+                }
+            }
+
+            return null;
         }
     }
 }

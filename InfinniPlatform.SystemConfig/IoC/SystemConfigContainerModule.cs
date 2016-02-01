@@ -1,11 +1,27 @@
-﻿using InfinniPlatform.Api.Security;
-using InfinniPlatform.Modules;
-using InfinniPlatform.Sdk.Environment;
-using InfinniPlatform.Sdk.Environment.Settings;
+﻿using InfinniPlatform.Core.Documents;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Runtime;
+using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core.SystemInfo;
+using InfinniPlatform.Core.Transactions;
+using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.SystemConfig.Initializers;
-using InfinniPlatform.SystemConfig.Installers;
+using InfinniPlatform.Sdk.PrintView;
+using InfinniPlatform.Sdk.Registers;
+using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.SystemConfig.Documents;
+using InfinniPlatform.SystemConfig.Metadata;
+using InfinniPlatform.SystemConfig.PrintView;
+using InfinniPlatform.SystemConfig.Registers;
+using InfinniPlatform.SystemConfig.Runtime;
+using InfinniPlatform.SystemConfig.Services;
+using InfinniPlatform.SystemConfig.StartupInitializers;
+using InfinniPlatform.SystemConfig.SystemInfo;
+using InfinniPlatform.SystemConfig.Transactions;
 using InfinniPlatform.SystemConfig.UserStorage;
+using InfinniPlatform.SystemConfig.Utils;
 
 namespace InfinniPlatform.SystemConfig.IoC
 {
@@ -13,21 +29,79 @@ namespace InfinniPlatform.SystemConfig.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            // Info
+
+            builder.RegisterType<SystemInfoProvider>()
+                   .As<ISystemInfoProvider>()
+                   .SingleInstance();
+
+            // Metadata
+
+            builder.RegisterType<MetadataApi>()
+                   .As<IMetadataApi>()
+                   .SingleInstance();
+
+            builder.RegisterType<ConfigurationMetadataProvider>()
+                   .As<IConfigurationMetadataProvider>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<MigrationHelper>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            // Documents
+
+            builder.RegisterType<DocumentApi>()
+                   .AsSelf()
+                   .As<IDocumentApi>()
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentLinkMap>()
+                   .AsSelf()
+                   .InstancePerDependency();
+
+            builder.RegisterType<DocumentLinkMapProvider>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ReferenceResolver>()
+                   .As<IReferenceResolver>()
+                   .SingleInstance();
+
+            builder.RegisterType<SetDocumentExecutor>()
+                   .As<ISetDocumentExecutor>()
+                   .SingleInstance();
+
+            builder.RegisterType<GetDocumentExecutor>()
+                   .As<IGetDocumentExecutor>()
+                   .InstancePerDependency();
+
+            // Transactions
+
+            builder.RegisterType<DocumentTransactionScope>()
+                   .As<IDocumentTransactionScope>()
+                   .InstancePerRequest();
+
+            // Security
+
             builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<UserStorageSettings>(UserStorageSettings.SectionName))
                    .As<UserStorageSettings>()
                    .SingleInstance();
 
-            // Кэш сведений о пользователях системы
             builder.RegisterType<ApplicationUserStoreCache>()
                    .AsSelf()
                    .SingleInstance();
 
-            // Хранилище сведений о пользователях системы
             builder.RegisterType<ApplicationUserStorePersistentStorage>()
                    .As<IApplicationUserStore>()
                    .SingleInstance();
 
-            // Сервисы инициализации для обработки события старта приложения
+            builder.RegisterType<ElasticSearchUserStorage>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            // Hosting
 
             builder.RegisterType<PackageJsonConfigurationsInitializer>()
                    .As<IStartupInitializer>()
@@ -37,18 +111,36 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .As<IStartupInitializer>()
                    .SingleInstance();
 
-            // Обработчик событий приложения системной конфигурации
             builder.RegisterType<SystemConfigApplicationEventHandler>()
                    .As<IApplicationEventHandler>()
                    .SingleInstance();
 
-            // Обработчики сервисов системной конфигурации
-            builder.RegisterType<SystemConfigInstaller>()
-                   .As<IModuleInstaller>()
+            // PrintView
+
+            builder.RegisterType<PrintViewApi>()
+                   .As<IPrintViewApi>()
                    .SingleInstance();
 
-            // Прикладные скрипты
-            builder.RegisterActionUnits(GetType().Assembly);
+            // Registers
+
+            builder.RegisterType<RegisterApi>()
+                   .As<IRegisterApi>()
+                   .SingleInstance();
+
+            // Runtime
+
+            builder.RegisterType<ActionUnitFactory>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ScriptProcessor>()
+                   .As<IScriptProcessor>()
+                   .SingleInstance();
+
+            // Services
+
+            builder.RegisterType<DocumentTransactionScopeHttpGlobalHandler>().As<IHttpGlobalHandler>().SingleInstance();
+            builder.RegisterHttpServices(GetType().Assembly);
         }
     }
 }

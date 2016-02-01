@@ -48,17 +48,16 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         public Task<IdentityResult> ValidateAsync(IdentityApplicationUser user)
         {
-            return Task.Run(() =>
-                            {
-                                var errors = new List<string>();
-                                ValidateUserName(user, errors);
-                                ValidateEmail(user, errors);
-                                ValidatePhoneNumber(user, errors);
+            var errors = new List<string>();
+            ValidateUserName(user, errors);
+            ValidateEmail(user, errors);
+            ValidatePhoneNumber(user, errors);
 
-                                return (errors.Count <= 0)
-                                    ? IdentityResult.Success
-                                    : IdentityResult.Failed(errors.ToArray());
-                            });
+            var  result = (errors.Count <= 0)
+                ? IdentityResult.Success
+                : IdentityResult.Failed(errors.ToArray());
+
+            return Task.FromResult(result);
         }
 
         private void ValidateUserName(IdentityApplicationUser user, List<string> errors)

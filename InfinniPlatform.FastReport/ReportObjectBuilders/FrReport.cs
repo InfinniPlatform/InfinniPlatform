@@ -11,7 +11,8 @@ using FastReport.Export.OoXML;
 using FastReport.Export.Pdf;
 using FastReport.Export.RichText;
 using FastReport.Export.Xml;
-using InfinniPlatform.Api.Reporting;
+
+using InfinniPlatform.Core.Reporting;
 using InfinniPlatform.FastReport.Properties;
 using InfinniPlatform.FastReport.Templates.Data;
 

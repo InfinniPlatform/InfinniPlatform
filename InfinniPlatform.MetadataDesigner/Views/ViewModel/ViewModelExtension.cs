@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 
 using DevExpress.XtraEditors.Controls;
 
-using InfinniPlatform.Api.Context;
-using InfinniPlatform.Api.ContextTypes;
-using InfinniPlatform.Api.Metadata;
-using InfinniPlatform.Api.Metadata.ConfigurationManagers.Standard.Factories;
-using InfinniPlatform.Api.Registers;
-using InfinniPlatform.Api.RestApi.CommonApi;
-using InfinniPlatform.Api.RestApi.DataApi;
-using InfinniPlatform.Api.RestQuery;
-using InfinniPlatform.Api.RestQuery.RestQueryBuilders;
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Registers;
 using InfinniPlatform.MetadataDesigner.Views.Exchange;
-using InfinniPlatform.MetadataDesigner.Views.Status;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Environment.Hosting;
-using InfinniPlatform.Sdk.Environment.Register;
 
 using Newtonsoft.Json.Linq;
 
@@ -27,7 +16,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 {
     public static class ViewModelExtension
     {
-        private static readonly RestQueryApi RestQueryApi = new RestQueryApi((c, d, a) => new RestQueryBuilder(c, d, a));
         private static readonly IEnumerable<ServiceType> ServiceTypes = ServiceType.GetRegisteredServiceTypes();
 
         private static readonly List<dynamic> RegisteredMigrationsList = new List<dynamic>
@@ -38,8 +26,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                                                                                  Description = "Migration updates store mapping after changing configuration documents data schema",
                                                                                  IsUndoable = false,
                                                                                  ConfigurationId = string.Empty,
-                                                                                 ConfigVersion = string.Empty,
-                                                                                 Parameters = new MigrationParameter[0]
+                                                                                 ConfigVersion = string.Empty
                                                                              }
                                                                          };
 
@@ -85,92 +72,36 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return dt;
         }
 
-        public static DataTable BuildConfigurationHeaders(this object configurationId)
-        {
-            var result = new List<DynamicWrapper>();
-            var configs = configurationId.ToEnumerable();
-            foreach (var config in configs)
-            {
-                dynamic item = new DynamicWrapper();
-                item.Name = config.Name;
-                item.Caption = config.Caption;
-                item.Description = config.Description;
-                result.Add(item);
-            }
-            return result.ToDataTable();
-        }
-
-        public static IEnumerable<dynamic> LoadAssemblies(string version, string configurationId)
-        {
-            var reader = ManagerFactoryConfiguration.BuildConfigurationMetadataReader();
-
-            var config = reader.GetItem(configurationId);
-            return DynamicWrapperExtensions.ToEnumerable(config.Assemblies);
-        }
-
-        public static DataTable BuildDocumentHeaders(dynamic documents, string configName)
-        {
-            var result = new List<DynamicWrapper>();
-            var items = DynamicWrapperExtensions.ToEnumerable(documents);
-            foreach (var document in items)
-            {
-                dynamic item = new DynamicWrapper();
-                item.Id = document.Id;
-                item.Name = document.Name;
-                item.Caption = document.Caption;
-                item.Description = document.Description;
-                result.Add(item);
-            }
-            return result.ToDataTable();
-        }
-
         public static IEnumerable<ContextTypeDescription> BuildContextTypes()
         {
             return new List<ContextTypeDescription>
                    {
                        new ContextTypeDescription
                        {
-                           ContextTypeKind = ContextTypeKind.ApplyFilter,
-                           Description = ContextTypeKind.ApplyFilter.GetContextTypeDisplayByKind()
+                           ContextTypeKind = ContextTypeKind.ApplyFilter
                        },
                        new ContextTypeDescription
                        {
-                           ContextTypeKind = ContextTypeKind.ApplyMove,
-                           Description = ContextTypeKind.ApplyMove.GetContextTypeDisplayByKind()
+                           ContextTypeKind = ContextTypeKind.ApplyMove
                        },
                        new ContextTypeDescription
                        {
-                           ContextTypeKind = ContextTypeKind.ApplyResult,
-                           Description = ContextTypeKind.ApplyResult.GetContextTypeDisplayByKind()
+                           ContextTypeKind = ContextTypeKind.ApplyResult
                        },
                        new ContextTypeDescription
                        {
-                           ContextTypeKind = ContextTypeKind.SearchContext,
-                           Description = ContextTypeKind.SearchContext.GetContextTypeDisplayByKind()
+                           ContextTypeKind = ContextTypeKind.SearchContext
                        },
                        new ContextTypeDescription
                        {
-                           ContextTypeKind = ContextTypeKind.Upload,
-                           Description = ContextTypeKind.Upload.GetContextTypeDisplayByKind()
+                           ContextTypeKind = ContextTypeKind.Upload
                        }
                    };
         }
 
         public static IEnumerable<ScriptUnitTypeDescription> BuildScriptUnitTypes()
         {
-            return new List<ScriptUnitTypeDescription>
-                   {
-                       new ScriptUnitTypeDescription
-                       {
-                           ScriptUnitType = ScriptUnitType.Action,
-                           Description = "Action"
-                       },
-                       new ScriptUnitTypeDescription
-                       {
-                           ScriptUnitType = ScriptUnitType.Validator,
-                           Description = "Validator"
-                       }
-                   };
+            return new List<ScriptUnitTypeDescription>();
         }
 
         public static List<string> BuildServiceTypesHeaders()
@@ -203,116 +134,9 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return BuildScripts(assemblies).Where(sc => sc.ContextTypeCode == ContextTypeKind.ApplyMove).ToList();
         }
 
-        private static bool IsFileLocked(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
-            }
-
-            //file is not locked
-            return false;
-        }
-
-        public static void LoadModules(string modules, string baseDirectory)
-        {
-            var loadedModules = modules.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(m => m.Trim());
-
-            foreach (var filename in loadedModules)
-            {
-                try
-                {
-                    var fileDll = Path.Combine(baseDirectory, filename + ".dll");
-                    var fileExe = Path.Combine(baseDirectory, filename + ".exe");
-
-                    if (File.Exists(fileDll))
-                    {
-                        var destinationFile = Path.Combine(Directory.GetCurrentDirectory(), filename + ".dll");
-                        if (!File.Exists(destinationFile))
-                        {
-                            File.WriteAllBytes(destinationFile, File.ReadAllBytes(fileDll));
-                        }
-                        else
-                        {
-                            var fileInfo = new FileInfo(destinationFile);
-
-                            if (!IsFileLocked(fileInfo))
-                            {
-                                File.WriteAllBytes(destinationFile, File.ReadAllBytes(fileDll));
-                            }
-                        }
-                    }
-
-                    if (File.Exists(fileExe))
-                    {
-                        var destinationFile = Path.Combine(Directory.GetCurrentDirectory(), filename + ".exe");
-                        if (!File.Exists(destinationFile))
-                        {
-                            File.WriteAllBytes(destinationFile, File.ReadAllBytes(fileExe));
-                        }
-                        else
-                        {
-                            var fileInfo = new FileInfo(destinationFile);
-
-                            if (!IsFileLocked(fileInfo))
-                            {
-                                File.WriteAllBytes(destinationFile, File.ReadAllBytes(fileExe));
-                            }
-                        }
-                    }
-                }
-                catch (BadImageFormatException)
-                {
-                    // Not a valid assembly, move on
-                }
-            }
-        }
-
         public static IEnumerable<ScriptDescription> BuildScripts(IEnumerable<SourceAssemblyInfo> assemblies)
         {
-            var result = new List<ScriptDescription>();
-            if (assemblies != null)
-            {
-                foreach (var assembly in assemblies.Where(a => a.Assembly != null))
-                {
-                    var scriptInfoProvider = new ScriptInfoProvider(assembly.Assembly);
-
-                    var referencedAssemblies = string.Join(",", assembly.Assembly.GetReferencedAssemblies().Select(r => r.Name));
-
-                    var assemblyPath = Path.GetDirectoryName(assembly.AssemblyFileName);
-
-                    LoadModules(referencedAssemblies, assemblyPath);
-
-                    var infoList = scriptInfoProvider.GetScriptMethodsInfo();
-                    foreach (var o in infoList)
-                    {
-                        result.Add(new ScriptDescription
-                                   {
-                                       ContextTypeCode = (ContextTypeKind)o.ContextTypeCode,
-                                       MethodName = o.MethodName,
-                                       TypeName = o.TypeName
-                                   });
-                    }
-                }
-            }
-            return result;
+            return new List<ScriptDescription>();
         }
 
         public static DataTable BuildDocumentScenarios(string version, string configurationId, string documentId)
@@ -323,88 +147,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         private static IEnumerable<dynamic> GetDocumentScenarios(string configurationId, string documentId)
         {
-            var reader = new ManagerFactoryDocument(configurationId, documentId).BuildScenarioMetadataReader();
-            var scenarios =
-                reader.GetItems().ToEnumerable();
-            return scenarios;
-        }
-
-        public static DataTable BuildDocumentServices(string version, string configurationId, string documentId)
-        {
-            var reader = new ManagerFactoryConfiguration(configurationId).BuildDocumentMetadataReader();
-            IEnumerable<dynamic> services = DynamicWrapperExtensions.ToEnumerable(reader.GetItem(documentId).Services);
-
-            var serviceInstances = new List<DynamicWrapper>();
-            var serviceManager = new ManagerFactoryDocument(configurationId, documentId).BuildServiceMetadataReader();
-            foreach (var service in services)
-            {
-                dynamic serviceFull = serviceManager.GetItem(service.Name);
-
-                if (serviceFull == null)
-                {
-                    Console.WriteLine(string.Format("Not found service item \"{0}\"", service.Name));
-                    continue;
-                }
-                dynamic ins = new DynamicWrapper();
-                ins.Id = serviceFull.Id;
-                ins.Name = serviceFull.Name;
-                ins.Type = serviceFull.Type.Name;
-                serviceInstances.Add(ins);
-            }
-            return ToDataTable(serviceInstances);
-        }
-
-        public static object GetDocumentProcessByName(string version, string configurationId, string documentId, string processName)
-        {
-            var managerProcess = new ManagerFactoryDocument(configurationId, documentId).BuildProcessMetadataReader();
-
-            return managerProcess.GetItem(processName);
-        }
-
-        public static IEnumerable<ProcessDescription> GetDocumentProcessesList(string version, string configurationId, string documentId)
-        {
-            var managerProcess = new ManagerFactoryDocument(configurationId, documentId).BuildProcessMetadataReader();
-
-            var processes = managerProcess.GetItems();
-
-            var processesViewModel = new List<ProcessDescription>();
-            foreach (var process in processes)
-            {
-                var ins = new ProcessDescription();
-                ins.Id = process.Id;
-                ins.Name = process.Name;
-                ins.Caption = process.Caption;
-                processesViewModel.Add(ins);
-            }
-            return processesViewModel;
-        }
-
-        public static IEnumerable<GeneratorDescription> GetGenerators(string version, string configurationId, string documentId)
-        {
-            var reader = new ManagerFactoryDocument(configurationId, documentId).BuildGeneratorMetadataReader();
-            var managerGenerators = reader.GetItems();
-
-            var fullGeneratorMetadata = new List<dynamic>();
-            foreach (var managerGenerator in managerGenerators)
-            {
-                var generator = reader.GetItem(managerGenerator.Name);
-                if (generator == null)
-                {
-                    Console.WriteLine(string.Format("Not found generator item \"{0}\"", managerGenerator.Name));
-                    continue;
-                }
-                fullGeneratorMetadata.Add(generator);
-            }
-
-            var generatorList = new List<GeneratorDescription>();
-            foreach (var generator in fullGeneratorMetadata)
-            {
-                var descr = new GeneratorDescription();
-                descr.Name = generator.Name;
-                descr.MetadataType = generator.MetadataType;
-                generatorList.Add(descr);
-            }
-            return generatorList;
+            return Enumerable.Empty<dynamic>();
         }
 
         public static string CheckGetView(string version, string configId, string documentId, string viewName, string viewType, string jsonBody)
@@ -435,10 +178,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             }
 
 
-            var process = new StatusProcess();
             var result = string.Empty;
-            process.StartOperation(() => { result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getmanagedmetadata", null, dynamicBody).Content; });
-            process.EndOperation();
             return result;
         }
 
@@ -456,52 +196,12 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static IEnumerable<HandlerDescription> BuildValidationHandlerDescriptions(string version, string configId, string documentId)
         {
-            var result = new List<HandlerDescription>();
-
-            var scenarios = PackageMetadataLoader.GetScenarios(configId, documentId);
-
-            foreach (dynamic scenario in scenarios)
-            {
-                if (scenario != null)
-                {
-                    if ((ScriptUnitType)scenario.ScriptUnitType == ScriptUnitType.Validator)
-                    {
-                        var handler = new HandlerDescription
-                                      {
-                                          HandlerCaption = scenario.Caption,
-                                          HandlerId = scenario.Id
-                                      };
-                        result.Add(handler);
-                    }
-                }
-            }
-
-            return result;
+            return new List<HandlerDescription>();
         }
 
         public static IEnumerable<HandlerDescription> BuildActionHandlerDescriptions(string version, string configId, string documentId)
         {
-            var result = new List<HandlerDescription>();
-
-            var scenarios = PackageMetadataLoader.GetScenarios(configId, documentId);
-
-            foreach (dynamic scenario in scenarios)
-            {
-                if (scenario != null)
-                {
-                    if ((ScriptUnitType)scenario.ScriptUnitType == ScriptUnitType.Action)
-                    {
-                        var handler = new HandlerDescription
-                                      {
-                                          HandlerCaption = scenario.Caption,
-                                          HandlerId = scenario.Id
-                                      };
-                        result.Add(handler);
-                    }
-                }
-            }
-
-            return result;
+            return new List<HandlerDescription>();
         }
 
         public static object[] BuildMigrations()
@@ -514,35 +214,14 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             return RegisteredMigrationsList.FirstOrDefault(m => m.Name == migrationName);
         }
 
-        public static RestQueryResponse RunMigration(string version, string configId, string migrationName, object[] parameters)
+        public static dynamic RunMigration(string version, string configId, string migrationName, object[] parameters)
         {
-            RestQueryApi.QueryPostNotify(configId);
-
-            var body = new
-                       {
-                           MigrationName = migrationName,
-                           ConfigurationName = configId,
-                           Parameters = parameters
-                       };
-
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runmigration", null, body);
-            return result;
+            return null;
         }
 
-        public static RestQueryResponse RevertMigration(string version, string configId, string migrationName, object[] parameters)
+        public static dynamic RevertMigration(string version, string configId, string migrationName, object[] parameters)
         {
-            RestQueryApi.QueryPostNotify(configId);
-
-            var body = new
-                       {
-                           MigrationName = migrationName,
-                           ConfigurationName = configId,
-                           Parameters = parameters
-                       };
-
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "revertmigration", null, body);
-
-            return result;
+            return null;
         }
 
         public static object[] BuildVerifications()
@@ -552,29 +231,17 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static dynamic BuildVerificationDetails(string verifiecationName)
         {
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "getverifications", null, null);
-
-            return result.ToDynamicList().FirstOrDefault(verification => verification.Name.ToString() == verifiecationName);
+            return null;
         }
 
-        public static RestQueryResponse RunVerification(string version, string configId, string verificationName)
+        public static dynamic RunVerification(string version, string configId, string verificationName)
         {
-            RestQueryApi.QueryPostNotify(configId);
-
-            var body = new
-                       {
-                           VerificationName = verificationName,
-                           ConfigurationName = configId
-                       };
-
-            var result = RestQueryApi.QueryPostJsonRaw("SystemConfig", "metadata", "runverification", null, body);
-
-            return result;
+            return null;
         }
 
         public static IEnumerable<string> BuildViewTypes()
         {
-            return ViewType.GetViewTypes();
+            return Enumerable.Empty<string>();
         }
 
         public static IEnumerable<string> BuildRegisterPeriods()
@@ -675,9 +342,8 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static string CreateRegisterDocuments(string version, string configId, string registerName)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-
-            dynamic documentMetadata = managerDocument.CreateItem(RegisterConstants.RegisterNamePrefix + registerName);
+            dynamic documentMetadata = new DynamicWrapper();
+            documentMetadata.Name = RegisterConstants.RegisterNamePrefix + registerName;
             documentMetadata.Id = Guid.NewGuid().ToString();
             documentMetadata.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
             documentMetadata.Description = string.Format("Storage for register {0} data", registerName);
@@ -714,12 +380,10 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             documentMetadata.Schema.Description = "Register document schema";
             documentMetadata.Schema.Properties = schemaProperties;
 
-            managerDocument.MergeItem(documentMetadata);
-
-
             // Создаём документ для подсчета промежуточных итогов
 
-            dynamic documentTotalMetadata = managerDocument.CreateItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
+            dynamic documentTotalMetadata = new DynamicWrapper();
+            documentTotalMetadata.Name = RegisterConstants.RegisterTotalNamePrefix + registerName;
             documentMetadata.Id = Guid.NewGuid().ToString();
             documentMetadata.SearchAbility = 0; // SearchAbilityType.KeywordBasedSearch;
             documentMetadata.Description = string.Format("Storage for register {0} totals", registerName);
@@ -738,15 +402,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
             documentTotalMetadata.Schema.Description = "Register document schema";
             documentTotalMetadata.Schema.Properties = schemaProperties;
 
-            managerDocument.MergeItem(documentTotalMetadata);
-
-            var registerInfoDocument = new
-                                       {
-                                           Id = registerName
-                                       };
-
-            new DocumentApi(RestQueryApi).SetDocument(configId, configId + RegisterConstants.RegistersCommonInfo, registerInfoDocument);
-
             return RegisterConstants.RegisterNamePrefix + registerName;
         }
 
@@ -764,39 +419,15 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
 
         public static void UpdateRegisterDocumentSchema(string version, string configId, string registerName, dynamic documentSchema)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-            var registerDocument = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterNamePrefix + registerName);
-
-            registerDocument.Schema = documentSchema;
-
-            managerDocument.MergeItem(registerDocument);
-
-            // UpdateApi.ForceReload(configId);
         }
 
         public static dynamic GetRegisterDocumentTotalSchema(string version, string configId, string registerName)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-            var registerDocumentTotal = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
-
-            if (registerDocumentTotal != null)
-            {
-                return registerDocumentTotal.Schema;
-            }
-
             return null;
         }
 
         public static void UpdateRegisterDocumentTotalSchema(string version, string configId, string registerName, dynamic documentSchema)
         {
-            var managerDocument = new ManagerFactoryConfiguration(configId).BuildDocumentManager();
-            var registerDocumentTotal = managerDocument.MetadataReader.GetItem(RegisterConstants.RegisterTotalNamePrefix + registerName);
-
-            registerDocumentTotal.Schema = documentSchema;
-
-            managerDocument.MergeItem(registerDocumentTotal);
-
-            // UpdateApi.ForceReload(configId);
         }
     }
 
@@ -833,13 +464,6 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                                                         new ExtensionPoint("Move", 2, "Document move context"),
                                                         new ExtensionPoint("GetResult", 8, "Document move result context")
                                                     }),
-                       new ServiceType("apiapplyjson", new List<ExtensionPoint>
-                                                       {
-                                                           new ExtensionPoint("FilterEvents", 4, "Document filter events context"),
-                                                           new ExtensionPoint("Move", 2, "Document move context"),
-                                                           new ExtensionPoint("GetResult", 8, "Document move result context")
-                                                       }),
-                       new ServiceType("notify", new List<ExtensionPoint>()),
                        new ServiceType("search", new List<ExtensionPoint>
                                                  {
                                                      new ExtensionPoint("ValidateFilter", 16, "Document search context"),
@@ -860,5 +484,16 @@ namespace InfinniPlatform.MetadataDesigner.Views.ViewModel
                                                       })
                    };
         }
+    }
+
+    public enum ContextTypeKind
+    {
+        None = 1, //не является точкой расширения
+        ApplyMove = 2, //точка расширения применения изменений
+        ApplyFilter = 4, //точка расширения применения фильтра
+        ApplyResult = 8, //точка расширения получения результата применения изменений
+        SearchContext = 16, //точка расширения результата поиска
+        Upload = 32, //точка расширения загрузки файла
+        UrlEncodedData = 64 //точка расширения для загрузки параметров формы (key-value)
     }
 }

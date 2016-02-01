@@ -1,5 +1,6 @@
 ﻿using System;
 
+using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.RabbitMq.Policies;
 
 namespace InfinniPlatform.MessageQueue

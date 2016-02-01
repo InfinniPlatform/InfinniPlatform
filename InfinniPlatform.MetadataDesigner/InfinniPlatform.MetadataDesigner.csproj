@@ -338,9 +338,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Api\InfinniPlatform.Api.csproj">
-      <Project>{7CA0F96C-7FF4-44B2-9D44-851984DF4532}</Project>
-      <Name>InfinniPlatform.Api</Name>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.DesignControls\InfinniPlatform.DesignControls.csproj">
       <Project>{9e7fd106-8434-41ed-8db1-10761c25a25c}</Project>
