@@ -54,12 +54,14 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         public void Save(object userId, object userInfo)
         {
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
+            transactionScope.Synchronous();
             transactionScope.SaveDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, userId, userInfo);
         }
 
         public void Delete(object userId)
         {
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
+            transactionScope.Synchronous();
             transactionScope.DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, userId);
         }
     }
