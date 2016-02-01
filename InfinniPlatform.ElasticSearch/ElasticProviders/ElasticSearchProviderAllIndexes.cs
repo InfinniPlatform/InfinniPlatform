@@ -32,7 +32,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             //который находится в свойстве Values. Таким образом, для поиска по идентификатору
             //мы осуществляем поиск по вложенному свойству Values.Id
 
-            var response = _elasticConnection.Client.Search<dynamic>(
+            var response = _elasticConnection.Search<dynamic>(
                 q => q
                     .AllIndices()
                     .AllTypes()

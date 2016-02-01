@@ -93,7 +93,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                 descriptor => new ElasticSearchQueryBuilder(descriptor).BuildSearchDescriptor(searchModel)
                                                                        .BuildSearchForType(_indexName, _typeNames);
 
-            var documentsResponse = _elasticConnection.Client.Search(desc);
+            var documentsResponse = _elasticConnection.Search(desc);
 
             var hitsCount = (documentsResponse != null && documentsResponse.Hits != null) 
                 ? documentsResponse.Hits.Count() 

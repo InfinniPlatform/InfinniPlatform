@@ -215,11 +215,10 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                         .Aggregations(filterAggregation));
             }
 
-            var rawResult = _elasticConnection.Client.Search<dynamic>(s => s
+            var rawResult = _elasticConnection.Search<dynamic>(s => s
                 .BuildSearchForType(_indexName, _typeMappings.GetMappingsTypeNames())
                 .Size(0) // Нас интересуют только агрегации, исключаем результаты поискового запроса
-                .Aggregations(activeAggregation)
-                );
+                .Aggregations(activeAggregation));
 
             if (!rawResult.IsValid)
             {

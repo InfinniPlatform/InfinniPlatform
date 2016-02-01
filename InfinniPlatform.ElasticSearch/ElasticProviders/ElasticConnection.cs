@@ -5,6 +5,7 @@ using Elasticsearch.Net.ConnectionPool;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.IndexTypeVersions;
+using InfinniPlatform.Sdk.Logging;
 
 using Nest;
 using Nest.Resolvers;
@@ -14,16 +15,19 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
     /// <summary>
     /// Соединение с ElasticSearch.
     /// </summary>
+    [LoggerName("ElasticSearch")]
     public sealed class ElasticConnection : IElasticConnection
     {
-        public ElasticConnection(ElasticSearchSettings settings)
+        public ElasticConnection(ElasticSearchSettings settings, IPerformanceLog performanceLog)
         {
             _settings = settings;
+            _performanceLog = performanceLog;
             _elasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(settings));
         }
 
 
         private readonly ElasticSearchSettings _settings;
+        private readonly IPerformanceLog _performanceLog;
         private readonly Lazy<ElasticClient> _elasticClient;
 
 
@@ -52,6 +56,27 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
         public ElasticClient Client => _elasticClient.Value;
 
+        public ISearchResponse<T> Search<T>(Func<SearchDescriptor<T>, SearchDescriptor<T>> searchSelector) where T : class
+        {
+            var start = DateTime.Now;
+
+            var searchResponse = Client.Search(searchSelector);
+
+            _performanceLog.Log("Search", start);
+
+            return searchResponse;
+        }
+
+        public IBulkResponse Bulk(Func<BulkDescriptor, BulkDescriptor> bulkSelector)
+        {
+            var start = DateTime.Now;
+
+            var bulkResponse = Client.Bulk(bulkSelector);
+
+            _performanceLog.Log("Search", start);
+
+            return bulkResponse;
+        }
 
         [Obsolete]
         public void Refresh()

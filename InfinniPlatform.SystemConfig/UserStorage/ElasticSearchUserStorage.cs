@@ -23,11 +23,10 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
             // TODO: Load only UserInfo (without header).
             // TODO: Set specific types, not AllTypes().
-            var searchResponse = _elasticConnection
-                .Client.Search<dynamic>(d => d.Index(indexName)
-                                              .AllTypes()
-                                              .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value.ToLower()))
-                                              .Size(1));
+            var searchResponse = _elasticConnection.Search<dynamic>(d => d.Index(indexName)
+                                                                          .AllTypes()
+                                                                          .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value.ToLower()))
+                                                                          .Size(1));
 
             object userInfo = null;
 

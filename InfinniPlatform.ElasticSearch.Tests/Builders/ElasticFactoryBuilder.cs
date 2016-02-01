@@ -3,6 +3,7 @@
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.Factories;
+using InfinniPlatform.Sdk.Logging;
 
 using Moq;
 
@@ -36,7 +37,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.Builders
 
         private static ElasticConnection CreateElasticConnection()
         {
-            return new ElasticConnection(ElasticSearchSettings.Default);
+            return new ElasticConnection(ElasticSearchSettings.Default, new Mock<IPerformanceLog>().Object);
         }
 
         private static ElasticTypeManager CreateElasticTypeManager()
