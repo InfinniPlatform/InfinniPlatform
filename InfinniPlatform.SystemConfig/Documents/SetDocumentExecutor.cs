@@ -171,7 +171,7 @@ namespace InfinniPlatform.SystemConfig.Documents
         {
             setDocumentResult.IsValid = actionContext.IsValid;
             setDocumentResult.ValidationMessage = actionContext.ValidationMessage;
-            setDocumentResult.IsInternalServerError = actionContext.IsValid ? (bool?)null : true;
+            setDocumentResult.Result = actionContext.Result;
 
             return actionContext.IsValid;
         }

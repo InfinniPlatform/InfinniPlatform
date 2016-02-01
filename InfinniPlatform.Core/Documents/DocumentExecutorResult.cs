@@ -9,5 +9,8 @@
         public object ValidationMessage { get; set; }
 
         public object IsInternalServerError { get; set; }
+
+        //TODO: Костыль, пока не стандартизуем запросы/ответы к API.
+        public object Result { get; set; }
     }
 }
