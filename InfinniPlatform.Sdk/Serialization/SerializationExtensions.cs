@@ -14,12 +14,12 @@ namespace InfinniPlatform.Sdk.Serialization
             return (T)target.Deserialize(data, typeof(T));
         }
 
-        public static T Deserialize<T>(this JsonObjectSerializer target, string data)
+        public static T Deserialize<T>(this IJsonObjectSerializer target, string data)
         {
             return (T)target.Deserialize(data, typeof(T));
         }
 
-        public static T ConvertFromDynamic<T>(this JsonObjectSerializer target, object value)
+        public static T ConvertFromDynamic<T>(this IJsonObjectSerializer target, object value)
         {
             return (T)target.ConvertFromDynamic(value, typeof(T));
         }

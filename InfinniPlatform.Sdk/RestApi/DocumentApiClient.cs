@@ -13,7 +13,7 @@ namespace InfinniPlatform.Sdk.RestApi
     /// </summary>
     public sealed class DocumentApiClient : BaseRestClient
     {
-        public DocumentApiClient(string server, int port, bool synchronous = false) : base(server, port)
+        public DocumentApiClient(string server, int port, bool synchronous = false, IJsonObjectSerializer serializer = null) : base(server, port, serializer)
         {
             _synchronous = synchronous;
         }
@@ -134,7 +134,7 @@ namespace InfinniPlatform.Sdk.RestApi
                                   ["Synchronous"] = _synchronous
                               };
 
-            var pathArguments = $"/?linkedData={Uri.EscapeDataString(JsonObjectSerializer.Default.ConvertToString(requestData))}";
+            var pathArguments = $"/?linkedData={Uri.EscapeDataString(Serializer.ConvertToString(requestData))}";
 
             RequestExecutor.PostFile(requestUri + pathArguments, fileProperty, fileStream);
         }

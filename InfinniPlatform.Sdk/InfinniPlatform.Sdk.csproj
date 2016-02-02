@@ -62,6 +62,7 @@
     <Compile Include="Logging\LogExtensions.cs" />
     <Compile Include="Logging\LoggerNameAttribute.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
+    <Compile Include="Serialization\IJsonObjectSerializer.cs" />
     <Compile Include="Services\IMimeTypeProvider.cs" />
     <Compile Include="Settings\IAppEnvironment.cs" />
     <Compile Include="Security\IUserIdentityProvider.cs" />

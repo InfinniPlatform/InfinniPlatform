@@ -18,11 +18,10 @@ namespace InfinniPlatform.Sdk.RestApi
     public sealed class RequestExecutor
     {
         [ThreadStatic]
-        private static RequestExecutor _instance;
+        private static readonly HttpClient Client;
 
-        public static readonly RequestExecutor Instance = new RequestExecutor();
 
-        public RequestExecutor()
+        static RequestExecutor()
         {
             var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() };
             var client = new HttpClient(clientHandler);
@@ -31,14 +30,22 @@ namespace InfinniPlatform.Sdk.RestApi
             client.Timeout = Timeout.InfiniteTimeSpan;
 #endif
 
-            _client = client;
+            Client = client;
         }
 
-        private readonly HttpClient _client;
+
+        public RequestExecutor(IJsonObjectSerializer serializer)
+        {
+            _serializer = serializer;
+        }
+
+
+        private readonly IJsonObjectSerializer _serializer;
+
 
         public Stream GetDownload(string uri)
         {
-            var response = _client.GetAsync(uri).Result;
+            var response = Client.GetAsync(uri).Result;
 
             if (!response.IsSuccessStatusCode)
             {
@@ -52,7 +59,7 @@ namespace InfinniPlatform.Sdk.RestApi
         {
             var jsonContent = CreateJsonContent(content);
 
-            var response = _client.PostAsync(uri, jsonContent).Result;
+            var response = Client.PostAsync(uri, jsonContent).Result;
 
             if (!response.IsSuccessStatusCode)
             {
@@ -66,7 +73,7 @@ namespace InfinniPlatform.Sdk.RestApi
         {
             var jsonContent = CreateJsonContent(content);
 
-            var response = _client.PostAsync(uri, jsonContent).Result;
+            var response = Client.PostAsync(uri, jsonContent).Result;
 
             var result = response.Content.ReadAsStringAsync().Result;
 
@@ -82,7 +89,7 @@ namespace InfinniPlatform.Sdk.RestApi
         {
             var jsonContent = CreateJsonContent(content);
 
-            var response = _client.PostAsync(uri, jsonContent).Result;
+            var response = Client.PostAsync(uri, jsonContent).Result;
 
             var result = response.Content.ReadAsStringAsync().Result;
 
@@ -98,7 +105,7 @@ namespace InfinniPlatform.Sdk.RestApi
         {
             var streamContent = new MultipartFormDataContent { { new StreamContent(fileContent), fileName, fileName } };
 
-            var response = _client.PostAsync(uri, streamContent).Result;
+            var response = Client.PostAsync(uri, streamContent).Result;
 
             if (!response.IsSuccessStatusCode)
             {
@@ -108,26 +115,27 @@ namespace InfinniPlatform.Sdk.RestApi
             }
         }
 
-        private static StringContent CreateJsonContent(object body)
+
+        private StringContent CreateJsonContent(object body)
         {
             var bodyString = SerializeObject(body);
 
             return new StringContent(bodyString ?? string.Empty, Encoding.UTF8, HttpConstants.JsonContentType);
         }
 
-        private static string SerializeObject(object target)
+        private string SerializeObject(object target)
         {
-            return JsonObjectSerializer.Default.ConvertToString(target);
+            return _serializer.ConvertToString(target);
         }
 
-        private static object DeserializeObject(string value)
+        private object DeserializeObject(string value)
         {
-            return JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(value);
+            return _serializer.Deserialize<DynamicWrapper>(value);
         }
 
-        private static IEnumerable<object> DeserializeArray(string value)
+        private IEnumerable<object> DeserializeArray(string value)
         {
-            return JsonObjectSerializer.Default.Deserialize<DynamicWrapper[]>(value);
+            return _serializer.Deserialize<DynamicWrapper[]>(value);
         }
     }
 }

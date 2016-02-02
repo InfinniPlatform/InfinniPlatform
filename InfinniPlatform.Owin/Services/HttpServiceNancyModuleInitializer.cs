@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;
@@ -28,6 +29,7 @@ namespace InfinniPlatform.Owin.Services
     {
         public HttpServiceNancyModuleInitializer(IMimeTypeResolver mimeTypeResolver,
                                                  IUserIdentityProvider userIdentityProvider,
+                                                 IJsonObjectSerializer jsonObjectSerializer,
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
                                                  IEnumerable<IHttpService> httpServices,
@@ -35,6 +37,7 @@ namespace InfinniPlatform.Owin.Services
         {
             _mimeTypeResolver = mimeTypeResolver;
             _userIdentityProvider = userIdentityProvider;
+            _jsonObjectSerializer = jsonObjectSerializer;
             _httpRequestExcutorFactory = httpRequestExcutorFactory;
             _httpGlobalHandlers = httpGlobalHandlers;
             _httpServices = httpServices;
@@ -46,6 +49,7 @@ namespace InfinniPlatform.Owin.Services
 
         private readonly IMimeTypeResolver _mimeTypeResolver;
         private readonly IUserIdentityProvider _userIdentityProvider;
+        private readonly IJsonObjectSerializer _jsonObjectSerializer;
         private readonly HttpRequestExcutorFactory _httpRequestExcutorFactory;
         private readonly IEnumerable<IHttpGlobalHandler> _httpGlobalHandlers;
         private readonly IEnumerable<IHttpService> _httpServices;
@@ -187,7 +191,7 @@ namespace InfinniPlatform.Owin.Services
 
                                                                          try
                                                                          {
-                                                                             var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider);
+                                                                             var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
                                                                              var result = await onHandleGlobal(httpRequest);
                                                                              var nancyHttpResponse = CreateNancyHttpResponse(nancyContext, result);
 
@@ -239,6 +243,15 @@ namespace InfinniPlatform.Owin.Services
 
                 // Установка типа содержимого
                 nancyResponse.ContentType = httpResponse.ContentType;
+
+                // Установка сериализатора объектов (если применимо)
+
+                var jsonHttpResponse = result as JsonHttpResponse;
+
+                if (jsonHttpResponse != null && jsonHttpResponse.Serializer == null)
+                {
+                    jsonHttpResponse.Serializer = _jsonObjectSerializer;
+                }
 
                 // Установка заголовка для файлов (если применимо)
 

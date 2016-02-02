@@ -11,14 +11,20 @@ namespace InfinniPlatform.Sdk.Services
         /// Конструктор.
         /// </summary>
         /// <param name="content">Содержимое тела ответа.</param>
-        public JsonHttpResponse(object content)
+        public JsonHttpResponse(object content, IJsonObjectSerializer serializer = null)
         {
+            Serializer = serializer;
             ContentType = HttpConstants.JsonContentType;
 
             if (content != null)
             {
-                Content = stream => JsonObjectSerializer.Default.Serialize(stream, content);
+                Content = stream => Serializer.Serialize(stream, content);
             }
         }
+
+        /// <summary>
+        /// Сериализатор объектов.
+        /// </summary>
+        public IJsonObjectSerializer Serializer { get; set; }
     }
 }

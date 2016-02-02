@@ -11,7 +11,7 @@ namespace InfinniPlatform.Sdk.Serialization
     /// <summary>
     /// JSON-сериализатор объектов.
     /// </summary>
-    public sealed class JsonObjectSerializer : IObjectSerializer
+    public sealed class JsonObjectSerializer : IJsonObjectSerializer
     {
         private const int BufferSize = 1024;
 
@@ -24,6 +24,7 @@ namespace InfinniPlatform.Sdk.Serialization
         /// Экземпляр с настройками форматирования.
         /// </summary>
         public static readonly JsonObjectSerializer Formated = new JsonObjectSerializer(true);
+
 
         public JsonObjectSerializer(bool withFormatting = false, KnownTypesContainer knownTypes = null)
         {

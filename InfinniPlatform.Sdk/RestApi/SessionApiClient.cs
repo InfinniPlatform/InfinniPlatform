@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Sdk.RestApi
 {
@@ -7,7 +8,7 @@ namespace InfinniPlatform.Sdk.RestApi
     /// </summary>
     public sealed class SessionApiClient : BaseRestClient
     {
-        public SessionApiClient(string server, int port) : base(server, port)
+        public SessionApiClient(string server, int port, IJsonObjectSerializer serializer = null) : base(server, port, serializer)
         {
         }
 

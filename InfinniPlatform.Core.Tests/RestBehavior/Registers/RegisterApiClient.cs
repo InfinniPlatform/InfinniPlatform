@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Registers;
 using InfinniPlatform.Sdk.RestApi;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 {
     internal sealed class RegisterApiClient : BaseRestClient
     {
-        public RegisterApiClient(string server, int port, bool synchronous = false) : base(server, port)
+        public RegisterApiClient(string server, int port, bool synchronous = false, IJsonObjectSerializer serializer = null) : base(server, port, serializer)
         {
             _synchronous = synchronous;
         }

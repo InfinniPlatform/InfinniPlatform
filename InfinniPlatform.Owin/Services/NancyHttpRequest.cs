@@ -17,10 +17,11 @@ namespace InfinniPlatform.Owin.Services
     /// </summary>
     internal sealed class NancyHttpRequest : IHttpRequest
     {
-        public NancyHttpRequest(NancyContext nancyContext, Func<IIdentity> userIdentityProvider)
+        public NancyHttpRequest(NancyContext nancyContext, Func<IIdentity> userIdentityProvider, IJsonObjectSerializer jsonObjectSerializer)
         {
             _nancyRequest = nancyContext.Request;
             _userIdentityProvider = userIdentityProvider;
+            _jsonObjectSerializer = jsonObjectSerializer;
 
             Parameters = nancyContext.Parameters;
 
@@ -32,6 +33,7 @@ namespace InfinniPlatform.Owin.Services
 
         private readonly Request _nancyRequest;
         private readonly Func<IIdentity> _userIdentityProvider;
+        private readonly IJsonObjectSerializer _jsonObjectSerializer;
 
         private readonly Lazy<object> _form;
         private readonly Lazy<IHttpRequestHeaders> _headers;
@@ -69,7 +71,7 @@ namespace InfinniPlatform.Owin.Services
 
                 if (contentType != null && contentType.StartsWith(HttpConstants.JsonContentType, StringComparison.OrdinalIgnoreCase))
                 {
-                    return JsonObjectSerializer.Default.Deserialize(_nancyRequest.Body, typeof(DynamicWrapper));
+                    return _jsonObjectSerializer.Deserialize(_nancyRequest.Body, typeof(DynamicWrapper));
                 }
             }
 

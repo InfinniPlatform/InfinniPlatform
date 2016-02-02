@@ -4,6 +4,7 @@ using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Core.IoC
@@ -43,6 +44,13 @@ namespace InfinniPlatform.Core.IoC
 
             builder.RegisterType<DocumentTransactionScopeProvider>()
                    .As<IDocumentTransactionScopeProvider>()
+                   .SingleInstance();
+
+            // Serialization
+
+            builder.RegisterInstance(JsonObjectSerializer.Default)
+                   .As<IObjectSerializer>()
+                   .As<IJsonObjectSerializer>()
                    .SingleInstance();
         }
     }

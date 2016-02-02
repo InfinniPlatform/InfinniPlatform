@@ -10,7 +10,7 @@ namespace InfinniPlatform.Sdk.RestApi
     /// </summary>
     public sealed class FileApiClient : BaseRestClient
     {
-        public FileApiClient(string server, int port) : base(server, port)
+        public FileApiClient(string server, int port, IJsonObjectSerializer serializer = null) : base(server, port, serializer)
         {
         }
 
@@ -23,7 +23,7 @@ namespace InfinniPlatform.Sdk.RestApi
                                   ["ContentId"] = contentId
                               };
 
-            var pathArguments = $"/?Form={Uri.EscapeDataString(JsonObjectSerializer.Default.ConvertToString(requestData))}";
+            var pathArguments = $"/?Form={Uri.EscapeDataString(Serializer.ConvertToString(requestData))}";
 
             return RequestExecutor.GetDownload(requestUri + pathArguments);
         }

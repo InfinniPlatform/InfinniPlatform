@@ -1,11 +1,13 @@
-﻿namespace InfinniPlatform.Sdk.RestApi
+﻿using InfinniPlatform.Sdk.Serialization;
+
+namespace InfinniPlatform.Sdk.RestApi
 {
     /// <summary>
     /// Реализует REST-клиент для CustomApi.
     /// </summary>
     public sealed class CustomApiClient : BaseRestClient
     {
-        public CustomApiClient(string server, int port) : base(server, port)
+        public CustomApiClient(string server, int port, IJsonObjectSerializer serializer = null) : base(server, port, serializer)
         {
         }
 

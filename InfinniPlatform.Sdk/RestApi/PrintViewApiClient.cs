@@ -4,6 +4,7 @@ using System.IO;
 
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Sdk.RestApi
 {
@@ -12,7 +13,7 @@ namespace InfinniPlatform.Sdk.RestApi
     /// </summary>
     public class PrintViewApiClient : BaseRestClient
     {
-        public PrintViewApiClient(string server, int port) : base(server, port)
+        public PrintViewApiClient(string server, int port, IJsonObjectSerializer serializer = null) : base(server, port, serializer)
         {
         }
 
