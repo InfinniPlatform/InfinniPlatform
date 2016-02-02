@@ -11,6 +11,6 @@ namespace InfinniPlatform.Core.Settings
             Name = "InfinniPlatform";
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
     }
 }
