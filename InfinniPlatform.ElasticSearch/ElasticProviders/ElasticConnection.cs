@@ -67,30 +67,44 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         public ISearchResponse<T> Search<T>(Func<SearchDescriptor<T>, SearchDescriptor<T>> searchSelector) where T : class
         {
             var start = DateTime.Now;
+            try
+            {
+                var searchResponse = Client.Search(searchSelector);
 
-            var searchResponse = Client.Search(searchSelector);
+                _performanceLog.Log("Search", start);
 
-            _performanceLog.Log("Search", start);
-
-            return searchResponse;
+                return searchResponse;
+            }
+            catch (Exception e)
+            {
+                _performanceLog.Log("Search", start, e);
+                throw;
+            }
         }
 
         public IBulkResponse Bulk(Func<BulkDescriptor, BulkDescriptor> bulkSelector)
         {
             var start = DateTime.Now;
 
-            var bulkResponse = Client.Bulk(bulkSelector);
+            try
+            {
+                var bulkResponse = Client.Bulk(bulkSelector);
 
-            _performanceLog.Log("Search", start);
+                _performanceLog.Log("Bulk", start);
 
-            return bulkResponse;
+                return bulkResponse;
+            }
+            catch (Exception e)
+            {
+                _performanceLog.Log("Bulk", start, e);
+                throw;
+            }
         }
 
         [Obsolete]
         public void Refresh()
         {
             // TODO: От этого нужно избавиться!!!
-
             Client.Refresh(i => i.Force());
         }
 

@@ -18,7 +18,7 @@
           "alias": "OWIN",
           "pin": false,
           "type": "lucene",
-          "enable": true,
+          "enable": false,
           "query": "component:OWIN"
         },
         "2": {
@@ -33,38 +33,56 @@
         "3": {
           "id": 3,
           "color": "#967302",
-          "alias": "Transactions",
+          "alias": "TransactionScope",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:TransactionMaster"
+          "query": "component:TransactionScope"
         },
         "4": {
           "id": 4,
-          "color": "#F9BA8F",
-          "alias": "Cassandra",
+          "color": "#E24D42",
+          "alias": "Redis",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:CassandraBlobStorage"
+          "query": "component:Redis"
         },
         "5": {
           "id": 5,
-          "color": "#E5A8E2",
-          "alias": "GetDocument",
+          "color": "#1F78C1",
+          "alias": "ElasticSearch",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "qualifiedAction.raw:OWIN.POST\\:\\:\\/RestfulApi\\/StandardApi\\/configuration\\/GetDocument"
+          "query": "component:ElasticSearch"
         },
         "6": {
           "id": 6,
-          "color": "#447EBC",
-          "alias": "SetDocument",
+          "color": "#BA43A9",
+          "alias": "Nancy",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "qualifiedAction.raw:OWIN.POST\\:\\:\\/RestfulApi\\/StandardApi\\/configuration\\/SetDocument"
+          "query": "component:Nancy"
+        },
+        "7": {
+          "id": 7,
+          "color": "#705DA0",
+          "alias": "BlobStorage",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "component:BlobStorage"
+        },
+        "8": {
+          "id": 8,
+          "color": "#508642",
+          "alias": "DocumentApiHttpService",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "component:DocumentApiHttpService"
         }
       },
       "ids": [
@@ -74,6 +92,8 @@
         3,
         4,
         5,
+        7,
+        8,
         6
       ]
     },
@@ -82,26 +102,16 @@
         "0": {
           "type": "time",
           "field": "@timestamp",
-          "from": "now-1h",
+          "from": "now-2d",
           "to": "now",
           "mandate": "must",
           "active": true,
           "alias": "",
           "id": 0
-        },
-        "1": {
-          "type": "field",
-          "field": "monitoring",
-          "query": "\"Performance\"",
-          "mandate": "must",
-          "active": true,
-          "alias": "",
-          "id": 1
         }
       },
       "ids": [
-        0,
-        1
+        0
       ]
     }
   },
@@ -139,12 +149,13 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms",
@@ -178,12 +189,13 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms_stats",
@@ -217,12 +229,13 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms_stats",
@@ -249,19 +262,20 @@
           "tilt": false,
           "labels": true,
           "arrangement": "horizontal",
-          "chart": "pie",
+          "chart": "bar",
           "counter_pos": "none",
           "spyable": true,
           "queries": {
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms_stats",
@@ -295,12 +309,13 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms_stats",
@@ -334,12 +349,13 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms_stats",
@@ -367,12 +383,13 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "style": {
@@ -393,7 +410,7 @@
             "mean": true,
             "std_deviation": false,
             "sum_of_squares": false,
-            "total": true,
+            "total": false,
             "variance": false
           },
           "title": "Statistics",
@@ -401,7 +418,46 @@
         },
         {
           "error": false,
-          "span": 8,
+          "span": 3,
+          "editable": true,
+          "type": "percentiles",
+          "loadingEditor": false,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          },
+          "style": {
+            "font-size": "24pt"
+          },
+          "format": "number",
+          "mode": "95.0",
+          "display_breakdown": "yes",
+          "sort_field": "",
+          "sort_reverse": false,
+          "label_name": "Query",
+          "value_name": "Value",
+          "spyable": true,
+          "show": {
+            "75.0": false,
+            "90.0": true,
+            "95.0": true,
+            "99.0": true,
+            "50.0": false
+          },
+          "title": "Percentiles",
+          "field": "duration"
+        },
+        {
+          "error": false,
+          "span": 6,
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
@@ -427,12 +483,13 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8
             ]
           },
           "tmode": "terms",
@@ -484,7 +541,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "30s",
+          "interval": "30m",
           "intervals": [
             "auto",
             "1s",
@@ -552,12 +609,8 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              1,
               2,
-              3,
-              4,
-              5,
-              6
+              3
             ]
           },
           "annotate": {
@@ -572,7 +625,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "30s",
+          "interval": "30m",
           "intervals": [
             "auto",
             "1s",
@@ -640,12 +693,8 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              1,
               2,
-              3,
-              4,
-              5,
-              6
+              3
             ]
           },
           "annotate": {
@@ -660,7 +709,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "30s",
+          "interval": "30m",
           "intervals": [
             "auto",
             "1s",
@@ -728,12 +777,8 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              1,
               2,
-              3,
-              4,
-              5,
-              6
+              3
             ]
           },
           "annotate": {
@@ -748,7 +793,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "30s",
+          "interval": "30m",
           "intervals": [
             "auto",
             "1s",
@@ -794,12 +839,12 @@
       "title": "All events",
       "height": "150px",
       "editable": true,
-      "collapse": true,
+      "collapse": false,
       "collapsable": true,
       "panels": [
         {
           "error": false,
-          "span": 7,
+          "span": 10,
           "editable": true,
           "type": "table",
           "loadingEditor": false,
@@ -826,11 +871,13 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
-              5
+              5,
+              6,
+              7,
+              8
             ]
           },
           "style": {
@@ -841,7 +888,7 @@
         },
         {
           "error": false,
-          "span": 5,
+          "span": 12,
           "editable": true,
           "type": "table",
           "loadingEditor": false,
@@ -854,15 +901,16 @@
           ],
           "overflow": "min-height",
           "fields": [
-            "timestamp",
+            "component",
+            "action",
             "correlationId",
-            "component"
+            "timestamp"
           ],
           "highlight": [],
           "sortable": true,
           "header": true,
           "paging": true,
-          "field_list": false,
+          "field_list": true,
           "all_fields": false,
           "trimFactor": 300,
           "localTime": false,
@@ -872,11 +920,62 @@
             "mode": "all",
             "ids": [
               0,
-              1,
               2,
               3,
               4,
-              5
+              5,
+              6,
+              7,
+              8
+            ]
+          },
+          "style": {
+            "font-size": "9pt"
+          },
+          "normTimes": true,
+          "title": "Root Requests"
+        },
+        {
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "type": "table",
+          "loadingEditor": false,
+          "size": 10,
+          "pages": 10,
+          "offset": 0,
+          "sort": [
+            "timestamp",
+            "desc"
+          ],
+          "overflow": "min-height",
+          "fields": [
+            "component",
+            "action",
+            "correlationId",
+            "timestamp"
+          ],
+          "highlight": [ ],
+          "sortable": true,
+          "header": true,
+          "paging": true,
+          "field_list": true,
+          "all_fields": false,
+          "trimFactor": 300,
+          "localTime": false,
+          "timeField": "@timestamp",
+          "spyable": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
             ]
           },
           "style": {
@@ -902,29 +1001,29 @@
   "pulldowns": [
     {
       "type": "query",
-      "collapse": true,
+      "collapse": false,
       "notice": false,
       "query": "*",
       "pinned": true,
       "history": [
-        "qualifiedAction.raw:OWIN.POST\\:\\:\\/RestfulApi\\/StandardApi\\/configuration\\/SetDocument",
-        "qualifiedAction.raw:OWIN.POST\\:\\:\\/RestfulApi\\/StandardApi\\/configuration\\/GetDocument",
-        "_exists_:result.raw",
-        "component:CassandraBlobStorage",
-        "component:TransactionMaster",
+        "component:DocumentApiHttpService",
+        "component:BlobStorage",
+        "component:Nancy",
+        "component:ElasticSearch",
+        "component:Redis",
+        "component:TransactionScope",
         "component:ScriptProcessor",
         "component:OWIN",
-        "*",
-        "qualifiedAction.raw:OWIN.POST\\:\\:/RestfulApi/StandardApi/configuration/SetDocument",
-        "qualifiedAction.raw:OWIN.POST\\:\\:/RestfulApi/StandardApi/configuration/GetDocument"
+        "_exists_:result.raw",
+        "component:FileSystemBlobStorage"
       ],
       "remember": 10,
       "enable": true
     },
     {
       "type": "filtering",
-      "collapse": true,
-      "notice": false,
+      "collapse": false,
+      "notice": true,
       "enable": true
     }
   ],
@@ -977,5 +1076,5 @@
     "load_local": true,
     "hide": false
   },
-  "refresh": "30s"
+  "refresh": false
 }
