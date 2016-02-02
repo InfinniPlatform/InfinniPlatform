@@ -31,7 +31,7 @@ namespace InfinniPlatform.Cors.Tests
             containerResolverMoq.Setup(i => i.Resolve<IEnumerable<IOwinHostingModule>>()).Returns(owinHostingModules);
 
             var hostingContextMoq = new Mock<IOwinHostingContext>();
-            hostingContextMoq.SetupGet(i => i.Configuration).Returns(HostingConfig.Default);
+            hostingContextMoq.SetupGet(i => i.Configuration).Returns(new HostingConfig { Port = 9901 });
             hostingContextMoq.SetupGet(i => i.ContainerResolver).Returns(containerResolverMoq.Object);
 
             return hostingContextMoq.Object;
