@@ -12,7 +12,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class ValidationDocumentBehavior
     {
-        private const string ConfigurationId = "TestConfiguration";
         private const string DocumentType = "ValidationDocument";
 
         private IDisposable _server;
@@ -37,7 +36,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             var document = new { Id = Guid.NewGuid(), LastName = "123" };
 
             // When
-            var error = Assert.Catch(() => documentApi.SetDocument(ConfigurationId, DocumentType, document));
+            var error = Assert.Catch(() => documentApi.SetDocument(DocumentType, document));
 
             // Then
             Assert.IsTrue(error.Message.Contains(@"TestComplexValidatorMessage"));

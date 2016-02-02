@@ -6,11 +6,6 @@
     public interface IActionContext
     {
         /// <summary>
-        /// Конфигурация текущего запроса.
-        /// </summary>
-        string Configuration { get; }
-
-        /// <summary>
         /// Тип документа текущего запроса.
         /// </summary>
         string DocumentType { get; }

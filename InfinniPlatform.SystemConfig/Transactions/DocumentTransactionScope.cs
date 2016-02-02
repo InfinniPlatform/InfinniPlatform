@@ -38,7 +38,7 @@ namespace InfinniPlatform.SystemConfig.Transactions
         private bool _needRefresh;
 
 
-        public IEnumerable<object> GetDocuments(string configuration, string documentType, IEnumerable<object> documents)
+        public IEnumerable<object> GetDocuments(string documentType, IEnumerable<object> documents)
         {
             foreach (dynamic document in documents)
             {
@@ -48,7 +48,7 @@ namespace InfinniPlatform.SystemConfig.Transactions
 
                 if (documentId != null)
                 {
-                    var transactionCommand = _transactionLog.GetEntry(configuration, documentType, documentId);
+                    var transactionCommand = _transactionLog.GetEntry(documentType, documentId);
 
                     if (transactionCommand != null)
                     {
@@ -70,16 +70,16 @@ namespace InfinniPlatform.SystemConfig.Transactions
             }
         }
 
-        public void SaveDocument(string configuration, string documentType, object documentId, object document)
+        public void SaveDocument(string documentType, object documentId, object document)
         {
-            var saveCommand = DocumentTransactionCommand.SaveCommand(configuration, documentType, documentId, document);
+            var saveCommand = DocumentTransactionCommand.SaveCommand(documentType, documentId, document);
 
             _transactionLog.EnqueueEntry(saveCommand);
         }
 
-        public void DeleteDocument(string configuration, string documentType, object documentId)
+        public void DeleteDocument(string documentType, object documentId)
         {
-            var deleteCommand = DocumentTransactionCommand.DeleteCommand(configuration, documentType, documentId);
+            var deleteCommand = DocumentTransactionCommand.DeleteCommand(documentType, documentId);
 
             _transactionLog.EnqueueEntry(deleteCommand);
         }
@@ -116,17 +116,15 @@ namespace InfinniPlatform.SystemConfig.Transactions
 
                         var saveResponse = _elasticConnection.Bulk(d =>
                                                                    {
-                                                                       foreach (var command1 in saveCommands)
+                                                                       foreach (var command in saveCommands)
                                                                        {
-                                                                           var indexName1 = _elasticConnection.GetIndexName(command1.Configuration);
-                                                                           var indexTypeName1 = _elasticTypeManager.GetActualTypeName(command1.Configuration, command1.DocumentType);
+                                                                           var indexTypeName = _elasticTypeManager.GetActualTypeName(command.DocumentType);
 
-                                                                           var indexObjectId1 = CreateIndexObjectId(command1.DocumentId);
-                                                                           var indexObject1 = CreateIndexObject(tenantId, indexObjectId1, command1.Document);
+                                                                           var indexObjectId = CreateIndexObjectId(command.DocumentId);
+                                                                           var indexObject = CreateIndexObject(tenantId, indexObjectId, command.Document);
 
-                                                                           d.Index<IndexObject>(i => i.Index(indexName1)
-                                                                                                      .Type(indexTypeName1)
-                                                                                                      .Document(indexObject1));
+                                                                           d.Index<IndexObject>(i => i.Type(indexTypeName)
+                                                                                                      .Document(indexObject));
                                                                        }
 
                                                                        if (_needRefresh)
@@ -144,11 +142,9 @@ namespace InfinniPlatform.SystemConfig.Transactions
                     {
                         // Удаление документов вынуждено делается за два этапа: определение типа удаляемого документа, затем удаление
 
-                        var indexNames = deleteCommands.Select(i => _elasticConnection.GetIndexName(i.Configuration));
                         var indexObjectIds = deleteCommands.Select(i => CreateIndexObjectId(i.DocumentId));
 
-                        var searchResponse = _elasticConnection.Search<IndexObject>(d => d.Indices(indexNames)
-                                                                                          .AllTypes()
+                        var searchResponse = _elasticConnection.Search<IndexObject>(d => d.AllTypes()
                                                                                           .Filter(f => f.Terms(i => i.Id, indexObjectIds) && f.Term(i => i.TenantId, tenantId))
                                                                                           .Size(deleteCommands.Length)
                                                                                           .Source(false));
@@ -161,8 +157,7 @@ namespace InfinniPlatform.SystemConfig.Transactions
                                                                          {
                                                                              foreach (var hit in searchResponse.Hits)
                                                                              {
-                                                                                 d.Delete<IndexObject>(i => i.Index(hit.Index)
-                                                                                                             .Type(hit.Type)
+                                                                                 d.Delete<IndexObject>(i => i.Type(hit.Type)
                                                                                                              .Id(hit.Id));
                                                                              }
 

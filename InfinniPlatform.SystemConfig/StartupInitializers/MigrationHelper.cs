@@ -29,11 +29,10 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         /// <summary>
         /// Создает маппинг типа в ElasticSearch.
         /// </summary>
-        /// <param name="configurationName">Наименование конфигурации (индекса)</param>
         /// <param name="documentName">Наименование документа (типа)</param>
-        public string TryUpdateDocumentMappings(string configurationName, string documentName)
+        public string TryUpdateDocumentMappings(string documentName)
         {
-            dynamic schema = _metadataApi.GetDocumentSchema(configurationName, documentName);
+            dynamic schema = _metadataApi.GetDocumentSchema(documentName);
 
             var props = new List<PropertyMapping>();
 
@@ -49,49 +48,35 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             string resultMessage = null;
 
-            if (!VersionExists(configurationName, documentName, indexTypeMapping))
+            if (!VersionExists(documentName, indexTypeMapping))
             {
                 resultMessage = $"Created new version of {documentName} document.";
-                _elasticTypeManager.CreateType(configurationName, documentName, indexTypeMapping);
+                _elasticTypeManager.CreateType(documentName, indexTypeMapping);
                 // Необходимо создать новые версии для контейнеров документов, имеющих inline ссылки на измененный документ
-                resultMessage += UpdateContainersWithInlineLinks(configurationName, documentName);
+                resultMessage += UpdateContainersWithInlineLinks(documentName);
             }
 
             return resultMessage;
         }
 
-        private string UpdateContainersWithInlineLinks(string configId,
-                                                       string documentId)
+        private string UpdateContainersWithInlineLinks(string documentId)
         {
-            //MetadataApi
-            var configurationNames = _metadataApi.GetConfigurationNames();
+            var documentNames = _metadataApi.GetDocumentNames();
 
-            foreach (var configurationName in configurationNames)
+            foreach (var documentName in documentNames)
             {
-                var documentNames = _metadataApi.GetDocumentNames(configurationName);
+                var schema = _metadataApi.GetDocumentSchema(documentName);
 
-                foreach (var documentName in documentNames)
+                if (schema != null)
                 {
-                    var schema = _metadataApi.GetDocumentSchema(configurationName, documentName);
-
-                    if (schema != null)
+                    // Проверяем, имеется ли в схеме данных документа inline ссылка на документ с documentId
+                    if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, documentId))
                     {
-                        // Проверяем, имеется ли в схеме данных документа inline ссылка 
-                        // на документ с documentId из конфигурации configId
-                        if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, configId, documentId))
-                        {
-                            // convert document schema to index mapping
-                            List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
-                            _elasticTypeManager.CreateType(configurationName, documentName, props.Count > 0
-                                                                                                ? props
-                                                                                                : null);
+                        // convert document schema to index mapping
+                        List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
+                        _elasticTypeManager.CreateType(documentName, props.Count > 0 ? props : null);
 
-                            return string.Format("{3}Created new version of {0} document from configuration {1} due inline link on {2}.",
-                                                 documentName,
-                                                 configId,
-                                                 documentId,
-                                                 Environment.NewLine);
-                        }
+                        return $"Created new version of {documentName} for inline link on {documentId}. ";
                     }
                 }
             }
@@ -106,15 +91,15 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         /// свойствам,
         /// в противном случае нужно создавать новую версию.
         /// </summary>
-        private bool VersionExists(string indexName, string typeName, IList<PropertyMapping> properties = null)
+        private bool VersionExists(string typeName, IList<PropertyMapping> properties = null)
         {
-            var isTypeExists = _elasticTypeManager.TypeExists(indexName, typeName);
+            var isTypeExists = _elasticTypeManager.TypeExists(typeName);
 
             var isPropertiesMatch = true;
 
             if (properties != null && isTypeExists)
             {
-                var currentProperties = _elasticTypeManager.GetPropertyMappings(indexName, typeName);
+                var currentProperties = _elasticTypeManager.GetPropertyMappings(typeName);
 
                 foreach (var newMappingProperty in properties)
                 {

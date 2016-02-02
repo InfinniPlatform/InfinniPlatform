@@ -4,6 +4,7 @@ using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Settings;
 
 using Moq;
 
@@ -29,15 +30,19 @@ namespace InfinniPlatform.ElasticSearch.Tests.Builders
         public static ElasticFactory GetElasticFactory()
         {
             return new ElasticFactory(
-                (indexName, typeName) => new IndexQueryExecutor(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
-                (indexName, typeName) => new ElasticSearchAggregationProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, indexName, typeName),
+                typeName => new IndexQueryExecutor(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, typeName),
+                typeName => new ElasticSearchAggregationProvider(ElasticConnection.Value, ElasticTypeManager.Value, TenantProvider.Value, typeName),
                 new ElasticSearchProviderAllIndexes(ElasticConnection.Value));
         }
 
 
         private static ElasticConnection CreateElasticConnection()
         {
-            return new ElasticConnection(ElasticSearchSettings.Default, new Mock<IPerformanceLog>().Object);
+            var appEnvironment = new Mock<IAppEnvironment>();
+            var performanceLog = new Mock<IPerformanceLog>();
+            appEnvironment.SetupGet(i => i.Name).Returns("InfinniPlatform");
+
+            return new ElasticConnection(appEnvironment.Object, ElasticSearchSettings.Default, performanceLog.Object);
         }
 
         private static ElasticTypeManager CreateElasticTypeManager()

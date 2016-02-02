@@ -14,7 +14,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class DocumentApiBehavior
     {
-        private const string ConfigurationId = "TestConfiguration";
         private const string DocumentType = "TestDocument";
 
         private IDisposable _server;
@@ -48,18 +47,18 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, DocumentType, document);
+            documentApi.SetDocument(DocumentType, document);
 
             stopwatch.Restart();
-            documentApi.SetDocument(ConfigurationId, DocumentType, document);
+            documentApi.SetDocument(DocumentType, document);
             stopwatch.Stop();
             Console.WriteLine(@"SetDocument: {0}", stopwatch.Elapsed);
 
-            var afterSave = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
+            var afterSave = documentApi.GetDocument(DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
 
-            documentApi.DeleteDocument(ConfigurationId, DocumentType, document.Id);
+            documentApi.DeleteDocument(DocumentType, document.Id);
 
-            var afterDelete = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
+            var afterDelete = documentApi.GetDocument(DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
 
             // Then
 
@@ -87,13 +86,13 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, DocumentType, document);
+            documentApi.SetDocument(DocumentType, document);
 
-            var afterSave = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
+            var afterSave = documentApi.GetDocument(DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
 
-            documentApi.DeleteDocument(ConfigurationId, DocumentType, document.Id);
+            documentApi.DeleteDocument(DocumentType, document.Id);
 
-            var afterDelete = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
+            var afterDelete = documentApi.GetDocument(DocumentType, f => f.AddCriteria(c => c.Property("Id").IsEquals(document.Id)), 0, 1);
 
             // Then
 
@@ -123,9 +122,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, DocumentType, document);
+            documentApi.SetDocument(DocumentType, document);
 
-            var items = documentApi.GetDocument(ConfigurationId, DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals(testProperty)), 0, 10);
+            var items = documentApi.GetDocument(DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals(testProperty)), 0, 10);
 
             // Then
 
@@ -157,7 +156,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
                     TestProperty = testProperty1
                 };
 
-                documentApi.SetDocument(ConfigurationId, DocumentType, document);
+                documentApi.SetDocument(DocumentType, document);
             }
 
             var testProperty2 = Guid.NewGuid().ToString();
@@ -170,11 +169,11 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
                     TestProperty = testProperty2
                 };
 
-                documentApi.SetDocument(ConfigurationId, DocumentType, document);
+                documentApi.SetDocument(DocumentType, document);
             }
 
-            var count1 = documentApi.GetNumberOfDocuments(ConfigurationId, DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals(testProperty1)));
-            var count2 = documentApi.GetNumberOfDocuments(ConfigurationId, DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals(testProperty2)));
+            var count1 = documentApi.GetNumberOfDocuments(DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals(testProperty1)));
+            var count2 = documentApi.GetNumberOfDocuments(DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals(testProperty2)));
 
             // Then
 
@@ -212,9 +211,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, DocumentType, rightDocument1);
-            documentApi.SetDocument(ConfigurationId, DocumentType, rightDocument2);
-            var error = Assert.Catch(() => documentApi.SetDocument(ConfigurationId, DocumentType, badDocument));
+            documentApi.SetDocument(DocumentType, rightDocument1);
+            documentApi.SetDocument(DocumentType, rightDocument2);
+            var error = Assert.Catch(() => documentApi.SetDocument(DocumentType, badDocument));
 
             // Then
 
@@ -248,9 +247,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocuments(ConfigurationId, DocumentType, documents);
+            documentApi.SetDocuments(DocumentType, documents);
 
-            var items = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("TestProperty").IsEquals(testProperty)), 0, 10);
+            var items = documentApi.GetDocument(DocumentType, f => f.AddCriteria(c => c.Property("TestProperty").IsEquals(testProperty)), 0, 10);
 
             // Then
 
@@ -301,9 +300,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocuments(ConfigurationId, DocumentType, documents);
+            documentApi.SetDocuments(DocumentType, documents);
 
-            var items = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(c => c.Property("TestProperty").IsEquals(testProperty)), 0, 10);
+            var items = documentApi.GetDocument(DocumentType, f => f.AddCriteria(c => c.Property("TestProperty").IsEquals(testProperty)), 0, 10);
 
             // Then
 
@@ -364,9 +363,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocuments(ConfigurationId, DocumentType, documents);
+            documentApi.SetDocuments(DocumentType, documents);
 
-            var items = documentApi.GetDocument(ConfigurationId, DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals(testProperty)), 0, 10);
+            var items = documentApi.GetDocument(DocumentType, filter => filter.AddCriteria(cr => cr.Property("TestProperty").IsEquals(testProperty)), 0, 10);
 
             // Then
 

@@ -12,7 +12,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class ActionUnitExceptionHandlingBehavior
     {
-        private const string ConfigurationId = "TestConfiguration";
         private const string DocumentType = "ExceptionHandlingDocument";
 
         private IDisposable _server;
@@ -37,7 +36,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             var document = new { Id = Guid.NewGuid(), LastName = "123" };
 
             // When
-            var result = Assert.Catch(() => documentApi.SetDocument(ConfigurationId, DocumentType, document));
+            var result = Assert.Catch(() => documentApi.SetDocument(DocumentType, document));
 
             // Then
             Assert.IsTrue(result.Message.Contains("Important exception details"));

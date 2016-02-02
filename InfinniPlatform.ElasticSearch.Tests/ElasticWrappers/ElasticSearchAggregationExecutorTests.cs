@@ -27,7 +27,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [SetUp]
         public void InitializeElasticSearch()
         {
-            ElasticFactoryBuilder.ElasticTypeManager.Value.CreateType(IndexName, IndexName);
+            ElasticFactoryBuilder.ElasticTypeManager.Value.CreateType(IndexName);
             _elasticConnection = ElasticFactoryBuilder.ElasticConnection.Value;
 
             foreach (var school in SchoolsFactory.CreateSchoolsForFacetsTesting())
@@ -41,7 +41,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
                 dynamicSchool.Values["Id"] = Guid.NewGuid().ToString().ToLowerInvariant();
 
-                _elasticConnection.Client.Index((object)dynamicSchool, i => i.Index(IndexName.ToLower()).Type(IndexName.ToLower()));
+                _elasticConnection.Client.Index((object)dynamicSchool, i => i.Type(IndexName.ToLower()));
             }
 
             _elasticConnection.Refresh();
@@ -50,7 +50,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void CompleteAggregationBehavior()
         {
-            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName);
 
             var result = executor.ExecuteTermAggregation(new[] { "Name", "Principal.LastName" }, AggregationType.Avg, "Rating");
 
@@ -130,24 +130,24 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
 
             var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
 
-            if (!elasticTypeManager.TypeExists(aggrindex, aggrindex))
+            if (!elasticTypeManager.TypeExists(aggrindex))
             {
-                elasticTypeManager.CreateType(aggrindex, aggrindex);
+                elasticTypeManager.CreateType(aggrindex);
 
 				foreach (var school in SchoolsFactory.CreateRandomSchools(300000))
                 {
                     dynamic dynSchool = school.ToDynamic();
                     dynSchool.Id = Guid.NewGuid().ToString().ToLowerInvariant();
                     
-                    _elasticConnection.Client.Index((object)dynSchool, i => i.Index(aggrindex.ToLower()).Type(aggrindex.ToLower()));
+                    _elasticConnection.Client.Index((object)dynSchool, i => i.Type(aggrindex.ToLower()));
                 }
 
                 _elasticConnection.Refresh();
             }
 
             var factory = ElasticFactoryBuilder.GetElasticFactory();
-            var executor = factory.BuildAggregationProvider(aggrindex, aggrindex);
-            var queryWrapper = factory.BuildIndexQueryExecutor(aggrindex, aggrindex);
+            var executor = factory.BuildAggregationProvider(aggrindex);
+            var queryWrapper = factory.BuildIndexQueryExecutor(aggrindex);
 
             var r = executor.ExecuteTermAggregation(
                     new string[0],
@@ -255,7 +255,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void SumTest()
         {
-			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName, IndexName);
+			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName);
 
             var sum = target.ExecuteTermAggregation(new[] { "Street" }, AggregationType.Sum, "Rating");
 
@@ -266,7 +266,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void AvgTest()
         {
-			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName, IndexName);
+			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName);
             
             var avg = target.ExecuteTermAggregation(new[] { "Street" }, AggregationType.Avg, "Rating");
 
@@ -277,7 +277,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void CountTest()
         {
-			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName, IndexName);
+			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName);
 
             var count = target.ExecuteTermAggregation(new[] { "Street" }, AggregationType.Count, "");
 
@@ -288,7 +288,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void MaxTest()
         {
-			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName, IndexName);
+			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName);
 
             var max = target.ExecuteTermAggregation(new[] {  "Street"}, AggregationType.Max, "Rating");
 
@@ -299,7 +299,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void MinTest()
         {
-			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName, IndexName);
+			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName);
 
             var min = target.ExecuteTermAggregation(new[] { "Street" }, AggregationType.Min, "Rating");
 
@@ -310,7 +310,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void MutiDimTest()
         {
-			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName, IndexName);
+			var target = ElasticFactoryBuilder.GetElasticFactory().BuildAggregationProvider(IndexName);
 
 
             var result = target.ExecuteTermAggregation(
@@ -407,7 +407,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [TearDown]
         public void DeleteIndex()
         {
-            ElasticFactoryBuilder.ElasticTypeManager.Value.DeleteType(IndexName, IndexName);
+            ElasticFactoryBuilder.ElasticTypeManager.Value.DeleteType(IndexName);
         }
     }
 }

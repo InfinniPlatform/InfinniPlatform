@@ -51,12 +51,11 @@ namespace InfinniPlatform.ElasticSearch.IndexTypeVersions
         /// <summary>
         /// Задание схемы для документов, хранимых в индексе
         /// </summary>
-        public static void ApplyIndexTypeMapping(ElasticClient elasticClient, string indexName, string schemaversionname, IList<PropertyMapping> properties, SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
+        public static void ApplyIndexTypeMapping(ElasticClient elasticClient, string schemaversionname, IList<PropertyMapping> properties, SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
         {
             var propertiesDictionary = (properties != null) ? properties.ToDictionary<PropertyMapping, PropertyNameMarker, IElasticType>(property => property.Name, GetElasticType) : new Dictionary<PropertyNameMarker, IElasticType>();
 
-            elasticClient.Map<dynamic>(m => m.Index(indexName.ToLowerInvariant())
-                                             .Type(schemaversionname)
+            elasticClient.Map<dynamic>(m => m.Type(schemaversionname)
                                              .SearchAnalyzer("string_lowercase")
                                              .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant())
                                              .Properties(p => p.Object<dynamic>(od => od.Name("Values").Properties(ps => ps.AddProperties(propertiesDictionary)))));

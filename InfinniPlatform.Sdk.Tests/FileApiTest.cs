@@ -30,14 +30,14 @@ namespace InfinniPlatform.Sdk.Tests
                                LastName = "McDonald"
                            };
 
-            var profileId = _documentApiClient.SetDocument("Gameshop", "UserProfile", document).Id.ToString();
+            var profileId = _documentApiClient.SetDocument("UserProfile", document).Id.ToString();
 
             using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _documentApiClient.AttachFile("Gameshop", "UserProfile", profileId, "Avatar", fileStream);
+                _documentApiClient.AttachFile("UserProfile", profileId, "Avatar", fileStream);
             }
 
-            var documentSaved = _documentApiClient.GetDocumentById("Gameshop", "UserProfile", profileId);
+            var documentSaved = _documentApiClient.GetDocumentById("UserProfile", profileId);
 
             Stream result = _fileApiClient.DownloadFile(documentSaved.Avatar.Info.ContentId);
 
@@ -54,14 +54,14 @@ namespace InfinniPlatform.Sdk.Tests
                                LastName = "McDonald"
                            };
 
-            _documentApiClient.SetDocument("Gameshop", "UserProfile", document);
+            _documentApiClient.SetDocument("UserProfile", document);
 
             using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _documentApiClient.AttachFile("Gameshop", "UserProfile", document.Id, "Avatar", fileStream);
+                _documentApiClient.AttachFile("UserProfile", document.Id, "Avatar", fileStream);
             }
 
-            dynamic actualDocument = _documentApiClient.GetDocumentById("Gameshop", "UserProfile", document.Id);
+            dynamic actualDocument = _documentApiClient.GetDocumentById("UserProfile", document.Id);
 
             Assert.IsNotNull(actualDocument);
             Assert.IsNotNull(actualDocument.Avatar);

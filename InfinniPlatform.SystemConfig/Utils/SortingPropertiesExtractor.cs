@@ -28,11 +28,10 @@ namespace InfinniPlatform.SystemConfig.Utils
 
                         if (documentLink != null && documentLink.Inline == true)
                         {
-                            string configurationName = documentLink.ConfigId;
                             string documentName = documentLink.DocumentId;
 
                             // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка, чтобы получить сортировочные поля 
-                            dynamic inlineDocumentSchema = metadataApi.GetDocumentSchema(configurationName, documentName);
+                            dynamic inlineDocumentSchema = metadataApi.GetDocumentSchema(documentName);
 
                             if (inlineDocumentSchema != null)
                             {

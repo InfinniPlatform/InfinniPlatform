@@ -215,7 +215,7 @@
     <None Include=".metadata\TestConfiguration\Documents\RegisterTotals_RegisterTest_InfoRegister\RegisterTotals_RegisterTest_InfoRegister.json" />
     <None Include=".metadata\TestConfiguration\Documents\Register_RegisterTest_AvailableBedsRegister\Register_RegisterTest_AvailableBedsRegister.json" />
     <None Include=".metadata\TestConfiguration\Documents\Register_RegisterTest_InfoRegister\Register_RegisterTest_InfoRegister.json" />
-    <None Include=".metadata\TestConfiguration\Documents\TestConfiguration_Registers\TestConfiguration_Registers.json" />
+    <None Include=".metadata\TestConfiguration\Documents\InfinniPlatform_Registers\InfinniPlatform_Registers.json" />
     <None Include=".metadata\TestConfiguration\Documents\TestDocument\PrintViews\TestPrintView.json" />
     <None Include=".metadata\TestConfiguration\Documents\TestDocument\TestDocument.json" />
     <None Include=".metadata\TestConfiguration\Documents\TwoSortingFieldsDocument\TwoSortingFieldsDocument.json" />

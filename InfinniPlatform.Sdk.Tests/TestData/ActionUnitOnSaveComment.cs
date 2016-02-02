@@ -17,7 +17,7 @@ namespace InfinniPlatform.Sdk.Tests.TestData
         {
             target.Item.Text = target.Item.Text + "123";
 
-            _documentApi.SetDocument("gameshop", "review", new DynamicWrapper { ["Text"] = "test" });
+            _documentApi.SetDocument("review", new DynamicWrapper { ["Text"] = "test" });
         }
     }
 }

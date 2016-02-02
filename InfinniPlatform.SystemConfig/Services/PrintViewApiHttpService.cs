@@ -48,7 +48,6 @@ namespace InfinniPlatform.SystemConfig.Services
 
             if (form != null)
             {
-                string configuration = form.ConfigId;
                 string documentType = form.DocumentId;
                 string printViewName = form.PrintViewId;
                 string actionId = form.ActionId;
@@ -67,7 +66,7 @@ namespace InfinniPlatform.SystemConfig.Services
                 pageNumber = Math.Max(pageNumber, 0);
                 pageSize = Math.Min(pageSize, 1000);
 
-                var printViewSource = _documentApi.GetDocuments(configuration, documentType, filter, pageNumber, pageSize);
+                var printViewSource = _documentApi.GetDocuments(documentType, filter, pageNumber, pageSize);
 
                 if (!string.IsNullOrEmpty(actionId))
                 {
@@ -80,7 +79,7 @@ namespace InfinniPlatform.SystemConfig.Services
                     printViewSource = context.Result;
                 }
 
-                var printView = _printViewApi.Build(configuration, documentType, printViewName, printViewSource);
+                var printView = _printViewApi.Build(documentType, printViewName, printViewSource);
 
                 Task.FromResult<object>(new StreamHttpResponse(printView ?? new byte[] { }, HttpConstants.PdfContentType));
             }

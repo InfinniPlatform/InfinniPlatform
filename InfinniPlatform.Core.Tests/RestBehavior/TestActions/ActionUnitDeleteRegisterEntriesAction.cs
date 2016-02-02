@@ -17,8 +17,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
         public void Action(IActionContext target)
         {
             // После удаления документа, удаляем соответствующие записи в регистрах
-            _registryComponent.DeleteEntry(target.Configuration, RegisterApiAcceptanceTest.AvailableBedsRegister, target.Item);
-            _registryComponent.DeleteEntry(target.Configuration, RegisterApiAcceptanceTest.InfoRegister, target.Item);
+            _registryComponent.DeleteEntry(RegisterApiAcceptanceTest.AvailableBedsRegister, target.Item);
+            _registryComponent.DeleteEntry(RegisterApiAcceptanceTest.InfoRegister, target.Item);
         }
     }
 }

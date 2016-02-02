@@ -16,35 +16,31 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var elasticTypeManager = ElasticFactoryBuilder.ElasticTypeManager.Value;
 
-            elasticTypeManager.DeleteIndex("indexstatebehavior");
-            elasticTypeManager.DeleteIndex("indexstatebehavior1");
+            elasticTypeManager.DeleteIndex();
 
-            Assert.IsFalse(elasticTypeManager.TypeExists("indexstatebehavior", "TestPerson"));
+            Assert.IsFalse(elasticTypeManager.TypeExists("TestPerson"));
 
-            elasticTypeManager.DeleteType("indexstatebehavior", "TestPerson");
-            elasticTypeManager.CreateType("indexstatebehavior", "TestPerson");
+            elasticTypeManager.CreateType("TestPerson");
 
-            Assert.IsTrue(elasticTypeManager.TypeExists("indexstatebehavior", "TestPerson"));
+            Assert.IsTrue(elasticTypeManager.TypeExists("TestPerson"));
 
             //создаем новую версию типа
 
-            elasticTypeManager.CreateType("indexstatebehavior", "TestPerson");
+            elasticTypeManager.CreateType("TestPerson");
 
-            Assert.IsTrue(elasticTypeManager.TypeExists("indexstatebehavior", "TestPerson"));
-
-            //проверям, что в инедксе существуют 2 версии, со старым маппингом и с новым
-            var typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior", "testPerson").ToArray();
+            // проверяем, что в индексе существуют 2 версии, со старым маппингом и с новым
+            var typeMappings = elasticTypeManager.GetTypeMappings("TestPerson").ToArray();
 
             Assert.AreEqual(2, typeMappings.Length);
             Assert.True(typeMappings.Any(x => x.TypeName == "testperson_typeschema_0"));
             Assert.True(typeMappings.Any(x => x.TypeName == "testperson_typeschema_1"));
 
-            //проверяем создание другого типа в том же индексе
-            elasticTypeManager.CreateType("indexstatebehavior", "TestPerson1");
+            // проверяем создание другого типа в том же индексе
+            elasticTypeManager.CreateType("TestPerson1");
 
-            //проверям, что в индексе существуют 2 типа
-            typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior", "testPerson")
-                                             .Union(elasticTypeManager.GetTypeMappings("indexstatebehavior", "TestPerson1"))
+            // проверяем, что в индексе существуют 2 типа
+            typeMappings = elasticTypeManager.GetTypeMappings("TestPerson")
+                                             .Union(elasticTypeManager.GetTypeMappings("TestPerson1"))
                                              .ToArray();
 
             Assert.AreEqual(3, typeMappings.Length);
@@ -52,57 +48,30 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             Assert.True(typeMappings.Any(x => x.TypeName == "testperson_typeschema_0"));
             Assert.True(typeMappings.Any(x => x.TypeName == "testperson_typeschema_1"));
 
-            //проверяем удаление типа из индекса
-            elasticTypeManager.DeleteType("indexstatebehavior", "TestPerson");
-            //проверяем, что один из типов удалился
-            typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior", "testPerson").ToArray();
+            // проверяем удаление типа из индекса
+            elasticTypeManager.DeleteType("TestPerson");
+
+            // проверяем, что один из типов удалился
+            typeMappings = elasticTypeManager.GetTypeMappings("TestPerson").ToArray();
 
             Assert.AreEqual(0, typeMappings.Length);
 
-            //проверяем, что второй тип существует
-            typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior", "testPerson1").ToArray();
+            // проверяем, что второй тип существует
+            typeMappings = elasticTypeManager.GetTypeMappings("TestPerson1").ToArray();
 
             Assert.AreEqual(1, typeMappings.Length);
             Assert.True(typeMappings.GetMappingsBaseTypeNames().Contains("testperson1"));
             Assert.AreEqual("testperson1_typeschema_0", typeMappings.GetMappingsTypeNames().First());
 
-            //проверяем создание типа с таким же именем в другом индексе
-            elasticTypeManager.CreateType("indexstatebehavior1", "TestPerson1");
+            // проверяем удаление предыдущей версии маппинга при создании новой
+            elasticTypeManager.CreateType("testPerson1", deleteExistingVersion: true);
 
-            typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior1","testPerson1").ToArray();
-
-            Assert.AreEqual(1, typeMappings.Length);
-            Assert.AreEqual("testperson1", typeMappings.GetMappingsBaseTypeNames().First());
-            Assert.AreEqual("testperson1_typeschema_0", typeMappings.GetMappingsTypeNames().First());
-
-            //проверяем повторное создание того же типа
-            elasticTypeManager.CreateType("indexstatebehavior", "TestPerson");
-            typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior", "testPerson").ToArray();
-
-            Assert.AreEqual(1, typeMappings.Length);
-            //проверяем, что создалась версия именно с нулевым индексом
-            Assert.True(typeMappings.GetMappingsTypeNames().Contains("testperson_typeschema_0"));
-
-            //проверяем удаление индекса целиком
-            elasticTypeManager.DeleteIndex("indexstatebehavior");
-            typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior", "testPerson").ToArray();
-
-            Assert.AreEqual(0, typeMappings.Length);
-
-            //проверяем, что другой индекс не удалился
-            typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior1", "testPerson1").ToArray();
-
-            Assert.AreEqual(1, typeMappings.Length);
-
-            //проверяем удаление предыдущей версии маппинга при создании новой
-            elasticTypeManager.CreateType("indexstatebehavior1", "testPerson1", deleteExistingVersion: true);
-
-            typeMappings = elasticTypeManager.GetTypeMappings("indexstatebehavior1", "testPerson1").ToArray();
+            typeMappings = elasticTypeManager.GetTypeMappings("testPerson1").ToArray();
 
             Assert.AreEqual(1, typeMappings.Length);
             Assert.AreEqual("testperson1_typeschema_1", typeMappings.GetMappingsTypeNames().First());
 
-            elasticTypeManager.DeleteIndex("indexstatebehavior1");
+            elasticTypeManager.DeleteIndex();
         }
     }
 }

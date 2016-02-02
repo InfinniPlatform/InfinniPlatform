@@ -24,36 +24,36 @@ namespace InfinniPlatform.SystemConfig.Documents
         private readonly IScriptProcessor _scriptProcessor;
 
 
-        public DocumentExecutorResult SaveDocument(string configuration, string documentType, object documentInstance)
+        public DocumentExecutorResult SaveDocument(string documentType, object documentInstance)
         {
-            return ExecuteSaveDocuments(configuration, documentType, new[] { documentInstance });
+            return ExecuteSaveDocuments(documentType, new[] { documentInstance });
         }
 
-        public DocumentExecutorResult SaveDocuments(string configuration, string documentType, IEnumerable<object> documentInstances)
+        public DocumentExecutorResult SaveDocuments(string documentType, IEnumerable<object> documentInstances)
         {
-            return ExecuteSaveDocuments(configuration, documentType, documentInstances);
-        }
-
-
-        public DocumentExecutorResult DeleteDocument(string configuration, string documentType, object documentId)
-        {
-            return ExecuteDeleteDocuments(configuration, documentType, new[] { documentId });
-        }
-
-        public DocumentExecutorResult DeleteDocuments(string configuration, string documentType, IEnumerable<object> documentIds)
-        {
-            return ExecuteDeleteDocuments(configuration, documentType, documentIds);
+            return ExecuteSaveDocuments(documentType, documentInstances);
         }
 
 
-        private DocumentExecutorResult ExecuteSaveDocuments(string configuration, string documentType, IEnumerable<object> documentInstances)
+        public DocumentExecutorResult DeleteDocument(string documentType, object documentId)
+        {
+            return ExecuteDeleteDocuments(documentType, new[] { documentId });
+        }
+
+        public DocumentExecutorResult DeleteDocuments(string documentType, IEnumerable<object> documentIds)
+        {
+            return ExecuteDeleteDocuments(documentType, documentIds);
+        }
+
+
+        private DocumentExecutorResult ExecuteSaveDocuments(string documentType, IEnumerable<object> documentInstances)
         {
             var result = new DocumentExecutorResult { IsValid = true };
 
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
 
             // События документа
-            var documentEvents = _metadataComponent.GetDocumentEvents(configuration, documentType);
+            var documentEvents = _metadataComponent.GetDocumentEvents(documentType);
 
             // Скрипт, который выполняется для проверки возможности сохранения документа
             string onValidateAction = (documentEvents.ValidationPointError != null) ? documentEvents.ValidationPointError.ScenarioId : null;
@@ -73,7 +73,7 @@ namespace InfinniPlatform.SystemConfig.Documents
                 if (!string.IsNullOrEmpty(onValidateAction))
                 {
                     // Вызов прикладного скрипта для проверки документа
-                    ActionContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
+                    ActionContext actionContext = CreateActionContext(documentType, documentInstance);
                     _scriptProcessor.InvokeScript(onValidateAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
@@ -87,7 +87,7 @@ namespace InfinniPlatform.SystemConfig.Documents
                 if (!string.IsNullOrEmpty(onSuccessAction))
                 {
                     // Вызов скрипта для пост-обработки документа перед его сохранением
-                    ActionContext actionContext = CreateActionContext(configuration, documentType, documentInstance);
+                    ActionContext actionContext = CreateActionContext(documentType, documentInstance);
                     _scriptProcessor.InvokeScript(onSuccessAction, actionContext);
 
                     // Предполагается, что скрипт может заменить оригинальный документ
@@ -100,20 +100,20 @@ namespace InfinniPlatform.SystemConfig.Documents
                 }
 
                 // Регистрация сохранения в транзакции
-                transactionScope.SaveDocument(configuration, documentType, documentInstance.Id, documentToSave);
+                transactionScope.SaveDocument(documentType, documentInstance.Id, documentToSave);
             }
 
             return result;
         }
 
-        private DocumentExecutorResult ExecuteDeleteDocuments(string configuration, string documentType, IEnumerable<object> documentIds)
+        private DocumentExecutorResult ExecuteDeleteDocuments(string documentType, IEnumerable<object> documentIds)
         {
             var result = new DocumentExecutorResult { IsValid = true };
 
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
 
             // События документа
-            var documentEvents = _metadataComponent.GetDocumentEvents(configuration, documentType);
+            var documentEvents = _metadataComponent.GetDocumentEvents(documentType);
 
             // Скрипт, который выполняется для проверки возможности удаления документа
             string onValidateAction = (documentEvents.DeletingDocumentValidationPoint != null) ? documentEvents.DeletingDocumentValidationPoint.ScenarioId : null;
@@ -126,7 +126,7 @@ namespace InfinniPlatform.SystemConfig.Documents
                 if (!string.IsNullOrEmpty(onValidateAction))
                 {
                     // Вызов прикладного скрипта для проверки документа
-                    ActionContext actionContext = CreateActionContext(configuration, documentType, documentId);
+                    ActionContext actionContext = CreateActionContext(documentType, documentId);
                     _scriptProcessor.InvokeScript(onValidateAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
@@ -136,12 +136,12 @@ namespace InfinniPlatform.SystemConfig.Documents
                 }
 
                 // Регистрация удаления в транзакции
-                transactionScope.DeleteDocument(configuration, documentType, documentId);
+                transactionScope.DeleteDocument(documentType, documentId);
 
                 if (!string.IsNullOrEmpty(onSuccessAction))
                 {
                     // Вызов скрипта для пост-обработки документа перед его сохранением
-                    ActionContext actionContext = CreateActionContext(configuration, documentType, documentId);
+                    ActionContext actionContext = CreateActionContext(documentType, documentId);
                     _scriptProcessor.InvokeScript(onSuccessAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
@@ -155,11 +155,10 @@ namespace InfinniPlatform.SystemConfig.Documents
         }
 
 
-        private static ActionContext CreateActionContext(string configuration, string documentType, object actionItem)
+        private static ActionContext CreateActionContext(string documentType, object actionItem)
         {
             var actionContext = new ActionContext
                                 {
-                                    Configuration = configuration,
                                     DocumentType = documentType,
                                     Item = actionItem
                                 };

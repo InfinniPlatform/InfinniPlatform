@@ -16,9 +16,9 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
     {
-        public PackageJsonConfigurationsInitializer(ConfigurationMetadataProvider configurationMetadataProvider, IAppConfiguration appConfiguration, ILog log)
+        public PackageJsonConfigurationsInitializer(MetadataApi metadataApi, IAppConfiguration appConfiguration, ILog log)
         {
-            _configurationMetadataProvider = configurationMetadataProvider;
+            _metadataApi = metadataApi;
             _log = log;
 
             dynamic metadataSection = appConfiguration.GetSection("metadata");
@@ -39,7 +39,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         }
 
 
-        private readonly ConfigurationMetadataProvider _configurationMetadataProvider;
+        private readonly MetadataApi _metadataApi;
         private readonly ILog _log;
 
         private readonly string _contentDirectory;
@@ -57,9 +57,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             // Загрузка и кэширование метаданных каждой конфигурации
             foreach (dynamic configuration in configurations)
             {
-                string configurationId = configuration.Name;
-
-                InstallConfiguration(configuration, configurationId);
+                InstallConfiguration(configuration);
             }
         }
 
@@ -76,9 +74,9 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
                     var updatedConfigurations = LoadConfigsMetadata();
 
-                    foreach (dynamic configuration in updatedConfigurations)
+                    foreach (var configuration in updatedConfigurations)
                     {
-                        InstallConfiguration(configuration, configuration.Name);
+                        InstallConfiguration(configuration);
                     }
 
 #if DEBUG
@@ -92,23 +90,14 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             }
         }
 
-        private void InstallConfiguration(object configuration, string configId)
-        {
-            var configurationMetadata = new ConfigurationMetadata(configId);
-
-            LoadConfigurationMetadata(configurationMetadata, configuration);
-
-            _configurationMetadataProvider.AddConfiguration(configurationMetadata);
-        }
-
-        private static void LoadConfigurationMetadata(ConfigurationMetadata metadataConfiguration, dynamic configuration)
+        private void InstallConfiguration(dynamic configuration)
         {
             IEnumerable<dynamic> menuList = configuration.Menu;
             IEnumerable<dynamic> registerList = configuration.Registers;
             IEnumerable<dynamic> documentList = configuration.Documents;
 
-            metadataConfiguration.AddMenu(menuList);
-            metadataConfiguration.AddRegisters(registerList);
+            _metadataApi.AddMenu(menuList);
+            _metadataApi.AddRegisters(registerList);
 
             foreach (var document in documentList)
             {
@@ -130,15 +119,15 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 }
             }
 
-            metadataConfiguration.AddDocuments(documentList);
+            _metadataApi.AddDocuments(documentList);
 
             foreach (var document in documentList)
             {
                 string documentName = document.Name;
 
-                metadataConfiguration.AddActions(documentName, document.Scenarios);
-                metadataConfiguration.AddViews(documentName, document.Views);
-                metadataConfiguration.AddPrintViews(documentName, document.PrintViews);
+                _metadataApi.AddActions(documentName, document.Scenarios);
+                _metadataApi.AddViews(documentName, document.Views);
+                _metadataApi.AddPrintViews(documentName, document.PrintViews);
             }
         }
 
@@ -162,31 +151,28 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             dynamic configuration = LoadItemMetadata(configFile);
 
-            object configId = configuration.Name;
-
-            configuration.Version = null;
-            configuration.Menu = LoadItemsMetadata(configDirectory, "Menu", configId);
-            configuration.Registers = LoadItemsMetadata(configDirectory, "Registers", configId);
-            configuration.Documents = LoadDocumentsMetadata(configDirectory, configId);
+            configuration.Menu = LoadItemsMetadata(configDirectory, "Menu");
+            configuration.Registers = LoadItemsMetadata(configDirectory, "Registers");
+            configuration.Documents = LoadDocumentsMetadata(configDirectory);
 
             return configuration;
         }
 
-        private static IEnumerable<object> LoadDocumentsMetadata(string configDirectory, object configId)
+        private static IEnumerable<object> LoadDocumentsMetadata(string configDirectory)
         {
             var documentsDirectory = Path.Combine(configDirectory, "Documents");
 
             if (Directory.Exists(documentsDirectory))
             {
                 return Directory.EnumerateDirectories(documentsDirectory)
-                                .Select(d => LoadDocumentMetadata(d, configId))
+                                .Select(d => LoadDocumentMetadata(d))
                                 .ToArray();
             }
 
             return Enumerable.Empty<object>();
         }
 
-        private static object LoadDocumentMetadata(string documentDirectory, object configId)
+        private static object LoadDocumentMetadata(string documentDirectory)
         {
             var documentFile = Directory.EnumerateFiles(documentDirectory, "*.json").FirstOrDefault();
 
@@ -194,16 +180,15 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             object documentId = document.Name;
 
-            document.ConfigId = configId;
-            document.Processes = LoadItemsMetadata(documentDirectory, "Processes", configId, documentId);
-            document.Scenarios = LoadItemsMetadata(documentDirectory, "Scenarios", configId, documentId);
-            document.Views = LoadItemsMetadata(documentDirectory, "Views", configId, documentId);
-            document.PrintViews = LoadItemsMetadata(documentDirectory, "PrintViews", configId, documentId);
+            document.Processes = LoadItemsMetadata(documentDirectory, "Processes", documentId);
+            document.Scenarios = LoadItemsMetadata(documentDirectory, "Scenarios", documentId);
+            document.Views = LoadItemsMetadata(documentDirectory, "Views", documentId);
+            document.PrintViews = LoadItemsMetadata(documentDirectory, "PrintViews", documentId);
 
             return document;
         }
 
-        private static IEnumerable<object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object configId, object documentId = null)
+        private static IEnumerable<object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object documentId = null)
         {
             var itemsDirectory = Path.Combine(documentDirectory, itemsContainer);
 
@@ -215,7 +200,6 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
                 foreach (dynamic item in itemsMetadata)
                 {
-                    item.ConfigId = configId;
                     item.DocumentId = documentId;
                 }
 

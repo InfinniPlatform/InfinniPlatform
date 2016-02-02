@@ -19,7 +19,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
     [Category(TestCategories.AcceptanceTest)]
     public sealed class RegisterApiAcceptanceTest
     {
-        public const string ConfigurationId = "TestConfiguration";
+        public const string ConfigurationId = "InfinniPlatform";
 
         public const string PatientMovementDocument = "RegisterTest_PatientMovementDocument";
         public const string BedsRegistrationDocument = "RegisterTest_BedsRegistrationDocument";
@@ -63,8 +63,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             // Регистрация документов регистров
 
-            _documentApi.SetDocuments(ConfigurationId, ConfigurationRegistersCommonInfo, new[] { new { Id = InfoRegister } });
-            _documentApi.SetDocuments(ConfigurationId, ConfigurationRegistersCommonInfo, new[] { new { Id = AvailableBedsRegister } });
+            _documentApi.SetDocuments(ConfigurationRegistersCommonInfo, new[] { new { Id = InfoRegister } });
+            _documentApi.SetDocuments(ConfigurationRegistersCommonInfo, new[] { new { Id = AvailableBedsRegister } });
 
             // Регистрация коек
 
@@ -99,30 +99,30 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         {
             var documentId = Guid.NewGuid().ToString();
 
-            _documentApi.SetDocument(ConfigurationId, BedsRegistrationDocument, new
-            {
-                Id = documentId,
-                Room = room,
-                Bed = bed,
-                Date = date,
-                Info = info
-            });
+            _documentApi.SetDocument(BedsRegistrationDocument, new
+                                                               {
+                                                                   Id = documentId,
+                                                                   Room = room,
+                                                                   Bed = bed,
+                                                                   Date = date,
+                                                                   Info = info
+                                                               });
         }
 
         private string AddPatientMovement(DateTime date, string patient, string oldRoom, string oldBed, string newRoom, string newBed)
         {
             var documentId = Guid.NewGuid().ToString();
 
-            _documentApi.SetDocument(ConfigurationId, PatientMovementDocument, new
-            {
-                Id = documentId,
-                PatientName = patient,
-                OldRoom = oldRoom,
-                OldBed = oldBed,
-                NewRoom = newRoom,
-                NewBed = newBed,
-                Date = date
-            });
+            _documentApi.SetDocument(PatientMovementDocument, new
+                                                              {
+                                                                  Id = documentId,
+                                                                  PatientName = patient,
+                                                                  OldRoom = oldRoom,
+                                                                  OldBed = oldBed,
+                                                                  NewRoom = newRoom,
+                                                                  NewBed = newBed,
+                                                                  Date = date
+                                                              });
 
             return documentId;
         }
@@ -145,7 +145,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             AddBed(new DateTime(2114, 02, 04, 3, 2, 1), "Палата 1", "Койка 3", infoProperty);
             AddBed(new DateTime(2114, 03, 01, 3, 2, 1), "Палата 1", "Койка 6", infoProperty);
 
-            var registerEntries = _documentApi.GetDocument(ConfigurationId, infoRegisterDocument, f => f.AddCriteria(c => c.Property("Info").IsEquals(infoProperty)), 0, 10);
+            var registerEntries = _documentApi.GetDocument(infoRegisterDocument, f => f.AddCriteria(c => c.Property("Info").IsEquals(infoProperty)), 0, 10);
 
             // Then
 
@@ -161,23 +161,23 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             // When & Then
 
             // 01.02.2014 - Все койки свободны, ни одного пациента еще не было
-            IEnumerable<dynamic> aggregationInfo1 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), dimensionsProperties: new[] { "Room", "Bed" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo1 = _registerApi.GetValuesByDate(AvailableBedsRegister, new DateTime(2014, 2, 1), dimensionsProperties: new[] { "Room", "Bed" }).ToArray();
             Assert.AreEqual(1d, aggregationInfo1.First(i => i.Room == "палата 54" && i.Bed == "койка 3").Value);
             Assert.AreEqual(1d, aggregationInfo1.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
 
             // 12.08.2014 - Свободные койки по палатам: "Палата 33" - 2 пациента, "Палата 54" - свободна
-            IEnumerable<dynamic> aggregationInfo2 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Room" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo2 = _registerApi.GetValuesByDate(AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Room" }).ToArray();
             Assert.AreEqual(3d, aggregationInfo2.First(i => i.Room == "палата 54").Value);
             Assert.AreEqual(1d, aggregationInfo2.First(i => i.Room == "палата 33").Value);
 
             // 12.08.2014 - Свободные койки по номерам
-            IEnumerable<dynamic> aggregationInfo3 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Bed" }, valueProperties: new[] { "Value" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo3 = _registerApi.GetValuesByDate(AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Bed" }, valueProperties: new[] { "Value" }).ToArray();
             Assert.AreEqual(2d, aggregationInfo3.First(i => i.Bed == "койка 1").Value);
             Assert.AreEqual(1d, aggregationInfo3.First(i => i.Bed == "койка 2").Value);
             Assert.AreEqual(1d, aggregationInfo3.First(i => i.Bed == "койка 3").Value);
 
             // 12-14.08.2014 - Изменение занятости коек за период - освободилась "Койка 1" в "Палата 33"
-            IEnumerable<dynamic> aggregationInfo4 = _registerApi.GetValuesBetweenDates(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), new DateTime(2014, 08, 14));
+            IEnumerable<dynamic> aggregationInfo4 = _registerApi.GetValuesBetweenDates(AvailableBedsRegister, new DateTime(2014, 08, 12), new DateTime(2014, 08, 14));
             Assert.AreEqual(1, aggregationInfo4.First(a => a.Room == "палата 33" && a.Bed == "койка 1").Value);
 
             // Получение информации по типу регистратора - были добавлены все койки
@@ -186,12 +186,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             //Assert.AreEqual(1d, aggregationInfo5.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
 
             // 18.08.2014 - "Палата 54" свободна, в "Палата 33" занято 2 койки
-            IEnumerable<dynamic> aggregationInfo6 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 8, 18)).ToArray();
+            IEnumerable<dynamic> aggregationInfo6 = _registerApi.GetValuesByDate(AvailableBedsRegister, new DateTime(2014, 8, 18)).ToArray();
             Assert.AreEqual(1d, aggregationInfo6.First(a => a.Room == "палата 54" && a.Bed == "койка 3").Value);
             Assert.AreEqual(0d, aggregationInfo6.First(a => a.Room == "палата 33" && a.Bed == "койка 3").Value);
 
             // 01.10.2014 - Все койки свободны
-            IEnumerable<dynamic> aggregationInfo7 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 10, 1)).ToArray();
+            IEnumerable<dynamic> aggregationInfo7 = _registerApi.GetValuesByDate(AvailableBedsRegister, new DateTime(2014, 10, 1)).ToArray();
             Assert.AreEqual(1d, aggregationInfo7.First(i => i.Room == "палата 54" && i.Bed == "койка 3").Value);
             Assert.AreEqual(1d, aggregationInfo7.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
 
@@ -216,7 +216,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             // When & Then
 
             // 01.02.2014 - Все койки свободны, ни одного пациента еще не было
-            IEnumerable<dynamic> aggregationInfo1 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 2, 1), dimensionsProperties: new[] { "Room", "Bed" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo1 = _registerApi.GetValuesByDate(AvailableBedsRegister, new DateTime(2014, 2, 1), dimensionsProperties: new[] { "Room", "Bed" }).ToArray();
             Assert.AreEqual(1d, aggregationInfo1.First(i => i.Room == "палата 54" && i.Bed == "койка 3").Value);
             Assert.AreEqual(1d, aggregationInfo1.First(i => i.Room == "палата 33" && i.Bed == "койка 3").Value);
 
@@ -225,7 +225,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             AddPatientMovement(new DateTime(2014, 08, 10), "Иванов", "", "", "Палата 6", "Койка 1");
 
             // 12.08.2014 - Занята только первая койка в "Палата 6"
-            IEnumerable<dynamic> aggregationInfo2 = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Room" }).ToArray();
+            IEnumerable<dynamic> aggregationInfo2 = _registerApi.GetValuesByDate(AvailableBedsRegister, new DateTime(2014, 08, 12), dimensionsProperties: new[] { "Room" }).ToArray();
             Assert.AreEqual(2, aggregationInfo2.First(i => i.Room == "палата 6").Value);
         }
 
@@ -235,14 +235,14 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             // When
 
             // Миграция поместит имеющиеся на данный момент записи в таблицу итогов
-            _registerApi.RecalculateTotals(ConfigurationId);
+            _registerApi.RecalculateTotals();
 
             AddPatientMovement(DateTime.Now.AddYears(2), "Иванов", "Палата 33", "Койка 3", "", "");
             AddPatientMovement(DateTime.Now.AddYears(2), "Петров", "Палата 33", "Койка 2", "", "");
             AddPatientMovement(DateTime.Now.AddYears(2), "Сидоров", "Палата 33", "Койка 1", "", "");
 
             // В данном случае расчет будет произведен с учетом данных из таблицы итогов
-            IEnumerable<dynamic> aggregationInfo = _registerApi.GetValuesByDate(ConfigurationId, AvailableBedsRegister, DateTime.Now.AddYears(3)).ToArray();
+            IEnumerable<dynamic> aggregationInfo = _registerApi.GetValuesByDate(AvailableBedsRegister, DateTime.Now.AddYears(3)).ToArray();
 
             // Then
 
@@ -263,12 +263,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             var documentId = AddPatientMovement(date, "Иванов", "", "", "Палата 123", "Койка 321");
 
-            var registerEntries1 = _registerApi.GetEntries(ConfigurationId, AvailableBedsRegister,
+            var registerEntries1 = _registerApi.GetEntries(AvailableBedsRegister,
                 new[] { new FilterCriteria(RegisterConstants.DocumentDateProperty, date, CriteriaType.IsMoreThanOrEquals) }, 0, 10);
 
-            _documentApi.DeleteDocument(ConfigurationId, BedsRegistrationDocument, documentId);
+            _documentApi.DeleteDocument(BedsRegistrationDocument, documentId);
 
-            var registerEntries2 = _registerApi.GetEntries(ConfigurationId, AvailableBedsRegister,
+            var registerEntries2 = _registerApi.GetEntries(AvailableBedsRegister,
                 new[] { new FilterCriteria(RegisterConstants.DocumentDateProperty, date, CriteriaType.IsMoreThanOrEquals) }, 0, 10);
 
             // Then

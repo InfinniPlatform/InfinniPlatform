@@ -14,7 +14,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class SaaSBehavior
     {
-        private const string ConfigurationId = "TestConfiguration";
         private const string DocumentType = "TestDocument";
 
         private IDisposable _server;
@@ -57,7 +56,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
                                     }
             };
 
-            documentApi.SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, user);
+            documentApi.SetDocument(AuthorizationStorageExtensions.UserStore, user);
         }
 
         [Test]
@@ -83,21 +82,21 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // When
 
             signInApi.SignInInternal(userName1, userName1);
-            documentApi.SetDocument(ConfigurationId, DocumentType, documentUser1);
+            documentApi.SetDocument(DocumentType, documentUser1);
             signInApi.SignOut();
 
             signInApi.SignInInternal(userName2, userName2);
-            documentApi.SetDocument(ConfigurationId, DocumentType, documentUser2);
+            documentApi.SetDocument(DocumentType, documentUser2);
             signInApi.SignOut();
 
             signInApi.SignInInternal(userName1, userName1);
-            var allowedDocumentsForUser1 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName1)), 0, 10);
-            var notAllowedDocumentsForUser1 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName2)), 0, 10);
+            var allowedDocumentsForUser1 = documentApi.GetDocument(DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName1)), 0, 10);
+            var notAllowedDocumentsForUser1 = documentApi.GetDocument(DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName2)), 0, 10);
             signInApi.SignOut();
 
             signInApi.SignInInternal(userName2, userName2);
-            var allowedDocumentsForUser2 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName2)), 0, 10);
-            var notAllowedDocumentsForUser2 = documentApi.GetDocument(ConfigurationId, DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName1)), 0, 10);
+            var allowedDocumentsForUser2 = documentApi.GetDocument(DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName2)), 0, 10);
+            var notAllowedDocumentsForUser2 = documentApi.GetDocument(DocumentType, s => s.AddCriteria(c => c.Property("TestProperty").IsEquals(userName1)), 0, 10);
             signInApi.SignOut();
 
             // Then

@@ -9,28 +9,26 @@
         /// Конструктор.
         /// </summary>
         /// <param name="action">Тип команды над документом.</param>
-        /// <param name="configuration">Имя конфигурации.</param>
         /// <param name="documentType">Тип документа.</param>
         /// <param name="documentId">Идентификатор документа.</param>
         /// <param name="document">Экземпляр документа.</param>
-        private DocumentTransactionCommand(DocumentTransactionAction action, string configuration, string documentType, object documentId, object document)
+        private DocumentTransactionCommand(DocumentTransactionAction action, string documentType, object documentId, object document)
         {
             Action = action;
-            Configuration = configuration;
             DocumentType = documentType;
             DocumentId = documentId;
             Document = document;
         }
 
 
-        public static DocumentTransactionCommand SaveCommand(string configuration, string documentType, object documentId, object document)
+        public static DocumentTransactionCommand SaveCommand(string documentType, object documentId, object document)
         {
-            return new DocumentTransactionCommand(DocumentTransactionAction.Save, configuration, documentType, documentId, document);
+            return new DocumentTransactionCommand(DocumentTransactionAction.Save, documentType, documentId, document);
         }
 
-        public static DocumentTransactionCommand DeleteCommand(string configuration, string documentType, object documentId)
+        public static DocumentTransactionCommand DeleteCommand(string documentType, object documentId)
         {
-            return new DocumentTransactionCommand(DocumentTransactionAction.Delete, configuration, documentType, documentId, null);
+            return new DocumentTransactionCommand(DocumentTransactionAction.Delete, documentType, documentId, null);
         }
 
 
@@ -38,11 +36,6 @@
         /// Тип команды над документом.
         /// </summary>
         public readonly DocumentTransactionAction Action;
-
-        /// <summary>
-        /// Имя конфигурации.
-        /// </summary>
-        public readonly string Configuration;
 
         /// <summary>
         /// Тип документа.

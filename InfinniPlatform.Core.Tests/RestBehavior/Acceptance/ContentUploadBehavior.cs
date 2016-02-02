@@ -17,7 +17,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class ContentUploadBehavior
     {
-        private const string ConfigId = "TestConfiguration";
         private const string DocumentId = "ContentUploadDocument";
 
         private IDisposable _server;
@@ -55,16 +54,16 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When & Then
 
-            var saveResult = documentApi.SetDocument(ConfigId, DocumentId, testDocument);
+            var saveResult = documentApi.SetDocument(DocumentId, testDocument);
             Assert.AreNotEqual(saveResult.IsValid, false);
 
             // When & Then
 
-            documentApi.AttachFile(ConfigId, DocumentId, testDocument.Id, "ContentField", contentStream);
+            documentApi.AttachFile(DocumentId, testDocument.Id, "ContentField", contentStream);
 
             // When & Then
 
-            var storedDocument = documentApi.GetDocument(ConfigId, DocumentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
+            var storedDocument = documentApi.GetDocument(DocumentId, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(testDocument.Id)), 0, 1).FirstOrDefault();
             Assert.IsNotNull(storedDocument);
             Assert.IsNotNull(storedDocument.ContentField);
             Assert.IsNotNull(storedDocument.ContentField.Info);

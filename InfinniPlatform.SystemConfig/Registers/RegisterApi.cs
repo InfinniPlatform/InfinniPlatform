@@ -13,6 +13,7 @@ using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Registers;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.SystemConfig.Registers
 {
@@ -23,35 +24,26 @@ namespace InfinniPlatform.SystemConfig.Registers
     {
         // TODO: Нужен глубокий рефакторинг и тестирование.
 
-        public RegisterApi(IDocumentApi documentApi, IIndexFactory indexFactory, IMetadataApi metadataApi)
+        public RegisterApi(IAppEnvironment appEnvironment, IDocumentApi documentApi, IMetadataApi metadataApi, IIndexFactory indexFactory)
         {
+            _appEnvironment = appEnvironment;
             _documentApi = documentApi;
-            _indexFactory = indexFactory;
             _metadataApi = metadataApi;
+            _indexFactory = indexFactory;
             _filterFactory = FilterBuilderFactory.GetInstance();
         }
 
+        private readonly IAppEnvironment _appEnvironment;
         private readonly IDocumentApi _documentApi;
-        private readonly INestFilterBuilder _filterFactory;
-        private readonly IIndexFactory _indexFactory;
         private readonly IMetadataApi _metadataApi;
+        private readonly IIndexFactory _indexFactory;
+        private readonly INestFilterBuilder _filterFactory;
 
         /// <summary>
         /// Создает (но не сохраняет) запись регистра.
         /// </summary>
-        public dynamic CreateEntry(
-            string configuration,
-            string registerName,
-            string documentId,
-            DateTime? documentDate,
-            dynamic document,
-            bool isInfoRegister)
+        public dynamic CreateEntry(string registerName, string documentId, DateTime? documentDate, dynamic document, bool isInfoRegister)
         {
-            if (string.IsNullOrEmpty(configuration))
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
             if (string.IsNullOrEmpty(registerName))
             {
                 throw new ArgumentNullException(nameof(registerName));
@@ -80,7 +72,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             if (documentDate == null)
             {
                 // Дата документа явно не задана, используем дату из содержимого переданного документа
-                dynamic documentEvents = _metadataApi.GetDocumentEvents(configuration, documentId);
+                dynamic documentEvents = _metadataApi.GetDocumentEvents(documentId);
                 string dateFieldName = (documentEvents.RegisterPoint != null) ? documentEvents.RegisterPoint.DocumentDateProperty : null;
 
                 if (!string.IsNullOrEmpty(dateFieldName))
@@ -89,7 +81,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 }
             }
 
-            var registerMetadata = _metadataApi.GetRegister(configuration, registerName);
+            var registerMetadata = _metadataApi.GetRegister(registerName);
 
             // Признак того, что необходимо создать запись для регистра сведений
             if (isInfoRegister && registerMetadata != null)
@@ -105,16 +97,8 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Выполняет проведение данных документа в регистр.
         /// </summary>
-        public void PostEntries(
-            string configuration,
-            string registerName,
-            IEnumerable<dynamic> registerEntries)
+        public void PostEntries(string registerName, IEnumerable<object> registerEntries)
         {
-            if (string.IsNullOrEmpty(configuration))
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
             if (string.IsNullOrEmpty(registerName))
             {
                 throw new ArgumentNullException(nameof(registerName));
@@ -125,7 +109,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 throw new ArgumentNullException(nameof(registerEntries));
             }
 
-            var registerObject = _metadataApi.GetRegister(configuration, registerName);
+            var registerObject = _metadataApi.GetRegister(registerName);
 
             if (registerObject == null)
             {
@@ -142,7 +126,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 }
             }
 
-            foreach (var registerEntry in registerEntries)
+            foreach (dynamic registerEntry in registerEntries)
             {
                 // Id генерируется по следующему алгоритму:
                 // формируется уникальный ключ записи по всем полям-измерениям и по полю даты,
@@ -170,18 +154,13 @@ namespace InfinniPlatform.SystemConfig.Registers
                 }
             }
 
-            _documentApi.SetDocuments(configuration, RegisterConstants.RegisterNamePrefix + registerName, registerEntries);
+            _documentApi.SetDocuments(RegisterConstants.RegisterNamePrefix + registerName, registerEntries);
         }
 
         /// <summary>
         /// Выполняет перепроведение документов до указанной даты.
         /// </summary>
-        public void RecarryingEntries(
-            string configuration,
-            string registerName,
-            DateTime aggregationDate,
-            bool deteleExistingRegisterEntries = true
-            )
+        public void RecarryingEntries(string registerName, DateTime aggregationDate, bool deteleExistingRegisterEntries = true)
         {
             // TODO: Механизм перепроведения нуждается в переработке!
 
@@ -197,9 +176,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 // Получаем записи из регистра постранично
                 Action<FilterBuilder> filter = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(aggregationDate));
 
-                var registerEntries = _documentApi.GetDocument(
-                    configuration,
-                    RegisterConstants.RegisterNamePrefix + registerName,
+                var registerEntries = _documentApi.GetDocument(RegisterConstants.RegisterNamePrefix + registerName,
                     filter,
                     pageNumber++, 1000).ToArray();
 
@@ -219,12 +196,12 @@ namespace InfinniPlatform.SystemConfig.Registers
                     string registrarId = registerEntry.Registrar;
                     string registrarType = registerEntry.RegistrarType;
 
-                    var documentRegistrar = _documentApi.GetDocumentById(configuration, registrarType, registrarId);
+                    var documentRegistrar = _documentApi.GetDocumentById(registrarType, registrarId);
 
                     if (deteleExistingRegisterEntries)
                     {
                         // Удаляем запись из регистра
-                        _documentApi.DeleteDocument(configuration, RegisterConstants.RegisterNamePrefix + registerName, registerEntry.Id);
+                        _documentApi.DeleteDocument(RegisterConstants.RegisterNamePrefix + registerName, registerEntry.Id);
                     }
 
                     if (documentRegistrar != null && !recarriedDocuments.Contains(registrarId))
@@ -237,34 +214,31 @@ namespace InfinniPlatform.SystemConfig.Registers
                 foreach (var document in documentsToRecarry)
                 {
                     // Перепроводка документа
-                    _documentApi.SetDocument(configuration, document.Item1, document.Item2);
+                    _documentApi.SetDocument(document.Item1, document.Item2);
                 }
             }
 
             // Удаляем значения из таблицы итогов
             Action<FilterBuilder> action = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(aggregationDate));
 
-            var registerTotalEntries = _documentApi.GetDocument(
-                configuration,
-                RegisterConstants.RegisterTotalNamePrefix + registerName,
+            var registerTotalEntries = _documentApi.GetDocument(RegisterConstants.RegisterTotalNamePrefix + registerName,
                 action,
                 0, 1000);
 
             foreach (var registerEntry in registerTotalEntries)
             {
-                _documentApi.DeleteDocument(configuration, RegisterConstants.RegisterTotalNamePrefix + registerName, registerEntry.Id);
+                _documentApi.DeleteDocument(RegisterConstants.RegisterTotalNamePrefix + registerName, registerEntry.Id);
             }
         }
 
         /// <summary>
         /// Рассчитывает итоги для регистров накопления на текущую дату.
         /// </summary>
-        public void RecalculateTotals(
-            string configuration)
+        public void RecalculateTotals()
         {
-            var registerName = configuration + RegisterConstants.RegistersCommonInfo;
+            var registerName = _appEnvironment.Name + RegisterConstants.RegistersCommonInfo;
 
-            var registersInfo = _documentApi.GetDocument(configuration, registerName, null, 0, 1000);
+            var registersInfo = _documentApi.GetDocument(registerName, null, 0, 1000);
 
             var tempDate = DateTime.Now;
 
@@ -280,14 +254,14 @@ namespace InfinniPlatform.SystemConfig.Registers
             {
                 dynamic registerId = registerInfo.Id;
 
-                var aggregatedData = GetValuesByDate(configuration, registerId, calculationDate);
+                var aggregatedData = GetValuesByDate(registerId, calculationDate);
 
                 foreach (var item in aggregatedData)
                 {
                     item.Id = Guid.NewGuid().ToString();
                     item[RegisterConstants.DocumentDateProperty] = calculationDate;
 
-                    _documentApi.SetDocument(configuration, RegisterConstants.RegisterTotalNamePrefix + registerId, item);
+                    _documentApi.SetDocument(RegisterConstants.RegisterTotalNamePrefix + registerId, item);
                 }
             }
         }
@@ -295,16 +269,8 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Удаляет запись регистра.
         /// </summary>
-        public void DeleteEntry(
-            string configuration,
-            string registerName,
-            string registar)
+        public void DeleteEntry(string registerName, string registar)
         {
-            if (string.IsNullOrEmpty(configuration))
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
             if (string.IsNullOrEmpty(registerName))
             {
                 throw new ArgumentNullException(nameof(registerName));
@@ -316,18 +282,16 @@ namespace InfinniPlatform.SystemConfig.Registers
             }
 
             // Находим все записи в регистре, соответствующие регистратору
-            var registerEntries = GetEntries(
-                configuration,
-                registerName,
+            var registerEntries = GetEntries(registerName,
                 new[] { new FilterCriteria(RegisterConstants.RegistrarProperty, registar, CriteriaType.IsEquals) },
                 0,
                 1000);
 
             var earliestDocumentDate = DateTime.MaxValue;
 
-            foreach (var registerEntry in registerEntries)
+            foreach (dynamic registerEntry in registerEntries)
             {
-                _documentApi.DeleteDocument(configuration, RegisterConstants.RegisterNamePrefix + registerName, registerEntry.Id);
+                _documentApi.DeleteDocument(RegisterConstants.RegisterNamePrefix + registerName, registerEntry.Id);
 
                 var documentDate = registerEntry[RegisterConstants.DocumentDateProperty];
 
@@ -338,32 +302,23 @@ namespace InfinniPlatform.SystemConfig.Registers
             }
 
             // Необходимо удалить все записи регистра после earliestDocumentDate
-            var notActualRegisterEntries = GetEntries(
-                configuration,
-                registerName,
+            var notActualRegisterEntries = GetEntries(registerName,
                 new[] { new FilterCriteria(RegisterConstants.DocumentDateProperty, earliestDocumentDate, CriteriaType.IsMoreThanOrEquals) },
                 0,
                 1000);
 
-            foreach (var registerEntry in notActualRegisterEntries)
+            foreach (dynamic registerEntry in notActualRegisterEntries)
             {
-                _documentApi.DeleteDocument(configuration, RegisterConstants.RegisterNamePrefix + registerName, registerEntry.Id);
+                _documentApi.DeleteDocument(RegisterConstants.RegisterNamePrefix + registerName, registerEntry.Id);
             }
         }
 
         /// <summary>
         /// Возвращает записи регистра.
         /// </summary>
-        public IEnumerable<dynamic> GetEntries(
-            string configuration,
-            string registerName,
-            IEnumerable<FilterCriteria> filter,
-            int pageNumber,
-            int pageSize)
+        public IEnumerable<object> GetEntries(string registerName, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize)
         {
-            return _documentApi.GetDocuments(
-                configuration,
-                RegisterConstants.RegisterNamePrefix + registerName,
+            return _documentApi.GetDocuments(RegisterConstants.RegisterNamePrefix + registerName,
                 filter,
                 pageNumber,
                 pageSize);
@@ -372,16 +327,9 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Возвращает записи регистра.
         /// </summary>
-        public IEnumerable<dynamic> GetValuesByDate(
-            string configuration,
-            string registerName,
-            DateTime aggregationDate,
-            IEnumerable<FilterCriteria> filter = null,
-            IEnumerable<string> dimensionsProperties = null,
-            IEnumerable<string> valueProperties = null,
-            IEnumerable<AggregationType> aggregationTypes = null)
+        public IEnumerable<object> GetValuesByDate(string registerName, DateTime aggregationDate, IEnumerable<FilterCriteria> filter = null, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null, IEnumerable<AggregationType> aggregationTypes = null)
         {
-            var registerObject = _metadataApi.GetRegister(configuration, registerName);
+            var registerObject = _metadataApi.GetRegister(registerName);
 
             if (registerObject == null)
             {
@@ -389,7 +337,7 @@ namespace InfinniPlatform.SystemConfig.Registers
             }
 
             // Сначала необходимо извлечь значения из регистра итогов
-            var closestDate = GetClosestDateTimeOfTotalCalculation(configuration, registerName, aggregationDate);
+            var closestDate = GetClosestDateTimeOfTotalCalculation(registerName, aggregationDate);
 
             var filetrBuilder = new FilterBuilder();
             filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThanOrEquals(aggregationDate));
@@ -398,9 +346,7 @@ namespace InfinniPlatform.SystemConfig.Registers
 
             if (closestDate != null)
             {
-                aggregatedTotals = _documentApi.GetDocument(
-                    configuration,
-                    RegisterConstants.RegisterTotalNamePrefix + registerName,
+                aggregatedTotals = _documentApi.GetDocument(RegisterConstants.RegisterTotalNamePrefix + registerName,
                     f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsEquals(closestDate.Value)), 0, 1000);
 
                 filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThan(closestDate.Value));
@@ -430,7 +376,6 @@ namespace InfinniPlatform.SystemConfig.Registers
             }
 
             var aggregationResult = GetAggregationDocumentResult(
-                configuration,
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
                 dimensions,
@@ -453,17 +398,9 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Возвращает значения ресурсов в указанном диапазоне дат для регистра.
         /// </summary>
-        public IEnumerable<dynamic> GetValuesBetweenDates(
-            string configuration,
-            string registerName,
-            DateTime beginDate,
-            DateTime endDate,
-            IEnumerable<FilterCriteria> filter = null,
-            IEnumerable<string> dimensionsProperties = null,
-            IEnumerable<string> valueProperties = null,
-            IEnumerable<AggregationType> aggregationTypes = null)
+        public IEnumerable<object> GetValuesBetweenDates(string registerName, DateTime beginDate, DateTime endDate, IEnumerable<FilterCriteria> filter = null, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null, IEnumerable<AggregationType> aggregationTypes = null)
         {
-            var registerObject = _metadataApi.GetRegister(configuration, registerName);
+            var registerObject = _metadataApi.GetRegister(registerName);
 
             if (registerObject == null)
             {
@@ -494,7 +431,6 @@ namespace InfinniPlatform.SystemConfig.Registers
             }
 
             var aggregationResult = GetAggregationDocumentResult(
-                configuration,
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
                 dimensions,
@@ -510,18 +446,9 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Возвращает значения ресурсов в указанном диапазоне дат c разбиением на периоды.
         /// </summary>
-        public IEnumerable<dynamic> GetValuesByPeriods(
-            string configuration,
-            string registerName,
-            DateTime beginDate,
-            DateTime endDate,
-            string interval,
-            IEnumerable<FilterCriteria> filter,
-            IEnumerable<string> dimensionsProperties = null,
-            IEnumerable<string> valueProperties = null,
-            string timezone = null)
+        public IEnumerable<object> GetValuesByPeriods(string registerName, DateTime beginDate, DateTime endDate, string interval, IEnumerable<FilterCriteria> filter, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null, string timezone = null)
         {
-            var registerObject = _metadataApi.GetRegister(configuration, registerName);
+            var registerObject = _metadataApi.GetRegister(registerName);
 
             if (registerObject == null)
             {
@@ -577,7 +504,6 @@ namespace InfinniPlatform.SystemConfig.Registers
             resultFilter.AddRange(FilterBuilder.DateRangeCondition(RegisterConstants.DocumentDateProperty, beginDate, endDate));
 
             IEnumerable<dynamic> aggregationResult = GetAggregationDocumentResult(
-                configuration,
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
                 dimensions,
@@ -593,14 +519,9 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Получение значений ресурсов по документу-регистратору.
         /// </summary>
-        public IEnumerable<dynamic> GetValuesByRegistrar(
-            string configuration,
-            string registerName,
-            string registrar,
-            IEnumerable<string> dimensionsProperties = null,
-            IEnumerable<string> valueProperties = null)
+        public IEnumerable<object> GetValuesByRegistrar(string registerName, string registrar, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null)
         {
-            var registerObject = _metadataApi.GetRegister(configuration, registerName);
+            var registerObject = _metadataApi.GetRegister(registerName);
 
             if (registerObject == null)
             {
@@ -619,7 +540,6 @@ namespace InfinniPlatform.SystemConfig.Registers
             filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.RegistrarProperty).IsEquals(registrar));
 
             IEnumerable<dynamic> aggregationResult = GetAggregationDocumentResult(
-                configuration,
                 RegisterConstants.RegisterNamePrefix + registerName,
                 filetrBuilder.CriteriaList,
                 dimensions,
@@ -635,14 +555,9 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Получение значений ресурсов по типу документа-регистратора.
         /// </summary>
-        public IEnumerable<dynamic> GetValuesByRegistrarType(
-            string configuration,
-            string registerName,
-            string registrar,
-            IEnumerable<string> dimensionsProperties = null,
-            IEnumerable<string> valueProperties = null)
+        public IEnumerable<object> GetValuesByRegistrarType(string registerName, string registrar, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null)
         {
-            var registerObject = _metadataApi.GetRegister(configuration, registerName);
+            var registerObject = _metadataApi.GetRegister(registerName);
 
             if (registerObject == null)
             {
@@ -661,7 +576,6 @@ namespace InfinniPlatform.SystemConfig.Registers
             filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.RegistrarTypeProperty).IsEquals(registrar));
 
             IEnumerable<dynamic> aggregationResult = GetAggregationDocumentResult(
-                configuration,
                 RegisterConstants.RegisterNamePrefix + registerName,
                 filetrBuilder.CriteriaList,
                 dimensions,
@@ -677,18 +591,15 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Получение значений из таблицы итогов на дату, ближайшую к заданной
         /// </summary>
-        public IEnumerable<dynamic> GetTotals(
-            string configuration,
-            string registerName,
-            DateTime aggregationDate)
+        public IEnumerable<object> GetTotals(string registerName, DateTime aggregationDate)
         {
-            var closestDate = GetClosestDateTimeOfTotalCalculation(configuration, registerName, aggregationDate);
+            var closestDate = GetClosestDateTimeOfTotalCalculation(registerName, aggregationDate);
 
             if (closestDate != null)
             {
                 Action<FilterBuilder> action = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsEquals(aggregationDate));
 
-                return _documentApi.GetDocument(configuration, RegisterConstants.RegisterTotalNamePrefix + registerName, action, 0, 1000);
+                return _documentApi.GetDocument(RegisterConstants.RegisterTotalNamePrefix + registerName, action, 0, 1000);
             }
 
             return Enumerable.Empty<dynamic>();
@@ -697,10 +608,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Возвращает дату последнего подсчета итогов для регистра накоплений, ближайшей к заданной.
         /// </summary>
-        public DateTime? GetClosestDateTimeOfTotalCalculation(
-            string configuration,
-            string registerName,
-            DateTime aggregationDate)
+        public DateTime? GetClosestDateTimeOfTotalCalculation(string registerName, DateTime aggregationDate)
         {
             // В таблице итогов нужно найти итог, ближайший к aggregationDate
             var dateToReturn = new DateTime();
@@ -715,7 +623,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 // Постранично считываем данные и таблицы итогов и ищем итоги с датой, ближайшей к заданной
                 Action<FilterBuilder> filter = f => f.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsLessThan(aggregationDate));
 
-                var totals = _documentApi.GetDocument(configuration, RegisterConstants.RegisterTotalNamePrefix + registerName, filter, page++, 1000).ToArray();
+                var totals = _documentApi.GetDocument(RegisterConstants.RegisterTotalNamePrefix + registerName, filter, page++, 1000).ToArray();
 
                 if (totals.Length == 0)
                 {
@@ -740,14 +648,13 @@ namespace InfinniPlatform.SystemConfig.Registers
         }
 
         private IEnumerable<AggregationResult> GetAggregationDocumentResult(
-            string configuration,
             string registerName,
             IEnumerable<FilterCriteria> filter,
             IEnumerable<dynamic> dimensions,
             IEnumerable<AggregationType> aggregationTypes,
             IEnumerable<string> valueProperties)
         {
-            var executor = _indexFactory.BuildAggregationProvider(configuration, registerName);
+            var executor = _indexFactory.BuildAggregationProvider(registerName);
 
             var extractSearchModel = filter.ExtractSearchModel(_filterFactory);
 

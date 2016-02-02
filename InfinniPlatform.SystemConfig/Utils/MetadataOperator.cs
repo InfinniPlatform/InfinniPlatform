@@ -43,12 +43,12 @@ namespace InfinniPlatform.SystemConfig.Utils
             }
 
 
-            if (typeInfo == null || string.IsNullOrEmpty(typeInfo.ConfigId) || string.IsNullOrEmpty(typeInfo.DocumentId))
+            if (typeInfo == null || string.IsNullOrEmpty(typeInfo.DocumentId))
             {
                 return;
             }
 
-            dynamic schema = _metadataComponent.GetDocumentSchema(typeInfo.ConfigId, typeInfo.DocumentId);
+            dynamic schema = _metadataComponent.GetDocumentSchema(typeInfo.DocumentId);
 
             //обрабатываем связанные документы
             if (schema != null && schema.Properties != null)
@@ -69,15 +69,12 @@ namespace InfinniPlatform.SystemConfig.Utils
                             dynamic property1 = property;
                             Action<object> setValueAction = value => document[property1.Key] = value;
 
-                            _linkMap.RegisterLink(
-                                property.Value.TypeInfo.DocumentLink.ConfigId,
-                                property.Value.TypeInfo.DocumentLink.DocumentId,
+                            _linkMap.RegisterLink(property.Value.TypeInfo.DocumentLink.DocumentId,
                                 documentLink != null ? documentLink.Id : null,
                                 setValueAction);
                         }
 
-                        if (TypeInfoChain.Any(t => t.ConfigId == property.Value.TypeInfo.DocumentLink.ConfigId &&
-                                                   t.DocumentId == property.Value.TypeInfo.DocumentLink.DocumentId))
+                        if (TypeInfoChain.Any(t => t.DocumentId == property.Value.TypeInfo.DocumentLink.DocumentId))
                         {
                             continue;
                         }
@@ -126,9 +123,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                                             arrayToAddResolvedDocument.Add(value);
                                         };
 
-                                    _linkMap.RegisterLink(
-                                        property.Value.Items.TypeInfo.DocumentLink.ConfigId,
-                                        property.Value.Items.TypeInfo.DocumentLink.DocumentId,
+                                    _linkMap.RegisterLink(property.Value.Items.TypeInfo.DocumentLink.DocumentId,
                                         documentLink != null ? documentLink.Id : null,
                                         setValueAction);
                                 }
@@ -140,10 +135,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                             {
                                 foreach (dynamic documentLink in documentLinks)
                                 {
-                                    if (
-                                        TypeInfoChain.Any(
-                                            t => t.ConfigId == property.Value.Items.TypeInfo.DocumentLink.ConfigId &&
-                                                 t.DocumentId == property.Value.Items.TypeInfo.DocumentLink.DocumentId))
+                                    if (TypeInfoChain.Any(t => t.DocumentId == property.Value.Items.TypeInfo.DocumentLink.DocumentId))
                                     {
                                         continue;
                                     }
@@ -167,9 +159,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                                                 };
 
 
-                                            _linkMap.RegisterLink(
-                                                innerProperty.Value.TypeInfo.DocumentLink.ConfigId,
-                                                innerProperty.Value.TypeInfo.DocumentLink.DocumentId,
+                                            _linkMap.RegisterLink(innerProperty.Value.TypeInfo.DocumentLink.DocumentId,
                                                 documentLink != null && documentLink[innerProperty.Key] != null
                                                     ? documentLink.GetProperty(innerProperty.Key).Id
                                                     : null,

@@ -2,29 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Metadata;
+
 namespace InfinniPlatform.Core.Schema
 {
     public sealed class SchemaIterator
     {
         private readonly IList<LinkEntry> _entries = new List<LinkEntry>();
-        private readonly ISchemaProvider _schemaProvider;
+        private readonly IMetadataApi _metadataApi;
         private readonly List<dynamic> _typeInfoChain = new List<dynamic>();
 
-        public SchemaIterator(ISchemaProvider schemaProvider)
+        public SchemaIterator(IMetadataApi metadataApi)
         {
-            _schemaProvider = schemaProvider;
+            _metadataApi = metadataApi;
         }
 
         public Action<SchemaObject> OnPrimitiveProperty { get; set; }
         public Action<SchemaObject> OnObjectProperty { get; set; }
         public Action<SchemaObject> OnArrayProperty { get; set; }
 
-        private dynamic GetDocumentSchema(string configuration, string document)
+        private dynamic GetDocumentSchema(string document)
         {
-            if (!string.IsNullOrEmpty(configuration) &&
-                !string.IsNullOrEmpty(document))
+            if (!string.IsNullOrEmpty(document))
             {
-                return _schemaProvider.GetSchema(configuration, document);
+                return _metadataApi.GetDocumentSchema(document);
             }
             return null;
         }
@@ -50,14 +51,12 @@ namespace InfinniPlatform.Core.Schema
                 {
                     if (propertyValue.TypeInfo != null && propertyValue.TypeInfo.DocumentLink != null)
                     {
-                        dynamic schemaInner = GetDocumentSchema(propertyValue.TypeInfo.DocumentLink.ConfigId,
-                            propertyValue.TypeInfo.DocumentLink.DocumentId);
+                        dynamic schemaInner = GetDocumentSchema(propertyValue.TypeInfo.DocumentLink.DocumentId);
 
                         var linkSchemaObject = new SchemaObject(parentInfo, startInfo.Key, propertyValue.Caption,
                             startInfo.Value, schemaInner);
 
-                        if (_typeInfoChain.Any(t => t.ConfigId == propertyValue.TypeInfo.DocumentLink.ConfigId &&
-                                                    t.DocumentId == propertyValue.TypeInfo.DocumentLink.DocumentId))
+                        if (_typeInfoChain.Any(t => t.DocumentId == propertyValue.TypeInfo.DocumentLink.DocumentId))
                         {
                             continue;
                         }
@@ -91,7 +90,6 @@ namespace InfinniPlatform.Core.Schema
                         //---
                         var linkEntry = new LinkEntry
                         {
-                            ConfigId = propertyValue.TypeInfo.DocumentLink.ConfigId,
                             DocumentId = propertyValue.TypeInfo.DocumentLink.DocumentId,
                             Schema = schemaInner
                         };
@@ -117,8 +115,7 @@ namespace InfinniPlatform.Core.Schema
                         if (propertyValue.Items.Type == "Object" && propertyValue.Items.TypeInfo != null &&
                             propertyValue.Items.TypeInfo.DocumentLink != null)
                         {
-                            schemaObject = GetDocumentSchema(propertyValue.Items.TypeInfo.DocumentLink.ConfigId,
-                                propertyValue.Items.TypeInfo.DocumentLink.DocumentId);
+                            schemaObject = GetDocumentSchema(propertyValue.Items.TypeInfo.DocumentLink.DocumentId);
                         }
 
                         //обрабатываем сам массив
@@ -133,7 +130,6 @@ namespace InfinniPlatform.Core.Schema
                         {
                             var linkEntry = new LinkEntry
                             {
-                                ConfigId = propertyValue.Items.TypeInfo.DocumentLink.ConfigId,
                                 DocumentId = propertyValue.Items.TypeInfo.DocumentLink.DocumentId,
                                 Schema = schemaObject
                             };

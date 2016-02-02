@@ -16,7 +16,7 @@ namespace InfinniPlatform.Sdk.RestApi
         {
         }
 
-        public Stream GetPrintView(string configId, string documentId, string printViewId, string printViewType, int pageNumber, int pageSize, Action<FilterBuilder> filter = null)
+        public Stream GetPrintView(string documentId, string printViewId, string printViewType, int pageNumber, int pageSize, Action<FilterBuilder> filter = null)
         {
             IEnumerable<FilterCriteria> filterCriterias = null;
 
@@ -32,7 +32,6 @@ namespace InfinniPlatform.Sdk.RestApi
 
             var requestData = new DynamicWrapper
                               {
-                                  ["ConfigId"] = configId,
                                   ["DocumentId"] = documentId,
                                   ["PrintViewId"] = printViewId,
                                   ["PrintViewType"] = printViewType,

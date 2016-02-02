@@ -31,14 +31,12 @@ namespace InfinniPlatform.SystemConfig.Services
 
             dynamic requestForm = request.Form;
             dynamic changesObject = requestForm.changesObject;
-            string configuration = changesObject.Configuration;
             string documentType = changesObject.Metadata;
 
             changesObject.Documents = changesObject.Documents ?? new object[] { changesObject.Document };
 
             var context = new ActionContext
             {
-                Configuration = configuration,
                 DocumentType = documentType,
                 Item = changesObject,
                 Result = changesObject

@@ -31,9 +31,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         {
             var registerRequest = GetRegisterRequest(request);
 
-            var result = _registerApi.GetEntries(
-                registerRequest.Configuration,
-                registerRequest.RegisterName,
+            var result = _registerApi.GetEntries(registerRequest.RegisterName,
                 registerRequest.Filter,
                 registerRequest.PageNumber.Value,
                 registerRequest.PageSize.Value);
@@ -45,9 +43,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         {
             var registerRequest = GetRegisterRequest(request);
 
-            var result = _registerApi.GetValuesByDate(
-                registerRequest.Configuration,
-                registerRequest.RegisterName,
+            var result = _registerApi.GetValuesByDate(registerRequest.RegisterName,
                 registerRequest.EndDate.Value,
                 registerRequest.Filter,
                 registerRequest.DimensionsProperties,
@@ -61,9 +57,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         {
             var registerRequest = GetRegisterRequest(request);
 
-            var result = _registerApi.GetValuesBetweenDates(
-                registerRequest.Configuration,
-                registerRequest.RegisterName,
+            var result = _registerApi.GetValuesBetweenDates(registerRequest.RegisterName,
                 registerRequest.BeginDate.Value,
                 registerRequest.EndDate.Value,
                 registerRequest.Filter,
@@ -76,11 +70,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
         private Task<object> RecalculateTotals(IHttpRequest request)
         {
-            string configuration = request.Form.Configuration;
-
             SetSynchronous(request.Form.Synchronous);
 
-            _registerApi.RecalculateTotals(configuration);
+            _registerApi.RecalculateTotals();
 
             return Task.FromResult<object>(null);
         }

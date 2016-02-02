@@ -30,31 +30,25 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         {
             _log.Info("Creating indexes started.");
 
-            var configurationNames = _metadataApi.GetConfigurationNames();
+            var documentNames = _metadataApi.GetDocumentNames();
 
-            foreach (var configurationName in configurationNames)
+            foreach (var documentName in documentNames)
             {
-                var documentNames = _metadataApi.GetDocumentNames(configurationName);
-
-                foreach (var documentName in documentNames)
-                {
-                    CreateStorage(configurationName, documentName);
-                }
+                CreateStorage(documentName);
             }
 
             _log.Info("Creating indexes successfully completed.");
         }
 
-        private void CreateStorage(string configId, string documentId)
+        private void CreateStorage(string documentType)
         {
-            var message = _migrationHelper.TryUpdateDocumentMappings(configId, documentId);
+            var message = _migrationHelper.TryUpdateDocumentMappings(documentType);
 
             if (message != null)
             {
                 _log.Info("Creating index.", new Dictionary<string, object>
                                              {
-                                                 { "configurationId", configId },
-                                                 { "documentId", documentId }
+                                                 { "documentType", documentType }
                                              });
             }
         }

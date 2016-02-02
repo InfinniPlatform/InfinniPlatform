@@ -16,14 +16,13 @@ namespace InfinniPlatform.SystemConfig.Utils
         private readonly IMetadataApi _metadataApi;
         private readonly DocumentLinkMapProvider _documentLinkMapProvider;
 
-        public void ResolveReferences(string configId, string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
+        public void ResolveReferences(string documentId, dynamic documents, IEnumerable<dynamic> ignoreResolve)
         {
             var documentLinkMap = _documentLinkMapProvider.GetDocumentLinkMap();
 
             var metadataOperator = new MetadataOperator(_metadataApi, documentLinkMap, ignoreResolve);
 
             dynamic typeInfo = new DynamicWrapper();
-            typeInfo.ConfigId = configId;
             typeInfo.DocumentId = documentId;
 
             if (documents is IEnumerable<dynamic>)
@@ -38,7 +37,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                 metadataOperator.ProcessMetadata(documents, typeInfo);
             }
 
-            documentLinkMap.ResolveLinks(typeInfo, metadataOperator.TypeInfoChain);
+            documentLinkMap.ResolveLinks(metadataOperator.TypeInfoChain);
         }
     }
 }

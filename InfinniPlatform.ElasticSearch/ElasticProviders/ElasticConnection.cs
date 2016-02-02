@@ -6,6 +6,7 @@ using Elasticsearch.Net.ConnectionPool;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.IndexTypeVersions;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Settings;
 
 using Nest;
 using Nest.Resolvers;
@@ -18,11 +19,14 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
     [LoggerName("ElasticSearch")]
     public sealed class ElasticConnection : IElasticConnection
     {
-        public ElasticConnection(ElasticSearchSettings settings, IPerformanceLog performanceLog)
+        public ElasticConnection(IAppEnvironment appEnvironment, ElasticSearchSettings settings, IPerformanceLog performanceLog)
         {
             _settings = settings;
             _performanceLog = performanceLog;
-            _elasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(settings));
+
+            IndexName = GetIndexName(appEnvironment.Name);
+
+            _elasticClient = new Lazy<ElasticClient>(() => CreatElasticClient(IndexName, settings));
         }
 
 
@@ -31,7 +35,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         private readonly Lazy<ElasticClient> _elasticClient;
 
 
-        private static ElasticClient CreatElasticClient(ElasticSearchSettings settings)
+        private static ElasticClient CreatElasticClient(string indexName, ElasticSearchSettings settings)
         {
             var nodeAddresses = settings.Nodes.Select(node => new Uri(node));
 
@@ -46,6 +50,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             connectionSettings.SetDefaultPropertyNameInferrer(i => i);
             connectionSettings.SetJsonSerializerSettingsModifier(m => m.ContractResolver = new ElasticContractResolver(connectionSettings));
+            connectionSettings.SetDefaultIndex(indexName);
             connectionSettings.EnableTrace(settings.EnableTrace);
 
             var client = new ElasticClient(connectionSettings);
@@ -54,7 +59,10 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         }
 
 
+        public string IndexName { get; }
+
         public ElasticClient Client => _elasticClient.Value;
+
 
         public ISearchResponse<T> Search<T>(Func<SearchDescriptor<T>, SearchDescriptor<T>> searchSelector) where T : class
         {

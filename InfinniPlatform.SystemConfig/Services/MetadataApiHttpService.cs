@@ -27,11 +27,10 @@ namespace InfinniPlatform.SystemConfig.Services
         private Task<object> GetMetadataItem(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
-            string configuration = requestForm.Configuration;
             string documentType = requestForm.MetadataObject;
             string viewName = requestForm.MetadataName;
 
-            var result = _metadataApi.GetView(configuration, documentType, viewName);
+            var result = _metadataApi.GetView(documentType, viewName);
 
             return Task.FromResult<object>(result);
         }

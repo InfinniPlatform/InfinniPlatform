@@ -22,74 +22,74 @@ namespace InfinniPlatform.SystemConfig.Documents
         private readonly IGetDocumentExecutor _getDocumentExecutor;
         private readonly IBlobStorage _blobStorage;
         
-        public dynamic GetDocumentById(string configuration, string documentType, string documentId)
+        public dynamic GetDocumentById(string documentType, string documentId)
         {
-            return _getDocumentExecutor.GetDocumentById(configuration, documentType, documentId);
+            return _getDocumentExecutor.GetDocumentById(documentType, documentId);
         }
 
-        public dynamic DeleteDocument(string configuration, string documentType, string documentId)
+        public dynamic DeleteDocument(string documentType, string documentId)
         {
-            return _setDocumentExecutor.DeleteDocument(configuration, documentType, documentId);
+            return _setDocumentExecutor.DeleteDocument(documentType, documentId);
         }
 
-        long IDocumentApi.GetNumberOfDocuments(string configuration, string documentType, Action<FilterBuilder> filter)
+        long IDocumentApi.GetNumberOfDocuments(string documentType, Action<FilterBuilder> filter)
         {
-            return GetNumberOfDocuments(configuration, documentType, filter);
+            return GetNumberOfDocuments(documentType, filter);
         }
 
-        long IDocumentApi.GetNumberOfDocuments(string configuration, string documentType, IEnumerable<FilterCriteria> filter)
+        long IDocumentApi.GetNumberOfDocuments(string documentType, IEnumerable<FilterCriteria> filter)
         {
-            return _getDocumentExecutor.GetNumberOfDocuments(configuration, documentType, filter);
+            return _getDocumentExecutor.GetNumberOfDocuments(documentType, filter);
         }
 
-        public IEnumerable<dynamic> GetDocuments(string configurationName, string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
+        public IEnumerable<dynamic> GetDocuments(string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
         {
-            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, sorting);
+            return _getDocumentExecutor.GetDocument(documentType, filter, pageNumber, pageSize, sorting);
         }
 
-        public dynamic SetDocument(string configuration, string documentType, object documentInstance)
+        public dynamic SetDocument(string documentType, object documentInstance)
         {
-            return _setDocumentExecutor.SaveDocument(configuration, documentType, documentInstance);
+            return _setDocumentExecutor.SaveDocument(documentType, documentInstance);
         }
 
-        public dynamic SetDocuments(string configuration, string documentType, IEnumerable<object> documentInstances)
+        public dynamic SetDocuments(string documentType, IEnumerable<object> documentInstances)
         {
-            return _setDocumentExecutor.SaveDocuments(configuration, documentType, documentInstances);
+            return _setDocumentExecutor.SaveDocuments(documentType, documentInstances);
         }
 
-        public int GetNumberOfDocuments(string configurationName, string documentType, dynamic filter)
+        public int GetNumberOfDocuments(string documentType, dynamic filter)
         {
-            return _getDocumentExecutor.GetNumberOfDocuments(configurationName, documentType, filter);
+            return _getDocumentExecutor.GetNumberOfDocuments(documentType, (Action<FilterBuilder>)filter);
         }
 
-        public int GetNumberOfDocuments(string configurationName, string documentType, Action<FilterBuilder> filter)
+        public int GetNumberOfDocuments(string documentType, Action<FilterBuilder> filter)
         {
-            return _getDocumentExecutor.GetNumberOfDocuments(configurationName, documentType, filter);
+            return _getDocumentExecutor.GetNumberOfDocuments(documentType, filter);
         }
 
-        public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
+        public IEnumerable<dynamic> GetDocument(string documentType, dynamic filter, int pageNumber, int pageSize, IEnumerable<dynamic> ignoreResolve = null, dynamic sorting = null)
         {
-            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, sorting: sorting);
+            return _getDocumentExecutor.GetDocument(documentType, filter, pageNumber, pageSize, sorting: sorting);
         }
 
-        public IEnumerable<dynamic> GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
+        public IEnumerable<dynamic> GetDocument(string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, sorting, null);
+            return _getDocumentExecutor.GetDocument(documentType, filter, pageNumber, pageSize, sorting, null);
         }
 
-        IEnumerable<dynamic> IDocumentApi.GetDocument(string configurationName, string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting)
+        IEnumerable<dynamic> IDocumentApi.GetDocument(string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            return _getDocumentExecutor.GetDocument(configurationName, documentType, filter, pageNumber, pageSize, sorting, null);
+            return _getDocumentExecutor.GetDocument(documentType, filter, pageNumber, pageSize, sorting, null);
         }
 
         /// <summary>
         /// Прикрепляет файл к свойству документа.
         /// </summary>
-        public void AttachFile(string configuration, string documentType, string documentId, string fileProperty, Stream fileStream)
+        public void AttachFile(string documentType, string documentId, string fileProperty, Stream fileStream)
         {
             // Получение документа
 
-            object document = GetDocumentById(configuration, documentType, documentId);
+            object document = GetDocumentById(documentType, documentId);
 
             // Получение свойства
 
@@ -124,7 +124,7 @@ namespace InfinniPlatform.SystemConfig.Documents
 
             // Сохранение документа
 
-            SetDocument(configuration, documentType, document);
+            SetDocument(documentType, document);
         }
     }
 }

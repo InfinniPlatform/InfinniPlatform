@@ -24,7 +24,6 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         {
             var elasticConnection = ElasticFactoryBuilder.ElasticConnection.Value;
 
-
             dynamic test = ElasticDocument.Create();
             test.Values.Id = "898989";
             test.Values.LastName = "Иванов";
@@ -34,7 +33,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             test.Values.NestedObjId = "111";
             test.Values.NestedObj.Code = "12345";
             test.Values.NestedObj.Name = "test123";
-            elasticConnection.Client.Index((object)test, i => i.Index(IndexName).Type(TypeName));
+            elasticConnection.Client.Index((object)test, i => i.Type(TypeName));
 
             dynamic test1 = ElasticDocument.Create();
             test1.Values.Id = "24342";
@@ -45,7 +44,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             test1.Values.NestedObj.Id = "112";
             test1.Values.NestedObj.Code = "12345";
             test1.Values.NestedObj.Name = "test12345";
-            elasticConnection.Client.Index((object)test1, i => i.Index(IndexName).Type(TypeName));
+            elasticConnection.Client.Index((object)test1, i => i.Type(TypeName));
 
             dynamic test2 = ElasticDocument.Create();
             test2.Values.Id = "83453";
@@ -56,7 +55,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
             test2.Values.NestedObj.Id = "235";
             test2.Values.NestedObj.Code = "1232342";
             test2.Values.NestedObj.Name = "test2456";
-            elasticConnection.Client.Index((object)test2, i => i.Index(IndexName).Type(TypeName));
+            elasticConnection.Client.Index((object)test2, i => i.Type(TypeName));
 
             elasticConnection.Refresh();
         }
@@ -64,7 +63,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldExecuteSearchByExecutor()
         {
-            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName);
             var searchModel = new SearchModel();
 
             var filter = _filterFactory.Get("Patronimic", "СТЕПАНОВИч", CriteriaType.IsEquals)
@@ -85,7 +84,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldExecuteSearchWithFacetFilter()
         {
-            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName);
             var searchModel = new SearchModel();
             searchModel.AddFilter(_filterFactory.Get("Patronimic", "СТЕПАНОВИч", CriteriaType.IsEquals));
             searchModel.AddFilter(_filterFactory.Get("NestedObj.Code", "12345", CriteriaType.IsEquals));
@@ -100,7 +99,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldExecuteSearchWithFacetSearchstring()
         {
-            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName);
             var searchModel = new SearchModel();
             searchModel.AddSort("LastName", SortOrder.Descending);
             searchModel.SetPageSize(3);
@@ -114,7 +113,7 @@ namespace InfinniPlatform.ElasticSearch.Tests.ElasticWrappers
         [Test]
         public void ShouldExecuteSearchWithoutFilters()
         {
-            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName, IndexName);
+            var executor = ElasticFactoryBuilder.GetElasticFactory().BuildIndexQueryExecutor(IndexName);
             var searchModel = new SearchModel();
 
             var result = executor.Query(searchModel);

@@ -15,7 +15,7 @@ namespace InfinniPlatform.SystemConfig.Documents
 {
     internal sealed class GetDocumentExecutor : IGetDocumentExecutor
     {
-        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(string configuration, string documentType);
+        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(string documentType);
 
 
         public GetDocumentExecutor(IDocumentTransactionScopeProvider transactionScopeProvider,
@@ -37,7 +37,7 @@ namespace InfinniPlatform.SystemConfig.Documents
         private readonly IReferenceResolver _referenceResolver;
         private readonly IndexQueryExecutorFactory _indexQueryExecutorFactory;
 
-        public dynamic GetDocumentById(string configuration, string documentType, string documentId)
+        public object GetDocumentById(string documentType, string documentId)
         {
             var documentProvider = _indexFactory.BuildAllIndexesOperationProvider();
 
@@ -45,24 +45,20 @@ namespace InfinniPlatform.SystemConfig.Documents
 
             if (document != null)
             {
-                document = GetActualDocuments(configuration, documentType, new[] { document }).FirstOrDefault();
+                document = GetActualDocuments(documentType, new[] { document }).FirstOrDefault();
             }
 
             return document;
         }
 
-        public int GetNumberOfDocuments(string configuration,
-                                        string documentType,
-                                        Action<FilterBuilder> filter)
+        public int GetNumberOfDocuments(string documentType, Action<FilterBuilder> filter)
         {
-            return GetNumberOfDocuments(configuration, documentType, filter.ToFilterCriterias());
+            return GetNumberOfDocuments(documentType, filter.ToFilterCriterias());
         }
 
-        public int GetNumberOfDocuments(string configuration,
-                                        string documentType,
-                                        IEnumerable<FilterCriteria> filter)
+        public int GetNumberOfDocuments(string documentType, IEnumerable<FilterCriteria> filter)
         {
-            var schema = _metadataApi.GetDocumentSchema(configuration, documentType);
+            var schema = _metadataApi.GetDocumentSchema(documentType);
 
             var queryAnalyzer = new QueryCriteriaAnalyzer(_metadataApi, schema);
 
@@ -70,7 +66,7 @@ namespace InfinniPlatform.SystemConfig.Documents
             var filterCriteria = queryAnalyzer.GetBeforeResolveCriteriaList(filter);
             var searchModel = filterCriteria.ExtractSearchModel(queryFactory);
 
-            var indexQueryExecutor = _indexQueryExecutorFactory(configuration, documentType);
+            var indexQueryExecutor = _indexQueryExecutorFactory(documentType);
 
             // вряд ли документов в одном индексе будет больше чем 2 147 483 647, конвертируем в int
             var numberOfDocuments = Convert.ToInt32(indexQueryExecutor.CalculateCountQuery(searchModel));
@@ -78,26 +74,14 @@ namespace InfinniPlatform.SystemConfig.Documents
             return numberOfDocuments;
         }
 
-        public IEnumerable<dynamic> GetDocument(string configurationName,
-                                                string documentName,
-                                                Action<FilterBuilder> filter,
-                                                int pageNumber,
-                                                int pageSize,
-                                                Action<SortingBuilder> sorting = null,
-                                                IEnumerable<dynamic> ignoreResolve = null)
+        public IEnumerable<object> GetDocument(string documentName, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null, IEnumerable<object> ignoreResolve = null)
         {
-            return GetDocument(configurationName, documentName, filter.ToFilterCriterias(), pageNumber, pageSize, sorting.ToSortingCriterias(), ignoreResolve);
+            return GetDocument(documentName, filter.ToFilterCriterias(), pageNumber, pageSize, sorting.ToSortingCriterias(), ignoreResolve);
         }
 
-        public IEnumerable<object> GetDocument(string configurationName,
-                                               string documentName,
-                                               IEnumerable<FilterCriteria> filter,
-                                               int pageNumber,
-                                               int pageSize,
-                                               IEnumerable<SortingCriteria> sorting = null,
-                                               IEnumerable<dynamic> ignoreResolve = null)
+        public IEnumerable<object> GetDocument(string documentName, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null, IEnumerable<dynamic> ignoreResolve = null)
         {
-            dynamic schema = _metadataApi.GetDocumentSchema(configurationName, documentName);
+            dynamic schema = _metadataApi.GetDocumentSchema(documentName);
 
             SortingCriteria[] sortingFields = null;
 
@@ -152,26 +136,26 @@ namespace InfinniPlatform.SystemConfig.Documents
                 }
             }
 
-            var indexQueryExecutor = _indexQueryExecutorFactory(configurationName, documentName);
+            var indexQueryExecutor = _indexQueryExecutorFactory(documentName);
 
             IEnumerable<dynamic> result = indexQueryExecutor.Query(searchModel).Items.ToList();
 
-            _referenceResolver.ResolveReferences(configurationName, documentName, result, ignoreResolve);
+            _referenceResolver.ResolveReferences(documentName, result, ignoreResolve);
 
             var documents = result.Take(pageSize == 0
                                             ? 10
                                             : pageSize);
 
-            return GetActualDocuments(configurationName, documentName, documents);
+            return GetActualDocuments(documentName, documents);
         }
 
-        private IEnumerable<object> GetActualDocuments(string configuration, string documentType, IEnumerable<object> documents)
+        private IEnumerable<object> GetActualDocuments(string documentType, IEnumerable<object> documents)
         {
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
 
             if (transactionScope != null)
             {
-                return transactionScope.GetDocuments(configuration, documentType, documents);
+                return transactionScope.GetDocuments(documentType, documents);
             }
 
             return documents;

@@ -19,12 +19,9 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         public object Find(string property, string value)
         {
-            var indexName = _elasticConnection.GetIndexName(AuthorizationStorageExtensions.AuthorizationConfigId);
-
             // TODO: Load only UserInfo (without header).
             // TODO: Set specific types, not AllTypes().
-            var searchResponse = _elasticConnection.Search<dynamic>(d => d.Index(indexName)
-                                                                          .AllTypes()
+            var searchResponse = _elasticConnection.Search<dynamic>(d => d.AllTypes()
                                                                           .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value.ToLower()))
                                                                           .Size(1));
 
@@ -44,7 +41,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             {
                 var transactionScope = _transactionScopeProvider.GetTransactionScope();
 
-                userInfo = transactionScope.GetDocuments(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, new[] { userInfo }).FirstOrDefault();
+                userInfo = transactionScope.GetDocuments(AuthorizationStorageExtensions.UserStore, new[] { userInfo }).FirstOrDefault();
             }
 
             return userInfo;
@@ -54,14 +51,14 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         {
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
             transactionScope.Synchronous();
-            transactionScope.SaveDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, userId, userInfo);
+            transactionScope.SaveDocument(AuthorizationStorageExtensions.UserStore, userId, userInfo);
         }
 
         public void Delete(object userId)
         {
             var transactionScope = _transactionScopeProvider.GetTransactionScope();
             transactionScope.Synchronous();
-            transactionScope.DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId, AuthorizationStorageExtensions.UserStore, userId);
+            transactionScope.DeleteDocument(AuthorizationStorageExtensions.UserStore, userId);
         }
     }
 }

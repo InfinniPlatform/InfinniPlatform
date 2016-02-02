@@ -17,7 +17,6 @@ namespace InfinniPlatform.Core.Tests.Schema
             linkPatient.Caption = "patient";
             linkPatient.TypeInfo = new DynamicWrapper();
             linkPatient.TypeInfo.DocumentLink = new DynamicWrapper();
-            linkPatient.TypeInfo.DocumentLink.ConfigId = "TestConfig";
             linkPatient.TypeInfo.DocumentLink.DocumentId = "Patient";
 
             dynamic linkAddress = new DynamicWrapper();
@@ -25,7 +24,6 @@ namespace InfinniPlatform.Core.Tests.Schema
             linkAddress.Caption = "patient address ";
             linkAddress.TypeInfo = new DynamicWrapper();
             linkAddress.TypeInfo.DocumentLink = new DynamicWrapper();
-            linkAddress.TypeInfo.DocumentLink.ConfigId = "TestConfig";
             linkAddress.TypeInfo.DocumentLink.DocumentId = "Address";
 
             dynamic linkPolicies = new DynamicWrapper();
@@ -35,7 +33,6 @@ namespace InfinniPlatform.Core.Tests.Schema
             linkPolicies.Items.Type = "Object";
             linkPolicies.Items.TypeInfo = new DynamicWrapper();
             linkPolicies.Items.TypeInfo.DocumentLink = new DynamicWrapper();
-            linkPolicies.Items.TypeInfo.DocumentLink.ConfigId = "TestConfig";
             linkPolicies.Items.TypeInfo.DocumentLink.DocumentId = "Policy";
 
             dynamic linkStreet = new DynamicWrapper();

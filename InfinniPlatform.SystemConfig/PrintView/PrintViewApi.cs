@@ -20,13 +20,8 @@ namespace InfinniPlatform.SystemConfig.PrintView
         private readonly IMetadataApi _metadataApi;
         private readonly IPrintViewBuilder _printViewBuilder;
 
-        public byte[] Build(string configuration, string documentType, string printViewName, object printViewSource, PrintViewFileFormat priiViewFormat = PrintViewFileFormat.Pdf)
+        public byte[] Build(string documentType, string printViewName, object printViewSource, PrintViewFileFormat priiViewFormat = PrintViewFileFormat.Pdf)
         {
-            if (string.IsNullOrEmpty(configuration))
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
             if (string.IsNullOrEmpty(documentType))
             {
                 throw new ArgumentNullException(nameof(documentType));
@@ -37,11 +32,11 @@ namespace InfinniPlatform.SystemConfig.PrintView
                 throw new ArgumentNullException(nameof(printViewName));
             }
 
-            var printViewMetadata = _metadataApi.GetPrintView(configuration, documentType, printViewName);
+            var printViewMetadata = _metadataApi.GetPrintView(documentType, printViewName);
 
             if (printViewMetadata == null)
             {
-                throw new ArgumentException($"Print view '{configuration}/{documentType}/{printViewName}' not found.");
+                throw new ArgumentException($"Print view '{documentType}/{printViewName}' not found.");
             }
 
             var printViewData = _printViewBuilder.BuildFile(printViewMetadata, printViewSource, priiViewFormat);

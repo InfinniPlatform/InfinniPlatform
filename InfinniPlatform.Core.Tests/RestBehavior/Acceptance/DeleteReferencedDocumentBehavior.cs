@@ -13,7 +13,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class DeleteReferencedDocumentBehavior
     {
-        private const string ConfigurationId = "TestConfiguration";
         private const string MainDocumentType = "DeleteReferencedDocument";
         private const string ReferenceDocumentType = "AddressDocument";
 
@@ -60,16 +59,16 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, ReferenceDocumentType, referenceDocument);
-            documentApi.SetDocument(ConfigurationId, MainDocumentType, mainDocument);
+            documentApi.SetDocument(ReferenceDocumentType, referenceDocument);
+            documentApi.SetDocument(MainDocumentType, mainDocument);
 
-            var mainDocumentBeforeDelete = documentApi.GetDocument(ConfigurationId, MainDocumentType, filter => filter.AddCriteria(c => c.Property("Id").IsEquals(mainDocumentId)), 0, 1);
-            var referenceDocumentBeforeDelete = documentApi.GetDocument(ConfigurationId, ReferenceDocumentType, filter => filter.AddCriteria(c => c.Property("Id").IsEquals(referenceDocumentId)), 0, 1);
+            var mainDocumentBeforeDelete = documentApi.GetDocument(MainDocumentType, filter => filter.AddCriteria(c => c.Property("Id").IsEquals(mainDocumentId)), 0, 1);
+            var referenceDocumentBeforeDelete = documentApi.GetDocument(ReferenceDocumentType, filter => filter.AddCriteria(c => c.Property("Id").IsEquals(referenceDocumentId)), 0, 1);
 
-            documentApi.DeleteDocument(ConfigurationId, MainDocumentType, mainDocumentId.ToString());
+            documentApi.DeleteDocument(MainDocumentType, mainDocumentId.ToString());
 
-            var mainDocumentAfterDelete = documentApi.GetDocument(ConfigurationId, MainDocumentType, filter => filter.AddCriteria(c => c.Property("Id").IsEquals(mainDocumentId)), 0, 1);
-            var referenceDocumentAfterDelete = documentApi.GetDocument(ConfigurationId, ReferenceDocumentType, filter => filter.AddCriteria(c => c.Property("Id").IsEquals(referenceDocumentId)), 0, 1);
+            var mainDocumentAfterDelete = documentApi.GetDocument(MainDocumentType, filter => filter.AddCriteria(c => c.Property("Id").IsEquals(mainDocumentId)), 0, 1);
+            var referenceDocumentAfterDelete = documentApi.GetDocument(ReferenceDocumentType, filter => filter.AddCriteria(c => c.Property("Id").IsEquals(referenceDocumentId)), 0, 1);
 
             // Then
 

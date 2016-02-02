@@ -22,7 +22,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
             if (target.Item.OldRoom != null && target.Item.OldBed != null)
             {
-                incomeEntry = _registerApi.CreateEntry(target.Configuration, RegisterApiAcceptanceTest.AvailableBedsRegister, target.Item.Metadata, (DateTime?)target.Item.Date, (object)target.Item, false);
+                incomeEntry = _registerApi.CreateEntry(RegisterApiAcceptanceTest.AvailableBedsRegister, target.Item.Metadata, (DateTime?)target.Item.Date, (object)target.Item, false);
                 incomeEntry.Value = 1; // Изменение количества на единицу
 
                 // Койка освободилась - income
@@ -33,7 +33,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
             if (target.Item.NewRoom != null && target.Item.NewBed != null)
             {
-                consumptionEntry = _registerApi.CreateEntry(target.Configuration, RegisterApiAcceptanceTest.AvailableBedsRegister, target.Item.Metadata, (DateTime?)target.Item.Date, (object)target.Item, false);
+                consumptionEntry = _registerApi.CreateEntry(RegisterApiAcceptanceTest.AvailableBedsRegister, target.Item.Metadata, (DateTime?)target.Item.Date, (object)target.Item, false);
                 consumptionEntry.Value = 1; // Изменение количества на единицу
 
                 // Койку заняли - consumption
@@ -44,12 +44,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
 
             if (incomeEntry != null)
             {
-                _registerApi.PostEntries(target.Configuration, RegisterApiAcceptanceTest.AvailableBedsRegister, new[] { incomeEntry });
+                _registerApi.PostEntries(RegisterApiAcceptanceTest.AvailableBedsRegister, new[] { incomeEntry });
             }
 
             if (consumptionEntry != null)
             {
-                _registerApi.PostEntries(target.Configuration, RegisterApiAcceptanceTest.AvailableBedsRegister, new[] { consumptionEntry });
+                _registerApi.PostEntries(RegisterApiAcceptanceTest.AvailableBedsRegister, new[] { consumptionEntry });
             }
         }
     }

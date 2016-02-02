@@ -4,7 +4,6 @@ using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.SystemConfig.Utils
@@ -12,7 +11,6 @@ namespace InfinniPlatform.SystemConfig.Utils
     public sealed class DocumentLinkMap
     {
         public delegate IEnumerable<dynamic> GetDocumentsDelegate(
-            string configurationName,
             string documentType,
             IEnumerable<FilterCriteria> filter,
             int pageNumber,
@@ -30,11 +28,10 @@ namespace InfinniPlatform.SystemConfig.Utils
         private readonly IMetadataApi _metadataComponent;
         private readonly GetDocumentsDelegate _getDocuments;
 
-        public void RegisterLink(string configId, string documentId, string instanceId, Action<object> valueSetFunc)
+        public void RegisterLink(string documentId, string instanceId, Action<object> valueSetFunc)
         {
             var link = new DocumentLink
             {
-                ConfigId = configId,
                 DocumentId = documentId,
                 InstanceId = instanceId,
                 SetValue = valueSetFunc
@@ -46,7 +43,7 @@ namespace InfinniPlatform.SystemConfig.Utils
             }
         }
 
-        public void ResolveLinks(dynamic resolvingTypeInfo, IEnumerable<dynamic> typeInfoChain)
+        public void ResolveLinks(IEnumerable<dynamic> typeInfoChain)
         {
             IEnumerable<DocumentLink> links;
 
@@ -55,37 +52,25 @@ namespace InfinniPlatform.SystemConfig.Utils
                 links = _links.ToArray();
             }
 
-            var groupsLinks = links.GroupBy(l => new
-            {
-                l.ConfigId,
-                l.DocumentId
-            })
-                                   .ToList();
+            var groupsLinks = links.GroupBy(l => l.DocumentId).ToList();
 
             foreach (var groupsLink in groupsLinks)
             {
                 IEnumerable<DocumentLink> values = groupsLink.ToList();
 
-                if (typeInfoChain != null &&
-                    typeInfoChain.Count(t => t.ConfigId == groupsLink.Key.ConfigId && t.DocumentId == groupsLink.Key.DocumentId) > 1)
+                if (typeInfoChain != null && typeInfoChain.Count(t => t.DocumentId == groupsLink.Key) > 1)
                 {
                     continue;
                 }
 
-                if (HasCircularRefs(groupsLink.Key.ConfigId, groupsLink.Key.DocumentId))
+                if (HasCircularRefs(groupsLink.Key))
                 {
                     continue;
                 }
-
-                var typeInfoChainUpdated = typeInfoChain.ToList();
-                dynamic typeInfo = new DynamicWrapper();
-                typeInfo.ConfigId = groupsLink.Key.ConfigId;
-                typeInfo.DocumentId = groupsLink.Key.DocumentId;
-                typeInfoChainUpdated.Add(typeInfo);
 
                 Action<FilterBuilder> builder = f => f.AddCriteria(c => c.Property("Id").IsIdIn(values.Select(i => i.InstanceId).ToList()));
 
-                var resolvedLinks = GetResolvedLinks(groupsLink, builder, typeInfoChainUpdated);
+                var resolvedLinks = GetResolvedLinks(groupsLink, builder);
 
                 foreach (var resolvedLink in resolvedLinks)
                 {
@@ -98,22 +83,21 @@ namespace InfinniPlatform.SystemConfig.Utils
             }
         }
 
-        private List<dynamic> GetResolvedLinks(IGrouping<dynamic, DocumentLink> groupsLink, Action<FilterBuilder> filterAction, List<dynamic> typeInfoChainUpdated)
+        private List<dynamic> GetResolvedLinks(IGrouping<string, DocumentLink> groupsLink, Action<FilterBuilder> filterAction)
         {
-            string configuration = groupsLink.Key.ConfigId;
-            string documentType = groupsLink.Key.DocumentId;
+            var documentType = groupsLink.Key;
             var filter = filterAction.ToFilterCriterias();
 
-            IEnumerable<dynamic> result = _getDocuments(configuration, documentType, filter, 0, 100);
+            IEnumerable<dynamic> result = _getDocuments(documentType, filter, 0, 100);
 
             var resolvedLinks = (result != null) ? Enumerable.ToList(result) : null;
 
             return resolvedLinks;
         }
 
-        private bool HasCircularRefs(string configId, string documentId)
+        private bool HasCircularRefs(string documentId)
         {
-            dynamic schema = _metadataComponent.GetDocumentSchema(configId, documentId);
+            dynamic schema = _metadataComponent.GetDocumentSchema(documentId);
 
             if (schema != null)
             {
@@ -125,7 +109,6 @@ namespace InfinniPlatform.SystemConfig.Utils
                          property.Value.Type.ToLowerInvariant() == "object" &&
                          property.Value.TypeInfo != null &&
                          property.Value.TypeInfo.DocumentLink != null &&
-                         property.Value.TypeInfo.DocumentLink.ConfigId == configId &&
                          property.Value.TypeInfo.DocumentLink.DocumentId == documentId &&
                          property.Value.TypeInfo.DocumentLink.Resolve == true)
                         || (property.Value.Type != null &&
@@ -133,15 +116,13 @@ namespace InfinniPlatform.SystemConfig.Utils
                             property.Value.Items != null &&
                             property.Value.Items.TypeInfo != null &&
                             property.Value.Items.TypeInfo.DocumentLink != null &&
-                            property.Value.Items.TypeInfo.DocumentLink.ConfigId == configId &&
                             property.Value.Items.TypeInfo.DocumentLink.DocumentId == documentId &&
                             property.Value.Items.TypeInfo.DocumentLink.Resolve == true)
                         || (property.Value.Items != null && property.Value.Items.TypeInfo != null &&
                             property.Value.Items.TypeInfo.DocumentLink != null &&
-                            property.Value.Items.TypeInfo.DocumentLink.ConfigId == configId &&
                             property.Value.Items.TypeInfo.DocumentLink.DocumentId == documentId &&
                             property.Value.Items.TypeInfo.DocumentLink.Resolve == true)
-                        || HasCircularArrayProperty(property, configId, documentId))
+                        || HasCircularArrayProperty(property, documentId))
                     {
                         return true;
                     }
@@ -150,7 +131,7 @@ namespace InfinniPlatform.SystemConfig.Utils
             return false;
         }
 
-        private bool HasCircularArrayProperty(dynamic property, string configId, string documentId)
+        private bool HasCircularArrayProperty(dynamic property, string documentId)
         {
             if (property.Value.Items == null)
             {
@@ -167,7 +148,6 @@ namespace InfinniPlatform.SystemConfig.Utils
             foreach (var innerProperty in properties)
             {
                 if (innerProperty.Value.TypeInfo != null && innerProperty.Value.TypeInfo.DocumentLink != null &&
-                    innerProperty.Value.TypeInfo.DocumentLink.ConfigId == configId &&
                     innerProperty.Value.TypeInfo.DocumentLink.DocumentId == documentId &&
                     innerProperty.Value.TypeInfo.DocumentLink.Resolve == true)
                 {
@@ -187,7 +167,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                                       {
                                           var documentApi = containerResolver.Resolve<IDocumentApi>();
                                           var metadataComponent = containerResolver.Resolve<IMetadataApi>();
-                                          return new DocumentLinkMap(metadataComponent, documentApi.GetDocuments);
+                                          return new DocumentLinkMap(metadataComponent, (documentType, filter, pageNumber, pageSize, sorting) => documentApi.GetDocuments(documentType, filter, pageNumber, pageSize, sorting));
                                       };
         }
 

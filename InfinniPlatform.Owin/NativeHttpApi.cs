@@ -436,15 +436,13 @@ namespace InfinniPlatform.Owin
         /// Изменяет запись конфигурации драйвера HTTP Server API.
         /// </summary>
         [DllImport("httpapi.dll", SetLastError = true)]
-        private static extern uint HttpSetServiceConfiguration(IntPtr serviceIntPtr, HTTP_SERVICE_CONFIG_ID configId,
-                                                               IntPtr pConfigInformation, int configInformationLength, IntPtr pOverlapped);
+        private static extern uint HttpSetServiceConfiguration(IntPtr serviceIntPtr, HTTP_SERVICE_CONFIG_ID configId, IntPtr pConfigInformation, int configInformationLength, IntPtr pOverlapped);
 
         /// <summary>
         /// Удаляет запись конфигурации драйвера HTTP Server API.
         /// </summary>
         [DllImport("httpapi.dll", SetLastError = true)]
-        private static extern uint HttpDeleteServiceConfiguration(IntPtr serviceIntPtr, HTTP_SERVICE_CONFIG_ID configId,
-                                                                  IntPtr pConfigInformation, int configInformationLength, IntPtr pOverlapped);
+        private static extern uint HttpDeleteServiceConfiguration(IntPtr serviceIntPtr, HTTP_SERVICE_CONFIG_ID configId, IntPtr pConfigInformation, int configInformationLength, IntPtr pOverlapped);
 
         /// <summary>
         /// Возвращает записи конфигурации драйвера HTTP Server API.

@@ -2,29 +2,24 @@
 using System.Linq;
 
 using InfinniPlatform.Core.Security;
-using InfinniPlatform.Sdk;
-using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.SystemConfig.Documents;
 using InfinniPlatform.SystemConfig.Properties;
 
 namespace InfinniPlatform.SystemConfig.UserStorage
 {
     internal sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
-        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, DocumentApi documentApi, ElasticSearchUserStorage userStorage)
+        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, ElasticSearchUserStorage userStorage)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
             _userCache = userCache;
-            _documentApi = documentApi;
             _userStorage = userStorage;
         }
 
 
         private readonly Lazy<ApplicationUserStoreCache> _userCache;
-        private readonly DocumentApi _documentApi;
         private readonly ElasticSearchUserStorage _userStorage;
 
         public void CreateUser(ApplicationUser user)
@@ -34,8 +29,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 user.Id = CreateUnique();
             }
 
-            SaveUser(user);
-            UpdateUserInCache(user);
+            UpdateUser(user);
         }
 
         public void UpdateUser(ApplicationUser user)
@@ -48,16 +42,12 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         {
             user.SecurityStamp = CreateUnique();
 
-            _userStorage.Save(user.Id, ConvertToDynamic(user));
-
-            // SetDocument(AuthorizationStorageExtensions.UserStore, ConvertToDynamic(user));
+            _userStorage.Save(user.Id, JsonObjectSerializer.Default.ConvertToDynamic(user));
         }
 
         public void DeleteUser(ApplicationUser user)
         {
             _userStorage.Delete(user.Id);
-
-            // DeleteDocument(AuthorizationStorageExtensions.UserStore, user.Id);
 
             RemoveUserFromCache(user.Id);
         }
@@ -65,36 +55,26 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         public ApplicationUser FindUserById(string userId)
         {
             return FindUserInCache(c => c.FindUserById(userId), () => FindUser("Id", userId));
-
-            // return FindUserInCache(c => c.FindUserById(userId), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Id", userId));
         }
 
         public ApplicationUser FindUserByUserName(string userName)
         {
             return FindUserInCache(c => c.FindUserByUserName(userName), () => FindUser("UserName", userName));
-
-            // return FindUserInCache(c => c.FindUserByUserName(userName), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "UserName", userName));
         }
 
         public ApplicationUser FindUserByEmail(string email)
         {
             return FindUserInCache(c => c.FindUserByEmail(email), () => FindUser("Email", email));
-
-            // return FindUserInCache(c => c.FindUserByEmail(email), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Email", email));
         }
 
         public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
         {
             return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => FindUser("PhoneNumber", phoneNumber));
-
-            // return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "PhoneNumber", phoneNumber));
         }
 
         public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
         {
             return FindUserInCache(c => c.FindUserByLogin(userLogin), () => FindUser("Logins.ProviderKey", userLogin.ProviderKey));
-
-            // return FindUserInCache(c => c.FindUserByLogin(userLogin), () => GetDocument<ApplicationUser>(AuthorizationStorageExtensions.UserStore, "Logins.ProviderKey", userLogin.ProviderKey));
         }
 
         public ApplicationUser FindUserByName(string name)
@@ -107,7 +87,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             var user = _userStorage.Find(property, value);
 
             return (user != null)
-                       ? ConvertFromDynamic<ApplicationUser>(user)
+                       ? JsonObjectSerializer.Default.ConvertFromDynamic<ApplicationUser>(user)
                        : null;
         }
 
@@ -118,28 +98,19 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 throw new ArgumentException(Resources.CantAddUnsavedUserToRole);
             }
 
-            dynamic role = GetDocument(AuthorizationStorageExtensions.RoleStore, "Name", roleName);
-
-            if (role == null)
-            {
-                throw new ArgumentException(string.Format(Resources.RoleNotFound, roleName));
-            }
-
             var roles = user.Roles.ToList();
 
-            if (roles.All(r => r.Id != role.Id))
+            if (roles.All(r => r.Id != roleName))
             {
                 // Обновление сведений пользователя
-                roles.Add(new ForeignKey { Id = role.Id, DisplayName = role.Name });
+                roles.Add(new ForeignKey { Id = roleName, DisplayName = roleName });
                 user.Roles = roles;
                 UpdateUser(user);
 
                 // Добавление связки пользователь-роль
                 dynamic userRole = new DynamicWrapper();
                 userRole.UserName = user.UserName;
-                userRole.RoleName = role.Name;
-
-                SetDocument(AuthorizationStorageExtensions.UserRoleStore, userRole);
+                userRole.RoleName = roleName;
             }
         }
 
@@ -150,29 +121,13 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 throw new ArgumentException(Resources.CantRemoveUnsavedUserFromRole);
             }
 
-            dynamic role = GetDocument(AuthorizationStorageExtensions.RoleStore, "Name", roleName);
-
-            if (role == null)
-            {
-                throw new ArgumentException(string.Format(Resources.RoleNotFound, roleName));
-            }
-
             var roles = user.Roles.ToList();
 
-            if (roles.Any(r => r.Id == role.Id))
+            if (roles.Any(r => r.Id == roleName))
             {
                 // Обновление сведений пользователя
-                user.Roles = roles.Where(r => r.Id != role.Id).ToList();
+                user.Roles = roles.Where(r => r.Id != roleName).ToList();
                 UpdateUser(user);
-
-                // Удаление связки пользователь-роль
-
-                dynamic userRole = GetDocument(AuthorizationStorageExtensions.UserRoleStore, "RoleName", roleName, "UserName", user.UserName);
-
-                if (userRole != null)
-                {
-                    DeleteDocument(AuthorizationStorageExtensions.UserRoleStore, userRole.Id);
-                }
             }
         }
 
@@ -196,15 +151,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
         }
 
-        public void RemoveUserClaim(ApplicationUser user, string claimType)
-        {
-            if (user.Claims.Any(c => c.Type.DisplayName == claimType))
-            {
-                user.Claims = user.Claims.Where(c => c.Type.DisplayName != claimType).ToList();
-                UpdateUser(user);
-            }
-        }
-
         public void AddUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
         {
             var logins = user.Logins.ToList();
@@ -224,127 +170,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
                 user.Logins = user.Logins.Where(f => !(f.Provider == userLogin.Provider && f.ProviderKey == userLogin.ProviderKey)).ToList();
                 UpdateUser(user);
             }
-        }
-
-        public void AddRole(string name, string caption, string description)
-        {
-            dynamic role = new DynamicWrapper();
-            role.Name = name;
-            role.Caption = caption;
-            role.Description = description;
-
-            dynamic existsRole = GetDocument(AuthorizationStorageExtensions.RoleStore, "Name", name);
-
-            if (existsRole != null)
-            {
-                role.Id = existsRole.Id;
-            }
-
-            SetDocument(AuthorizationStorageExtensions.RoleStore, role);
-        }
-
-        public void RemoveRole(string name)
-        {
-            dynamic role = GetDocument(AuthorizationStorageExtensions.RoleStore, "Name", name);
-
-            if (role == null)
-            {
-                throw new ArgumentException(string.Format(Resources.RoleNotFound, name));
-            }
-
-            dynamic roleLinks = GetDocument(AuthorizationStorageExtensions.UserStore, "Roles.DisplayName", name);
-
-            if (roleLinks != null)
-            {
-                throw new ArgumentException(string.Format(Resources.RoleIsUsed, name));
-            }
-
-            DeleteDocument(AuthorizationStorageExtensions.RoleStore, role.Id);
-        }
-
-        public dynamic FindClaimType(string claimType)
-        {
-            return GetDocument<ApplicationClaimType>(AuthorizationStorageExtensions.ClaimStore, "Name", claimType);
-        }
-
-        public void AddClaimType(string claimType)
-        {
-            dynamic claim = FindClaimType(claimType);
-
-            if (claim == null)
-            {
-                claim = new DynamicWrapper();
-                claim.Name = claimType;
-
-                SetDocument(AuthorizationStorageExtensions.ClaimStore, claim);
-            }
-        }
-
-        public void RemoveClaimType(string claimType)
-        {
-            dynamic claim = FindClaimType(claimType);
-
-            if (claim != null)
-            {
-                dynamic claimLinks = GetDocument(AuthorizationStorageExtensions.UserStore, "Claims.Type.DisplayName", claimType);
-
-                if (claimLinks != null)
-                {
-                    throw new ArgumentException(string.Format(Resources.ClaimIsUsed, claimType));
-                }
-
-                DeleteDocument(AuthorizationStorageExtensions.ClaimStore, claim.Id);
-            }
-        }
-
-        private object GetDocument(string documentType, string propertyName, string propertyValue)
-        {
-            return GetDocument(documentType, f => f.AddCriteria(cr => cr.Property(propertyName).IsEquals(propertyValue)));
-        }
-
-        private T GetDocument<T>(string documentType, string propertyName, string propertyValue)
-        {
-            var document = GetDocument(documentType, f => f.AddCriteria(cr => cr.Property(propertyName).IsEquals(propertyValue)));
-            return ConvertFromDynamic<T>(document);
-        }
-
-        private object GetDocument(string documentType, params string[] documentFilters)
-        {
-            return GetDocument(documentType, f =>
-                                             {
-                                                 for (var i = 0; i < documentFilters.Length; i += 2)
-                                                 {
-                                                     var propertyName = documentFilters[i];
-                                                     var propertyValue = documentFilters[i + 1];
-                                                     f.AddCriteria(cr => cr.Property(propertyName).IsEquals(propertyValue));
-                                                 }
-                                             });
-        }
-
-        private object GetDocument(string documentType, Action<FilterBuilder> documentFilters)
-        {
-            var documents = _documentApi.GetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, documentFilters, 0, 1);
-            return (documents != null) ? documents.FirstOrDefault() : null;
-        }
-
-        private void SetDocument(string documentType, object document)
-        {
-            _documentApi.SetDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, document);
-        }
-
-        private void DeleteDocument(string documentType, string documentId)
-        {
-            _documentApi.DeleteDocument(AuthorizationStorageExtensions.AuthorizationConfigId, documentType, documentId);
-        }
-
-        private static T ConvertFromDynamic<T>(object dynamicObject)
-        {
-            return (T)JsonObjectSerializer.Default.ConvertFromDynamic(dynamicObject, typeof(T));
-        }
-
-        private static object ConvertToDynamic(object typeObject)
-        {
-            return JsonObjectSerializer.Default.ConvertToDynamic(typeObject);
         }
 
 

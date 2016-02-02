@@ -20,7 +20,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
             {
                 dynamic item = new DynamicWrapper();
                 item.TestValue = "AnotherTest";
-                _documentApi.SetDocument(target.Configuration, target.DocumentType, item);
+                _documentApi.SetDocument(target.DocumentType, item);
             }
         }
     }

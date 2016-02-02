@@ -21,9 +21,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
             string registerName = isInfoRegister ? RegisterApiAcceptanceTest.InfoRegister : RegisterApiAcceptanceTest.AvailableBedsRegister;
 
             CreateRegisterEntry(target, registerName,
-                r => r.CreateEntry(
-                    target.Configuration,
-                    RegisterApiAcceptanceTest.AvailableBedsRegister,
+                r => r.CreateEntry(RegisterApiAcceptanceTest.AvailableBedsRegister,
                     target.DocumentType,
                     (DateTime?)target.Item.Date,
                     (object)target.Item,
@@ -39,7 +37,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions
             registerEntry.Bed = target.Item.Bed;
             registerEntry.Value = 1; // Изменение количества на единицу
 
-            _registerApi.PostEntries(target.Configuration, registerName, new[] { registerEntry });
+            _registerApi.PostEntries(registerName, new[] { registerEntry });
         }
     }
 }

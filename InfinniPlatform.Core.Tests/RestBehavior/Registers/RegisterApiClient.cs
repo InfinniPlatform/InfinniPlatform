@@ -17,7 +17,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         private readonly bool _synchronous;
 
         public IEnumerable<object> GetEntries(
-            string configuration,
             string registerName,
             IEnumerable<FilterCriteria> filter,
             int pageNumber,
@@ -27,7 +26,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             var requestData = new RegisterApiRequest
                               {
-                                  Configuration = configuration,
                                   RegisterName = registerName,
                                   Filter = filter,
                                   PageNumber = pageNumber,
@@ -38,7 +36,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         }
 
         public IEnumerable<object> GetValuesByDate(
-            string configuration,
             string registerName,
             DateTime aggregationDate,
             IEnumerable<FilterCriteria> filter = null,
@@ -50,7 +47,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             var requestData = new RegisterApiRequest
                               {
-                                  Configuration = configuration,
                                   RegisterName = registerName,
                                   BeginDate = aggregationDate,
                                   EndDate = aggregationDate,
@@ -64,7 +60,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         }
 
         public IEnumerable<object> GetValuesBetweenDates(
-            string configuration,
             string registerName,
             DateTime beginDate,
             DateTime endDate,
@@ -77,7 +72,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 
             var requestData = new RegisterApiRequest
                               {
-                                  Configuration = configuration,
                                   RegisterName = registerName,
                                   BeginDate = beginDate,
                                   EndDate = endDate,
@@ -90,14 +84,12 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             return RequestExecutor.PostArray(requestUri, requestData);
         }
 
-        public void RecalculateTotals(
-            string configuration)
+        public void RecalculateTotals()
         {
             var requestUri = BuildRequestUri("/System/Registers/RecalculateTotals");
 
             var requestData = new RegisterApiRequest
                               {
-                                  Configuration = configuration,
                                   Synchronous = _synchronous
                               };
 

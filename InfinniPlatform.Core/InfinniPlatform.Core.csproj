@@ -77,7 +77,6 @@
     <Compile Include="Index\SearchViewModel.cs" />
     <Compile Include="Index\SortOption.cs" />
     <Compile Include="Index\SortOrder.cs" />
-    <Compile Include="Metadata\IConfigurationMetadataProvider.cs" />
     <Compile Include="Contracts\ActionContext.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />
     <Compile Include="Factories\IIntegrationBusFactory.cs" />
@@ -104,7 +103,6 @@
     <Compile Include="MessageQueue\Integration\IntegrationBusMessage.cs" />
     <Compile Include="MessageQueue\Integration\IntegrationBusSubscription.cs" />
     <Compile Include="Metadata\DataType.cs" />
-    <Compile Include="Metadata\IConfigurationMetadata.cs" />
     <Compile Include="Metadata\MetadataType.cs" />
     <Compile Include="Metadata\Validation\IMetadataSchemaValidator.cs" />
     <Compile Include="Metadata\Validation\IMetadataSchemaValidatorFactory.cs" />
@@ -128,14 +126,12 @@
     <Compile Include="Runtime\IScriptProcessor.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="Schema\DataSchema.cs" />
-    <Compile Include="Schema\ISchemaProvider.cs" />
     <Compile Include="Schema\LinkEntry.cs" />
     <Compile Include="Schema\SchemaCreator.cs" />
     <Compile Include="Schema\SchemaDataType.cs" />
     <Compile Include="Schema\SchemaDataTypeExtensions.cs" />
     <Compile Include="Schema\SchemaIterator.cs" />
     <Compile Include="Schema\SchemaObject.cs" />
-    <Compile Include="Schema\SchemaProvider.cs" />
     <Compile Include="SearchOptions\SearchType.cs" />
     <Compile Include="Security\ApplicationClaimType.cs" />
     <Compile Include="Security\ApplicationClaimTypes.cs" />

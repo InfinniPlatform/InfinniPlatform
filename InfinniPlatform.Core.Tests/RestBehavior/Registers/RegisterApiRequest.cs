@@ -8,8 +8,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
 {
     internal sealed class RegisterApiRequest
     {
-        public string Configuration { get; set; }
-
         public string RegisterName { get; set; }
 
         public DateTime? BeginDate { get; set; }

@@ -39,10 +39,6 @@ namespace InfinniPlatform.SystemConfig.IoC
 
             builder.RegisterType<MetadataApi>()
                    .As<IMetadataApi>()
-                   .SingleInstance();
-
-            builder.RegisterType<ConfigurationMetadataProvider>()
-                   .As<IConfigurationMetadataProvider>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -53,7 +49,6 @@ namespace InfinniPlatform.SystemConfig.IoC
             // Documents
 
             builder.RegisterType<DocumentApi>()
-                   .AsSelf()
                    .As<IDocumentApi>()
                    .SingleInstance();
 

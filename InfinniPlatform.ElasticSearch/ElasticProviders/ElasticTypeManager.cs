@@ -38,32 +38,40 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
         private readonly ElasticConnection _elasticConnection;
 
         private readonly object _mappingsCacheSync = new object();
-        private volatile Dictionary<string, IList<TypeMapping>> _mappingsCache;
+        private volatile IList<TypeMapping> _mappingsCache;
 
         // INDEXES
 
-        public bool IndexExists(string indexName)
+        public bool IndexExists()
         {
-            indexName = indexName.ToLower();
+            var indexName = _elasticConnection.IndexName;
 
             return _elasticConnection.Client.IndexExists(i => i.Index(indexName)).Exists;
         }
 
-        public void CreateIndex(string indexName)
+        public void CreateIndex()
         {
-            indexName = indexName.ToLower();
+            var indexName = _elasticConnection.IndexName;
 
-            _elasticConnection.Client.CreateIndex(i => i.Index(indexName)
-                                                 .Analysis(ad => ad.Analyzers(SetDefaultAnalyzers)));
+            _elasticConnection.Client.CreateIndex(i => i.Index(indexName).Analysis(ad => ad.Analyzers(SetDefaultAnalyzers)));
+
+            ResetIndexMappings();
+        }
+
+        public void DeleteIndex()
+        {
+            var indexName = _elasticConnection.IndexName;
+
+            _elasticConnection.Client.DeleteIndex(i => i.Index(indexName));
 
             ResetIndexMappings();
         }
 
         private static FluentDictionary<string, AnalyzerBase> SetDefaultAnalyzers(FluentDictionary<string, AnalyzerBase> ab)
         {
-            // Для корректной работы маппера в настройках ElasticSearch должны быть
-            // определены необходимые фильтры и анализаторы:
-            /*             
+            // Для корректной работы маппера в настройках ElasticSearch должны быть определены необходимые фильтры и анализаторы:
+
+            /*
             index:
                 analysis:
                     filter:
@@ -96,6 +104,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
                             filter: [ lowercase, lengthfilter]
                             tokenizer:  keyword
              */
+
             var defaultFilter = new List<string> { "lowercase", "lengthfilter" };
             var defaultAnalyzers = new Dictionary<string, AnalyzerBase>
                                    {
@@ -151,33 +160,23 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             return ab;
         }
 
-        public void DeleteIndex(string indexName)
-        {
-            indexName = indexName.ToLower();
-
-            _elasticConnection.Client.DeleteIndex(i => i.Index(indexName));
-
-            ResetIndexMappings();
-        }
 
         // TYPES
 
-        public bool TypeExists(string indexName, string typeName)
+        public bool TypeExists(string typeName)
         {
-            indexName = indexName.ToLower();
             typeName = typeName.ToLower();
 
-            var typeMappings = GetTypeMappings(indexName, typeName);
+            var typeMappings = GetTypeMappings(typeName);
 
             return typeMappings.Any();
         }
 
-        public void CreateType(string indexName, string typeName, IList<PropertyMapping> properties = null, bool deleteExistingVersion = false, SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
+        public void CreateType(string typeName, IList<PropertyMapping> properties = null, bool deleteExistingVersion = false, SearchAbilityType searchAbility = SearchAbilityType.KeywordBasedSearch)
         {
-            indexName = indexName.ToLower();
             typeName = typeName.ToLower();
 
-            var typeMappings = GetTypeMappings(indexName, typeName);
+            var typeMappings = GetTypeMappings(typeName);
 
             var schemaTypeVersionNumber = 0;
 
@@ -192,25 +191,24 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             {
                 foreach (var typeMapping in typeMappings)
                 {
-                    _elasticConnection.Client.DeleteMapping<dynamic>(d => d.Index(indexName).Type(typeMapping.TypeName));
+                    _elasticConnection.Client.DeleteMapping<dynamic>(d => d.Type(typeMapping.TypeName));
                 }
             }
 
             var schemaTypeVersion = (typeName + IndexTypeMapper.MappingTypeVersionPattern + schemaTypeVersionNumber).ToLowerInvariant();
 
-            if (!IndexExists(indexName))
+            if (!IndexExists())
             {
-                CreateIndex(indexName);
+                CreateIndex();
             }
 
             _elasticConnection.Refresh();
 
-            _elasticConnection.Client.Map<dynamic>(s => s.Index(indexName)
-                                                         .Type(schemaTypeVersion)
+            _elasticConnection.Client.Map<dynamic>(s => s.Type(schemaTypeVersion)
                                                          .SearchAnalyzer("string_lowercase")
                                                          .IndexAnalyzer(searchAbility.ToString().ToLowerInvariant()));
 
-            var mapping = _elasticConnection.Client.GetMapping<dynamic>(d => d.Index(indexName).Type(schemaTypeVersion));
+            var mapping = _elasticConnection.Client.GetMapping<dynamic>(d => d.Type(schemaTypeVersion));
 
             if (mapping == null)
             {
@@ -219,22 +217,21 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             if (properties != null)
             {
-                IndexTypeMapper.ApplyIndexTypeMapping(_elasticConnection.Client, indexName, schemaTypeVersion, properties);
+                IndexTypeMapper.ApplyIndexTypeMapping(_elasticConnection.Client, schemaTypeVersion, properties);
             }
 
             ResetIndexMappings();
         }
 
-        public void DeleteType(string indexName, string typeName)
+        public void DeleteType(string typeName)
         {
-            indexName = indexName.ToLower();
             typeName = typeName.ToLower();
 
-            var typeMappings = GetTypeMappings(indexName, typeName);
+            var typeMappings = GetTypeMappings(typeName);
 
             foreach (var mapping in typeMappings)
             {
-                _elasticConnection.Client.DeleteMapping<dynamic>(d => d.Index(indexName).Type(mapping.TypeName));
+                _elasticConnection.Client.DeleteMapping<dynamic>(d => d.Type(mapping.TypeName));
             }
 
             _elasticConnection.Refresh();
@@ -244,12 +241,11 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
         // MAPPINGS
 
-        public IEnumerable<TypeMapping> GetTypeMappings(string indexName, string typeName)
+        public IEnumerable<TypeMapping> GetTypeMappings(string typeName)
         {
-            indexName = indexName.ToLower();
             typeName = typeName.ToLower();
 
-            var indexMappings = GetIndexMappings(indexName);
+            var indexMappings = GetIndexMappings();
 
             if (indexMappings != null)
             {
@@ -263,15 +259,14 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             return Enumerable.Empty<TypeMapping>();
         }
 
-        public IList<PropertyMapping> GetPropertyMappings(string indexName, string typeName)
+        public IList<PropertyMapping> GetPropertyMappings(string typeName)
         {
-            indexName = indexName.ToLower();
             typeName = typeName.ToLower();
 
             // TODO: Рассмотреть возможность использования типов данных из NEST.
             var propertyMappings = new List<PropertyMapping>();
 
-            var indexMappings = GetIndexMappings(indexName);
+            var indexMappings = GetIndexMappings();
 
             if (indexMappings == null)
             {
@@ -336,7 +331,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             return new PropertyMapping(propertyName, dataType, hasSortingFiled);
         }
 
-        public string GetActualTypeName(string configuration, string documentType)
+        public string GetActualTypeName(string documentType)
         {
             // TODO: Данный метод должен возвращать актуальное имя типа для версии приложения.
             // Вместо этого он возвращает имя последнего созданного типа, что в свою очередь
@@ -344,10 +339,9 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             string actualTypeName = null;
 
-            var indexName = _elasticConnection.GetIndexName(configuration);
             var baseTypeName = _elasticConnection.GetBaseTypeName(documentType);
 
-            var indexMappings = GetIndexMappings(indexName);
+            var indexMappings = GetIndexMappings();
 
             if (indexMappings != null)
             {
@@ -371,10 +365,8 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             return actualTypeName;
         }
 
-        private IList<TypeMapping> GetIndexMappings(string indexName)
+        private IList<TypeMapping> GetIndexMappings()
         {
-            IList<TypeMapping> result = null;
-
             var mappings = _mappingsCache;
 
             if (mappings == null)
@@ -385,19 +377,21 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
                     if (mappings == null)
                     {
-                        mappings = _elasticConnection.Client.GetMapping(new GetMappingRequest("_all", "_all")).Mappings;
+                        var indexName = _elasticConnection.IndexName;
+
+                        var actualMappings = _elasticConnection.Client.GetMapping(new GetMappingRequest(indexName, "_all")).Mappings;
+
+                        if (actualMappings != null && actualMappings.TryGetValue(indexName, out mappings))
+                        {
+                            _mappingsCache = mappings;
+                        }
 
                         _mappingsCache = mappings;
                     }
                 }
             }
 
-            if (mappings != null)
-            {
-                mappings.TryGetValue(indexName, out result);
-            }
-
-            return result;
+            return mappings;
         }
 
         private void ResetIndexMappings()

@@ -45,11 +45,10 @@ namespace InfinniPlatform.SystemConfig.Services
         private Task<object> GetDocumentById(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
-            string configuration = requestForm.ConfigId;
             string documentType = requestForm.DocumentId;
             string documentId = requestForm.Id;
 
-            var result = _documentApi.GetDocumentById(configuration, documentType, documentId);
+            var result = _documentApi.GetDocumentById(documentType, documentId);
 
             return Task.FromResult<object>(result);
         }
@@ -61,7 +60,6 @@ namespace InfinniPlatform.SystemConfig.Services
             try
             {
                 dynamic requestForm = request.Form.changesObject;
-                string configuration = requestForm.Configuration;
                 string documentType = requestForm.Metadata;
                 object filter = requestForm.Filter;
                 object sorting = requestForm.Sorting;
@@ -72,7 +70,7 @@ namespace InfinniPlatform.SystemConfig.Services
                 int pageNumber = Math.Max((int)(requestForm.PageNumber ?? 0), 0);
                 int pageSize = Math.Min((int)(requestForm.PageSize ?? 0), 1000);
 
-                var result = _documentApi.GetDocuments(configuration, documentType, filterCriterias, pageNumber, pageSize, sortingCriterias);
+                var result = _documentApi.GetDocuments(documentType, filterCriterias, pageNumber, pageSize, sortingCriterias);
 
                 _performanceLog.Log("GetDocuments", start);
 
@@ -89,13 +87,12 @@ namespace InfinniPlatform.SystemConfig.Services
         private Task<object> GetNumberOfDocuments(IHttpRequest request)
         {
             dynamic requestForm = request.Form.changesObject;
-            string configuration = requestForm.Configuration;
             string documentType = requestForm.Metadata;
             object filter = requestForm.Filter;
 
             var filterCriterias = JsonObjectSerializer.Default.ConvertFromDynamic<FilterCriteria[]>(filter);
 
-            var numberOfDocuments = _documentApi.GetNumberOfDocuments(configuration, documentType, filterCriterias);
+            var numberOfDocuments = _documentApi.GetNumberOfDocuments(documentType, filterCriterias);
 
             var result = new DynamicWrapper { ["NumberOfDocuments"] = numberOfDocuments };
 
@@ -109,13 +106,12 @@ namespace InfinniPlatform.SystemConfig.Services
             try
             {
                 dynamic requestForm = request.Form.changesObject;
-                string configuration = requestForm.Configuration;
                 string documentType = requestForm.Metadata;
                 IEnumerable<dynamic> documents = requestForm.Documents ?? new object[] { requestForm.Document };
 
                 SetSynchronous(request.Form.Synchronous == true);
 
-                var result = _documentApi.SetDocuments(configuration, documentType, documents);
+                var result = _documentApi.SetDocuments(documentType, documents);
 
                 if (result.IsValid == false)
                 {
@@ -141,13 +137,12 @@ namespace InfinniPlatform.SystemConfig.Services
             try
             {
                 dynamic requestForm = request.Form.changesObject;
-                string configuration = requestForm.Configuration;
                 string documentType = requestForm.Metadata;
                 string documentId = requestForm.Id;
 
                 SetSynchronous(request.Form.Synchronous == true);
 
-                var result = _documentApi.DeleteDocument(configuration, documentType, documentId);
+                var result = _documentApi.DeleteDocument(documentType, documentId);
 
                 if (result.IsValid == false)
                 {
@@ -183,7 +178,6 @@ namespace InfinniPlatform.SystemConfig.Services
                 throw new ArgumentException(@"LinkedData");
             }
 
-            string configuration = linkedData.Configuration;
             string documentType = linkedData.Metadata;
             string documentId = linkedData.DocumentId;
             string fileProperty = linkedData.FieldName;
@@ -198,7 +192,7 @@ namespace InfinniPlatform.SystemConfig.Services
                 {
                     SetSynchronous(linkedData.Synchronous == true);
 
-                    _documentApi.AttachFile(configuration, documentType, documentId, fileProperty, firstFile.Value);
+                    _documentApi.AttachFile(documentType, documentId, fileProperty, firstFile.Value);
                 }
             }
 

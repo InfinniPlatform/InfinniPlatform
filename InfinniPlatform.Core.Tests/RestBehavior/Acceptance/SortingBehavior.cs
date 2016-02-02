@@ -13,7 +13,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class SortingBehavior
     {
-        private const string ConfigurationId = "TestConfiguration";
         private const string OneStringSortingFieldDocument = "OneStringSortingFieldDocument";
         private const string OneIntSortingFieldDocument = "OneIntSortingFieldDocument";
         private const string OneDateSortingFieldDocument = "OneDateSortingFieldDocument";
@@ -63,15 +62,15 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, OneSortingFieldInArrayDocument, document1);
-            documentApi.SetDocument(ConfigurationId, OneSortingFieldInArrayDocument, document2);
-            documentApi.SetDocument(ConfigurationId, OneSortingFieldInArrayDocument, document3);
+            documentApi.SetDocument(OneSortingFieldInArrayDocument, document1);
+            documentApi.SetDocument(OneSortingFieldInArrayDocument, document2);
+            documentApi.SetDocument(OneSortingFieldInArrayDocument, document3);
 
             // По умолчанию - сортировка по возрастанию SortableStringProperty
-            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInArrayDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(OneSortingFieldInArrayDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInArrayDocument, null, 0, 10, s => s.AddSorting("ArrayProperty.SortableStringProperty", "descending"));
+            var descPage0 = documentApi.GetDocument(OneSortingFieldInArrayDocument, null, 0, 10, s => s.AddSorting("ArrayProperty.SortableStringProperty", "descending"));
 
             // Then
 
@@ -98,16 +97,16 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             {
                 var document = new { SortableDateProperty = startDate.AddDays(i) };
 
-                documentApi.SetDocument(ConfigurationId, OneDateSortingFieldDocument, document);
+                documentApi.SetDocument(OneDateSortingFieldDocument, document);
             }
 
             // По умолчанию - сортировка по возрастанию SortableDateProperty
-            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 0, 10);
-            var ascPage1 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 1, 10);
+            var ascPage0 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 0, 10);
+            var ascPage1 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 1, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableDateProperty", "descending"));
-            var descPage1 = documentApi.GetDocument(ConfigurationId, OneDateSortingFieldDocument, null, 1, 10, s => s.AddSorting("SortableDateProperty", "descending"));
+            var descPage0 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableDateProperty", "descending"));
+            var descPage1 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 1, 10, s => s.AddSorting("SortableDateProperty", "descending"));
 
             // Then
 
@@ -153,15 +152,15 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, InlineSortingDocument, document1);
-            documentApi.SetDocument(ConfigurationId, InlineSortingDocument, document2);
-            documentApi.SetDocument(ConfigurationId, InlineSortingDocument, document3);
+            documentApi.SetDocument(InlineSortingDocument, document1);
+            documentApi.SetDocument(InlineSortingDocument, document2);
+            documentApi.SetDocument(InlineSortingDocument, document3);
 
             // По умолчанию - сортировка по возрастанию ObjectProperty.SortableStringProperty
-            var ascPage0 = documentApi.GetDocument(ConfigurationId, InlineSortingDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(InlineSortingDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, InlineSortingDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "descending"));
+            var descPage0 = documentApi.GetDocument(InlineSortingDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "descending"));
 
             // Then
 
@@ -186,14 +185,14 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             {
                 var document = new { SortableIntProperty = i };
 
-                documentApi.SetDocument(ConfigurationId, OneIntSortingFieldDocument, document);
+                documentApi.SetDocument(OneIntSortingFieldDocument, document);
             }
 
             // По умолчанию - сортировка по возрастанию SortableIntProperty
-            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneIntSortingFieldDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(OneIntSortingFieldDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneIntSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableIntProperty", "descending"));
+            var descPage0 = documentApi.GetDocument(OneIntSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableIntProperty", "descending"));
 
             // Then
 
@@ -232,15 +231,15 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, document1);
-            documentApi.SetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, document2);
-            documentApi.SetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, document3);
+            documentApi.SetDocument(OneSortingFieldInNestedObjectDocument, document1);
+            documentApi.SetDocument(OneSortingFieldInNestedObjectDocument, document2);
+            documentApi.SetDocument(OneSortingFieldInNestedObjectDocument, document3);
 
             // По умолчанию - сортировка по возрастанию ObjectProperty.SortableStringProperty
-            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(OneSortingFieldInNestedObjectDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneSortingFieldInNestedObjectDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "descending"));
+            var descPage0 = documentApi.GetDocument(OneSortingFieldInNestedObjectDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "descending"));
 
             // Then
 
@@ -265,14 +264,14 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             {
                 var document = new { SortableStringProperty = $"эюя абв где {i}" };
 
-                documentApi.SetDocument(ConfigurationId, OneStringSortingFieldDocument, document);
+                documentApi.SetDocument(OneStringSortingFieldDocument, document);
             }
 
             // По умолчанию - сортировка по возрастанию SortableStringProperty
-            var ascPage0 = documentApi.GetDocument(ConfigurationId, OneStringSortingFieldDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(OneStringSortingFieldDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, OneStringSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", "descending"));
+            var descPage0 = documentApi.GetDocument(OneStringSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", "descending"));
 
             // Then
 
@@ -329,18 +328,18 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document1);
-            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document2);
-            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document3);
-            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document4);
-            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document5);
-            documentApi.SetDocument(ConfigurationId, TwoSortingFieldsDocument, document6);
+            documentApi.SetDocument(TwoSortingFieldsDocument, document1);
+            documentApi.SetDocument(TwoSortingFieldsDocument, document2);
+            documentApi.SetDocument(TwoSortingFieldsDocument, document3);
+            documentApi.SetDocument(TwoSortingFieldsDocument, document4);
+            documentApi.SetDocument(TwoSortingFieldsDocument, document5);
+            documentApi.SetDocument(TwoSortingFieldsDocument, document6);
 
             // По умолчанию - сортировка по возрастанию SortableStringProperty и SortableIntProperty
-            var ascPage0 = documentApi.GetDocument(ConfigurationId, TwoSortingFieldsDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(TwoSortingFieldsDocument, null, 0, 10);
 
             // Сортировка по убыванию
-            var descPage0 = documentApi.GetDocument(ConfigurationId, TwoSortingFieldsDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", "descending").AddSorting("SortableIntProperty"));
+            var descPage0 = documentApi.GetDocument(TwoSortingFieldsDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", "descending").AddSorting("SortableIntProperty"));
 
             // Then
 

@@ -13,7 +13,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class AfterDocumentSaveEventsBehavior
     {
-        private const string ConfigurationId = "TestConfiguration";
         private const string DocumentType = "AfterDocumentSaveDocument";
 
         private IDisposable _server;
@@ -38,8 +37,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             var document = new { Id = Guid.NewGuid().ToString(), LastName = "123" };
 
             // When
-            documentApi.SetDocument(ConfigurationId, DocumentType, document);
-            var documents = documentApi.GetDocument(ConfigurationId, DocumentType, f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("Test")), 0, 1);
+            documentApi.SetDocument(DocumentType, document);
+            var documents = documentApi.GetDocument(DocumentType, f => f.AddCriteria(cr => cr.Property("TestValue").IsEquals("Test")), 0, 1);
 
             // Then
             Assert.IsNotNull(documents);

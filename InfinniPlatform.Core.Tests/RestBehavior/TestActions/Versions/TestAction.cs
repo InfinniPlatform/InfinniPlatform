@@ -19,7 +19,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.TestActions.Versions
             {
                 dynamic testDoc1 = new DynamicWrapper();
                 testDoc1.Name = "Name_TestAction";
-                _documentApi.SetDocument(target.Configuration, target.DocumentType, testDoc1);
+                _documentApi.SetDocument(target.DocumentType, testDoc1);
             }
         }
     }

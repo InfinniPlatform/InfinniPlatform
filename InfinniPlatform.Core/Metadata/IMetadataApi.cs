@@ -4,37 +4,35 @@ namespace InfinniPlatform.Core.Metadata
 {
     public interface IMetadataApi
     {
-        IEnumerable<string> GetConfigurationNames();
+        IEnumerable<string> GetMenuNames();
 
-        IEnumerable<string> GetMenuNames(string configuration);
-
-        dynamic GetMenu(string configuration, string menuName);
+        dynamic GetMenu(string menuName);
 
 
-        IEnumerable<string> GetRegisterNames(string configuration);
+        IEnumerable<string> GetRegisterNames();
 
-        dynamic GetRegister(string configuration, string registerName);
-
-
-        IEnumerable<string> GetDocumentNames(string configuration);
-
-        dynamic GetDocumentSchema(string configuration, string documentName);
-
-        dynamic GetDocumentEvents(string configuration, string documentName);
+        dynamic GetRegister(string registerName);
 
 
-        IEnumerable<string> GetActionNames(string configuration, string documentName);
+        IEnumerable<string> GetDocumentNames();
 
-        dynamic GetAction(string configuration, string documentName, string actionName);
+        dynamic GetDocumentSchema(string documentName);
 
-
-        IEnumerable<string> GetViewNames(string configuration, string documentName);
-
-        dynamic GetView(string configuration, string documentName, string viewName);
+        dynamic GetDocumentEvents(string documentName);
 
 
-        IEnumerable<string> GetPrintViewNames(string configuration, string documentName);
+        IEnumerable<string> GetActionNames(string documentName);
 
-        dynamic GetPrintView(string configuration, string documentName, string printViewName);
+        dynamic GetAction(string documentName, string actionName);
+
+
+        IEnumerable<string> GetViewNames(string documentName);
+
+        dynamic GetView(string documentName, string viewName);
+
+
+        IEnumerable<string> GetPrintViewNames(string documentName);
+
+        dynamic GetPrintView(string documentName, string printViewName);
     }
 }

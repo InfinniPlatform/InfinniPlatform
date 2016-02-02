@@ -221,7 +221,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
                 }
 
-				if (_process.Transitions[0].CredentialsPoint != null && _process.Transitions[0].CredentialsType == AuthorizationStorageExtensions.CustomCredentials)
+				if (_process.Transitions[0].CredentialsPoint != null && _process.Transitions[0].CredentialsType == "CustomCredentials")
 				{
 					DefaultProcessCredentialsAction.EditValue = DefaultProcessCredentialsAction.Properties.Items.Cast<ImageComboBoxItem>().FirstOrDefault(
 						i => _process.Transitions[0].CredentialsPoint.ScenarioId == ((dynamic)i.Value).HandlerId);
@@ -412,7 +412,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 		{
 			get
 			{
-				if (DefaultProcessCredentialsType.EditValue != null && DefaultProcessCredentialsType.EditValue == AuthorizationStorageExtensions.CustomCredentials)
+				if (DefaultProcessCredentialsType.EditValue != null && DefaultProcessCredentialsType.EditValue == "CustomCredentials")
 				{
 					if (DefaultProcessCredentialsAction.EditValue == null)
 					{
@@ -476,8 +476,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void ProcessCredentialsEditor_Properties_EditValueChanged(object sender, EventArgs e)
 		{
-			var customCredentialsSelected = DefaultProcessCredentialsType.EditValue.ToString() ==
-											AuthorizationStorageExtensions.CustomCredentials;
+			var customCredentialsSelected = DefaultProcessCredentialsType.EditValue.ToString() == "CustomCredentials";
 
 			CredentialsLabel.Visible = customCredentialsSelected;
 			DefaultProcessCredentialsAction.Visible = customCredentialsSelected;

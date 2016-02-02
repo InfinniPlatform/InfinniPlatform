@@ -40,7 +40,7 @@ namespace InfinniPlatform.SystemConfig.Runtime
             {
                 // TODO: Уже нет смысла хранить скрипты, как сущность конфигурации
 
-                var scriptMetadata = _metadataApi.GetAction(actionUnitContext.Configuration, actionUnitContext.DocumentType, actionUnitId);
+                var scriptMetadata = _metadataApi.GetAction(actionUnitContext.DocumentType, actionUnitId);
 
                 if (scriptMetadata == null)
                 {

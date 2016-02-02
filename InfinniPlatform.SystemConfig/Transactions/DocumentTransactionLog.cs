@@ -23,11 +23,11 @@ namespace InfinniPlatform.SystemConfig.Transactions
         /// <summary>
         /// Возвращает запись журнала.
         /// </summary>
-        public DocumentTransactionCommand GetEntry(string configuration, string documentType, object documentId)
+        public DocumentTransactionCommand GetEntry(string documentType, object documentId)
         {
             DocumentTransactionCommand entry;
 
-            var documentUid = GetDocumentUid(configuration, documentType, documentId);
+            var documentUid = GetDocumentUid(documentType, documentId);
 
             lock (_entriesSync)
             {
@@ -42,7 +42,7 @@ namespace InfinniPlatform.SystemConfig.Transactions
         /// </summary>
         public void EnqueueEntry(DocumentTransactionCommand entry)
         {
-            var documentUid = GetDocumentUid(entry.Configuration, entry.DocumentType, entry.DocumentId);
+            var documentUid = GetDocumentUid(entry.DocumentType, entry.DocumentId);
 
             lock (_entriesSync)
             {
@@ -70,9 +70,9 @@ namespace InfinniPlatform.SystemConfig.Transactions
         }
 
 
-        private static string GetDocumentUid(string configuration, string documentType, object documentId)
+        private static string GetDocumentUid(string documentType, object documentId)
         {
-            return $"{configuration}.{documentType}.{documentId}";
+            return $"{documentType}.{documentId}";
         }
     }
 }

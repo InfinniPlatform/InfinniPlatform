@@ -54,12 +54,10 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
                     if (documentLink != null && documentLink.Inline != null && documentLink.Inline == true)
                     {
-                        // inline ссылка на документ: необходимо получить схему документа, на который сделана ссылка,
-                        // чтобы получить сортировочные поля 
-                        string configurationName = documentLink.ConfigId.ToString();
-
+                        // inline ссылка на документ:
+                        // необходимо получить схему документа, на который сделана ссылка, чтобы получить сортировочные поля 
                         string documentName = documentLink.DocumentId.ToString();
-                        dynamic inlineDocumentSchema = metadataApi.GetDocumentSchema(configurationName, documentName);
+                        dynamic inlineDocumentSchema = metadataApi.GetDocumentSchema(documentName);
 
                         if (inlineDocumentSchema != null)
                         {
@@ -86,7 +84,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         /// <summary>
         /// Проверяет наличие inline ссылки на определенный документ в схеме
         /// </summary>
-        public static bool CheckObjectForSpecifiedInline(dynamic schema, string configId, string documentId)
+        public static bool CheckObjectForSpecifiedInline(dynamic schema, string documentId)
         {
             if (schema.Properties is DynamicWrapper)
             {
@@ -107,12 +105,12 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
                     if (documentLink != null)
                     {
-                        if (documentLink.Inline == true && documentLink.ConfigId == configId && documentLink.DocumentId == documentId)
+                        if (documentLink.Inline == true && documentLink.DocumentId == documentId)
                         {
                             return true;
                         }
 
-                        if (CheckObjectForSpecifiedInline(linkInfoToCheck, configId, documentId))
+                        if (CheckObjectForSpecifiedInline(linkInfoToCheck, documentId))
                         {
                             return true;
                         }

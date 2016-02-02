@@ -12,7 +12,6 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
     [Category(TestCategories.AcceptanceTest)]
     public sealed class ReportingBehavior
     {
-        private const string ConfigurationId = "TestConfiguration";
         private const string DocumentType = "TestDocument";
 
         private IDisposable _server;
@@ -41,9 +40,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When
 
-            documentApi.SetDocument(ConfigurationId, DocumentType, document);
+            documentApi.SetDocument(DocumentType, document);
 
-            var response = printViewApi.GetPrintView(ConfigurationId, DocumentType, "TestPrintView", "ListView", 0, 10, f => f.AddCriteria(cr => cr.Property("TestProperty").IsEquals(document.TestProperty)));
+            var response = printViewApi.GetPrintView(DocumentType, "TestPrintView", "ListView", 0, 10, f => f.AddCriteria(cr => cr.Property("TestProperty").IsEquals(document.TestProperty)));
 
             // Then
 

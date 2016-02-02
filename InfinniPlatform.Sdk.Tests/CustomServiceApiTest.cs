@@ -44,7 +44,7 @@ namespace InfinniPlatform.Sdk.Tests
 				Likes = 0
 			};
 
-			string docId = _documentApiClient.SetDocument("Gameshop", "review", review).Id.ToString();
+			string docId = _documentApiClient.SetDocument("review", review).Id.ToString();
 
 			//When
 			_customApiClient.ExecuteAction("Gameshop", "Review", "Like", new
@@ -53,7 +53,7 @@ namespace InfinniPlatform.Sdk.Tests
 			});
 
 			//Then
-			dynamic documentResult = _documentApiClient.GetDocumentById("Gameshop", "review", docId);
+			dynamic documentResult = _documentApiClient.GetDocumentById("review", docId);
 			Assert.AreEqual(documentResult.Likes, 1);
 		}
 

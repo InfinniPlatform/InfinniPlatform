@@ -378,7 +378,7 @@ namespace InfinniPlatform.MetadataDesigner.Views.ProcessTemplates
 
 		private void CustomProcessCredentialsEditor_Properties_EditValueChanged(object sender, EventArgs e)
 		{
-			var isCustomCredentials = CustomProcessCredentialsEditor.EditValue.ToString() == AuthorizationStorageExtensions.CustomCredentials;
+			var isCustomCredentials = CustomProcessCredentialsEditor.EditValue.ToString() == "CustomCredentials";
 
 			LabelCredentialsAction.Visible = isCustomCredentials;
 			CustomProcessCredentialsAction.Visible = isCustomCredentials;

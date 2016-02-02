@@ -17,11 +17,11 @@ namespace InfinniPlatform.Core.Index
         /// <summary>
         ///     Конструктор
         /// </summary>
-        /// <param name="metadataComponent">Провайдер метаданных сервисной части</param>
+        /// <param name="metadataApi">Провайдер метаданных сервисной части</param>
         /// <param name="schema">Схема данных документа, к которому выполняется запрос</param>
-        public QueryCriteriaAnalyzer(IMetadataApi metadataComponent, dynamic schema)
+        public QueryCriteriaAnalyzer(IMetadataApi metadataApi, dynamic schema)
         {
-            var metadataIterator = new SchemaIterator(new SchemaProvider(metadataComponent))
+            var metadataIterator = new SchemaIterator(metadataApi)
                                    {
                                        OnObjectProperty = schemaObject =>
                                                           {

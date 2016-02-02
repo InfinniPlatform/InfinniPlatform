@@ -9,8 +9,6 @@ namespace InfinniPlatform.Core.Contracts
             IsValid = true;
         }
 
-        public string Configuration { get; set; }
-
         public string DocumentType { get; set; }
 
         public dynamic Item { get; set; }

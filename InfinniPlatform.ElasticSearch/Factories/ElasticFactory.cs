@@ -7,8 +7,8 @@ namespace InfinniPlatform.ElasticSearch.Factories
     /// </summary>
     public sealed class ElasticFactory : IIndexFactory
     {
-        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(string indexName, string typeName);
-        public delegate IAggregationProvider AggregationProviderFactory(string indexName, string typeName);
+        public delegate IIndexQueryExecutor IndexQueryExecutorFactory(string typeName);
+        public delegate IAggregationProvider AggregationProviderFactory(string typeName);
 
 
         public ElasticFactory(IndexQueryExecutorFactory indexQueryExecutorFactory,
@@ -37,31 +37,26 @@ namespace InfinniPlatform.ElasticSearch.Factories
         /// <summary>
         /// Создать исполнитель запросов к индексу
         /// </summary>
-        /// <param name="indexName">
-        /// Наименование индекса, для которого выполняется запрос. Если не указан, осуществляется выборка
-        /// из всех существующих индексов
-        /// </param>
         /// <param name="typeName">
         /// Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка из
         /// всех существующих в индексе типов
         /// </param>
         /// <returns></returns>
-        public IIndexQueryExecutor BuildIndexQueryExecutor(string indexName, string typeName)
+        public IIndexQueryExecutor BuildIndexQueryExecutor(string typeName)
         {
-            return _indexQueryExecutorFactory(indexName, typeName);
+            return _indexQueryExecutorFactory(typeName);
         }
 
         /// <summary>
         /// Создать исполнитель агрегаций
         /// </summary>
-        /// <param name="indexName">Наименование индекса, для которого выполняется запрос</param>
         /// <param name="typeName">
         /// Наименование типа для выполнения операций с данными. Если не указан, осуществляется выборка всех
         /// существующих в индексе типов
         /// </param>
-        public IAggregationProvider BuildAggregationProvider(string indexName, string typeName)
+        public IAggregationProvider BuildAggregationProvider(string typeName)
         {
-            return _aggregationProviderFactory(indexName, typeName);
+            return _aggregationProviderFactory(typeName);
         }
     }
 }

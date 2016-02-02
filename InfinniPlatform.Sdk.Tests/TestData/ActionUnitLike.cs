@@ -16,11 +16,11 @@ namespace InfinniPlatform.Sdk.Tests.TestData
 
         public void Action(IActionContext target)
         {
-            dynamic document = _documentApi.GetDocument("Gameshop", "review", f => f.AddCriteria(c => c.Property("Id").IsEquals(target.Item.DocumentId)), 0, 1).FirstOrDefault();
+            dynamic document = _documentApi.GetDocument("review", f => f.AddCriteria(c => c.Property("Id").IsEquals(target.Item.DocumentId)), 0, 1).FirstOrDefault();
 
             document.Likes = document.Likes + 1;
 
-            _documentApi.SetDocument("Gameshop", "review", document);
+            _documentApi.SetDocument("review", document);
         }
     }
 }

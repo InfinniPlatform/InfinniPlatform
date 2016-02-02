@@ -47,7 +47,6 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
             if (indexObject != null)
             {
-                var index = response.Hits.First().Index;
                 var type = response.Hits.First().Type;
 
                 var typeName = type.Substring(0, type.LastIndexOf(IndexTypeMapper.MappingTypeVersionPattern,
@@ -55,7 +54,6 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
 
                 dynamic result = DynamicWrapperExtensions.ToDynamic(indexObject.Values);
 
-                result.__ConfigId = index;
                 result.__DocumentId = typeName;
                 return result;
             }
