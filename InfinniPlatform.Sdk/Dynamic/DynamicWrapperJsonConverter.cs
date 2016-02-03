@@ -58,7 +58,58 @@ namespace InfinniPlatform.Sdk.Dynamic
         {
             var jObj = JObject.Load(reader);
 
-            return DynamicWrapperExtensions.ConvertFromJsonObject(jObj);
+            return ConvertFromJsonObject(jObj);
+        }
+
+
+        private static object ConvertFromJsonObject(JObject value)
+        {
+            DynamicWrapper result = null;
+
+            if (value != null)
+            {
+                result = new DynamicWrapper();
+
+                foreach (var property in value)
+                {
+                    if (property.Value != null)
+                    {
+                        result[property.Key] = ConvertFromJsonToken(property.Value);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static object ConvertFromJsonToken(JToken value)
+        {
+            object result = null;
+
+            if (value != null)
+            {
+                if (value is JValue)
+                {
+                    result = ((JValue)value).Value;
+                }
+                else if (value is JObject)
+                {
+                    result = ConvertFromJsonObject((JObject)value);
+                }
+                else if (value is JArray)
+                {
+                    var array = new List<object>();
+
+                    foreach (var item in (JArray)value)
+                    {
+                        array.Add(ConvertFromJsonToken(item));
+                    }
+
+                    result = array;
+                }
+            }
+
+            return result;
         }
     }
 }

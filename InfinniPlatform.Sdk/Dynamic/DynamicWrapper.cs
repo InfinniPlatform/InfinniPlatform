@@ -42,6 +42,30 @@ namespace InfinniPlatform.Sdk.Dynamic
             set { TrySetMember(memberName, value); }
         }
 
+
+        /// <summary>
+        /// Устанавливает значение члена с заданным именем.
+        /// </summary>
+        /// <param name="memberName">Имя члена.</param>
+        /// <param name="memberValue">Значение члена.</param>
+        /// <remarks>
+        /// Метод добавлен для возможности использования красивых инициализаторов.
+        /// <example>
+        /// <code>
+        /// new DynamicWrapper
+        /// {
+        ///   { "Property1", 1 },
+        ///   { "Property2", 2 }
+        /// }
+        /// </code>
+        /// </example>
+        /// </remarks>
+        public void Add(string memberName, object memberValue)
+        {
+            this[memberName] = memberValue;
+        }
+
+
         /// <summary>
         /// Возвращает значение члена с заданным именем.
         /// </summary>
