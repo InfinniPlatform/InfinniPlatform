@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.ElasticSearch.Filters.Extensions;
@@ -135,16 +136,14 @@ namespace InfinniPlatform.ElasticSearch.Filters.NestQueries
         {
             var values = JsonConvert.DeserializeObject<IEnumerable<string>>((string)value);
 
-            var nestQuery = new NestQuery(Query<dynamic>.Ids(values));
-
-            return nestQuery;
+            return new NestQuery(Query<dynamic>.Ids(values));
         }
 
         private static IFilter BuildIsInQuery(string field, object value)
         {
-            var valueSet = value.ToString().Split('\n');
+            var values = JsonConvert.DeserializeObject<IEnumerable<string>>((string)value).ToArray();
 
-            return new NestQuery(Query<dynamic>.Terms(field, valueSet));
+            return new NestQuery(Query<dynamic>.Terms(field, values));
         }
 
         private static IFilter BuildLessThanQuery(string field, object value)

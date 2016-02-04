@@ -19,13 +19,5 @@ namespace InfinniPlatform.Sdk.Documents
         public object Value { get; set; }
 
         public CriteriaType CriteriaType { get; set; }
-
-        public string ToJsonString()
-        {
-            var criteriaFilter = new FilterCriteria(Property, Value, CriteriaType);
-            var serializeObject = JsonConvert.SerializeObject(criteriaFilter);
-
-            return serializeObject;
-        }
     }
 }
