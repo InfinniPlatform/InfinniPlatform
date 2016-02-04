@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Transactions;
@@ -8,20 +9,29 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 {
     public sealed class ElasticSearchUserStorage
     {
-        private readonly ElasticConnection _elasticConnection;
-        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
+        private const string UserStorageTypeName = "userstore";
 
-        public ElasticSearchUserStorage(ElasticConnection elasticConnection, IDocumentTransactionScopeProvider transactionScopeProvider)
+        public ElasticSearchUserStorage(ElasticConnection elasticConnection,
+                                        IDocumentTransactionScopeProvider transactionScopeProvider,
+                                        Lazy<ElasticTypeManager> elasticTypeManager)
         {
             _elasticConnection = elasticConnection;
             _transactionScopeProvider = transactionScopeProvider;
+            _elasticTypeManager = elasticTypeManager;
         }
+
+        private readonly ElasticConnection _elasticConnection;
+        private readonly Lazy<ElasticTypeManager> _elasticTypeManager;
+        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
 
         public object Find(string property, string value)
         {
+            var enumerable = _elasticTypeManager.Value.GetTypeMappings(UserStorageTypeName)
+                .Select(mapping => mapping.TypeName);
+            
             // TODO: Load only UserInfo (without header).
             // TODO: Set specific types, not AllTypes().
-            var searchResponse = _elasticConnection.Search<dynamic>(d => d.AllTypes()
+            var searchResponse = _elasticConnection.Search<dynamic>(d => d.Types(enumerable)
                                                                           .Filter(f => f.Term(ElasticConstants.IndexObjectPath + property, value.ToLower()))
                                                                           .Size(1));
 

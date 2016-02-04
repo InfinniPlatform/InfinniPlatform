@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 using Newtonsoft.Json;
 
 namespace InfinniPlatform.Sdk.Documents
 {
     [Serializable]
+    [DebuggerDisplay("{Property}, {CriteriaType}, {Value}")]
     public sealed class FilterCriteria
     {
         public FilterCriteria(string property, object value, CriteriaType criteriaType)
