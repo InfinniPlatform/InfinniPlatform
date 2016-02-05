@@ -147,9 +147,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         private static DynamicWrapper LoadConfigMetadata(string configDirectory)
         {
-            var configFile = Path.Combine(configDirectory, "Configuration.json");
-
-            dynamic configuration = LoadItemMetadata(configFile);
+            dynamic configuration = new DynamicWrapper { { "Name", Path.GetDirectoryName(configDirectory) } };
 
             configuration.Menu = LoadItemsMetadata(configDirectory, "Menu");
             configuration.Registers = LoadItemsMetadata(configDirectory, "Registers");

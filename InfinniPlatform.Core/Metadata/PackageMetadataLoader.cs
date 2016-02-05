@@ -15,7 +15,6 @@ namespace InfinniPlatform.Core.Metadata
     {
         private static IDictionary<string, object> Configurations { get; set; } = LoadConfigsMetadata();
 
-
         /// <summary>
         /// Обновить кэш конфигураций.
         /// </summary>
@@ -23,7 +22,6 @@ namespace InfinniPlatform.Core.Metadata
         {
             Configurations = LoadConfigsMetadata(metadataPath);
         }
-
 
         private static IDictionary<string, object> LoadConfigsMetadata(string metadataDirectory = null)
         {
@@ -50,9 +48,19 @@ namespace InfinniPlatform.Core.Metadata
         {
             var configFile = Path.Combine(configDirectory, "Configuration.json");
 
-            dynamic configuration = ReadMetadataFromFile(configFile);
+            dynamic configuration = File.Exists(configFile)
+                                        ? ReadMetadataFromFile(configFile)
+                                        : new DynamicWrapper
+                                          {
+                                              {
+                                                  "Content", new DynamicWrapper
+                                                             {
+                                                                 { "Name", Directory.GetParent(configFile).Name }
+                                                             }
+                                              }
+                                          };
 
-            string configId = configuration.Name;
+            string configId = configuration.Content.Name;
 
             configuration.Menu = LoadItemsMetadata(configDirectory, "Menu", configId);
             configuration.Registers = LoadItemsMetadata(configDirectory, "Registers", configId);
@@ -142,7 +150,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic configurationInfo = GetConfigurationInfo(configId);
 
-            return (configurationInfo != null) ? configurationInfo.Content : null;
+            return configurationInfo != null
+                       ? configurationInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetConfigurations()
@@ -173,7 +183,6 @@ namespace InfinniPlatform.Core.Metadata
             return Path.Combine(configurationDirectory, "Configuration.json");
         }
 
-
         // Menus
 
         private static object GetMenuInfo(string configId, string menuId)
@@ -189,7 +198,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic menuInfo = GetMenuInfo(configId, menuId);
 
-            return (menuInfo != null) ? menuInfo.Content : null;
+            return menuInfo != null
+                       ? menuInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetMenus(string configId)
@@ -225,7 +236,6 @@ namespace InfinniPlatform.Core.Metadata
             return Path.Combine(menuDirectory, menuId + ".json");
         }
 
-
         // Registers
 
         private static object GetRegisterInfo(string configId, string registerId)
@@ -241,7 +251,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic registerInfo = GetRegisterInfo(configId, registerId);
 
-            return (registerInfo != null) ? registerInfo.Content : null;
+            return registerInfo != null
+                       ? registerInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetRegisters(string configId)
@@ -292,7 +304,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic documentInfo = GetDocumentInfo(configId, documentId);
 
-            return (documentInfo != null) ? documentInfo.Content : null;
+            return documentInfo != null
+                       ? documentInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetDocuments(string configId)
@@ -343,7 +357,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic viewInfo = GetViewInfo(configId, documentId, viewId);
 
-            return (viewInfo != null) ? viewInfo.Content : null;
+            return viewInfo != null
+                       ? viewInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetViews(string configId, string documentId)
@@ -394,7 +410,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic printViewInfo = GetPrintViewInfo(configId, documentId, printViewId);
 
-            return (printViewInfo != null) ? printViewInfo.Content : null;
+            return printViewInfo != null
+                       ? printViewInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetPrintViews(string configId, string documentId)
@@ -445,7 +463,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic processInfo = GetProcessInfo(configId, documentId, processId);
 
-            return (processInfo != null) ? processInfo.Content : null;
+            return processInfo != null
+                       ? processInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetProcesses(string configId, string documentId)
@@ -496,7 +516,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic serviceInfo = GetServiceInfo(configId, documentId, serviceId);
 
-            return (serviceInfo != null) ? serviceInfo.Content : null;
+            return serviceInfo != null
+                       ? serviceInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetServices(string configId, string documentId)
@@ -547,7 +569,9 @@ namespace InfinniPlatform.Core.Metadata
         {
             dynamic scenarioInfo = GetScenarioInfo(configId, documentId, scenarioId);
 
-            return (scenarioInfo != null) ? scenarioInfo.Content : null;
+            return scenarioInfo != null
+                       ? scenarioInfo.Content
+                       : null;
         }
 
         public static IEnumerable<object> GetScenarios(string configId, string documentId)
@@ -582,7 +606,6 @@ namespace InfinniPlatform.Core.Metadata
 
             return Path.Combine(scenarioDirectory, scenarioId + ".json");
         }
-
 
         private static string GetContentDirectory()
         {
