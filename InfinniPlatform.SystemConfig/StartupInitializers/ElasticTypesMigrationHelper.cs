@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
+using InfinniPlatform.Sdk.Logging;
 
 using Nest;
 
@@ -14,52 +14,57 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// <summary>
     /// Отвечает за создание маппингов при старте системы.
     /// </summary>
-    public class MigrationHelper
+    public class ElasticTypesMigrationHelper
     {
-        public MigrationHelper(IMetadataApi metadataApi,
-                               ElasticTypeManager elasticTypeManager)
+        public ElasticTypesMigrationHelper(IMetadataApi metadataApi,
+                                           ElasticTypeManager elasticTypeManager,
+                                           ILog log)
         {
             _metadataApi = metadataApi;
             _elasticTypeManager = elasticTypeManager;
+            _log = log;
         }
 
         private readonly ElasticTypeManager _elasticTypeManager;
+        private readonly ILog _log;
         private readonly IMetadataApi _metadataApi;
 
-        /// <summary>
-        /// Создает маппинг типа в ElasticSearch.
-        /// </summary>
-        /// <param name="documentName">Наименование документа (типа)</param>
-        public string TryUpdateDocumentMappings(string documentName)
+        public void CreateOrUpdateStorage(IEnumerable<string> documentTypes)
         {
-            dynamic schema = _metadataApi.GetDocumentSchema(documentName);
+            _log.Info("Creating indexes started.");
 
-            var props = new List<PropertyMapping>();
-
-            if (schema != null)
+            foreach (var documentName in documentTypes)
             {
-                // convert document schema to index mapping
-                props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
+                dynamic schema = _metadataApi.GetDocumentSchema(documentName);
+
+                var props = new List<PropertyMapping>();
+
+                if (schema != null)
+                {
+                    // convert document schema to index mapping
+                    props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
+                }
+
+                var indexTypeMapping = props.Count > 0
+                                           ? props
+                                           : null;
+
+                if (!VersionExists(documentName, indexTypeMapping))
+                {
+                    _elasticTypeManager.CreateType(documentName, indexTypeMapping);
+                    UpdateContainersWithInlineLinks(documentName);
+                }
+
+                _log.Info("Created type.", new Dictionary<string, object>
+                                           {
+                                               { "documentType", documentName }
+                                           });
             }
 
-            var indexTypeMapping = props.Count > 0
-                                       ? props
-                                       : null;
-
-            string resultMessage = null;
-
-            if (!VersionExists(documentName, indexTypeMapping))
-            {
-                resultMessage = $"Created new version of {documentName} document.";
-                _elasticTypeManager.CreateType(documentName, indexTypeMapping);
-                // Необходимо создать новые версии для контейнеров документов, имеющих inline ссылки на измененный документ
-                resultMessage += UpdateContainersWithInlineLinks(documentName);
-            }
-
-            return resultMessage;
+            _log.Info("Creating indexes successfully completed.");
         }
 
-        private string UpdateContainersWithInlineLinks(string documentId)
+        private void UpdateContainersWithInlineLinks(string documentId)
         {
             var documentNames = _metadataApi.GetDocumentNames();
 
@@ -74,14 +79,17 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                     {
                         // convert document schema to index mapping
                         List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
-                        _elasticTypeManager.CreateType(documentName, props.Count > 0 ? props : null);
+                        _elasticTypeManager.CreateType(documentName, props.Count > 0
+                                                                         ? props
+                                                                         : null);
 
-                        return $"Created new version of {documentName} for inline link on {documentId}. ";
+                        _log.Info("Created inlined type.", new Dictionary<string, object>
+                                                           {
+                                                               { "documentType", documentName }
+                                                           });
                     }
                 }
             }
-
-            return string.Empty;
         }
 
         /// <summary>
