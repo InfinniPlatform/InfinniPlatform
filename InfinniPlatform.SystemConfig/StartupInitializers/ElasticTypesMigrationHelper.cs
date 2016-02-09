@@ -25,6 +25,8 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             _log = log;
         }
 
+        private readonly Dictionary<string, bool> _createdDocumetsMappings = new Dictionary<string, bool>();
+
         private readonly ElasticTypeManager _elasticTypeManager;
         private readonly ILog _log;
         private readonly IMetadataApi _metadataApi;
@@ -33,7 +35,14 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         {
             _log.Info("Creating indexes started.");
 
-            foreach (var documentName in documentTypes)
+            var documentNames = documentTypes.ToArray();
+
+            foreach (var documentName in documentNames)
+            {
+                _createdDocumetsMappings.Add(documentName, false);
+            }
+
+            foreach (var documentName in documentNames)
             {
                 dynamic schema = _metadataApi.GetDocumentSchema(documentName);
 
@@ -49,9 +58,10 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                                            ? props
                                            : null;
 
-                if (!VersionExists(documentName, indexTypeMapping))
+                if (!VersionExists(documentName, indexTypeMapping) && _createdDocumetsMappings[documentName] == false)
                 {
                     _elasticTypeManager.CreateType(documentName, indexTypeMapping);
+                    _createdDocumetsMappings[documentName] = true;
                     UpdateContainersWithInlineLinks(documentName);
                 }
 
@@ -75,13 +85,15 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 if (schema != null)
                 {
                     // Проверяем, имеется ли в схеме данных документа inline ссылка на документ с documentId
-                    if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, documentId))
+                    if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, documentId) && _createdDocumetsMappings[documentName] == false)
                     {
                         // convert document schema to index mapping
                         List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
                         _elasticTypeManager.CreateType(documentName, props.Count > 0
                                                                          ? props
                                                                          : null);
+
+                        _createdDocumetsMappings[documentName] = true;
 
                         _log.Info("Created inlined type.", new Dictionary<string, object>
                                                            {
