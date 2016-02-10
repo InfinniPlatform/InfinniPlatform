@@ -97,7 +97,9 @@
     "Password": "",
     /* Разрешить трассировку запросов к ElasticSearch (значение по умолчанию - false) */
     /* При включении желательно указать уровень DEBUG в AppLog.config */
-    "EnableTrace": false
+    "EnableTrace": false,
+    /* Разрешить resolve вложенных документов */
+    "EnableResolve": true
   },
   /* Настройки хранения BLOB и файлов */
   "blobStorage": {
