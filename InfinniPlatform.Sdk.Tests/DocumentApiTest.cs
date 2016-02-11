@@ -191,10 +191,10 @@ namespace InfinniPlatform.Sdk.Tests
                                      Price = 100.50
                                  };
 
-            var result = _documentApiClient.SetDocument("catalogue", documentObject).Id.ToString();
+            string result = _documentApiClient.SetDocument("catalogue", documentObject).Id.ToString();
 
             var resultDoc = _documentApiClient.GetDocument("catalogue",
-                f => f.AddCriteria(cr => cr.Property("Id").IsIn(result)), 0, 100,
+                f => f.AddCriteria(cr => cr.Property("Id").IsIn(new[] { result })), 0, 100,
                 s => s.AddSorting("Price", "descending"));
 
             Assert.AreEqual(1, resultDoc.Count());
