@@ -146,6 +146,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		Files\Packaging\Templates\InfinniPlatform.Template.nuspec = Files\Packaging\Templates\InfinniPlatform.Template.nuspec
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentStorage", "InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj", "{8EAF5465-16FB-456F-B562-6E4F38DD8885}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentStorage.Tests", "InfinniPlatform.DocumentStorage.Tests\InfinniPlatform.DocumentStorage.Tests.csproj", "{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -348,6 +352,14 @@ Global
 		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EAF5465-16FB-456F-B562-6E4F38DD8885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EAF5465-16FB-456F-B562-6E4F38DD8885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EAF5465-16FB-456F-B562-6E4F38DD8885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EAF5465-16FB-456F-B562-6E4F38DD8885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

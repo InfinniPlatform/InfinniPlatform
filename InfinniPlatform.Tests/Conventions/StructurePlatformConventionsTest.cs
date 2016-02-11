@@ -360,6 +360,7 @@ namespace InfinniPlatform.Conventions
         }
 
         [Test]
+        [Ignore("Исправлено в Mono 4.3")]
         [Description(@"В коде нельзя использовать операторы ?. и ?[] из-за отсутствия их поддержки в Mono 4.2")]
         public void CodeCannotUseMaybeOperatorBecauseMono()
         {

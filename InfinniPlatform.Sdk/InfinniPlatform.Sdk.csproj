@@ -58,9 +58,34 @@
     </Compile>
     <Compile Include="BlobStorage\BlobStorageExtensions.cs" />
     <Compile Include="ClientNotification\IClientNotificationService.cs" />
-    <Compile Include="Documents\DocumentExtensions.cs" />
+    <Compile Include="Documents\DocumentBulkResult.cs" />
+    <Compile Include="Documents\DocumentUpdateResult.cs" />
+    <Compile Include="Documents\DocumentUpdateStatus.cs" />
+    <Compile Include="Documents\IDocumentAggregateCursor.cs" />
+    <Compile Include="Documents\IDocumentAggregateCursorGeneric.cs" />
+    <Compile Include="Documents\IDocumentAggregateSortedCursor.cs" />
+    <Compile Include="Documents\IDocumentAggregateSortedCursorGeneric.cs" />
+    <Compile Include="Documents\IDocumentBulkBuilder.cs" />
+    <Compile Include="Documents\IDocumentBulkBuilderGeneric.cs" />
+    <Compile Include="Documents\IDocumentCursor.cs" />
+    <Compile Include="Documents\IDocumentFilterBuilder.cs" />
+    <Compile Include="Documents\IDocumentFindCursor.cs" />
+    <Compile Include="Documents\IDocumentFindCursorGeneric.cs" />
+    <Compile Include="Documents\IDocumentFindSortedCursor.cs" />
+    <Compile Include="Documents\IDocumentFindSortedCursorGeneric.cs" />
+    <Compile Include="Documents\IDocumentProjectionBuilder.cs" />
+    <Compile Include="Documents\IDocumentStorageManager.cs" />
+    <Compile Include="Documents\IDocumentStorageProvider.cs" />
+    <Compile Include="Documents\IDocumentStorageProviderGeneric.cs" />
+    <Compile Include="Documents\IDocumentUpdateBuilder.cs" />
+    <Compile Include="Documents\IDocumentUpdateBuilderGeneric.cs" />
+    <Compile Include="Documents\Obsolete\DocumentExtensions.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
     <Compile Include="Logging\LoggerNameAttribute.cs" />
+    <Compile Include="Metadata\Documents\DataType.cs" />
+    <Compile Include="Metadata\Documents\DocumentIndex.cs" />
+    <Compile Include="Metadata\Documents\DocumentIndexKeyType.cs" />
+    <Compile Include="Metadata\Documents\DocumentMetadata.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
     <Compile Include="Serialization\IJsonObjectSerializer.cs" />
     <Compile Include="Services\IMimeTypeProvider.cs" />
@@ -84,12 +109,12 @@
     <Compile Include="Services\DefaultHttpResultConverter.cs" />
     <Compile Include="Services\StreamHttpResponse.cs" />
     <Compile Include="Services\TextHttpResponse.cs" />
-    <Compile Include="Documents\CriteriaBuilder.cs" />
-    <Compile Include="Documents\FilterCriteria.cs" />
-    <Compile Include="Documents\SortingCriteria.cs" />
+    <Compile Include="Documents\Obsolete\CriteriaBuilder.cs" />
+    <Compile Include="Documents\Obsolete\FilterCriteria.cs" />
+    <Compile Include="Documents\Obsolete\SortingCriteria.cs" />
     <Compile Include="Registers\AggregationType.cs" />
     <Compile Include="Registers\RegisterEntryType.cs" />
-    <Compile Include="Documents\IDocumentApi.cs" />
+    <Compile Include="Documents\Obsolete\IDocumentApi.cs" />
     <Compile Include="PrintView\IPrintViewApi.cs" />
     <Compile Include="Registers\IRegisterApi.cs" />
     <Compile Include="RestApi\BaseRestClient.cs" />
@@ -118,14 +143,14 @@
     <Compile Include="Dynamic\DynamicWrapperPropertyDescriptor.cs" />
     <Compile Include="Dynamic\ObjectHelper.cs" />
     <Compile Include="Logging\ILog.cs" />
-    <Compile Include="Documents\CriteriaType.cs" />
-    <Compile Include="Documents\ICalculatedField.cs" />
-    <Compile Include="Documents\IFilter.cs" />
-    <Compile Include="Documents\INestFilterBuilder.cs" />
+    <Compile Include="Documents\Obsolete\CriteriaType.cs" />
+    <Compile Include="Documents\Obsolete\ICalculatedField.cs" />
+    <Compile Include="Documents\Obsolete\IFilter.cs" />
+    <Compile Include="Documents\Obsolete\INestFilterBuilder.cs" />
     <Compile Include="PrintView\PrintViewFileFormat.cs" />
     <Compile Include="Dynamic\ReflectionCache.cs" />
     <Compile Include="Dynamic\ReflectionExtensions.cs" />
-    <Compile Include="Documents\FilterBuilder.cs" />
+    <Compile Include="Documents\Obsolete\FilterBuilder.cs" />
     <Compile Include="RestApi\DocumentApiClient.cs" />
     <Compile Include="RestApi\FileApiClient.cs" />
     <Compile Include="IoC\ContainerExtensions.cs" />
@@ -143,7 +168,7 @@
     </Compile>
     <Compile Include="RestApi\RequestExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Documents\SortingBuilder.cs" />
+    <Compile Include="Documents\Obsolete\SortingBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
