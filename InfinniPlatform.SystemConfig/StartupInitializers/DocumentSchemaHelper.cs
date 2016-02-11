@@ -38,8 +38,8 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             foreach (var propertyModel in schemaProperties)
             {
-                bool sortable = propertyModel.Value.Sortable == null ?? false;
-                string typeName = propertyModel.Value.Type;
+                bool sortable = propertyModel.Value.Sortable ?? false;
+                string typeName = propertyModel.Value.Type.ToString();
 
                 FieldType fieldType;
 
@@ -47,40 +47,38 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 {
                     properties.Add(new PropertyMapping(propertyModel.Key, fieldType, sortable));
                 }
-                else
+
+                if (typeName == "Object")
                 {
-                    if (typeName == "Object")
+                    // Свойство типа 'объект' может являться inline ссылкой на документ
+                    var documentLink = propertyModel.Value.TypeInfo != null
+                                           ? propertyModel.Value.TypeInfo.DocumentLink
+                                           : null;
+
+                    if (documentLink != null && documentLink.Inline != null && documentLink.Inline == true)
                     {
-                        // Свойство типа 'объект' может являться inline ссылкой на документ
-                        var documentLink = propertyModel.Value.TypeInfo != null
-                                               ? propertyModel.Value.TypeInfo.DocumentLink
-                                               : null;
+                        // inline ссылка на документ:
+                        // необходимо получить схему документа, на который сделана ссылка, чтобы получить сортировочные поля 
+                        string documentName = documentLink.DocumentId.ToString();
+                        dynamic inlineDocumentSchema = metadataApi.GetDocumentSchema(documentName);
 
-                        if (documentLink != null && documentLink.Inline != null && documentLink.Inline == true)
+                        if (inlineDocumentSchema != null)
                         {
-                            // inline ссылка на документ:
-                            // необходимо получить схему документа, на который сделана ссылка, чтобы получить сортировочные поля 
-                            string documentName = documentLink.DocumentId.ToString();
-                            dynamic inlineDocumentSchema = metadataApi.GetDocumentSchema(documentName);
-
-                            if (inlineDocumentSchema != null)
-                            {
-                                properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(inlineDocumentSchema.Properties, metadataApi)));
-                            }
-                        }
-                        else
-                        {
-                            properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Properties, metadataApi)));
+                            properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(inlineDocumentSchema.Properties, metadataApi)));
                         }
                     }
                     else
                     {
-                        if (typeName == "Array")
-                        {
-                            properties.Add(SimpleTypes.TryGetValue(propertyModel.Value.Items.Type, out fieldType)
-                                               ? new PropertyMapping(propertyModel.Key, fieldType, sortable)
-                                               : new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Items.Properties, metadataApi)));
-                        }
+                        properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Properties, metadataApi)));
+                    }
+                }
+                else
+                {
+                    if (typeName == "Array")
+                    {
+                        properties.Add(SimpleTypes.TryGetValue(propertyModel.Value.Items.Type, out fieldType)
+                                           ? new PropertyMapping(propertyModel.Key, fieldType, sortable)
+                                           : new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Items.Properties, metadataApi)));
                     }
                 }
             }
