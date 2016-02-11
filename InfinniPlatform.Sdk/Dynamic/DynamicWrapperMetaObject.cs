@@ -58,7 +58,12 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public override IEnumerable<string> GetDynamicMemberNames()
         {
-            return Enumerable.Empty<string>();
+            var value = (DynamicWrapper)Value;
+
+            foreach (KeyValuePair<string, object> property in value)
+            {
+                yield return property.Key;
+            }
         }
 
         /// <summary>
