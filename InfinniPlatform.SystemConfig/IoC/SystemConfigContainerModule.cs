@@ -42,7 +42,7 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<MigrationHelper>()
+            builder.RegisterType<ElasticTypesMigrationHelper>()
                    .AsSelf()
                    .SingleInstance();
 

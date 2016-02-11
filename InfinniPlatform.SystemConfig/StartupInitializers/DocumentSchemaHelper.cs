@@ -12,6 +12,18 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
     public static class DocumentSchemaHelper
     {
+        private static readonly Dictionary<string, FieldType> SimpleTypes =
+            new Dictionary<string, FieldType>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "float", FieldType.Float },
+                { "integer", FieldType.Integer },
+                { "bool", FieldType.Boolean },
+                { "string", FieldType.String },
+                { "uuid", FieldType.String },
+                { "dateTime", FieldType.Date },
+                { "binary", FieldType.Binary }
+            };
+
         /// <summary>
         /// Метод преобразует схему данных документа в схему, применимую к контейнеру документов
         /// </summary>
@@ -29,28 +41,19 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 bool sortable = propertyModel.Value.Sortable ?? false;
                 string typeName = propertyModel.Value.Type.ToString();
 
-                var simpleMappings = new Dictionary<string, PropertyMapping>(StringComparer.OrdinalIgnoreCase)
-                                     {
-                                         { "float", new PropertyMapping(propertyModel.Key, FieldType.Float, sortable) },
-                                         { "integer", new PropertyMapping(propertyModel.Key, FieldType.Integer, sortable) },
-                                         { "bool", new PropertyMapping(propertyModel.Key, FieldType.Boolean, sortable) },
-                                         { "string", new PropertyMapping(propertyModel.Key, FieldType.String, sortable) },
-                                         { "uuid", new PropertyMapping(propertyModel.Key, FieldType.String, sortable) },
-                                         { "dateTime", new PropertyMapping(propertyModel.Key, FieldType.Date, sortable) },
-                                         { "binary", new PropertyMapping(propertyModel.Key, FieldType.Binary, false) }
-                                     };
+                FieldType fieldType;
 
-                PropertyMapping propertyMapping;
-
-                if (simpleMappings.TryGetValue(typeName, out propertyMapping))
+                if (SimpleTypes.TryGetValue(typeName, out fieldType))
                 {
-                    properties.Add(propertyMapping);
+                    properties.Add(new PropertyMapping(propertyModel.Key, fieldType, sortable));
                 }
 
                 if (typeName == "Object")
                 {
                     // Свойство типа 'объект' может являться inline ссылкой на документ
-                    var documentLink = (propertyModel.Value.TypeInfo != null) ? propertyModel.Value.TypeInfo.DocumentLink : null;
+                    var documentLink = propertyModel.Value.TypeInfo != null
+                                           ? propertyModel.Value.TypeInfo.DocumentLink
+                                           : null;
 
                     if (documentLink != null && documentLink.Inline != null && documentLink.Inline == true)
                     {
@@ -73,7 +76,9 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 {
                     if (typeName == "Array")
                     {
-                        properties.Add(new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Items.Properties, metadataApi)));
+                        properties.Add(SimpleTypes.TryGetValue(propertyModel.Value.Items.Type, out fieldType)
+                                           ? new PropertyMapping(propertyModel.Key, fieldType, sortable)
+                                           : new PropertyMapping(propertyModel.Key, ExtractProperties(propertyModel.Value.Items.Properties, metadataApi)));
                     }
                 }
             }
@@ -101,7 +106,9 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                         linkInfoToCheck = propertyModel.Value.Items;
                     }
 
-                    var documentLink = (linkInfoToCheck != null && linkInfoToCheck.TypeInfo != null) ? linkInfoToCheck.TypeInfo.DocumentLink : null;
+                    var documentLink = linkInfoToCheck != null && linkInfoToCheck.TypeInfo != null
+                                           ? linkInfoToCheck.TypeInfo.DocumentLink
+                                           : null;
 
                     if (documentLink != null)
                     {

@@ -6,6 +6,7 @@ using InfinniPlatform.Core.Documents;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Transactions;
+using InfinniPlatform.ElasticSearch.ElasticProviders;
 using InfinniPlatform.ElasticSearch.Factories;
 using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.Documents;
@@ -22,20 +23,24 @@ namespace InfinniPlatform.SystemConfig.Documents
                                    IMetadataApi metadataApi,
                                    IReferenceResolver referenceResolver,
                                    IIndexFactory indexFactory,
-                                   IndexQueryExecutorFactory indexQueryExecutorFactory)
+                                   IndexQueryExecutorFactory indexQueryExecutorFactory,
+                                   ElasticSearchSettings elasticSearchSettings)
         {
             _transactionScopeProvider = transactionScopeProvider;
             _metadataApi = metadataApi;
             _referenceResolver = referenceResolver;
             _indexFactory = indexFactory;
             _indexQueryExecutorFactory = indexQueryExecutorFactory;
+            _elasticSearchSettings = elasticSearchSettings;
         }
 
-        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
         private readonly IIndexFactory _indexFactory;
+        private readonly IndexQueryExecutorFactory _indexQueryExecutorFactory;
+        private readonly ElasticSearchSettings _elasticSearchSettings;
         private readonly IMetadataApi _metadataApi;
         private readonly IReferenceResolver _referenceResolver;
-        private readonly IndexQueryExecutorFactory _indexQueryExecutorFactory;
+
+        private readonly IDocumentTransactionScopeProvider _transactionScopeProvider;
 
         public object GetDocumentById(string documentType, string documentId)
         {
@@ -140,7 +145,11 @@ namespace InfinniPlatform.SystemConfig.Documents
 
             IEnumerable<dynamic> result = indexQueryExecutor.Query(searchModel).Items.ToList();
 
-            _referenceResolver.ResolveReferences(documentName, result, ignoreResolve);
+            //Быстрофикс (и, скорее всего, навсегдафикс) для конфигурации ЖКХ, т.к. в ней не используется resolve.
+            if (_elasticSearchSettings.EnableResolve)
+            {
+                _referenceResolver.ResolveReferences(documentName, result, ignoreResolve);
+            }
 
             var documents = result.Take(pageSize == 0
                                             ? 10

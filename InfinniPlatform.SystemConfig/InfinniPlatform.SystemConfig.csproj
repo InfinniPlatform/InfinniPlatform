@@ -90,7 +90,7 @@
     <Compile Include="StartupInitializers\DocumentSchemaHelper.cs" />
     <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
     <Compile Include="StartupInitializers\IStartupInitializer.cs" />
-    <Compile Include="StartupInitializers\MigrationHelper.cs" />
+    <Compile Include="StartupInitializers\ElasticTypesMigrationHelper.cs" />
     <Compile Include="StartupInitializers\PackageJsonConfigurationsInitializer.cs" />
     <Compile Include="StartupInitializers\SystemConfigApplicationEventHandler.cs" />
     <Compile Include="StartupInitializers\DocumentIndexTypeInitializer.cs" />

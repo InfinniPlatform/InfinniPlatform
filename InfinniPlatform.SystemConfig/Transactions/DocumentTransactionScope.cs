@@ -35,7 +35,7 @@ namespace InfinniPlatform.SystemConfig.Transactions
         private readonly DocumentTransactionLog _transactionLog;
 
 
-        private bool _needRefresh;
+        private bool _needRefresh = true;
 
 
         public IEnumerable<object> GetDocuments(string documentType, IEnumerable<object> documents)
@@ -84,9 +84,9 @@ namespace InfinniPlatform.SystemConfig.Transactions
             _transactionLog.EnqueueEntry(deleteCommand);
         }
 
-        public void Synchronous()
+        public void Synchronous(bool value = true)
         {
-            _needRefresh = true;
+            _needRefresh = value;
         }
 
 

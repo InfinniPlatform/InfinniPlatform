@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.ElasticSearch.ElasticProviders;
+using InfinniPlatform.Sdk.Logging;
 
 using Nest;
 
@@ -14,52 +14,67 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// <summary>
     /// Отвечает за создание маппингов при старте системы.
     /// </summary>
-    public class MigrationHelper
+    public class ElasticTypesMigrationHelper
     {
-        public MigrationHelper(IMetadataApi metadataApi,
-                               ElasticTypeManager elasticTypeManager)
+        public ElasticTypesMigrationHelper(IMetadataApi metadataApi,
+                                           ElasticTypeManager elasticTypeManager,
+                                           ILog log)
         {
             _metadataApi = metadataApi;
             _elasticTypeManager = elasticTypeManager;
+            _log = log;
         }
+
+        private readonly Dictionary<string, bool> _createdDocumetsMappings = new Dictionary<string, bool>();
 
         private readonly ElasticTypeManager _elasticTypeManager;
+        private readonly ILog _log;
         private readonly IMetadataApi _metadataApi;
 
-        /// <summary>
-        /// Создает маппинг типа в ElasticSearch.
-        /// </summary>
-        /// <param name="documentName">Наименование документа (типа)</param>
-        public string TryUpdateDocumentMappings(string documentName)
+        public void CreateOrUpdateStorage(IEnumerable<string> documentTypes)
         {
-            dynamic schema = _metadataApi.GetDocumentSchema(documentName);
+            _log.Info("Creating indexes started.");
 
-            var props = new List<PropertyMapping>();
+            var documentNames = documentTypes.ToArray();
 
-            if (schema != null)
+            foreach (var documentName in documentNames)
             {
-                // convert document schema to index mapping
-                props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
+                _createdDocumetsMappings.Add(documentName, false);
             }
 
-            var indexTypeMapping = props.Count > 0
-                                       ? props
-                                       : null;
-
-            string resultMessage = null;
-
-            if (!VersionExists(documentName, indexTypeMapping))
+            foreach (var documentName in documentNames)
             {
-                resultMessage = $"Created new version of {documentName} document.";
-                _elasticTypeManager.CreateType(documentName, indexTypeMapping);
-                // Необходимо создать новые версии для контейнеров документов, имеющих inline ссылки на измененный документ
-                resultMessage += UpdateContainersWithInlineLinks(documentName);
+                dynamic schema = _metadataApi.GetDocumentSchema(documentName);
+
+                var props = new List<PropertyMapping>();
+
+                if (schema != null)
+                {
+                    // convert document schema to index mapping
+                    props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
+                }
+
+                var indexTypeMapping = props.Count > 0
+                                           ? props
+                                           : null;
+
+                if (!VersionExists(documentName, indexTypeMapping) && _createdDocumetsMappings[documentName] == false)
+                {
+                    _elasticTypeManager.CreateType(documentName, indexTypeMapping);
+                    _createdDocumetsMappings[documentName] = true;
+                    UpdateContainersWithInlineLinks(documentName);
+                }
+
+                _log.Info("Created type.", new Dictionary<string, object>
+                                           {
+                                               { "documentType", documentName }
+                                           });
             }
 
-            return resultMessage;
+            _log.Info("Creating indexes successfully completed.");
         }
 
-        private string UpdateContainersWithInlineLinks(string documentId)
+        private void UpdateContainersWithInlineLinks(string documentId)
         {
             var documentNames = _metadataApi.GetDocumentNames();
 
@@ -70,18 +85,23 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 if (schema != null)
                 {
                     // Проверяем, имеется ли в схеме данных документа inline ссылка на документ с documentId
-                    if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, documentId))
+                    if (DocumentSchemaHelper.CheckObjectForSpecifiedInline(schema, documentId) && _createdDocumetsMappings[documentName] == false)
                     {
                         // convert document schema to index mapping
                         List<PropertyMapping> props = DocumentSchemaHelper.ExtractProperties(schema.Properties, _metadataApi);
-                        _elasticTypeManager.CreateType(documentName, props.Count > 0 ? props : null);
+                        _elasticTypeManager.CreateType(documentName, props.Count > 0
+                                                                         ? props
+                                                                         : null);
 
-                        return $"Created new version of {documentName} for inline link on {documentId}. ";
+                        _createdDocumetsMappings[documentName] = true;
+
+                        _log.Info("Created inlined type.", new Dictionary<string, object>
+                                                           {
+                                                               { "documentType", documentName }
+                                                           });
                     }
                 }
             }
-
-            return string.Empty;
         }
 
         /// <summary>

@@ -32,7 +32,7 @@ namespace InfinniPlatform.Core.Transactions
         /// <summary>
         /// Устанавливает синхронный режим транзакции.
         /// </summary>
-        void Synchronous();
+        void Synchronous(bool value = true);
 
         /// <summary>
         /// Подтверждает все операции.

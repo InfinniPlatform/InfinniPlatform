@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace InfinniPlatform.Sdk.Documents
 {
     [Serializable]
+    [DebuggerDisplay("{PropertyName}, {SortingOrder}")]
     public sealed class SortingCriteria
     {
         public SortingCriteria(string propertyName, string sortingOrder)

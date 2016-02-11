@@ -145,17 +145,15 @@ namespace InfinniPlatform.Sdk.Documents
             return this;
         }
 
-        public CriteriaBuilder IsIn(params object[] values)
+        public CriteriaBuilder IsIn(IEnumerable<string> values)
         {
-            string.Join("\n", values.Select(v => v.ToString()));
-
-            Criteria.Value = string.Join("\n", values.Select(v => v.ToString()));
+            Criteria.Value = values;
             Criteria.CriteriaType = CriteriaType.IsIn;
 
             return this;
         }
 
-        public CriteriaBuilder IsIdIn(List<string> idList)
+        public CriteriaBuilder IsIdIn(IEnumerable<string> idList)
         {
             Criteria.Value = idList;
             Criteria.CriteriaType = CriteriaType.IsIdIn;
