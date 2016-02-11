@@ -38,69 +38,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
 
 
         [Test]
-        public void ShouldAddArrayObjectItems()
-        {
-            // Given
-            dynamic dynamicWrapper = new List<dynamic>();
-            dynamic i1 = new DynamicWrapper();
-            i1.Value = 1;
-
-            dynamic i2 = new DynamicWrapper();
-            i2.Value = 2;
-
-            dynamic i3 = new DynamicWrapper();
-            i3.Value = 3;
-            // When
-            dynamicWrapper.Add(i1);
-            dynamicWrapper.Add(i2);
-            dynamicWrapper.Add(i3);
-            // Then
-            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper);
-            Assert.AreEqual(3, items.Count());
-            Assert.AreEqual(1, items.First().Value);
-            Assert.AreEqual(2, items.Skip(1).First().Value);
-            Assert.AreEqual(3, items.Skip(2).First().Value);
-        }
-
-        [Test]
-        public void ShouldAddArraySimpleValueItems()
-        {
-            // Given
-            dynamic dynamicWrapper = new List<dynamic>();
-            // When
-            dynamicWrapper.Add("1");
-            dynamicWrapper.Add("2");
-            dynamicWrapper.Add("3");
-            // Then
-            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper);
-            Assert.AreEqual(3, items.Count());
-            Assert.AreEqual("1", items.First());
-            Assert.AreEqual("2", items.Skip(1).First());
-            Assert.AreEqual("3", items.Skip(2).First());
-        }
-
-        [Test]
-        public void ShouldAddArraySimpleValueItemsProperty()
-        {
-            // Given
-            dynamic dynamicWrapper = new List<dynamic>();
-
-            dynamic someInstance = new DynamicWrapper();
-            someInstance.InnerProperty = dynamicWrapper;
-
-            // When
-            someInstance.InnerProperty.Add("1");
-            someInstance.InnerProperty.Add("2");
-            someInstance.InnerProperty.Add("3");
-            // Then
-            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(someInstance.InnerProperty);
-            Assert.AreEqual(3, items.Count());
-            Assert.AreEqual("1", items.First());
-            Assert.AreEqual("2", items.Skip(1).First());
-            Assert.AreEqual("3", items.Skip(2).First());
-        }
-
-        [Test]
         public void ShouldAddProperty()
         {
             // Given
@@ -131,24 +68,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
             dynamicWrapper.SomeValue = 1;
 
             Assert.AreEqual(1, dynamicWrapper.SomeValue);
-        }
-
-        [Test]
-        public void ShouldConvertDictionaryToJObject()
-        {
-            var dict = new Dictionary<string, object>();
-
-            dynamic instance1 = new DynamicWrapper();
-            instance1.TestProperty = 1;
-
-            dynamic instance2 = new DynamicWrapper();
-            instance2.TestProperty = 2;
-
-            dict.Add("1", instance1);
-            dict.Add("2", instance2);
-
-            var result = dict.ToDynamic();
-            Assert.AreEqual(string.Format("{{{0}  \"1\": {{{0}    \"TestProperty\": 1{0}  }},{0}  \"2\": {{{0}    \"TestProperty\": 2{0}  }}{0}}}", Environment.NewLine), result.ToString());
         }
 
         [Test]
@@ -208,16 +127,9 @@ namespace InfinniPlatform.Core.Tests.Dynamic
 
             // When
             var result = JsonConvert.SerializeObject(obj);
+
             // Then
             Assert.AreEqual("{\"SomeProperty\":\"1\"}", result);
-        }
-
-        [Test]
-        public void ShouldConvertToByteArray()
-        {
-            var items = new byte[] { 10, 100, 200, 30 }.ToDynamic();
-
-            Assert.AreEqual(items.Length, 4);
         }
 
         [Test]
@@ -257,24 +169,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
         }
 
         [Test]
-        public void ShouldCreateInstanceFromAnonimousObject()
-        {
-            var obj = new
-                      {
-                          TestObjectField = new
-                                            {
-                                                TestProperty = 1
-                                            },
-                          TestPropertyField = "1234"
-                      };
-
-            dynamic instance = obj.ToDynamic();
-
-            Assert.IsNotNull(instance.TestObjectField.TestProperty);
-            Assert.IsNotNull(instance.TestPropertyField);
-        }
-
-        [Test]
         public void ShouldEnumerateDynamicWrapperProperties()
         {
             dynamic dynamicWrapper = new DynamicWrapper();
@@ -293,7 +187,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
             pair = (KeyValuePair<string, dynamic>)props.ToArray().Skip(1).First();
             Assert.AreEqual(pair.Key, "Property2");
         }
-
 
         [Test]
         public void ShouldFailToAccessNonExistingProperty()
@@ -366,20 +259,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
         }
 
         [Test]
-        public void ShouldGetArraySimpleItem()
-        {
-            dynamic dynamicWrapper = new DynamicWrapper();
-            var jarray = new[] { "1", "2", "3" };
-
-            dynamicWrapper.SomeArray = jarray.ToDynamic();
-
-            Assert.AreEqual("1", dynamicWrapper.SomeArray[0]);
-            Assert.AreEqual("2", dynamicWrapper.SomeArray[1]);
-            Assert.AreEqual("3", dynamicWrapper.SomeArray[2]);
-        }
-
-
-        [Test]
         public void ShouldGetPropertiesList()
         {
             dynamic dynamicWrapper = new DynamicWrapper();
@@ -416,18 +295,12 @@ namespace InfinniPlatform.Core.Tests.Dynamic
             dynamic obj = new DynamicWrapper();
             obj.SomeValue = 1;
 
-            dynamic jarray = new List<dynamic>();
-            jarray.Add("3");
-
             // When
             dynamicWrapper.SomeObj = obj;
             dynamicWrapper.SomeValue = 2;
-            dynamicWrapper.SomeArray = ((object)jarray).ToDynamic();
 
             // Then
             Assert.AreEqual(1, dynamicWrapper.SomeObj.SomeValue);
-            dynamic arr = dynamicWrapper.SomeArray;
-            Assert.AreEqual("3", arr[0]);
             Assert.AreEqual(2, dynamicWrapper.SomeValue);
             Assert.AreEqual(null, dynamicWrapper["NonExistingProperty"]);
         }
@@ -447,58 +320,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
         }
 
         [Test]
-        public void ShouldInvokeLinqMethodsForObjectsCollections()
-        {
-            // Given
-            dynamic dynamicWrapper = new DynamicWrapper();
-
-            dynamic at1 = new DynamicWrapper();
-            at1.a = "1";
-
-            dynamic at2 = new DynamicWrapper();
-            at2.a = "2";
-
-            dynamic at3 = new DynamicWrapper();
-            at3.a = "3";
-
-            var attachments = new List<DynamicWrapper>
-                              {
-                                  at1,
-                                  at2,
-                                  at3
-                              };
-            dynamicWrapper.Attachments = attachments;
-            // When
-            IEnumerable<dynamic> enumerable = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper.Attachments);
-            // Then
-            Assert.AreEqual(3, enumerable.Count());
-            dynamic instance = enumerable.FirstOrDefault(e => e.a == "3");
-
-            Assert.IsNotNull(instance);
-            Assert.AreEqual("3", instance.a);
-        }
-
-        [Test]
-        public void ShouldInvokeLinqMethodsForSimpleValues()
-        {
-            // Given
-            dynamic dynamicWrapper = new DynamicWrapper();
-            var attachments = new List<string>
-                              {
-                                  "1",
-                                  "2",
-                                  "3"
-                              };
-
-            dynamicWrapper.Attachments = attachments;
-            // When
-            IEnumerable<dynamic> enumerable = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper.Attachments);
-            dynamic item = enumerable.FirstOrDefault(a => a == "1");
-            // Then
-            Assert.AreEqual("1", item);
-        }
-
-        [Test]
         public void ShouldNotThrowOnSetNotExistingProperty()
         {
             // Given
@@ -511,56 +332,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
             Assert.AreEqual(dynamicWrapper["SomeValue"], 2);
         }
 
-
-        [Test]
-        public void ShouldParseDynamicWrapperFieldToJObject()
-        {
-            dynamic someInstance = new DynamicWrapper();
-            someInstance.TestProperty = "1";
-            someInstance.TestProperty2 = 2;
-
-            var anonimousObject = new
-                                  {
-                                      TestField = 1,
-                                      TestInnerInstance = someInstance
-                                  };
-
-            dynamic jobject = anonimousObject.ToDynamic();
-
-            Assert.IsNotNull(jobject.TestInnerInstance.TestProperty2);
-        }
-
-        [Test]
-        public void ShouldRemoveArrayObjectItems()
-        {
-            // Given
-            dynamic dynamicWrapper = new DynamicWrapper();
-            dynamic i1 = new DynamicWrapper();
-            i1.Value = 1;
-
-            dynamic i2 = new DynamicWrapper();
-            i2.Value = 2;
-
-            dynamic i3 = new DynamicWrapper();
-            i3.Value = 3;
-
-            dynamic arr = new List<DynamicWrapper>
-                          {
-                              i1,
-                              i2,
-                              i3
-                          };
-
-            dynamicWrapper.Arr = arr;
-            // When
-            dynamicWrapper.Arr.Remove(i2);
-            // Then
-            IEnumerable<dynamic> items = DynamicWrapperExtensions.ToEnumerable(dynamicWrapper.Arr);
-            Assert.AreEqual(2, items.Count());
-            Assert.AreEqual(1, items.First().Value);
-            Assert.AreEqual(3, items.Skip(1).First().Value);
-        }
-
         [Test]
         public void ShouldRemoveProperty()
         {
@@ -570,7 +341,8 @@ namespace InfinniPlatform.Core.Tests.Dynamic
 
             // When
             dynamicWrapper["SomeValue"] = null;
-            // Then			
+
+            // Then
             Assert.AreEqual(null, dynamicWrapper["SomeValue"]);
 
             var hasProps = false;
@@ -702,7 +474,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
             Assert.AreEqual(dynamicWrapper.ArrayProperty[1].SomeValue, 2);
         }
 
-
         [Test]
         public void ShouldSetArrayPropertyWithSomeElements2()
         {
@@ -717,7 +488,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
 
             Assert.AreEqual(dynamicWrapper.ArrayProperty[1].SomeValue, 2);
         }
-
 
         [Test]
         public void ShouldSetArrayPropertyWithSomeElements3()
