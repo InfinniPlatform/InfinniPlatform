@@ -13,6 +13,7 @@
         {
             Nodes = new[] { "http://localhost:9200" };
             EnableTrace = false;
+            EnableResolve = true;
         }
 
         /// <summary>
@@ -34,5 +35,10 @@
         /// Разрешить трассировку запросов к ElasticSearch.
         /// </summary>
         public bool EnableTrace { get; set; }
+
+        /// <summary>
+        /// Разрешить resolve вложенных документов.
+        /// </summary>
+        public bool EnableResolve { get; set; }
     }
 }

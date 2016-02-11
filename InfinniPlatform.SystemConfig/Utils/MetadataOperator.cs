@@ -19,21 +19,12 @@ namespace InfinniPlatform.SystemConfig.Utils
         {
             _metadataComponent = metadataComponent;
             _linkMap = linkMap;
-            if (typeInfoChain != null)
-            {
-                _typeInfoChain = typeInfoChain.ToList();
-            }
-            else
-            {
-                _typeInfoChain = new List<dynamic>();
-            }
+            _typeInfoChain = typeInfoChain != null
+                                 ? typeInfoChain.ToList()
+                                 : new List<dynamic>();
         }
 
-        public IEnumerable<dynamic> TypeInfoChain
-        {
-            get { return _typeInfoChain; }
-        }
-
+        public IEnumerable<dynamic> TypeInfoChain => _typeInfoChain;
 
         public void ProcessMetadata(dynamic document, dynamic typeInfo)
         {
@@ -69,9 +60,7 @@ namespace InfinniPlatform.SystemConfig.Utils
                             dynamic property1 = property;
                             Action<object> setValueAction = value => document[property1.Key] = value;
 
-                            _linkMap.RegisterLink(property.Value.TypeInfo.DocumentLink.DocumentId,
-                                documentLink != null ? documentLink.Id : null,
-                                setValueAction);
+                            _linkMap.RegisterLink(property.Value.TypeInfo.DocumentLink.DocumentId, documentLink.Id, setValueAction);
                         }
 
                         if (TypeInfoChain.Any(t => t.DocumentId == property.Value.TypeInfo.DocumentLink.DocumentId))
