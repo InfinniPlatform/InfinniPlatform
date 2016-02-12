@@ -58,5 +58,10 @@ namespace InfinniPlatform.Sdk.Metadata.Documents
 
             return false;
         }
+
+        public override int GetHashCode()
+        {
+            return 0;
+        }
     }
 }
