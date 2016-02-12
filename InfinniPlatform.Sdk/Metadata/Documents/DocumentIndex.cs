@@ -23,6 +23,43 @@ namespace InfinniPlatform.Sdk.Metadata.Documents
         /// </summary>
         public IDictionary<string, DocumentIndexKeyType> Key { get; set; }
 
+
+        /// <summary>
+        /// Возвращает имя индекса по умолчанию.
+        /// </summary>
+        public string GetDefaultName()
+        {
+            if (Key != null && Key.Count > 0)
+            {
+                var indexName = string.Empty;
+
+                foreach (var item in Key)
+                {
+                    var indexSuffix = string.Empty;
+
+                    switch (item.Value)
+                    {
+                        case DocumentIndexKeyType.Asc:
+                            indexSuffix = "1";
+                            break;
+                        case DocumentIndexKeyType.Desc:
+                            indexSuffix = "-1";
+                            break;
+                        case DocumentIndexKeyType.Text:
+                            indexSuffix = "text";
+                            break;
+                    }
+
+                    indexName += "_" + item.Key + "_" + indexSuffix;
+                }
+
+                return indexName.Substring(1);
+            }
+
+            return null;
+        }
+
+
         public bool Equals(DocumentIndex other)
         {
             if (ReferenceEquals(this, other))
@@ -32,32 +69,15 @@ namespace InfinniPlatform.Sdk.Metadata.Documents
 
             if (other != null && Unique == other.Unique)
             {
-                if (ReferenceEquals(Key, other.Key) || ((Key == null || Key.Count == 0) && (other.Key == null || other.Key.Count == 0)))
-                {
-                    return true;
-                }
+                var name = string.IsNullOrEmpty(Name) ? GetDefaultName() : Name;
+                var otherName = string.IsNullOrEmpty(other.Name) ? other.GetDefaultName() : other.Name;
 
-                if (Key != null && other.Key != null && Key.Count == other.Key.Count)
-                {
-                    var keysAreEqual = true;
-
-                    foreach (var item in Key)
-                    {
-                        DocumentIndexKeyType otherKeyType;
-
-                        if (!other.Key.TryGetValue(item.Key, out otherKeyType) || item.Value != otherKeyType)
-                        {
-                            keysAreEqual = false;
-                            break;
-                        }
-                    }
-
-                    return keysAreEqual;
-                }
+                return string.Equals(name, otherName);
             }
 
             return false;
         }
+
 
         public override int GetHashCode()
         {

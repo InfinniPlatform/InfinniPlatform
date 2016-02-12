@@ -14,5 +14,10 @@
         /// Сортирует документы по убыванию указанного свойства.
         /// </summary>
         IDocumentFindSortedCursor ThenByDescending(string property);
+
+        /// <summary>
+        /// Сортирует документы по убыванию релевантности, значение которой находится в указанном свойстве.
+        /// </summary>
+        IDocumentFindSortedCursor ThenByTextScore(string property);
     }
 }

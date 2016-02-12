@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Threading;
 
 using InfinniPlatform.Sdk.Documents;
 
@@ -19,7 +18,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
-        private readonly FindFluentBase<TDocument, TProjection> _fluentCursor;
+        private readonly IFindFluent<TDocument, TProjection> _fluentCursor;
+        private SortDefinition<TDocument> _sort;
 
 
         protected override IAsyncCursor<TProjection> Cursor => CreateCursor();
@@ -33,25 +33,40 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         public IDocumentFindSortedCursor<TDocument, TProjection> SortBy(Expression<Func<TDocument, object>> property)
         {
-            _fluentCursor.SortBy(property);
+            _sort = Builders<TDocument>.Sort.Ascending(property);
             return this;
         }
 
         public IDocumentFindSortedCursor<TDocument, TProjection> SortByDescending(Expression<Func<TDocument, object>> property)
         {
-            _fluentCursor.SortByDescending(property);
+            _sort = Builders<TDocument>.Sort.Descending(property);
+            return this;
+        }
+
+        public IDocumentFindSortedCursor<TDocument, TProjection> SortByTextScore(Expression<Func<TProjection, object>> property)
+        {
+            _sort = Builders<TDocument>.Sort.MetaTextScore(GetPropertyName(property));
             return this;
         }
 
         public IDocumentFindSortedCursor<TDocument, TProjection> ThenBy(Expression<Func<TDocument, object>> property)
         {
-            _fluentCursor.ThenBy(property);
+            var thenSort = Builders<TDocument>.Sort.Ascending(property);
+            _sort = Builders<TDocument>.Sort.Combine(_sort, thenSort);
             return this;
         }
 
         public IDocumentFindSortedCursor<TDocument, TProjection> ThenByDescending(Expression<Func<TDocument, object>> property)
         {
-            _fluentCursor.ThenByDescending(property);
+            var thenSort = Builders<TDocument>.Sort.Descending(property);
+            _sort = Builders<TDocument>.Sort.Combine(_sort, thenSort);
+            return this;
+        }
+
+        public IDocumentFindSortedCursor<TDocument, TProjection> ThenByTextScore(Expression<Func<TProjection, object>> property)
+        {
+            var thenSort = Builders<TDocument>.Sort.MetaTextScore(GetPropertyName(property));
+            _sort = Builders<TDocument>.Sort.Combine(_sort, thenSort);
             return this;
         }
 
@@ -68,9 +83,22 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
+        private static string GetPropertyName<T>(Expression<Func<T, object>> property)
+        {
+            return ((MemberExpression)property.Body).Member.Name;
+        }
+
+
         private IAsyncCursor<TProjection> CreateCursor()
         {
-            return _fluentCursor.ToCursor(default(CancellationToken));
+            var fluentCursor = _fluentCursor;
+
+            if (_sort != null)
+            {
+                fluentCursor = _fluentCursor.Sort(_sort);
+            }
+
+            return fluentCursor.ToCursor();
         }
     }
 }

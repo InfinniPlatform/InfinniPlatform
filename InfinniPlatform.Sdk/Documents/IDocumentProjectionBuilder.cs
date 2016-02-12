@@ -50,5 +50,12 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="arrayProperty">Свойство документа, содержащее массив.</param>
         /// <param name="filter">Условие фильтрации элементов.</param>
         IDocumentProjectionBuilder Match(string arrayProperty, Func<IDocumentFilterBuilder, object> filter = null);
+
+
+        /// <summary>
+        /// Создает оператор проекции, который включает указанное свойство документа в результат выборки и помещает в него значение релевантности документа, полученное при полнотекстовом поиске.
+        /// </summary>
+        /// <param name="property">Свойство документа, в которое будет помещено значение релевантности документа, полученное при полнотекстовом поиске.</param>
+        IDocumentProjectionBuilder IncludeTextScore(string property);
     }
 }

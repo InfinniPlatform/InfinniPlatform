@@ -48,6 +48,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             return this;
         }
 
+        public IDocumentFindSortedCursor SortByTextScore(string property)
+        {
+            _sort = Builders<DynamicWrapper>.Sort.MetaTextScore(property);
+            return this;
+        }
+
         public IDocumentFindSortedCursor ThenBy(string property)
         {
             var thenSort = Builders<DynamicWrapper>.Sort.Ascending(property);
@@ -58,6 +64,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         public IDocumentFindSortedCursor ThenByDescending(string property)
         {
             var thenSort = Builders<DynamicWrapper>.Sort.Descending(property);
+            _sort = Builders<DynamicWrapper>.Sort.Combine(_sort, thenSort);
+            return this;
+        }
+
+        public IDocumentFindSortedCursor ThenByTextScore(string property)
+        {
+            var thenSort = Builders<DynamicWrapper>.Sort.MetaTextScore(property);
             _sort = Builders<DynamicWrapper>.Sort.Combine(_sort, thenSort);
             return this;
         }

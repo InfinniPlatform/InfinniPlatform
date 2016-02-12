@@ -66,41 +66,25 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             {
                 if (createIndex.Key != null && createIndex.Key.Count > 0)
                 {
-                    IndexKeysDefinition<BsonDocument> keysDefinition = null;
+                    var keysDefinitionList = new List<IndexKeysDefinition<BsonDocument>>(createIndex.Key.Count);
 
                     foreach (var property in createIndex.Key)
                     {
-                        if (keysDefinition == null)
+                        switch (property.Value)
                         {
-                            switch (property.Value)
-                            {
-                                case DocumentIndexKeyType.Asc:
-                                    keysDefinition = Builders<BsonDocument>.IndexKeys.Ascending(property.Key);
-                                    break;
-                                case DocumentIndexKeyType.Desc:
-                                    keysDefinition = Builders<BsonDocument>.IndexKeys.Descending(property.Key);
-                                    break;
-                                case DocumentIndexKeyType.Text:
-                                    keysDefinition = Builders<BsonDocument>.IndexKeys.Text(property.Key);
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            switch (property.Value)
-                            {
-                                case DocumentIndexKeyType.Asc:
-                                    keysDefinition = keysDefinition.Ascending(property.Key);
-                                    break;
-                                case DocumentIndexKeyType.Desc:
-                                    keysDefinition = keysDefinition.Descending(property.Key);
-                                    break;
-                                case DocumentIndexKeyType.Text:
-                                    keysDefinition = keysDefinition.Text(property.Key);
-                                    break;
-                            }
+                            case DocumentIndexKeyType.Asc:
+                                keysDefinitionList.Add(Builders<BsonDocument>.IndexKeys.Ascending(property.Key));
+                                break;
+                            case DocumentIndexKeyType.Desc:
+                                keysDefinitionList.Add(Builders<BsonDocument>.IndexKeys.Descending(property.Key));
+                                break;
+                            case DocumentIndexKeyType.Text:
+                                keysDefinitionList.Add(Builders<BsonDocument>.IndexKeys.Text(property.Key));
+                                break;
                         }
                     }
+
+                    var keysDefinition = (keysDefinitionList.Count == 1) ? keysDefinitionList[0] : Builders<BsonDocument>.IndexKeys.Combine(keysDefinitionList);
 
                     CreateIndexOptions indexOptions = null;
 

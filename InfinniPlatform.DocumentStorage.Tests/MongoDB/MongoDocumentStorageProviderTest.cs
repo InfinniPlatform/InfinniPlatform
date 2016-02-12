@@ -944,38 +944,38 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
             // Then
 
-            Assert.AreEqual(3, searchSingleWordResult.Count);
-            Assert.AreEqual(1, ((dynamic)searchSingleWordResult[0])._id);
-            Assert.AreEqual(7, ((dynamic)searchSingleWordResult[1])._id);
-            Assert.AreEqual(2, ((dynamic)searchSingleWordResult[2])._id);
+            Assert.AreEqual(3, searchSingleWordResult.Count, nameof(searchSingleWordResult));
+            Assert.AreEqual(1, searchSingleWordResult[0]["_id"], nameof(searchSingleWordResult));
+            Assert.AreEqual(7, searchSingleWordResult[1]["_id"], nameof(searchSingleWordResult));
+            Assert.AreEqual(2, searchSingleWordResult[2]["_id"], nameof(searchSingleWordResult));
 
-            Assert.AreEqual(2, searchWithoutTermResult.Count);
-            Assert.AreEqual(1, ((dynamic)searchWithoutTermResult[0])._id);
-            Assert.AreEqual(7, ((dynamic)searchWithoutTermResult[1])._id);
+            Assert.AreEqual(2, searchWithoutTermResult.Count, nameof(searchWithoutTermResult));
+            Assert.AreEqual(1, searchWithoutTermResult[0]["_id"], nameof(searchWithoutTermResult));
+            Assert.AreEqual(7, searchWithoutTermResult[1]["_id"], nameof(searchWithoutTermResult));
 
-            Assert.AreEqual(2, searchWithLanguageResult.Count);
-            Assert.AreEqual(8, ((dynamic)searchWithLanguageResult[0])._id);
-            Assert.AreEqual(5, ((dynamic)searchWithLanguageResult[1])._id);
+            Assert.AreEqual(2, searchWithLanguageResult.Count, nameof(searchWithLanguageResult));
+            Assert.AreEqual(8, searchWithLanguageResult[0]["_id"], nameof(searchWithLanguageResult));
+            Assert.AreEqual(5, searchWithLanguageResult[1]["_id"], nameof(searchWithLanguageResult));
 
-            Assert.AreEqual(3, diacriticInsensitiveSearchResult.Count);
-            Assert.AreEqual(8, ((dynamic)diacriticInsensitiveSearchResult[0])._id);
-            Assert.AreEqual(5, ((dynamic)diacriticInsensitiveSearchResult[1])._id);
-            Assert.AreEqual(6, ((dynamic)diacriticInsensitiveSearchResult[2])._id);
+            Assert.AreEqual(3, diacriticInsensitiveSearchResult.Count, nameof(diacriticInsensitiveSearchResult));
+            Assert.AreEqual(8, diacriticInsensitiveSearchResult[0]["_id"], nameof(diacriticInsensitiveSearchResult));
+            Assert.AreEqual(5, diacriticInsensitiveSearchResult[1]["_id"], nameof(diacriticInsensitiveSearchResult));
+            Assert.AreEqual(6, diacriticInsensitiveSearchResult[2]["_id"], nameof(diacriticInsensitiveSearchResult));
 
-            Assert.AreEqual(1, caseSensitiveSearchForTermResult.Count);
-            Assert.AreEqual(2, ((dynamic)caseSensitiveSearchForTermResult[0])._id);
+            Assert.AreEqual(1, caseSensitiveSearchForTermResult.Count, nameof(caseSensitiveSearchForTermResult));
+            Assert.AreEqual(2, caseSensitiveSearchForTermResult[0]["_id"], nameof(caseSensitiveSearchForTermResult));
 
-            Assert.AreEqual(1, caseSensitiveSearchForPhraseResult.Count);
-            Assert.AreEqual(5, ((dynamic)caseSensitiveSearchForPhraseResult[0])._id);
+            Assert.AreEqual(1, caseSensitiveSearchForPhraseResult.Count, nameof(caseSensitiveSearchForPhraseResult));
+            Assert.AreEqual(5, caseSensitiveSearchForPhraseResult[0]["_id"], nameof(caseSensitiveSearchForPhraseResult));
 
-            Assert.AreEqual(1, caseSensitiveSearchWithNegatedTermResult.Count);
-            Assert.AreEqual(2, ((dynamic)caseSensitiveSearchWithNegatedTermResult[0])._id);
+            Assert.AreEqual(1, caseSensitiveSearchWithNegatedTermResult.Count, nameof(caseSensitiveSearchWithNegatedTermResult));
+            Assert.AreEqual(2, caseSensitiveSearchWithNegatedTermResult[0]["_id"], nameof(caseSensitiveSearchWithNegatedTermResult));
 
-            Assert.AreEqual(1, diacriticSensitiveSearchForTermResult.Count);
-            Assert.AreEqual(5, ((dynamic)diacriticSensitiveSearchForTermResult[0])._id);
+            Assert.AreEqual(1, diacriticSensitiveSearchForTermResult.Count, nameof(diacriticSensitiveSearchForTermResult));
+            Assert.AreEqual(5, diacriticSensitiveSearchForTermResult[0]["_id"], nameof(diacriticSensitiveSearchForTermResult));
 
-            Assert.AreEqual(1, diacriticSensitiveSearchWithNegatedTermResult.Count);
-            Assert.AreEqual(8, ((dynamic)diacriticSensitiveSearchWithNegatedTermResult[0])._id);
+            Assert.AreEqual(1, diacriticSensitiveSearchWithNegatedTermResult.Count, nameof(diacriticSensitiveSearchWithNegatedTermResult));
+            Assert.AreEqual(8, diacriticSensitiveSearchWithNegatedTermResult[0]["_id"], nameof(diacriticSensitiveSearchWithNegatedTermResult));
         }
 
         [Test]

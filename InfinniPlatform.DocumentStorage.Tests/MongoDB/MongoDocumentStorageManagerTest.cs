@@ -103,9 +103,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
             // Description: Text
             Assert.AreEqual(3, resultIndex3.Count);
-            Assert.AreEqual("Some description 5 for Name2", resultIndex3[0]["Description"]);
-            Assert.AreEqual("Some description 4 for Name2", resultIndex3[1]["Description"]);
-            Assert.AreEqual("Some description 3 for Name2", resultIndex3[2]["Description"]);
+            CollectionAssert.AreEquivalent(new[] { 3, 4, 5 }, new[] { resultIndex3[0]["Id"], resultIndex3[1]["Id"], resultIndex3[2]["Id"] });
         }
 
         [Test]

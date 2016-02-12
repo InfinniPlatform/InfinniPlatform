@@ -25,6 +25,11 @@ namespace InfinniPlatform.Sdk.Documents
         IDocumentFindSortedCursor SortByDescending(string property);
 
         /// <summary>
+        /// Сортирует документы по убыванию релевантности, значение которой находится в указанном свойстве.
+        /// </summary>
+        IDocumentFindSortedCursor SortByTextScore(string property);
+
+        /// <summary>
         /// Пропускает указанное количество документов в результирующей выборке.
         /// </summary>
         IDocumentFindCursor Skip(int skip);

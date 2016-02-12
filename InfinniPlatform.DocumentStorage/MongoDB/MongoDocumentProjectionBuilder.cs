@@ -56,6 +56,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
+        public IDocumentProjectionBuilder IncludeTextScore(string property)
+        {
+            _projections.Add(InternalBuilder.MetaTextScore(property));
+            return this;
+        }
+
+
         public static ProjectionDefinition<TDocument> CreateMongoProjection(Action<IDocumentProjectionBuilder> projection)
         {
             var builder = new MongoDocumentProjectionBuilder<TDocument>();
