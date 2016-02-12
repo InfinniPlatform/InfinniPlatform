@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using InfinniPlatform.Sdk.Documents;
@@ -909,12 +910,12 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             // Given
 
             var textIndex = new DocumentIndex
-            {
-                Key = new Dictionary<string, DocumentIndexKeyType>
+                            {
+                                Key = new Dictionary<string, DocumentIndexKeyType>
                                       {
                                           { "subject", DocumentIndexKeyType.Text }
                                       }
-            };
+                            };
 
             var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByText), textIndex);
 
@@ -941,26 +942,21 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             var caseSensitiveSearchWithNegatedTermResult = storage.Find(f => f.Text("Coffee -shop", caseSensitive: true)).ToList();
             var diacriticSensitiveSearchForTermResult = storage.Find(f => f.Text("CAFÉ", diacriticSensitive: true)).ToList();
             var diacriticSensitiveSearchWithNegatedTermResult = storage.Find(f => f.Text("leches -cafés", diacriticSensitive: true)).ToList();
+            var searchWithTextScoreResult = storage.Find(f => f.Text("coffee")).Project(p => p.IncludeTextScore("score")).SortByTextScore("score").ToList();
 
             // Then
 
             Assert.AreEqual(3, searchSingleWordResult.Count, nameof(searchSingleWordResult));
-            Assert.AreEqual(1, searchSingleWordResult[0]["_id"], nameof(searchSingleWordResult));
-            Assert.AreEqual(7, searchSingleWordResult[1]["_id"], nameof(searchSingleWordResult));
-            Assert.AreEqual(2, searchSingleWordResult[2]["_id"], nameof(searchSingleWordResult));
+            CollectionAssert.AreEquivalent(new[] { 2, 7, 1 }, new[] { searchSingleWordResult[0]["_id"], searchSingleWordResult[1]["_id"], searchSingleWordResult[2]["_id"] });
 
             Assert.AreEqual(2, searchWithoutTermResult.Count, nameof(searchWithoutTermResult));
-            Assert.AreEqual(1, searchWithoutTermResult[0]["_id"], nameof(searchWithoutTermResult));
-            Assert.AreEqual(7, searchWithoutTermResult[1]["_id"], nameof(searchWithoutTermResult));
+            CollectionAssert.AreEquivalent(new[] { 7, 1 }, new[] { searchWithoutTermResult[0]["_id"], searchWithoutTermResult[1]["_id"] });
 
             Assert.AreEqual(2, searchWithLanguageResult.Count, nameof(searchWithLanguageResult));
-            Assert.AreEqual(8, searchWithLanguageResult[0]["_id"], nameof(searchWithLanguageResult));
-            Assert.AreEqual(5, searchWithLanguageResult[1]["_id"], nameof(searchWithLanguageResult));
+            CollectionAssert.AreEquivalent(new[] { 5, 8 }, new[] { searchWithLanguageResult[0]["_id"], searchWithLanguageResult[1]["_id"] });
 
             Assert.AreEqual(3, diacriticInsensitiveSearchResult.Count, nameof(diacriticInsensitiveSearchResult));
-            Assert.AreEqual(8, diacriticInsensitiveSearchResult[0]["_id"], nameof(diacriticInsensitiveSearchResult));
-            Assert.AreEqual(5, diacriticInsensitiveSearchResult[1]["_id"], nameof(diacriticInsensitiveSearchResult));
-            Assert.AreEqual(6, diacriticInsensitiveSearchResult[2]["_id"], nameof(diacriticInsensitiveSearchResult));
+            CollectionAssert.AreEquivalent(new[] { 6, 5, 8 }, new[] { diacriticInsensitiveSearchResult[0]["_id"], diacriticInsensitiveSearchResult[1]["_id"], diacriticInsensitiveSearchResult[2]["_id"] });
 
             Assert.AreEqual(1, caseSensitiveSearchForTermResult.Count, nameof(caseSensitiveSearchForTermResult));
             Assert.AreEqual(2, caseSensitiveSearchForTermResult[0]["_id"], nameof(caseSensitiveSearchForTermResult));
@@ -976,6 +972,11 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
             Assert.AreEqual(1, diacriticSensitiveSearchWithNegatedTermResult.Count, nameof(diacriticSensitiveSearchWithNegatedTermResult));
             Assert.AreEqual(8, diacriticSensitiveSearchWithNegatedTermResult[0]["_id"], nameof(diacriticSensitiveSearchWithNegatedTermResult));
+
+            Assert.AreEqual(3, searchWithTextScoreResult.Count, nameof(searchWithTextScoreResult));
+            Assert.AreEqual(1, searchWithTextScoreResult[0]["_id"], nameof(searchWithTextScoreResult));
+            Assert.AreEqual(2, searchWithTextScoreResult[1]["_id"], nameof(searchWithTextScoreResult));
+            Assert.AreEqual(7, searchWithTextScoreResult[2]["_id"], nameof(searchWithTextScoreResult));
         }
 
         [Test]
@@ -2117,32 +2118,32 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
             Assert.AreEqual(3, groupByMonthDayYearResult.Count);
 
-            Assert.IsNotNull(groupByMonthDayYearResult[0]);
-            Assert.IsNotNull(((dynamic)groupByMonthDayYearResult[0])._id);
-            Assert.AreEqual(4, ((dynamic)groupByMonthDayYearResult[0])._id.month);
-            Assert.AreEqual(4, ((dynamic)groupByMonthDayYearResult[0])._id.day);
-            Assert.AreEqual(2016, ((dynamic)groupByMonthDayYearResult[0])._id.year);
-            Assert.AreEqual(200, ((dynamic)groupByMonthDayYearResult[0]).totalPrice);
-            Assert.AreEqual(15, ((dynamic)groupByMonthDayYearResult[0]).averageQuantity);
-            Assert.AreEqual(2, ((dynamic)groupByMonthDayYearResult[0]).count);
+            var item1 = groupByMonthDayYearResult.FirstOrDefault((dynamic i) => i._id != null && i._id.month == 3 && i._id.day == 15 && i._id.year == 2016);
+            Assert.IsNotNull(item1);
+            Assert.AreEqual(3, item1._id.month);
+            Assert.AreEqual(15, item1._id.day);
+            Assert.AreEqual(2016, item1._id.year);
+            Assert.AreEqual(50, item1.totalPrice);
+            Assert.AreEqual(10, item1.averageQuantity);
+            Assert.AreEqual(1, item1.count);
 
-            Assert.IsNotNull(groupByMonthDayYearResult[1]);
-            Assert.IsNotNull(((dynamic)groupByMonthDayYearResult[1])._id);
-            Assert.AreEqual(3, ((dynamic)groupByMonthDayYearResult[1])._id.month);
-            Assert.AreEqual(15, ((dynamic)groupByMonthDayYearResult[1])._id.day);
-            Assert.AreEqual(2016, ((dynamic)groupByMonthDayYearResult[1])._id.year);
-            Assert.AreEqual(50, ((dynamic)groupByMonthDayYearResult[1]).totalPrice);
-            Assert.AreEqual(10, ((dynamic)groupByMonthDayYearResult[1]).averageQuantity);
-            Assert.AreEqual(1, ((dynamic)groupByMonthDayYearResult[1]).count);
+            var item2 = groupByMonthDayYearResult.FirstOrDefault((dynamic i) => i._id != null && i._id.month == 4 && i._id.day == 4 && i._id.year == 2016);
+            Assert.IsNotNull(item2);
+            Assert.AreEqual(4, item2._id.month);
+            Assert.AreEqual(4, item2._id.day);
+            Assert.AreEqual(2016, item2._id.year);
+            Assert.AreEqual(200, item2.totalPrice);
+            Assert.AreEqual(15, item2.averageQuantity);
+            Assert.AreEqual(2, item2.count);
 
-            Assert.IsNotNull(groupByMonthDayYearResult[2]);
-            Assert.IsNotNull(((dynamic)groupByMonthDayYearResult[2])._id);
-            Assert.AreEqual(3, ((dynamic)groupByMonthDayYearResult[2])._id.month);
-            Assert.AreEqual(1, ((dynamic)groupByMonthDayYearResult[2])._id.day);
-            Assert.AreEqual(2016, ((dynamic)groupByMonthDayYearResult[2])._id.year);
-            Assert.AreEqual(40, ((dynamic)groupByMonthDayYearResult[2]).totalPrice);
-            Assert.AreEqual(1.5, ((dynamic)groupByMonthDayYearResult[2]).averageQuantity);
-            Assert.AreEqual(2, ((dynamic)groupByMonthDayYearResult[2]).count);
+            var item3 = groupByMonthDayYearResult.FirstOrDefault((dynamic i) => i._id != null && i._id.month == 3 && i._id.day == 1 && i._id.year == 2016);
+            Assert.IsNotNull(item3);
+            Assert.AreEqual(3, item3._id.month);
+            Assert.AreEqual(1, item3._id.day);
+            Assert.AreEqual(2016, item3._id.year);
+            Assert.AreEqual(40, item3.totalPrice);
+            Assert.AreEqual(1.5, item3.averageQuantity);
+            Assert.AreEqual(2, item3.count);
         }
 
         [Test]
