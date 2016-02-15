@@ -10,7 +10,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             return new MongoConnection("MongoTest", MongoConnectionSettings.Default);
         }
 
-        public static MongoDocumentStorageProvider GetEmptyStorage(string documentType, params DocumentIndex[] indexes)
+        public static MongoDocumentStorageProvider GetEmptyStorageProvider(string documentType, params DocumentIndex[] indexes)
         {
             var connection = GetConnection();
             var database = connection.GetDatabase();

@@ -61,11 +61,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
-        public static IEnumerable<WriteModel<TDocument>> CreateMongoBulk(MongoDocumentFilterBuilder<TDocument> filterBuilder, Action<IDocumentBulkBuilder<TDocument>> bulk)
+        public static IEnumerable<WriteModel<TDocument>> CreateMongoBulk(MongoDocumentFilterBuilder<TDocument> filterBuilder, Action<IDocumentBulkBuilder<TDocument>> requests)
         {
             var builder = new MongoDocumentBulkBuilderGeneric<TDocument>(filterBuilder);
 
-            bulk?.Invoke(builder);
+            requests?.Invoke(builder);
 
             return builder._operations;
         }

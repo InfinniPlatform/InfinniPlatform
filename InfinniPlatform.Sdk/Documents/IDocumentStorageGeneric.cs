@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace InfinniPlatform.Sdk.Documents
 {
     /// <summary>
-    /// Предоставляет низкоуровневые методы для работы с данными хранилища документов.
+    /// Предоставляет методы для работы с данными хранилища документов.
     /// </summary>
-    public interface IDocumentStorageProvider<TDocument>
+    public interface IDocumentStorage<TDocument>
     {
         /// <summary>
         /// Возвращает количество документов, удовлетворяющих указанному фильтру.
@@ -56,24 +56,28 @@ namespace InfinniPlatform.Sdk.Documents
         /// Вставляет один документ в хранилище или возвращает исключение, если хранилище уже содержит указанный документ.
         /// </summary>
         /// <param name="document">Документ для вставки.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         void InsertOne(TDocument document);
 
         /// <summary>
         /// Вставляет один документ в хранилище или возвращает исключение, если хранилище уже содержит указанный документ.
         /// </summary>
         /// <param name="document">Документ для вставки.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         Task InsertOneAsync(TDocument document);
 
         /// <summary>
         /// Вставляет набор документов хранилище или возвращает исключение, если хранилище уже содержит один из указанных документов.
         /// </summary>
         /// <param name="documents">Список документов для вставки.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         void InsertMany(IEnumerable<TDocument> documents);
 
         /// <summary>
         /// Вставляет набор документов хранилище или возвращает исключение, если хранилище уже содержит один из указанных документов.
         /// </summary>
         /// <param name="documents">Список документов для вставки.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         Task InsertManyAsync(IEnumerable<TDocument> documents);
 
 
@@ -83,6 +87,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="update">Оператор обновления документов.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         DocumentUpdateResult UpdateOne(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false);
 
         /// <summary>
@@ -91,6 +96,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="update">Оператор обновления документов.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         Task<DocumentUpdateResult> UpdateOneAsync(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false);
 
         /// <summary>
@@ -99,6 +105,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="update">Оператор обновления документов.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         DocumentUpdateResult UpdateMany(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false);
 
         /// <summary>
@@ -107,6 +114,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="update">Оператор обновления документов.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         Task<DocumentUpdateResult> UpdateManyAsync(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false);
 
 
@@ -116,6 +124,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="replacement">Документ замены.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         DocumentUpdateResult ReplaceOne(TDocument replacement, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false);
 
         /// <summary>
@@ -124,6 +133,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="replacement">Документ замены.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         Task<DocumentUpdateResult> ReplaceOneAsync(TDocument replacement, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false);
 
 
@@ -131,24 +141,28 @@ namespace InfinniPlatform.Sdk.Documents
         /// Удаляет первый найденный документ, удовлетворяющий указанному фильтру.
         /// </summary>
         /// <param name="filter">Фильтр для поиска документов.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         long DeleteOne(Expression<Func<TDocument, bool>> filter = null);
 
         /// <summary>
         /// Удаляет первый найденный документ, удовлетворяющий указанному фильтру.
         /// </summary>
         /// <param name="filter">Фильтр для поиска документов.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         Task<long> DeleteOneAsync(Expression<Func<TDocument, bool>> filter = null);
 
         /// <summary>
         /// Удаляет все документы, удовлетворяющие указанному фильтру.
         /// </summary>
         /// <param name="filter">Фильтр для поиска документов.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         long DeleteMany(Expression<Func<TDocument, bool>> filter = null);
 
         /// <summary>
         /// Удаляет все документы, удовлетворяющие указанному фильтру.
         /// </summary>
         /// <param name="filter">Фильтр для поиска документов.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         Task<long> DeleteManyAsync(Expression<Func<TDocument, bool>> filter = null);
 
 
@@ -157,6 +171,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// </summary>
         /// <param name="requests">Набор команд изменения документов.</param>
         /// <param name="isOrdered">Обязательно ли выполнять команды по порядку.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         DocumentBulkResult Bulk(Action<IDocumentBulkBuilder<TDocument>> requests, bool isOrdered = false);
 
         /// <summary>
@@ -164,6 +179,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// </summary>
         /// <param name="requests">Набор команд изменения документов.</param>
         /// <param name="isOrdered">Обязательно ли выполнять команды по порядку.</param>
+        /// <exception cref="DocumentStorageWriteException"></exception>
         Task<DocumentBulkResult> BulkAsync(Action<IDocumentBulkBuilder<TDocument>> requests, bool isOrdered = false);
     }
 }

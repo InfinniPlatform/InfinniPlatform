@@ -10,7 +10,7 @@ using MongoDB.Driver;
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     /// <summary>
-    /// Предоставляет методы для управления данными хранилища документов в MongoDB.
+    /// Предоставляет низкоуровневые методы для работы с данными хранилища документов в MongoDB.
     /// </summary>
     internal sealed class MongoDocumentStorageProvider : IDocumentStorageProvider
     {
@@ -150,17 +150,17 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
-        public DocumentBulkResult Bulk(Action<IDocumentBulkBuilder> bulk, bool isOrdered = false)
+        public DocumentBulkResult Bulk(Action<IDocumentBulkBuilder> requests, bool isOrdered = false)
         {
-            var requests = MongoDocumentBulkBuilder.CreateMongoBulk(_filterBuilder, bulk);
-            var result = _collection.Value.BulkWrite(requests, new BulkWriteOptions { IsOrdered = isOrdered });
+            var bulk = MongoDocumentBulkBuilder.CreateMongoBulk(_filterBuilder, requests);
+            var result = _collection.Value.BulkWrite(bulk, new BulkWriteOptions { IsOrdered = isOrdered });
             return new DocumentBulkResult(result.RequestCount, result.MatchedCount, result.InsertedCount, result.ModifiedCount, result.DeletedCount);
         }
 
-        public async Task<DocumentBulkResult> BulkAsync(Action<IDocumentBulkBuilder> bulk, bool isOrdered = false)
+        public async Task<DocumentBulkResult> BulkAsync(Action<IDocumentBulkBuilder> requests, bool isOrdered = false)
         {
-            var requests = MongoDocumentBulkBuilder.CreateMongoBulk(_filterBuilder, bulk);
-            var result = await _collection.Value.BulkWriteAsync(requests, new BulkWriteOptions { IsOrdered = isOrdered });
+            var bulk = MongoDocumentBulkBuilder.CreateMongoBulk(_filterBuilder, requests);
+            var result = await _collection.Value.BulkWriteAsync(bulk, new BulkWriteOptions { IsOrdered = isOrdered });
             return new DocumentBulkResult(result.RequestCount, result.MatchedCount, result.InsertedCount, result.ModifiedCount, result.DeletedCount);
         }
     }

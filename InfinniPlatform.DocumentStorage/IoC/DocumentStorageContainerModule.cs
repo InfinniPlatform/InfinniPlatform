@@ -1,6 +1,5 @@
-﻿using System;
-
-using InfinniPlatform.DocumentStorage.MongoDB;
+﻿using InfinniPlatform.DocumentStorage.MongoDB;
+using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
@@ -11,6 +10,8 @@ namespace InfinniPlatform.DocumentStorage.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            // MongoDB
+
             builder.RegisterFactory(GetMongoConnectionSettings)
                    .As<MongoConnectionSettings>()
                    .SingleInstance();
@@ -30,6 +31,28 @@ namespace InfinniPlatform.DocumentStorage.IoC
             builder.RegisterGeneric(typeof(MongoDocumentStorageProvider<>))
                    .As(typeof(IDocumentStorageProvider<>))
                    .InstancePerDependency();
+
+            // Storage
+
+            builder.RegisterType<DocumentStorageIdProvider>()
+                   .As<IDocumentStorageIdProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentStorageHeaderProvider>()
+                   .As<IDocumentStorageHeaderProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentStorageFilterProvider>()
+                   .As<IDocumentStorageFilterProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentStorageInterceptorProvider>()
+                   .As<IDocumentStorageInterceptorProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentStorageImpl>()
+                   .As<IDocumentStorage>()
+                   .SingleInstance();
         }
 
 

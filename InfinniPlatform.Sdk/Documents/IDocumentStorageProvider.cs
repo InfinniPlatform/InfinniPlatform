@@ -7,7 +7,7 @@ using InfinniPlatform.Sdk.Dynamic;
 namespace InfinniPlatform.Sdk.Documents
 {
     /// <summary>
-    /// Предоставляет методы для работы с данными хранилища документов.
+    /// Предоставляет низкоуровневые методы для работы с данными хранилища документов.
     /// </summary>
     public interface IDocumentStorageProvider
     {
@@ -154,17 +154,17 @@ namespace InfinniPlatform.Sdk.Documents
 
 
         /// <summary>
-        /// Выполняет набор операций изменения документов в рамках одного запроса.
+        /// Выполняет набор команд изменения документов в рамках одного запроса.
         /// </summary>
-        /// <param name="bulk">Набор операций изменения документов.</param>
-        /// <param name="isOrdered">Обязательно ли выполнять операции по порядку.</param>
-        DocumentBulkResult Bulk(Action<IDocumentBulkBuilder> bulk, bool isOrdered = false);
+        /// <param name="requests">Набор команд изменения документов.</param>
+        /// <param name="isOrdered">Обязательно ли выполнять команды по порядку.</param>
+        DocumentBulkResult Bulk(Action<IDocumentBulkBuilder> requests, bool isOrdered = false);
 
         /// <summary>
-        /// Выполняет набор операций изменения документов в рамках одного запроса.
+        /// Выполняет набор команд изменения документов в рамках одного запроса.
         /// </summary>
-        /// <param name="bulk">Набор операций изменения документов.</param>
-        /// <param name="isOrdered">Обязательно ли выполнять операции по порядку.</param>
-        Task<DocumentBulkResult> BulkAsync(Action<IDocumentBulkBuilder> bulk, bool isOrdered = false);
+        /// <param name="requests">Набор команд изменения документов.</param>
+        /// <param name="isOrdered">Обязательно ли выполнять команды по порядку.</param>
+        Task<DocumentBulkResult> BulkAsync(Action<IDocumentBulkBuilder> requests, bool isOrdered = false);
     }
 }

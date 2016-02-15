@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 namespace InfinniPlatform.Sdk.Documents
 {
     /// <summary>
-    /// Предоставляет методы создания набора операций изменения документов.
+    /// Предоставляет методы создания набора команд изменения документов.
     /// </summary>
     public interface IDocumentBulkBuilder<TDocument>
     {

@@ -11,7 +11,7 @@ namespace InfinniPlatform.Core.Transactions
     internal class TenantProvider : ITenantProvider
     {
         private const string TenantId = "tenantid";
-        private const string AnonymousUser = "anonimous";
+        private const string AnonymousUser = "anonymous";
         private const string DefaultTenantId = "defaulttenantid";
 
 

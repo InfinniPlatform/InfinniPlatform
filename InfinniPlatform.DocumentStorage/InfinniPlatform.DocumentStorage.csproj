@@ -76,11 +76,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Storage\DocumentStorageImpl.cs" />
+    <Compile Include="Storage\DocumentStorageFilterProvider.cs" />
+    <Compile Include="Storage\DocumentStorageHeaderProvider.cs" />
+    <Compile Include="Storage\DocumentStorageHelpers.cs" />
+    <Compile Include="Storage\DocumentStorageIdProvider.cs" />
+    <Compile Include="Storage\DocumentStorageInterceptorProvider.cs" />
+    <Compile Include="Storage\IDocumentStorageFilterProvider.cs" />
+    <Compile Include="Storage\IDocumentStorageHeaderProvider.cs" />
+    <Compile Include="Storage\IDocumentStorageIdProvider.cs" />
+    <Compile Include="Storage\IDocumentStorageInterceptorProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
       <Name>InfinniPlatform.Sdk</Name>

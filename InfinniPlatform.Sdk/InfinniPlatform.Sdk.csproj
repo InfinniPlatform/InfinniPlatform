@@ -58,7 +58,20 @@
     </Compile>
     <Compile Include="BlobStorage\BlobStorageExtensions.cs" />
     <Compile Include="ClientNotification\IClientNotificationService.cs" />
+    <Compile Include="Documents\DocumentStorageWriteException.cs" />
+    <Compile Include="Documents\IDocumentStorageGeneric.cs" />
+    <Compile Include="Documents\Interceptors\DocumentBulkCommand.cs" />
+    <Compile Include="Documents\Interceptors\DocumentStorageWriteResult.cs" />
+    <Compile Include="Documents\Interceptors\DocumentStorageInterceptor.cs" />
+    <Compile Include="Documents\Interceptors\IDocumentStorageInterceptor.cs" />
+    <Compile Include="Documents\Interceptors\DocumentDeleteManyCommand.cs" />
+    <Compile Include="Documents\Interceptors\DocumentDeleteOneCommand.cs" />
+    <Compile Include="Documents\Interceptors\DocumentInsertManyCommand.cs" />
+    <Compile Include="Documents\Interceptors\DocumentInsertOneCommand.cs" />
+    <Compile Include="Documents\Interceptors\DocumentReplaceOneCommand.cs" />
     <Compile Include="Documents\DocumentBulkResult.cs" />
+    <Compile Include="Documents\Interceptors\DocumentUpdateManyCommand.cs" />
+    <Compile Include="Documents\Interceptors\DocumentUpdateOneCommand.cs" />
     <Compile Include="Documents\DocumentUpdateResult.cs" />
     <Compile Include="Documents\DocumentUpdateStatus.cs" />
     <Compile Include="Documents\IDocumentAggregateCursor.cs" />
@@ -74,11 +87,13 @@
     <Compile Include="Documents\IDocumentFindSortedCursor.cs" />
     <Compile Include="Documents\IDocumentFindSortedCursorGeneric.cs" />
     <Compile Include="Documents\IDocumentProjectionBuilder.cs" />
+    <Compile Include="Documents\IDocumentStorage.cs" />
     <Compile Include="Documents\IDocumentStorageManager.cs" />
     <Compile Include="Documents\IDocumentStorageProvider.cs" />
     <Compile Include="Documents\IDocumentStorageProviderGeneric.cs" />
     <Compile Include="Documents\IDocumentUpdateBuilder.cs" />
     <Compile Include="Documents\IDocumentUpdateBuilderGeneric.cs" />
+    <Compile Include="Documents\Interceptors\IDocumentWriteCommand.cs" />
     <Compile Include="Documents\Obsolete\DocumentExtensions.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
     <Compile Include="Logging\LoggerNameAttribute.cs" />

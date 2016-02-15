@@ -19,7 +19,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldCount()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldCount));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldCount));
 
             // When
             storage.InsertMany(new[] { new DynamicWrapper(), new DynamicWrapper(), new DynamicWrapper() });
@@ -33,7 +33,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldCountAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldCountAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldCountAsync));
 
             // When
             storage.InsertMany(new[] { new DynamicWrapper(), new DynamicWrapper(), new DynamicWrapper() });
@@ -47,7 +47,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldCountWithExpression()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldCountWithExpression));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldCountWithExpression));
 
             // When
 
@@ -71,7 +71,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldCountWithExpressionAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldCountWithExpression));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldCountWithExpression));
 
             // When
 
@@ -95,7 +95,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldDistinct()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldDistinct));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDistinct));
 
             // When
 
@@ -123,7 +123,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldDistinctAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldDistinctAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDistinctAsync));
 
             // When
 
@@ -151,7 +151,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByEmpty()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByEmpty));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByEmpty));
 
             // When
 
@@ -180,7 +180,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByNot()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByNot));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByNot));
 
             // When
 
@@ -208,7 +208,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByOr()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByEmpty));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByEmpty));
 
             // When
 
@@ -234,7 +234,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByAnd()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByAnd));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByAnd));
 
             // When
 
@@ -261,7 +261,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByExists()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByExists));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByExists));
 
             // When
 
@@ -289,7 +289,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByType()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByType));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByType));
 
             // When
 
@@ -359,7 +359,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByIn()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByIn));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByIn));
 
             // When
 
@@ -391,7 +391,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByEq()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByIn));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByIn));
 
             // When
 
@@ -423,7 +423,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByCompareNumbers()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByCompareNumbers));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByCompareNumbers));
 
             // When
 
@@ -474,7 +474,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByCompareDateTimes()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByCompareDateTimes));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByCompareDateTimes));
 
             // When
 
@@ -525,7 +525,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByRegex()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByRegex));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByRegex));
 
             // When
 
@@ -565,7 +565,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByMatch()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByMatch));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByMatch));
 
             // When
 
@@ -618,7 +618,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByAll()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByAll));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByAll));
 
             // When
 
@@ -693,7 +693,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByAnyIn()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByAnyIn));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByAnyIn));
 
             // When
 
@@ -725,7 +725,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByAnyEq()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByAnyEq));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByAnyEq));
 
             // When
 
@@ -757,7 +757,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByAnyCompareNumbers()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByAnyCompareNumbers));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByAnyCompareNumbers));
 
             // When
 
@@ -801,7 +801,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByAnyCompareDateTimes()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByAnyCompareDateTimes));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByAnyCompareDateTimes));
 
             // When
 
@@ -847,7 +847,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindBySize()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindBySize));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindBySize));
 
             // When
 
@@ -917,7 +917,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
                                       }
                             };
 
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindByText), textIndex);
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByText), textIndex);
 
             // When
 
@@ -983,7 +983,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindWithSort()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindWithSort));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindWithSort));
 
             // When
 
@@ -1041,7 +1041,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindWithSkipAndLimit()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindWithSkipAndLimit));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindWithSkipAndLimit));
 
             // When
 
@@ -1100,7 +1100,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindWithProjection()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindWithProjection));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindWithProjection));
 
             // When
 
@@ -1211,7 +1211,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindWithProjectionWithMatchArray()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldFindWithProjectionWithMatchArray));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindWithProjectionWithMatchArray));
 
             // When
 
@@ -1306,7 +1306,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldInsertOne()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldInsertOne));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertOne));
 
             // When
             storage.InsertOne(new DynamicWrapper());
@@ -1321,7 +1321,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldInsertOneAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldInsertOneAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertOneAsync));
 
             // When
             await storage.InsertOneAsync(new DynamicWrapper());
@@ -1336,7 +1336,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldInsertMany()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldInsertMany));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertMany));
 
             // When
             storage.InsertMany(new[] { new DynamicWrapper(), new DynamicWrapper() });
@@ -1351,7 +1351,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldInsertManyAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldInsertManyAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertManyAsync));
 
             // When
             await storage.InsertManyAsync(new[] { new DynamicWrapper(), new DynamicWrapper() });
@@ -1366,7 +1366,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateOne()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateOne));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateOne));
 
             // When
             storage.InsertMany(new[]
@@ -1413,7 +1413,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldUpdateOneAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateOneAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateOneAsync));
 
             // When
             storage.InsertMany(new[]
@@ -1460,7 +1460,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShoudlUpdateMany()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShoudlUpdateMany));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShoudlUpdateMany));
 
             // When
             storage.InsertMany(new[]
@@ -1518,7 +1518,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShoudlUpdateManyAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShoudlUpdateManyAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShoudlUpdateManyAsync));
 
             // When
             storage.InsertMany(new[]
@@ -1576,7 +1576,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithRename()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithRename));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithRename));
 
             // When
 
@@ -1592,7 +1592,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithRemove()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithRemove));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithRemove));
 
             // When
 
@@ -1608,7 +1608,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithSet()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithSet));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithSet));
 
             // When
 
@@ -1624,7 +1624,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithInc()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithInc));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithInc));
 
             // When
 
@@ -1643,7 +1643,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithMul()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithMul));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithMul));
 
             // When
 
@@ -1662,7 +1662,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithMin()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithMin));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithMin));
 
             // When
 
@@ -1681,7 +1681,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithMax()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithMax));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithMax));
 
             // When
 
@@ -1700,7 +1700,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithBitwiseOperations()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithBitwiseOperations));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithBitwiseOperations));
 
             // When
 
@@ -1719,7 +1719,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         {
             // Given
             var nowDate = DateTime.UtcNow;
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithBitwiseOperations));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithBitwiseOperations));
 
             // When
             storage.InsertOne(new DynamicWrapper());
@@ -1735,7 +1735,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithPush()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithPush));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithPush));
 
             // When
             storage.InsertOne(new DynamicWrapper());
@@ -1758,7 +1758,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldUpdateWithPopAndPull()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldUpdateWithPopAndPull));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithPopAndPull));
 
             // When
 
@@ -1792,7 +1792,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldReplaceOne()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldReplaceOne));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldReplaceOne));
 
             // When
             storage.InsertMany(new[]
@@ -1850,7 +1850,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldReplaceOneAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldReplaceOneAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldReplaceOneAsync));
 
             // When
 
@@ -1909,7 +1909,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldDeleteOne()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldDeleteOne));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDeleteOne));
 
             // When
 
@@ -1944,7 +1944,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldDeleteOneAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldDeleteOneAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDeleteOneAsync));
 
             // When
 
@@ -1979,7 +1979,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldDeleteMany()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldDeleteMany));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDeleteMany));
 
             // When
 
@@ -2024,7 +2024,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldDeleteManyAsync()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldDeleteManyAsync));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDeleteManyAsync));
 
             // When
 
@@ -2069,7 +2069,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldAggregateWithGroup()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldAggregateWithGroup));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldAggregateWithGroup));
 
             // When
 
@@ -2150,7 +2150,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldBulk()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorage(nameof(ShouldBulk));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldBulk));
 
             // When
 
