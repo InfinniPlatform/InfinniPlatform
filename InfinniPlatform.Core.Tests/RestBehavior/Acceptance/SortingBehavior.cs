@@ -51,13 +51,13 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             var document2 = new
             {
                 IntProperty = 1,
-                ArrayProperty = new[] { new { SortableStringProperty = "aaaa 2" }, new { SortableStringProperty = "zzz 2" } }
+                ArrayProperty = new[] { new { SortableStringProperty = "aaaa 2" }, new { SortableStringProperty = "xxx 2" } }
             };
 
             var document3 = new
             {
                 IntProperty = 3,
-                ArrayProperty = new[] { new { SortableStringProperty = "eee 1" }, new { SortableStringProperty = "xxx 1" } }
+                ArrayProperty = new[] { new { SortableStringProperty = "eee 1" }, new { SortableStringProperty = "zzz 1" } }
             };
 
             // When
@@ -67,7 +67,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             documentApi.SetDocument(OneSortingFieldInArrayDocument, document3);
 
             // По умолчанию - сортировка по возрастанию SortableStringProperty
-            var ascPage0 = documentApi.GetDocument(OneSortingFieldInArrayDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(OneSortingFieldInArrayDocument, null, 0, 10, s => s.AddSorting("ArrayProperty.SortableStringProperty", "ascending"));
 
             // Сортировка по убыванию
             var descPage0 = documentApi.GetDocument(OneSortingFieldInArrayDocument, null, 0, 10, s => s.AddSorting("ArrayProperty.SortableStringProperty", "descending"));
@@ -101,8 +101,8 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             }
 
             // По умолчанию - сортировка по возрастанию SortableDateProperty
-            var ascPage0 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 0, 10);
-            var ascPage1 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 1, 10);
+            var ascPage0 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableDateProperty", "ascending"));
+            var ascPage1 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 1, 10, s => s.AddSorting("SortableDateProperty", "ascending"));
 
             // Сортировка по убыванию
             var descPage0 = documentApi.GetDocument(OneDateSortingFieldDocument, null, 0, 10, s => s.AddSorting("SortableDateProperty", "descending"));
@@ -114,15 +114,15 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             Assert.IsNotNull(ascPage1);
             Assert.IsNotNull(ascPage0.FirstOrDefault());
             Assert.IsNotNull(ascPage1.FirstOrDefault());
-            Assert.AreEqual(startDate.AddDays(0), ascPage0.FirstOrDefault().SortableDateProperty);
-            Assert.AreEqual(startDate.AddDays(10), ascPage1.FirstOrDefault().SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(0).ToUniversalTime(), ascPage0.FirstOrDefault().SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(10).ToUniversalTime(), ascPage1.FirstOrDefault().SortableDateProperty);
 
             Assert.IsNotNull(descPage0);
             Assert.IsNotNull(descPage1);
             Assert.IsNotNull(descPage0.FirstOrDefault());
             Assert.IsNotNull(descPage1.FirstOrDefault());
-            Assert.AreEqual(startDate.AddDays(99), descPage0.FirstOrDefault().SortableDateProperty);
-            Assert.AreEqual(startDate.AddDays(89), descPage1.FirstOrDefault().SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(99).ToUniversalTime(), descPage0.FirstOrDefault().SortableDateProperty);
+            Assert.AreEqual(startDate.AddDays(89).ToUniversalTime(), descPage1.FirstOrDefault().SortableDateProperty);
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             documentApi.SetDocument(InlineSortingDocument, document3);
 
             // По умолчанию - сортировка по возрастанию ObjectProperty.SortableStringProperty
-            var ascPage0 = documentApi.GetDocument(InlineSortingDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(InlineSortingDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "ascending"));
 
             // Сортировка по убыванию
             var descPage0 = documentApi.GetDocument(InlineSortingDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "descending"));
@@ -236,7 +236,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             documentApi.SetDocument(OneSortingFieldInNestedObjectDocument, document3);
 
             // По умолчанию - сортировка по возрастанию ObjectProperty.SortableStringProperty
-            var ascPage0 = documentApi.GetDocument(OneSortingFieldInNestedObjectDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(OneSortingFieldInNestedObjectDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "ascending"));
 
             // Сортировка по убыванию
             var descPage0 = documentApi.GetDocument(OneSortingFieldInNestedObjectDocument, null, 0, 10, s => s.AddSorting("ObjectProperty.SortableStringProperty", "descending"));
@@ -336,7 +336,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             documentApi.SetDocument(TwoSortingFieldsDocument, document6);
 
             // По умолчанию - сортировка по возрастанию SortableStringProperty и SortableIntProperty
-            var ascPage0 = documentApi.GetDocument(TwoSortingFieldsDocument, null, 0, 10);
+            var ascPage0 = documentApi.GetDocument(TwoSortingFieldsDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", "ascending").AddSorting("SortableIntProperty"));
 
             // Сортировка по убыванию
             var descPage0 = documentApi.GetDocument(TwoSortingFieldsDocument, null, 0, 10, s => s.AddSorting("SortableStringProperty", "descending").AddSorting("SortableIntProperty"));

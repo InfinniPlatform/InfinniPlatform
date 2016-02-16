@@ -182,6 +182,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
         }
 
         [Test]
+        [Ignore("It does not matter for MongoDB")]
         public void ShouldReturnCorrectMessageAfterSetDocumentWithIncorrectSchema()
         {
             // Given

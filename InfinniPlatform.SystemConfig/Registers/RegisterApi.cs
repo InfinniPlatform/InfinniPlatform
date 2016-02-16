@@ -8,8 +8,6 @@ using System.Text.RegularExpressions;
 using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Registers;
-using InfinniPlatform.ElasticSearch.Factories;
-using InfinniPlatform.ElasticSearch.Filters;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Registers;
@@ -24,20 +22,18 @@ namespace InfinniPlatform.SystemConfig.Registers
     {
         // TODO: Нужен глубокий рефакторинг и тестирование.
 
-        public RegisterApi(IAppEnvironment appEnvironment, IDocumentApi documentApi, IMetadataApi metadataApi, IIndexFactory indexFactory)
+        public RegisterApi(IAppEnvironment appEnvironment, IMetadataApi metadataApi, IDocumentApi documentApi, Func<string, IDocumentStorage> documentStorageFactory)
         {
             _appEnvironment = appEnvironment;
-            _documentApi = documentApi;
             _metadataApi = metadataApi;
-            _indexFactory = indexFactory;
-            _filterFactory = FilterBuilderFactory.GetInstance();
+            _documentApi = documentApi;
+            _documentStorageFactory = documentStorageFactory;
         }
 
         private readonly IAppEnvironment _appEnvironment;
-        private readonly IDocumentApi _documentApi;
         private readonly IMetadataApi _metadataApi;
-        private readonly IIndexFactory _indexFactory;
-        private readonly INestFilterBuilder _filterFactory;
+        private readonly IDocumentApi _documentApi;
+        private readonly Func<string, IDocumentStorage> _documentStorageFactory;
 
         /// <summary>
         /// Создает (но не сохраняет) запись регистра.
@@ -375,24 +371,19 @@ namespace InfinniPlatform.SystemConfig.Registers
                 aggregationTypes = AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount);
             }
 
-            var aggregationResult = GetAggregationDocumentResult(
+            IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
                 dimensions,
-                aggregationTypes,
-                valueProperties);
-
-            var dimensionNames = dimensions.Select(d => (string)d.FieldName).ToArray();
-
-            // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
-            var denormalizedResult = AggregationUtils.ProcessBuckets(dimensionNames, valueProperties.ToArray(), aggregationResult);
+                valueProperties, aggregationTypes);
 
             if (aggregatedTotals != null)
             {
-                return AggregationUtils.MergeAggregaionResults(dimensionNames, valueProperties, denormalizedResult, aggregatedTotals);
+                var dimensionNames = dimensions.Select(d => (string)d.FieldName).ToArray();
+                return AggregationUtils.MergeAggregaionResults(dimensionNames, valueProperties, aggregationResult, aggregatedTotals);
             }
 
-            return denormalizedResult;
+            return aggregationResult;
         }
 
         /// <summary>
@@ -430,17 +421,13 @@ namespace InfinniPlatform.SystemConfig.Registers
                 aggregationTypes = AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount);
             }
 
-            var aggregationResult = GetAggregationDocumentResult(
+            IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
                 dimensions,
-                aggregationTypes,
-                valueProperties);
+                valueProperties, aggregationTypes);
 
-            var dimensionNames = dimensions.Select(d => (string)d.FieldName).ToArray();
-
-            // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
-            return AggregationUtils.ProcessBuckets(dimensionNames, valueProperties.ToArray(), aggregationResult);
+            return aggregationResult;
         }
 
         /// <summary>
@@ -503,17 +490,13 @@ namespace InfinniPlatform.SystemConfig.Registers
 
             resultFilter.AddRange(FilterBuilder.DateRangeCondition(RegisterConstants.DocumentDateProperty, beginDate, endDate));
 
-            IEnumerable<dynamic> aggregationResult = GetAggregationDocumentResult(
+            IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
                 dimensions,
-                AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount),
-                valueProperties);
+                valueProperties, AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
 
-            var dimensionNames = dimensions.Select(d => (string)d.FieldName).ToArray();
-
-            // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
-            return AggregationUtils.ProcessBuckets(dimensionNames, valueProperties.ToArray(), aggregationResult);
+            return aggregationResult;
         }
 
         /// <summary>
@@ -539,17 +522,13 @@ namespace InfinniPlatform.SystemConfig.Registers
             var filetrBuilder = new FilterBuilder();
             filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.RegistrarProperty).IsEquals(registrar));
 
-            IEnumerable<dynamic> aggregationResult = GetAggregationDocumentResult(
+            IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 filetrBuilder.CriteriaList,
                 dimensions,
-                AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount),
-                valueProperties.ToArray());
+                valueProperties.ToArray(), AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
 
-            var dimensionNames = dimensions.Select(d => (string)d.FieldName).ToArray();
-
-            // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
-            return AggregationUtils.ProcessBuckets(dimensionNames, valueProperties.ToArray(), aggregationResult);
+            return aggregationResult;
         }
 
         /// <summary>
@@ -575,17 +554,13 @@ namespace InfinniPlatform.SystemConfig.Registers
             var filetrBuilder = new FilterBuilder();
             filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.RegistrarTypeProperty).IsEquals(registrar));
 
-            IEnumerable<dynamic> aggregationResult = GetAggregationDocumentResult(
+            IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 filetrBuilder.CriteriaList,
                 dimensions,
-                AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount),
-                valueProperties.ToArray());
+                valueProperties.ToArray(), AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
 
-            var dimensionNames = dimensions.Select(d => (string)d.FieldName).ToArray();
-
-            // Выполняем обработку результата агрегации, чтобы представить полученные данные в табличном виде
-            return AggregationUtils.ProcessBuckets(dimensionNames, valueProperties.ToArray(), aggregationResult);
+            return aggregationResult;
         }
 
         /// <summary>
@@ -647,24 +622,87 @@ namespace InfinniPlatform.SystemConfig.Registers
             return isDateFound ? dateToReturn : (DateTime?)null;
         }
 
-        private IEnumerable<AggregationResult> GetAggregationDocumentResult(
-            string registerName,
-            IEnumerable<FilterCriteria> filter,
-            IEnumerable<dynamic> dimensions,
-            IEnumerable<AggregationType> aggregationTypes,
-            IEnumerable<string> valueProperties)
+        private IEnumerable<DynamicWrapper> GetAggregationDocumentResult(
+            string registerName, 
+            IEnumerable<FilterCriteria> filter, 
+            IEnumerable<dynamic> dimensions, 
+            IEnumerable<string> valueProperties, 
+            IEnumerable<AggregationType> aggregationTypes)
         {
-            var executor = _indexFactory.BuildAggregationProvider(registerName);
+            var dimensionsArray = dimensions.ToArray();
+            var valuePropertiesArray = valueProperties.ToArray();
+            var aggregationTypesArray = aggregationTypes.ToArray();
 
-            var extractSearchModel = filter.ExtractSearchModel(_filterFactory);
+            if (valuePropertiesArray.Length <= 0)
+            {
+                throw new ArgumentException($"{nameof(valueProperties)}.Length <= 0");
+            }
 
-            var result = executor.ExecuteAggregation(
-                dimensions.ToArray(),
-                aggregationTypes.ToArray(),
-                valueProperties.ToArray(),
-                extractSearchModel);
+            if (aggregationTypesArray.Length <= 0)
+            {
+                throw new ArgumentException($"{nameof(aggregationTypes)}.Length <= 0");
+            }
 
-            return result;
+            if (valuePropertiesArray.Length != aggregationTypesArray.Length)
+            {
+                throw new ArgumentException($"{nameof(valueProperties)}.Length != {aggregationTypes}.Length");
+            }
+
+            var groupKey = new DynamicWrapper();
+
+            var groupRequest = new DynamicWrapper
+                               {
+                                   { "_id", groupKey }
+                               };
+
+            foreach (var dimension in dimensionsArray)
+            {
+                string keyProperty = dimension.FieldName;
+                groupKey[keyProperty] = $"${keyProperty}";
+            }
+
+            for (var i = 0; i < valuePropertiesArray.Length; ++i)
+            {
+                var valueProperty = valuePropertiesArray[i];
+                var valueFunction = aggregationTypesArray[i];
+
+                switch (valueFunction)
+                {
+                    case AggregationType.Count:
+                        groupRequest[valueProperty] = new DynamicWrapper { { "$sum", 1 } };
+                        break;
+                    case AggregationType.Sum:
+                        groupRequest[valueProperty] = new DynamicWrapper { { "$sum", $"${valueProperty}" } };
+                        break;
+                    case AggregationType.Avg:
+                        groupRequest[valueProperty] = new DynamicWrapper { { "$avg", $"${valueProperty}" } };
+                        break;
+                    case AggregationType.Max:
+                        groupRequest[valueProperty] = new DynamicWrapper { { "$max", $"${valueProperty}" } };
+                        break;
+                    case AggregationType.Min:
+                        groupRequest[valueProperty] = new DynamicWrapper { { "min", $"${valueProperty}" } };
+                        break;
+                }
+            }
+
+            var groupResult = _documentStorageFactory(registerName)
+                .Aggregate(filter.ToDocumentStorageFilter())
+                .Group(groupRequest)
+                .ToList();
+
+            foreach (var grouRow in groupResult)
+            {
+                foreach (var dimension in dimensionsArray)
+                {
+                    string keyProperty = dimension.FieldName;
+                    grouRow[keyProperty] = ((DynamicWrapper)grouRow["_id"])[keyProperty];
+                }
+
+                grouRow["_id"] = null;
+            }
+
+            return groupResult;
         }
 
         private static bool CheckInterval(string interval)

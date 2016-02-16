@@ -59,7 +59,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             builder.RegisterType<DocumentStorageImpl>()
                    .As<IDocumentStorage>()
-                   .SingleInstance();
+                   .InstancePerDependency();
 
             // Hosting
 

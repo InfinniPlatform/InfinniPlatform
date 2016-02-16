@@ -11,7 +11,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 {
     internal sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
-        private const string UserStorageTypeName = "userstore";
+        private const string UserStorageTypeName = "UserStore";
 
 
         public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, Func<string, IDocumentStorage> documentStorageFactory)
