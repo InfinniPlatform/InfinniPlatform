@@ -83,15 +83,8 @@ namespace InfinniPlatform.Sdk.Registers
         /// <summary>
         /// Возвращает значения ресурсов в указанном диапазоне дат c разбиением на периоды.
         /// </summary>
-        IEnumerable<object> GetValuesByPeriods(
-            string registerName,
-            DateTime beginDate,
-            DateTime endDate,
-            string interval,
-            IEnumerable<FilterCriteria> filter,
-            IEnumerable<string> dimensionsProperties = null,
-            IEnumerable<string> valueProperties = null,
-            string timezone = null);
+        [Obsolete("It does not work currently! For more details see comments in implementation. Should be fix after refactoring.")]
+        IEnumerable<object> GetValuesByPeriods(string registerName, DateTime beginDate, DateTime endDate, string interval, IEnumerable<FilterCriteria> filter, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null);
 
         /// <summary>
         /// Получение значений ресурсов по документу-регистратору.

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 
-using InfinniPlatform.Core.Index;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Registers;
 using InfinniPlatform.Sdk.Documents;
@@ -348,9 +346,10 @@ namespace InfinniPlatform.SystemConfig.Registers
                 filetrBuilder.AddCriteria(c => c.Property(RegisterConstants.DocumentDateProperty).IsMoreThan(closestDate.Value));
             }
 
-            IEnumerable<dynamic> dimensions = (dimensionsProperties == null)
-                ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
-                : AggregationUtils.BuildDimensionsFromProperties(dimensionsProperties);
+            if (dimensionsProperties == null)
+            {
+                dimensionsProperties = AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject);
+            }
 
             valueProperties = valueProperties ?? AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
 
@@ -374,12 +373,13 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
-                dimensions,
-                valueProperties, aggregationTypes);
+                dimensionsProperties,
+                valueProperties, 
+                aggregationTypes);
 
             if (aggregatedTotals != null)
             {
-                var dimensionNames = dimensions.Select(d => (string)d.FieldName).ToArray();
+                var dimensionNames = dimensionsProperties.ToArray();
                 return AggregationUtils.MergeAggregaionResults(dimensionNames, valueProperties, aggregationResult, aggregatedTotals);
             }
 
@@ -398,9 +398,10 @@ namespace InfinniPlatform.SystemConfig.Registers
                 throw new ArgumentException($"Register '{registerName} not found'");
             }
 
-            IEnumerable<dynamic> dimensions = (dimensionsProperties == null)
-                ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
-                : AggregationUtils.BuildDimensionsFromProperties(dimensionsProperties);
+            if (dimensionsProperties == null)
+            {
+                dimensionsProperties = AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject);
+            }
 
             valueProperties = valueProperties ?? AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
 
@@ -424,8 +425,9 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
-                dimensions,
-                valueProperties, aggregationTypes);
+                dimensionsProperties,
+                valueProperties, 
+                aggregationTypes);
 
             return aggregationResult;
         }
@@ -433,7 +435,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// <summary>
         /// Возвращает значения ресурсов в указанном диапазоне дат c разбиением на периоды.
         /// </summary>
-        public IEnumerable<object> GetValuesByPeriods(string registerName, DateTime beginDate, DateTime endDate, string interval, IEnumerable<FilterCriteria> filter, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null, string timezone = null)
+        public IEnumerable<object> GetValuesByPeriods(string registerName, DateTime beginDate, DateTime endDate, string interval, IEnumerable<FilterCriteria> filter, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null)
         {
             var registerObject = _metadataApi.GetRegister(registerName);
 
@@ -442,40 +444,28 @@ namespace InfinniPlatform.SystemConfig.Registers
                 throw new ArgumentException($"Register '{registerName}' not found.");
             }
 
-            // В качестве интервалов могут быть указаны следующие значения:
-            // year, quarter, month, week, day, hour, minute, second
+            // TODO: Данный метод предполагает группировку по части даты (году, месяцу, дню и т.п.)
+
+            // При переходе на MongoDB эта функциональность была временно "потеряна", но ее легко восстановить.
+            // В метод GetAggregationDocumentResult() нужно передавать не просто список измерений, а список ключей.
+            // Одни ключи будут соответствовать именам полей, другие будут представлены выражениями (например, 
+            // выражением выборки из даты года, месяца, дня и т.п.). Исходная реализация предполагала, что в 
+            // качестве интервала могут быть указаны следующие значения: year, quarter, month, week, day, hour,
+            // minute, second (Note: лучше передавать это значение в виде Enum). Функциональность не была 
+            // восстановлена, так как на момент перехода она не использовалась, во-вторых, механизм регистров
+            // и код, который его реализует, требует глубокой переработки.
 
             if (!CheckInterval(interval))
             {
                 throw new ArgumentException($"Specified interval '{interval}' is invalid. Supported intervals: year, quarter, month, week, day, hour, minute, second.", nameof(interval));
             }
 
-            if (string.IsNullOrEmpty(timezone))
+            if (dimensionsProperties == null)
             {
-                var hours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).TotalHours;
-                timezone = hours > 0 ? "+" + hours.ToString("00") + ":00" : hours.ToString("00") + ":00";
+                dimensionsProperties = AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject);
             }
 
-            if (!CheckTimezone(timezone))
-            {
-                throw new ArgumentException($"Specified timezone {timezone} is invalid. Valid timezone example: '+05:00'.", nameof(timezone));
-            }
-
-            var dimensions = new List<dynamic>
-                             {
-                                 new DynamicWrapper
-                                 {
-                                     ["Label"] = RegisterConstants.DocumentDateProperty + "_datehistogram",
-                                     ["FieldName"] = RegisterConstants.DocumentDateProperty,
-                                     ["DimensionType"] = DimensionType.DateHistogram,
-                                     ["Interval"] = interval,
-                                     ["TimeZone"] = timezone
-                                 }
-                             };
-
-            dimensions.AddRange((dimensionsProperties == null)
-                ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
-                : AggregationUtils.BuildDimensionsFromProperties(dimensionsProperties));
+            dimensionsProperties = dimensionsProperties.Union(new[] { RegisterConstants.DocumentDateProperty });
 
             valueProperties = valueProperties ?? AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
 
@@ -493,8 +483,9 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 resultFilter,
-                dimensions,
-                valueProperties, AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
+                dimensionsProperties,
+                valueProperties, 
+                AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
 
             return aggregationResult;
         }
@@ -511,9 +502,10 @@ namespace InfinniPlatform.SystemConfig.Registers
                 throw new ArgumentException($"Register '{registerName}' not found.");
             }
 
-            IEnumerable<dynamic> dimensions = (dimensionsProperties == null)
-                ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
-                : AggregationUtils.BuildDimensionsFromProperties(dimensionsProperties);
+            if (dimensionsProperties == null)
+            {
+                dimensionsProperties = AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject);
+            }
 
             valueProperties = valueProperties ?? AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
 
@@ -525,8 +517,9 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 filetrBuilder.CriteriaList,
-                dimensions,
-                valueProperties.ToArray(), AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
+                dimensionsProperties,
+                valueProperties, 
+                AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
 
             return aggregationResult;
         }
@@ -543,9 +536,10 @@ namespace InfinniPlatform.SystemConfig.Registers
                 throw new ArgumentException($"Register '{registerName}' not found.");
             }
 
-            IEnumerable<dynamic> dimensions = (dimensionsProperties == null)
-                ? AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject)
-                : AggregationUtils.BuildDimensionsFromProperties(dimensionsProperties);
+            if (dimensionsProperties == null)
+            {
+                dimensionsProperties = AggregationUtils.BuildDimensionsFromRegisterMetadata(registerObject);
+            }
 
             valueProperties = valueProperties ?? AggregationUtils.BuildValuePropertyFromRegisterMetadata(registerObject);
 
@@ -557,8 +551,9 @@ namespace InfinniPlatform.SystemConfig.Registers
             IEnumerable<DynamicWrapper> aggregationResult = GetAggregationDocumentResult(
                 RegisterConstants.RegisterNamePrefix + registerName,
                 filetrBuilder.CriteriaList,
-                dimensions,
-                valueProperties.ToArray(), AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
+                dimensionsProperties,
+                valueProperties,
+                AggregationUtils.BuildAggregationType(AggregationType.Sum, valuePropertiesCount));
 
             return aggregationResult;
         }
@@ -623,13 +618,13 @@ namespace InfinniPlatform.SystemConfig.Registers
         }
 
         private IEnumerable<DynamicWrapper> GetAggregationDocumentResult(
-            string registerName, 
-            IEnumerable<FilterCriteria> filter, 
-            IEnumerable<dynamic> dimensions, 
-            IEnumerable<string> valueProperties, 
+            string registerName,
+            IEnumerable<FilterCriteria> filter,
+            IEnumerable<string> dimensionsProperties,
+            IEnumerable<string> valueProperties,
             IEnumerable<AggregationType> aggregationTypes)
         {
-            var dimensionsArray = dimensions.ToArray();
+            var dimensionsPropertiesArray = dimensionsProperties.ToArray();
             var valuePropertiesArray = valueProperties.ToArray();
             var aggregationTypesArray = aggregationTypes.ToArray();
 
@@ -655,10 +650,9 @@ namespace InfinniPlatform.SystemConfig.Registers
                                    { "_id", groupKey }
                                };
 
-            foreach (var dimension in dimensionsArray)
+            foreach (var dimension in dimensionsPropertiesArray)
             {
-                string keyProperty = dimension.FieldName;
-                groupKey[keyProperty] = $"${keyProperty}";
+                groupKey[dimension] = $"${dimension}";
             }
 
             for (var i = 0; i < valuePropertiesArray.Length; ++i)
@@ -672,7 +666,34 @@ namespace InfinniPlatform.SystemConfig.Registers
                         groupRequest[valueProperty] = new DynamicWrapper { { "$sum", 1 } };
                         break;
                     case AggregationType.Sum:
-                        groupRequest[valueProperty] = new DynamicWrapper { { "$sum", $"${valueProperty}" } };
+                        groupRequest[valueProperty]
+                            = new DynamicWrapper
+                              {
+                                  {
+                                      // Подсчет суммы с учетом типов записей
+                                      "$sum", new DynamicWrapper
+                                              {
+                                                  {
+                                                      // Условное выражение
+                                                      "$cond", new object[]
+                                                               {
+                                                                   // Если запись о расходе
+                                                                   new DynamicWrapper
+                                                                   {
+                                                                       { "$eq", new[] { $"${RegisterConstants.EntryTypeProperty}", RegisterEntryType.Consumption } }
+                                                                   },
+                                                                   // Значение умножается на -1
+                                                                   new DynamicWrapper
+                                                                   {
+                                                                       { "$multiply", new object[] { -1, $"${valueProperty}" } }
+                                                                   },
+                                                                   // Значение берется, как есть
+                                                                   $"${valueProperty}"
+                                                               }
+                                                  }
+                                              }
+                                  }
+                              };
                         break;
                     case AggregationType.Avg:
                         groupRequest[valueProperty] = new DynamicWrapper { { "$avg", $"${valueProperty}" } };
@@ -693,10 +714,9 @@ namespace InfinniPlatform.SystemConfig.Registers
 
             foreach (var grouRow in groupResult)
             {
-                foreach (var dimension in dimensionsArray)
+                foreach (var dimension in dimensionsPropertiesArray)
                 {
-                    string keyProperty = dimension.FieldName;
-                    grouRow[keyProperty] = ((DynamicWrapper)grouRow["_id"])[keyProperty];
+                    grouRow[dimension] = ((DynamicWrapper)grouRow["_id"])[dimension];
                 }
 
                 grouRow["_id"] = null;
@@ -710,12 +730,6 @@ namespace InfinniPlatform.SystemConfig.Registers
             var validIntervals = new[] { "year", "quarter", "month", "week", "day", "hour", "minute", "second" };
 
             return validIntervals.Contains(interval.ToLowerInvariant());
-        }
-
-        private static bool CheckTimezone(string timezone)
-        {
-            // Временная зона задаётся в виде "+05:00"
-            return (Regex.IsMatch(timezone, "^[+-]{0,1}[0-9]*:00$"));
         }
     }
 }
