@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Hosting;
@@ -24,19 +25,19 @@ namespace InfinniPlatform.Owin.Hosting
             {
                 hostingService.OnStart += (s, e) =>
                                           {
-                                              foreach (var handler in appEventHandlers)
+                                              foreach (var handler in appEventHandlers.OrderBy(i => i.Order))
                                               {
                                                   handler.OnStart();
                                               }
                                           };
 
-                hostingService.OnStart += (s, e) =>
-                                          {
-                                              foreach (var handler in appEventHandlers)
-                                              {
-                                                  handler.OnStop();
-                                              }
-                                          };
+                hostingService.OnStop += (s, e) =>
+                                         {
+                                             foreach (var handler in appEventHandlers.OrderByDescending(i => i.Order))
+                                             {
+                                                 handler.OnStop();
+                                             }
+                                         };
             }
 
             _hostingService = hostingService;

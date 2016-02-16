@@ -89,10 +89,8 @@
     <Compile Include="Services\SessionApiHttpService.cs" />
     <Compile Include="StartupInitializers\DocumentSchemaHelper.cs" />
     <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
-    <Compile Include="StartupInitializers\IStartupInitializer.cs" />
     <Compile Include="StartupInitializers\ElasticTypesMigrationHelper.cs" />
     <Compile Include="StartupInitializers\PackageJsonConfigurationsInitializer.cs" />
-    <Compile Include="StartupInitializers\SystemConfigApplicationEventHandler.cs" />
     <Compile Include="StartupInitializers\DocumentIndexTypeInitializer.cs" />
     <Compile Include="IoC\SystemConfigContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
@@ -106,7 +104,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SystemInfo\SystemInfoProvider.cs" />
     <Compile Include="Transactions\DocumentTransactionAction.cs" />
     <Compile Include="Transactions\DocumentTransactionCommand.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />

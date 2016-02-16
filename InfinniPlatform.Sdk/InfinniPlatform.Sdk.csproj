@@ -95,6 +95,7 @@
     <Compile Include="Documents\IDocumentUpdateBuilderGeneric.cs" />
     <Compile Include="Documents\Interceptors\IDocumentWriteCommand.cs" />
     <Compile Include="Documents\Obsolete\DocumentExtensions.cs" />
+    <Compile Include="Hosting\ApplicationEventHandler.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
     <Compile Include="Logging\LoggerNameAttribute.cs" />
     <Compile Include="Metadata\Documents\DataType.cs" />

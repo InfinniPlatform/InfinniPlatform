@@ -27,7 +27,7 @@ namespace InfinniPlatform.IoC.Owin.Middleware
         private readonly ILifetimeScope _rootContainer;
 
 
-        public override Task Invoke(IOwinContext context)
+        public override async Task Invoke(IOwinContext context)
         {
             // Создание контейнера зависимостей запроса на время его обработки
             using (var requestContainer = _rootContainer.BeginLifetimeScope(MatchingScopeLifetimeTags.RequestLifetimeScopeTag, b => b.RegisterInstance(context).As<IOwinContext>()))
@@ -41,7 +41,7 @@ namespace InfinniPlatform.IoC.Owin.Middleware
                 try
                 {
                     // Обработка запроса в рамках контейнера
-                    return Next.Invoke(context);
+                    await Next.Invoke(context);
                 }
                 finally
                 {

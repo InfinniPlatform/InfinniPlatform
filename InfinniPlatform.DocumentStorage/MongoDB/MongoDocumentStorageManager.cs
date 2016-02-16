@@ -16,6 +16,29 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// </summary>
     internal sealed class MongoDocumentStorageManager : IDocumentStorageManager
     {
+        /// <summary>
+        /// Список системных индексов, создаваемых для всех коллекций.
+        /// </summary>
+        private static readonly DocumentIndex[] SystemIndexes;
+
+
+        static MongoDocumentStorageManager()
+        {
+            SystemIndexes = new[]
+                            {
+                                // Индекс для проверки актуальных документов внутри заданного tenant
+                                new DocumentIndex
+                                {
+                                    Key = new Dictionary<string, DocumentIndexKeyType>
+                                          {
+                                              { "_header._tenant", DocumentIndexKeyType.Asc },
+                                              { "_header._deleted", DocumentIndexKeyType.Asc }
+                                          }
+                                }
+                            };
+        }
+
+
         public MongoDocumentStorageManager(MongoConnection connection)
         {
             _connection = connection;
@@ -47,7 +70,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var actualIndexes = await GetCollectionIndexesAsync(collection);
 
             // Получение требуемого списка индексов коллекции документов
-            var neededIndexes = documentMetadata.Indexes ?? new DocumentIndex[] { };
+            var neededIndexes = SystemIndexes.Union((documentMetadata.Indexes ?? new DocumentIndex[] { })).ToArray();
 
             // Удаление неактуальных индексов
 

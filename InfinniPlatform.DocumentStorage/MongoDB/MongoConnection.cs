@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Dynamic;
+
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
@@ -84,6 +86,17 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var databaseName = _database.Value.DatabaseNamespace.DatabaseName;
 
             return _database.Value.Client.DropDatabaseAsync(databaseName);
+        }
+
+
+        /// <summary>
+        /// Возвращает состояние базы данных.
+        /// </summary>
+        public Task<DynamicWrapper> GetDatabaseStatusAsync()
+        {
+            var dbStats = new DynamicWrapper { { "dbStats", 1 } };
+
+            return _database.Value.RunCommandAsync(new ObjectCommand<DynamicWrapper>(dbStats));
         }
     }
 }

@@ -5,10 +5,14 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 {
     internal static class MongoTestHelpers
     {
+        public const string DatabaseName = "MongoTest";
+
+
         public static MongoConnection GetConnection()
         {
-            return new MongoConnection("MongoTest", MongoConnectionSettings.Default);
+            return new MongoConnection(DatabaseName, MongoConnectionSettings.Default);
         }
+
 
         public static MongoDocumentStorageProvider GetEmptyStorageProvider(string documentType, params DocumentIndex[] indexes)
         {

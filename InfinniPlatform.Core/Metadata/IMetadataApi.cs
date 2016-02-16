@@ -20,6 +20,8 @@ namespace InfinniPlatform.Core.Metadata
 
         dynamic GetDocumentEvents(string documentName);
 
+        IEnumerable<object> GetDocumentIndexes(string documentName);
+
 
         IEnumerable<string> GetActionNames(string documentName);
 

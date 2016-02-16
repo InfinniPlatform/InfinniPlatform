@@ -1,23 +1,32 @@
 ﻿namespace InfinniPlatform.Sdk.Hosting
 {
     /// <summary>
-    /// Обработчик событий приложения.
+    /// Базовый класс обработчика событий приложения.
     /// </summary>
-    public interface IApplicationEventHandler
+    public abstract class ApplicationEventHandler : IApplicationEventHandler
     {
+        protected ApplicationEventHandler(int order = 0)
+        {
+            Order = order;
+        }
+
         /// <summary>
         /// Порядковый номер при выполнении.
         /// </summary>
-        int Order { get; }
+        public int Order { get; }
 
         /// <summary>
         /// Обрабатывает событие запуска приложения.
         /// </summary>
-        void OnStart();
+        public virtual void OnStart()
+        {
+        }
 
         /// <summary>
         /// Обрабатывает событие остановки приложения.
         /// </summary>
-        void OnStop();
+        public virtual void OnStop()
+        {
+        }
     }
 }

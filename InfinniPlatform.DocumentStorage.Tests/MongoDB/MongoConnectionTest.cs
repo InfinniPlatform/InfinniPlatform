@@ -27,7 +27,6 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public async void ShouldDropDatabaseAsync()
         {
             // Given
-
             var connection = MongoTestHelpers.GetConnection();
 
             // When
@@ -52,6 +51,20 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             Assert.AreEqual(3, collectionSizeBeforeDrop2);
             Assert.AreEqual(0, collectionSizeAfterDrop1);
             Assert.AreEqual(0, collectionSizeAfterDrop2);
+        }
+
+        [Test]
+        public async void ShouldReturnsDatabaseStatus()
+        {
+            // Given
+            var connection = MongoTestHelpers.GetConnection();
+
+            // When
+            var status = await connection.GetDatabaseStatusAsync();
+
+            // Then
+            Assert.IsNotNull(status);
+            Assert.AreEqual(MongoTestHelpers.DatabaseName, status["db"]);
         }
     }
 }
