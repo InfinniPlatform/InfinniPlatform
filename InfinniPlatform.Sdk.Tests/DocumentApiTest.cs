@@ -179,7 +179,7 @@ namespace InfinniPlatform.Sdk.Tests
                 f => f.AddCriteria(cr => cr.Property("Id").IsIdIn(new List<string>())), 0, 100,
                 s => s.AddSorting("Price", "descending"));
 
-            Assert.AreNotEqual(0, resultDoc.Count());
+            Assert.AreEqual(0, resultDoc.Count());
         }
 
         [Test]

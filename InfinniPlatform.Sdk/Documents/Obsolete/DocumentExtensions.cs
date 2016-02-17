@@ -95,10 +95,10 @@ namespace InfinniPlatform.Sdk.Documents
                                 conditions.Add(f.Not(f.Regex(criteria.Property, new Regex($"{criteria.Value}$", RegexOptions.IgnoreCase))));
                                 break;
                             case CriteriaType.IsIn:
-                                conditions.Add(f.In(criteria.Property, ((IEnumerable)criteria.Value).Cast<object>()));
+                                conditions.Add(f.In(criteria.Property, ((IEnumerable)criteria.Value).Cast<object>().Select(i => i.ToString())));
                                 break;
                             case CriteriaType.IsIdIn:
-                                conditions.Add(f.In("_id", ((IEnumerable)criteria.Value).Cast<object>()));
+                                conditions.Add(f.In("_id", ((IEnumerable)criteria.Value).Cast<object>().Select(i => i.ToString())));
                                 break;
                             case CriteriaType.FullTextSearch:
                                 conditions.Add(f.Text((string)criteria.Value));
