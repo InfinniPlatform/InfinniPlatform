@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 
 using InfinniPlatform.Core.Transactions;
+using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Tests.MongoDB;
 using InfinniPlatform.Sdk.Security;
@@ -27,7 +28,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
             return new DocumentStorageImpl(
                 documentType,
                 d => MongoTestHelpers.GetEmptyStorageProvider(documentType),
-                new DocumentStorageIdProvider(),
+                new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
                 new DocumentStorageHeaderProvider(tenantProvider.Object, userIdentityProvider.Object),
                 new DocumentStorageFilterProvider(tenantProvider.Object),
                 new DocumentStorageInterceptorProvider(null));

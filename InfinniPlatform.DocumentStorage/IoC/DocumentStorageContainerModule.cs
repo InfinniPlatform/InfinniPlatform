@@ -27,6 +27,10 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .As<MongoConnection>()
                    .SingleInstance();
 
+            builder.RegisterType<MongoDocumentIdGenerator>()
+                   .As<IDocumentIdGenerator>()
+                   .SingleInstance();
+
             builder.RegisterType<MongoDocumentStorageManager>()
                    .As<IDocumentStorageManager>()
                    .SingleInstance();

@@ -63,6 +63,7 @@
     <Compile Include="MongoDB\MongoDocumentFilterBuilder.cs" />
     <Compile Include="MongoDB\MongoDocumentFindCursor.cs" />
     <Compile Include="MongoDB\MongoDocumentFindCursorGeneric.cs" />
+    <Compile Include="MongoDB\MongoDocumentIdGenerator.cs" />
     <Compile Include="MongoDB\MongoDocumentProjectionBuilder.cs" />
     <Compile Include="MongoDB\MongoDocumentStorageManager.cs" />
     <Compile Include="MongoDB\MongoDocumentStorageProvider.cs" />

@@ -16,6 +16,20 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
         public static MongoDocumentStorageProvider GetEmptyStorageProvider(string documentType, params DocumentIndex[] indexes)
         {
+            var connection = CreateEmptyStorage(documentType, indexes);
+            return new MongoDocumentStorageProvider(connection, documentType);
+        }
+
+
+        public static MongoDocumentStorageProvider<TDocument> GetEmptyStorageProvider<TDocument>(string documentType, params DocumentIndex[] indexes)
+        {
+            var connection = CreateEmptyStorage(documentType, indexes);
+            return new MongoDocumentStorageProvider<TDocument>(connection, documentType);
+        }
+
+
+        private static MongoConnection CreateEmptyStorage(string documentType, params DocumentIndex[] indexes)
+        {
             var connection = GetConnection();
             var database = connection.GetDatabase();
             database.DropCollection(documentType);
@@ -26,7 +40,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
                 storageManager.CreateStorageAsync(new DocumentMetadata { Type = documentType, Indexes = indexes }).Wait();
             }
 
-            return new MongoDocumentStorageProvider(connection, documentType);
+            return connection;
         }
     }
 }
