@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Sdk.Documents.Interceptors;
+﻿using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Interceptors;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
@@ -6,6 +7,6 @@ namespace InfinniPlatform.DocumentStorage.Storage
     {
         IDocumentStorageInterceptor GetInterceptor(string documentType);
 
-        IDocumentStorageInterceptor<TDocument> GetInterceptor<TDocument>(string documentType);
+        IDocumentStorageInterceptor<TDocument> GetInterceptor<TDocument>(string documentType) where TDocument : Document;
     }
 }
