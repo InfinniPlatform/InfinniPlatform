@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.Sdk.Dynamic;
 
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
@@ -16,6 +17,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     {
         static MongoConnection()
         {
+            // Игнорирование null значений в свойствах документов
+            var defaultConventions = new ConventionPack { new IgnoreIfNullConvention(true) };
+            ConventionRegistry.Register("IgnoreNulls", defaultConventions, t => true);
+
+            // Установка правил сериализации и десериализации для DynamicWrapper
             BsonSerializer.RegisterSerializer(MongoDynamicWrapperBsonSerializer.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
         }
