@@ -77,22 +77,40 @@ namespace InfinniPlatform.Sdk.Documents
                                 conditions.Add(f.And(f.Exists(criteria.Property), f.NotEq(criteria.Property, ""), f.NotEq<object>(criteria.Property, null)));
                                 break;
                             case CriteriaType.IsContains:
-                                conditions.Add(f.Regex(criteria.Property, new Regex($"{criteria.Value}", RegexOptions.IgnoreCase)));
+                                if (IsNotNullAndEmpty(criteria.Value))
+                                {
+                                    conditions.Add(f.Regex(criteria.Property, new Regex($"{criteria.Value}", RegexOptions.IgnoreCase)));
+                                }
                                 break;
                             case CriteriaType.IsNotContains:
-                                conditions.Add(f.Not(f.Regex(criteria.Property, new Regex($"{criteria.Value}", RegexOptions.IgnoreCase))));
+                                if (IsNotNullAndEmpty(criteria.Value))
+                                {
+                                    conditions.Add(f.Not(f.Regex(criteria.Property, new Regex($"{criteria.Value}", RegexOptions.IgnoreCase))));
+                                }
                                 break;
                             case CriteriaType.IsStartsWith:
-                                conditions.Add(f.Regex(criteria.Property, new Regex($"^{criteria.Value}", RegexOptions.IgnoreCase)));
+                                if (IsNotNullAndEmpty(criteria.Value))
+                                {
+                                    conditions.Add(f.Regex(criteria.Property, new Regex($"^{criteria.Value}", RegexOptions.IgnoreCase)));
+                                }
                                 break;
                             case CriteriaType.IsNotStartsWith:
-                                conditions.Add(f.Not(f.Regex(criteria.Property, new Regex($"^{criteria.Value}", RegexOptions.IgnoreCase))));
+                                if (IsNotNullAndEmpty(criteria.Value))
+                                {
+                                    conditions.Add(f.Not(f.Regex(criteria.Property, new Regex($"^{criteria.Value}", RegexOptions.IgnoreCase))));
+                                }
                                 break;
                             case CriteriaType.IsEndsWith:
-                                conditions.Add(f.Regex(criteria.Property, new Regex($"{criteria.Value}$", RegexOptions.IgnoreCase)));
+                                if (IsNotNullAndEmpty(criteria.Value))
+                                {
+                                    conditions.Add(f.Regex(criteria.Property, new Regex($"{criteria.Value}$", RegexOptions.IgnoreCase)));
+                                }
                                 break;
                             case CriteriaType.IsNotEndsWith:
-                                conditions.Add(f.Not(f.Regex(criteria.Property, new Regex($"{criteria.Value}$", RegexOptions.IgnoreCase))));
+                                if (IsNotNullAndEmpty(criteria.Value))
+                                {
+                                    conditions.Add(f.Not(f.Regex(criteria.Property, new Regex($"{criteria.Value}$", RegexOptions.IgnoreCase))));
+                                }
                                 break;
                             case CriteriaType.IsIn:
                                 conditions.Add(f.In(criteria.Property, ((IEnumerable)criteria.Value).Cast<object>().Select(i => i.ToString())));
@@ -101,7 +119,10 @@ namespace InfinniPlatform.Sdk.Documents
                                 conditions.Add(f.In("_id", ((IEnumerable)criteria.Value).Cast<object>().Select(i => i.ToString())));
                                 break;
                             case CriteriaType.FullTextSearch:
-                                conditions.Add(f.Text((string)criteria.Value));
+                                if (IsNotNullAndEmpty(criteria.Value))
+                                {
+                                    conditions.Add(f.Text((string)criteria.Value));
+                                }
                                 break;
                         }
                     }
@@ -158,6 +179,12 @@ namespace InfinniPlatform.Sdk.Documents
             }
 
             return result;
+        }
+
+
+        private static bool IsNotNullAndEmpty(object value)
+        {
+            return (value != null) && (!(value is string) || !string.IsNullOrEmpty((string)value));
         }
     }
 }
