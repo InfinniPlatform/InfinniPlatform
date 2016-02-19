@@ -62,6 +62,7 @@
     <Compile Include="Documents\DocumentHeader.cs" />
     <Compile Include="Documents\DocumentStorageExtensions.cs" />
     <Compile Include="Documents\DocumentStorageWriteException.cs" />
+    <Compile Include="Documents\DocumentTypeAttribute.cs" />
     <Compile Include="Documents\IDocumentIdGenerator.cs" />
     <Compile Include="Documents\IDocumentStorageGeneric.cs" />
     <Compile Include="Documents\Interceptors\DocumentBulkCommand.cs" />

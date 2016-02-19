@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 using InfinniPlatform.Sdk.Documents;
 
@@ -69,6 +70,17 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                     : DocumentUpdateStatus.None;
 
             return new DocumentUpdateResult(mongoResult.MatchedCount, modifiedCount, updateStatus);
+        }
+
+
+        public static string GetDefaultDocumentType<TDocument>()
+        {
+            var type = typeof(TDocument);
+            var documentTypeInfo = type.GetCustomAttribute<DocumentTypeAttribute>();
+
+            return (documentTypeInfo != null && !string.IsNullOrWhiteSpace(documentTypeInfo.Name))
+                ? documentTypeInfo.Name
+                : type.Name;
         }
     }
 }

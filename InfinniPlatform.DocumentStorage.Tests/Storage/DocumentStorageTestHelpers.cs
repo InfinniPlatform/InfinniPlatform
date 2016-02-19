@@ -18,38 +18,72 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
         public const string FakeUserName = "FakeUserName";
 
 
+        public static DocumentStorageImpl GetStorage(string documentType = null)
+        {
+            var tenantProvider = GetTenantProvider();
+            var userIdentityProvider = GetUserIdentityProvider();
+
+            return new DocumentStorageImpl(
+                documentType,
+                d => MongoTestHelpers.GetStorageProvider(documentType),
+                new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
+                new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
+                new DocumentStorageFilterProvider(tenantProvider),
+                new DocumentStorageInterceptorProvider(null));
+        }
+
+        public static DocumentStorageImpl<TDocument> GetStorage<TDocument>(string documentType = null) where TDocument : Document
+        {
+            var tenantProvider = GetTenantProvider();
+            var userIdentityProvider = GetUserIdentityProvider();
+
+            return new DocumentStorageImpl<TDocument>(d => MongoTestHelpers.GetStorageProvider<TDocument>(documentType),
+                new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
+                new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
+                new DocumentStorageFilterProvider(tenantProvider),
+                new DocumentStorageInterceptorProvider(null), documentType);
+        }
+
+
         public static DocumentStorageImpl GetEmptyStorage(string documentType)
         {
-            var tenantProvider = new Mock<ITenantProvider>();
-            tenantProvider.Setup(i => i.GetTenantId()).Returns(FakeTenant);
-
-            var userIdentityProvider = new Mock<IUserIdentityProvider>();
-            userIdentityProvider.Setup(i => i.GetUserIdentity()).Returns(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, FakeUserId), new Claim(ClaimTypes.Name, FakeUserName) }, "TestAuth"));
+            var tenantProvider = GetTenantProvider();
+            var userIdentityProvider = GetUserIdentityProvider();
 
             return new DocumentStorageImpl(
                 documentType,
                 d => MongoTestHelpers.GetEmptyStorageProvider(documentType),
                 new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
-                new DocumentStorageHeaderProvider(tenantProvider.Object, userIdentityProvider.Object),
-                new DocumentStorageFilterProvider(tenantProvider.Object),
+                new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
+                new DocumentStorageFilterProvider(tenantProvider),
                 new DocumentStorageInterceptorProvider(null));
         }
 
         public static DocumentStorageImpl<TDocument> GetEmptyStorage<TDocument>(string documentType) where TDocument : Document
         {
+            var tenantProvider = GetTenantProvider();
+            var userIdentityProvider = GetUserIdentityProvider();
+
+            return new DocumentStorageImpl<TDocument>(d => MongoTestHelpers.GetEmptyStorageProvider<TDocument>(documentType),
+                new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
+                new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
+                new DocumentStorageFilterProvider(tenantProvider),
+                new DocumentStorageInterceptorProvider(null), documentType);
+        }
+
+
+        private static ITenantProvider GetTenantProvider()
+        {
             var tenantProvider = new Mock<ITenantProvider>();
             tenantProvider.Setup(i => i.GetTenantId()).Returns(FakeTenant);
+            return tenantProvider.Object;
+        }
 
+        private static IUserIdentityProvider GetUserIdentityProvider()
+        {
             var userIdentityProvider = new Mock<IUserIdentityProvider>();
             userIdentityProvider.Setup(i => i.GetUserIdentity()).Returns(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, FakeUserId), new Claim(ClaimTypes.Name, FakeUserName) }, "TestAuth"));
-
-            return new DocumentStorageImpl<TDocument>(
-                documentType,
-                d => MongoTestHelpers.GetEmptyStorageProvider<TDocument>(documentType),
-                new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
-                new DocumentStorageHeaderProvider(tenantProvider.Object, userIdentityProvider.Object),
-                new DocumentStorageFilterProvider(tenantProvider.Object),
-                new DocumentStorageInterceptorProvider(null));
+            return userIdentityProvider.Object;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Interceptors;
 
@@ -10,13 +11,18 @@ namespace InfinniPlatform.DocumentStorage.Storage
 {
     internal sealed class DocumentStorageImpl<TDocument> : IDocumentStorage<TDocument> where TDocument : Document
     {
-        public DocumentStorageImpl(string documentType,
-                                   Func<string, IDocumentStorageProvider<TDocument>> storageProviderFactory,
+        public DocumentStorageImpl(Func<string, IDocumentStorageProvider<TDocument>> storageProviderFactory,
                                    IDocumentStorageIdProvider storageIdProvider,
                                    IDocumentStorageHeaderProvider storageHeaderProvider,
                                    IDocumentStorageFilterProvider storageFilterProvider,
-                                   IDocumentStorageInterceptorProvider storageInterceptorProvider)
+                                   IDocumentStorageInterceptorProvider storageInterceptorProvider,
+                                   string documentType = null)
         {
+            if (string.IsNullOrEmpty(documentType))
+            {
+                documentType = MongoHelpers.GetDefaultDocumentType<TDocument>();
+            }
+
             _storageProvider = new Lazy<IDocumentStorageProvider<TDocument>>(() => storageProviderFactory(documentType));
             _storageIdProvider = storageIdProvider;
             _storageHeaderProvider = storageHeaderProvider;

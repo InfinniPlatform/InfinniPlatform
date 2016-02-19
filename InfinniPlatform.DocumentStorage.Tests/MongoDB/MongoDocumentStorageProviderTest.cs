@@ -910,12 +910,12 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             // Given
 
             var textIndex = new DocumentIndex
-                            {
-                                Key = new Dictionary<string, DocumentIndexKeyType>
+            {
+                Key = new Dictionary<string, DocumentIndexKeyType>
                                       {
                                           { "subject", DocumentIndexKeyType.Text }
                                       }
-                            };
+            };
 
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByText), textIndex);
 
@@ -1905,6 +1905,31 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             Assert.AreEqual(5, ((dynamic)documents[3])._id);
             Assert.AreEqual(55, ((dynamic)documents[3]).prop1);
             Assert.AreEqual("D", ((dynamic)documents[3]).prop2);
+        }
+
+        [Test]
+        public void ShouldReplacePropertyType()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldReplacePropertyType));
+
+            // When
+
+            storage.InsertOne(new DynamicWrapper { { "_id", 1 }, { "prop1", "123" /* string */ } });
+            var beforeReplace = storage.Find(f => f.Eq("_id", 1)).FirstOrDefault();
+
+            storage.ReplaceOne(new DynamicWrapper { { "_id", 1 }, { "prop1", 123 /* int */ } }, f => f.Eq("_id", 1), true);
+            var afterReplace = storage.Find(f => f.Eq("_id", 1)).FirstOrDefault();
+
+            // Then
+
+            Assert.IsNotNull(beforeReplace);
+            Assert.IsInstanceOf<string>(beforeReplace["prop1"]);
+            Assert.AreEqual("123", beforeReplace["prop1"]);
+
+            Assert.IsNotNull(afterReplace);
+            Assert.IsInstanceOf<int>(afterReplace["prop1"]);
+            Assert.AreEqual(123, afterReplace["prop1"]);
         }
 
         [Test]

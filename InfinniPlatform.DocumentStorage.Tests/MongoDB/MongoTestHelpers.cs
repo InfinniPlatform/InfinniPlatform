@@ -14,6 +14,17 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
 
+        public static MongoDocumentStorageProvider GetStorageProvider(string documentType = null)
+        {
+            return new MongoDocumentStorageProvider(GetConnection(), documentType);
+        }
+
+        public static MongoDocumentStorageProvider<TDocument> GetStorageProvider<TDocument>(string documentType = null)
+        {
+            return new MongoDocumentStorageProvider<TDocument>(GetConnection(), documentType);
+        }
+
+
         public static MongoDocumentStorageProvider GetEmptyStorageProvider(string documentType, params DocumentIndex[] indexes)
         {
             var connection = CreateEmptyStorage(documentType, indexes);

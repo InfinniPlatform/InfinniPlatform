@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents;
 
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
@@ -15,8 +14,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// </summary>
     internal sealed class MongoDocumentStorageProvider<TDocument> : IDocumentStorageProvider<TDocument>
     {
-        public MongoDocumentStorageProvider(MongoConnection connection, string documentType)
+        public MongoDocumentStorageProvider(MongoConnection connection, string documentType = null)
         {
+            if (string.IsNullOrEmpty(documentType))
+            {
+                documentType = MongoHelpers.GetDefaultDocumentType<TDocument>();
+            }
+
             _database = new Lazy<IMongoDatabase>(connection.GetDatabase);
             _collection = new Lazy<IMongoCollection<TDocument>>(() => _database.Value.GetCollection<TDocument>(documentType));
             _filterBuilder = new MongoDocumentFilterBuilder<TDocument>();

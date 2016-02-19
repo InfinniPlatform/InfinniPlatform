@@ -65,7 +65,7 @@
     <Compile Include="MongoDB\MongoDocumentStorageProviderTest.cs" />
     <Compile Include="MongoDB\MongoTestHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage\DocumentStorageGenericCrudTest.cs" />
+    <Compile Include="Storage\DocumentStorageGenericIntegrationTest.cs" />
     <Compile Include="Storage\DocumentStorageIntegrationTest.cs" />
     <Compile Include="Storage\DocumentStorageTestHelpers.cs" />
     <Compile Include="TestEntities\FakeDocument.cs" />

@@ -2068,5 +2068,39 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             Assert.AreEqual(7, documents[5]._id);
             Assert.AreEqual("7", documents[5].prop1);
         }
+
+        [Test]
+        public void ShouldUseDocumentTypeAttribute()
+        {
+            // Given
+
+            var value1 = Guid.NewGuid().ToString();
+            var value2 = Guid.NewGuid().ToString();
+
+            var storageWithSpecifiedName = MongoTestHelpers.GetEmptyStorageProvider<FakeDocument>("FakeDocumentCollection");
+            var storageWithDefaultName = MongoTestHelpers.GetStorageProvider<FakeDocument>();
+
+            // When
+
+            storageWithSpecifiedName.InsertOne(new FakeDocument { _id = 1, prop2 = value1 });
+            storageWithDefaultName.InsertOne(new FakeDocument { _id = 2, prop2 = value2 });
+
+            var storageWithSpecifiedNameDocuments = storageWithDefaultName.Find().ToList();
+            var storageWithDefaultNameDocuments = storageWithDefaultName.Find().ToList();
+
+            // Then
+
+            Assert.AreEqual(2, storageWithSpecifiedNameDocuments.Count);
+            Assert.AreEqual(1, storageWithSpecifiedNameDocuments[0]._id);
+            Assert.AreEqual(value1, storageWithSpecifiedNameDocuments[0].prop2);
+            Assert.AreEqual(2, storageWithSpecifiedNameDocuments[1]._id);
+            Assert.AreEqual(value2, storageWithSpecifiedNameDocuments[1].prop2);
+
+            Assert.AreEqual(2, storageWithDefaultNameDocuments.Count);
+            Assert.AreEqual(1, storageWithDefaultNameDocuments[0]._id);
+            Assert.AreEqual(value1, storageWithDefaultNameDocuments[0].prop2);
+            Assert.AreEqual(2, storageWithDefaultNameDocuments[1]._id);
+            Assert.AreEqual(value2, storageWithDefaultNameDocuments[1].prop2);
+        }
     }
 }

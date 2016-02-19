@@ -2,6 +2,7 @@
 
 namespace InfinniPlatform.DocumentStorage.Tests.TestEntities
 {
+    [DocumentType("FakeDocumentCollection")]
     public class FakeDocument : Document
     {
         public int prop1 { get; set; }
