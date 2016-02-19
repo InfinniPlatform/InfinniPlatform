@@ -1,87 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Interceptors;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
-    internal sealed class DocumentStorageImpl : IDocumentStorage
+    internal sealed class DocumentStorageImpl<TDocument> : IDocumentStorage<TDocument> where TDocument : Document
     {
         public DocumentStorageImpl(string documentType,
-                                   Func<string, IDocumentStorageProvider> storageProviderFactory,
+                                   Func<string, IDocumentStorageProvider<TDocument>> storageProviderFactory,
                                    IDocumentStorageIdProvider storageIdProvider,
                                    IDocumentStorageHeaderProvider storageHeaderProvider,
                                    IDocumentStorageFilterProvider storageFilterProvider,
                                    IDocumentStorageInterceptorProvider storageInterceptorProvider)
         {
-            _storageProvider = new Lazy<IDocumentStorageProvider>(() => storageProviderFactory(documentType));
+            _storageProvider = new Lazy<IDocumentStorageProvider<TDocument>>(() => storageProviderFactory(documentType));
             _storageIdProvider = storageIdProvider;
             _storageHeaderProvider = storageHeaderProvider;
             _storageFilterProvider = storageFilterProvider;
-            _storageInterceptor = storageInterceptorProvider.GetInterceptor(documentType);
+            _storageInterceptor = storageInterceptorProvider.GetInterceptor<TDocument>(documentType);
         }
 
 
-        private readonly Lazy<IDocumentStorageProvider> _storageProvider;
+        private readonly Lazy<IDocumentStorageProvider<TDocument>> _storageProvider;
         private readonly IDocumentStorageIdProvider _storageIdProvider;
         private readonly IDocumentStorageHeaderProvider _storageHeaderProvider;
         private readonly IDocumentStorageFilterProvider _storageFilterProvider;
-        private readonly IDocumentStorageInterceptor _storageInterceptor;
+        private readonly IDocumentStorageInterceptor<TDocument> _storageInterceptor;
 
 
-        public long Count(Func<IDocumentFilterBuilder, object> filter = null)
+
+        public long Count(Expression<Func<TDocument, bool>> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
             return _storageProvider.Value.Count(filter);
         }
 
-        public Task<long> CountAsync(Func<IDocumentFilterBuilder, object> filter = null)
+        public Task<long> CountAsync(Expression<Func<TDocument, bool>> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
             return _storageProvider.Value.CountAsync(filter);
         }
 
 
-        public IDocumentCursor<TProperty> Distinct<TProperty>(string property, Func<IDocumentFilterBuilder, object> filter = null)
+        public IDocumentCursor<TProperty> Distinct<TProperty>(Expression<Func<TDocument, TProperty>> property, Expression<Func<TDocument, bool>> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
-            return _storageProvider.Value.Distinct<TProperty>(property, filter);
+            return _storageProvider.Value.Distinct(property, filter);
         }
 
-        public Task<IDocumentCursor<TProperty>> DistinctAsync<TProperty>(string property, Func<IDocumentFilterBuilder, object> filter = null)
+        public Task<IDocumentCursor<TProperty>> DistinctAsync<TProperty>(Expression<Func<TDocument, TProperty>> property, Expression<Func<TDocument, bool>> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
-            return _storageProvider.Value.DistinctAsync<TProperty>(property, filter);
+            return _storageProvider.Value.DistinctAsync(property, filter);
         }
 
 
-        public IDocumentFindCursor Find(Func<IDocumentFilterBuilder, object> filter = null)
+        public IDocumentCursor<TItem> Distinct<TItem>(Expression<Func<TDocument, IEnumerable<TItem>>> arrayProperty, Expression<Func<TDocument, bool>> filter = null)
+        {
+            filter = _storageFilterProvider.AddSystemFilter(filter);
+            return _storageProvider.Value.Distinct(arrayProperty, filter);
+        }
+
+        public Task<IDocumentCursor<TItem>> DistinctAsync<TItem>(Expression<Func<TDocument, IEnumerable<TItem>>> arrayProperty, Expression<Func<TDocument, bool>> filter = null)
+        {
+            filter = _storageFilterProvider.AddSystemFilter(filter);
+            return _storageProvider.Value.DistinctAsync(arrayProperty, filter);
+        }
+
+
+        public IDocumentFindCursor<TDocument, TDocument> Find(Expression<Func<TDocument, bool>> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
             return _storageProvider.Value.Find(filter);
         }
 
-        public IDocumentFindCursor FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Func<IDocumentFilterBuilder, object> filter = null)
+        public IDocumentFindCursor<TDocument, TDocument> FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Expression<Func<TDocument, bool>> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
             return _storageProvider.Value.FindText(search, language, caseSensitive, diacriticSensitive, filter);
         }
 
 
-        public IDocumentAggregateCursor Aggregate(Func<IDocumentFilterBuilder, object> filter = null)
+        public IDocumentAggregateCursor<TDocument> Aggregate(Expression<Func<TDocument, bool>> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
             return _storageProvider.Value.Aggregate(filter);
         }
 
 
-        public void InsertOne(DynamicWrapper document)
+        public void InsertOne(TDocument document)
         {
             _storageInterceptor.ExecuteCommand(
-                new DocumentInsertOneCommand(document),
+                new DocumentInsertOneCommand<TDocument>(document),
                 command =>
                 {
                     _storageIdProvider.SetDocumentId(command.Document);
@@ -93,10 +107,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterInsertOne(command, result, error));
         }
 
-        public Task InsertOneAsync(DynamicWrapper document)
+        public Task InsertOneAsync(TDocument document)
         {
             return _storageInterceptor.ExecuteCommandAsync(
-                new DocumentInsertOneCommand(document),
+                new DocumentInsertOneCommand<TDocument>(document),
                 command =>
                 {
                     _storageIdProvider.SetDocumentId(command.Document);
@@ -109,10 +123,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
         }
 
 
-        public void InsertMany(IEnumerable<DynamicWrapper> documents)
+        public void InsertMany(IEnumerable<TDocument> documents)
         {
             _storageInterceptor.ExecuteCommand(
-                new DocumentInsertManyCommand(documents),
+                new DocumentInsertManyCommand<TDocument>(documents),
                 command =>
                 {
                     foreach (var document in command.Documents)
@@ -127,10 +141,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterInsertMany(command, result, error));
         }
 
-        public Task InsertManyAsync(IEnumerable<DynamicWrapper> documents)
+        public Task InsertManyAsync(IEnumerable<TDocument> documents)
         {
             return _storageInterceptor.ExecuteCommandAsync(
-                new DocumentInsertManyCommand(documents),
+                new DocumentInsertManyCommand<TDocument>(documents),
                 command =>
                 {
                     foreach (var document in command.Documents)
@@ -146,10 +160,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
         }
 
 
-        public DocumentUpdateResult UpdateOne(Action<IDocumentUpdateBuilder> update, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public DocumentUpdateResult UpdateOne(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false)
         {
             return _storageInterceptor.ExecuteCommand(
-                new DocumentUpdateOneCommand(update, filter, insertIfNotExists),
+                new DocumentUpdateOneCommand<TDocument>(update, filter, insertIfNotExists),
                 command =>
                 {
                     command.Update = _storageHeaderProvider.SetUpdateHeader(command.Update);
@@ -161,10 +175,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterUpdateOne(command, result, error));
         }
 
-        public Task<DocumentUpdateResult> UpdateOneAsync(Action<IDocumentUpdateBuilder> update, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public Task<DocumentUpdateResult> UpdateOneAsync(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false)
         {
             return _storageInterceptor.ExecuteCommandAsync(
-                new DocumentUpdateOneCommand(update, filter, insertIfNotExists),
+                new DocumentUpdateOneCommand<TDocument>(update, filter, insertIfNotExists),
                 command =>
                 {
                     command.Update = _storageHeaderProvider.SetUpdateHeader(command.Update);
@@ -177,10 +191,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
         }
 
 
-        public DocumentUpdateResult UpdateMany(Action<IDocumentUpdateBuilder> update, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public DocumentUpdateResult UpdateMany(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false)
         {
             return _storageInterceptor.ExecuteCommand(
-                new DocumentUpdateManyCommand(update, filter, insertIfNotExists),
+                new DocumentUpdateManyCommand<TDocument>(update, filter, insertIfNotExists),
                 command =>
                 {
                     command.Update = _storageHeaderProvider.SetUpdateHeader(command.Update);
@@ -192,10 +206,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterUpdateMany(command, result, error));
         }
 
-        public Task<DocumentUpdateResult> UpdateManyAsync(Action<IDocumentUpdateBuilder> update, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public Task<DocumentUpdateResult> UpdateManyAsync(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false)
         {
             return _storageInterceptor.ExecuteCommandAsync(
-                new DocumentUpdateManyCommand(update, filter, insertIfNotExists),
+                new DocumentUpdateManyCommand<TDocument>(update, filter, insertIfNotExists),
                 command =>
                 {
                     command.Update = _storageHeaderProvider.SetUpdateHeader(command.Update);
@@ -208,10 +222,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
         }
 
 
-        public DocumentUpdateResult ReplaceOne(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public DocumentUpdateResult ReplaceOne(TDocument replacement, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false)
         {
             return _storageInterceptor.ExecuteCommand(
-                new DocumentReplaceOneCommand(replacement, filter, insertIfNotExists),
+                new DocumentReplaceOneCommand<TDocument>(replacement, filter, insertIfNotExists),
                 command =>
                 {
                     _storageIdProvider.SetDocumentId(command.Replacement);
@@ -224,10 +238,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterReplaceOne(command, result, error));
         }
 
-        public Task<DocumentUpdateResult> ReplaceOneAsync(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public Task<DocumentUpdateResult> ReplaceOneAsync(TDocument replacement, Expression<Func<TDocument, bool>> filter = null, bool insertIfNotExists = false)
         {
             return _storageInterceptor.ExecuteCommandAsync(
-                new DocumentReplaceOneCommand(replacement, filter, insertIfNotExists),
+                new DocumentReplaceOneCommand<TDocument>(replacement, filter, insertIfNotExists),
                 command =>
                 {
                     _storageIdProvider.SetDocumentId(command.Replacement);
@@ -241,13 +255,13 @@ namespace InfinniPlatform.DocumentStorage.Storage
         }
 
 
-        public long DeleteOne(Func<IDocumentFilterBuilder, object> filter = null)
+        public long DeleteOne(Expression<Func<TDocument, bool>> filter = null)
         {
             return _storageInterceptor.ExecuteCommand(
-                new DocumentDeleteOneCommand(filter),
+                new DocumentDeleteOneCommand<TDocument>(filter),
                 command =>
                 {
-                    var delete = _storageHeaderProvider.SetDeleteHeader();
+                    var delete = _storageHeaderProvider.SetDeleteHeader<TDocument>();
                     command.Filter = _storageFilterProvider.AddSystemFilter(command.Filter);
 
                     var result = _storageProvider.Value.UpdateOne(delete, command.Filter);
@@ -258,13 +272,13 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterDeleteOne(command, result, error));
         }
 
-        public Task<long> DeleteOneAsync(Func<IDocumentFilterBuilder, object> filter = null)
+        public Task<long> DeleteOneAsync(Expression<Func<TDocument, bool>> filter = null)
         {
             return _storageInterceptor.ExecuteCommandAsync(
-                new DocumentDeleteOneCommand(filter),
+                new DocumentDeleteOneCommand<TDocument>(filter),
                 async command =>
                       {
-                          var delete = _storageHeaderProvider.SetDeleteHeader();
+                          var delete = _storageHeaderProvider.SetDeleteHeader<TDocument>();
                           command.Filter = _storageFilterProvider.AddSystemFilter(command.Filter);
 
                           var result = await _storageProvider.Value.UpdateOneAsync(delete, command.Filter);
@@ -276,13 +290,13 @@ namespace InfinniPlatform.DocumentStorage.Storage
         }
 
 
-        public long DeleteMany(Func<IDocumentFilterBuilder, object> filter = null)
+        public long DeleteMany(Expression<Func<TDocument, bool>> filter = null)
         {
             return _storageInterceptor.ExecuteCommand(
-                new DocumentDeleteManyCommand(filter),
+                new DocumentDeleteManyCommand<TDocument>(filter),
                 command =>
                 {
-                    var delete = _storageHeaderProvider.SetDeleteHeader();
+                    var delete = _storageHeaderProvider.SetDeleteHeader<TDocument>();
                     command.Filter = _storageFilterProvider.AddSystemFilter(command.Filter);
 
                     var result = _storageProvider.Value.UpdateMany(delete, command.Filter);
@@ -293,13 +307,13 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterDeleteMany(command, result, error));
         }
 
-        public Task<long> DeleteManyAsync(Func<IDocumentFilterBuilder, object> filter = null)
+        public Task<long> DeleteManyAsync(Expression<Func<TDocument, bool>> filter = null)
         {
             return _storageInterceptor.ExecuteCommandAsync(
-                new DocumentDeleteManyCommand(filter),
+                new DocumentDeleteManyCommand<TDocument>(filter),
                 async command =>
                       {
-                          var delete = _storageHeaderProvider.SetDeleteHeader();
+                          var delete = _storageHeaderProvider.SetDeleteHeader<TDocument>();
                           command.Filter = _storageFilterProvider.AddSystemFilter(command.Filter);
 
                           var result = await _storageProvider.Value.UpdateManyAsync(delete, command.Filter);
@@ -310,8 +324,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterDeleteMany(command, result, error));
         }
 
-
-        public DocumentBulkResult Bulk(Action<IDocumentBulkBuilder> requests, bool isOrdered = false)
+        public DocumentBulkResult Bulk(Action<IDocumentBulkBuilder<TDocument>> requests, bool isOrdered = false)
         {
             var bulkInterceptor = new DocumentStorageBulkBuilderInterceptor(this, requests, isOrdered);
 
@@ -322,7 +335,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 (command, result, error) => _storageInterceptor.OnAfterBulk(command, result, error));
         }
 
-        public Task<DocumentBulkResult> BulkAsync(Action<IDocumentBulkBuilder> requests, bool isOrdered = false)
+        public Task<DocumentBulkResult> BulkAsync(Action<IDocumentBulkBuilder<TDocument>> requests, bool isOrdered = false)
         {
             var bulkInterceptor = new DocumentStorageBulkBuilderInterceptor(this, requests, isOrdered);
 
@@ -334,9 +347,9 @@ namespace InfinniPlatform.DocumentStorage.Storage
         }
 
 
-        private sealed class DocumentStorageBulkBuilderInterceptor : IDocumentBulkBuilder
+        private sealed class DocumentStorageBulkBuilderInterceptor : IDocumentBulkBuilder<TDocument>
         {
-            public DocumentStorageBulkBuilderInterceptor(DocumentStorageImpl storage, Action<IDocumentBulkBuilder> requests, bool isOrdered = false)
+            public DocumentStorageBulkBuilderInterceptor(DocumentStorageImpl<TDocument> storage, Action<IDocumentBulkBuilder<TDocument>> requests, bool isOrdered = false)
             {
                 _storage = storage;
                 _requests = requests;
@@ -344,18 +357,18 @@ namespace InfinniPlatform.DocumentStorage.Storage
             }
 
 
-            private readonly DocumentStorageImpl _storage;
-            private readonly Action<IDocumentBulkBuilder> _requests;
+            private readonly DocumentStorageImpl<TDocument> _storage;
+            private readonly Action<IDocumentBulkBuilder<TDocument>> _requests;
             private readonly bool _isOrdered;
 
 
-            private readonly Dictionary<IDocumentWriteCommand, Action<IDocumentBulkBuilder>> _commands
-                = new Dictionary<IDocumentWriteCommand, Action<IDocumentBulkBuilder>>();
+            private readonly Dictionary<IDocumentWriteCommand<TDocument>, Action<IDocumentBulkBuilder<TDocument>>> _commands
+                = new Dictionary<IDocumentWriteCommand<TDocument>, Action<IDocumentBulkBuilder<TDocument>>>();
 
 
-            IDocumentBulkBuilder IDocumentBulkBuilder.InsertOne(DynamicWrapper document)
+            IDocumentBulkBuilder<TDocument> IDocumentBulkBuilder<TDocument>.InsertOne(TDocument document)
             {
-                var command = new DocumentInsertOneCommand(document);
+                var command = new DocumentInsertOneCommand<TDocument>(document);
 
                 _commands.Add(command, bulk =>
                                        {
@@ -368,9 +381,9 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 return this;
             }
 
-            IDocumentBulkBuilder IDocumentBulkBuilder.UpdateOne(Action<IDocumentUpdateBuilder> update, Func<IDocumentFilterBuilder, object> filter, bool insertIfNotExists)
+            IDocumentBulkBuilder<TDocument> IDocumentBulkBuilder<TDocument>.UpdateOne(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter, bool insertIfNotExists)
             {
-                var command = new DocumentUpdateOneCommand(update, filter, insertIfNotExists);
+                var command = new DocumentUpdateOneCommand<TDocument>(update, filter, insertIfNotExists);
 
                 _commands.Add(command, bulk =>
                                        {
@@ -383,9 +396,9 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 return this;
             }
 
-            IDocumentBulkBuilder IDocumentBulkBuilder.UpdateMany(Action<IDocumentUpdateBuilder> update, Func<IDocumentFilterBuilder, object> filter, bool insertIfNotExists)
+            IDocumentBulkBuilder<TDocument> IDocumentBulkBuilder<TDocument>.UpdateMany(Action<IDocumentUpdateBuilder<TDocument>> update, Expression<Func<TDocument, bool>> filter, bool insertIfNotExists)
             {
-                var command = new DocumentUpdateManyCommand(update, filter, insertIfNotExists);
+                var command = new DocumentUpdateManyCommand<TDocument>(update, filter, insertIfNotExists);
 
                 _commands.Add(command, bulk =>
                                        {
@@ -398,9 +411,9 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 return this;
             }
 
-            IDocumentBulkBuilder IDocumentBulkBuilder.ReplaceOne(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter, bool insertIfNotExists)
+            IDocumentBulkBuilder<TDocument> IDocumentBulkBuilder<TDocument>.ReplaceOne(TDocument replacement, Expression<Func<TDocument, bool>> filter, bool insertIfNotExists)
             {
-                var command = new DocumentReplaceOneCommand(replacement, filter, insertIfNotExists);
+                var command = new DocumentReplaceOneCommand<TDocument>(replacement, filter, insertIfNotExists);
 
                 _commands.Add(command, bulk =>
                                        {
@@ -414,13 +427,13 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 return this;
             }
 
-            IDocumentBulkBuilder IDocumentBulkBuilder.DeleteOne(Func<IDocumentFilterBuilder, object> filter)
+            IDocumentBulkBuilder<TDocument> IDocumentBulkBuilder<TDocument>.DeleteOne(Expression<Func<TDocument, bool>> filter)
             {
-                var command = new DocumentDeleteOneCommand(filter);
+                var command = new DocumentDeleteOneCommand<TDocument>(filter);
 
                 _commands.Add(command, bulk =>
                                        {
-                                           var delete = _storage._storageHeaderProvider.SetDeleteHeader();
+                                           var delete = _storage._storageHeaderProvider.SetDeleteHeader<TDocument>();
                                            command.Filter = _storage._storageFilterProvider.AddSystemFilter(command.Filter);
 
                                            bulk.UpdateOne(delete, command.Filter);
@@ -429,13 +442,13 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 return this;
             }
 
-            IDocumentBulkBuilder IDocumentBulkBuilder.DeleteMany(Func<IDocumentFilterBuilder, object> filter)
+            IDocumentBulkBuilder<TDocument> IDocumentBulkBuilder<TDocument>.DeleteMany(Expression<Func<TDocument, bool>> filter)
             {
-                var command = new DocumentDeleteManyCommand(filter);
+                var command = new DocumentDeleteManyCommand<TDocument>(filter);
 
                 _commands.Add(command, bulk =>
                                        {
-                                           var delete = _storage._storageHeaderProvider.SetDeleteHeader();
+                                           var delete = _storage._storageHeaderProvider.SetDeleteHeader<TDocument>();
                                            command.Filter = _storage._storageFilterProvider.AddSystemFilter(command.Filter);
 
                                            bulk.UpdateMany(delete, command.Filter);
@@ -445,15 +458,15 @@ namespace InfinniPlatform.DocumentStorage.Storage
             }
 
 
-            public DocumentBulkCommand CreateBulkCommand()
+            public DocumentBulkCommand<TDocument> CreateBulkCommand()
             {
                 _requests?.Invoke(this);
 
-                return new DocumentBulkCommand(_commands.Keys, _isOrdered);
+                return new DocumentBulkCommand<TDocument>(_commands.Keys, _isOrdered);
             }
 
 
-            public void AddBulkCommands(IDocumentBulkBuilder bulk)
+            public void AddBulkCommands(IDocumentBulkBuilder<TDocument> bulk)
             {
                 foreach (var addCommand in _commands.Values)
                 {

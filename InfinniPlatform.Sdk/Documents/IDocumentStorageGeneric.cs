@@ -8,7 +8,7 @@ namespace InfinniPlatform.Sdk.Documents
     /// <summary>
     /// Предоставляет методы для работы с данными хранилища документов.
     /// </summary>
-    public interface IDocumentStorage<TDocument>
+    public interface IDocumentStorage<TDocument> where TDocument : Document
     {
         /// <summary>
         /// Возвращает количество документов, удовлетворяющих указанному фильтру.

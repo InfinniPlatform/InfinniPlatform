@@ -59,16 +59,16 @@ namespace InfinniPlatform.Sdk.Documents.Interceptors
         /// <summary>
         /// Оператор обновления документов.
         /// </summary>
-        public Action<IDocumentUpdateBuilder<TDocument>> Update { get; }
+        public Action<IDocumentUpdateBuilder<TDocument>> Update { get; set; }
 
         /// <summary>
         /// Фильтр для поиска документов.
         /// </summary>
-        public Expression<Func<TDocument, bool>> Filter { get; }
+        public Expression<Func<TDocument, bool>> Filter { get; set; }
 
         /// <summary>
         /// Следует ли создать документ, если ничего не найдено.
         /// </summary>
-        public bool InsertIfNotExists { get; }
+        public bool InsertIfNotExists { get; set; }
     }
 }

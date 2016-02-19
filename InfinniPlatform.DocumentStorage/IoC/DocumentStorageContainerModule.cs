@@ -65,6 +65,10 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .As<IDocumentStorage>()
                    .InstancePerDependency();
 
+            builder.RegisterGeneric(typeof(DocumentStorageImpl<>))
+                   .As(typeof(IDocumentStorage<>))
+                   .InstancePerDependency();
+
             // Hosting
 
             builder.RegisterType<MongoCollectionInitializer>()
