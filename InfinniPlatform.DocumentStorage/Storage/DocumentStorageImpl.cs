@@ -35,14 +35,12 @@ namespace InfinniPlatform.DocumentStorage.Storage
         public long Count(Func<IDocumentFilterBuilder, object> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
-
             return _storageProvider.Value.Count(filter);
         }
 
         public Task<long> CountAsync(Func<IDocumentFilterBuilder, object> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
-
             return _storageProvider.Value.CountAsync(filter);
         }
 
@@ -50,14 +48,12 @@ namespace InfinniPlatform.DocumentStorage.Storage
         public IDocumentCursor<TProperty> Distinct<TProperty>(string property, Func<IDocumentFilterBuilder, object> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
-
             return _storageProvider.Value.Distinct<TProperty>(property, filter);
         }
 
         public Task<IDocumentCursor<TProperty>> DistinctAsync<TProperty>(string property, Func<IDocumentFilterBuilder, object> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
-
             return _storageProvider.Value.DistinctAsync<TProperty>(property, filter);
         }
 
@@ -65,14 +61,19 @@ namespace InfinniPlatform.DocumentStorage.Storage
         public IDocumentFindCursor Find(Func<IDocumentFilterBuilder, object> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
-
             return _storageProvider.Value.Find(filter);
         }
+
+        public IDocumentFindCursor FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Func<IDocumentFilterBuilder, object> filter = null)
+        {
+            filter = _storageFilterProvider.AddSystemFilter(filter);
+            return _storageProvider.Value.FindText(search, language, caseSensitive, diacriticSensitive, filter);
+        }
+
 
         public IDocumentAggregateCursor Aggregate(Func<IDocumentFilterBuilder, object> filter = null)
         {
             filter = _storageFilterProvider.AddSystemFilter(filter);
-
             return _storageProvider.Value.Aggregate(filter);
         }
 

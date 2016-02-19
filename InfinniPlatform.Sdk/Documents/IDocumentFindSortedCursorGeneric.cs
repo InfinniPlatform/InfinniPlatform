@@ -21,6 +21,6 @@ namespace InfinniPlatform.Sdk.Documents
         /// <summary>
         /// Сортирует документы по убыванию релевантности, значение которой находится в указанном свойстве.
         /// </summary>
-        IDocumentFindSortedCursor<TDocument, TProjection> ThenByTextScore(Expression<Func<TProjection, object>> property);
+        IDocumentFindSortedCursor<TDocument, TProjection> ThenByTextScore(Expression<Func<TProjection, object>> textScoreProperty);
     }
 }

@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="BlobStorage\BlobStorageExtensions.cs" />
     <Compile Include="ClientNotification\IClientNotificationService.cs" />
+    <Compile Include="Documents\DocumentStorageExtensions.cs" />
     <Compile Include="Documents\DocumentStorageWriteException.cs" />
     <Compile Include="Documents\IDocumentIdGenerator.cs" />
     <Compile Include="Documents\IDocumentStorageGeneric.cs" />

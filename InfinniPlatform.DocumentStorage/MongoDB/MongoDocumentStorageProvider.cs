@@ -54,6 +54,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             return new MongoDocumentFindCursor(_collection, _filterBuilder.CreateMongoFilter(filter));
         }
 
+        public IDocumentFindCursor FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Func<IDocumentFilterBuilder, object> filter = null)
+        {
+            Func<IDocumentFilterBuilder, object> textFilter = f => f.Text(search, language, caseSensitive, diacriticSensitive);
+            return new MongoDocumentFindCursor(_collection, _filterBuilder.CreateMongoFilter((filter == null) ? textFilter : f => f.And(textFilter, filter(f))));
+        }
+
 
         public IDocumentAggregateCursor Aggregate(Func<IDocumentFilterBuilder, object> filter = null)
         {

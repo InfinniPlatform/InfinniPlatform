@@ -40,10 +40,19 @@ namespace InfinniPlatform.Sdk.Documents
 
 
         /// <summary>
-        /// Возвращает интерфейс для построения поискового запроса.
+        /// Осуществляет поиск по указанному фильтру и возвращает указатель на результат поиска.
         /// </summary>
         /// <param name="filter">Фильтр для поиска документов.</param>
         IDocumentFindCursor Find(Func<IDocumentFilterBuilder, object> filter = null);
+
+        /// <summary>
+        /// Осуществляет полнотекстовый поиск по указанной строке и возвращает указатель на результат поиска.
+        /// </summary>
+        /// <param name="language">Язык для поиска.</param>
+        /// <param name="caseSensitive">Чувствительность к регистру символов.</param>
+        /// <param name="diacriticSensitive">Чувствительность к диакритическим символам.</param>
+        /// <param name="filter">Фильтр для поиска документов.</param>
+        IDocumentFindCursor FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Func < IDocumentFilterBuilder, object> filter = null);
 
 
         /// <summary>

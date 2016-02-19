@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 
 using InfinniPlatform.Sdk.Documents;
 
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
@@ -10,16 +11,19 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// <summary>
     /// Указатель на список документов для поиска в MongoDB.
     /// </summary>
-    internal class MongoDocumentFindCursorGeneric<TDocument, TProjection> : MongoDocumentCursor<TProjection>, IDocumentFindSortedCursor<TDocument, TProjection>
+    internal class MongoDocumentFindCursor<TDocument, TProjection> : MongoDocumentCursor<TProjection>, IDocumentFindSortedCursor<TDocument, TProjection>
     {
-        public MongoDocumentFindCursorGeneric(FindFluentBase<TDocument, TProjection> fluentCursor)
+        public MongoDocumentFindCursor(IFindFluent<TDocument, TProjection> fluentCursor, SortDefinition<TDocument> sortDefinitionDefinition = null, string textScoreProperty = null)
         {
             _fluentCursor = fluentCursor;
+            _sortDefinition = sortDefinitionDefinition;
+            _textScoreProperty = textScoreProperty;
         }
 
 
         private readonly IFindFluent<TDocument, TProjection> _fluentCursor;
-        private SortDefinition<TDocument> _sort;
+        private SortDefinition<TDocument> _sortDefinition;
+        private string _textScoreProperty;
 
 
         protected override IAsyncCursor<TProjection> Cursor => CreateCursor();
@@ -27,46 +31,48 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         public IDocumentFindCursor<TDocument, TNewProjection> Project<TNewProjection>(Expression<Func<TDocument, TNewProjection>> projection)
         {
-            var fluentCursor = (FindFluentBase<TDocument, TNewProjection>)_fluentCursor.Project(projection);
-            return new MongoDocumentFindCursorGeneric<TDocument, TNewProjection>(fluentCursor);
+            var fluentCursor = _fluentCursor.Project(projection);
+            return new MongoDocumentFindCursor<TDocument, TNewProjection>(fluentCursor, _sortDefinition, _textScoreProperty);
         }
 
         public IDocumentFindSortedCursor<TDocument, TProjection> SortBy(Expression<Func<TDocument, object>> property)
         {
-            _sort = Builders<TDocument>.Sort.Ascending(property);
+            _sortDefinition = Builders<TDocument>.Sort.Ascending(property);
             return this;
         }
 
         public IDocumentFindSortedCursor<TDocument, TProjection> SortByDescending(Expression<Func<TDocument, object>> property)
         {
-            _sort = Builders<TDocument>.Sort.Descending(property);
+            _sortDefinition = Builders<TDocument>.Sort.Descending(property);
             return this;
         }
 
-        public IDocumentFindSortedCursor<TDocument, TProjection> SortByTextScore(Expression<Func<TProjection, object>> property)
+        public IDocumentFindSortedCursor<TDocument, TProjection> SortByTextScore(Expression<Func<TProjection, object>> textScoreProperty)
         {
-            _sort = Builders<TDocument>.Sort.MetaTextScore(GetPropertyName(property));
+            _textScoreProperty = MongoHelpers.GetPropertyName(textScoreProperty);
+            _sortDefinition = Builders<TDocument>.Sort.MetaTextScore(_textScoreProperty);
             return this;
         }
 
         public IDocumentFindSortedCursor<TDocument, TProjection> ThenBy(Expression<Func<TDocument, object>> property)
         {
-            var thenSort = Builders<TDocument>.Sort.Ascending(property);
-            _sort = Builders<TDocument>.Sort.Combine(_sort, thenSort);
+            var thenSortDefinition = Builders<TDocument>.Sort.Ascending(property);
+            _sortDefinition = Builders<TDocument>.Sort.Combine(_sortDefinition, thenSortDefinition);
             return this;
         }
 
         public IDocumentFindSortedCursor<TDocument, TProjection> ThenByDescending(Expression<Func<TDocument, object>> property)
         {
-            var thenSort = Builders<TDocument>.Sort.Descending(property);
-            _sort = Builders<TDocument>.Sort.Combine(_sort, thenSort);
+            var thenSortDefinition = Builders<TDocument>.Sort.Descending(property);
+            _sortDefinition = Builders<TDocument>.Sort.Combine(_sortDefinition, thenSortDefinition);
             return this;
         }
 
-        public IDocumentFindSortedCursor<TDocument, TProjection> ThenByTextScore(Expression<Func<TProjection, object>> property)
+        public IDocumentFindSortedCursor<TDocument, TProjection> ThenByTextScore(Expression<Func<TProjection, object>> textScoreProperty)
         {
-            var thenSort = Builders<TDocument>.Sort.MetaTextScore(GetPropertyName(property));
-            _sort = Builders<TDocument>.Sort.Combine(_sort, thenSort);
+            _textScoreProperty = MongoHelpers.GetPropertyName(textScoreProperty);
+            var thenSortDefinition = Builders<TDocument>.Sort.MetaTextScore(_textScoreProperty);
+            _sortDefinition = Builders<TDocument>.Sort.Combine(_sortDefinition, thenSortDefinition);
             return this;
         }
 
@@ -83,19 +89,25 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
-        private static string GetPropertyName<T>(Expression<Func<T, object>> property)
-        {
-            return ((MemberExpression)property.Body).Member.Name;
-        }
-
-
         private IAsyncCursor<TProjection> CreateCursor()
         {
             var fluentCursor = _fluentCursor;
 
-            if (_sort != null)
+            if (!string.IsNullOrEmpty(_textScoreProperty))
             {
-                fluentCursor = _fluentCursor.Sort(_sort);
+                var projectionDefinition = fluentCursor.Options.Projection;
+
+                var textScoreProjection = new BsonDocument(_textScoreProperty, new BsonDocument("$meta", "textScore"));
+                var textScoreProjectionDefinition = new BsonDocumentProjectionDefinition<TDocument, TProjection>(textScoreProjection);
+
+                fluentCursor.Options.Projection = (projectionDefinition != null)
+                    ? MongoHelpers.Combine(projectionDefinition, textScoreProjectionDefinition)
+                    : textScoreProjectionDefinition;
+            }
+
+            if (_sortDefinition != null)
+            {
+                fluentCursor = _fluentCursor.Sort(_sortDefinition);
             }
 
             return fluentCursor.ToCursor();

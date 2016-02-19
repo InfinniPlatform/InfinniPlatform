@@ -27,7 +27,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <summary>
         /// Сортирует документы по убыванию релевантности, значение которой находится в указанном свойстве.
         /// </summary>
-        IDocumentFindSortedCursor SortByTextScore(string property);
+        IDocumentFindSortedCursor SortByTextScore(string textScoreProperty = DocumentStorageExtensions.DefaultTextScoreProperty);
 
         /// <summary>
         /// Пропускает указанное количество документов в результирующей выборке.

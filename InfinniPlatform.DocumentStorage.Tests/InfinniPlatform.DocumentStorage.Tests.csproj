@@ -67,7 +67,31 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\DocumentStorageIntegrationTest.cs" />
     <Compile Include="Storage\DocumentStorageTestHelpers.cs" />
+    <Compile Include="TestEntities\Article.cs" />
+    <Compile Include="TestEntities\ArticleProjection.cs" />
+    <Compile Include="TestEntities\CollectionEntity.cs" />
+    <Compile Include="TestEntities\ComplexInventory.cs" />
+    <Compile Include="TestEntities\ComplexInventoryClassification.cs" />
+    <Compile Include="TestEntities\ComplexInventoryVendor.cs" />
+    <Compile Include="TestEntities\ComplexInventoryVendorInfo.cs" />
+    <Compile Include="TestEntities\Inventory.cs" />
+    <Compile Include="TestEntities\InventoryItem.cs" />
+    <Compile Include="TestEntities\MathEntity.cs" />
+    <Compile Include="TestEntities\Order.cs" />
+    <Compile Include="TestEntities\OrderItem.cs" />
+    <Compile Include="TestEntities\Product.cs" />
+    <Compile Include="TestEntities\PushAndPullEntity.cs" />
+    <Compile Include="TestEntities\RangeEntity.cs" />
+    <Compile Include="TestEntities\RenameAndRemoveEntity.cs" />
+    <Compile Include="TestEntities\ReplaceEntity.cs" />
+    <Compile Include="TestEntities\Sale.cs" />
+    <Compile Include="TestEntities\School.cs" />
+    <Compile Include="TestEntities\SchoolStudent.cs" />
     <Compile Include="TestEntities\SimpleEntity.cs" />
+    <Compile Include="TestEntities\Survey.cs" />
+    <Compile Include="TestEntities\SurveyResult.cs" />
+    <Compile Include="TestEntities\Thing.cs" />
+    <Compile Include="TestEntities\ThingItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

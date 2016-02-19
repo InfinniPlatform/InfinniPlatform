@@ -18,6 +18,6 @@
         /// <summary>
         /// Сортирует документы по убыванию релевантности, значение которой находится в указанном свойстве.
         /// </summary>
-        IDocumentFindSortedCursor ThenByTextScore(string property);
+        IDocumentFindSortedCursor ThenByTextScore(string textScoreProperty = DocumentStorageExtensions.DefaultTextScoreProperty);
     }
 }

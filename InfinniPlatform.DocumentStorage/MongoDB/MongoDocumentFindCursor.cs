@@ -48,9 +48,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             return this;
         }
 
-        public IDocumentFindSortedCursor SortByTextScore(string property)
+        public IDocumentFindSortedCursor SortByTextScore(string textScoreProperty = DocumentStorageExtensions.DefaultTextScoreProperty)
         {
-            _sort = Builders<DynamicWrapper>.Sort.MetaTextScore(property);
+            _sort = Builders<DynamicWrapper>.Sort.MetaTextScore(textScoreProperty);
             return this;
         }
 
@@ -68,9 +68,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             return this;
         }
 
-        public IDocumentFindSortedCursor ThenByTextScore(string property)
+        public IDocumentFindSortedCursor ThenByTextScore(string textScoreProperty = DocumentStorageExtensions.DefaultTextScoreProperty)
         {
-            var thenSort = Builders<DynamicWrapper>.Sort.MetaTextScore(property);
+            var thenSort = Builders<DynamicWrapper>.Sort.MetaTextScore(textScoreProperty);
             _sort = Builders<DynamicWrapper>.Sort.Combine(_sort, thenSort);
             return this;
         }

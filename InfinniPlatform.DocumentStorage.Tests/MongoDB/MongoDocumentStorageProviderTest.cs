@@ -391,7 +391,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void ShouldFindByEq()
         {
             // Given
-            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByIn));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByEq));
 
             // When
 
@@ -1719,7 +1719,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         {
             // Given
             var nowDate = DateTime.UtcNow;
-            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithBitwiseOperations));
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithCurrentDate));
 
             // When
             storage.InsertOne(new DynamicWrapper());
@@ -1738,6 +1738,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithPush));
 
             // When
+
             storage.InsertOne(new DynamicWrapper());
 
             storage.UpdateOne(u => u.Push("propPush", 1).PushAll("propPushAll", new[] { 11, 22 }).PushUnique("propPushUnique", 111).PushAllUnique("propPushAllUnique", new[] { 1111, 2222 }));
@@ -1795,6 +1796,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldReplaceOne));
 
             // When
+
             storage.InsertMany(new[]
                                {
                                    new DynamicWrapper { { "_id", 1 } },
@@ -2075,11 +2077,11 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, {"prop1", 1 }, { "item", "abc" }, { "price", 10 }, { "quantity", 2 }, { "date", DateTime.Parse("2016-03-01T08:00:00Z") } },
-                                   new DynamicWrapper { { "_id", 2 }, {"prop1", 1 }, { "item", "jkl" }, { "price", 20 }, { "quantity", 1 }, { "date", DateTime.Parse("2016-03-01T09:00:00Z") } },
-                                   new DynamicWrapper { { "_id", 3 }, {"prop1", 2 }, { "item", "xyz" }, { "price", 5 }, { "quantity", 10 }, { "date", DateTime.Parse("2016-03-15T09:00:00Z") } },
-                                   new DynamicWrapper { { "_id", 4 }, {"prop1", 2 }, { "item", "xyz" }, { "price", 5 }, { "quantity", 20 }, { "date", DateTime.Parse("2016-04-04T11:21:39.736Z") } },
-                                   new DynamicWrapper { { "_id", 5 }, {"prop1", 2 }, { "item", "abc" }, { "price", 10 }, { "quantity", 10 }, { "date", DateTime.Parse("2016-04-04T21:23:13.331Z") } }
+                                   new DynamicWrapper { { "_id", 1 }, { "item", "abc" }, { "price", 10 }, { "quantity", 2 }, { "date", DateTime.Parse("2016-03-01T08:00:00Z") } },
+                                   new DynamicWrapper { { "_id", 2 }, { "item", "jkl" }, { "price", 20 }, { "quantity", 1 }, { "date", DateTime.Parse("2016-03-01T09:00:00Z") } },
+                                   new DynamicWrapper { { "_id", 3 }, { "item", "xyz" }, { "price", 5 }, { "quantity", 10 }, { "date", DateTime.Parse("2016-03-15T09:00:00Z") } },
+                                   new DynamicWrapper { { "_id", 4 }, { "item", "xyz" }, { "price", 5 }, { "quantity", 20 }, { "date", DateTime.Parse("2016-04-04T11:21:39.736Z") } },
+                                   new DynamicWrapper { { "_id", 5 }, { "item", "abc" }, { "price", 10 }, { "quantity", 10 }, { "date", DateTime.Parse("2016-04-04T21:23:13.331Z") } }
                                });
 
             var groupByMonthDayYearResult = storage.Aggregate()

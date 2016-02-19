@@ -26,23 +26,47 @@ namespace InfinniPlatform.Sdk.Documents
         /// <summary>
         /// Возвращает список уникальных значений свойства документа для указанного фильтра.
         /// </summary>
-        /// <param name="field">Свойство документа.</param>
+        /// <param name="property">Свойство документа.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
-        IDocumentCursor<TProperty> Distinct<TProperty>(Expression<Func<TDocument, TProperty>> field, Expression<Func<TDocument, bool>> filter = null);
+        IDocumentCursor<TProperty> Distinct<TProperty>(Expression<Func<TDocument, TProperty>> property, Expression<Func<TDocument, bool>> filter = null);
 
         /// <summary>
         /// Возвращает список уникальных значений свойства документа для указанного фильтра.
         /// </summary>
-        /// <param name="field">Свойство документа.</param>
+        /// <param name="property">Свойство документа.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
-        Task<IDocumentCursor<TProperty>> DistinctAsync<TProperty>(Expression<Func<TDocument, TProperty>> field, Expression<Func<TDocument, bool>> filter = null);
+        Task<IDocumentCursor<TProperty>> DistinctAsync<TProperty>(Expression<Func<TDocument, TProperty>> property, Expression<Func<TDocument, bool>> filter = null);
 
 
         /// <summary>
-        /// Возвращает интерфейс для построения поискового запроса.
+        /// Возвращает список уникальных значений свойства документа для указанного фильтра.
+        /// </summary>
+        /// <param name="arrayProperty">Свойство документа, содержащее массив.</param>
+        /// <param name="filter">Фильтр для поиска документов.</param>
+        IDocumentCursor<TItem> Distinct<TItem>(Expression<Func<TDocument, IEnumerable<TItem>>> arrayProperty, Expression<Func<TDocument, bool>> filter = null);
+
+        /// <summary>
+        /// Возвращает список уникальных значений свойства документа для указанного фильтра.
+        /// </summary>
+        /// <param name="arrayProperty">Свойство документа, содержащее массив.</param>
+        /// <param name="filter">Фильтр для поиска документов.</param>
+        Task<IDocumentCursor<TItem>> DistinctAsync<TItem>(Expression<Func<TDocument, IEnumerable<TItem>>> arrayProperty, Expression<Func<TDocument, bool>> filter = null);
+
+
+        /// <summary>
+        /// Осуществляет поиск по указанному фильтру и возвращает указатель на результат поиска.
         /// </summary>
         /// <param name="filter">Фильтр для поиска документов.</param>
         IDocumentFindCursor<TDocument, TDocument> Find(Expression<Func<TDocument, bool>> filter = null);
+
+        /// <summary>
+        /// Осуществляет полнотекстовый поиск по указанной строке и возвращает указатель на результат поиска.
+        /// </summary>
+        /// <param name="language">Язык для поиска.</param>
+        /// <param name="caseSensitive">Чувствительность к регистру символов.</param>
+        /// <param name="diacriticSensitive">Чувствительность к диакритическим символам.</param>
+        /// <param name="filter">Фильтр для поиска документов.</param>
+        IDocumentFindCursor<TDocument, TDocument> FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Expression<Func<TDocument, bool>> filter = null);
 
 
         /// <summary>

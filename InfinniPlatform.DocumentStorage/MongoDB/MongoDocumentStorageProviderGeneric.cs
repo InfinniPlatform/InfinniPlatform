@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents;
 
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
@@ -38,23 +39,47 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
-        public IDocumentCursor<TProperty> Distinct<TProperty>(Expression<Func<TDocument, TProperty>> field, Expression<Func<TDocument, bool>> filter = null)
+        public IDocumentCursor<TProperty> Distinct<TProperty>(Expression<Func<TDocument, TProperty>> property, Expression<Func<TDocument, bool>> filter = null)
         {
-            var result = _collection.Value.Distinct(field, _filterBuilder.CreateMongoFilter(filter));
+            var result = _collection.Value.Distinct(property, _filterBuilder.CreateMongoFilter(filter));
             return new MongoDocumentCursor<TProperty>(result);
         }
 
-        public async Task<IDocumentCursor<TProperty>> DistinctAsync<TProperty>(Expression<Func<TDocument, TProperty>> field, Expression<Func<TDocument, bool>> filter = null)
+        public async Task<IDocumentCursor<TProperty>> DistinctAsync<TProperty>(Expression<Func<TDocument, TProperty>> property, Expression<Func<TDocument, bool>> filter = null)
         {
-            var result = await _collection.Value.DistinctAsync(field, _filterBuilder.CreateMongoFilter(filter));
+            var result = await _collection.Value.DistinctAsync(property, _filterBuilder.CreateMongoFilter(filter));
             return new MongoDocumentCursor<TProperty>(result);
+        }
+
+
+        public IDocumentCursor<TItem> Distinct<TItem>(Expression<Func<TDocument, IEnumerable<TItem>>> arrayProperty, Expression<Func<TDocument, bool>> filter = null)
+        {
+            var arrayPropertyString = arrayProperty.Body.ToString();
+            arrayPropertyString = arrayPropertyString.Substring(arrayPropertyString.IndexOf('.') + 1);
+            var result = _collection.Value.Distinct<TItem>(arrayPropertyString, _filterBuilder.CreateMongoFilter(filter));
+            return new MongoDocumentCursor<TItem>(result);
+        }
+
+        public async Task<IDocumentCursor<TItem>> DistinctAsync<TItem>(Expression<Func<TDocument, IEnumerable<TItem>>> arrayProperty, Expression<Func<TDocument, bool>> filter = null)
+        {
+            var arrayPropertyString = arrayProperty.Body.ToString();
+            arrayPropertyString = arrayPropertyString.Substring(arrayPropertyString.IndexOf('.') + 1);
+            var result = await _collection.Value.DistinctAsync<TItem>(arrayPropertyString, _filterBuilder.CreateMongoFilter(filter));
+            return new MongoDocumentCursor<TItem>(result);
         }
 
 
         public IDocumentFindCursor<TDocument, TDocument> Find(Expression<Func<TDocument, bool>> filter = null)
         {
-            var result = (FindFluentBase<TDocument, TDocument>)_collection.Value.Find(_filterBuilder.CreateMongoFilter(filter));
-            return new MongoDocumentFindCursorGeneric<TDocument, TDocument>(result);
+            var result = _collection.Value.Find(_filterBuilder.CreateMongoFilter(filter));
+            return new MongoDocumentFindCursor<TDocument, TDocument>(result);
+        }
+
+        public IDocumentFindCursor<TDocument, TDocument> FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Expression<Func<TDocument, bool>> filter = null)
+        {
+            var textFilter = _filterBuilder.CreateMongoFilter(f => f.Text(search, language, caseSensitive, diacriticSensitive));
+            var result = _collection.Value.Find((filter == null) ? textFilter : textFilter & _filterBuilder.CreateMongoFilter(filter));
+            return new MongoDocumentFindCursor<TDocument, TDocument>(result);
         }
 
 
