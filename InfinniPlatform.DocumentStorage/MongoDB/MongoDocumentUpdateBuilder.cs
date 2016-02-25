@@ -56,7 +56,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             return this;
         }
 
-        public IDocumentUpdateBuilder Set(string property, object value)
+        public IDocumentUpdateBuilder Set<TProperty>(string property, TProperty value)
         {
             _updates.Add(InternalBuilder.Set(property, value));
             return this;

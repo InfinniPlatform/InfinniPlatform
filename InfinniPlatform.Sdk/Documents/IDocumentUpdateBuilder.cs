@@ -22,7 +22,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <summary>
         /// Создает оператор обновления, который присваивает свойству документа указанное значение.
         /// </summary>
-        IDocumentUpdateBuilder Set(string property, object value);
+        IDocumentUpdateBuilder Set<TProperty>(string property, TProperty value);
 
         /// <summary>
         /// Создает оператор обновления, который присваивает свойству документа результат сложения текущего значения с указанным.

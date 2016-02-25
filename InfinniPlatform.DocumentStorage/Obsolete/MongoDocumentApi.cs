@@ -87,44 +87,25 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
 
         public void AttachFile(string documentType, string documentId, string fileProperty, Stream fileStream)
         {
-            // Получение документа
-
-            object document = GetDocumentById(documentType, documentId);
-
-            // Получение свойства
-
-            dynamic filePropertyValue = document.GetProperty(fileProperty);
-
-            if (filePropertyValue == null)
-            {
-                filePropertyValue = new DynamicWrapper();
-                filePropertyValue.Info = new DynamicWrapper();
-                ObjectHelper.SetProperty(document, fileProperty, filePropertyValue);
-            }
-
-            if (filePropertyValue.Info == null)
-            {
-                filePropertyValue.Info = new DynamicWrapper();
-            }
-
-            string fileId = filePropertyValue.Info.ContentId;
+            var documentStorage = _storageFactory.GetStorage(documentType);
 
             // Сохранение файла
 
-            if (string.IsNullOrEmpty(fileId))
-            {
-                fileId = _blobStorage.CreateBlob(fileProperty, string.Empty, fileStream);
+            var fileId = _blobStorage.CreateBlob(fileProperty, string.Empty, fileStream);
 
-                filePropertyValue.Info.ContentId = fileId;
-            }
-            else
-            {
-                _blobStorage.UpdateBlob(fileId, fileProperty, string.Empty, fileStream);
-            }
+            var blobData = new DynamicWrapper
+                           {
+                               {
+                                   "Info", new DynamicWrapper
+                                           {
+                                               { "ContentId", fileId }
+                                           }
+                               }
+                           };
 
-            // Сохранение документа
+            // Обновление документа
 
-            SetDocument(documentType, document);
+            documentStorage.UpdateOne(u => u.Set(fileProperty, blobData), f => f.Eq("_id", documentId));
         }
 
 
