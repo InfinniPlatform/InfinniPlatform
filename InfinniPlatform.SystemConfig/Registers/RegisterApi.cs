@@ -20,7 +20,7 @@ namespace InfinniPlatform.SystemConfig.Registers
     {
         // TODO: Нужен глубокий рефакторинг и тестирование.
 
-        public RegisterApi(IAppEnvironment appEnvironment, IMetadataApi metadataApi, IDocumentApi documentApi, Func<string, IDocumentStorage> documentStorageFactory)
+        public RegisterApi(IAppEnvironment appEnvironment, IMetadataApi metadataApi, IDocumentApi documentApi, IDocumentStorageFactory documentStorageFactory)
         {
             _appEnvironment = appEnvironment;
             _metadataApi = metadataApi;
@@ -31,7 +31,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         private readonly IAppEnvironment _appEnvironment;
         private readonly IMetadataApi _metadataApi;
         private readonly IDocumentApi _documentApi;
-        private readonly Func<string, IDocumentStorage> _documentStorageFactory;
+        private readonly IDocumentStorageFactory _documentStorageFactory;
 
         /// <summary>
         /// Создает (но не сохраняет) запись регистра.
@@ -707,7 +707,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 }
             }
 
-            var groupResult = _documentStorageFactory(registerName)
+            var groupResult = _documentStorageFactory.GetStorage(registerName)
                 .Aggregate(filter.ToDocumentStorageFilter())
                 .Group(groupRequest)
                 .ToList();

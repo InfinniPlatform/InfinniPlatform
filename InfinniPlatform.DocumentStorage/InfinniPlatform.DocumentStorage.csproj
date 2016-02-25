@@ -85,6 +85,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Hosting\MongoCollectionInitializer.cs" />
+    <Compile Include="Storage\DocumentStorageFactory.cs" />
     <Compile Include="Storage\DocumentStorageImplGeneric.cs" />
     <Compile Include="Storage\DocumentStorageImpl.cs" />
     <Compile Include="Storage\DocumentStorageFilterProvider.cs" />
@@ -92,10 +93,16 @@
     <Compile Include="Storage\DocumentStorageHelpers.cs" />
     <Compile Include="Storage\DocumentStorageIdProvider.cs" />
     <Compile Include="Storage\DocumentStorageInterceptorProvider.cs" />
+    <Compile Include="Storage\DocumentStorageProviderFactory.cs" />
+    <Compile Include="Storage\IDocumentStorageBulkExecutor.cs" />
     <Compile Include="Storage\IDocumentStorageFilterProvider.cs" />
     <Compile Include="Storage\IDocumentStorageHeaderProvider.cs" />
     <Compile Include="Storage\IDocumentStorageIdProvider.cs" />
     <Compile Include="Storage\IDocumentStorageInterceptorProvider.cs" />
+    <Compile Include="Transactions\UnitOfWorkFactory.cs" />
+    <Compile Include="Transactions\UnitOfWorkItem.cs" />
+    <Compile Include="Transactions\UnitOfWork.cs" />
+    <Compile Include="Transactions\UnitOfWorkLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

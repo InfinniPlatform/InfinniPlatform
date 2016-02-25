@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 
 using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.DocumentStorage.MongoDB;
@@ -25,7 +26,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
 
             return new DocumentStorageImpl(
                 documentType,
-                d => MongoTestHelpers.GetStorageProvider(documentType),
+                GetStorageProviderFactory(d => MongoTestHelpers.GetStorageProvider(documentType)),
                 new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
                 new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
                 new DocumentStorageFilterProvider(tenantProvider),
@@ -37,7 +38,8 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
             var tenantProvider = GetTenantProvider();
             var userIdentityProvider = GetUserIdentityProvider();
 
-            return new DocumentStorageImpl<TDocument>(d => MongoTestHelpers.GetStorageProvider<TDocument>(documentType),
+            return new DocumentStorageImpl<TDocument>(
+                GetStorageProviderFactory(d => MongoTestHelpers.GetStorageProvider<TDocument>(documentType)),
                 new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
                 new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
                 new DocumentStorageFilterProvider(tenantProvider),
@@ -52,7 +54,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
 
             return new DocumentStorageImpl(
                 documentType,
-                d => MongoTestHelpers.GetEmptyStorageProvider(documentType),
+                GetStorageProviderFactory(d => MongoTestHelpers.GetEmptyStorageProvider(documentType)),
                 new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
                 new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
                 new DocumentStorageFilterProvider(tenantProvider),
@@ -64,13 +66,28 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
             var tenantProvider = GetTenantProvider();
             var userIdentityProvider = GetUserIdentityProvider();
 
-            return new DocumentStorageImpl<TDocument>(d => MongoTestHelpers.GetEmptyStorageProvider<TDocument>(documentType),
+            return new DocumentStorageImpl<TDocument>(
+                GetStorageProviderFactory(d => MongoTestHelpers.GetEmptyStorageProvider<TDocument>(d)),
                 new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
                 new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
                 new DocumentStorageFilterProvider(tenantProvider),
                 new DocumentStorageInterceptorProvider(null), documentType);
         }
 
+
+        private static IDocumentStorageProviderFactory GetStorageProviderFactory(Func<string, IDocumentStorageProvider> factory)
+        {
+            var storageProviderFactory = new Mock<IDocumentStorageProviderFactory>();
+            storageProviderFactory.Setup(i => i.GetStorageProvider(It.IsAny<string>())).Returns(factory);
+            return storageProviderFactory.Object;
+        }
+
+        private static IDocumentStorageProviderFactory GetStorageProviderFactory<TDocument>(Func<string, IDocumentStorageProvider<TDocument>> factory)
+        {
+            var storageProviderFactory = new Mock<IDocumentStorageProviderFactory>();
+            storageProviderFactory.Setup(i => i.GetStorageProvider<TDocument>(It.IsAny<string>())).Returns(factory);
+            return storageProviderFactory.Object;
+        }
 
         private static ITenantProvider GetTenantProvider()
         {

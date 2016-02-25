@@ -64,7 +64,11 @@
     <Compile Include="Documents\DocumentStorageWriteException.cs" />
     <Compile Include="Documents\DocumentTypeAttribute.cs" />
     <Compile Include="Documents\IDocumentIdGenerator.cs" />
+    <Compile Include="Documents\IDocumentStorageFactory.cs" />
     <Compile Include="Documents\IDocumentStorageGeneric.cs" />
+    <Compile Include="Documents\IDocumentStorageProviderFactory.cs" />
+    <Compile Include="Documents\Transactions\IUnitOfWork.cs" />
+    <Compile Include="Documents\Transactions\IUnitOfWorkFactory.cs" />
     <Compile Include="Documents\Interceptors\DocumentBulkCommand.cs" />
     <Compile Include="Documents\Interceptors\DocumentStorageWriteResult.cs" />
     <Compile Include="Documents\Interceptors\DocumentStorageInterceptor.cs" />

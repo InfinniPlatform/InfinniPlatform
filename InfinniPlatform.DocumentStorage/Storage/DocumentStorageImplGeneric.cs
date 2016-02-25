@@ -9,9 +9,9 @@ using InfinniPlatform.Sdk.Documents.Interceptors;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
-    internal sealed class DocumentStorageImpl<TDocument> : IDocumentStorage<TDocument> where TDocument : Document
+    internal sealed class DocumentStorageImpl<TDocument> : IDocumentStorage<TDocument>, IDocumentStorageBulkExecutor where TDocument : Document
     {
-        public DocumentStorageImpl(Func<string, IDocumentStorageProvider<TDocument>> storageProviderFactory,
+        public DocumentStorageImpl(IDocumentStorageProviderFactory storageProviderFactory,
                                    IDocumentStorageIdProvider storageIdProvider,
                                    IDocumentStorageHeaderProvider storageHeaderProvider,
                                    IDocumentStorageFilterProvider storageFilterProvider,
@@ -23,7 +23,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 documentType = MongoHelpers.GetDefaultDocumentType<TDocument>();
             }
 
-            _storageProvider = new Lazy<IDocumentStorageProvider<TDocument>>(() => storageProviderFactory(documentType));
+            _storageProvider = new Lazy<IDocumentStorageProvider<TDocument>>(() => storageProviderFactory.GetStorageProvider<TDocument>(documentType));
             _storageIdProvider = storageIdProvider;
             _storageHeaderProvider = storageHeaderProvider;
             _storageFilterProvider = storageFilterProvider;
@@ -350,6 +350,17 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 command => _storageProvider.Value.BulkAsync(bulkInterceptor.AddBulkCommands, command.IsOrdered),
                 command => _storageInterceptor.OnBeforeBulk(command),
                 (command, result, error) => _storageInterceptor.OnAfterBulk(command, result, error));
+        }
+
+
+        DocumentBulkResult IDocumentStorageBulkExecutor.Bulk(Action<object> documentBulkBuilderInitializer, bool isOrdered)
+        {
+            return Bulk(documentBulkBuilderInitializer, isOrdered);
+        }
+
+        Task<DocumentBulkResult> IDocumentStorageBulkExecutor.BulkAsync(Action<object> documentBulkBuilderInitializer, bool isOrdered)
+        {
+            return BulkAsync(documentBulkBuilderInitializer, isOrdered);
         }
 
 

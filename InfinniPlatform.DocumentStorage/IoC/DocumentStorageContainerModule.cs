@@ -6,7 +6,9 @@ using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Obsolete;
 using InfinniPlatform.DocumentStorage.Storage;
+using InfinniPlatform.DocumentStorage.Transactions;
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
@@ -45,6 +47,10 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             // Storage
 
+            builder.RegisterType<DocumentStorageProviderFactory>()
+                   .As<IDocumentStorageProviderFactory>()
+                   .SingleInstance();
+
             builder.RegisterType<DocumentStorageIdProvider>()
                    .As<IDocumentStorageIdProvider>()
                    .SingleInstance();
@@ -68,6 +74,20 @@ namespace InfinniPlatform.DocumentStorage.IoC
             builder.RegisterGeneric(typeof(DocumentStorageImpl<>))
                    .As(typeof(IDocumentStorage<>))
                    .InstancePerDependency();
+
+            // Transactions
+
+            builder.RegisterType<DocumentStorageFactory>()
+                   .As<IDocumentStorageFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<UnitOfWork>()
+                   .AsSelf()
+                   .InstancePerRequest();
+
+            builder.RegisterType<UnitOfWorkFactory>()
+                   .As<IUnitOfWorkFactory>()
+                   .SingleInstance();
 
             // Hosting
 

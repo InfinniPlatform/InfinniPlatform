@@ -14,12 +14,12 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         private const string UserStorageTypeName = "UserStore";
 
 
-        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, Func<string, IDocumentStorage> documentStorageFactory)
+        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, IDocumentStorageFactory documentStorageFactory)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
             _userCache = userCache;
-            _userStorage = new Lazy<IDocumentStorage>(() => documentStorageFactory(UserStorageTypeName));
+            _userStorage = new Lazy<IDocumentStorage>(() => documentStorageFactory.GetStorage(UserStorageTypeName));
         }
 
 

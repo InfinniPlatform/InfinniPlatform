@@ -11,7 +11,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
 {
     internal sealed class MongoDocumentApi : IDocumentApi
     {
-        public MongoDocumentApi(Func<string, IDocumentStorage> storageFactory, ISetDocumentExecutor setDocumentExecutor, IBlobStorage blobStorage)
+        public MongoDocumentApi(IDocumentStorageFactory storageFactory, ISetDocumentExecutor setDocumentExecutor, IBlobStorage blobStorage)
         {
             _storageFactory = storageFactory;
             _setDocumentExecutor = setDocumentExecutor;
@@ -19,27 +19,27 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
         }
 
 
-        private readonly Func<string, IDocumentStorage> _storageFactory;
+        private readonly IDocumentStorageFactory _storageFactory;
         private readonly ISetDocumentExecutor _setDocumentExecutor;
         private readonly IBlobStorage _blobStorage;
 
 
         public long GetNumberOfDocuments(string documentType, Action<FilterBuilder> filter)
         {
-            var documentStorage = _storageFactory(documentType);
+            var documentStorage = _storageFactory.GetStorage(documentType);
             return documentStorage.Count(filter.ToDocumentStorageFilter());
         }
 
         public long GetNumberOfDocuments(string documentType, IEnumerable<FilterCriteria> filter)
         {
-            var documentStorage = _storageFactory(documentType);
+            var documentStorage = _storageFactory.GetStorage(documentType);
             return documentStorage.Count(filter.ToDocumentStorageFilter());
         }
 
 
         public dynamic GetDocumentById(string documentType, string documentId)
         {
-            var documentStorage = _storageFactory(documentType);
+            var documentStorage = _storageFactory.GetStorage(documentType);
             var document = documentStorage.Find(f => f.Eq("_id", documentId)).FirstOrDefault();
 
             if (document != null)
@@ -53,7 +53,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
 
         public IEnumerable<dynamic> GetDocument(string documentType, Action<FilterBuilder> filter, int pageNumber, int pageSize, Action<SortingBuilder> sorting = null)
         {
-            var documentStorage = _storageFactory(documentType);
+            var documentStorage = _storageFactory.GetStorage(documentType);
             var documents = documentStorage.Find(filter.ToDocumentStorageFilter()).Skip(pageNumber * pageSize).Limit(pageSize).ToSortedCursor(sorting).ToList();
             SetDocumentIds(documents);
             return documents;
@@ -61,7 +61,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
 
         public IEnumerable<dynamic> GetDocuments(string documentType, IEnumerable<FilterCriteria> filter, int pageNumber, int pageSize, IEnumerable<SortingCriteria> sorting = null)
         {
-            var documentStorage = _storageFactory(documentType);
+            var documentStorage = _storageFactory.GetStorage(documentType);
             var documents = documentStorage.Find(filter.ToDocumentStorageFilter()).Skip(pageNumber * pageSize).Limit(pageSize).ToSortedCursor(sorting).ToList();
             SetDocumentIds(documents);
             return documents;

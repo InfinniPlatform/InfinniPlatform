@@ -8,16 +8,16 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
-    internal sealed class DocumentStorageImpl : IDocumentStorage
+    internal sealed class DocumentStorageImpl : IDocumentStorage, IDocumentStorageBulkExecutor
     {
         public DocumentStorageImpl(string documentType,
-                                   Func<string, IDocumentStorageProvider> storageProviderFactory,
+                                   IDocumentStorageProviderFactory storageProviderFactory,
                                    IDocumentStorageIdProvider storageIdProvider,
                                    IDocumentStorageHeaderProvider storageHeaderProvider,
                                    IDocumentStorageFilterProvider storageFilterProvider,
                                    IDocumentStorageInterceptorProvider storageInterceptorProvider)
         {
-            _storageProvider = new Lazy<IDocumentStorageProvider>(() => storageProviderFactory(documentType));
+            _storageProvider = new Lazy<IDocumentStorageProvider>(() => storageProviderFactory.GetStorageProvider(documentType));
             _storageIdProvider = storageIdProvider;
             _storageHeaderProvider = storageHeaderProvider;
             _storageFilterProvider = storageFilterProvider;
@@ -331,6 +331,17 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 command => _storageProvider.Value.BulkAsync(bulkInterceptor.AddBulkCommands, command.IsOrdered),
                 command => _storageInterceptor.OnBeforeBulk(command),
                 (command, result, error) => _storageInterceptor.OnAfterBulk(command, result, error));
+        }
+
+
+        DocumentBulkResult IDocumentStorageBulkExecutor.Bulk(Action<object> documentBulkBuilderInitializer, bool isOrdered)
+        {
+            return Bulk(documentBulkBuilderInitializer, isOrdered);
+        }
+
+        Task<DocumentBulkResult> IDocumentStorageBulkExecutor.BulkAsync(Action<object> documentBulkBuilderInitializer, bool isOrdered)
+        {
+            return BulkAsync(documentBulkBuilderInitializer, isOrdered);
         }
 
 

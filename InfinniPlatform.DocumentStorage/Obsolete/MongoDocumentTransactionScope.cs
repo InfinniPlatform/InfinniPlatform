@@ -15,7 +15,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
     [LoggerName("TransactionScope")]
     internal sealed class MongoDocumentTransactionScope : IDocumentTransactionScope
     {
-        public MongoDocumentTransactionScope(Func<string, IDocumentStorage> documentStorageFactory, IPerformanceLog performanceLog)
+        public MongoDocumentTransactionScope(IDocumentStorageFactory documentStorageFactory, IPerformanceLog performanceLog)
         {
             _documentStorageFactory = documentStorageFactory;
             _performanceLog = performanceLog;
@@ -23,7 +23,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
         }
 
 
-        private readonly Func<string, IDocumentStorage> _documentStorageFactory;
+        private readonly IDocumentStorageFactory _documentStorageFactory;
         private readonly IPerformanceLog _performanceLog;
         private readonly DocumentTransactionLog _transactionLog;
 
@@ -95,7 +95,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
 
                     foreach (var commands in storageCommands)
                     {
-                        var documentStorage = _documentStorageFactory.Invoke(commands.Key);
+                        var documentStorage = _documentStorageFactory.GetStorage(commands.Key);
 
                         documentStorage.Bulk(bulk =>
                                              {
