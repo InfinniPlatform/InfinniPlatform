@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
+    <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
+    <Compile Include="Diagnostics\SystemStatusProvider.cs" />
     <Compile Include="Logging\JsonEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\IMetadataApi.cs" />
@@ -179,7 +181,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Hosting\WebRequestHelper.cs" />
-    <Compile Include="SystemInfo\ISystemInfoProvider.cs" />
+    <Compile Include="Diagnostics\ISystemStatusProvider.cs" />
     <Compile Include="Threading\AsyncHelper.cs" />
     <Compile Include="Transactions\DocumentTransactionScopeProvider.cs" />
     <Compile Include="Transactions\IDocumentTransactionScope.cs" />

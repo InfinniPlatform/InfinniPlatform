@@ -87,8 +87,9 @@ namespace InfinniPlatform.SystemConfig.Metadata
                     var documentType = document.Name ?? string.Empty;
                     var documentSchema = document.Schema ?? new DynamicWrapper();
                     var documentEvents = document.Events ?? new DynamicWrapper();
+                    var documentIndexes = document.Indexes ?? new List<dynamic>();
 
-                    _documents[documentType] = new DocumentMetadata { Schema = documentSchema, Events = documentEvents };
+                    _documents[documentType] = new DocumentMetadata { Schema = documentSchema, Events = documentEvents, Indexes = documentIndexes };
                 }
             }
         }
@@ -115,6 +116,16 @@ namespace InfinniPlatform.SystemConfig.Metadata
             return !string.IsNullOrEmpty(documentName)
                    && _documents.TryGetValue(documentName, out document)
                 ? document.Events
+                : null;
+        }
+
+        public IEnumerable<object> GetDocumentIndexes(string documentName)
+        {
+            DocumentMetadata document;
+
+            return !string.IsNullOrEmpty(documentName)
+                   && _documents.TryGetValue(documentName, out document)
+                ? document.Indexes
                 : null;
         }
 
@@ -232,6 +243,8 @@ namespace InfinniPlatform.SystemConfig.Metadata
             public dynamic Schema;
 
             public dynamic Events;
+
+            public IEnumerable<object> Indexes;
 
             // Action
 

@@ -1,11 +1,12 @@
 ﻿using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Sdk.Hosting;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
     /// <summary>
     /// Создает типы индексов ElasticSearch для документов прикладных конфигураций.
     /// </summary>
-    internal sealed class DocumentIndexTypeInitializer : IStartupInitializer
+    internal sealed class DocumentIndexTypeInitializer : ApplicationEventHandler
     {
         public DocumentIndexTypeInitializer(IMetadataApi metadataApi,
                                             ElasticTypesMigrationHelper elasticTypesMigrationHelper)

@@ -340,6 +340,24 @@ namespace InfinniPlatform.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not get status for the subsystem..
+        /// </summary>
+        public static string CouldNotGetStatusForTheSubsystem {
+            get {
+                return ResourceManager.GetString("CouldNotGetStatusForTheSubsystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not get status for the subsystem. For more details see the application log..
+        /// </summary>
+        public static string CouldNotGetStatusForTheSubsystemMessage {
+            get {
+                return ResourceManager.GetString("CouldNotGetStatusForTheSubsystemMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Credentials action should not be empty.
         /// </summary>
         public static string CredentialsActionShouldNotBeEmpty {

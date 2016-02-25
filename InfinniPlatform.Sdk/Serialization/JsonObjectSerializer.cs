@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text;
 
+using InfinniPlatform.Sdk.Dynamic;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -270,7 +272,7 @@ namespace InfinniPlatform.Sdk.Serialization
                     {
                         using (var jReader = new JsonTextReader(reader))
                         {
-                            return _serializer.Deserialize(jReader);
+                            return _serializer.Deserialize(jReader, typeof(DynamicWrapper));
                         }
                     }
                 }

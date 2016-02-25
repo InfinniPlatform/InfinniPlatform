@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
@@ -14,9 +15,9 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// <summary>
     /// Загружает метаданные прикладных конфигураций из JSON-файлов текущего пакета приложения.
     /// </summary>
-    internal sealed class PackageJsonConfigurationsInitializer : IStartupInitializer
+    internal sealed class PackageJsonConfigurationsInitializer : ApplicationEventHandler
     {
-        public PackageJsonConfigurationsInitializer(MetadataApi metadataApi, IAppConfiguration appConfiguration, ILog log)
+        public PackageJsonConfigurationsInitializer(MetadataApi metadataApi, IAppConfiguration appConfiguration, ILog log) : base(0)
         {
             _metadataApi = metadataApi;
             _log = log;
@@ -46,10 +47,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
 
-        public int Order => 0;
-
-
-        public void OnStart()
+        public override void OnStart()
         {
             // Получение списка всех установленных конфигураций
             var configurations = _configurations.Value;

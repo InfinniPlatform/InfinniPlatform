@@ -6,6 +6,11 @@
     public interface IApplicationEventHandler
     {
         /// <summary>
+        /// Порядковый номер при выполнении.
+        /// </summary>
+        int Order { get; }
+
+        /// <summary>
         /// Обрабатывает событие запуска приложения.
         /// </summary>
         void OnStart();

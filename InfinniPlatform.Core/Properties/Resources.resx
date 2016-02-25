@@ -210,6 +210,12 @@
   <data name="ConfirmDeleteDocument" xml:space="preserve">
     <value>Are you sure you want to delete element {0}? </value>
   </data>
+  <data name="CouldNotGetStatusForTheSubsystem" xml:space="preserve">
+    <value>Could not get status for the subsystem.</value>
+  </data>
+  <data name="CouldNotGetStatusForTheSubsystemMessage" xml:space="preserve">
+    <value>Could not get status for the subsystem. For more details see the application log.</value>
+  </data>
   <data name="CredentialsActionShouldNotBeEmpty" xml:space="preserve">
     <value>Credentials action should not be empty</value>
   </data>

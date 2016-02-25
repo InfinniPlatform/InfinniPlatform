@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core.SystemInfo;
+using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.SystemConfig.Services
@@ -10,12 +10,12 @@ namespace InfinniPlatform.SystemConfig.Services
     /// </summary>
     internal sealed class SystemInfoHttpService : IHttpService
     {
-        public SystemInfoHttpService(ISystemInfoProvider systemInfoProvider)
+        public SystemInfoHttpService(ISystemStatusProvider systemStatusProvider)
         {
-            _systemInfoProvider = systemInfoProvider;
+            _systemStatusProvider = systemStatusProvider;
         }
 
-        private readonly ISystemInfoProvider _systemInfoProvider;
+        private readonly ISystemStatusProvider _systemStatusProvider;
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -27,9 +27,9 @@ namespace InfinniPlatform.SystemConfig.Services
 
         private Task<object> GetSystemInfo(IHttpRequest request)
         {
-            var systemInfo = _systemInfoProvider.GetSystemInfo();
-
-            return Task.FromResult(systemInfo);
+            return _systemStatusProvider.GetStatus();
+            var status = _systemStatusProvider.GetStatus().Result;
+            return Task.FromResult(status);
         }
     }
 }
