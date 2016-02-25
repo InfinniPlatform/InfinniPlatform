@@ -5,6 +5,9 @@
     /// </summary>
     public sealed class DocumentBulkResult
     {
+        public static readonly DocumentBulkResult Empty = new DocumentBulkResult(0, 0, 0, 0, 0);
+
+
         public DocumentBulkResult(int requestCount, long matchedCount, long insertedCount, long modifiedCount, long deletedCount)
         {
             RequestCount = requestCount;
@@ -13,6 +16,7 @@
             ModifiedCount = modifiedCount;
             DeletedCount = deletedCount;
         }
+
 
         /// <summary>
         /// Количество обработанных запросов.

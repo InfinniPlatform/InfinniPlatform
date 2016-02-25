@@ -43,7 +43,7 @@ namespace InfinniPlatform.DocumentStorage.Transactions
         /// образом обеспечивается изоляция дочерних экземпляров. Основной недостаток заключается в том, что
         /// данный подход не учитывает уровень вложенности дочерних экземпляров друг относительно друга.
         /// </remarks>
-        public UnitOfWork Begin()
+        public IUnitOfWork Begin()
         {
             return BeginParentScope() ? this : new UnitOfWork(_storageFactory, this);
         }
@@ -116,11 +116,18 @@ namespace InfinniPlatform.DocumentStorage.Transactions
         /// </summary>
         public void Dispose()
         {
-            _unitOfWorkLog.Dequeue();
-
-            if (_parentScope == null)
+            try
             {
-                DisposeParentScope();
+                _unitOfWorkLog.Dequeue();
+
+                if (_parentScope == null)
+                {
+                    DisposeParentScope();
+                }
+            }
+            finally
+            {
+                _isOrdered = false;
             }
         }
 

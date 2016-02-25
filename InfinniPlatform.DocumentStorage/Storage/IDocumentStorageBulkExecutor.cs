@@ -5,7 +5,7 @@ using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
-    internal interface IDocumentStorageBulkExecutor
+    public interface IDocumentStorageBulkExecutor
     {
         DocumentBulkResult Bulk(Action<object> documentBulkBuilderInitializer, bool isOrdered = false);
 

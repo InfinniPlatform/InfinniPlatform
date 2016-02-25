@@ -94,6 +94,7 @@
     <Compile Include="TestEntities\SurveyResult.cs" />
     <Compile Include="TestEntities\Thing.cs" />
     <Compile Include="TestEntities\ThingItem.cs" />
+    <Compile Include="Transactions\UnitOfWorkTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
