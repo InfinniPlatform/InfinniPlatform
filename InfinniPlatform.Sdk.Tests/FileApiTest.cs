@@ -34,7 +34,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _documentApiClient.AttachFile("UserProfile", profileId, "Avatar", fileStream);
+                _documentApiClient.AttachFile("UserProfile", profileId, "Avatar", "image.jpg", "image/jpeg", fileStream);
             }
 
             var documentSaved = _documentApiClient.GetDocumentById("UserProfile", profileId);
@@ -58,7 +58,7 @@ namespace InfinniPlatform.Sdk.Tests
 
             using (var fileStream = new MemoryStream(Resources.Avatar))
             {
-                _documentApiClient.AttachFile("UserProfile", document.Id, "Avatar", fileStream);
+                _documentApiClient.AttachFile("UserProfile", document.Id, "Avatar", "image.jpg", "image/jpeg", fileStream);
             }
 
             dynamic actualDocument = _documentApiClient.GetDocumentById("UserProfile", document.Id);

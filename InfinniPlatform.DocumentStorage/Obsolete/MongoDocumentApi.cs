@@ -85,20 +85,22 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
         }
 
 
-        public void AttachFile(string documentType, string documentId, string fileProperty, Stream fileStream)
+        public void AttachFile(string documentType, string documentId, string fileProperty, string fileName, string fileType, Stream fileStream)
         {
             var documentStorage = _storageFactory.GetStorage(documentType);
 
             // Сохранение файла
 
-            var fileId = _blobStorage.CreateBlob(fileProperty, string.Empty, fileStream);
+            var fileId = _blobStorage.CreateBlob(fileName, fileType, fileStream);
 
             var blobData = new DynamicWrapper
                            {
                                {
                                    "Info", new DynamicWrapper
                                            {
-                                               { "ContentId", fileId }
+                                               { "ContentId", fileId },
+                                               { "Name", fileName },
+                                               { "Type", fileType }
                                            }
                                }
                            };

@@ -60,7 +60,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
 
             // When & Then
 
-            documentApi.AttachFile(DocumentType, testDocument.Id, "ContentField", contentStream);
+            documentApi.AttachFile(DocumentType, testDocument.Id, "ContentField", "images.jpg", "image/jpeg", contentStream);
 
             // When & Then
 
@@ -110,9 +110,9 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Acceptance
             // When & Then
 
             documentApi.SetDocument(DocumentType, document);
-            documentApi.AttachFile(DocumentType, documentId, "subDocument.items.0.file", new MemoryStream(contentBytes));
-            documentApi.AttachFile(DocumentType, documentId, "subDocument.items.1.file", new MemoryStream(contentBytes));
-            documentApi.AttachFile(DocumentType, documentId, "subDocument.items.2.file", new MemoryStream(contentBytes));
+            documentApi.AttachFile(DocumentType, documentId, "subDocument.items.0.file", "file1.zip", "application/zip", new MemoryStream(contentBytes));
+            documentApi.AttachFile(DocumentType, documentId, "subDocument.items.1.file", "file2.zip", "application/zip", new MemoryStream(contentBytes));
+            documentApi.AttachFile(DocumentType, documentId, "subDocument.items.2.file", "file3.zip", "application/zip", new MemoryStream(contentBytes));
 
             var storedDocument = documentApi.GetDocument(DocumentType, cr => cr.AddCriteria(f => f.Property("Id").IsEquals(documentId)), 0, 1).FirstOrDefault();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 
@@ -101,11 +102,16 @@ namespace InfinniPlatform.Sdk.RestApi
             return DeserializeArray(result);
         }
 
-        public void PostFile(string uri, string fileName, Stream fileContent)
+        public void PostFile(string uri, string fileName, string fileType, Stream fileContent)
         {
-            var streamContent = new MultipartFormDataContent { { new StreamContent(fileContent), fileName, fileName } };
+            var streamContent = new StreamContent(fileContent);
 
-            var response = Client.PostAsync(uri, streamContent).Result;
+            if (!string.IsNullOrEmpty(fileType))
+            {
+                streamContent.Headers.ContentType = new MediaTypeHeaderValue(fileType);
+            }
+
+            var response = Client.PostAsync(uri, new MultipartFormDataContent { { streamContent, "\"File\"", $"\"{fileName}\"" } }).Result;
 
             if (!response.IsSuccessStatusCode)
             {

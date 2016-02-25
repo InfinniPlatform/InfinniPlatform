@@ -85,7 +85,7 @@ namespace InfinniPlatform.SystemConfig.Documents
         /// <summary>
         /// Прикрепляет файл к свойству документа.
         /// </summary>
-        public void AttachFile(string documentType, string documentId, string fileProperty, Stream fileStream)
+        public void AttachFile(string documentType, string documentId, string fileProperty, string fileName, string fileType, Stream fileStream)
         {
             // Получение документа
 

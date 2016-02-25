@@ -192,7 +192,7 @@ namespace InfinniPlatform.SystemConfig.Services
                 {
                     SetSynchronous(linkedData.Synchronous == true);
 
-                    _documentApi.AttachFile(documentType, documentId, fileProperty, firstFile.Value);
+                    _documentApi.AttachFile(documentType, documentId, fileProperty, firstFile.Name, firstFile.ContentType, firstFile.Value);
                 }
             }
 

@@ -122,7 +122,7 @@ namespace InfinniPlatform.Sdk.RestApi
             return (result != null) ? result.NumberOfDocuments : 0;
         }
 
-        public void AttachFile(string documentType, string documentId, string fileProperty, Stream fileStream)
+        public void AttachFile(string documentType, string documentId, string fileProperty, string fileName, string fileType, Stream fileStream)
         {
             var requestUri = BuildRequestUri("/RestfulApi/Upload/configuration/UploadBinaryContent");
 
@@ -136,7 +136,7 @@ namespace InfinniPlatform.Sdk.RestApi
 
             var pathArguments = $"/?linkedData={Uri.EscapeDataString(Serializer.ConvertToString(requestData))}";
 
-            RequestExecutor.PostFile(requestUri + pathArguments, fileProperty, fileStream);
+            RequestExecutor.PostFile(requestUri + pathArguments, fileName, fileType, fileStream);
         }
     }
 }

@@ -79,6 +79,6 @@ namespace InfinniPlatform.Sdk.Documents
         /// <summary>
         /// Прикрепляет файл к свойству документа.
         /// </summary>
-        void AttachFile(string documentType, string documentId, string fileProperty, Stream fileStream);
+        void AttachFile(string documentType, string documentId, string fileProperty, string fileName, string fileType, Stream fileStream);
     }
 }
