@@ -30,9 +30,7 @@ namespace InfinniPlatform.ElasticSearch.ElasticProviders
             _elasticConnection = elasticConnection;
             _tenantProvider = tenantProvider;
 
-            var indexTypeName = elasticTypeManager.GetActualTypeName(documentType);
-
-            _typeNames = elasticTypeManager.GetTypeMappings(indexTypeName).GetMappingsTypeNames();
+            _typeNames = elasticTypeManager.GetTypeMappings(documentType).GetMappingsTypeNames();
         }
 
         private readonly ElasticConnection _elasticConnection;

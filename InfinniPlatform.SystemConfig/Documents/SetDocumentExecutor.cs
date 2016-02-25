@@ -56,10 +56,10 @@ namespace InfinniPlatform.SystemConfig.Documents
             var documentEvents = _metadataComponent.GetDocumentEvents(documentType);
 
             // Скрипт, который выполняется для проверки возможности сохранения документа
-            string onValidateAction = (documentEvents.ValidationPointError != null) ? documentEvents.ValidationPointError.ScenarioId : null;
+            string onValidateAction = documentEvents != null && documentEvents.ValidationPointError != null ? documentEvents.ValidationPointError.ScenarioId : null;
 
             // Скрипт, который выполняется после успешного сохранения документа
-            string onSuccessAction = (documentEvents.SuccessPoint != null) ? documentEvents.SuccessPoint.ScenarioId : null;
+            string onSuccessAction = documentEvents != null && documentEvents.SuccessPoint != null ? documentEvents.SuccessPoint.ScenarioId : null;
 
             foreach (dynamic documentInstance in documentInstances)
             {
@@ -116,10 +116,10 @@ namespace InfinniPlatform.SystemConfig.Documents
             var documentEvents = _metadataComponent.GetDocumentEvents(documentType);
 
             // Скрипт, который выполняется для проверки возможности удаления документа
-            string onValidateAction = (documentEvents.DeletingDocumentValidationPoint != null) ? documentEvents.DeletingDocumentValidationPoint.ScenarioId : null;
+            string onValidateAction = documentEvents != null && (documentEvents.DeletingDocumentValidationPoint != null) ? documentEvents.DeletingDocumentValidationPoint.ScenarioId : null;
 
             // Скрипт, который выполняется после успешного удаления документа
-            string onSuccessAction = (documentEvents.DeletePoint != null) ? documentEvents.DeletePoint.ScenarioId : null;
+            string onSuccessAction = documentEvents != null && (documentEvents.DeletePoint != null) ? documentEvents.DeletePoint.ScenarioId : null;
 
             foreach (var documentId in documentIds)
             {
