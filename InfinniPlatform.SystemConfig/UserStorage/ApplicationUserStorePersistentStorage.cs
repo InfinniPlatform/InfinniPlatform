@@ -13,18 +13,21 @@ namespace InfinniPlatform.SystemConfig.UserStorage
     {
         private const string UserStorageTypeName = "UserStore";
 
-
-        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache, IDocumentStorageFactory documentStorageFactory)
+        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache,
+                                                     IDocumentStorageFactory documentStorageFactory,
+                                                     IDocumentStorageProviderFactory storageProviderFactory)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
             _userCache = userCache;
             _userStorage = new Lazy<IDocumentStorage>(() => documentStorageFactory.GetStorage(UserStorageTypeName));
+            _userStorageProvider = new Lazy<IDocumentStorageProvider>(() => storageProviderFactory.GetStorageProvider(UserStorageTypeName));
         }
 
 
         private readonly Lazy<ApplicationUserStoreCache> _userCache;
         private readonly Lazy<IDocumentStorage> _userStorage;
+        private readonly Lazy<IDocumentStorageProvider> _userStorageProvider;
 
         public void CreateUser(ApplicationUser user)
         {
@@ -91,7 +94,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         private ApplicationUser FindUser(string property, string value)
         {
-            var dynamicUser = _userStorage.Value.Find(f => f.Eq(property, value)).FirstOrDefault();
+            var dynamicUser = _userStorageProvider.Value.Find(f => f.Eq(property, value)).FirstOrDefault();
 
             if (dynamicUser != null)
             {
