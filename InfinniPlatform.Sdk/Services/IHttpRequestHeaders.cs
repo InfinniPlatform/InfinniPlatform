@@ -24,6 +24,11 @@ namespace InfinniPlatform.Sdk.Services
 
 
         /// <summary>
+        /// Имя агента пользователя.
+        /// </summary>
+        string UserAgent { get; }
+
+        /// <summary>
         /// Тип содержимого тела запроса.
         /// </summary>
         string ContentType { get; }

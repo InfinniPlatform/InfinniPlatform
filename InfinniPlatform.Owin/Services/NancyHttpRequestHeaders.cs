@@ -28,6 +28,8 @@ namespace InfinniPlatform.Owin.Services
         public IEnumerable<string> this[string key] => _nancyHeaders[key];
 
 
+        public string UserAgent => _nancyHeaders.UserAgent;
+
         public string ContentType => _nancyHeaders.ContentType;
 
         public long ContentLength => _nancyHeaders.ContentLength;
