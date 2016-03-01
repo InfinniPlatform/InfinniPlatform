@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Threading;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
@@ -13,9 +15,6 @@ namespace InfinniPlatform.DocumentStorage.Hosting
 {
     internal class MongoCollectionInitializer : ApplicationEventHandler
     {
-        private const int CreateStorageTimeout = 5 * 60 * 1000;
-
-
         public MongoCollectionInitializer(IDocumentStorageManager documentStorageManager,
                                           IJsonObjectSerializer jsonObjectSerializer,
                                           IMetadataApi metadataApi,
@@ -40,8 +39,6 @@ namespace InfinniPlatform.DocumentStorage.Hosting
 
             var documentTypes = _metadataApi.GetDocumentNames();
 
-            var tasks = new List<Task>();
-
             foreach (var documentType in documentTypes)
             {
                 var documentMetadata = new DocumentMetadata { Type = documentType };
@@ -53,34 +50,29 @@ namespace InfinniPlatform.DocumentStorage.Hosting
                     documentMetadata.Indexes = documentIndexes.Select(i => _jsonObjectSerializer.ConvertFromDynamic<DocumentIndex>(i)).ToArray();
                 }
 
-                var logContext = new Dictionary<string, object> { { "documentType", documentType } };
-
-                _log.Info("Creating storage for type started.", logContext);
-
-                var createStorageTask = _documentStorageManager.CreateStorageAsync(documentMetadata);
-
-                createStorageTask.ContinueWith(t =>
-                                               {
-                                                   if (t.IsFaulted)
-                                                   {
-                                                       _log.Error("Creating storage for type completed with exception.", logContext, t.Exception);
-                                                   }
-                                                   else
-                                                   {
-                                                       _log.Info("Creating storage for type successfully completed.", logContext);
-                                                   }
-                                               });
-
-                tasks.Add(createStorageTask);
+                // Специально для Mono пришлось выполнять создание коллекций в последовательном режиме
+                AsyncHelper.RunSync(() => CreateStorageAsync(documentMetadata));
             }
 
-            if (Task.WaitAll(tasks.ToArray(), CreateStorageTimeout))
+            _log.Info("Creating the document storage successfully completed.");
+        }
+
+
+        private async Task CreateStorageAsync(DocumentMetadata documentMetadata)
+        {
+            var logContext = new Dictionary<string, object> { { "documentType", documentMetadata.Type } };
+
+            _log.Info("Creating storage for type started.", logContext);
+
+            try
             {
-                _log.Info("Creating the document storage successfully completed.");
+                await _documentStorageManager.CreateStorageAsync(documentMetadata);
+
+                _log.Info("Creating storage for type successfully completed.", logContext);
             }
-            else
+            catch (Exception exception)
             {
-                _log.Error("Creating the document storage completed with a timeout.");
+                _log.Error("Creating storage for type completed with exception.", logContext, exception);
             }
         }
     }
