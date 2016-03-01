@@ -145,6 +145,7 @@
     </Compile>
     <Compile Include="Modules\CookieAuthOwinHostingModule.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
+    <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="Services\AuthHttpService.cs" />
   </ItemGroup>
   <ItemGroup>

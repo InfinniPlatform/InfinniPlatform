@@ -41,10 +41,6 @@ namespace InfinniPlatform.Owin.IoC
                    .As<IMimeTypeResolver>()
                    .SingleInstance();
 
-            builder.RegisterType<OwinUserIdentityProvider>()
-                   .As<IUserIdentityProvider>()
-                   .SingleInstance();
-
             builder.RegisterType<OwinContextProvider>()
                    .As<IOwinContextProvider>()
                    .SingleInstance();

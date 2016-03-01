@@ -1,6 +1,5 @@
-﻿using System.Threading;
-
-using InfinniPlatform.Authentication.InternalIdentity;
+﻿using InfinniPlatform.Authentication.InternalIdentity;
+using InfinniPlatform.Authentication.Security;
 using InfinniPlatform.Owin.Modules;
 
 using Microsoft.AspNet.Identity;
@@ -21,10 +20,10 @@ namespace InfinniPlatform.Authentication.Modules
             // Регистрация метода для создания менеджера управления пользователями
             builder.CreatePerOwinContext(() => context.ContainerResolver.Resolve<UserManager<IdentityApplicationUser>>());
 
-            // Прослойка для установки Thread.CurrentPrincipal
+            // Прослойка для установки информации об идентификационных данных текущего пользователя
             builder.Use((owinContext, nextOwinMiddleware) =>
                         {
-                            Thread.CurrentPrincipal = owinContext.Request.User;
+                            UserIdentityProvider.SetRequestUser(owinContext.Request.User);
                             return nextOwinMiddleware.Invoke();
                         });
         }

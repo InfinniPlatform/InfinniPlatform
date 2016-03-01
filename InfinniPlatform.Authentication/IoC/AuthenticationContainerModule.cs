@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Modules;
+using InfinniPlatform.Authentication.Security;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;
@@ -27,6 +28,11 @@ namespace InfinniPlatform.Authentication.IoC
             // Менеджер работы с учетными записями пользователей на уровне приложения
             builder.RegisterType<IdentityApplicationUserManager>()
                    .As<IApplicationUserManager>()
+                   .SingleInstance();
+
+            // Идентификационные данных текущего пользователя
+            builder.RegisterType<UserIdentityProvider>()
+                   .As<IUserIdentityProvider>()
                    .SingleInstance();
 
             // Модули аутентификации
