@@ -17,9 +17,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     {
         static MongoConnection()
         {
-            // Игнорирование null значений в свойствах документов
-            var defaultConventions = new ConventionPack { new IgnoreIfNullConvention(true) };
-            ConventionRegistry.Register("IgnoreNulls", defaultConventions, t => true);
+            // Игнорирование null значений в свойствах документов, игнорирование свойств id в классах
+            var defaultConventions = new ConventionPack { new IgnoreIfNullConvention(true), new NoIdMemberConvention() };
+            ConventionRegistry.Register("IgnoreRules", defaultConventions, t => true);
 
             // Установка правил сериализации и десериализации для DynamicWrapper
             BsonSerializer.RegisterSerializer(MongoDynamicWrapperBsonSerializer.Default);
