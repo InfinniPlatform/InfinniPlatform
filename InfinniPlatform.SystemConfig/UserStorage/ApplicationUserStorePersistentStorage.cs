@@ -94,7 +94,7 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
         private ApplicationUser FindUser(string property, string value)
         {
-            var dynamicUser = _userStorageProvider.Value.Find(f => f.Eq(property, value)).FirstOrDefault();
+            var dynamicUser = _userStorageProvider.Value.Find(f => f.And(f.Exists("_header._deleted", false), f.Eq(property, value))).FirstOrDefault();
 
             if (dynamicUser != null)
             {
