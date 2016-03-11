@@ -56,10 +56,10 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
             var documentEvents = _metadataComponent.GetDocumentEvents(documentType);
 
             // Скрипт, который выполняется для проверки возможности сохранения документа
-            string onValidateAction = (documentEvents.ValidationPointError != null) ? documentEvents.ValidationPointError.ScenarioId : null;
+            string onValidateAction = (documentEvents!=null && documentEvents.ValidationPointError != null) ? documentEvents.ValidationPointError.ScenarioId : null;
 
             // Скрипт, который выполняется после успешного сохранения документа
-            string onSuccessAction = (documentEvents.SuccessPoint != null) ? documentEvents.SuccessPoint.ScenarioId : null;
+            string onSuccessAction = (documentEvents != null && documentEvents.SuccessPoint != null) ? documentEvents.SuccessPoint.ScenarioId : null;
 
             foreach (dynamic documentInstance in documentInstances)
             {
