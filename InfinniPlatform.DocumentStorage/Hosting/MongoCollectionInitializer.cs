@@ -33,7 +33,7 @@ namespace InfinniPlatform.DocumentStorage.Hosting
         private readonly ILog _log;
 
 
-        public override void OnStart()
+        public override void OnBeforeStart()
         {
             _log.Info("Creating the document storage started.");
 

@@ -110,14 +110,30 @@ namespace InfinniPlatform.Owin.Hosting
                 {
                     if (_host == null)
                     {
-                        BindCertificate();
+                        IDisposable host = null;
 
-                        _host = WebApp.Start(_baseAddress, Startup);
-
-                        if (OnStart != null)
+                        try
                         {
-                            OnStart.Invoke(this, EventArgs.Empty);
+                            OnBeforeStart?.Invoke(this, EventArgs.Empty);
+
+                            host = WebApp.Start(_baseAddress, Startup);
+
+                            OnAfterStart?.Invoke(this, EventArgs.Empty);
                         }
+                        catch (Exception exception)
+                        {
+                            try
+                            {
+                                host?.Dispose();
+                            }
+                            catch
+                            {
+                            }
+
+                            throw new AggregateException(Resources.CannotStartServiceCorrectly, exception);
+                        }
+
+                        _host = host;
                     }
                 }
             }
@@ -131,27 +147,56 @@ namespace InfinniPlatform.Owin.Hosting
                 {
                     if (_host != null)
                     {
+                        var exceptions = new List<Exception>();
+
                         try
                         {
-                            if (OnStop != null)
-                            {
-                                OnStop.Invoke(this, EventArgs.Empty);
-                            }
+                            OnBeforeStop?.Invoke(this, EventArgs.Empty);
+                        }
+                        catch (Exception exception)
+                        {
+                            exceptions.Add(exception);
+                        }
 
+                        try
+                        {
                             _host.Dispose();
+                        }
+                        catch (Exception exception)
+                        {
+                            exceptions.Add(exception);
                         }
                         finally
                         {
                             _host = null;
+                        }
+
+                        try
+                        {
+                            OnAfterStop?.Invoke(this, EventArgs.Empty);
+                        }
+                        catch (Exception exception)
+                        {
+                            exceptions.Add(exception);
+                        }
+
+                        if (exceptions.Count > 0)
+                        {
+                            throw new AggregateException(Resources.CannotStopServiceCorrectly, exceptions);
                         }
                     }
                 }
             }
         }
 
-        public event EventHandler OnStart;
 
-        public event EventHandler OnStop;
+        public event EventHandler OnBeforeStart;
+
+        public event EventHandler OnAfterStart;
+
+        public event EventHandler OnBeforeStop;
+
+        public event EventHandler OnAfterStop;
 
 
         private void Startup(IAppBuilder builder)
@@ -167,21 +212,6 @@ namespace InfinniPlatform.Owin.Hosting
             foreach (var module in _hostingModules)
             {
                 module.Configure(builder, _hostingContext);
-            }
-        }
-
-        private void BindCertificate()
-        {
-            var config = _hostingContext.Configuration;
-
-            if (Uri.UriSchemeHttps.Equals(config.Scheme, StringComparison.OrdinalIgnoreCase))
-            {
-                if (string.IsNullOrWhiteSpace(config.Certificate))
-                {
-                    throw new ArgumentNullException(Resources.ServerCertificateCannotBeNullOrWhiteSpace);
-                }
-
-                OwinExtensions.BindCertificate(config.Port, config.Certificate);
             }
         }
     }

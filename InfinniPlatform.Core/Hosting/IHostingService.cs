@@ -20,11 +20,11 @@ namespace InfinniPlatform.Core.Hosting
         /// <summary>
         /// Событие запуска хостинга приложения.
         /// </summary>
-        event EventHandler OnStart;
+        event EventHandler OnAfterStart;
 
         /// <summary>
         /// Событие остановки хостинга приложения.
         /// </summary>
-        event EventHandler OnStop;
+        event EventHandler OnBeforeStop;
     }
 }

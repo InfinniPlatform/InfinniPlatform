@@ -61,6 +61,24 @@ namespace InfinniPlatform.Owin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot start service correctly..
+        /// </summary>
+        internal static string CannotStartServiceCorrectly {
+            get {
+                return ResourceManager.GetString("CannotStartServiceCorrectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot stop service correctly..
+        /// </summary>
+        internal static string CannotStopServiceCorrectly {
+            get {
+                return ResourceManager.GetString("CannotStopServiceCorrectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Method &apos;HTTP {0} {1}&apos; is not supported..
         /// </summary>
         internal static string MethodIsNotSupported {

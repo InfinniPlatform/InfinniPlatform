@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Factories;
@@ -23,21 +24,10 @@ namespace InfinniPlatform.Owin.Hosting
 
             if (appEventHandlers != null)
             {
-                hostingService.OnStart += (s, e) =>
-                                          {
-                                              foreach (var handler in appEventHandlers.OrderBy(i => i.Order))
-                                              {
-                                                  handler.OnStart();
-                                              }
-                                          };
-
-                hostingService.OnStop += (s, e) =>
-                                         {
-                                             foreach (var handler in appEventHandlers.OrderByDescending(i => i.Order))
-                                             {
-                                                 handler.OnStop();
-                                             }
-                                         };
+                hostingService.OnBeforeStart += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnBeforeStart());
+                hostingService.OnAfterStart += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnAfterStart());
+                hostingService.OnBeforeStop += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnBeforeStop());
+                hostingService.OnAfterStop += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnAfterStop());
             }
 
             _hostingService = hostingService;
@@ -53,6 +43,15 @@ namespace InfinniPlatform.Owin.Hosting
         public IHostingService CreateHostingService()
         {
             return _hostingService;
+        }
+
+
+        private static void InvokeAppHandlers(IEnumerable<IApplicationEventHandler> handlers, Action<IApplicationEventHandler> handle)
+        {
+            foreach (var handler in handlers.OrderByDescending(i => i.Order))
+            {
+                handle(handler);
+            }
         }
     }
 }

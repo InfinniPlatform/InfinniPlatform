@@ -11,13 +11,23 @@
         int Order { get; }
 
         /// <summary>
-        /// Обрабатывает событие запуска приложения.
+        /// Вызывается перед запуском приложения.
         /// </summary>
-        void OnStart();
+        void OnBeforeStart();
 
         /// <summary>
-        /// Обрабатывает событие остановки приложения.
+        /// Вызывается после запуска приложения.
         /// </summary>
-        void OnStop();
+        void OnAfterStart();
+
+        /// <summary>
+        /// Вызывается перед остановкой приложения.
+        /// </summary>
+        void OnBeforeStop();
+
+        /// <summary>
+        /// Вызывается после остановки приложения.
+        /// </summary>
+        void OnAfterStop();
     }
 }

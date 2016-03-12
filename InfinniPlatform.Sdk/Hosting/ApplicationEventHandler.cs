@@ -16,16 +16,30 @@
         public int Order { get; }
 
         /// <summary>
-        /// Обрабатывает событие запуска приложения.
+        /// Вызывается перед запуском приложения.
         /// </summary>
-        public virtual void OnStart()
+        public virtual void OnBeforeStart()
         {
         }
 
         /// <summary>
-        /// Обрабатывает событие остановки приложения.
+        /// Вызывается после запуска приложения.
         /// </summary>
-        public virtual void OnStop()
+        public virtual void OnAfterStart()
+        {
+        }
+
+        /// <summary>
+        /// Вызывается перед остановкой приложения.
+        /// </summary>
+        public virtual void OnBeforeStop()
+        {
+        }
+
+        /// <summary>
+        /// Вызывается после остановки приложения.
+        /// </summary>
+        public virtual void OnAfterStop()
         {
         }
     }

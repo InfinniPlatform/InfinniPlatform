@@ -47,7 +47,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
 
-        public override void OnStart()
+        public override void OnBeforeStart()
         {
             // Получение списка всех установленных конфигураций
             var configurations = _configurations.Value;
