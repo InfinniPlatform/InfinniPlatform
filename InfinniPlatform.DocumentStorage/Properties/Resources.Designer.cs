@@ -59,5 +59,50 @@ namespace InfinniPlatform.DocumentStorage.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Function {0}() is not supported..
+        /// </summary>
+        internal static string FunctionIsNotSupported {
+            get {
+                return ResourceManager.GetString("FunctionIsNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal symbol &apos;{0}&apos; in expression. Index: {1}..
+        /// </summary>
+        internal static string IllegalSymbolInExpression {
+            get {
+                return ResourceManager.GetString("IllegalSymbolInExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal token &apos;{0}&apos;..
+        /// </summary>
+        internal static string IllegalToken {
+            get {
+                return ResourceManager.GetString("IllegalToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete expression..
+        /// </summary>
+        internal static string IncompleteExpression {
+            get {
+                return ResourceManager.GetString("IncompleteExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token &apos;{0}&apos; is not supported..
+        /// </summary>
+        internal static string TokenIsNotSupported {
+            get {
+                return ResourceManager.GetString("TokenIsNotSupported", resourceCulture);
+            }
+        }
     }
 }
