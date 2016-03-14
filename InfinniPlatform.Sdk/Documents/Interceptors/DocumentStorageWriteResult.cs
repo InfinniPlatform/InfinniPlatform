@@ -9,17 +9,17 @@
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="isValid">Успешность выполнения команды.</param>
-        public DocumentStorageWriteResult(bool isValid = true)
+        /// <param name="success">Успешность выполнения команды.</param>
+        public DocumentStorageWriteResult(bool success = true)
         {
-            IsValid = isValid;
+            Success = success;
         }
 
 
         /// <summary>
         /// Успешность выполнения команды.
         /// </summary>
-        public bool IsValid { get; set; }
+        public bool Success { get; set; }
 
         /// <summary>
         /// Результат выполнения команды.
@@ -29,6 +29,6 @@
         /// <summary>
         /// Сообщение об ошибке выполнения команды.
         /// </summary>
-        public object ValidationResult { get; set; }
+        public DocumentValidationResult ValidationResult { get; set; }
     }
 }

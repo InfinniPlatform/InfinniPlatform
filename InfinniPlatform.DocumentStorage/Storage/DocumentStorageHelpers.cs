@@ -71,7 +71,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 {
                     writeResult = new DocumentStorageWriteResult<TResult>();
                 }
-                else if (!writeResult.IsValid)
+                else if (!writeResult.Success)
                 {
                     throw new DocumentStorageWriteException(interceptor.DocumentType, writeResult);
                 }
@@ -87,7 +87,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
                     throw;
                 }
 
-                if (!writeResult.IsValid)
+                if (!writeResult.Success)
                 {
                     throw new DocumentStorageWriteException(interceptor.DocumentType, writeResult);
                 }
@@ -117,7 +117,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 {
                     writeResult = new DocumentStorageWriteResult<TResult>();
                 }
-                else if (!writeResult.IsValid)
+                else if (!writeResult.Success)
                 {
                     throw new DocumentStorageWriteException(interceptor.DocumentType, writeResult);
                 }
@@ -133,7 +133,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
                     throw;
                 }
 
-                if (!writeResult.IsValid)
+                if (!writeResult.Success)
                 {
                     throw new DocumentStorageWriteException(interceptor.DocumentType, writeResult);
                 }

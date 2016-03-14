@@ -1,0 +1,23 @@
+﻿using System.Collections.Generic;
+
+using InfinniPlatform.Sdk.Services;
+
+namespace InfinniPlatform.Sdk.Documents.Services
+{
+    /// <summary>
+    /// Запрос на сохранение документа.
+    /// </summary>
+    /// <typeparam name="TDocument">Тип документа.</typeparam>
+    public class DocumentPostQuery<TDocument>
+    {
+        /// <summary>
+        /// Экземпляр документа.
+        /// </summary>
+        public TDocument Document { get; set; }
+
+        /// <summary>
+        /// Список файлов документа.
+        /// </summary>
+        public IEnumerable<IHttpRequestFile> Files { get; set; }
+    }
+}

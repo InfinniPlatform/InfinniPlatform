@@ -83,8 +83,8 @@ namespace InfinniPlatform.Sdk.Services
         {
             var error = new DynamicWrapper
             {
-                ["IsValid"] = false,
-                ["ErrorMessage"] = exception.GetFullMessage()
+                ["Success"] = false,
+                ["Error"] = exception.GetFullMessage()
             };
 
             return new JsonHttpResponse(error) { StatusCode = 500 };
