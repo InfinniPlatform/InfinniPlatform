@@ -27,6 +27,7 @@ namespace InfinniPlatform.Sdk.Dynamic
             _isBaseClass = GetType() == typeof(DynamicWrapper);
         }
 
+
         private readonly bool _isBaseClass;
         private readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
@@ -140,10 +141,21 @@ namespace InfinniPlatform.Sdk.Dynamic
             return invokeResult;
         }
 
+
+        /// <summary>
+        /// Возвращает значение свойств объекта в виде словаря.
+        /// </summary>
+        public IDictionary<string, object> ToDictionary()
+        {
+            return _properties;
+        }
+
+
         public override string ToString()
         {
             return JToken.FromObject(_properties).ToString();
         }
+
 
         DynamicMetaObject IDynamicMetaObjectProvider.GetMetaObject(Expression parameter)
         {

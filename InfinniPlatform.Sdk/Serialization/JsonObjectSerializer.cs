@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using System.IO;
 using System.Text;
 
@@ -159,7 +160,7 @@ namespace InfinniPlatform.Sdk.Serialization
                     {
                         using (var jReader = new JsonTextReader(reader))
                         {
-                            return _serializer.Deserialize(jReader);
+                            return _serializer.Deserialize(jReader, typeof(DynamicWrapper));
                         }
                     }
                 }
@@ -181,7 +182,7 @@ namespace InfinniPlatform.Sdk.Serialization
                 {
                     using (var jReader = new JsonTextReader(reader))
                     {
-                        return _serializer.Deserialize(jReader);
+                        return _serializer.Deserialize(jReader, typeof(DynamicWrapper));
                     }
                 }
             }
@@ -202,7 +203,7 @@ namespace InfinniPlatform.Sdk.Serialization
                 {
                     using (var jReader = new JsonTextReader(reader))
                     {
-                        return _serializer.Deserialize(jReader);
+                        return _serializer.Deserialize(jReader, typeof(DynamicWrapper));
                     }
                 }
             }
@@ -237,6 +238,11 @@ namespace InfinniPlatform.Sdk.Serialization
         {
             if (value != null)
             {
+                if (value is string)
+                {
+                    return (string)value;
+                }
+
                 using (var writer = new StringWriter())
                 {
                     _serializer.Serialize(writer, value);
@@ -257,6 +263,11 @@ namespace InfinniPlatform.Sdk.Serialization
         {
             if (value != null)
             {
+                if (value is IDynamicMetaObjectProvider)
+                {
+                    return value;
+                }
+
                 using (var stream = new MemoryStream())
                 {
                     using (var writer = CreateWriter(stream, true))
@@ -288,6 +299,11 @@ namespace InfinniPlatform.Sdk.Serialization
         {
             if (value != null)
             {
+                if (type.IsInstanceOfType(value))
+                {
+                    return value;
+                }
+
                 var jValue = JToken.FromObject(value);
 
                 if (jValue != null)

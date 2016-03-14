@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.Sdk.Documents.Services;
 
-namespace InfinniPlatform.DocumentStorage.Services.QueryBuilders
+namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
 {
     /// <summary>
     /// Выполняет синтаксический разбор для получения правила сортировки документов <see cref="DocumentGetQuery{TDocument}.Order"/>.

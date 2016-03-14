@@ -6,7 +6,7 @@ using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Obsolete;
 using InfinniPlatform.DocumentStorage.Services;
-using InfinniPlatform.DocumentStorage.Services.QueryBuilders;
+using InfinniPlatform.DocumentStorage.Services.QueryFactory;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Transactions;
@@ -98,8 +98,8 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .As<IQuerySyntaxTreeParser>()
                    .SingleInstance();
 
-            builder.RegisterGeneric(typeof(DocumentQueryBuilder<>))
-                   .As(typeof(IDocumentQueryBuilder<>))
+            builder.RegisterGeneric(typeof(DocumentQueryFactory<>))
+                   .As(typeof(IDocumentQueryFactory<>))
                    .SingleInstance();
 
             // Hosting

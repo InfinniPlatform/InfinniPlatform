@@ -11,7 +11,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     {
         public object NewId()
         {
-            return ObjectId.GenerateNewId();
+            return ObjectId.GenerateNewId().ToString();
         }
     }
 }

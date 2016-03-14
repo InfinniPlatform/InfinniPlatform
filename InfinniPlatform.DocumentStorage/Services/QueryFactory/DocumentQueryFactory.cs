@@ -5,22 +5,26 @@ using System.Linq.Expressions;
 
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.Sdk.Documents.Services;
+using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.DocumentStorage.Services.QueryBuilders
+namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
 {
     /// <summary>
-    /// Предоставляет интерфейс для построения запросов к сервису документов.
+    /// Предоставляет интерфейс для создания запросов к сервису документов.
     /// </summary>
     /// <typeparam name="TDocument">Тип документа.</typeparam>
-    public sealed class DocumentQueryBuilder<TDocument> : DocumentQueryBuilderBase, IDocumentQueryBuilder<TDocument>
+    public sealed class DocumentQueryFactory<TDocument> : DocumentQueryFactoryBase, IDocumentQueryFactory<TDocument>
     {
-        public DocumentQueryBuilder(IQuerySyntaxTreeParser syntaxTreeParser) : base(syntaxTreeParser)
+        public DocumentQueryFactory(IQuerySyntaxTreeParser syntaxTreeParser, IJsonObjectSerializer objectSerializer) : base(syntaxTreeParser, objectSerializer)
         {
         }
 
 
-        public DocumentGetQuery<TDocument> BuildGetQuery(IDictionary<string, object> query)
+        public DocumentGetQuery<TDocument> CreateGetQuery(IHttpRequest request)
         {
+            var query = ReadRequestQuery(request);
+
             if (query != null)
             {
                 var result = new DocumentGetQuery<TDocument>
@@ -40,8 +44,34 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryBuilders
             return null;
         }
 
+        public DocumentPostQuery<TDocument> CreatePostQuery(IHttpRequest request, string documentFormKey)
+        {
+            var document = ReadRequestForm<TDocument>(request, documentFormKey);
 
-        private Expression<Func<TDocument, bool>> BuildFilter(IDictionary<string, object> query)
+            if (document != null)
+            {
+                return new DocumentPostQuery<TDocument>
+                {
+                    Document = document,
+                    Files = request.Files
+                };
+            }
+
+            return null;
+        }
+
+        public DocumentDeleteQuery CreateDeleteQuery(IHttpRequest request, string documentIdKey)
+        {
+            var documentId = ReadRequestParameter(request, documentIdKey);
+
+            return new DocumentDeleteQuery
+            {
+                DocumentId = documentId
+            };
+        }
+
+
+        private Expression<Func<TDocument, bool>> BuildFilter(object query)
         {
             var filterMethod = ParseFilter(query);
 
@@ -53,7 +83,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryBuilders
             return null;
         }
 
-        private Expression<Func<TDocument, object>> BuildSelect(IDictionary<string, object> query)
+        private Expression<Func<TDocument, object>> BuildSelect(object query)
         {
             var selectMethods = ParseSelect(query);
 
@@ -67,7 +97,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryBuilders
             return null;
         }
 
-        private IDictionary<Expression<Func<TDocument, object>>, DocumentSortOrder> BuildOrder(IDictionary<string, object> query)
+        private IDictionary<Expression<Func<TDocument, object>>, DocumentSortOrder> BuildOrder(object query)
         {
             var orderMethods = ParseOrder(query);
 

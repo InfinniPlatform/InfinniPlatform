@@ -85,14 +85,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Hosting\MongoCollectionInitializer.cs" />
-    <Compile Include="Services\QueryBuilders\DocumentQueryBuilder.cs" />
-    <Compile Include="Services\QueryBuilders\DocumentQueryBuilderBase.cs" />
-    <Compile Include="Services\QueryBuilders\ExpressionBaseQuerySyntaxVisitor.cs" />
-    <Compile Include="Services\QueryBuilders\ExpressionFilterQuerySyntaxVisitor.cs" />
-    <Compile Include="Services\QueryBuilders\ExpressionOrderQuerySyntaxVisitor.cs" />
-    <Compile Include="Services\QueryBuilders\ExpressionSelectQuerySyntaxVisitor.cs" />
-    <Compile Include="Services\IDocumentQueryBuilder.cs" />
-    <Compile Include="Services\QueryBuilders\QuerySyntaxHelper.cs" />
+    <Compile Include="Services\QueryFactory\DocumentQueryFactory.cs" />
+    <Compile Include="Services\QueryFactory\DocumentQueryFactoryBase.cs" />
+    <Compile Include="Services\QueryFactory\ExpressionBaseQuerySyntaxVisitor.cs" />
+    <Compile Include="Services\QueryFactory\ExpressionFilterQuerySyntaxVisitor.cs" />
+    <Compile Include="Services\QueryFactory\ExpressionOrderQuerySyntaxVisitor.cs" />
+    <Compile Include="Services\QueryFactory\ExpressionSelectQuerySyntaxVisitor.cs" />
+    <Compile Include="Services\IDocumentQueryFactory.cs" />
+    <Compile Include="Services\QueryFactory\QuerySyntaxHelper.cs" />
     <Compile Include="Services\QuerySyntax\IdentifierNameQuerySyntaxNode.cs" />
     <Compile Include="Services\QuerySyntax\InvocationQuerySyntaxNode.cs" />
     <Compile Include="Services\QuerySyntax\IQuerySyntaxNode.cs" />

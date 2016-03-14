@@ -65,10 +65,10 @@
     <Compile Include="MongoDB\MongoDocumentStorageProviderTest.cs" />
     <Compile Include="MongoDB\MongoTestHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\QueryBuilders\DocumentQueryBuilderTest.cs" />
-    <Compile Include="Services\QueryBuilders\ExpressionFilterQuerySyntaxVisitorTest.cs" />
-    <Compile Include="Services\QueryBuilders\ExpressionOrderQuerySyntaxVisitorTest.cs" />
-    <Compile Include="Services\QueryBuilders\ExpressionSelectQuerySyntaxVisitorTest.cs" />
+    <Compile Include="Services\QueryFactory\DocumentQueryFactoryTest.cs" />
+    <Compile Include="Services\QueryFactory\ExpressionFilterQuerySyntaxVisitorTest.cs" />
+    <Compile Include="Services\QueryFactory\ExpressionOrderQuerySyntaxVisitorTest.cs" />
+    <Compile Include="Services\QueryFactory\ExpressionSelectQuerySyntaxVisitorTest.cs" />
     <Compile Include="Services\QuerySyntax\QuerySyntaxTreeParserTest.cs" />
     <Compile Include="Services\QuerySyntax\QueryTokenReaderTest.cs" />
     <Compile Include="Storage\DocumentStorageGenericIntegrationTest.cs" />

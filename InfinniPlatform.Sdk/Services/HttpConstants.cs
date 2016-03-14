@@ -5,7 +5,7 @@
         /// <summary>
         /// Размер буфера для передачи файлов (4 Мб).
         /// </summary>
-        public static int FileBufferSize = 4 * 1024 * 1024;
+        public const int FileBufferSize = 4 * 1024 * 1024;
 
         /// <summary>
         /// Тип содержимого 'application/pdf'.
@@ -26,5 +26,15 @@
         /// Тип содержимого "application/octet-stream".
         /// </summary>
         public const string StreamContentType = "application/octet-stream";
+
+        /// <summary>
+        /// Тип содержимого "multipart/form-data".
+        /// </summary>
+        public const string MultipartFormDataContentType = "multipart/form-data";
+
+        /// <summary>
+        /// Тип содержимого "application/x-www-form-urlencoded".
+        /// </summary>
+        public const string FormUrlencodedContentType = "application/x-www-form-urlencoded";
     }
 }

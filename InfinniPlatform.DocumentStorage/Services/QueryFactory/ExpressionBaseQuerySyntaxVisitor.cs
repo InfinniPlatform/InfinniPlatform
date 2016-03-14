@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.Services.QueryBuilders
+namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
 {
     internal abstract class ExpressionBaseQuerySyntaxVisitor : QuerySyntaxVisitor<Expression>
     {
