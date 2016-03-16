@@ -23,6 +23,8 @@ namespace InfinniPlatform.DocumentStorage.Storage
                 documentType = MongoHelpers.GetDefaultDocumentType<TDocument>();
             }
 
+            DocumentType = documentType;
+
             _storageProvider = new Lazy<IDocumentStorageProvider<TDocument>>(() => storageProviderFactory.GetStorageProvider<TDocument>(documentType));
             _storageIdProvider = storageIdProvider;
             _storageHeaderProvider = storageHeaderProvider;
@@ -37,6 +39,8 @@ namespace InfinniPlatform.DocumentStorage.Storage
         private readonly IDocumentStorageFilterProvider _storageFilterProvider;
         private readonly IDocumentStorageInterceptor<TDocument> _storageInterceptor;
 
+
+        public string DocumentType { get; }
 
 
         public long Count(Expression<Func<TDocument, bool>> filter = null)

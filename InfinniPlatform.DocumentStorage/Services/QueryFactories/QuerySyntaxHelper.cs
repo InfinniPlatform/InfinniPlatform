@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.Sdk.Dynamic;
 
-namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
+namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {
     internal static class QuerySyntaxHelper
     {

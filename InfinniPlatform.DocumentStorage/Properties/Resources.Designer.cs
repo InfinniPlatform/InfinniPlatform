@@ -97,6 +97,24 @@ namespace InfinniPlatform.DocumentStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Method not allowed..
+        /// </summary>
+        internal static string MethodNotAllowed {
+            get {
+                return ResourceManager.GetString("MethodNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request processed with exception..
+        /// </summary>
+        internal static string RequestProcessedWithException {
+            get {
+                return ResourceManager.GetString("RequestProcessedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token &apos;{0}&apos; is not supported..
         /// </summary>
         internal static string TokenIsNotSupported {

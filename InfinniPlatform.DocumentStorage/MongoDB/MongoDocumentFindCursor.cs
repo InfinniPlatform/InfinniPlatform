@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
@@ -85,6 +86,16 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         {
             _limit = limit;
             return this;
+        }
+
+        public long Count()
+        {
+            return _collection.Value.Count(_filter);
+        }
+
+        public Task<long> CountAsync()
+        {
+            return _collection.Value.CountAsync(_filter);
         }
 
 

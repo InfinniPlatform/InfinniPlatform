@@ -11,6 +11,12 @@ namespace InfinniPlatform.Sdk.Documents
     public interface IDocumentStorageProvider<TDocument>
     {
         /// <summary>
+        /// Имя типа документа.
+        /// </summary>
+        string DocumentType { get; }
+
+
+        /// <summary>
         /// Возвращает количество документов, удовлетворяющих указанному фильтру.
         /// </summary>
         /// <param name="filter">Фильтр для поиска документов.</param>

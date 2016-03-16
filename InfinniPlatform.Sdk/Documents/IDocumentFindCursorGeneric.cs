@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace InfinniPlatform.Sdk.Documents
 {
@@ -37,5 +38,15 @@ namespace InfinniPlatform.Sdk.Documents
         /// Ограничивает результирующую выборку указанным количеством документов.
         /// </summary>
         IDocumentFindCursor<TDocument, TProjection> Limit(int limit);
+
+        /// <summary>
+        /// Возвращает количество документов, удовлетворяющих указанному фильтру.
+        /// </summary>
+        long Count();
+
+        /// <summary>
+        /// Возвращает количество документов, удовлетворяющих указанному фильтру.
+        /// </summary>
+        Task<long> CountAsync();
     }
 }

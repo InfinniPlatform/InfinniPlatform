@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents;
 
@@ -86,6 +87,16 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         {
             _fluentCursor.Limit(limit);
             return this;
+        }
+
+        public long Count()
+        {
+            return _fluentCursor.Count();
+        }
+
+        public Task<long> CountAsync()
+        {
+            return _fluentCursor.CountAsync();
         }
 
 

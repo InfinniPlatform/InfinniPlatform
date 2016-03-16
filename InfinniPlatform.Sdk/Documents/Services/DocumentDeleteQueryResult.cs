@@ -3,16 +3,11 @@
     /// <summary>
     /// Результат выполнения запроса на удаление документа.
     /// </summary>
-    public class DocumentDeleteQueryResult
+    public class DocumentDeleteQueryResult : DocumentQeuryResult
     {
         /// <summary>
         /// Количество удаленных документов.
         /// </summary>
         public long? DeletedCount { get; set; }
-
-        /// <summary>
-        /// Результат выполнения проверки корректности документа.
-        /// </summary>
-        public DocumentValidationResult Validation { get; set; }
     }
 }

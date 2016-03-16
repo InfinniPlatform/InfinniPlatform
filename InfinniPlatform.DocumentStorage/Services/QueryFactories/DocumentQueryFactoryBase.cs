@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
+using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
+namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {
     public abstract class DocumentQueryFactoryBase
     {
@@ -17,6 +20,22 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
 
         private readonly IQuerySyntaxTreeParser _syntaxTreeParser;
         private readonly IJsonObjectSerializer _objectSerializer;
+
+
+        public DocumentDeleteQuery CreateDeleteQuery(IHttpRequest request, string documentIdKey)
+        {
+            var documentId = ReadRequestParameter(request, documentIdKey);
+
+            if (!string.IsNullOrEmpty(documentId))
+            {
+                return new DocumentDeleteQuery
+                {
+                    DocumentId = documentId
+                };
+            }
+
+            throw new InvalidOperationException(Resources.MethodNotAllowed);
+        }
 
 
         /// <summary>
@@ -226,7 +245,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
         /// <summary>
         /// Возвращает максимальное количество документов, которое нужно выбрать.
         /// </summary>
-        protected int? ParseTake(object query)
+        protected int ParseTake(object query)
         {
             var parameter = GetQueryParameter(query, QuerySyntaxHelper.TakeParameterName);
 
@@ -236,11 +255,11 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
 
                 if (int.TryParse(parameter, out value) && value >= 0)
                 {
-                    return value;
+                    return Math.Min(value, 1000);
                 }
             }
 
-            return null;
+            return 10;
         }
 
 

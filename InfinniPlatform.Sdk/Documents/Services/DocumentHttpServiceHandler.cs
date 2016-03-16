@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Services;
 
@@ -7,9 +8,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
     /// <summary>
     /// Обработчик по умолчанию для сервиса по работе с документами.
     /// </summary>
-    public class DefaultDocumentHttpService : IDocumentHttpService
+    public class DocumentHttpServiceHandler : IDocumentHttpServiceHandler
     {
-        public DefaultDocumentHttpService(string documentType)
+        public DocumentHttpServiceHandler(string documentType)
         {
             DocumentType = documentType;
         }
@@ -31,9 +32,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// </summary>
         /// <param name="query">Запрос на получение документов.</param>
         /// <returns>Результат обработки запроса или <c>null</c>, если запрос не был обработан.</returns>
-        public virtual DocumentServiceResult<DocumentGetQueryResult> OnBeforeGet(DocumentGetQuery query)
+        public virtual Task<DocumentGetQueryResult> OnBeforeGet(DocumentGetQuery query)
         {
-            return null;
+            return Task.FromResult<DocumentGetQueryResult>(null);
         }
 
         /// <summary>
@@ -42,8 +43,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <param name="query">Запрос на получение документов.</param>
         /// <param name="result">Результат обработки запроса.</param>
         /// <param name="exception">Исключение обработки запроса.</param>
-        public virtual void OnAfterGet(DocumentGetQuery query, DocumentServiceResult<DocumentGetQueryResult> result, Exception exception)
+        public virtual Task OnAfterGet(DocumentGetQuery query, DocumentGetQueryResult result, Exception exception)
         {
+            return Task.FromResult<object>(null);
         }
 
 
@@ -57,9 +59,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// </summary>
         /// <param name="query">Запрос на сохранение документа.</param>
         /// <returns>Результат обработки запроса или <c>null</c>, если запрос не был обработан.</returns>
-        public virtual DocumentServiceResult<DocumentPostQueryResult> OnBeforePost(DocumentPostQuery query)
+        public virtual Task<DocumentPostQueryResult> OnBeforePost(DocumentPostQuery query)
         {
-            return null;
+            return Task.FromResult<DocumentPostQueryResult>(null);
         }
 
         /// <summary>
@@ -68,8 +70,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <param name="query">Запрос на сохранение документа.</param>
         /// <param name="result">Результат обработки запроса.</param>
         /// <param name="exception">Исключение обработки запроса.</param>
-        public virtual void OnAfterPost(DocumentPostQuery query, DocumentServiceResult<DocumentPostQueryResult> result, Exception exception)
+        public virtual Task OnAfterPost(DocumentPostQuery query, DocumentPostQueryResult result, Exception exception)
         {
+            return Task.FromResult<object>(null);
         }
 
 
@@ -83,9 +86,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// </summary>
         /// <param name="query"></param>
         /// <returns>Результат обработки запроса или <c>null</c>, если запрос не был обработан.</returns>
-        public virtual DocumentServiceResult<DocumentDeleteQueryResult> OnBeforeDelete(DocumentDeleteQuery query)
+        public virtual Task<DocumentDeleteQueryResult> OnBeforeDelete(DocumentDeleteQuery query)
         {
-            return null;
+            return Task.FromResult<DocumentDeleteQueryResult>(null);
         }
 
         /// <summary>
@@ -94,8 +97,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <param name="query">Запрос на удаление документа.</param>
         /// <param name="result">Результат обработки запроса.</param>
         /// <param name="exception">Исключение обработки запроса.</param>
-        public virtual void OnAfterDelete(DocumentDeleteQuery query, DocumentServiceResult<DocumentDeleteQueryResult> result, Exception exception)
+        public virtual Task OnAfterDelete(DocumentDeleteQuery query, DocumentDeleteQueryResult result, Exception exception)
         {
+            return Task.FromResult<object>(null);
         }
 
 
@@ -113,9 +117,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
     /// Обработчик по умолчанию для сервиса по работе с документами.
     /// </summary>
     /// <typeparam name="TDocument">Тип документа.</typeparam>
-    public class DefaultDocumentHttpService<TDocument> : IDocumentHttpService<TDocument>
+    public class DocumentHttpServiceHandler<TDocument> : IDocumentHttpServiceHandler<TDocument> where TDocument : Document
     {
-        public DefaultDocumentHttpService(string documentType = null)
+        public DocumentHttpServiceHandler(string documentType = null)
         {
             DocumentType = documentType;
         }
@@ -137,9 +141,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// </summary>
         /// <param name="query">Запрос на получение документов.</param>
         /// <returns>Результат обработки запроса или <c>null</c>, если запрос не был обработан.</returns>
-        public virtual DocumentServiceResult<DocumentGetQueryResult> OnBeforeGet(DocumentGetQuery<TDocument> query)
+        public virtual Task<DocumentGetQueryResult> OnBeforeGet(DocumentGetQuery<TDocument> query)
         {
-            return null;
+            return Task.FromResult<DocumentGetQueryResult>(null);
         }
 
         /// <summary>
@@ -148,8 +152,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <param name="query">Запрос на получение документов.</param>
         /// <param name="result">Результат обработки запроса.</param>
         /// <param name="exception">Исключение обработки запроса.</param>
-        public virtual void OnAfterGet(DocumentGetQuery<TDocument> query, DocumentServiceResult<DocumentGetQueryResult> result, Exception exception)
+        public virtual Task OnAfterGet(DocumentGetQuery<TDocument> query, DocumentGetQueryResult result, Exception exception)
         {
+            return Task.FromResult<object>(null);
         }
 
 
@@ -163,9 +168,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// </summary>
         /// <param name="query">Запрос на сохранение документа.</param>
         /// <returns>Результат обработки запроса или <c>null</c>, если запрос не был обработан.</returns>
-        public virtual DocumentServiceResult<DocumentPostQueryResult> OnBeforePost(DocumentPostQuery<TDocument> query)
+        public virtual Task<DocumentPostQueryResult> OnBeforePost(DocumentPostQuery<TDocument> query)
         {
-            return null;
+            return Task.FromResult<DocumentPostQueryResult>(null);
         }
 
         /// <summary>
@@ -174,8 +179,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <param name="query">Запрос на сохранение документа.</param>
         /// <param name="result">Результат обработки запроса.</param>
         /// <param name="exception">Исключение обработки запроса.</param>
-        public virtual void OnAfterPost(DocumentPostQuery<TDocument> query, DocumentServiceResult<DocumentPostQueryResult> result, Exception exception)
+        public virtual Task OnAfterPost(DocumentPostQuery<TDocument> query, DocumentPostQueryResult result, Exception exception)
         {
+            return Task.FromResult<object>(null);
         }
 
 
@@ -189,9 +195,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// </summary>
         /// <param name="query"></param>
         /// <returns>Результат обработки запроса или <c>null</c>, если запрос не был обработан.</returns>
-        public virtual DocumentServiceResult<DocumentDeleteQueryResult> OnBeforeDelete(DocumentDeleteQuery query)
+        public virtual Task<DocumentDeleteQueryResult> OnBeforeDelete(DocumentDeleteQuery query)
         {
-            return null;
+            return Task.FromResult<DocumentDeleteQueryResult>(null);
         }
 
         /// <summary>
@@ -200,8 +206,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <param name="query">Запрос на удаление документа.</param>
         /// <param name="result">Результат обработки запроса.</param>
         /// <param name="exception">Исключение обработки запроса.</param>
-        public virtual void OnAfterDelete(DocumentDeleteQuery query, DocumentServiceResult<DocumentDeleteQueryResult> result, Exception exception)
+        public virtual Task OnAfterDelete(DocumentDeleteQuery query, DocumentDeleteQueryResult result, Exception exception)
         {
+            return Task.FromResult<object>(null);
         }
 
 

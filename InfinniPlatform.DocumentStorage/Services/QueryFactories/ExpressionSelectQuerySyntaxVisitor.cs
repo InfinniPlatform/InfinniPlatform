@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.Sdk.Documents.Services;
 
-namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
+namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {
     /// <summary>
     /// Выполняет синтаксический разбор для получения правила отображения документа <see cref="DocumentGetQuery{TDocument}.Select"/>.

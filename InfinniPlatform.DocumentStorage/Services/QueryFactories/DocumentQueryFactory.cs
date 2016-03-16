@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
-namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
+namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {
     /// <summary>
     /// Предоставляет интерфейс для создания запросов к сервису документов.
@@ -25,23 +26,20 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
         {
             var query = ReadRequestQuery(request);
 
+            var result = new DocumentGetQuery<TDocument>();
+
             if (query != null)
             {
-                var result = new DocumentGetQuery<TDocument>
-                {
-                    Search = ParseSearch(query),
-                    Filter = BuildFilter(query),
-                    Select = BuildSelect(query),
-                    Order = BuildOrder(query),
-                    Count = ParseCount(query),
-                    Skip = ParseSkip(query),
-                    Take = ParseTake(query)
-                };
-
-                return result;
+                result.Search = ParseSearch(query);
+                result.Filter = BuildFilter(query);
+                result.Select = BuildSelect(query);
+                result.Order = BuildOrder(query);
+                result.Count = ParseCount(query);
+                result.Skip = ParseSkip(query);
+                result.Take = ParseTake(query);
             }
 
-            return null;
+            return result;
         }
 
         public DocumentPostQuery<TDocument> CreatePostQuery(IHttpRequest request, string documentFormKey)
@@ -57,17 +55,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
                 };
             }
 
-            return null;
-        }
-
-        public DocumentDeleteQuery CreateDeleteQuery(IHttpRequest request, string documentIdKey)
-        {
-            var documentId = ReadRequestParameter(request, documentIdKey);
-
-            return new DocumentDeleteQuery
-            {
-                DocumentId = documentId
-            };
+            throw new InvalidOperationException(Resources.MethodNotAllowed);
         }
 
 

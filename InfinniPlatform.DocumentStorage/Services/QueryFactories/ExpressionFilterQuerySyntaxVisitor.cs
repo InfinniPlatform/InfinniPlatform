@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.Sdk.Documents.Services;
 
-namespace InfinniPlatform.DocumentStorage.Services.QueryFactory
+namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {
     /// <summary>
     /// Выполняет синтаксический разбор для получения правила фильтрации документов <see cref="DocumentGetQuery{TDocument}.Filter"/>.

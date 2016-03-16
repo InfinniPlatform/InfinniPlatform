@@ -17,6 +17,8 @@ namespace InfinniPlatform.DocumentStorage.Storage
                                    IDocumentStorageFilterProvider storageFilterProvider,
                                    IDocumentStorageInterceptorProvider storageInterceptorProvider)
         {
+            DocumentType = documentType;
+
             _storageProvider = new Lazy<IDocumentStorageProvider>(() => storageProviderFactory.GetStorageProvider(documentType));
             _storageIdProvider = storageIdProvider;
             _storageHeaderProvider = storageHeaderProvider;
@@ -30,6 +32,9 @@ namespace InfinniPlatform.DocumentStorage.Storage
         private readonly IDocumentStorageHeaderProvider _storageHeaderProvider;
         private readonly IDocumentStorageFilterProvider _storageFilterProvider;
         private readonly IDocumentStorageInterceptor _storageInterceptor;
+
+
+        public string DocumentType { get; }
 
 
         public long Count(Func<IDocumentFilterBuilder, object> filter = null)

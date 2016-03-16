@@ -6,7 +6,7 @@ using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Obsolete;
 using InfinniPlatform.DocumentStorage.Services;
-using InfinniPlatform.DocumentStorage.Services.QueryFactory;
+using InfinniPlatform.DocumentStorage.Services.QueryFactories;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Transactions;

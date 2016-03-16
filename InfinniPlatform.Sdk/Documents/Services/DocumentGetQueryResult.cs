@@ -5,7 +5,7 @@ namespace InfinniPlatform.Sdk.Documents.Services
     /// <summary>
     /// Результат выполнения запроса на получение документов.
     /// </summary>
-    public class DocumentGetQueryResult
+    public class DocumentGetQueryResult : DocumentQeuryResult
     {
         /// <summary>
         /// Список документов.
@@ -15,6 +15,6 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <summary>
         /// Количество документов.
         /// </summary>
-        public int? Count { get; set; }
+        public long? Count { get; set; }
     }
 }

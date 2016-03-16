@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -38,5 +39,15 @@ namespace InfinniPlatform.Sdk.Documents
         /// Ограничивает результирующую выборку указанным количеством документов.
         /// </summary>
         IDocumentFindCursor Limit(int limit);
+
+        /// <summary>
+        /// Возвращает количество документов, удовлетворяющих указанному фильтру.
+        /// </summary>
+        long Count();
+
+        /// <summary>
+        /// Возвращает количество документов, удовлетворяющих указанному фильтру.
+        /// </summary>
+        Task<long> CountAsync();
     }
 }

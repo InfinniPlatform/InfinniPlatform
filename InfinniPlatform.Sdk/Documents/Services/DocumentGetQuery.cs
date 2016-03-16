@@ -42,7 +42,7 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <summary>
         /// Максимальное количество документов, которое нужно выбрать.
         /// </summary>
-        public int? Take { get; set; }
+        public int Take { get; set; }
     }
 
 
@@ -85,6 +85,6 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <summary>
         /// Максимальное количество документов, которое нужно выбрать.
         /// </summary>
-        public int? Take { get; set; }
+        public int Take { get; set; }
     }
 }

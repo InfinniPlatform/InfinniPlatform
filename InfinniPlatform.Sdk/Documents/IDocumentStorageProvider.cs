@@ -12,6 +12,12 @@ namespace InfinniPlatform.Sdk.Documents
     public interface IDocumentStorageProvider
     {
         /// <summary>
+        /// Имя типа документа.
+        /// </summary>
+        string DocumentType { get; }
+
+
+        /// <summary>
         /// Возвращает количество документов, удовлетворяющих указанному фильтру.
         /// </summary>
         /// <param name="filter">Фильтр для поиска документов.</param>
@@ -52,7 +58,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// <param name="caseSensitive">Чувствительность к регистру символов.</param>
         /// <param name="diacriticSensitive">Чувствительность к диакритическим символам.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
-        IDocumentFindCursor FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Func < IDocumentFilterBuilder, object> filter = null);
+        IDocumentFindCursor FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Func<IDocumentFilterBuilder, object> filter = null);
 
 
         /// <summary>

@@ -16,6 +16,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     {
         public MongoDocumentStorageProvider(MongoConnection connection, string documentType)
         {
+            DocumentType = documentType;
+
             _collection = new Lazy<IMongoCollection<DynamicWrapper>>(() => connection.GetDatabase().GetCollection<DynamicWrapper>(documentType));
             _filterBuilder = new MongoDocumentFilterBuilder<DynamicWrapper>();
         }
@@ -23,6 +25,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         private readonly Lazy<IMongoCollection<DynamicWrapper>> _collection;
         private readonly MongoDocumentFilterBuilder<DynamicWrapper> _filterBuilder;
+
+
+        public string DocumentType { get; }
 
 
         public long Count(Func<IDocumentFilterBuilder, object> filter = null)

@@ -129,6 +129,12 @@
   <data name="IncompleteExpression" xml:space="preserve">
     <value>Incomplete expression.</value>
   </data>
+  <data name="MethodNotAllowed" xml:space="preserve">
+    <value>Method not allowed.</value>
+  </data>
+  <data name="RequestProcessedWithException" xml:space="preserve">
+    <value>Request processed with exception.</value>
+  </data>
   <data name="TokenIsNotSupported" xml:space="preserve">
     <value>Token '{0}' is not supported.</value>
   </data>

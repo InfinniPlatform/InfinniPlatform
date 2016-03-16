@@ -13,7 +13,7 @@ namespace InfinniPlatform.Sdk.Documents
         /// </summary>
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="writeResult">Результат выполнения команды изменения документа в хранилище.</param>
-        public DocumentStorageWriteException(string documentType, object writeResult)
+        public DocumentStorageWriteException(string documentType, DocumentStorageWriteResult writeResult)
         {
             Data.Add("DocumentType", documentType);
             Data.Add("WriteResult", writeResult);
@@ -22,6 +22,6 @@ namespace InfinniPlatform.Sdk.Documents
         /// <summary>
         /// Результат выполнения команды изменения документа в хранилище.
         /// </summary>
-        public object WriteResult { get; set; }
+        public DocumentStorageWriteResult WriteResult { get; set; }
     }
 }
