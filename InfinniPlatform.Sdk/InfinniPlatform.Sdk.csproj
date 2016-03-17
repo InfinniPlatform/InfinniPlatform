@@ -81,6 +81,7 @@
     <Compile Include="Documents\Services\DocumentServiceResult.cs" />
     <Compile Include="Documents\Services\DocumentSortOrder.cs" />
     <Compile Include="Documents\Services\IDocumentHttpServiceHandler.cs" />
+    <Compile Include="Documents\Services\IDocumentHttpServiceHandlerBase.cs" />
     <Compile Include="Documents\Transactions\IUnitOfWork.cs" />
     <Compile Include="Documents\Transactions\IUnitOfWorkFactory.cs" />
     <Compile Include="Documents\Interceptors\DocumentBulkCommand.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Metadata\Documents\DocumentMetadata.cs" />
     <Compile Include="Security\SecurityExtensions.cs" />
     <Compile Include="Serialization\IJsonObjectSerializer.cs" />
+    <Compile Include="Services\IHttpServiceSource.cs" />
     <Compile Include="Services\IMimeTypeProvider.cs" />
     <Compile Include="Settings\IAppEnvironment.cs" />
     <Compile Include="Security\IUserIdentityProvider.cs" />

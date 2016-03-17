@@ -16,17 +16,17 @@ namespace InfinniPlatform.DocumentStorage.Services
     /// Сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}"/>.
     /// </summary>
     [LoggerName("DocumentHttpService")]
-    internal class DocumentHttpService : DocumentHttpServiceBase
+    internal class DocumentHttpService<TDocument> : DocumentHttpServiceBase where TDocument : Document
     {
-        public DocumentHttpService(IDocumentHttpServiceHandler serviceHandler,
-                                   IDocumentQueryFactory queryFactory,
+        public DocumentHttpService(IDocumentHttpServiceHandler<TDocument> serviceHandler,
+                                   IDocumentQueryFactory<TDocument> queryFactory,
                                    IDocumentStorageFactory storageFactory,
                                    IBlobStorage blobStorage,
                                    IPerformanceLog performanceLog,
                                    ILog log)
             : base(performanceLog, log)
         {
-            var storage = storageFactory.GetStorage(serviceHandler.DocumentType);
+            var storage = storageFactory.GetStorage<TDocument>(serviceHandler.DocumentType);
 
             DocumentType = storage.DocumentType;
 
@@ -37,9 +37,9 @@ namespace InfinniPlatform.DocumentStorage.Services
         }
 
 
-        private readonly IDocumentHttpServiceHandler _serviceHandler;
-        private readonly IDocumentQueryFactory _queryFactory;
-        private readonly IDocumentStorage _storage;
+        private readonly IDocumentHttpServiceHandler<TDocument> _serviceHandler;
+        private readonly IDocumentQueryFactory<TDocument> _queryFactory;
+        private readonly IDocumentStorage<TDocument> _storage;
         private readonly IBlobStorage _blobStorage;
 
 
@@ -66,7 +66,7 @@ namespace InfinniPlatform.DocumentStorage.Services
                     // Установка правил сортировки
                     if (query.Order != null)
                     {
-                        IDocumentFindSortedCursor sortedCursor = null;
+                        IDocumentFindSortedCursor<TDocument, TDocument> sortedCursor = null;
 
                         foreach (var order in query.Order)
                         {
@@ -81,11 +81,6 @@ namespace InfinniPlatform.DocumentStorage.Services
                                     cursor = sortedCursor = (sortedCursor == null)
                                         ? cursor.SortByDescending(order.Key)
                                         : sortedCursor.ThenByDescending(order.Key);
-                                    break;
-                                case DocumentSortOrder.TextScore:
-                                    cursor = sortedCursor = (sortedCursor == null)
-                                        ? cursor.SortByTextScore(order.Key)
-                                        : sortedCursor.ThenByTextScore(order.Key);
                                     break;
                             }
                         }
@@ -126,22 +121,22 @@ namespace InfinniPlatform.DocumentStorage.Services
             return ProcessRequestAsync(request,
                 r => _queryFactory.CreatePostQuery(r, DocumentFormKey),
                 async query =>
-                {
-                    IDictionary<string, object> fileIds = null;
+                      {
+                          IDictionary<string, object> fileIds = null;
 
-                    if (query.Files != null)
-                    {
-                        fileIds = new Dictionary<string, object>();
+                          if (query.Files != null)
+                          {
+                              fileIds = new Dictionary<string, object>();
 
-                        // Сохранение списка файлов
-                        foreach (var file in query.Files)
-                        {
-                            // Сохранение файла в хранилище
-                            var fileId = _blobStorage.CreateBlob(file.Name, file.ContentType, file.Value);
+                              // Сохранение списка файлов
+                              foreach (var file in query.Files)
+                              {
+                                  // Сохранение файла в хранилище
+                                  var fileId = _blobStorage.CreateBlob(file.Name, file.ContentType, file.Value);
 
-                            // TODO: BlobInfo
-                            // Создание информации о файле
-                            var blobData = new DynamicWrapper
+                                  // TODO: BlobInfo
+                                  // Создание информации о файле
+                                  var blobData = new DynamicWrapper
                                                  {
                                                      {
                                                          "Info", new DynamicWrapper
@@ -153,35 +148,35 @@ namespace InfinniPlatform.DocumentStorage.Services
                                                      }
                                                  };
 
-                            // Включение информации о файле в ответ
-                            fileIds[file.Key] = blobData;
+                                  // Включение информации о файле в ответ
+                                  fileIds[file.Key] = blobData;
 
-                            // Установка ссылки на файл в документе
-                            query.Document.SetProperty(file.Key, blobData);
-                        }
-                    }
+                                  // Установка ссылки на файл в документе
+                                  query.Document.SetProperty(file.Key, blobData);
+                              }
+                          }
 
-                    DocumentUpdateResult status = null;
-                    DocumentValidationResult validationResult = null;
+                          DocumentUpdateResult status = null;
+                          DocumentValidationResult validationResult = null;
 
-                    try
-                    {
-                        // Сохранение документа в хранилище
-                        status = await _storage.SaveOneAsync(query.Document);
-                    }
-                    catch (DocumentStorageWriteException exception)
-                    {
-                        validationResult = exception.WriteResult?.ValidationResult;
-                    }
+                          try
+                          {
+                              // Сохранение документа в хранилище
+                              status = await _storage.SaveOneAsync(query.Document);
+                          }
+                          catch (DocumentStorageWriteException exception)
+                          {
+                              validationResult = exception.WriteResult?.ValidationResult;
+                          }
 
-                    return new DocumentPostQueryResult
-                    {
-                        DocumentId = query.Document["_id"],
-                        FileIds = fileIds,
-                        Status = status,
-                        ValidationResult = validationResult
-                    };
-                },
+                          return new DocumentPostQueryResult
+                          {
+                              DocumentId = query.Document._id,
+                              FileIds = fileIds,
+                              Status = status,
+                              ValidationResult = validationResult
+                          };
+                      },
                 _serviceHandler.OnBeforePost,
                 _serviceHandler.OnAfterPost);
         }
@@ -191,26 +186,26 @@ namespace InfinniPlatform.DocumentStorage.Services
             return ProcessRequestAsync(request,
                 r => _queryFactory.CreateDeleteQuery(r, DocumentIdKey),
                 async query =>
-                {
-                    long? deletedCount = null;
-                    DocumentValidationResult validationResult = null;
+                      {
+                          long? deletedCount = null;
+                          DocumentValidationResult validationResult = null;
 
-                    try
-                    {
-                        // Удаление документа из хранилища
-                        deletedCount = await _storage.DeleteOneAsync(f => f.Eq("_id", query.DocumentId));
-                    }
-                    catch (DocumentStorageWriteException exception)
-                    {
-                        validationResult = exception.WriteResult?.ValidationResult;
-                    }
+                          try
+                          {
+                              // Удаление документа из хранилища
+                              deletedCount = await _storage.DeleteOneAsync(i => i._id == query.DocumentId);
+                          }
+                          catch (DocumentStorageWriteException exception)
+                          {
+                              validationResult = exception.WriteResult?.ValidationResult;
+                          }
 
-                    return new DocumentDeleteQueryResult
-                    {
-                        DeletedCount = deletedCount,
-                        ValidationResult = validationResult
-                    };
-                },
+                          return new DocumentDeleteQueryResult
+                          {
+                              DeletedCount = deletedCount,
+                              ValidationResult = validationResult
+                          };
+                      },
                 _serviceHandler.OnBeforeDelete,
                 _serviceHandler.OnAfterDelete);
         }

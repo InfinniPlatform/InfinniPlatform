@@ -85,16 +85,23 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Hosting\MongoCollectionInitializer.cs" />
-    <Compile Include="Services\DocumentHttpService.cs" />
+    <Compile Include="Services\DocumentHttpServiceGeneric.cs" />
     <Compile Include="Services\DocumentHttpServiceBase.cs" />
-    <Compile Include="Services\QueryFactories\DocumentQueryFactory.cs" />
+    <Compile Include="Services\DocumentHttpServiceFactory.cs" />
+    <Compile Include="Services\DocumentHttpServiceSource.cs" />
+    <Compile Include="Services\HttpServiceWrapperFactory.cs" />
+    <Compile Include="Services\IDocumentHttpServiceFactory.cs" />
+    <Compile Include="Services\IHttpServiceWrapperFactory.cs" />
+    <Compile Include="Services\QueryFactories\DocumentQueryFactoryGeneric.cs" />
     <Compile Include="Services\QueryFactories\DocumentQueryFactoryBase.cs" />
     <Compile Include="Services\QueryFactories\ExpressionBaseQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\ExpressionFilterQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\ExpressionOrderQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\ExpressionSelectQuerySyntaxVisitor.cs" />
     <Compile Include="Services\IDocumentQueryFactory.cs" />
+    <Compile Include="Services\QueryFactories\DocumentQueryFactory.cs" />
     <Compile Include="Services\QueryFactories\QuerySyntaxHelper.cs" />
+    <Compile Include="Services\DocumentHttpService.cs" />
     <Compile Include="Services\QuerySyntax\IdentifierNameQuerySyntaxNode.cs" />
     <Compile Include="Services\QuerySyntax\InvocationQuerySyntaxNode.cs" />
     <Compile Include="Services\QuerySyntax\IQuerySyntaxNode.cs" />

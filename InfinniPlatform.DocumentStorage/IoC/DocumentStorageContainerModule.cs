@@ -14,6 +14,7 @@ using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.DocumentStorage.IoC
@@ -98,8 +99,32 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .As<IQuerySyntaxTreeParser>()
                    .SingleInstance();
 
+            builder.RegisterType<DocumentQueryFactory>()
+                   .As<IDocumentQueryFactory>()
+                   .SingleInstance();
+
             builder.RegisterGeneric(typeof(DocumentQueryFactory<>))
                    .As(typeof(IDocumentQueryFactory<>))
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentHttpService>()
+                   .AsSelf()
+                   .InstancePerDependency();
+
+            builder.RegisterGeneric(typeof(DocumentHttpService<>))
+                   .AsSelf()
+                   .InstancePerDependency();
+
+            builder.RegisterType<DocumentHttpServiceFactory>()
+                   .As<IDocumentHttpServiceFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<HttpServiceWrapperFactory>()
+                   .As<IHttpServiceWrapperFactory>()
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentHttpServiceSource>()
+                   .As<IHttpServiceSource>()
                    .SingleInstance();
 
             // Hosting

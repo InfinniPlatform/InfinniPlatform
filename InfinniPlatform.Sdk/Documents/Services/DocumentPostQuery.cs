@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Sdk.Documents.Services
@@ -12,7 +13,7 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <summary>
         /// Экземпляр документа.
         /// </summary>
-        public object Document { get; set; }
+        public DynamicWrapper Document { get; set; }
 
         /// <summary>
         /// Список файлов документа.
