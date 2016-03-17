@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.BlobStorage;
+
 namespace InfinniPlatform.Sdk.Documents.Services
 {
     /// <summary>
@@ -13,9 +15,9 @@ namespace InfinniPlatform.Sdk.Documents.Services
         public object DocumentId { get; set; }
 
         /// <summary>
-        /// Идентификаторы сохраненных файлов документа.
+        /// Информация о сохраненных файлах документа.
         /// </summary>
-        public IDictionary<string, object> FileIds { get; set; }
+        public IDictionary<string, BlobInfo> FileInfos { get; set; }
 
         /// <summary>
         /// Результат выполнения обновления документа.

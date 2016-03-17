@@ -122,20 +122,20 @@ namespace InfinniPlatform.DocumentStorage.Services
                 r => _queryFactory.CreatePostQuery(r, DocumentFormKey),
                 async query =>
                       {
-                          IDictionary<string, object> fileIds = null;
+                          IDictionary<string, BlobInfo> fileInfos = null;
 
                           if (query.Files != null)
                           {
-                              fileIds = new Dictionary<string, object>();
+                              fileInfos = new Dictionary<string, BlobInfo>();
 
                               // Сохранение списка файлов
                               foreach (var file in query.Files)
                               {
                                   // Сохранение файла в хранилище
-                                  var blobInfo = _blobStorage.CreateBlob(file.Name, file.ContentType, file.Value);
+                                  var blobInfo = await _blobStorage.CreateBlobAsync(file.Name, file.ContentType, file.Value);
 
                                   // Включение информации о файле в ответ
-                                  fileIds[file.Key] = blobInfo;
+                                  fileInfos[file.Key] = blobInfo;
 
                                   // Установка ссылки на файл в документе
                                   query.Document.SetProperty(file.Key, blobInfo);
@@ -158,7 +158,7 @@ namespace InfinniPlatform.DocumentStorage.Services
                           return new DocumentPostQueryResult
                           {
                               DocumentId = query.Document._id,
-                              FileIds = fileIds,
+                              FileInfos = fileInfos,
                               Status = status,
                               ValidationResult = validationResult
                           };

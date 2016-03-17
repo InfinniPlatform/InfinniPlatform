@@ -91,7 +91,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
 
             // Сохранение файла
 
-            var fileId = _blobStorage.CreateBlob(fileName, fileType, fileStream);
+            var fileId = _blobStorage.CreateBlob(fileName, fileType, fileStream).Id;
 
             var blobData = new DynamicWrapper
                            {

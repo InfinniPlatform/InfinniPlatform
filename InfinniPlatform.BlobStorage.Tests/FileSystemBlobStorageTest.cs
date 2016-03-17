@@ -3,6 +3,7 @@ using System.IO;
 
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
 using Moq;
@@ -21,7 +22,11 @@ namespace InfinniPlatform.BlobStorage.Tests
             var mimeTypeResolverMock = new Mock<IMimeTypeResolver>();
             var performanceLogMock = new Mock<IPerformanceLog>();
 
-            _blobStorage = new FileSystemBlobStorage(new FileSystemBlobStorageSettings(), mimeTypeResolverMock.Object, performanceLogMock.Object);
+            _blobStorage = new FileSystemBlobStorage(
+                new FileSystemBlobStorageSettings(),
+                JsonObjectSerializer.Default,
+                mimeTypeResolverMock.Object,
+                performanceLogMock.Object);
         }
 
 

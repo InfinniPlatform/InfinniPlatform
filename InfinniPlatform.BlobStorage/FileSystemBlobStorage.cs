@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Logging;
@@ -43,20 +44,21 @@ namespace InfinniPlatform.BlobStorage
     [LoggerName("BlobStorage")]
     internal sealed class FileSystemBlobStorage : IBlobStorage
     {
-        public FileSystemBlobStorage(FileSystemBlobStorageSettings settings, IMimeTypeResolver mimeTypeResolver, IPerformanceLog performanceLog)
+        public FileSystemBlobStorage(FileSystemBlobStorageSettings settings,
+                                     IObjectSerializer objectSerializer,
+                                     IMimeTypeResolver mimeTypeResolver,
+                                     IPerformanceLog performanceLog)
         {
             _baseDirectory = settings.BaseDirectory;
             _mimeTypeResolver = mimeTypeResolver;
+            _objectSerializer = objectSerializer;
             _performanceLog = performanceLog;
-
-            // TODO: Получать JsonObjectSerializer через конструктор.
-            _serializer = JsonObjectSerializer.Default;
         }
 
 
         private readonly string _baseDirectory;
         private readonly IPerformanceLog _performanceLog;
-        private readonly IObjectSerializer _serializer;
+        private readonly IObjectSerializer _objectSerializer;
         private readonly IMimeTypeResolver _mimeTypeResolver;
 
 
@@ -126,6 +128,13 @@ namespace InfinniPlatform.BlobStorage
             return UpdateBlob(blobId, blobName, blobType, blobData);
         }
 
+        public Task<BlobInfo> CreateBlobAsync(string blobName, string blobType, Stream blobData)
+        {
+            var blobId = GenerateBlobId();
+
+            return UpdateBlobAsync(blobId, blobName, blobType, blobData);
+        }
+
         public BlobInfo UpdateBlob(string blobId, string blobName, string blobType, Stream blobData)
         {
             var start = DateTime.Now;
@@ -158,6 +167,51 @@ namespace InfinniPlatform.BlobStorage
 
                 WriteBlobInfo(blobId, blobInfo);
                 WriteBlobData(blobId, blobData);
+
+                _performanceLog.Log("UpdateBlob", start);
+
+                return blobInfo;
+            }
+            catch (Exception e)
+            {
+                _performanceLog.Log("UpdateBlob", start, e);
+
+                throw;
+            }
+        }
+
+        public async Task<BlobInfo> UpdateBlobAsync(string blobId, string blobName, string blobType, Stream blobData)
+        {
+            var start = DateTime.Now;
+
+            try
+            {
+                if (string.IsNullOrEmpty(blobId))
+                {
+                    throw new ArgumentNullException(nameof(blobId));
+                }
+
+                if (blobData == null)
+                {
+                    throw new ArgumentNullException(nameof(blobData));
+                }
+
+                if (string.IsNullOrEmpty(blobType))
+                {
+                    blobType = _mimeTypeResolver.GetMimeType(blobName);
+                }
+
+                var blobInfo = new BlobInfo
+                {
+                    Id = blobId,
+                    Name = blobName,
+                    Type = blobType,
+                    Size = blobData.Length,
+                    Time = DateTime.UtcNow
+                };
+
+                WriteBlobInfo(blobId, blobInfo);
+                await WriteBlobDataAsync(blobId, blobData);
 
                 _performanceLog.Log("UpdateBlob", start);
 
@@ -207,7 +261,7 @@ namespace InfinniPlatform.BlobStorage
             {
                 using (var infoFile = OpenReadFileStream(infoFilePath))
                 {
-                    blobInfo = _serializer.Deserialize(infoFile, typeof(BlobInfo)) as BlobInfo;
+                    blobInfo = _objectSerializer.Deserialize(infoFile, typeof(BlobInfo)) as BlobInfo;
                 }
             }
             // Если файл с мета-информацией не существует
@@ -240,7 +294,7 @@ namespace InfinniPlatform.BlobStorage
 
             using (var infoFile = OpenWriteFileStream(infoFilePath))
             {
-                _serializer.Serialize(infoFile, blobInfo);
+                _objectSerializer.Serialize(infoFile, blobInfo);
             }
         }
 
@@ -268,6 +322,19 @@ namespace InfinniPlatform.BlobStorage
             {
                 blobData.CopyTo(dataFile);
                 dataFile.Flush();
+            }
+        }
+
+        private async Task WriteBlobDataAsync(string blobId, Stream blobData)
+        {
+            TryCreateDirectory(blobId);
+
+            var dataFilePath = GetBlobDataFilePath(blobId);
+
+            using (var dataFile = OpenWriteFileStream(dataFilePath))
+            {
+                await blobData.CopyToAsync(dataFile);
+                await dataFile.FlushAsync();
             }
         }
 
