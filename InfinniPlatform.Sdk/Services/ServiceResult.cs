@@ -1,10 +1,10 @@
-﻿namespace InfinniPlatform.Sdk.Documents.Services
+﻿namespace InfinniPlatform.Sdk.Services
 {
     /// <summary>
     /// Результат обработки запроса.
     /// </summary>
     /// <typeparam name="TResult">Тип результата.</typeparam>
-    public class DocumentServiceResult<TResult>
+    public class ServiceResult<TResult>
     {
         /// <summary>
         /// Успешность выполнения запроса.

@@ -49,6 +49,10 @@ namespace InfinniPlatform.Owin.IoC
                    .AsSelf()
                    .SingleInstance();
 
+            builder.RegisterType<HttpServiceSource>()
+                   .As<IHttpServiceSource>()
+                   .SingleInstance();
+
             // Остальные модули
 
             builder.RegisterType<ErrorHandlingOwinHostingModule>()

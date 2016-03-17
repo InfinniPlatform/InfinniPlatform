@@ -78,7 +78,7 @@
     <Compile Include="Documents\Services\DocumentGetQuery.cs" />
     <Compile Include="Documents\Services\DocumentPostQueryResult.cs" />
     <Compile Include="Documents\Services\DocumentQeuryResult.cs" />
-    <Compile Include="Documents\Services\DocumentServiceResult.cs" />
+    <Compile Include="Services\ServiceResult.cs" />
     <Compile Include="Documents\Services\DocumentSortOrder.cs" />
     <Compile Include="Documents\Services\IDocumentHttpServiceHandler.cs" />
     <Compile Include="Documents\Services\IDocumentHttpServiceHandlerBase.cs" />

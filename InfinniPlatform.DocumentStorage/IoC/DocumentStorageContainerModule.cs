@@ -112,7 +112,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .InstancePerDependency();
 
             builder.RegisterGeneric(typeof(DocumentHttpService<>))
-                   .AsSelf()
+                   .As(typeof(DocumentHttpService<>))
                    .InstancePerDependency();
 
             builder.RegisterType<DocumentHttpServiceFactory>()

@@ -16,7 +16,7 @@ namespace InfinniPlatform.DocumentStorage.Services
     /// Сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}"/>.
     /// </summary>
     [LoggerName("DocumentHttpService")]
-    internal class DocumentHttpService : DocumentHttpServiceBase
+    internal sealed class DocumentHttpService : DocumentHttpServiceBase
     {
         public DocumentHttpService(IDocumentHttpServiceHandler serviceHandler,
                                    IDocumentQueryFactory queryFactory,

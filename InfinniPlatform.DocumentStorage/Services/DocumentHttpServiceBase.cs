@@ -142,7 +142,7 @@ namespace InfinniPlatform.DocumentStorage.Services
             {
                 var success = (error == null && (result?.ValidationResult == null || result.ValidationResult.IsValid));
 
-                var requestResult = new DocumentServiceResult<TResult>
+                var requestResult = new ServiceResult<TResult>
                 {
                     Success = success,
                     Result = result,

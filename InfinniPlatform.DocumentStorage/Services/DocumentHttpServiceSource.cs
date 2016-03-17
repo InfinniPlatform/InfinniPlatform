@@ -8,7 +8,7 @@ namespace InfinniPlatform.DocumentStorage.Services
     /// <summary>
     /// Источник сервисов по работе с документами.
     /// </summary>
-    internal class DocumentHttpServiceSource : IHttpServiceSource
+    internal sealed class DocumentHttpServiceSource : IHttpServiceSource
     {
         public DocumentHttpServiceSource(IDocumentHttpServiceFactory httpServiceFactory,
                                          IHttpServiceWrapperFactory httpServiceWrapperFactory,
@@ -25,9 +25,6 @@ namespace InfinniPlatform.DocumentStorage.Services
         private readonly IEnumerable<IDocumentHttpServiceHandlerBase> _httpServiceHandlers;
 
 
-        /// <summary>
-        /// Возвращает список модулей регистрации обработчиков запросов сервиса.
-        /// </summary>
         public IEnumerable<IHttpService> GetServices()
         {
             var index = 0;

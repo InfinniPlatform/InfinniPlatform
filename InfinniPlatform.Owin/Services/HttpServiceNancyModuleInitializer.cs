@@ -32,7 +32,7 @@ namespace InfinniPlatform.Owin.Services
                                                  IJsonObjectSerializer jsonObjectSerializer,
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
-                                                 IEnumerable<IHttpService> httpServices,
+                                                 IEnumerable<IHttpServiceSource> httpServiceSources,
                                                  IPerformanceLog performanceLog)
         {
             _mimeTypeResolver = mimeTypeResolver;
@@ -40,7 +40,7 @@ namespace InfinniPlatform.Owin.Services
             _jsonObjectSerializer = jsonObjectSerializer;
             _httpRequestExcutorFactory = httpRequestExcutorFactory;
             _httpGlobalHandlers = httpGlobalHandlers;
-            _httpServices = httpServices;
+            _httpServices = new Lazy<IEnumerable<IHttpService>>(() => httpServiceSources.SelectMany(i => i.GetServices()).ToArray());
             _performanceLog = performanceLog;
 
             _nancyHttpServices = new Lazy<Dictionary<Type, NancyHttpService>>(CreateNancyHttpServices);
@@ -52,7 +52,7 @@ namespace InfinniPlatform.Owin.Services
         private readonly IJsonObjectSerializer _jsonObjectSerializer;
         private readonly HttpRequestExcutorFactory _httpRequestExcutorFactory;
         private readonly IEnumerable<IHttpGlobalHandler> _httpGlobalHandlers;
-        private readonly IEnumerable<IHttpService> _httpServices;
+        private readonly Lazy<IEnumerable<IHttpService>> _httpServices;
         private readonly IPerformanceLog _performanceLog;
 
         private readonly Lazy<Dictionary<Type, NancyHttpService>> _nancyHttpServices;
@@ -63,9 +63,7 @@ namespace InfinniPlatform.Owin.Services
         /// </summary>
         public IEnumerable<Type> GetModuleTypes()
         {
-            return (_httpServices != null)
-                ? _httpServices.Select(s => typeof(HttpServiceNancyModule<>).MakeGenericType(s.GetType()))
-                : Type.EmptyTypes;
+            return _httpServices.Value.Select(s => typeof(HttpServiceNancyModule<>).MakeGenericType(s.GetType()));
         }
 
         /// <summary>
@@ -109,7 +107,7 @@ namespace InfinniPlatform.Owin.Services
             {
                 var httpGlobalHandler = CreateNancyHttpGlobalHandler();
 
-                foreach (var httpService in _httpServices)
+                foreach (var httpService in _httpServices.Value)
                 {
                     var serviceBuilder = new HttpServiceBuilder();
 

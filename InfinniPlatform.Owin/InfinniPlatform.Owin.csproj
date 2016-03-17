@@ -74,6 +74,7 @@
     <Compile Include="Security\OwinContextProvider.cs" />
     <Compile Include="Services\HttpServiceNancyBootstrapper.cs" />
     <Compile Include="Services\HttpServiceNancyModule.cs" />
+    <Compile Include="Services\HttpServiceSource.cs" />
     <Compile Include="Services\NancyMimeTypeResolver.cs" />
     <Compile Include="Services\NancyOwinHostingModule.cs" />
     <Compile Include="Services\HttpRequestExcutorFactory.cs" />
