@@ -119,16 +119,14 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
-        public string CreateBlob(string blobName, string blobType, Stream blobData)
+        public BlobInfo CreateBlob(string blobName, string blobType, Stream blobData)
         {
             var blobId = GenerateBlobId();
 
-            UpdateBlob(blobId, blobName, blobType, blobData);
-
-            return blobId;
+            return UpdateBlob(blobId, blobName, blobType, blobData);
         }
 
-        public void UpdateBlob(string blobId, string blobName, string blobType, Stream blobData)
+        public BlobInfo UpdateBlob(string blobId, string blobName, string blobType, Stream blobData)
         {
             var start = DateTime.Now;
 
@@ -162,6 +160,8 @@ namespace InfinniPlatform.BlobStorage
                 WriteBlobData(blobId, blobData);
 
                 _performanceLog.Log("UpdateBlob", start);
+
+                return blobInfo;
             }
             catch (Exception e)
             {

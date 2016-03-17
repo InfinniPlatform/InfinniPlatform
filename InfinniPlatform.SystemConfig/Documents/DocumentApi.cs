@@ -113,7 +113,7 @@ namespace InfinniPlatform.SystemConfig.Documents
 
             if (string.IsNullOrEmpty(fileId))
             {
-                fileId = _blobStorage.CreateBlob(fileProperty, string.Empty, fileStream);
+                fileId = _blobStorage.CreateBlob(fileProperty, string.Empty, fileStream).Id;
 
                 filePropertyValue.Info.ContentId = fileId;
             }

@@ -28,7 +28,7 @@ namespace InfinniPlatform.Sdk.BlobStorage
         /// <param name="blobType">Формат данных BLOB.</param>
         /// <param name="blobData">Данные BLOB.</param>
         /// <returns>Идентификатор BLOB. </returns>
-        string CreateBlob(string blobName, string blobType, Stream blobData);
+        BlobInfo CreateBlob(string blobName, string blobType, Stream blobData);
 
         /// <summary>
         /// Обновляет BLOB.
@@ -38,7 +38,7 @@ namespace InfinniPlatform.Sdk.BlobStorage
         /// <param name="blobType">Формат данных BLOB.</param>
         /// <param name="blobData">Данные BLOB.</param>
         /// <returns>Идентификатор BLOB. </returns>
-        void UpdateBlob(string blobId, string blobName, string blobType, Stream blobData);
+        BlobInfo UpdateBlob(string blobId, string blobName, string blobType, Stream blobData);
 
         /// <summary>
         /// Удаляет BLOB.

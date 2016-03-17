@@ -49,7 +49,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             // WHEN
 
             // Create
-            var blobId = _blobStorage.CreateBlob(blobNameV1, blobTypeV1, blobDataV1);
+            var blobId = _blobStorage.CreateBlob(blobNameV1, blobTypeV1, blobDataV1).Id;
 
             // Read
             var timeV1 = DateTime.UtcNow;

@@ -11,7 +11,7 @@ namespace InfinniPlatform.Sdk.BlobStorage
         /// <param name="blobType">Формат данных BLOB.</param>
         /// <param name="blobData">Данные BLOB.</param>
         /// <returns>Идентификатор BLOB. </returns>
-        public static string CreateBlob(this IBlobStorage target, string blobName, string blobType, byte[] blobData)
+        public static BlobInfo CreateBlob(this IBlobStorage target, string blobName, string blobType, byte[] blobData)
         {
             using (var dataStream = new MemoryStream(blobData))
             {
@@ -27,11 +27,11 @@ namespace InfinniPlatform.Sdk.BlobStorage
         /// <param name="blobType">Формат данных BLOB.</param>
         /// <param name="blobData">Данные BLOB.</param>
         /// <returns>Идентификатор BLOB. </returns>
-        public static void UpdateBlob(this IBlobStorage target, string blobId, string blobName, string blobType, byte[] blobData)
+        public static BlobInfo UpdateBlob(this IBlobStorage target, string blobId, string blobName, string blobType, byte[] blobData)
         {
             using (var dataStream = new MemoryStream(blobData))
             {
-                target.UpdateBlob(blobId, blobName, blobType, dataStream);
+                return target.UpdateBlob(blobId, blobName, blobType, dataStream);
             }
         }
     }

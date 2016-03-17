@@ -137,27 +137,13 @@ namespace InfinniPlatform.DocumentStorage.Services
                         foreach (var file in query.Files)
                         {
                             // Сохранение файла в хранилище
-                            var fileId = _blobStorage.CreateBlob(file.Name, file.ContentType, file.Value);
-
-                            // TODO: BlobInfo
-                            // Создание информации о файле
-                            var blobData = new DynamicWrapper
-                                                 {
-                                                     {
-                                                         "Info", new DynamicWrapper
-                                                                 {
-                                                                     { "ContentId", fileId },
-                                                                     { "Name", file.Name },
-                                                                     { "Type", file.ContentType }
-                                                                 }
-                                                     }
-                                                 };
+                            var blobInfo = _blobStorage.CreateBlob(file.Name, file.ContentType, file.Value);
 
                             // Включение информации о файле в ответ
-                            fileIds[file.Key] = blobData;
+                            fileIds[file.Key] = blobInfo;
 
                             // Установка ссылки на файл в документе
-                            query.Document.SetProperty(file.Key, blobData);
+                            query.Document.SetProperty(file.Key, blobInfo);
                         }
                     }
 
