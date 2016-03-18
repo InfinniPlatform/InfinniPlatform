@@ -52,6 +52,9 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
             var expectedValue = (DynamicWrapper)expectedSelect.Compile().Invoke(item);
             var actualValue = (DynamicWrapper)actualSelect.Compile().Invoke(item);
 
+            Assert.IsNotNull(expectedValue);
+            Assert.IsNotNull(actualValue);
+
             var expectedProperties = expectedValue.Cast<KeyValuePair<string, object>>().Select(i => new Tuple<string, object>(i.Key, i.Value));
             var actualProperties = actualValue.Cast<KeyValuePair<string, object>>().Select(i => new Tuple<string, object>(i.Key, i.Value));
 

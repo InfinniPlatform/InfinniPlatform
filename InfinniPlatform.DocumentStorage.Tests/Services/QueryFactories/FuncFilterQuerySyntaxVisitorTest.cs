@@ -659,9 +659,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
         private static void AssertFilter(string documentType, IEnumerable<DynamicWrapper> items, Func<IDocumentFilterBuilder, object> expectedFilter, Func<IDocumentFilterBuilder, object> actualFilter)
         {
             var documentStorage = DocumentStorageTestHelpers.GetEmptyStorage(documentType);
-
             documentStorage.InsertMany(items);
-
             AssertFilter(documentStorage, expectedFilter, actualFilter);
         }
 
@@ -669,7 +667,6 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
         {
             var expectedItems = documentStorage.Find(expectedFilter).ToList().Select(i => i["_id"]);
             var actualItems = documentStorage.Find(actualFilter).ToList().Select(i => i["_id"]);
-
             CollectionAssert.AreEqual(expectedItems, actualItems);
         }
 

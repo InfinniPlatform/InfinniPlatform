@@ -13,7 +13,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
     /// <summary>
     /// Выполняет синтаксический разбор для получения правила фильтрации документов <see cref="DocumentGetQuery.Filter"/>.
     /// </summary>
-    internal sealed class FuncFilterQuerySyntaxVisitor : FuncBaseQuerySyntaxVisitor
+    internal sealed class FuncFilterQuerySyntaxVisitor : FuncBaseQuerySyntaxVisitor<Func<IDocumentFilterBuilder, object>>
     {
         private static readonly Dictionary<string, Func<FuncFilterQuerySyntaxVisitor, InvocationQuerySyntaxNode, Func<IDocumentFilterBuilder, object>>> KnownFunctions
             = new Dictionary<string, Func<FuncFilterQuerySyntaxVisitor, InvocationQuerySyntaxNode, Func<IDocumentFilterBuilder, object>>>(StringComparer.OrdinalIgnoreCase)
@@ -52,11 +52,6 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
               };
 
 
-        private FuncFilterQuerySyntaxVisitor()
-        {
-        }
-
-
         public static Func<IDocumentFilterBuilder, object> CreateFilterExpression(InvocationQuerySyntaxNode node)
         {
             var visitor = new FuncFilterQuerySyntaxVisitor();
@@ -77,6 +72,16 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             }
 
             return factory(this, node);
+        }
+
+        public override Func<IDocumentFilterBuilder, object> VisitIdentifierName(IdentifierNameQuerySyntaxNode node)
+        {
+            return f => node.Identifier;
+        }
+
+        public override Func<IDocumentFilterBuilder, object> VisitLiteral(LiteralQuerySyntaxNode node)
+        {
+            return f => node.Value;
         }
 
 

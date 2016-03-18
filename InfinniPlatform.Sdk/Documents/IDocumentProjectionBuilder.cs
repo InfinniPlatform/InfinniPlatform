@@ -56,6 +56,6 @@ namespace InfinniPlatform.Sdk.Documents
         /// Создает оператор проекции, который включает указанное свойство документа в результат выборки и помещает в него значение релевантности документа, полученное при полнотекстовом поиске.
         /// </summary>
         /// <param name="property">Свойство документа, в которое будет помещено значение релевантности документа, полученное при полнотекстовом поиске.</param>
-        IDocumentProjectionBuilder IncludeTextScore(string property);
+        IDocumentProjectionBuilder IncludeTextScore(string property = DocumentStorageExtensions.DefaultTextScoreProperty);
     }
 }
