@@ -12,6 +12,11 @@ namespace InfinniPlatform.Sdk.Documents.Services
     {
         public DocumentHttpServiceHandler(string documentType)
         {
+            if (string.IsNullOrEmpty(documentType))
+            {
+                throw new ArgumentNullException(nameof(documentType));
+            }
+
             DocumentType = documentType;
         }
 

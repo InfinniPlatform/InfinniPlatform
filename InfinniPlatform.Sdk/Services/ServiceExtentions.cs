@@ -20,7 +20,7 @@ namespace InfinniPlatform.Sdk.Services
         /// Регистрирует все прикладные сервисы текущей сборки.
         /// </summary>
         /// <remarks>
-        /// Прикладные скрипты будут зарегистрированы со стратегией SingleInstance().
+        /// Сервисы будут зарегистрированы со стратегией SingleInstance().
         /// </remarks>
         /// <example>
         /// <code>
