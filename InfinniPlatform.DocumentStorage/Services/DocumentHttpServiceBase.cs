@@ -88,7 +88,7 @@ namespace InfinniPlatform.DocumentStorage.Services
             Func<IHttpRequest, TQuery> queryFunc,
             Func<TQuery, Task<TResult>> handlerFunc,
             Func<TQuery, Task<TResult>> onBefore,
-            Func<TQuery, TResult, Exception, Task> onAfter) where TResult : DocumentQeuryResult
+            Func<TQuery, TResult, Exception, Task> onAfter) where TResult : DocumentQueryResult
         {
             var startTime = DateTime.Now;
 

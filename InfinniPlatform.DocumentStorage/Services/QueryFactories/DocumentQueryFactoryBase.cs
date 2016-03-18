@@ -55,12 +55,12 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 
             if (request.Parameters != null)
             {
-                value = request.Parameters[parameterName] as string;
+                value = (string)request.Parameters[parameterName];
             }
 
             if (string.IsNullOrWhiteSpace(value) && request.Query != null)
             {
-                value = request.Query[parameterName] as string;
+                value = (string)request.Query[parameterName];
             }
 
             return value;
@@ -267,7 +267,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         {
             dynamic queryAsDynamic = query;
 
-            string valueAsString = queryAsDynamic[name] as string;
+            var valueAsString = (string)queryAsDynamic[name];
 
             if (!string.IsNullOrWhiteSpace(valueAsString))
             {

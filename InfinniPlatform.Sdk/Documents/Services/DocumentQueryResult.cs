@@ -3,7 +3,7 @@
     /// <summary>
     /// Базовый класс результата выполнения запроса.
     /// </summary>
-    public abstract class DocumentQeuryResult
+    public abstract class DocumentQueryResult
     {
         /// <summary>
         /// Результат выполнения проверки корректности выполнения запроса.

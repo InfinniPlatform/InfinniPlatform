@@ -7,7 +7,7 @@ namespace InfinniPlatform.Sdk.Documents.Services
     /// <summary>
     /// Результат выполнения запроса на сохранение документа.
     /// </summary>
-    public class DocumentPostQueryResult : DocumentQeuryResult
+    public class DocumentPostQueryResult : DocumentQueryResult
     {
         /// <summary>
         /// Идентификатор сохраненного документа.

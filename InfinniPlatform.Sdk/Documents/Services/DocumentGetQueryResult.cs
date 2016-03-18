@@ -5,7 +5,7 @@ namespace InfinniPlatform.Sdk.Documents.Services
     /// <summary>
     /// Результат выполнения запроса на получение документов.
     /// </summary>
-    public class DocumentGetQueryResult : DocumentQeuryResult
+    public class DocumentGetQueryResult : DocumentQueryResult
     {
         /// <summary>
         /// Список документов.
