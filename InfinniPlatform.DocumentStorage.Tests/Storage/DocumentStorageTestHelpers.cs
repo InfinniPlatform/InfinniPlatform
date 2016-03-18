@@ -6,6 +6,7 @@ using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Tests.MongoDB;
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Metadata.Documents;
 using InfinniPlatform.Sdk.Security;
 
 using Moq;
@@ -47,27 +48,27 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
         }
 
 
-        public static DocumentStorageImpl GetEmptyStorage(string documentType)
+        public static DocumentStorageImpl GetEmptyStorage(string documentType, params DocumentIndex[] indexes)
         {
             var tenantProvider = GetTenantProvider();
             var userIdentityProvider = GetUserIdentityProvider();
 
             return new DocumentStorageImpl(
                 documentType,
-                GetStorageProviderFactory(d => MongoTestHelpers.GetEmptyStorageProvider(documentType)),
+                GetStorageProviderFactory(d => MongoTestHelpers.GetEmptyStorageProvider(documentType, indexes)),
                 new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
                 new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
                 new DocumentStorageFilterProvider(tenantProvider),
                 new DocumentStorageInterceptorProvider(null));
         }
 
-        public static DocumentStorageImpl<TDocument> GetEmptyStorage<TDocument>(string documentType) where TDocument : Document
+        public static DocumentStorageImpl<TDocument> GetEmptyStorage<TDocument>(string documentType, params DocumentIndex[] indexes) where TDocument : Document
         {
             var tenantProvider = GetTenantProvider();
             var userIdentityProvider = GetUserIdentityProvider();
 
             return new DocumentStorageImpl<TDocument>(
-                GetStorageProviderFactory(d => MongoTestHelpers.GetEmptyStorageProvider<TDocument>(d)),
+                GetStorageProviderFactory(d => MongoTestHelpers.GetEmptyStorageProvider<TDocument>(d, indexes)),
                 new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
                 new DocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
                 new DocumentStorageFilterProvider(tenantProvider),

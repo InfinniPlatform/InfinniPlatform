@@ -10,7 +10,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactory
+namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

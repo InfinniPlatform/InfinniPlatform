@@ -147,10 +147,15 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         }
 
 
-        public static TEnum AsEnumLiteral<TEnum>(this IQuerySyntaxNode node) where TEnum : struct
+        public static string AsIdentifierName(this IQuerySyntaxNode node)
+        {
+            return ((IdentifierNameQuerySyntaxNode)node).Identifier;
+        }
+
+        public static TEnum AsEnumIdentifier<TEnum>(this IQuerySyntaxNode node) where TEnum : struct
         {
             TEnum result;
-            return Enum.TryParse(node.AsStringLiteral(), true, out result) ? result : default(TEnum);
+            return Enum.TryParse(node.AsIdentifierName(), true, out result) ? result : default(TEnum);
         }
 
         public static string AsStringLiteral(this IQuerySyntaxNode node)

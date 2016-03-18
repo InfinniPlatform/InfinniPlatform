@@ -10,7 +10,7 @@ using InfinniPlatform.DocumentStorage.Tests.TestEntities;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactory
+namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
@@ -161,10 +161,10 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactory
         {
             // Given
 
-            const string caseInsensitiveFilter = "regex(sku, '^ABC', 'IgnoreCase')";
-            const string multilineMatchFilter = "regex(description, '^S', 'Multiline')";
-            const string ignoreNewLineFilter = "regex(description, 'm.*line', 'Singleline', 'IgnoreCase')";
-            const string ignoreWhiteSpacesFilter = @"regex(description, '\\S+\\s+line$', 'Singleline')";
+            const string caseInsensitiveFilter = "regex(sku, '^ABC', IgnoreCase)";
+            const string multilineMatchFilter = "regex(description, '^S', Multiline)";
+            const string ignoreNewLineFilter = "regex(description, 'm.*line', Singleline, IgnoreCase)";
+            const string ignoreWhiteSpacesFilter = @"regex(description, '\\S+\\s+line$', Singleline)";
 
             Expression<Func<Product, bool>> caseInsensitiveExpectedFilter = i => Regex.IsMatch(i.sku, "^ABC", RegexOptions.IgnoreCase);
             Expression<Func<Product, bool>> multilineMatchExpectedFilter = i => Regex.IsMatch(i.description, "^S", RegexOptions.Multiline);

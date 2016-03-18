@@ -199,7 +199,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             // regex(property, pattern, 'option1', 'option2', 'option3', ...) --> Regex.IsMatch(i.property, pattern, option1 | option2 | option3 | ...)
             var property = visitor.Visit(node.Arguments[0]);
             var pattern = visitor.Visit(node.Arguments[1]);
-            var options = Expression.Constant(node.Arguments.Skip(2).Aggregate(RegexOptions.None, (r, n) => r | n.AsEnumLiteral<RegexOptions>()));
+            var options = Expression.Constant(node.Arguments.Skip(2).Aggregate(RegexOptions.None, (r, n) => r | n.AsEnumIdentifier<RegexOptions>()));
             return QuerySyntaxHelper.InvokeRegex(property, pattern, options);
         }
 
@@ -268,31 +268,31 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 
         private static Expression SizeEqInvocation(ExpressionFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
         {
-            // sizeEq(arrayProperty, item) --> Enumerable.Count(i.arrayProperty) == value
+            // sizeEq(arrayProperty, value) --> Enumerable.Count(i.arrayProperty) == value
             return CreateSizeFilterForArrayProperty(visitor, node, Expression.Equal);
         }
 
         private static Expression SizeGtInvocation(ExpressionFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
         {
-            // sizeGt(arrayProperty, item) --> Enumerable.Count(i.arrayProperty) > value
+            // sizeGt(arrayProperty, value) --> Enumerable.Count(i.arrayProperty) > value
             return CreateSizeFilterForArrayProperty(visitor, node, Expression.GreaterThan);
         }
 
         private static Expression SizeGteInvocation(ExpressionFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
         {
-            // sizeGte(arrayProperty, item) --> Enumerable.Count(i.arrayProperty) >= value
+            // sizeGte(arrayProperty, value) --> Enumerable.Count(i.arrayProperty) >= value
             return CreateSizeFilterForArrayProperty(visitor, node, Expression.GreaterThanOrEqual);
         }
 
         private static Expression SizeLtInvocation(ExpressionFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
         {
-            // sizeLt(arrayProperty, item) --> Enumerable.Count(i.arrayProperty) < value
+            // sizeLt(arrayProperty, value) --> Enumerable.Count(i.arrayProperty) < value
             return CreateSizeFilterForArrayProperty(visitor, node, Expression.LessThan);
         }
 
         private static Expression SizeLteInvocation(ExpressionFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
         {
-            // sizeLte(arrayProperty, item) --> Enumerable.Count(i.arrayProperty) <= value
+            // sizeLte(arrayProperty, value) --> Enumerable.Count(i.arrayProperty) <= value
             return CreateSizeFilterForArrayProperty(visitor, node, Expression.LessThanOrEqual);
         }
 
