@@ -70,6 +70,7 @@
     <Compile Include="Services\QueryFactories\ExpressionOrderQuerySyntaxVisitorTest.cs" />
     <Compile Include="Services\QueryFactories\ExpressionSelectQuerySyntaxVisitorTest.cs" />
     <Compile Include="Services\QueryFactories\FuncFilterQuerySyntaxVisitorTest.cs" />
+    <Compile Include="Services\QueryFactories\FuncOrderQuerySyntaxVisitorTest.cs" />
     <Compile Include="Services\QueryFactories\FuncSelectQuerySyntaxVisitorTest.cs" />
     <Compile Include="Services\QuerySyntax\QuerySyntaxTreeParserTest.cs" />
     <Compile Include="Services\QuerySyntax\QueryTokenReaderTest.cs" />

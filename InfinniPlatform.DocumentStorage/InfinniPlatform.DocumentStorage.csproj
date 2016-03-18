@@ -102,6 +102,7 @@
     <Compile Include="Services\QueryFactories\DocumentQueryFactory.cs" />
     <Compile Include="Services\QueryFactories\FuncBaseQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\FuncFilterQuerySyntaxVisitor.cs" />
+    <Compile Include="Services\QueryFactories\FuncOrderQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\FuncSelectQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\QuerySyntaxHelper.cs" />
     <Compile Include="Services\DocumentHttpService.cs" />
