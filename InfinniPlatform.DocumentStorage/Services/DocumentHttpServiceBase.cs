@@ -45,9 +45,20 @@ namespace InfinniPlatform.DocumentStorage.Services
         {
             builder.ServicePath = DefaultServicePath;
 
-            builder.Get[$"/{DocumentType}"] = Get;
-            builder.Post[$"/{DocumentType}"] = Post;
-            builder.Delete[$"/{DocumentType}/{{id?}}"] = Delete;
+            if (CanGet)
+            {
+                builder.Get[$"/{DocumentType}"] = Get;
+            }
+
+            if (CanPost)
+            {
+                builder.Post[$"/{DocumentType}"] = Post;
+            }
+
+            if (CanDelete)
+            {
+                builder.Delete[$"/{DocumentType}/{{id?}}"] = Delete;
+            }
 
             Load(builder);
         }
@@ -56,7 +67,22 @@ namespace InfinniPlatform.DocumentStorage.Services
         /// <summary>
         /// Имя типа документа.
         /// </summary>
-        public abstract string DocumentType { get; }
+        public string DocumentType { get; protected set; }
+
+        /// <summary>
+        /// Разрешено ли получение документов.
+        /// </summary>
+        public bool CanGet { get; protected set; }
+
+        /// <summary>
+        /// Разрешено ли сохранение документов.
+        /// </summary>
+        public bool CanPost { get; protected set; }
+
+        /// <summary>
+        /// Разрешено ли удаление документов.
+        /// </summary>
+        public bool CanDelete { get; protected set; }
 
 
         /// <summary>

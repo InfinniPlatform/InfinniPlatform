@@ -29,6 +29,9 @@ namespace InfinniPlatform.DocumentStorage.Services
             var storage = storageFactory.GetStorage(serviceHandler.DocumentType);
 
             DocumentType = storage.DocumentType;
+            CanGet = serviceHandler.CanGet;
+            CanPost = serviceHandler.CanPost;
+            CanDelete = serviceHandler.CanDelete;
 
             _serviceHandler = serviceHandler;
             _queryFactory = queryFactory;
@@ -41,9 +44,6 @@ namespace InfinniPlatform.DocumentStorage.Services
         private readonly IDocumentQueryFactory _queryFactory;
         private readonly IDocumentStorage _storage;
         private readonly IBlobStorage _blobStorage;
-
-
-        public override string DocumentType { get; }
 
 
         protected override void Load(IHttpServiceBuilder builder)
