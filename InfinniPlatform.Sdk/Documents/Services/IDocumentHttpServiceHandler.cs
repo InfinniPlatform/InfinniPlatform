@@ -100,7 +100,7 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// </summary>
         /// <param name="query"></param>
         /// <returns>Результат обработки запроса или <c>null</c>, если запрос не был обработан.</returns>
-        Task<DocumentDeleteQueryResult> OnBeforeDelete(DocumentDeleteQuery query);
+        Task<DocumentDeleteQueryResult> OnBeforeDelete(DocumentDeleteQuery<TDocument> query);
 
         /// <summary>
         /// Вызывается после удаления документов.
@@ -108,6 +108,6 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <param name="query">Запрос на удаление документа.</param>
         /// <param name="result">Результат обработки запроса.</param>
         /// <param name="exception">Исключение обработки запроса.</param>
-        Task OnAfterDelete(DocumentDeleteQuery query, DocumentDeleteQueryResult result, Exception exception);
+        Task OnAfterDelete(DocumentDeleteQuery<TDocument> query, DocumentDeleteQueryResult result, Exception exception);
     }
 }

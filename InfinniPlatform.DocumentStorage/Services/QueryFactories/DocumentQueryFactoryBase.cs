@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
-using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
@@ -21,50 +19,6 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         private readonly IQuerySyntaxTreeParser _syntaxTreeParser;
         private readonly IJsonObjectSerializer _objectSerializer;
 
-
-        public DocumentDeleteQuery CreateDeleteQuery(IHttpRequest request, string documentIdKey)
-        {
-            var documentId = ReadRequestParameter(request, documentIdKey);
-
-            if (!string.IsNullOrEmpty(documentId))
-            {
-                return new DocumentDeleteQuery
-                {
-                    DocumentId = documentId
-                };
-            }
-
-            throw new InvalidOperationException(Resources.MethodNotAllowed);
-        }
-
-
-        /// <summary>
-        /// Возвращает условие запроса.
-        /// </summary>
-        protected object ReadRequestQuery(IHttpRequest request)
-        {
-            return request.Query;
-        }
-
-        /// <summary>
-        /// Возвращает параметр запроса.
-        /// </summary>
-        protected string ReadRequestParameter(IHttpRequest request, string parameterName)
-        {
-            string value = null;
-
-            if (request.Parameters != null)
-            {
-                value = (string)request.Parameters[parameterName];
-            }
-
-            if (string.IsNullOrWhiteSpace(value) && request.Query != null)
-            {
-                value = (string)request.Query[parameterName];
-            }
-
-            return value;
-        }
 
         /// <summary>
         /// Возвращает форму запроса.
@@ -103,9 +57,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// <summary>
         /// Возвращает строку полнотекстового поиска.
         /// </summary>
-        protected string ParseSearch(object query)
+        protected static string ParseSearch(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(query, QuerySyntaxHelper.SearchParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxHelper.SearchParameterName);
 
             return parameter?.Trim();
         }
@@ -113,37 +67,52 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// <summary>
         /// Возвращает функцию фильтрации документов.
         /// </summary>
-        protected InvocationQuerySyntaxNode ParseFilter(object query)
+        protected InvocationQuerySyntaxNode ParseFilter(IHttpRequest request, string documentIdKey)
         {
-            var parameter = GetQueryParameter(query, QuerySyntaxHelper.FilterParameterName);
+            InvocationQuerySyntaxNode filter = null;
 
-            if (parameter != null)
+            // Если определен фильтр по идентификатору документа
+            var documentId = GetRequestParameter(request, documentIdKey);
+
+            if (!string.IsNullOrEmpty(documentId))
             {
-                var syntaxNodes = _syntaxTreeParser.Parse(parameter);
+                filter = new InvocationQuerySyntaxNode(QuerySyntaxHelper.EqMethodName);
+                filter.Arguments.Add(new IdentifierNameQuerySyntaxNode("_id"));
+                filter.Arguments.Add(new LiteralQuerySyntaxNode(documentId));
+            }
+            // Если определено условие фильтрации
+            else
+            {
+                var documentQuery = GetQueryParameter(request, QuerySyntaxHelper.FilterParameterName);
 
-                if (syntaxNodes != null && syntaxNodes.Count > 0)
+                if (documentQuery != null)
                 {
-                    if (syntaxNodes.Count == 1)
-                    {
-                        return syntaxNodes[0] as InvocationQuerySyntaxNode;
-                    }
+                    var syntaxNodes = _syntaxTreeParser.Parse(documentQuery);
 
-                    // По умолчанию все условия объединяются методом and()
-                    var and = new InvocationQuerySyntaxNode(QuerySyntaxHelper.AndMethodName);
-                    and.Arguments.AddRange(syntaxNodes);
-                    return and;
+                    if (syntaxNodes != null && syntaxNodes.Count > 0)
+                    {
+                        if (syntaxNodes.Count == 1)
+                        {
+                            return syntaxNodes[0] as InvocationQuerySyntaxNode;
+                        }
+
+                        // По умолчанию все условия объединяются методом and()
+                        var and = new InvocationQuerySyntaxNode(QuerySyntaxHelper.AndMethodName);
+                        and.Arguments.AddRange(syntaxNodes);
+                        return and;
+                    }
                 }
             }
 
-            return null;
+            return filter;
         }
 
         /// <summary>
         /// Возвращает набор функций выборки документов.
         /// </summary>
-        protected IEnumerable<InvocationQuerySyntaxNode> ParseSelect(object query)
+        protected IEnumerable<InvocationQuerySyntaxNode> ParseSelect(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(query, QuerySyntaxHelper.SelectParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxHelper.SelectParameterName);
 
             if (parameter != null)
             {
@@ -179,9 +148,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// <summary>
         /// Возвращает набор функций сортировки документов.
         /// </summary>
-        protected IEnumerable<InvocationQuerySyntaxNode> ParseOrder(object query)
+        protected IEnumerable<InvocationQuerySyntaxNode> ParseOrder(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(query, QuerySyntaxHelper.OrderParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxHelper.OrderParameterName);
 
             if (parameter != null)
             {
@@ -212,9 +181,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// <summary>
         /// Возвращает признак необходимости подсчета количества документов.
         /// </summary>
-        protected bool ParseCount(object query)
+        protected static bool ParseCount(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(query, QuerySyntaxHelper.CountParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxHelper.CountParameterName);
 
             if (parameter != null)
             {
@@ -228,9 +197,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// <summary>
         /// Возвращает количество документов, которое нужно пропустить.
         /// </summary>
-        protected int ParseSkip(object query)
+        protected static int ParseSkip(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(query, QuerySyntaxHelper.SkipParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxHelper.SkipParameterName);
 
             if (parameter != null)
             {
@@ -248,9 +217,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// <summary>
         /// Возвращает максимальное количество документов, которое нужно выбрать.
         /// </summary>
-        protected int ParseTake(object query)
+        protected static int ParseTake(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(query, QuerySyntaxHelper.TakeParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxHelper.TakeParameterName);
 
             if (parameter != null)
             {
@@ -266,11 +235,11 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         }
 
 
-        private static string GetQueryParameter(object query, string name)
+        private static string GetQueryParameter(IHttpRequest request, string name)
         {
-            dynamic queryAsDynamic = query;
+            dynamic query = request.Query;
 
-            var valueAsString = (string)queryAsDynamic[name];
+            var valueAsString = (string)query[name];
 
             if (!string.IsNullOrWhiteSpace(valueAsString))
             {
@@ -278,6 +247,23 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             }
 
             return null;
+        }
+
+        protected static string GetRequestParameter(IHttpRequest request, string parameterName)
+        {
+            string value = null;
+
+            if (request.Parameters != null)
+            {
+                value = (string)request.Parameters[parameterName];
+            }
+
+            if (string.IsNullOrWhiteSpace(value) && request.Query != null)
+            {
+                value = (string)request.Query[parameterName];
+            }
+
+            return value;
         }
     }
 }

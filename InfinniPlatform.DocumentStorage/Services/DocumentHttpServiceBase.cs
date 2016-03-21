@@ -14,22 +14,6 @@ namespace InfinniPlatform.DocumentStorage.Services
     /// </summary>
     internal abstract class DocumentHttpServiceBase : IHttpService
     {
-        /// <summary>
-        /// Базовый путь по умолчанию к методам сервиса документов.
-        /// </summary>
-        private const string DefaultServicePath = "/documents";
-
-        /// <summary>
-        /// Имя ключа с документом в запросе на сохранение документа.
-        /// </summary>
-        protected const string DocumentFormKey = "document";
-
-        /// <summary>
-        /// Имя сегмента с идентификатором документа в запросе на удаление документа.
-        /// </summary>
-        protected const string DocumentIdKey = "id";
-
-
         protected DocumentHttpServiceBase(IPerformanceLog performanceLog, ILog log)
         {
             _performanceLog = performanceLog;
@@ -43,11 +27,11 @@ namespace InfinniPlatform.DocumentStorage.Services
 
         void IHttpService.Load(IHttpServiceBuilder builder)
         {
-            builder.ServicePath = DefaultServicePath;
+            builder.ServicePath = DocumentHttpServiceConstants.DefaultServicePath;
 
             if (CanGet)
             {
-                builder.Get[$"/{DocumentType}"] = Get;
+                builder.Get[$"/{DocumentType}/{{{DocumentHttpServiceConstants.DocumentIdKey}?}}"] = Get;
             }
 
             if (CanPost)
@@ -57,7 +41,7 @@ namespace InfinniPlatform.DocumentStorage.Services
 
             if (CanDelete)
             {
-                builder.Delete[$"/{DocumentType}/{{id?}}"] = Delete;
+                builder.Delete[$"/{DocumentType}/{{{DocumentHttpServiceConstants.DocumentIdKey}?}}"] = Delete;
             }
 
             Load(builder);

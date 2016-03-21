@@ -22,27 +22,21 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         }
 
 
-        public DocumentGetQuery<TDocument> CreateGetQuery(IHttpRequest request)
+        public DocumentGetQuery<TDocument> CreateGetQuery(IHttpRequest request, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
         {
-            var query = ReadRequestQuery(request);
-
-            var result = new DocumentGetQuery<TDocument>();
-
-            if (query != null)
+            return new DocumentGetQuery<TDocument>
             {
-                result.Search = ParseSearch(query);
-                result.Filter = BuildFilter(query);
-                result.Select = BuildSelect(query);
-                result.Order = BuildOrder(query);
-                result.Count = ParseCount(query);
-                result.Skip = ParseSkip(query);
-                result.Take = ParseTake(query);
-            }
-
-            return result;
+                Search = ParseSearch(request),
+                Filter = BuildFilter(request, documentIdKey),
+                Select = BuildSelect(request),
+                Order = BuildOrder(request),
+                Count = ParseCount(request),
+                Skip = ParseSkip(request),
+                Take = ParseTake(request)
+            };
         }
 
-        public DocumentPostQuery<TDocument> CreatePostQuery(IHttpRequest request, string documentFormKey)
+        public DocumentPostQuery<TDocument> CreatePostQuery(IHttpRequest request, string documentFormKey = DocumentHttpServiceConstants.DocumentFormKey)
         {
             var document = ReadRequestForm<TDocument>(request, documentFormKey);
 
@@ -58,10 +52,25 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             throw new InvalidOperationException(Resources.MethodNotAllowed);
         }
 
-
-        private Expression<Func<TDocument, bool>> BuildFilter(object query)
+        public DocumentDeleteQuery<TDocument> CreateDeleteQuery(IHttpRequest request, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
         {
-            var filterMethod = ParseFilter(query);
+            var filter = BuildFilter(request, documentIdKey);
+
+            if (filter != null)
+            {
+                return new DocumentDeleteQuery<TDocument>
+                {
+                    Filter = filter
+                };
+            }
+
+            throw new InvalidOperationException(Resources.MethodNotAllowed);
+        }
+
+
+        private Expression<Func<TDocument, bool>> BuildFilter(IHttpRequest request, string documentIdKey)
+        {
+            var filterMethod = ParseFilter(request, documentIdKey);
 
             if (filterMethod != null)
             {
@@ -71,9 +80,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             return null;
         }
 
-        private Expression<Func<TDocument, object>> BuildSelect(object query)
+        private Expression<Func<TDocument, object>> BuildSelect(IHttpRequest request)
         {
-            var selectMethods = ParseSelect(query);
+            var selectMethods = ParseSelect(request);
 
             var selectMethod = selectMethods?.FirstOrDefault();
 
@@ -85,9 +94,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             return null;
         }
 
-        private IDictionary<Expression<Func<TDocument, object>>, DocumentSortOrder> BuildOrder(object query)
+        private IDictionary<Expression<Func<TDocument, object>>, DocumentSortOrder> BuildOrder(IHttpRequest request)
         {
-            var orderMethods = ParseOrder(query);
+            var orderMethods = ParseOrder(request);
 
             if (orderMethods != null)
             {

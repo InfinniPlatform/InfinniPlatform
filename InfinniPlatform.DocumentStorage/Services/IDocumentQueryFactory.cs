@@ -11,17 +11,17 @@ namespace InfinniPlatform.DocumentStorage.Services
         /// <summary>
         /// Создает запрос на получение документов.
         /// </summary>
-        DocumentGetQuery CreateGetQuery(IHttpRequest request);
+        DocumentGetQuery CreateGetQuery(IHttpRequest request, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey);
 
         /// <summary>
         /// Создает запрос на сохранение документа.
         /// </summary>
-        DocumentPostQuery CreatePostQuery(IHttpRequest request, string documentFormKey);
+        DocumentPostQuery CreatePostQuery(IHttpRequest request, string documentFormKey = DocumentHttpServiceConstants.DocumentFormKey);
 
         /// <summary>
         /// Создает запрос на удаление документа.
         /// </summary>
-        DocumentDeleteQuery CreateDeleteQuery(IHttpRequest request, string documentIdKey);
+        DocumentDeleteQuery CreateDeleteQuery(IHttpRequest request, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey);
     }
 
 
@@ -34,16 +34,16 @@ namespace InfinniPlatform.DocumentStorage.Services
         /// <summary>
         /// Создает запрос на получение документов.
         /// </summary>
-        DocumentGetQuery<TDocument> CreateGetQuery(IHttpRequest request);
+        DocumentGetQuery<TDocument> CreateGetQuery(IHttpRequest request, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey);
 
         /// <summary>
         /// Создает запрос на сохранение документа.
         /// </summary>
-        DocumentPostQuery<TDocument> CreatePostQuery(IHttpRequest request, string documentFormKey);
+        DocumentPostQuery<TDocument> CreatePostQuery(IHttpRequest request, string documentFormKey = DocumentHttpServiceConstants.DocumentFormKey);
 
         /// <summary>
         /// Создает запрос на удаление документа.
         /// </summary>
-        DocumentDeleteQuery CreateDeleteQuery(IHttpRequest request, string documentIdKey);
+        DocumentDeleteQuery<TDocument> CreateDeleteQuery(IHttpRequest request, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey);
     }
 }

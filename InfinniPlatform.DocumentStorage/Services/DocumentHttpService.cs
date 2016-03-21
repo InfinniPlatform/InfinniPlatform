@@ -124,7 +124,7 @@ namespace InfinniPlatform.DocumentStorage.Services
         protected override Task<object> Post(IHttpRequest request)
         {
             return ProcessRequestAsync(request,
-                r => _queryFactory.CreatePostQuery(r, DocumentFormKey),
+                r => _queryFactory.CreatePostQuery(r),
                 async query =>
                 {
                     IDictionary<string, BlobInfo> fileInfos = null;
@@ -175,7 +175,7 @@ namespace InfinniPlatform.DocumentStorage.Services
         protected override Task<object> Delete(IHttpRequest request)
         {
             return ProcessRequestAsync(request,
-                r => _queryFactory.CreateDeleteQuery(r, DocumentIdKey),
+                r => _queryFactory.CreateDeleteQuery(r),
                 async query =>
                 {
                     long? deletedCount = null;
@@ -184,7 +184,7 @@ namespace InfinniPlatform.DocumentStorage.Services
                     try
                     {
                         // Удаление документа из хранилища
-                        deletedCount = await _storage.DeleteOneAsync(f => f.Eq("_id", query.DocumentId));
+                        deletedCount = await _storage.DeleteManyAsync(query.Filter);
                     }
                     catch (DocumentStorageWriteException exception)
                     {

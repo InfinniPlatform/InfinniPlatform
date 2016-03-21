@@ -1,4 +1,7 @@
-﻿namespace InfinniPlatform.Sdk.Documents.Services
+﻿using System;
+using System.Linq.Expressions;
+
+namespace InfinniPlatform.Sdk.Documents.Services
 {
     /// <summary>
     /// Запрос на удаление документа.
@@ -6,8 +9,21 @@
     public class DocumentDeleteQuery
     {
         /// <summary>
-        /// Идентификатор документа.
+        /// Правило фильтрации документов.
         /// </summary>
-        public object DocumentId { get; set; }
+        public Func<IDocumentFilterBuilder, object> Filter { get; set; }
+    }
+
+
+    /// <summary>
+    /// Запрос на удаление документа.
+    /// </summary>
+    /// <typeparam name="TDocument">Тип документа.</typeparam>
+    public class DocumentDeleteQuery<TDocument>
+    {
+        /// <summary>
+        /// Правило фильтрации документов.
+        /// </summary>
+        public Expression<Func<TDocument, bool>> Filter { get; set; }
     }
 }
