@@ -71,12 +71,12 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// </summary>
         protected TDocument ReadRequestForm<TDocument>(IHttpRequest request, string documentFormKey)
         {
-            if (request.Headers.ContentType.StartsWith(HttpConstants.MultipartFormDataContentType)
-                || request.Headers.ContentType.StartsWith(HttpConstants.FormUrlencodedContentType))
+            if (request.Headers.ContentType.StartsWith(HttpConstants.MultipartFormDataContentType, StringComparison.OrdinalIgnoreCase)
+                || request.Headers.ContentType.StartsWith(HttpConstants.FormUrlencodedContentType, StringComparison.OrdinalIgnoreCase))
             {
                 if (request.Form != null)
                 {
-                    var documentString = request.Form[documentFormKey] as string;
+                    var documentString = (string)request.Form[documentFormKey];
 
                     if (!string.IsNullOrWhiteSpace(documentString))
                     {
@@ -84,9 +84,12 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
                     }
                 }
             }
-            else if (request.Form != null)
+            else if (request.Headers.ContentType.StartsWith(HttpConstants.JsonContentType, StringComparison.OrdinalIgnoreCase))
             {
-                return _objectSerializer.ConvertFromDynamic<TDocument>((object)request.Form);
+                if (request.Form != null)
+                {
+                    return _objectSerializer.ConvertFromDynamic<TDocument>((object)request.Form);
+                }
             }
             else if (request.Content != null)
             {
