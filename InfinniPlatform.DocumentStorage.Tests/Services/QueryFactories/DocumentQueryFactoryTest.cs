@@ -30,6 +30,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
 
             var request = CreateGetRequest(new Dictionary<string, object>
                                            {
+                                               { "id", null },
                                                { "search", "Full text search" },
                                                { "filter", "eq(prop1,'abc'),gt(prop2,15)" },
                                                { "select", "prop2" },
@@ -66,6 +67,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
 
             var request = CreateGetRequest(new Dictionary<string, object>
                                            {
+                                               { "id", null },
                                                { "search", "Full text search" },
                                                { "filter", "eq(prop1,'abc'),gt(prop2,15)" },
                                                { "select", "prop2" },
