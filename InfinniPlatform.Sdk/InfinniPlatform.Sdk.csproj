@@ -79,6 +79,11 @@
     <Compile Include="Documents\Services\DocumentGetQuery.cs" />
     <Compile Include="Documents\Services\DocumentPostQueryResult.cs" />
     <Compile Include="Documents\Services\DocumentQueryResult.cs" />
+    <Compile Include="RestApi\Documents\DocumentDeleteQueryClient.cs" />
+    <Compile Include="RestApi\Documents\DocumentGetQueryClient.cs" />
+    <Compile Include="RestApi\Documents\DocumentHttpServiceClient.cs" />
+    <Compile Include="RestApi\Documents\DocumentPostQueryClient.cs" />
+    <Compile Include="RestApi\Documents\HttpRequestFileClient.cs" />
     <Compile Include="Services\ServiceResult.cs" />
     <Compile Include="Documents\Services\DocumentSortOrder.cs" />
     <Compile Include="Documents\Services\IDocumentHttpServiceHandler.cs" />

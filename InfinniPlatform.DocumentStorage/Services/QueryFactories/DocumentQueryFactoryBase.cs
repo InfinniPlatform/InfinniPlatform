@@ -225,7 +225,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             {
                 int value;
 
-                if (int.TryParse(parameter, out value) && value >= 0)
+                if (int.TryParse(parameter, out value) && value > 0)
                 {
                     return Math.Min(value, 1000);
                 }

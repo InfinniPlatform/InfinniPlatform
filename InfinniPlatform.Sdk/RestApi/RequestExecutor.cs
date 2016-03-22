@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
@@ -44,6 +45,29 @@ namespace InfinniPlatform.Sdk.RestApi
         private readonly IJsonObjectSerializer _serializer;
 
 
+        public async Task<T> GetAsync<T>(string requestUri)
+        {
+            var response = await Client.GetAsync(requestUri);
+            var stream = await response.Content.ReadAsStreamAsync();
+            return _serializer.Deserialize<T>(stream);
+        }
+
+        public async Task<T> PostAsync<T>(string requestUri, MultipartFormDataContent requestContent)
+        {
+            var response = await Client.PostAsync(requestUri, requestContent);
+            var stream = await response.Content.ReadAsStreamAsync();
+            return _serializer.Deserialize<T>(stream);
+        }
+
+        public async Task<T> DeleteAsync<T>(string requestUri)
+        {
+            var response = await Client.DeleteAsync(requestUri);
+            var stream = await response.Content.ReadAsStreamAsync();
+            return _serializer.Deserialize<T>(stream);
+        }
+
+
+        [Obsolete]
         public Stream GetDownload(string uri)
         {
             var response = Client.GetAsync(uri).Result;
@@ -56,6 +80,7 @@ namespace InfinniPlatform.Sdk.RestApi
             return response.Content.ReadAsStreamAsync().Result;
         }
 
+        [Obsolete]
         public Stream PostDownload(string uri, object content = null)
         {
             var jsonContent = CreateJsonContent(content);
@@ -70,6 +95,7 @@ namespace InfinniPlatform.Sdk.RestApi
             return response.Content.ReadAsStreamAsync().Result;
         }
 
+        [Obsolete]
         public object PostObject(string uri, object content = null)
         {
             var jsonContent = CreateJsonContent(content);
@@ -86,6 +112,7 @@ namespace InfinniPlatform.Sdk.RestApi
             return DeserializeObject(result);
         }
 
+        [Obsolete]
         public IEnumerable<object> PostArray(string uri, object content = null)
         {
             var jsonContent = CreateJsonContent(content);
@@ -102,6 +129,7 @@ namespace InfinniPlatform.Sdk.RestApi
             return DeserializeArray(result);
         }
 
+        [Obsolete]
         public void PostFile(string uri, string fileName, string fileType, Stream fileContent)
         {
             var streamContent = new StreamContent(fileContent);
@@ -122,6 +150,7 @@ namespace InfinniPlatform.Sdk.RestApi
         }
 
 
+        [Obsolete]
         private StringContent CreateJsonContent(object body)
         {
             var bodyString = SerializeObject(body);
@@ -129,16 +158,19 @@ namespace InfinniPlatform.Sdk.RestApi
             return new StringContent(bodyString ?? string.Empty, Encoding.UTF8, HttpConstants.JsonContentType);
         }
 
+        [Obsolete]
         private string SerializeObject(object target)
         {
             return _serializer.ConvertToString(target);
         }
 
+        [Obsolete]
         private object DeserializeObject(string value)
         {
             return _serializer.Deserialize<DynamicWrapper>(value);
         }
 
+        [Obsolete]
         private IEnumerable<object> DeserializeArray(string value)
         {
             return _serializer.Deserialize<DynamicWrapper[]>(value);

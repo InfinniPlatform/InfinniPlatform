@@ -11,6 +11,7 @@ namespace InfinniPlatform.Sdk.RestApi
     /// <summary>
     /// Реализует REST-клиент для DocumentApi.
     /// </summary>
+    [Obsolete("Use InfinniPlatform.Sdk.RestApi.Documents.DocumentHttpServiceClient")]
     public sealed class DocumentApiClient : BaseRestClient
     {
         public DocumentApiClient(string server, int port, bool synchronous = false, IJsonObjectSerializer serializer = null) : base(server, port, serializer)

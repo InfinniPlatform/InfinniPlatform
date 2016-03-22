@@ -89,7 +89,7 @@ namespace InfinniPlatform.DocumentStorage.Services
                     // Установки диапазона выборки
                     cursor = cursor.Skip(query.Skip).Limit(query.Take);
 
-                    IEnumerable items;
+                    IEnumerable<object> items;
 
                     if (query.Select == null)
                     {

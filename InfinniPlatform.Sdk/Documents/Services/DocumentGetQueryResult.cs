@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Sdk.Documents.Services
 {
@@ -10,7 +11,7 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <summary>
         /// Список документов.
         /// </summary>
-        public IEnumerable Items { get; set; }
+        public IEnumerable<object> Items { get; set; }
 
         /// <summary>
         /// Количество документов.
