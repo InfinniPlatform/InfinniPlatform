@@ -78,6 +78,7 @@
     <Compile Include="Storage\DocumentStorageGenericIntegrationTest.cs" />
     <Compile Include="Storage\DocumentStorageIntegrationTest.cs" />
     <Compile Include="Storage\DocumentStorageTestHelpers.cs" />
+    <Compile Include="Storage\SystemDocumentStorageIntegrationTest.cs" />
     <Compile Include="TestEntities\FakeDocument.cs" />
     <Compile Include="TestEntities\Article.cs" />
     <Compile Include="TestEntities\ArticleProjection.cs" />

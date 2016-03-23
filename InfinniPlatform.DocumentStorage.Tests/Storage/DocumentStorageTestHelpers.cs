@@ -18,6 +18,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
         public const string FakeTenant = "FakeTenant";
         public const string FakeUserId = "FakeUserId";
         public const string FakeUserName = "FakeUserName";
+        public const string SystemTenant = "system";
 
 
         public static DocumentStorageImpl GetStorage(string documentType = null)
@@ -62,6 +63,20 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
                 new DocumentStorageInterceptorProvider(null));
         }
 
+        public static DocumentStorageImpl GetEmptySystemStorage(string documentType, params DocumentIndex[] indexes)
+        {
+            var tenantProvider = GetSystemTenantProvider();
+            var userIdentityProvider = GetUserIdentityProvider();
+
+            return new DocumentStorageImpl(
+                documentType,
+                GetStorageProviderFactory(d => MongoTestHelpers.GetEmptyStorageProvider(documentType, indexes)),
+                new DocumentStorageIdProvider(new MongoDocumentIdGenerator()),
+                new SystemDocumentStorageHeaderProvider(tenantProvider, userIdentityProvider),
+                new SystemDocumentStorageFilterProvider(tenantProvider),
+                new DocumentStorageInterceptorProvider(null));
+        }
+
         public static DocumentStorageImpl<TDocument> GetEmptyStorage<TDocument>(string documentType, params DocumentIndex[] indexes) where TDocument : Document
         {
             var tenantProvider = GetTenantProvider();
@@ -94,6 +109,13 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
         {
             var tenantProvider = new Mock<ITenantProvider>();
             tenantProvider.Setup(i => i.GetTenantId()).Returns(FakeTenant);
+            return tenantProvider.Object;
+        }
+
+        private static ISystemTenantProvider GetSystemTenantProvider()
+        {
+            var tenantProvider = new Mock<ISystemTenantProvider>();
+            tenantProvider.Setup(i => i.GetTenantId()).Returns(SystemTenant);
             return tenantProvider.Object;
         }
 
