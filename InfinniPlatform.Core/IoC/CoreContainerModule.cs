@@ -47,6 +47,10 @@ namespace InfinniPlatform.Core.IoC
                    .As<ITenantProvider>()
                    .SingleInstance();
 
+            builder.RegisterType<SystemTenantProvider>()
+                   .As<ISystemTenantProvider>()
+                   .SingleInstance();
+
             // Transaction
 
             builder.RegisterType<DocumentTransactionScopeProvider>()

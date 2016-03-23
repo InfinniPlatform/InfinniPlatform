@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 
+using InfinniPlatform.Core.Documents;
 using InfinniPlatform.Core.Security;
-using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.SystemConfig.Properties;
@@ -14,20 +14,16 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         private const string UserStorageTypeName = "UserStore";
 
         public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache,
-                                                     IDocumentStorageFactory documentStorageFactory,
-                                                     IDocumentStorageProviderFactory storageProviderFactory)
+                                                     ISystemDocumentStorageFactory documentStorageFactory)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
             _userCache = userCache;
-            _userStorage = new Lazy<IDocumentStorage>(() => documentStorageFactory.GetStorage(UserStorageTypeName));
-            _userStorageProvider = new Lazy<IDocumentStorageProvider>(() => storageProviderFactory.GetStorageProvider(UserStorageTypeName));
+            _userStorage = new Lazy<ISystemDocumentStorage>(() => documentStorageFactory.GetStorage(UserStorageTypeName));
         }
 
-
         private readonly Lazy<ApplicationUserStoreCache> _userCache;
-        private readonly Lazy<IDocumentStorage> _userStorage;
-        private readonly Lazy<IDocumentStorageProvider> _userStorageProvider;
+        private readonly Lazy<ISystemDocumentStorage> _userStorage;
 
         public void CreateUser(ApplicationUser user)
         {
@@ -43,16 +39,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         {
             SaveUser(user);
             UpdateUserInCache(user);
-        }
-
-        private void SaveUser(ApplicationUser user)
-        {
-            user.SecurityStamp = CreateUnique();
-
-            var dynamicUser = (DynamicWrapper)JsonObjectSerializer.Default.ConvertToDynamic(user);
-            dynamicUser["_id"] = user.Id;
-
-            _userStorage.Value.ReplaceOne(dynamicUser, f => f.Eq("_id", user.Id), true);
         }
 
         public void DeleteUser(ApplicationUser user)
@@ -90,20 +76,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
         public ApplicationUser FindUserByName(string name)
         {
             return FindUserByUserName(name) ?? FindUserByEmail(name) ?? FindUserByPhoneNumber(name);
-        }
-
-        private ApplicationUser FindUser(string property, string value)
-        {
-            var dynamicUser = _userStorageProvider.Value.Find(f => f.And(f.Exists("_header._deleted", false), f.Eq(property, value))).FirstOrDefault();
-
-            if (dynamicUser != null)
-            {
-                var user = JsonObjectSerializer.Default.ConvertFromDynamic<ApplicationUser>(dynamicUser);
-                user.Id = (string)dynamicUser["_id"];
-                return user;
-            }
-
-            return null;
         }
 
         public void AddUserToRole(ApplicationUser user, string roleName)
@@ -187,6 +159,29 @@ namespace InfinniPlatform.SystemConfig.UserStorage
             }
         }
 
+        private void SaveUser(ApplicationUser user)
+        {
+            user.SecurityStamp = CreateUnique();
+
+            var dynamicUser = (DynamicWrapper)JsonObjectSerializer.Default.ConvertToDynamic(user);
+            dynamicUser["_id"] = user.Id;
+
+            _userStorage.Value.ReplaceOne(dynamicUser, f => f.Eq("_id", user.Id), true);
+        }
+
+        private ApplicationUser FindUser(string property, string value)
+        {
+            var dynamicUser = _userStorage.Value.Find(f => f.And(f.Exists("_header._deleted", false), f.Eq(property, value))).FirstOrDefault();
+
+            if (dynamicUser != null)
+            {
+                var user = JsonObjectSerializer.Default.ConvertFromDynamic<ApplicationUser>(dynamicUser);
+                user.Id = (string)dynamicUser["_id"];
+                return user;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Обновляет сведения о пользователе в локальном кэше.
@@ -223,7 +218,6 @@ namespace InfinniPlatform.SystemConfig.UserStorage
 
             return user;
         }
-
 
         private static string CreateUnique()
         {

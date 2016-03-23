@@ -7,7 +7,7 @@ using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
-    internal sealed class DocumentStorageHeaderProvider : IDocumentStorageHeaderProvider
+    internal class DocumentStorageHeaderProvider : IDocumentStorageHeaderProvider
     {
         public DocumentStorageHeaderProvider(ITenantProvider tenantProvider, IUserIdentityProvider userIdentityProvider)
         {

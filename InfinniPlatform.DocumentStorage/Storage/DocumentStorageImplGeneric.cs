@@ -9,7 +9,7 @@ using InfinniPlatform.Sdk.Documents.Interceptors;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
-    internal sealed class DocumentStorageImpl<TDocument> : IDocumentStorage<TDocument>, IDocumentStorageBulkExecutor where TDocument : Document
+    internal class DocumentStorageImpl<TDocument> : IDocumentStorage<TDocument>, IDocumentStorageBulkExecutor where TDocument : Document
     {
         public DocumentStorageImpl(IDocumentStorageProviderFactory storageProviderFactory,
                                    IDocumentStorageIdProvider storageIdProvider,
