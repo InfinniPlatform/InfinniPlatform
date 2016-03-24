@@ -1,43 +1,14 @@
 {
-  "Id": "622b5316-a3b7-4e1b-b3ac-db138d75e93c",
-  "Secured": true,
   "Name": "Comment",
   "Caption": "Комментарий",
   "Description": "",
-  "Versioning": 2,
-  "Version": "1.0.0.0",
-  "MetadataIndex": "Comment",
-  "Services": [
-    {
-      "Id": "b6be91a0-8ac0-4378-9bb7-be36d3f5e9cb",
-      "Name": "OnSaveComment",
-      "Caption": "OnSaveComment"
-    }
-  ],
-  "Processes": [
-    {
-      "Id": "68684032-df60-4a42-bc58-045f7ecdafa8",
-      "Name": "Default",
-      "Caption": "Default business process"
-    }
-  ],
-  "Scenarios": [
-    {
-      "Id": "e31840bf-fa8a-4651-a8fd-37ea02662784",
-      "Name": "ActionUnitOnSaveComment",
-      "Caption": "ActionUnitOnSaveComment",
-      "Description": ""
-    }
-  ],
-  "Generators": [],
-  "Views": [],
-  "PrintViews": [],
-  "ValidationWarnings": [],
-  "ValidationErrors": [],
-  "DocumentStatuses": [],
-  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
-  "__ConfigId": "systemconfig",
-  "__DocumentId": "documentmetadata",
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": "InfinniPlatform.Sdk.Tests.TestData.ActionUnitOnSaveComment",
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": null,
+    "RegisterPoint": null
+  },
   "Schema": {
     "Type": "Object",
     "Caption": "Schema",

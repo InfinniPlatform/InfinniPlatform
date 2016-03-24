@@ -1,24 +1,14 @@
 {
-  "Id": "1e82cd00-9e28-49c4-a965-c7a78eb69cc0",
-  "Secured": true,
   "Name": "Catalogue",
   "Caption": "Каталог игр",
   "Description": "",
-  "Versioning": 2,
-  "Version": "1.0.0.0",
-  "MetadataIndex": "Catalogue",
-  "Services": [],
-  "Processes": [],
-  "Scenarios": [],
-  "Generators": [],
-  "Views": [],
-  "PrintViews": [],
-  "ValidationWarnings": [],
-  "ValidationErrors": [],
-  "DocumentStatuses": [],
-  "ParentId": "f17a31e9-3872-419e-882f-b9cdc3a29e76",
-  "__ConfigId": "systemconfig",
-  "__DocumentId": "documentmetadata",
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": null,
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": null,
+    "RegisterPoint": null
+  },
   "Schema": {
     "Type": "Object",
     "Caption": "Schema",
@@ -26,7 +16,7 @@
       "Name": {
         "Caption": "Наименование",
         "Type": "String",
-	"Sortable": true
+        "Sortable": true
       },
       "Price": {
         "Caption": "Цена",
