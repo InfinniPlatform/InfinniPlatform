@@ -56,10 +56,14 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
             var documentEvents = _metadataComponent.GetDocumentEvents(documentType);
 
             // Скрипт, который выполняется для проверки возможности сохранения документа
-            string onValidateAction = (documentEvents!=null && documentEvents.ValidationPointError != null) ? documentEvents.ValidationPointError.ScenarioId : null;
+            string onValidateAction = string.IsNullOrEmpty(documentEvents.ValidationPointError)
+                                          ? null
+                                          : documentEvents.ValidationPointError;
 
             // Скрипт, который выполняется после успешного сохранения документа
-            string onSuccessAction = (documentEvents != null && documentEvents.SuccessPoint != null) ? documentEvents.SuccessPoint.ScenarioId : null;
+            string onSuccessAction = string.IsNullOrEmpty(documentEvents.SuccessPoint)
+                                          ? null
+                                          : documentEvents.SuccessPoint;
 
             foreach (dynamic documentInstance in documentInstances)
             {
@@ -76,7 +80,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
                 {
                     // Вызов прикладного скрипта для проверки документа
                     ActionContext actionContext = CreateActionContext(documentType, documentInstance);
-                    _scriptProcessor.InvokeScript(onValidateAction, actionContext);
+                    _scriptProcessor.InvokeScriptByType(onValidateAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
                     {
@@ -90,7 +94,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
                 {
                     // Вызов скрипта для пост-обработки документа перед его сохранением
                     ActionContext actionContext = CreateActionContext(documentType, documentInstance);
-                    _scriptProcessor.InvokeScript(onSuccessAction, actionContext);
+                    _scriptProcessor.InvokeScriptByType(onSuccessAction, actionContext);
 
                     // Предполагается, что скрипт может заменить оригинальный документ
                     documentToSave = actionContext.Item;
@@ -118,10 +122,14 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
             var documentEvents = _metadataComponent.GetDocumentEvents(documentType);
 
             // Скрипт, который выполняется для проверки возможности удаления документа
-            string onValidateAction = (documentEvents.DeletingDocumentValidationPoint != null) ? documentEvents.DeletingDocumentValidationPoint.ScenarioId : null;
+            string onValidateAction = string.IsNullOrEmpty(documentEvents.DeletingDocumentValidationPoint)
+                                          ? null
+                                          : documentEvents.DeletingDocumentValidationPoint;
 
             // Скрипт, который выполняется после успешного удаления документа
-            string onSuccessAction = (documentEvents.DeletePoint != null) ? documentEvents.DeletePoint.ScenarioId : null;
+            string onSuccessAction = string.IsNullOrEmpty(documentEvents.DeletePoint)
+                                          ? null
+                                          : documentEvents.DeletePoint;
 
             foreach (var documentId in documentIds)
             {
@@ -129,7 +137,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
                 {
                     // Вызов прикладного скрипта для проверки документа
                     ActionContext actionContext = CreateActionContext(documentType, documentId);
-                    _scriptProcessor.InvokeScript(onValidateAction, actionContext);
+                    _scriptProcessor.InvokeScriptByType(onValidateAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
                     {
@@ -144,7 +152,7 @@ namespace InfinniPlatform.DocumentStorage.Obsolete
                 {
                     // Вызов скрипта для пост-обработки документа перед его сохранением
                     ActionContext actionContext = CreateActionContext(documentType, documentId);
-                    _scriptProcessor.InvokeScript(onSuccessAction, actionContext);
+                    _scriptProcessor.InvokeScriptByType(onSuccessAction, actionContext);
 
                     if (!CheckActionResult(actionContext, result))
                     {

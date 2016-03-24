@@ -30,39 +30,6 @@ namespace InfinniPlatform.SystemConfig.Runtime
         private readonly ILog _log;
 
 
-        public void InvokeScript(string actionUnitId, IActionContext actionUnitContext)
-        {
-            var start = DateTime.Now;
-
-            string actionUnitType = null;
-
-            try
-            {
-                // TODO: Уже нет смысла хранить скрипты, как сущность конфигурации
-
-                var scriptMetadata = _metadataApi.GetAction(actionUnitContext.DocumentType, actionUnitId);
-
-                if (scriptMetadata == null)
-                {
-                    throw new ArgumentException(string.Format(Resources.ActionUnitMetadataIsNotRegistered, actionUnitId));
-                }
-
-                actionUnitType = scriptMetadata.Name;
-
-                var actionUnit = _actionUnitFactory.CreateActionUnit(actionUnitType);
-
-                actionUnit(actionUnitContext);
-
-                LogSuccessComplete(actionUnitId, actionUnitType, start);
-            }
-            catch (Exception e)
-            {
-                LogErrorComplete(actionUnitId, actionUnitType, start, Resources.ActionUnitCompletedWithError, e);
-
-                throw;
-            }
-        }
-
         public void InvokeScriptByType(string actionUnitType, IActionContext actionUnitContext)
         {
             var start = DateTime.Now;

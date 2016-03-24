@@ -93,40 +93,14 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             IEnumerable<dynamic> menuList = configuration.Menu;
             IEnumerable<dynamic> registerList = configuration.Registers;
             IEnumerable<dynamic> documentList = configuration.Documents;
+            IEnumerable<dynamic> viewList = configuration.Views;
+            IEnumerable<dynamic> printViewList = configuration.PrintView;
 
             _metadataApi.AddMenu(menuList);
             _metadataApi.AddRegisters(registerList);
-
-            foreach (var document in documentList)
-            {
-                var processes = document.Processes as IEnumerable<dynamic>;
-
-                if (processes != null)
-                {
-                    var defaultProcess = processes.FirstOrDefault(i => string.Equals(i.Name, "Default", StringComparison.OrdinalIgnoreCase));
-
-                    if (defaultProcess != null)
-                    {
-                        var transitions = defaultProcess.Transitions as IEnumerable<dynamic>;
-
-                        if (transitions != null)
-                        {
-                            document.Events = transitions.FirstOrDefault();
-                        }
-                    }
-                }
-            }
-
             _metadataApi.AddDocuments(documentList);
-
-            foreach (var document in documentList)
-            {
-                string documentName = document.Name;
-
-                _metadataApi.AddActions(documentName, document.Scenarios);
-                _metadataApi.AddViews(documentName, document.Views);
-                _metadataApi.AddPrintViews(documentName, document.PrintViews);
-            }
+            _metadataApi.AddViews(viewList);
+            _metadataApi.AddPrintViews(printViewList);
         }
 
 
@@ -147,9 +121,11 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         {
             dynamic configuration = new DynamicWrapper { { "Name", Path.GetDirectoryName(configDirectory) } };
 
+            configuration.Documents = LoadDocumentsMetadata(configDirectory);
             configuration.Menu = LoadItemsMetadata(configDirectory, "Menu");
             configuration.Registers = LoadItemsMetadata(configDirectory, "Registers");
-            configuration.Documents = LoadDocumentsMetadata(configDirectory);
+            configuration.Views = LoadItemsMetadata(configDirectory, "Views");
+            configuration.PrintViews = LoadItemsMetadata(configDirectory, "PrintViews");
 
             return configuration;
         }

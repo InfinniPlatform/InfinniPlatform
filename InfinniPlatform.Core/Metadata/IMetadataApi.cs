@@ -23,18 +23,13 @@ namespace InfinniPlatform.Core.Metadata
         IEnumerable<object> GetDocumentIndexes(string documentName);
 
 
-        IEnumerable<string> GetActionNames(string documentName);
+        IEnumerable<string> GetViewNames();
 
-        dynamic GetAction(string documentName, string actionName);
-
-
-        IEnumerable<string> GetViewNames(string documentName);
-
-        dynamic GetView(string documentName, string viewName);
+        dynamic GetView(string viewName);
 
 
-        IEnumerable<string> GetPrintViewNames(string documentName);
+        IEnumerable<string> GetPrintViewNames();
 
-        dynamic GetPrintView(string documentName, string printViewName);
+        dynamic GetPrintView(string printViewName);
     }
 }

@@ -10,11 +10,6 @@ namespace InfinniPlatform.Core.Runtime
         /// <summary>
         /// Выполняет прикладной скрипт.
         /// </summary>
-        void InvokeScript(string actionUnitId, IActionContext actionUnitContext);
-
-        /// <summary>
-        /// Выполняет прикладной скрипт.
-        /// </summary>
         void InvokeScriptByType(string actionUnitType, IActionContext actionUnitContext);
     }
 }

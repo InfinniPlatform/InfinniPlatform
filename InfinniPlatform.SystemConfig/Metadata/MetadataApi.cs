@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
@@ -129,111 +128,67 @@ namespace InfinniPlatform.SystemConfig.Metadata
                 : null;
         }
 
-        // Action
-
-        public void AddActions(string documentName, IEnumerable<dynamic> actions)
-        {
-            if (!string.IsNullOrEmpty(documentName) && actions != null)
-            {
-                DocumentMetadata document;
-
-                if (_documents.TryGetValue(documentName, out document))
-                {
-                    document.AddActions(actions);
-                }
-            }
-        }
-
-        public IEnumerable<string> GetActionNames(string documentName)
-        {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetActionNames()
-                : Enumerable.Empty<string>();
-        }
-
-        public dynamic GetAction(string documentName, string actionName)
-        {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && !string.IsNullOrEmpty(actionName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetAction(actionName)
-                : null;
-        }
-
         // View
 
-        public void AddViews(string documentName, IEnumerable<dynamic> views)
-        {
-            if (!string.IsNullOrEmpty(documentName) && views != null)
-            {
-                DocumentMetadata document;
+        private readonly Dictionary<string, dynamic> _views = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
 
-                if (_documents.TryGetValue(documentName, out document))
+        public void AddViews(IEnumerable<dynamic> viewList)
+        {
+            if (viewList != null)
+            {
+                foreach (var view in viewList)
                 {
-                    document.AddViews(views);
+                    var viewName = view.Name ?? string.Empty;
+
+                    _views[viewName] = view;
                 }
             }
         }
 
-        public IEnumerable<string> GetViewNames(string documentName)
+        public IEnumerable<string> GetViewNames()
         {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetViewNames()
-                : Enumerable.Empty<string>();
+            return _views.Keys;
         }
 
-        public dynamic GetView(string documentName, string viewName)
+        public dynamic GetView(string viewName)
         {
-            DocumentMetadata document;
+            dynamic view;
 
-            return !string.IsNullOrEmpty(documentName)
-                   && !string.IsNullOrEmpty(viewName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetView(viewName)
+            return !string.IsNullOrEmpty(viewName)
+                   && _views.TryGetValue(viewName, out view)
+                ? view
                 : null;
         }
 
         // PrintView
 
-        public void AddPrintViews(string documentName, IEnumerable<dynamic> printViews)
-        {
-            if (!string.IsNullOrEmpty(documentName) && printViews != null)
-            {
-                DocumentMetadata document;
+        private readonly Dictionary<string, dynamic> _printViews = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
 
-                if (_documents.TryGetValue(documentName, out document))
+        public void AddPrintViews(IEnumerable<dynamic> printViewList)
+        {
+            if (printViewList != null)
+            {
+                foreach (var printView in printViewList)
                 {
-                    document.AddPrintViews(printViews);
+                    var printViewName = printView.Name ?? string.Empty;
+
+                    _printViews[printViewName] = printView;
                 }
             }
         }
 
-        public IEnumerable<string> GetPrintViewNames(string documentName)
+        public IEnumerable<string> GetPrintViewNames()
         {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetPrintViewNames()
-                : Enumerable.Empty<string>();
+            return _printViews.Keys;
         }
 
-        public dynamic GetPrintView(string documentName, string printViewName)
+        public dynamic GetPrintView(string printViewName)
         {
-            DocumentMetadata document;
+            dynamic printView;
 
-            return !string.IsNullOrEmpty(documentName)
-                   && !string.IsNullOrEmpty(printViewName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetPrintView(printViewName)
+            return !string.IsNullOrEmpty(printViewName)
+                   && _printViews.TryGetValue(printViewName, out printView)
+                ? printView
                 : null;
         }
 
@@ -245,102 +200,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
             public dynamic Events;
 
             public IEnumerable<object> Indexes;
-
-            // Action
-
-            private readonly Dictionary<string, dynamic> _actions = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
-
-            public void AddActions(IEnumerable<dynamic> actionList)
-            {
-                if (actionList != null)
-                {
-                    foreach (var action in actionList)
-                    {
-                        var actionName = action.Id ?? string.Empty;
-
-                        _actions[actionName] = action;
-                    }
-                }
-            }
-
-            public IEnumerable<string> GetActionNames()
-            {
-                return _actions.Keys;
-            }
-
-            public dynamic GetAction(string actionName)
-            {
-                dynamic action;
-
-                return !string.IsNullOrEmpty(actionName)
-                       && _actions.TryGetValue(actionName, out action)
-                    ? action
-                    : null;
-            }
-
-            // View
-
-            private readonly Dictionary<string, dynamic> _views = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
-
-            public void AddViews(IEnumerable<dynamic> viewList)
-            {
-                if (viewList != null)
-                {
-                    foreach (var view in viewList)
-                    {
-                        var viewName = view.Name ?? string.Empty;
-
-                        _views[viewName] = view;
-                    }
-                }
-            }
-
-            public IEnumerable<string> GetViewNames()
-            {
-                return _views.Keys;
-            }
-
-            public dynamic GetView(string viewName)
-            {
-                dynamic view;
-
-                return !string.IsNullOrEmpty(viewName)
-                       && _views.TryGetValue(viewName, out view)
-                    ? view
-                    : null;
-            }
-
-            // PrintView
-
-            private readonly Dictionary<string, dynamic> _printViews = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
-
-            public void AddPrintViews(IEnumerable<dynamic> printViewList)
-            {
-                if (printViewList != null)
-                {
-                    foreach (var printView in printViewList)
-                    {
-                        var printViewName = printView.Name ?? string.Empty;
-
-                        _printViews[printViewName] = printView;
-                    }
-                }
-            }
-
-            public IEnumerable<string> GetPrintViewNames()
-            {
-                return _printViews.Keys;
-            }
-
-            public dynamic GetPrintView(string printViewName)
-            {
-                dynamic printView;
-
-                return !string.IsNullOrEmpty(printViewName)
-                       && _printViews.TryGetValue(printViewName, out printView)
-                    ? printView
-                    : null;
-            }
         }
     }
 }
