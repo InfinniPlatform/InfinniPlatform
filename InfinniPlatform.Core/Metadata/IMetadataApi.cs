@@ -6,12 +6,9 @@ namespace InfinniPlatform.Core.Metadata
 {
     public interface IMetadataApi
     {
-        IEnumerable<string> GetNames(string startsWithMask);
+        IEnumerable<string> GetMetadataItemNames(string partOfFullName);
 
         dynamic GetMetadata(string metadataName);
-
-
-        IEnumerable<string> GetDocumentNames();
 
         dynamic GetDocumentSchema(string documentName);
 

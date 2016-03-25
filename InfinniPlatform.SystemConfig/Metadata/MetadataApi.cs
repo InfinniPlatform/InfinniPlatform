@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
@@ -9,13 +8,14 @@ namespace InfinniPlatform.SystemConfig.Metadata
 {
     internal sealed class MetadataApi : IMetadataApi
     {
-        private readonly Dictionary<string, DynamicWrapper> _itemsMetadata = new Dictionary<string, DynamicWrapper>(StringComparer.OrdinalIgnoreCase);
+        //TODO Избавиться от захардкоженых значений типа "Documents" после удаления deprecated кода работы с ElasticSearch.
+        private readonly Dictionary<MetadataUniqueName, DynamicWrapper> _itemsMetadata = new Dictionary<MetadataUniqueName, DynamicWrapper>();
 
-        public IEnumerable<string> GetNames(string startsWithMask)
+        public IEnumerable<string> GetMetadataItemNames(string partOfFullName)
         {
             return _itemsMetadata.Keys
-                                 .Where(i => i.StartsWith(startsWithMask))
-                                 .Select(i => i.Replace(startsWithMask, string.Empty));
+                                 .Where(i => i.Namespace.Contains(partOfFullName))
+                                 .Select(i => i.Name);
         }
 
         public dynamic GetMetadata(string metadataName)
@@ -23,53 +23,42 @@ namespace InfinniPlatform.SystemConfig.Metadata
             DynamicWrapper metadata;
 
             return !string.IsNullOrEmpty(metadataName)
-                   && _itemsMetadata.TryGetValue(metadataName, out metadata)
+                   && _itemsMetadata.TryGetValue(new MetadataUniqueName(metadataName), out metadata)
                        ? metadata
                        : null;
         }
 
-        public IEnumerable<string> GetDocumentNames()
-        {
-            return GetNames("Documents.");
-        }
-
         public dynamic GetDocumentSchema(string documentName)
         {
-            documentName = $"Documents.{documentName}";
-
             DynamicWrapper document;
 
             return !string.IsNullOrEmpty(documentName)
-                   && _itemsMetadata.TryGetValue(documentName, out document)
+                   && _itemsMetadata.TryGetValue(new MetadataUniqueName("Documents", documentName), out document)
                        ? document["Schema"]
                        : null;
         }
 
         public dynamic GetDocumentEvents(string documentName)
         {
-            documentName = $"Documents.{documentName}";
-
             DynamicWrapper document;
 
             return !string.IsNullOrEmpty(documentName)
-                   && _itemsMetadata.TryGetValue(documentName, out document)
+                   && _itemsMetadata.TryGetValue(new MetadataUniqueName("Documents", documentName), out document)
                        ? document["Events"]
                        : null;
         }
 
         public IEnumerable<object> GetDocumentIndexes(string documentName)
         {
-            documentName = $"Documents.{documentName}";
-
             DynamicWrapper document;
 
             return !string.IsNullOrEmpty(documentName)
-                   && _itemsMetadata.TryGetValue(documentName, out document)
+                   && _itemsMetadata.TryGetValue(new MetadataUniqueName("Documents", documentName), out document)
                        ? document["Indexes"] as IEnumerable<object>
                        : null;
         }
 
-        public void AddItemsMetadata(Dictionary<string, DynamicWrapper> itemsDictionary)
+        public void AddItemsMetadata(Dictionary<MetadataUniqueName, DynamicWrapper> itemsDictionary)
         {
             foreach (var item in itemsDictionary)
             {
@@ -81,7 +70,6 @@ namespace InfinniPlatform.SystemConfig.Metadata
                 {
                     _itemsMetadata.Add(item.Key, item.Value);
                 }
-                
             }
         }
     }

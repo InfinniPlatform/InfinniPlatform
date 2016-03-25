@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
@@ -114,11 +115,11 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             return configuration;
         }
 
-        private static Dictionary<string, DynamicWrapper> LoadItemsMetadata(string documentDirectory)
+        private static Dictionary<MetadataUniqueName, DynamicWrapper> LoadItemsMetadata(string documentDirectory)
         {
             var enumerateDirectories = Directory.EnumerateDirectories(documentDirectory);
 
-            var itemsMetadataCache = new Dictionary<string, DynamicWrapper>();
+            var itemsMetadataCache = new Dictionary<MetadataUniqueName, DynamicWrapper>();
 
             foreach (var dir in enumerateDirectories)
             {
@@ -128,7 +129,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
                 foreach (var item in itemsMetadata)
                 {
-                    itemsMetadataCache.Add($"{item["Namespace"]}.{item["Name"]}", item);
+                    itemsMetadataCache.Add(new MetadataUniqueName((string)item["Namespace"], (string)item["Name"]), item);
                 }
             }
 
