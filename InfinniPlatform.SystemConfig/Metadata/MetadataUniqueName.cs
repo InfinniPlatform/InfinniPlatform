@@ -24,7 +24,7 @@ namespace InfinniPlatform.Core.Metadata
 
         public bool Equals(MetadataUniqueName other)
         {
-            return Namespace.Equals(other.Namespace) && Name.Equals(other.Name);
+            return Namespace.Equals(other.Namespace, StringComparison.OrdinalIgnoreCase) && Name.Equals(other.Name, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string ToString()
@@ -34,7 +34,7 @@ namespace InfinniPlatform.Core.Metadata
 
         public override int GetHashCode()
         {
-            return Namespace.GetHashCode() ^ Name.GetHashCode();
+            return Namespace.ToLower().GetHashCode() ^ Name.ToLower().GetHashCode();
         }
     }
 }
