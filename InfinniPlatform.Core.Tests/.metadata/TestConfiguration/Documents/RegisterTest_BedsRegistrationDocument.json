@@ -1,0 +1,33 @@
+{
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": "InfinniPlatform.Core.Tests.RestBehavior.TestActions.ActionUnitAddNewBedToRoomMoveAction",
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": "InfinniPlatform.Core.Tests.RestBehavior.TestActions.ActionUnitDeleteRegisterEntriesAction",
+    "RegisterPoint": null
+  },
+  "Namespace": "Documents",
+  "Name": "RegisterTest_BedsRegistrationDocument",
+  "Caption": "Реестр коек",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Room": {
+        "Caption": "Палата",
+        "Type": "String"
+      },
+      "Bed": {
+        "Caption": "Койка",
+        "Type": "String"
+      },
+      "Date": {
+        "Caption": "Дата",
+        "Type": "DateTime"
+      },
+      "Info": {
+        "Type": "String"
+      }
+    }
+  }
+}

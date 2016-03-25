@@ -1,0 +1,34 @@
+{
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": null,
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": null,
+    "RegisterPoint": null
+  },
+  "Namespace": "Documents",
+  "Name": "RegisterTotals_RegisterTest_InfoRegister",
+  "Caption": "Служебный документ регистра, хранящий промежуточные итоги",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "DocumentDate": {
+        "Caption": "Дата регистрируемого документа",
+        "Type": "DateTime"
+      },
+      "Room": {
+        "Caption": "Номер палаты",
+        "Type": "String"
+      },
+      "Bed": {
+        "Caption": "Номер койки",
+        "Type": "String"
+      },
+      "Value": {
+        "Caption": "Изменение количества коек",
+        "Type": "Integer"
+      }
+    }
+  }
+}

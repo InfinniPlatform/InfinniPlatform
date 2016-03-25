@@ -1,0 +1,42 @@
+{
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": "InfinniPlatform.Core.Tests.RestBehavior.TestActions.ActionUnitHospitalRegisterMoveAction",
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": null,
+    "RegisterPoint": null
+  },
+  "Namespace": "Documents",
+  "Name": "RegisterTest_PatientMovementDocument",
+  "Caption": "Движения пациентов по палатам",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "PatientName": {
+        "Caption": "Имя пациента",
+        "Type": "String"
+      },
+      "OldRoom": {
+        "Caption": "Предыдущая палата",
+        "Type": "String"
+      },
+      "OldBed": {
+        "Caption": "Предыдущая койка",
+        "Type": "String"
+      },
+      "NewRoom": {
+        "Caption": "Новая палата",
+        "Type": "String"
+      },
+      "NewBed": {
+        "Caption": "Новая койка",
+        "Type": "String"
+      },
+      "Date": {
+        "Caption": "Дата перевода",
+        "Type": "DateTime"
+      }
+    }
+  }
+}
