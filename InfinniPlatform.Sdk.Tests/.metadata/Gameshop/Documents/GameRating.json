@@ -1,0 +1,38 @@
+{
+  "Name": "GameRating",
+  "Caption": "Оценка игры",
+  "Description": "",
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": null,
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": null,
+    "RegisterPoint": null
+  },
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Game": {
+        "Caption": "Игра",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Gameshop",
+            "DocumentId": "Catalogue",
+            "Resolve": true
+          }
+        },
+        "Properties": {}
+      },
+      "ReviewRate": {
+        "Caption": "Оценка в обзоре",
+        "Type": "Integer"
+      },
+      "UserRate": {
+        "Caption": "Оценка пользователей",
+        "Type": "Integer"
+      }
+    }
+  }
+}

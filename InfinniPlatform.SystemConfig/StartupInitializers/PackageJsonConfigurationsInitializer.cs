@@ -160,28 +160,12 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
             if (Directory.Exists(documentsDirectory))
             {
-                return Directory.EnumerateDirectories(documentsDirectory)
-                                .Select(d => LoadDocumentMetadata(d))
+                return Directory.EnumerateFiles(documentsDirectory)
+                                .Select(LoadItemMetadata)
                                 .ToArray();
             }
 
             return Enumerable.Empty<object>();
-        }
-
-        private static object LoadDocumentMetadata(string documentDirectory)
-        {
-            var documentFile = Directory.EnumerateFiles(documentDirectory, "*.json").FirstOrDefault();
-
-            dynamic document = LoadItemMetadata(documentFile);
-
-            object documentId = document.Name;
-
-            document.Processes = LoadItemsMetadata(documentDirectory, "Processes", documentId);
-            document.Scenarios = LoadItemsMetadata(documentDirectory, "Scenarios", documentId);
-            document.Views = LoadItemsMetadata(documentDirectory, "Views", documentId);
-            document.PrintViews = LoadItemsMetadata(documentDirectory, "PrintViews", documentId);
-
-            return document;
         }
 
         private static IEnumerable<object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object documentId = null)

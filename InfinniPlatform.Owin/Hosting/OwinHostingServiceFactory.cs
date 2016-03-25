@@ -48,7 +48,7 @@ namespace InfinniPlatform.Owin.Hosting
 
         private static void InvokeAppHandlers(IEnumerable<IApplicationEventHandler> handlers, Action<IApplicationEventHandler> handle)
         {
-            foreach (var handler in handlers.OrderByDescending(i => i.Order))
+            foreach (var handler in handlers.OrderBy(i => i.Order))
             {
                 handle(handler);
             }

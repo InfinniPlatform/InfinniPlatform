@@ -1,0 +1,49 @@
+{
+  "Name": "Comment",
+  "Caption": "Комментарий",
+  "Description": "",
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": "InfinniPlatform.Sdk.Tests.TestData.ActionUnitOnSaveComment",
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": null,
+    "RegisterPoint": null
+  },
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Author": {
+        "Caption": "Автор комментария",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Gameshop",
+            "DocumentId": "UserProfile"
+          }
+        },
+        "Properties": {}
+      },
+      "Likes": {
+        "Caption": "Количество лайков",
+        "Type": "Integer"
+      },
+      "Text": {
+        "Caption": "Текст комментария",
+        "Type": "String"
+      },
+      "ParentComment": {
+        "Caption": "Комментарий, к которому относится текущий комментарий",
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "Gameshop",
+            "DocumentId": "Comment",
+            "Resolve": false
+          }
+        },
+        "Properties": {}
+      }
+    }
+  }
+}

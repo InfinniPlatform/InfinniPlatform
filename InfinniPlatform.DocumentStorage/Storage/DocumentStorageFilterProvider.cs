@@ -51,7 +51,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
         /// <summary>
         /// Предоставляет интерфейс для объединения выражений.
         /// </summary>
-        private class LambdaExpressionComposer : ExpressionVisitor
+        public class LambdaExpressionComposer : ExpressionVisitor
         {
             private LambdaExpressionComposer(Dictionary<ParameterExpression, ParameterExpression> secondToFirstParameterMap)
             {

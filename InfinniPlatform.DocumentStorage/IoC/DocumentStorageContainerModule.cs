@@ -17,6 +17,10 @@ using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
+using ISystemDocumentStorageFilterProvider = InfinniPlatform.DocumentStorage.Storage.ISystemDocumentStorageFilterProvider;
+using SystemDocumentStorageFilterProvider = InfinniPlatform.DocumentStorage.Storage.SystemDocumentStorageFilterProvider;
+using SystemDocumentStorageImpl = InfinniPlatform.DocumentStorage.Storage.SystemDocumentStorageImpl;
+
 namespace InfinniPlatform.DocumentStorage.IoC
 {
     internal sealed class DocumentStorageContainerModule : IContainerModule
@@ -77,6 +81,28 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             builder.RegisterGeneric(typeof(DocumentStorageImpl<>))
                    .As(typeof(IDocumentStorage<>))
+                   .InstancePerDependency();
+
+            // System storage
+
+            builder.RegisterType<SystemDocumentStorageFactory>()
+                  .As<ISystemDocumentStorageFactory>()
+                  .SingleInstance();
+
+            builder.RegisterType<SystemDocumentStorageHeaderProvider>()
+                   .As<ISystemDocumentStorageHeaderProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<SystemDocumentStorageFilterProvider>()
+                   .As<ISystemDocumentStorageFilterProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<SystemDocumentStorageImpl>()
+                   .As<ISystemDocumentStorage>()
+                   .InstancePerDependency();
+
+            builder.RegisterGeneric(typeof(SystemDocumentStorageImpl<>))
+                   .As(typeof(ISystemDocumentStorage<>))
                    .InstancePerDependency();
 
             // Transactions

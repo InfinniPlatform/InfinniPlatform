@@ -8,7 +8,7 @@ using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
-    internal sealed class DocumentStorageImpl : IDocumentStorage, IDocumentStorageBulkExecutor
+    internal class DocumentStorageImpl : IDocumentStorage, IDocumentStorageBulkExecutor
     {
         public DocumentStorageImpl(string documentType,
                                    IDocumentStorageProviderFactory storageProviderFactory,

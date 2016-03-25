@@ -77,7 +77,6 @@
     <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include=".metadata\Gameshop\Configuration.json" />
     <None Include=".metadata\Gameshop\Documents\Catalogue\Catalogue.json" />
     <None Include=".metadata\Gameshop\Documents\Comment\Comment.json" />
     <None Include=".metadata\Gameshop\Documents\Comment\Processes\Default.json" />
@@ -94,7 +93,6 @@
     <None Include=".metadata\Gameshop\Documents\Review\Scenarios\ActionUnitLike.json" />
     <None Include=".metadata\Gameshop\Documents\Review\Services\Like.json" />
     <None Include=".metadata\Gameshop\Documents\UserProfile\UserProfile.json" />
-    <None Include=".metadata\Solution.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
