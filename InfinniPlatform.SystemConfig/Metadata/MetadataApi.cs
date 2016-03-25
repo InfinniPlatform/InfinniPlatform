@@ -57,7 +57,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
                        : null;
         }
 
-        public IEnumerable<DynamicWrapper> GetDocumentIndexes(string documentName)
+        public IEnumerable<object> GetDocumentIndexes(string documentName)
         {
             documentName = $"Documents.{documentName}";
 
@@ -65,7 +65,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
 
             return !string.IsNullOrEmpty(documentName)
                    && _itemsMetadata.TryGetValue(documentName, out document)
-                       ? document["Indexes"] as IEnumerable<DynamicWrapper>
+                       ? document["Indexes"] as IEnumerable<object>
                        : null;
         }
 

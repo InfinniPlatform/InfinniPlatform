@@ -17,6 +17,6 @@ namespace InfinniPlatform.Core.Metadata
 
         dynamic GetDocumentEvents(string documentName);
 
-        IEnumerable<DynamicWrapper> GetDocumentIndexes(string documentName);
+        IEnumerable<object> GetDocumentIndexes(string documentName);
     }
 }
