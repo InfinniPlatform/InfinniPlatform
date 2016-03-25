@@ -216,6 +216,8 @@
     <Compile Include="RestApi\RequestExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Documents\Obsolete\SortingBuilder.cs" />
+    <Compile Include="Types\Date.cs" />
+    <Compile Include="Types\Time.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
