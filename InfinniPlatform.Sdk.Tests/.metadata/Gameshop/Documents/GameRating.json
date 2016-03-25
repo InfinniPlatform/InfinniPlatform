@@ -1,4 +1,5 @@
 {
+  "Namespace": "Documents",
   "Name": "GameRating",
   "Caption": "Оценка игры",
   "Description": "",
@@ -23,7 +24,7 @@
             "Resolve": true
           }
         },
-        "Properties": {}
+        "Properties": { }
       },
       "ReviewRate": {
         "Caption": "Оценка в обзоре",

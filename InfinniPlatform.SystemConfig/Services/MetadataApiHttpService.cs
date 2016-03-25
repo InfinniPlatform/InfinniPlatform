@@ -30,9 +30,7 @@ namespace InfinniPlatform.SystemConfig.Services
             string documentType = requestForm.MetadataObject;
             string viewName = requestForm.MetadataName;
 
-            //TODO Combine name
-
-            var result = _metadataApi.GetView(viewName);
+            var result = _metadataApi.GetMetadata($"Views.{documentType}.{viewName}");
 
             return Task.FromResult<object>(result);
         }

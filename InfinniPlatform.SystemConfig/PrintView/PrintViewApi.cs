@@ -34,7 +34,7 @@ namespace InfinniPlatform.SystemConfig.PrintView
 
             //Build view name
 
-            var printViewMetadata = _metadataApi.GetPrintView(printViewName);
+            var printViewMetadata = _metadataApi.GetMetadata($"PrintViews.{documentType}.{printViewName}");
 
             if (printViewMetadata == null)
             {

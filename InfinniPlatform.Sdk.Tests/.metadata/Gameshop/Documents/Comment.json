@@ -1,4 +1,5 @@
 {
+  "Namespace": "Documents",
   "Name": "Comment",
   "Caption": "Комментарий",
   "Description": "",
@@ -22,7 +23,7 @@
             "DocumentId": "UserProfile"
           }
         },
-        "Properties": {}
+        "Properties": { }
       },
       "Likes": {
         "Caption": "Количество лайков",
@@ -42,7 +43,7 @@
             "Resolve": false
           }
         },
-        "Properties": {}
+        "Properties": { }
       }
     }
   }

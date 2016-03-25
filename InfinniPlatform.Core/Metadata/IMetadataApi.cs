@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.Dynamic;
+
 namespace InfinniPlatform.Core.Metadata
 {
     public interface IMetadataApi
     {
-        IEnumerable<string> GetMenuNames();
+        IEnumerable<string> GetNames(string startsWithMask);
 
-        dynamic GetMenu(string menuName);
-
-
-        IEnumerable<string> GetRegisterNames();
-
-        dynamic GetRegister(string registerName);
+        dynamic GetMetadata(string metadataName);
 
 
         IEnumerable<string> GetDocumentNames();
@@ -20,16 +17,6 @@ namespace InfinniPlatform.Core.Metadata
 
         dynamic GetDocumentEvents(string documentName);
 
-        IEnumerable<object> GetDocumentIndexes(string documentName);
-
-
-        IEnumerable<string> GetViewNames();
-
-        dynamic GetView(string viewName);
-
-
-        IEnumerable<string> GetPrintViewNames();
-
-        dynamic GetPrintView(string printViewName);
+        IEnumerable<DynamicWrapper> GetDocumentIndexes(string documentName);
     }
 }

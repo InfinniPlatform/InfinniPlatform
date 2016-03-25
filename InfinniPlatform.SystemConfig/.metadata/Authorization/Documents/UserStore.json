@@ -1,4 +1,5 @@
 {
+  "Namespace": "Documents",
   "Name": "UserStore",
   "Caption": "UserStore",
   "Description": "Хранилище пользователей системы",

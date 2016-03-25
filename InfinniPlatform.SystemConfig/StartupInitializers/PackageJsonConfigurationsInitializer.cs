@@ -90,19 +90,8 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         private void InstallConfiguration(dynamic configuration)
         {
-            IEnumerable<dynamic> menuList = configuration.Menu;
-            IEnumerable<dynamic> registerList = configuration.Registers;
-            IEnumerable<dynamic> documentList = configuration.Documents;
-            IEnumerable<dynamic> viewList = configuration.Views;
-            IEnumerable<dynamic> printViewList = configuration.PrintView;
-
-            _metadataApi.AddMenu(menuList);
-            _metadataApi.AddRegisters(registerList);
-            _metadataApi.AddDocuments(documentList);
-            _metadataApi.AddViews(viewList);
-            _metadataApi.AddPrintViews(printViewList);
+            _metadataApi.AddItemsMetadata(configuration.ItemsMetadata);
         }
-
 
         private IEnumerable<DynamicWrapper> LoadConfigsMetadata()
         {
@@ -111,65 +100,46 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                                                .Where(Directory.Exists)
                                                .ToArray();
 
-            return metadataDirectories
-                .SelectMany(Directory.EnumerateDirectories)
-                .Select(LoadConfigMetadata)
-                .ToArray();
+            return metadataDirectories.SelectMany(Directory.EnumerateDirectories)
+                                      .Select(LoadConfigMetadata)
+                                      .ToArray();
         }
 
         private static DynamicWrapper LoadConfigMetadata(string configDirectory)
         {
             dynamic configuration = new DynamicWrapper { { "Name", Path.GetDirectoryName(configDirectory) } };
 
-            configuration.Documents = LoadDocumentsMetadata(configDirectory);
-            configuration.Menu = LoadItemsMetadata(configDirectory, "Menu");
-            configuration.Registers = LoadItemsMetadata(configDirectory, "Registers");
-            configuration.Views = LoadItemsMetadata(configDirectory, "Views");
-            configuration.PrintViews = LoadItemsMetadata(configDirectory, "PrintViews");
+            configuration.ItemsMetadata = LoadItemsMetadata(configDirectory);
 
             return configuration;
         }
 
-        private static IEnumerable<object> LoadDocumentsMetadata(string configDirectory)
+        private static Dictionary<string, DynamicWrapper> LoadItemsMetadata(string documentDirectory)
         {
-            var documentsDirectory = Path.Combine(configDirectory, "Documents");
+            var enumerateDirectories = Directory.EnumerateDirectories(documentDirectory);
 
-            if (Directory.Exists(documentsDirectory))
+            var itemsMetadataCache = new Dictionary<string, DynamicWrapper>();
+
+            foreach (var dir in enumerateDirectories)
             {
-                return Directory.EnumerateFiles(documentsDirectory)
-                                .Select(LoadItemMetadata)
-                                .ToArray();
-            }
-
-            return Enumerable.Empty<object>();
-        }
-
-        private static IEnumerable<object> LoadItemsMetadata(string documentDirectory, string itemsContainer, object documentId = null)
-        {
-            var itemsDirectory = Path.Combine(documentDirectory, itemsContainer);
-
-            if (Directory.Exists(itemsDirectory))
-            {
-                var itemsMetadata = Directory.EnumerateFiles(itemsDirectory, "*.json", SearchOption.AllDirectories)
+                var itemsMetadata = Directory.EnumerateFiles(dir, "*.json", SearchOption.AllDirectories)
                                              .Select(LoadItemMetadata)
                                              .ToArray();
 
-                foreach (dynamic item in itemsMetadata)
+                foreach (var item in itemsMetadata)
                 {
-                    item.DocumentId = documentId;
+                    itemsMetadataCache.Add($"{item["Namespace"]}.{item["Name"]}", item);
                 }
-
-                return itemsMetadata;
             }
 
-            return Enumerable.Empty<object>();
+            return itemsMetadataCache;
         }
 
-        private static object LoadItemMetadata(string fileName)
+        private static DynamicWrapper LoadItemMetadata(string fileName)
         {
             using (var reader = File.OpenRead(fileName))
             {
-                return JsonObjectSerializer.Default.Deserialize(reader, typeof(DynamicWrapper));
+                return JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(reader);
             }
         }
     }
