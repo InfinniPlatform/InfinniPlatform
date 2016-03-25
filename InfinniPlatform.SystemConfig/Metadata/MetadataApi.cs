@@ -9,7 +9,7 @@ namespace InfinniPlatform.SystemConfig.Metadata
 {
     internal sealed class MetadataApi : IMetadataApi
     {
-        private Dictionary<string, DynamicWrapper> _itemsMetadata = new Dictionary<string, DynamicWrapper>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, DynamicWrapper> _itemsMetadata = new Dictionary<string, DynamicWrapper>(StringComparer.OrdinalIgnoreCase);
 
         public IEnumerable<string> GetNames(string startsWithMask)
         {
@@ -69,9 +69,20 @@ namespace InfinniPlatform.SystemConfig.Metadata
                        : null;
         }
 
-        public void AddItemsMetadata(Dictionary<string, DynamicWrapper> itemsList)
+        public void AddItemsMetadata(Dictionary<string, DynamicWrapper> itemsDictionary)
         {
-            _itemsMetadata = itemsList;
+            foreach (var item in itemsDictionary)
+            {
+                if (_itemsMetadata.ContainsKey(item.Key))
+                {
+                    _itemsMetadata[item.Key] = item.Value;
+                }
+                else
+                {
+                    _itemsMetadata.Add(item.Key, item.Value);
+                }
+                
+            }
         }
     }
 }
