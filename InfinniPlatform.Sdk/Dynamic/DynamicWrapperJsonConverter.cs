@@ -7,27 +7,16 @@ using Newtonsoft.Json.Linq;
 namespace InfinniPlatform.Sdk.Dynamic
 {
     /// <summary>
-    /// Осуществляет преобразование <see cref="DynamicWrapper"/> в JSON-представление и обратно на основе списка известных типов.
+    /// Осуществляет преобразование <see cref="DynamicWrapper"/> в JSON-представление и обратно.
     /// </summary>
     internal sealed class DynamicWrapperJsonConverter : JsonConverter
     {
-        private static readonly Type DynamicWrapperType = typeof(DynamicWrapper);
-
-
-        public override bool CanRead
-        {
-            get { return true; }
-        }
-
-        public override bool CanWrite
-        {
-            get { return true; }
-        }
+        private static readonly Type ConvertType = typeof(DynamicWrapper);
 
 
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == DynamicWrapperType);
+            return (objectType == ConvertType);
         }
 
 

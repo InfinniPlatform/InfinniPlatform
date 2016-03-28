@@ -217,6 +217,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Documents\Obsolete\SortingBuilder.cs" />
     <Compile Include="Types\Date.cs" />
+    <Compile Include="Types\TimeJsonConverter.cs" />
+    <Compile Include="Types\DateJsonConverter.cs" />
     <Compile Include="Types\Time.cs" />
   </ItemGroup>
   <ItemGroup>

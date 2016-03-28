@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Newtonsoft.Json;
+
 namespace InfinniPlatform.Sdk.Types
 {
     /// <summary>
@@ -14,6 +16,7 @@ namespace InfinniPlatform.Sdk.Types
     /// использования в сценариях, в которых нужно работать только со временем или с интервалом времени.
     /// </remarks>
     [Serializable]
+    [JsonConverter(typeof(TimeJsonConverter))]
     public struct Time : IComparable, IComparable<Time>, IEquatable<Time>, IFormattable
     {
         private const double SecondsPerMilliseconds = 0.001d;
