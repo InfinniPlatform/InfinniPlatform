@@ -32,7 +32,9 @@ namespace InfinniPlatform.SystemConfig.PrintView
                 throw new ArgumentNullException(nameof(printViewName));
             }
 
-            var printViewMetadata = _metadataApi.GetPrintView(documentType, printViewName);
+            //Build view name
+
+            var printViewMetadata = _metadataApi.GetMetadata($"PrintViews.{documentType}.{printViewName}");
 
             if (printViewMetadata == null)
             {

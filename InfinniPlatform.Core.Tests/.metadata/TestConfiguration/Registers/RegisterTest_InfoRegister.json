@@ -1,5 +1,5 @@
 {
-  "Id": "12bde853-3ad4-4ee9-8b26-0f250fd91557",
+  "Namespace": "Registers",
   "Name": "RegisterTest_InfoRegister",
   "Type": "Info",
   "Period": "Month",

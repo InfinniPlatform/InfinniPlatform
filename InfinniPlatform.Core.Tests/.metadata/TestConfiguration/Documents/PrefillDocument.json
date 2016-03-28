@@ -1,0 +1,47 @@
+{
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": null,
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": null,
+    "RegisterPoint": null
+  },
+  "Namespace": "Documents",
+  "Name": "PrefillDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Id": {
+        "Type": "Uuid"
+      },
+      "Name": {
+        "Type": "String"
+      },
+      "Address": {
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "TestConfiguration",
+            "DocumentId": "AddressDocument",
+            "Inline": true
+          }
+        },
+        "Properties": {}
+      },
+      "ObservationDate": {
+        "Type": "DateTime"
+      },
+      "RecursiveLink": {
+        "Type": "Object",
+        "TypeInfo": {
+          "DocumentLink": {
+            "ConfigId": "TestConfiguration",
+            "DocumentId": "PrefillDocument"
+          }
+        },
+        "Properties": {}
+      }
+    }
+  }
+}

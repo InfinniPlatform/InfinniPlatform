@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
@@ -9,337 +8,68 @@ namespace InfinniPlatform.SystemConfig.Metadata
 {
     internal sealed class MetadataApi : IMetadataApi
     {
-        // Menu
+        //TODO Избавиться от захардкоженых значений типа "Documents" после удаления deprecated кода работы с ElasticSearch.
+        private readonly Dictionary<MetadataUniqueName, DynamicWrapper> _itemsMetadata = new Dictionary<MetadataUniqueName, DynamicWrapper>();
 
-        private readonly Dictionary<string, dynamic> _menu = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
-
-        public void AddMenu(IEnumerable<dynamic> menuList)
+        public IEnumerable<string> GetMetadataItemNames(string partOfFullName)
         {
-            if (menuList != null)
-            {
-                foreach (var menu in menuList)
-                {
-                    var menuName = menu.Name ?? string.Empty;
-
-                    _menu[menuName] = menu;
-                }
-            }
+            return _itemsMetadata.Keys
+                                 .Where(i => i.Namespace.Contains(partOfFullName))
+                                 .Select(i => i.Name);
         }
 
-        public IEnumerable<string> GetMenuNames()
+        public dynamic GetMetadata(string metadataName)
         {
-            return _menu.Keys;
-        }
+            DynamicWrapper metadata;
 
-        public dynamic GetMenu(string menuName)
-        {
-            dynamic menu;
-
-            return !string.IsNullOrEmpty(menuName)
-                   && _menu.TryGetValue(menuName, out menu)
-                ? menu
-                : null;
-        }
-
-
-        // Register
-
-        private readonly Dictionary<string, dynamic> _registers = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
-
-        public void AddRegisters(IEnumerable<dynamic> registerList)
-        {
-            if (registerList != null)
-            {
-                foreach (var register in registerList)
-                {
-                    var registerName = register.Name ?? string.Empty;
-
-                    _registers[registerName] = register;
-                }
-            }
-        }
-
-        public IEnumerable<string> GetRegisterNames()
-        {
-            return _registers.Keys;
-        }
-
-        public dynamic GetRegister(string registerName)
-        {
-            dynamic register;
-
-            return !string.IsNullOrEmpty(registerName)
-                   && _registers.TryGetValue(registerName, out register)
-                ? register
-                : null;
-        }
-
-        // Document
-
-        private readonly Dictionary<string, DocumentMetadata> _documents = new Dictionary<string, DocumentMetadata>(StringComparer.OrdinalIgnoreCase);
-
-        public void AddDocuments(IEnumerable<dynamic> documentList)
-        {
-            if (documentList != null)
-            {
-                foreach (var document in documentList)
-                {
-                    var documentType = document.Name ?? string.Empty;
-                    var documentSchema = document.Schema ?? new DynamicWrapper();
-                    var documentEvents = document.Events ?? new DynamicWrapper();
-                    var documentIndexes = document.Indexes ?? new List<dynamic>();
-
-                    _documents[documentType] = new DocumentMetadata { Schema = documentSchema, Events = documentEvents, Indexes = documentIndexes };
-                }
-            }
-        }
-
-        public IEnumerable<string> GetDocumentNames()
-        {
-            return _documents.Keys;
+            return !string.IsNullOrEmpty(metadataName)
+                   && _itemsMetadata.TryGetValue(new MetadataUniqueName(metadataName), out metadata)
+                       ? metadata
+                       : null;
         }
 
         public dynamic GetDocumentSchema(string documentName)
         {
-            DocumentMetadata document;
+            DynamicWrapper document;
 
             return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.Schema
-                : null;
+                   && _itemsMetadata.TryGetValue(new MetadataUniqueName("Documents", documentName), out document)
+                       ? document["Schema"]
+                       : null;
         }
 
         public dynamic GetDocumentEvents(string documentName)
         {
-            DocumentMetadata document;
+            DynamicWrapper document;
 
             return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.Events
-                : null;
+                   && _itemsMetadata.TryGetValue(new MetadataUniqueName("Documents", documentName), out document)
+                       ? document["Events"]
+                       : null;
         }
 
         public IEnumerable<object> GetDocumentIndexes(string documentName)
         {
-            DocumentMetadata document;
+            DynamicWrapper document;
 
             return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.Indexes
-                : null;
+                   && _itemsMetadata.TryGetValue(new MetadataUniqueName("Documents", documentName), out document)
+                       ? document["Indexes"] as IEnumerable<object>
+                       : null;
         }
 
-        // Action
-
-        public void AddActions(string documentName, IEnumerable<dynamic> actions)
+        public void AddItemsMetadata(Dictionary<MetadataUniqueName, DynamicWrapper> itemsDictionary)
         {
-            if (!string.IsNullOrEmpty(documentName) && actions != null)
+            foreach (var item in itemsDictionary)
             {
-                DocumentMetadata document;
-
-                if (_documents.TryGetValue(documentName, out document))
+                if (_itemsMetadata.ContainsKey(item.Key))
                 {
-                    document.AddActions(actions);
+                    _itemsMetadata[item.Key] = item.Value;
                 }
-            }
-        }
-
-        public IEnumerable<string> GetActionNames(string documentName)
-        {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetActionNames()
-                : Enumerable.Empty<string>();
-        }
-
-        public dynamic GetAction(string documentName, string actionName)
-        {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && !string.IsNullOrEmpty(actionName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetAction(actionName)
-                : null;
-        }
-
-        // View
-
-        public void AddViews(string documentName, IEnumerable<dynamic> views)
-        {
-            if (!string.IsNullOrEmpty(documentName) && views != null)
-            {
-                DocumentMetadata document;
-
-                if (_documents.TryGetValue(documentName, out document))
+                else
                 {
-                    document.AddViews(views);
+                    _itemsMetadata.Add(item.Key, item.Value);
                 }
-            }
-        }
-
-        public IEnumerable<string> GetViewNames(string documentName)
-        {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetViewNames()
-                : Enumerable.Empty<string>();
-        }
-
-        public dynamic GetView(string documentName, string viewName)
-        {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && !string.IsNullOrEmpty(viewName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetView(viewName)
-                : null;
-        }
-
-        // PrintView
-
-        public void AddPrintViews(string documentName, IEnumerable<dynamic> printViews)
-        {
-            if (!string.IsNullOrEmpty(documentName) && printViews != null)
-            {
-                DocumentMetadata document;
-
-                if (_documents.TryGetValue(documentName, out document))
-                {
-                    document.AddPrintViews(printViews);
-                }
-            }
-        }
-
-        public IEnumerable<string> GetPrintViewNames(string documentName)
-        {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetPrintViewNames()
-                : Enumerable.Empty<string>();
-        }
-
-        public dynamic GetPrintView(string documentName, string printViewName)
-        {
-            DocumentMetadata document;
-
-            return !string.IsNullOrEmpty(documentName)
-                   && !string.IsNullOrEmpty(printViewName)
-                   && _documents.TryGetValue(documentName, out document)
-                ? document.GetPrintView(printViewName)
-                : null;
-        }
-
-
-        private sealed class DocumentMetadata
-        {
-            public dynamic Schema;
-
-            public dynamic Events;
-
-            public IEnumerable<object> Indexes;
-
-            // Action
-
-            private readonly Dictionary<string, dynamic> _actions = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
-
-            public void AddActions(IEnumerable<dynamic> actionList)
-            {
-                if (actionList != null)
-                {
-                    foreach (var action in actionList)
-                    {
-                        var actionName = action.Id ?? string.Empty;
-
-                        _actions[actionName] = action;
-                    }
-                }
-            }
-
-            public IEnumerable<string> GetActionNames()
-            {
-                return _actions.Keys;
-            }
-
-            public dynamic GetAction(string actionName)
-            {
-                dynamic action;
-
-                return !string.IsNullOrEmpty(actionName)
-                       && _actions.TryGetValue(actionName, out action)
-                    ? action
-                    : null;
-            }
-
-            // View
-
-            private readonly Dictionary<string, dynamic> _views = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
-
-            public void AddViews(IEnumerable<dynamic> viewList)
-            {
-                if (viewList != null)
-                {
-                    foreach (var view in viewList)
-                    {
-                        var viewName = view.Name ?? string.Empty;
-
-                        _views[viewName] = view;
-                    }
-                }
-            }
-
-            public IEnumerable<string> GetViewNames()
-            {
-                return _views.Keys;
-            }
-
-            public dynamic GetView(string viewName)
-            {
-                dynamic view;
-
-                return !string.IsNullOrEmpty(viewName)
-                       && _views.TryGetValue(viewName, out view)
-                    ? view
-                    : null;
-            }
-
-            // PrintView
-
-            private readonly Dictionary<string, dynamic> _printViews = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
-
-            public void AddPrintViews(IEnumerable<dynamic> printViewList)
-            {
-                if (printViewList != null)
-                {
-                    foreach (var printView in printViewList)
-                    {
-                        var printViewName = printView.Name ?? string.Empty;
-
-                        _printViews[printViewName] = printView;
-                    }
-                }
-            }
-
-            public IEnumerable<string> GetPrintViewNames()
-            {
-                return _printViews.Keys;
-            }
-
-            public dynamic GetPrintView(string printViewName)
-            {
-                dynamic printView;
-
-                return !string.IsNullOrEmpty(printViewName)
-                       && _printViews.TryGetValue(printViewName, out printView)
-                    ? printView
-                    : null;
             }
         }
     }

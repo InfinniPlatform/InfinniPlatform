@@ -1,0 +1,26 @@
+{
+  "Events": {
+    "ValidationPointError": null,
+    "SuccessPoint": "InfinniPlatform.Core.Tests.RestBehavior.TestActions.ActionUnitTestComplexAction",
+    "DeletingDocumentValidationPoint": null,
+    "DeletePoint": null,
+    "RegisterPoint": null
+  },
+  "Namespace": "Documents",
+  "Name": "AfterDocumentSaveDocument",
+  "Schema": {
+    "Type": "Object",
+    "Caption": "Schema",
+    "Properties": {
+      "Id": {
+        "Type": "Uuid"
+      },
+      "LastName": {
+        "Type": "String"
+      },
+      "TestValue": {
+        "Type": "String"
+      }
+    }
+  }
+}

@@ -1,13 +1,11 @@
 {
-  "Namespace": "Documents",
-  "Name": "Common",
-  "Caption": "Common options",
-  "Description": "Common options",
   "Events": {
     "ValidationPointError": null,
     "SuccessPoint": null,
     "DeletingDocumentValidationPoint": null,
     "DeletePoint": null,
     "RegisterPoint": null
-  }
+  },
+  "Namespace": "Documents",
+  "Name": "RegisterTest_InfoRegister"
 }

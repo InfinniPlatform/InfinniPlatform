@@ -76,7 +76,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         private void UpdateContainersWithInlineLinks(string documentId)
         {
-            var documentNames = _metadataApi.GetDocumentNames();
+            var documentNames = _metadataApi.GetMetadataItemNames("Documents");
 
             foreach (var documentName in documentNames)
             {

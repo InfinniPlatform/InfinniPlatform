@@ -75,7 +75,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 }
             }
 
-            var registerMetadata = _metadataApi.GetRegister(registerName);
+            var registerMetadata = _metadataApi.GetMetadata($"Registers.{registerName}");
 
             // Признак того, что необходимо создать запись для регистра сведений
             if (isInfoRegister && registerMetadata != null)
@@ -103,7 +103,7 @@ namespace InfinniPlatform.SystemConfig.Registers
                 throw new ArgumentNullException(nameof(registerEntries));
             }
 
-            var registerObject = _metadataApi.GetRegister(registerName);
+            var registerObject = _metadataApi.GetMetadata($"Registers.{registerName}");
 
             if (registerObject == null)
             {
@@ -323,7 +323,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// </summary>
         public IEnumerable<object> GetValuesByDate(string registerName, DateTime aggregationDate, IEnumerable<FilterCriteria> filter = null, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null, IEnumerable<AggregationType> aggregationTypes = null)
         {
-            var registerObject = _metadataApi.GetRegister(registerName);
+            var registerObject = _metadataApi.GetMetadata($"Registers.{registerName}");
 
             if (registerObject == null)
             {
@@ -391,7 +391,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// </summary>
         public IEnumerable<object> GetValuesBetweenDates(string registerName, DateTime beginDate, DateTime endDate, IEnumerable<FilterCriteria> filter = null, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null, IEnumerable<AggregationType> aggregationTypes = null)
         {
-            var registerObject = _metadataApi.GetRegister(registerName);
+            var registerObject = _metadataApi.GetMetadata($"Registers.{registerName}");
 
             if (registerObject == null)
             {
@@ -437,7 +437,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// </summary>
         public IEnumerable<object> GetValuesByPeriods(string registerName, DateTime beginDate, DateTime endDate, string interval, IEnumerable<FilterCriteria> filter, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null)
         {
-            var registerObject = _metadataApi.GetRegister(registerName);
+            var registerObject = _metadataApi.GetMetadata($"Registers.{registerName}");
 
             if (registerObject == null)
             {
@@ -495,7 +495,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// </summary>
         public IEnumerable<object> GetValuesByRegistrar(string registerName, string registrar, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null)
         {
-            var registerObject = _metadataApi.GetRegister(registerName);
+            var registerObject = _metadataApi.GetMetadata($"Registers.{registerName}");
 
             if (registerObject == null)
             {
@@ -529,7 +529,7 @@ namespace InfinniPlatform.SystemConfig.Registers
         /// </summary>
         public IEnumerable<object> GetValuesByRegistrarType(string registerName, string registrar, IEnumerable<string> dimensionsProperties = null, IEnumerable<string> valueProperties = null)
         {
-            var registerObject = _metadataApi.GetRegister(registerName);
+            var registerObject = _metadataApi.GetMetadata($"Registers.{registerName}");
 
             if (registerObject == null)
             {

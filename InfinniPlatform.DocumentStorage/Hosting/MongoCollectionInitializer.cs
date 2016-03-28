@@ -37,7 +37,7 @@ namespace InfinniPlatform.DocumentStorage.Hosting
         {
             _log.Info("Creating the document storage started.");
 
-            var documentTypes = _metadataApi.GetDocumentNames();
+            var documentTypes = _metadataApi.GetMetadataItemNames("Documents");
 
             foreach (var documentType in documentTypes)
             {

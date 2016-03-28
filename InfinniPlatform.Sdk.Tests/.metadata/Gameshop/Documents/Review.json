@@ -1,4 +1,5 @@
 {
+  "Namespace": "Documents",
   "Name": "Review",
   "Caption": "Обзор игры",
   "Description": "",
@@ -23,7 +24,7 @@
             "Resolve": false
           }
         },
-        "Properties": {}
+        "Properties": { }
       },
       "Text": {
         "Caption": "Текст обзора",
@@ -56,7 +57,7 @@
               "Resolve": true
             }
           },
-          "Properties": {}
+          "Properties": { }
         }
       },
       "ReviewConfig": {
@@ -70,7 +71,7 @@
             "Inline": true
           }
         },
-        "Properties": {}
+        "Properties": { }
       },
       "Rate": {
         "Caption": "Оценка игры",
@@ -82,7 +83,7 @@
             "Resolve": true
           }
         },
-        "Properties": {}
+        "Properties": { }
       },
       "AdditionalInfo": {
         "Caption": "Дополнительная информация о игре",
@@ -96,7 +97,7 @@
               "Inline": true
             }
           },
-          "Properties": {}
+          "Properties": { }
         }
       },
       "Like": {

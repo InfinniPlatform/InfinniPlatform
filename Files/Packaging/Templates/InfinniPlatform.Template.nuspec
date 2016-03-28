@@ -10,16 +10,14 @@
         <copyright>Copyright 2015</copyright>
     </metadata>
     <files>
-        <file target="lib\net45" src="*.dll" exclude="*.Tests.dll;InfinniPlatform.SystemConfig.AdministrationCustomization.dll"/>
-        <file target="lib\net45" src="*.pdb" exclude="*.Tests.pdb;InfinniPlatform.SystemConfig.AdministrationCustomization.pdb"/>
         <file target="lib\net45\App.config" src="InfinniPlatform.NodeServiceHost.dll.config"/>
         <file target="lib\net45\AppLog.config" src="AppLog.config"/>
         <file target="lib\net45\AppCommon.json" src="AppCommon.json"/>
         <file target="lib\net45\AppExtension.json" src="AppExtension.json"/>
-        <file target="content\metadata\Administration" src="content\InfinniPlatform\metadata\Administration\**\*.*"/>
         <file target="content\metadata\Authorization" src="content\InfinniPlatform\metadata\Authorization\**\*.*"/>
         <!-- For Linux debugging -->
         <file target="lib\net45\InfinniPlatform.ServiceHost.exe" src="InfinniPlatform.ServiceHost.exe"/>
+        <file target="lib\net45\InfinniPlatform.ServiceHost.exe.config" src="InfinniPlatform.ServiceHost.exe.config"/>
         <!-- For Linux debugging -->
     </files>
 </package>

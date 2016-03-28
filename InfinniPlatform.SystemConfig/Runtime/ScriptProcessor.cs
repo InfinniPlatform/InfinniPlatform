@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
-using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Runtime;
 using InfinniPlatform.Sdk.Contracts;
 using InfinniPlatform.Sdk.Logging;
@@ -15,53 +15,18 @@ namespace InfinniPlatform.SystemConfig.Runtime
         private const string PerformanceLogMethod = "Invoke";
 
 
-        public ScriptProcessor(IMetadataApi metadataApi, ActionUnitFactory actionUnitFactory, IPerformanceLog performanceLog, ILog log)
+        public ScriptProcessor(ActionUnitFactory actionUnitFactory, IPerformanceLog performanceLog, ILog log)
         {
-            _metadataApi = metadataApi;
             _actionUnitFactory = actionUnitFactory;
             _performanceLog = performanceLog;
             _log = log;
         }
 
 
-        private readonly IMetadataApi _metadataApi;
         private readonly ActionUnitFactory _actionUnitFactory;
         private readonly IPerformanceLog _performanceLog;
         private readonly ILog _log;
 
-
-        public void InvokeScript(string actionUnitId, IActionContext actionUnitContext)
-        {
-            var start = DateTime.Now;
-
-            string actionUnitType = null;
-
-            try
-            {
-                // TODO: Уже нет смысла хранить скрипты, как сущность конфигурации
-
-                var scriptMetadata = _metadataApi.GetAction(actionUnitContext.DocumentType, actionUnitId);
-
-                if (scriptMetadata == null)
-                {
-                    throw new ArgumentException(string.Format(Resources.ActionUnitMetadataIsNotRegistered, actionUnitId));
-                }
-
-                actionUnitType = scriptMetadata.Name;
-
-                var actionUnit = _actionUnitFactory.CreateActionUnit(actionUnitType);
-
-                actionUnit(actionUnitContext);
-
-                LogSuccessComplete(actionUnitId, actionUnitType, start);
-            }
-            catch (Exception e)
-            {
-                LogErrorComplete(actionUnitId, actionUnitType, start, Resources.ActionUnitCompletedWithError, e);
-
-                throw;
-            }
-        }
 
         public void InvokeScriptByType(string actionUnitType, IActionContext actionUnitContext)
         {
@@ -69,7 +34,10 @@ namespace InfinniPlatform.SystemConfig.Runtime
 
             try
             {
-                var actionUnit = _actionUnitFactory.CreateActionUnit(actionUnitType);
+                //TODO: Необходимо избавиться от использования CustomApiHttpService на уровне конфигураций.
+                var type = actionUnitType.Split('.').Last();
+
+                var actionUnit = _actionUnitFactory.CreateActionUnit(type);
 
                 actionUnit(actionUnitContext);
 

@@ -22,7 +22,7 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         public void OnStart()
         {
-            var documentNames = _metadataApi.GetDocumentNames();
+            var documentNames = _metadataApi.GetMetadataItemNames("Documents");
 
             _elasticTypesMigrationHelper.CreateOrUpdateStorage(documentNames);
         }

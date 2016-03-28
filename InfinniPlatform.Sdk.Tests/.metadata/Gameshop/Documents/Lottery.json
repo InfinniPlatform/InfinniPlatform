@@ -1,4 +1,5 @@
 {
+  "Namespace": "Documents",
   "Name": "Lottery",
   "Caption": "Розыгрыш призов для пользователей",
   "Description": "",
@@ -28,7 +29,7 @@
               "DocumentId": "UserProfile"
             }
           },
-          "Properties": {}
+          "Properties": { }
         }
       }
     }
