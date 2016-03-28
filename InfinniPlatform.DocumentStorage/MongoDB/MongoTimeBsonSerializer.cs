@@ -21,12 +21,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             var currentBsonType = reader.GetCurrentBsonType();
 
-            long totalSeconds;
+            double totalSeconds;
 
             switch (currentBsonType)
             {
                 case BsonType.Double:
-                    totalSeconds = (long)reader.ReadDouble();
+                    totalSeconds = reader.ReadDouble();
                     break;
                 case BsonType.Int64:
                     totalSeconds = reader.ReadInt64();
