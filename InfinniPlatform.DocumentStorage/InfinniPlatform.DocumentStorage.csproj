@@ -55,6 +55,8 @@
     <Compile Include="IoC\DocumentStorageContainerModule.cs" />
     <Compile Include="MongoDB\MongoConnection.cs" />
     <Compile Include="MongoDB\MongoConnectionSettings.cs" />
+    <Compile Include="MongoDB\MongoDateBsonSerializationProvider.cs" />
+    <Compile Include="MongoDB\MongoDateBsonSerializer.cs" />
     <Compile Include="MongoDB\MongoDocumentAggregateCursor.cs" />
     <Compile Include="MongoDB\MongoDocumentAggregateCursorGeneric.cs" />
     <Compile Include="MongoDB\MongoDocumentBulkBuilder.cs" />
@@ -72,6 +74,8 @@
     <Compile Include="MongoDB\MongoDynamicWrapperBsonSerializationProvider.cs" />
     <Compile Include="MongoDB\MongoDynamicWrapperBsonSerializer.cs" />
     <Compile Include="MongoDB\MongoHelpers.cs" />
+    <Compile Include="MongoDB\MongoTimeBsonSerializationProvider.cs" />
+    <Compile Include="MongoDB\MongoTimeBsonSerializer.cs" />
     <Compile Include="Obsolete\MongoDocumentApi.cs" />
     <Compile Include="Obsolete\MongoSetDocumentExecutor.cs" />
     <Compile Include="Obsolete\DocumentTransactionAction.cs" />

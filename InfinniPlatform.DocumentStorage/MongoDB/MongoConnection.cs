@@ -21,9 +21,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var defaultConventions = new ConventionPack { new IgnoreIfNullConvention(true), new NoIdMemberConvention() };
             ConventionRegistry.Register("IgnoreRules", defaultConventions, t => true);
 
-            // Установка правил сериализации и десериализации для DynamicWrapper
+            // Установка правил сериализации и десериализации внутренних типов данных
             BsonSerializer.RegisterSerializer(MongoDynamicWrapperBsonSerializer.Default);
+            BsonSerializer.RegisterSerializer(MongoDateBsonSerializer.Default);
+            BsonSerializer.RegisterSerializer(MongoTimeBsonSerializer.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
+            BsonSerializer.RegisterSerializationProvider(MongoDateBsonSerializationProvider.Default);
+            BsonSerializer.RegisterSerializationProvider(MongoTimeBsonSerializationProvider.Default);
         }
 
 
