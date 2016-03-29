@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using InfinniPlatform.Sdk.Dynamic;
@@ -29,7 +31,7 @@ namespace InfinniPlatform.Sdk.Serialization
         public static readonly JsonObjectSerializer Formated = new JsonObjectSerializer(true);
 
 
-        public JsonObjectSerializer(bool withFormatting = false, KnownTypesContainer knownTypes = null)
+        public JsonObjectSerializer(bool withFormatting = false, KnownTypesContainer knownTypes = null, IEnumerable<IMemberValueConverter> converters = null)
         {
             var serializer = new JsonSerializer
             {
@@ -38,9 +40,11 @@ namespace InfinniPlatform.Sdk.Serialization
                 Formatting = withFormatting ? Formatting.Indented : Formatting.None
             };
 
-            // При сериализации будут учитываться приватные поля
-            var contractResolver = new DefaultContractResolver();
-            serializer.ContractResolver = contractResolver;
+            var converterList = (converters ?? MemberValueConverterRegistry.Converters).ToArray();
+
+            serializer.ContractResolver = (converterList.Length > 0)
+                ? new JsonMemberValueConverterResolver(converterList)
+                : new DefaultContractResolver();
 
             if (knownTypes != null)
             {
