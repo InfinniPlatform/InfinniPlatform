@@ -4,18 +4,25 @@ using InfinniPlatform.Sdk.Types;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     /// <summary>
     /// Реализует логику сериализации и десериализации <see cref="Time"/> для MongoDB.
     /// </summary>
-    internal sealed class MongoTimeBsonSerializer : SerializerBase<Time>
+    internal sealed class MongoTimeBsonSerializer : MongoBsonSerializerBase<Time>
     {
         public static readonly MongoTimeBsonSerializer Default = new MongoTimeBsonSerializer();
 
-        public override Time Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+
+        protected override void SerializeValue(BsonSerializationContext context, object value)
+        {
+            var time = (Time)value;
+            var writer = context.Writer;
+            writer.WriteDouble(time.TotalSeconds);
+        }
+
+        protected override object DeserializeValue(BsonDeserializationContext context)
         {
             var reader = context.Reader;
 
@@ -35,17 +42,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                     totalSeconds = reader.ReadInt32();
                     break;
                 default:
-                    throw new FormatException($"Cannot deserialize a '{BsonUtils.GetFriendlyTypeName(typeof(Time))}' from BsonType '{currentBsonType}'.");
+                    throw new FormatException($"Cannot deserialize a '{BsonUtils.GetFriendlyTypeName(ValueType)}' from BsonType '{currentBsonType}'.");
             }
 
             return new Time(totalSeconds);
-        }
-
-        public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, Time value)
-        {
-            var writer = context.Writer;
-
-            writer.WriteDouble(value.TotalSeconds);
         }
     }
 }

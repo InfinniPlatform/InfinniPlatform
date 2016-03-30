@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
@@ -15,6 +17,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// </summary>
     internal sealed class MongoConnection
     {
+        private static volatile bool _applyConverters;
+        private static readonly object ApplyConvertersSync = new object();
+
+
         static MongoConnection()
         {
             // Игнорирование null значений в свойствах документов, игнорирование свойств id в классах
@@ -31,14 +37,38 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
-        public MongoConnection(string databaseName, MongoConnectionSettings connectionSettings)
+        public MongoConnection(string databaseName, MongoConnectionSettings connectionSettings, IEnumerable<IMemberValueConverter> converters = null)
         {
+            ApplyConverters(converters);
+
             _database = new Lazy<IMongoDatabase>(() => CreateMongoDatabase(databaseName, connectionSettings));
         }
 
 
         private readonly Lazy<IMongoDatabase> _database;
 
+
+        private static void ApplyConverters(IEnumerable<IMemberValueConverter> converters)
+        {
+            if (!_applyConverters)
+            {
+                lock (ApplyConvertersSync)
+                {
+                    if (!_applyConverters)
+                    {
+                        var converterList = converters?.ToArray();
+
+                        if (converterList?.Length > 0)
+                        {
+                            var convertConventions = new ConventionPack { new MongoMemberValueConverterResolver(converterList) };
+                            ConventionRegistry.Register("ConvertRules", convertConventions, t => true);
+                        }
+
+                        _applyConverters = true;
+                    }
+                }
+            }
+        }
 
         private static IMongoDatabase CreateMongoDatabase(string databaseName, MongoConnectionSettings connectionSettings)
         {

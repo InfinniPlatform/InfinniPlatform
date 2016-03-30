@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Dynamic;
@@ -7,30 +6,39 @@ using InfinniPlatform.Sdk.Dynamic;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     /// <summary>
     /// Реализует логику сериализации и десериализации <see cref="DynamicWrapper"/> для MongoDB.
     /// </summary>
-    internal sealed class MongoDynamicWrapperBsonSerializer : SerializerBase<DynamicWrapper>
+    internal sealed class MongoDynamicWrapperBsonSerializer : MongoBsonSerializerBase<DynamicWrapper>
     {
         public static readonly MongoDynamicWrapperBsonSerializer Default = new MongoDynamicWrapperBsonSerializer();
 
 
-        private static readonly IBsonSerializer<object> ObjectSerializer;
-        private static readonly IBsonSerializer<List<object>> ListSerializer;
-
-
-        static MongoDynamicWrapperBsonSerializer()
+        protected override void SerializeValue(BsonSerializationContext context, object value)
         {
-            ObjectSerializer = BsonSerializer.LookupSerializer<object>();
-            ListSerializer = BsonSerializer.LookupSerializer<List<object>>();
+            var document = (DynamicWrapper)value;
+
+            var writer = context.Writer;
+
+            writer.WriteStartDocument();
+
+            foreach (KeyValuePair<string, object> property in document)
+            {
+                if (property.Value != null)
+                {
+                    writer.WriteName(property.Key);
+
+                    WriteValue(context, property.Value);
+                }
+            }
+
+            writer.WriteEndDocument();
         }
 
-
-        public override DynamicWrapper Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+        protected override object DeserializeValue(BsonDeserializationContext context)
         {
             var reader = context.Reader;
 
@@ -38,10 +46,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             if (currentBsonType != BsonType.Document)
             {
-                throw new FormatException($"Cannot deserialize a '{BsonUtils.GetFriendlyTypeName(typeof(DynamicWrapper))}' from BsonType '{currentBsonType}'.");
+                throw new FormatException($"Cannot deserialize a '{BsonUtils.GetFriendlyTypeName(ValueType)}' from BsonType '{currentBsonType}'.");
             }
-
-            var dynamicDeserializationContext = context.With(ConfigureDeserializationContext);
 
             reader.ReadStartDocument();
 
@@ -71,7 +77,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                 }
                 else
                 {
-                    memberValue = ObjectSerializer.Deserialize(dynamicDeserializationContext);
+                    memberValue = ReadValue(context);
                 }
 
                 document[memberName] = memberValue;
@@ -80,40 +86,6 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             reader.ReadEndDocument();
 
             return document;
-        }
-
-
-        public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DynamicWrapper value)
-        {
-            var writer = context.Writer;
-
-            var dynamicSerializationContext = context.With(ConfigureSerializationContext);
-
-            writer.WriteStartDocument();
-
-            foreach (KeyValuePair<string, object> property in value)
-            {
-                if (property.Value != null)
-                {
-                    writer.WriteName(property.Key);
-
-                    ObjectSerializer.Serialize(dynamicSerializationContext, property.Value);
-                }
-            }
-
-            writer.WriteEndDocument();
-        }
-
-
-        private void ConfigureDeserializationContext(BsonDeserializationContext.Builder builder)
-        {
-            builder.DynamicDocumentSerializer = this;
-            builder.DynamicArraySerializer = ListSerializer;
-        }
-
-        private static void ConfigureSerializationContext(BsonSerializationContext.Builder builder)
-        {
-            builder.IsDynamicType = t => (t == typeof(DynamicWrapper)) || (t != typeof(string) && typeof(IEnumerable).IsAssignableFrom(t));
         }
     }
 }

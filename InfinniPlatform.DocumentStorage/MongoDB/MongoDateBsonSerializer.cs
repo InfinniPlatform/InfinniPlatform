@@ -4,18 +4,25 @@ using InfinniPlatform.Sdk.Types;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     /// <summary>
     /// Реализует логику сериализации и десериализации <see cref="Date"/> для MongoDB.
     /// </summary>
-    internal sealed class MongoDateBsonSerializer : SerializerBase<Date>
+    internal sealed class MongoDateBsonSerializer : MongoBsonSerializerBase<Date>
     {
         public static readonly MongoDateBsonSerializer Default = new MongoDateBsonSerializer();
 
-        public override Date Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+
+        protected override void SerializeValue(BsonSerializationContext context, object value)
+        {
+            var date = (Date)value;
+            var writer = context.Writer;
+            writer.WriteInt64(date.UnixTime);
+        }
+
+        protected override object DeserializeValue(BsonDeserializationContext context)
         {
             var reader = context.Reader;
 
@@ -35,17 +42,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                     unixTime = (long)reader.ReadDouble();
                     break;
                 default:
-                    throw new FormatException($"Cannot deserialize a '{BsonUtils.GetFriendlyTypeName(typeof(Date))}' from BsonType '{currentBsonType}'.");
+                    throw new FormatException($"Cannot deserialize a '{BsonUtils.GetFriendlyTypeName(ValueType)}' from BsonType '{currentBsonType}'.");
             }
 
             return new Date(unixTime);
-        }
-
-        public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, Date value)
-        {
-            var writer = context.Writer;
-
-            writer.WriteInt64(value.UnixTime);
         }
     }
 }
