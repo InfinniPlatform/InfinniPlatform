@@ -40,11 +40,16 @@ namespace InfinniPlatform.Sdk.Serialization
                 Formatting = withFormatting ? Formatting.Indented : Formatting.None
             };
 
-            var converterList = (converters ?? MemberValueConverterRegistry.Converters).ToArray();
+            IContractResolver contractResolver = null;
 
-            serializer.ContractResolver = (converterList.Length > 0)
-                ? new JsonMemberValueConverterResolver(converterList)
-                : new DefaultContractResolver();
+            var converterList = converters?.ToArray();
+
+            if (converterList?.Length > 0)
+            {
+                contractResolver = new JsonMemberValueConverterResolver(converterList);
+            }
+
+            serializer.ContractResolver = contractResolver ?? new DefaultContractResolver();
 
             if (knownTypes != null)
             {

@@ -59,7 +59,7 @@ namespace InfinniPlatform.Core.IoC
 
             // Serialization
 
-            builder.RegisterInstance(JsonObjectSerializer.Default)
+            builder.RegisterType<JsonObjectSerializer>()
                    .As<IObjectSerializer>()
                    .As<IJsonObjectSerializer>()
                    .SingleInstance();
