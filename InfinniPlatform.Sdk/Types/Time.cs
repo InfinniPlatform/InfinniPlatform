@@ -19,7 +19,8 @@ namespace InfinniPlatform.Sdk.Types
     [JsonConverter(typeof(TimeJsonConverter))]
     public struct Time : IComparable, IComparable<Time>, IEquatable<Time>, IFormattable
     {
-        private const double SecondsPerMilliseconds = 0.001d;
+        private const double MillisecondsPerSecond = 1000d;
+        private const double SecondsPerMillisecond = 0.001d;
         private const double SecondsPerMinute = 60d;
         private const double SecondsPerHour = SecondsPerMinute * 60d;
         private const double SecondsPerDay = SecondsPerHour * 24d;
@@ -83,7 +84,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <param name="milliseconds">Количество миллисекунд.</param>
         public Time(int days, int hours, int minutes, int seconds, int milliseconds)
         {
-            TotalSeconds = days * SecondsPerDay + hours * SecondsPerHour + minutes * SecondsPerMinute + seconds + milliseconds * SecondsPerMilliseconds;
+            TotalSeconds = days * SecondsPerDay + hours * SecondsPerHour + minutes * SecondsPerMinute + seconds + milliseconds * SecondsPerMillisecond;
         }
 
 
@@ -220,7 +221,7 @@ namespace InfinniPlatform.Sdk.Types
         /// </returns>
         public Time AddMilliseconds(double value)
         {
-            return new Time(TotalSeconds + value * SecondsPerMilliseconds);
+            return new Time(TotalSeconds + value * SecondsPerMillisecond);
         }
 
         /// <summary>
@@ -337,7 +338,7 @@ namespace InfinniPlatform.Sdk.Types
         /// </returns>
         public static bool Equals(Time first, Time second)
         {
-            return ((long)(first.TotalSeconds * SecondsPerMilliseconds) == (long)(second.TotalSeconds * SecondsPerMilliseconds));
+            return ((long)(first.TotalSeconds * MillisecondsPerSecond) == (long)(second.TotalSeconds * MillisecondsPerSecond));
         }
 
 
@@ -360,7 +361,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <returns>
         /// Значение <see cref="Time"/>, эквивалентное времени в параметре <paramref name="value"/>.
         /// </returns>
-        public Time Parse(string value)
+        public static Time Parse(string value)
         {
             return (Time)TimeSpan.Parse(value);
         }
@@ -373,7 +374,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <returns>
         /// Значение <see cref="Time"/>, эквивалентное времени в параметре <paramref name="value"/>.
         /// </returns>
-        public Time Parse(string value, IFormatProvider provider)
+        public static Time Parse(string value, IFormatProvider provider)
         {
             return (Time)TimeSpan.Parse(value, provider);
         }
@@ -387,7 +388,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <returns>
         /// Значение <c>true</c>, если параметр <paramref name="value"/> успешно преобразован, в противном случае — <c>false</c>.
         /// </returns>
-        public bool TryParse(string value, out Time result)
+        public static bool TryParse(string value, out Time result)
         {
             TimeSpan timeSpan;
             var success = TimeSpan.TryParse(value, out timeSpan);
@@ -404,7 +405,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <returns>
         /// Значение <c>true</c>, если параметр <paramref name="value"/> успешно преобразован, в противном случае — <c>false</c>.
         /// </returns>
-        public bool TryParse(string value, IFormatProvider provider, out Time result)
+        public static bool TryParse(string value, IFormatProvider provider, out Time result)
         {
             TimeSpan timeSpan;
             var success = TimeSpan.TryParse(value, provider, out timeSpan);
@@ -532,7 +533,7 @@ namespace InfinniPlatform.Sdk.Types
         /// </returns>
         public static Time FromMilliseconds(double value)
         {
-            return new Time(value * SecondsPerMilliseconds);
+            return new Time(value * SecondsPerMillisecond);
         }
 
         /// <summary>

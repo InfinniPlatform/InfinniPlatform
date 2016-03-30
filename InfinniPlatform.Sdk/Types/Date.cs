@@ -258,7 +258,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <returns>
         /// Значение <see cref="Date"/>, эквивалентное дате в параметре <paramref name="value"/>.
         /// </returns>
-        public Date Parse(string value)
+        public static Date Parse(string value)
         {
             return (Date)DateTime.Parse(value);
         }
@@ -271,7 +271,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <returns>
         /// Значение <see cref="Date"/>, эквивалентное дате в параметре <paramref name="value"/>.
         /// </returns>
-        public Date Parse(string value, IFormatProvider provider)
+        public static Date Parse(string value, IFormatProvider provider)
         {
             return (Date)DateTime.Parse(value, provider, DateTimeStyles.None);
         }
@@ -285,7 +285,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <returns>
         /// Значение <c>true</c>, если параметр <paramref name="value"/> успешно преобразован, в противном случае — <c>false</c>.
         /// </returns>
-        public bool TryParse(string value, out Date result)
+        public static bool TryParse(string value, out Date result)
         {
             DateTime dateTime;
             var success = DateTime.TryParse(value, out dateTime);
@@ -302,7 +302,7 @@ namespace InfinniPlatform.Sdk.Types
         /// <returns>
         /// Значение <c>true</c>, если параметр <paramref name="value"/> успешно преобразован, в противном случае — <c>false</c>.
         /// </returns>
-        public bool TryParse(string value, IFormatProvider provider, out Date result)
+        public static bool TryParse(string value, IFormatProvider provider, out Date result)
         {
             DateTime dateTime;
             var success = DateTime.TryParse(value, provider, DateTimeStyles.None, out dateTime);
