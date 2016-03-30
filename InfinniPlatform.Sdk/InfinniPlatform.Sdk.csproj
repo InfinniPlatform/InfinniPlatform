@@ -87,6 +87,7 @@
     <Compile Include="Serialization\IMemberValueConverter.cs" />
     <Compile Include="Serialization\JsonMemberValueConverter.cs" />
     <Compile Include="Serialization\JsonMemberValueConverterResolver.cs" />
+    <Compile Include="Serialization\XmlDateMemberValueConverter.cs" />
     <Compile Include="Services\ServiceResult.cs" />
     <Compile Include="Documents\Services\DocumentSortOrder.cs" />
     <Compile Include="Documents\Services\IDocumentHttpServiceHandler.cs" />
