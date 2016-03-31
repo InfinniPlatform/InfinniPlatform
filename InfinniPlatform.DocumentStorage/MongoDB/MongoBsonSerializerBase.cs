@@ -8,7 +8,10 @@ using MongoDB.Bson.Serialization;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {
-    internal abstract class MongoBsonSerializerBase : IBsonSerializer
+    /// <summary>
+    /// Реализует базовую логику сериализации и десериализации для MongoDB.
+    /// </summary>
+    internal abstract class MongoBsonSerializerBase : IBsonSerializer, IBsonPolymorphicSerializer
     {
         private static readonly IBsonSerializer<object> ObjectSerializer;
         private static readonly IBsonSerializer<List<object>> ListSerializer;
@@ -21,13 +24,28 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="valueType">Тип значения.</param>
         protected MongoBsonSerializerBase(Type valueType)
         {
             ValueType = valueType;
         }
 
 
+        /// <summary>
+        /// Тип значения.
+        /// </summary>
         public Type ValueType { get; }
+
+        /// <summary>
+        /// Определяет, что тип <see cref="ValueType"/> в динамическом контексте следует интерпретировать,
+        /// как известный, а экземпляры этого типа следует сохранять с использованием текущего сериализатора.
+        /// В противном случае экземпляр типа <see cref="ValueType"/> будет сохранен в обертке { _t, _v } с
+        /// использованием стандартного сериализатора для объектов.
+        /// </summary>
+        public bool IsDiscriminatorCompatibleWithObjectSerializer => true;
 
 
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)
@@ -70,7 +88,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         protected object ReadValue(BsonDeserializationContext context, Type valueType)
         {
-            return ObjectSerializer.Deserialize(context, new BsonDeserializationArgs { NominalType = valueType });
+            return BsonSerializer.LookupSerializer(valueType).Deserialize(context);
         }
 
         protected abstract object DeserializeValue(BsonDeserializationContext context);

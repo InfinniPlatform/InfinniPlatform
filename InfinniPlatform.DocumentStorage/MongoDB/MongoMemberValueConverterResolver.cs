@@ -11,7 +11,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// <summary>
     /// Определяет правила преобразования объекта для MongoDB на основе списка <see cref="IMemberValueConverter" />.
     /// </summary>
-    internal sealed class MongoMemberValueConverterResolver : ConventionBase, IMemberMapConvention, IConvention
+    internal sealed class MongoMemberValueConverterResolver : ConventionBase, IMemberMapConvention
     {
         public MongoMemberValueConverterResolver(IEnumerable<IMemberValueConverter> converters)
         {
