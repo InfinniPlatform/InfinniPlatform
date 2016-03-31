@@ -129,7 +129,14 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
                 foreach (var item in itemsMetadata)
                 {
-                    itemsMetadataCache.Add(new MetadataUniqueName((string)item["Namespace"], (string)item["Name"]), item);
+                    var metadataName = new MetadataUniqueName((string)item["Namespace"], (string)item["Name"]);
+
+                    if (itemsMetadataCache.ContainsKey(metadataName))
+                    {
+                        throw new InvalidOperationException($"Metadata object '{metadataName}' is duplicate.");
+                    }
+
+                    itemsMetadataCache.Add(metadataName, item);
                 }
             }
 

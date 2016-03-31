@@ -42,7 +42,7 @@ namespace InfinniPlatform.DocumentStorage.Services
 
             foreach (var clrDocumentType in clrDocumentTypes)
             {
-                var handlerType = typeof(IDocumentHttpServiceHandler<>).MakeGenericType(clrDocumentType);
+                var handlerType = typeof(IDocumentHttpServiceHandlerBase);
                 var serviceType = typeof(DocumentHttpService<>).MakeGenericType(clrDocumentType);
                 var serviceFunc = typeof(Func<,>).MakeGenericType(handlerType, serviceType);
 
@@ -57,9 +57,9 @@ namespace InfinniPlatform.DocumentStorage.Services
 
             if (httpServiceHandler is IDocumentHttpServiceHandler)
             {
-                var serviceFactory = _containerResolver.Resolve<Func<IDocumentHttpServiceHandler, DocumentHttpService>>();
+                var serviceFactory = _containerResolver.Resolve<Func<IDocumentHttpServiceHandlerBase, DocumentHttpService>>();
 
-                var service = (IHttpService)serviceFactory.Invoke((IDocumentHttpServiceHandler)httpServiceHandler);
+                var service = (IHttpService)serviceFactory.Invoke(httpServiceHandler);
 
                 yield return service;
             }

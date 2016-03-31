@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Documents;
@@ -18,7 +17,7 @@ namespace InfinniPlatform.DocumentStorage.Services
     [LoggerName("DocumentHttpService")]
     internal sealed class DocumentHttpService<TDocument> : DocumentHttpServiceBase where TDocument : Document
     {
-        public DocumentHttpService(IDocumentHttpServiceHandler<TDocument> serviceHandler,
+        public DocumentHttpService(IDocumentHttpServiceHandlerBase serviceHandler,
                                    IDocumentQueryFactory<TDocument> queryFactory,
                                    IDocumentStorageFactory storageFactory,
                                    IBlobStorage blobStorage,
@@ -33,7 +32,7 @@ namespace InfinniPlatform.DocumentStorage.Services
             CanPost = serviceHandler.CanPost;
             CanDelete = serviceHandler.CanDelete;
 
-            _serviceHandler = serviceHandler;
+            _serviceHandler = (IDocumentHttpServiceHandler<TDocument>)serviceHandler;
             _queryFactory = queryFactory;
             _blobStorage = blobStorage;
             _storage = storage;

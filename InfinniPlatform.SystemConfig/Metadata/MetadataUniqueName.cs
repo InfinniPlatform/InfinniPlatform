@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace InfinniPlatform.Core.Metadata
@@ -8,33 +7,39 @@ namespace InfinniPlatform.Core.Metadata
     {
         private const char NamespaceSeparator = '.';
 
+
         public MetadataUniqueName(string ns, string name)
         {
             Namespace = ns;
             Name = name;
         }
+
         public MetadataUniqueName(string fullQuelifiedName)
         {
             Namespace = fullQuelifiedName.Remove(fullQuelifiedName.LastIndexOf(NamespaceSeparator));
             Name = fullQuelifiedName.Split(NamespaceSeparator).Last();
         }
 
+
         public string Namespace { get; }
+
         public string Name { get; }
+
 
         public bool Equals(MetadataUniqueName other)
         {
-            return Namespace.Equals(other.Namespace, StringComparison.OrdinalIgnoreCase) && Name.Equals(other.Name, StringComparison.OrdinalIgnoreCase);
-        }
-
-        public override string ToString()
-        {
-            return $"{Namespace}.{Name}";
+            return string.Equals(Namespace, other.Namespace, StringComparison.OrdinalIgnoreCase)
+                   && string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode()
         {
-            return Namespace.ToLower().GetHashCode() ^ Name.ToLower().GetHashCode();
+            return ToString().GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return (string.IsNullOrEmpty(Namespace)) ? Name : $"{Namespace}{NamespaceSeparator}{Name}";
         }
     }
 }
