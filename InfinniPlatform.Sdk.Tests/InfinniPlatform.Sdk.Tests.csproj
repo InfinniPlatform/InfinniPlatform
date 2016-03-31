@@ -72,7 +72,9 @@
     <Compile Include="TestData\ActionUnitLike.cs" />
     <Compile Include="TestData\ActionUnitHelloWorld1.cs" />
     <Compile Include="TestData\ActionUnitOnSaveComment.cs" />
+    <Compile Include="Types\DateJsonConverterTest.cs" />
     <Compile Include="Types\DateTest.cs" />
+    <Compile Include="Types\TimeJsonConverterTest.cs" />
     <Compile Include="Types\TimeTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -670,5 +670,166 @@ namespace InfinniPlatform.Sdk.Tests.Types
             Assert.IsTrue(time3 >= time1);
             Assert.IsTrue(time3 >= time2);
         }
+
+        [Test]
+        public void ShouldPlusOperatorsForTime()
+        {
+            // Given
+            var value1 = new Time(1);
+            var value2 = new Time(2);
+
+            // When
+            var result = value1 + value2;
+
+            // Then
+            Assert.AreEqual(3, result.TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldPlusOperatorsForDouble()
+        {
+            // Given
+            var value1 = new Time(1);
+            var value2 = 2;
+
+            // When
+            var result1 = value1 + value2;
+            var result2 = value2 + value1;
+
+            // Then
+            Assert.AreEqual(3, result1.TotalSeconds, TimeInaccuracy);
+            Assert.AreEqual(3, result2.TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldPlusOperatorsForTimeSpan()
+        {
+            // Given
+            var value1 = new Time(1);
+            var value2 = TimeSpan.FromSeconds(2);
+
+            // When
+            var result1 = value1 + value2;
+            var result2 = value2 + value1;
+
+            // Then
+            Assert.AreEqual(3, result1.TotalSeconds, TimeInaccuracy);
+            Assert.AreEqual(3, result2.TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldPlusOperatorsForDateTime()
+        {
+            // Given
+            var date = DateTime.Now;
+            var time = new Time(123);
+
+            // When
+            var result = date + time;
+
+            // Then
+            Assert.AreEqual(123, (result - date).TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldPlusOperatorsForDateTimeOffset()
+        {
+            // Given
+            var date = DateTimeOffset.Now;
+            var time = new Time(123);
+
+            // When
+            var result = date + time;
+
+            // Then
+            Assert.AreEqual(123, (result - date).TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldMinusOperatorsForTime()
+        {
+            // Given
+            var value1 = new Time(1);
+            var value2 = new Time(2);
+
+            // When
+            var result = value1 - value2;
+
+            // Then
+            Assert.AreEqual(-1, result.TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldMinusOperatorsForDouble()
+        {
+            // Given
+            var value1 = new Time(1);
+            var value2 = 2;
+
+            // When
+            var result1 = value1 - value2;
+            var result2 = value2 - value1;
+
+            // Then
+            Assert.AreEqual(-1, result1.TotalSeconds, TimeInaccuracy);
+            Assert.AreEqual(1, result2.TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldMinusOperatorsForTimeSpan()
+        {
+            // Given
+            var value1 = new Time(1);
+            var value2 = TimeSpan.FromSeconds(2);
+
+            // When
+            var result1 = value1 - value2;
+            var result2 = value2 - value1;
+
+            // Then
+            Assert.AreEqual(-1, result1.TotalSeconds, TimeInaccuracy);
+            Assert.AreEqual(1, result2.TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldMinusOperatorsForDateTime()
+        {
+            // Given
+            var date = DateTime.Now;
+            var time = new Time(123);
+
+            // When
+            var result = date - time;
+
+            // Then
+            Assert.AreEqual(123, (date - result).TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldMinusOperatorsForDateTimeOffset()
+        {
+            // Given
+            var date = DateTimeOffset.Now;
+            var time = new Time(123);
+
+            // When
+            var result = date - time;
+
+            // Then
+            Assert.AreEqual(123, (date - result).TotalSeconds, TimeInaccuracy);
+        }
+
+        [Test]
+        public void ShouldUnaryMinusOperator()
+        {
+            // Given
+            var time = new Time(123);
+
+            // When
+            var result = -time;
+
+            // Then
+            Assert.AreEqual(-123, result.TotalSeconds);
+        }
     }
 }
