@@ -17,22 +17,25 @@ namespace InfinniPlatform.Sdk.Tests.Types
 
             var date1 = Date.Now.AddDays(1);
             var date2 = Date.Now.AddDays(2);
+            var date3 = Date.Now.AddDays(3);
 
             var serializer = JsonObjectSerializer.Default;
 
             var instance = new DateClassExample
             {
                 DateProperty = date1,
+                NullableDateProperty = date2,
                 ComplexProperty = new DateClassExample
                 {
-                    DateProperty = date2
+                    DateProperty = date3
                 }
             };
 
             var expectedJson = @"{" +
                                "\"DateProperty\":" + date1.UnixTime + "," +
+                               "\"NullableDateProperty\":" + date2.UnixTime + "," +
                                "\"ComplexProperty\":{" +
-                               "\"DateProperty\":" + date2.UnixTime +
+                               "\"DateProperty\":" + date3.UnixTime +
                                "}" +
                                "}";
 
@@ -51,13 +54,16 @@ namespace InfinniPlatform.Sdk.Tests.Types
 
             var date1 = Date.Now.AddDays(1);
             var date2 = Date.Now.AddDays(2);
+            var date3 = Date.Now.AddDays(3);
 
             var serializer = JsonObjectSerializer.Default;
 
             var instanceJson = @"{" +
                                "\"DateProperty\":" + date1.UnixTime + "," +
+                               "\"NullableDateProperty\":" + date2.UnixTime + "," +
                                "\"ComplexProperty\":{" +
-                               "\"DateProperty\":" + date2.UnixTime +
+                               "\"DateProperty\":" + date3.UnixTime + "," +
+                               "\"NullableDateProperty\":null" +
                                "}" +
                                "}";
 
@@ -68,8 +74,10 @@ namespace InfinniPlatform.Sdk.Tests.Types
             // Then
             Assert.IsNotNull(instance);
             Assert.AreEqual(date1, instance.DateProperty);
+            Assert.AreEqual(date2, instance.NullableDateProperty);
             Assert.IsNotNull(instance.ComplexProperty);
-            Assert.AreEqual(date2, instance.ComplexProperty.DateProperty);
+            Assert.AreEqual(date3, instance.ComplexProperty.DateProperty);
+            Assert.IsNull(instance.ComplexProperty.NullableDateProperty);
         }
 
         [Test]
@@ -79,24 +87,27 @@ namespace InfinniPlatform.Sdk.Tests.Types
 
             var date1 = Date.Now.AddDays(1);
             var date2 = Date.Now.AddDays(2);
+            var date3 = Date.Now.AddDays(3);
 
             var serializer = JsonObjectSerializer.Default;
 
             var instance = new DynamicWrapper
                            {
                                { "DateProperty", date1 },
+                               { "NullableDateProperty", date2 },
                                {
                                    "ComplexProperty", new DynamicWrapper
                                                       {
-                                                          { "DateProperty", date2 }
+                                                          { "DateProperty", date3 }
                                                       }
                                }
                            };
 
             var expectedJson = @"{" +
                                "\"DateProperty\":" + date1.UnixTime + "," +
+                               "\"NullableDateProperty\":" + date2.UnixTime + "," +
                                "\"ComplexProperty\":{" +
-                               "\"DateProperty\":" + date2.UnixTime +
+                               "\"DateProperty\":" + date3.UnixTime +
                                "}" +
                                "}";
 
@@ -115,13 +126,16 @@ namespace InfinniPlatform.Sdk.Tests.Types
 
             var date1 = Date.Now.AddDays(1);
             var date2 = Date.Now.AddDays(2);
+            var date3 = Date.Now.AddDays(3);
 
             var serializer = JsonObjectSerializer.Default;
 
             var instanceJson = @"{" +
                                "\"DateProperty\":" + date1.UnixTime + "," +
+                               "\"NullableDateProperty\":" + date2.UnixTime + "," +
                                "\"ComplexProperty\":{" +
-                               "\"DateProperty\":" + date2.UnixTime +
+                               "\"DateProperty\":" + date3.UnixTime + "," +
+                               "\"NullableDateProperty\":null" +
                                "}" +
                                "}";
 
@@ -132,14 +146,18 @@ namespace InfinniPlatform.Sdk.Tests.Types
             // Then
             Assert.IsNotNull(instance);
             Assert.AreEqual(date1.UnixTime, instance["DateProperty"]);
+            Assert.AreEqual(date2.UnixTime, instance["NullableDateProperty"]);
             Assert.IsNotNull(instance["ComplexProperty"]);
-            Assert.AreEqual(date2.UnixTime, ((DynamicWrapper)instance["ComplexProperty"])["DateProperty"]);
+            Assert.AreEqual(date3.UnixTime, ((DynamicWrapper)instance["ComplexProperty"])["DateProperty"]);
+            Assert.IsNull(((DynamicWrapper)instance["ComplexProperty"])["NullableDateProperty"]);
         }
 
 
         private class DateClassExample
         {
             public Date DateProperty { get; set; }
+
+            public Date? NullableDateProperty { get; set; }
 
             public DateClassExample ComplexProperty { get; set; }
         }

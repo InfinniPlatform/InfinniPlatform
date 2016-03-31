@@ -19,22 +19,25 @@ namespace InfinniPlatform.Sdk.Tests.Types
 
             var time1 = Time.Now.AddSeconds(1.456);
             var time2 = Time.Now.AddSeconds(2.789);
+            var time3 = Time.Now.AddSeconds(3.012);
 
             var serializer = JsonObjectSerializer.Default;
 
             var instance = new TimeClassExample
             {
                 TimeProperty = time1,
+                NullableTimeProperty = time2,
                 ComplexProperty = new TimeClassExample
                 {
-                    TimeProperty = time2
+                    TimeProperty = time3
                 }
             };
 
             var expectedJson = @"{" +
                                "\"TimeProperty\":" + time1.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
+                               "\"NullableTimeProperty\":" + time2.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
                                "\"ComplexProperty\":{" +
-                               "\"TimeProperty\":" + time2.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) +
+                               "\"TimeProperty\":" + time3.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) +
                                "}" +
                                "}";
 
@@ -52,13 +55,16 @@ namespace InfinniPlatform.Sdk.Tests.Types
 
             var time1 = Time.Now.AddSeconds(1.456);
             var time2 = Time.Now.AddSeconds(2.789);
+            var time3 = Time.Now.AddSeconds(3.012);
 
             var serializer = JsonObjectSerializer.Default;
 
             var instanceJson = @"{" +
                                "\"TimeProperty\":" + time1.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
+                               "\"NullableTimeProperty\":" + time2.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
                                "\"ComplexProperty\":{" +
-                               "\"TimeProperty\":" + time2.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) +
+                               "\"TimeProperty\":" + time3.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
+                               "\"NullableTimeProperty\":null" +
                                "}" +
                                "}";
 
@@ -69,8 +75,10 @@ namespace InfinniPlatform.Sdk.Tests.Types
             // Then
             Assert.IsNotNull(instance);
             Assert.AreEqual(time1, instance.TimeProperty);
+            Assert.AreEqual(time2, instance.NullableTimeProperty);
             Assert.IsNotNull(instance.ComplexProperty);
-            Assert.AreEqual(time2, instance.ComplexProperty.TimeProperty);
+            Assert.AreEqual(time3, instance.ComplexProperty.TimeProperty);
+            Assert.IsNull(instance.ComplexProperty.NullableTimeProperty);
         }
 
         [Test]
@@ -80,24 +88,27 @@ namespace InfinniPlatform.Sdk.Tests.Types
 
             var time1 = Time.Now.AddSeconds(1.456);
             var time2 = Time.Now.AddSeconds(2.789);
+            var time3 = Time.Now.AddSeconds(3.012);
 
             var serializer = JsonObjectSerializer.Default;
 
             var instance = new DynamicWrapper
                            {
                                { "TimeProperty", time1 },
+                               { "NullableTimeProperty", time2 },
                                {
                                    "ComplexProperty", new DynamicWrapper
                                                       {
-                                                          { "TimeProperty", time2 }
+                                                          { "TimeProperty", time3 }
                                                       }
                                }
                            };
 
             var expectedJson = @"{" +
                                "\"TimeProperty\":" + time1.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
+                               "\"NullableTimeProperty\":" + time2.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
                                "\"ComplexProperty\":{" +
-                               "\"TimeProperty\":" + time2.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) +
+                               "\"TimeProperty\":" + time3.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) +
                                "}" +
                                "}";
 
@@ -116,13 +127,16 @@ namespace InfinniPlatform.Sdk.Tests.Types
 
             var time1 = Time.Now.AddSeconds(1.456);
             var time2 = Time.Now.AddSeconds(2.789);
+            var time3 = Time.Now.AddSeconds(3.012);
 
             var serializer = JsonObjectSerializer.Default;
 
             var instanceJson = @"{" +
                                "\"TimeProperty\":" + time1.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
+                               "\"NullableTimeProperty\":" + time2.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
                                "\"ComplexProperty\":{" +
-                               "\"TimeProperty\":" + time2.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) +
+                               "\"TimeProperty\":" + time3.TotalSeconds.ToString("r", CultureInfo.InvariantCulture) + "," +
+                               "\"NullableTimeProperty\":null" +
                                "}" +
                                "}";
 
@@ -133,14 +147,18 @@ namespace InfinniPlatform.Sdk.Tests.Types
             // Then
             Assert.IsNotNull(instance);
             Assert.AreEqual(time1.TotalSeconds, instance["TimeProperty"]);
+            Assert.AreEqual(time2.TotalSeconds, instance["NullableTimeProperty"]);
             Assert.IsNotNull(instance["ComplexProperty"]);
-            Assert.AreEqual(time2.TotalSeconds, ((DynamicWrapper)instance["ComplexProperty"])["TimeProperty"]);
+            Assert.AreEqual(time3.TotalSeconds, ((DynamicWrapper)instance["ComplexProperty"])["TimeProperty"]);
+            Assert.IsNull(((DynamicWrapper)instance["ComplexProperty"])["NullableTimeProperty"]);
         }
 
 
         private class TimeClassExample
         {
             public Time TimeProperty { get; set; }
+
+            public Time? NullableTimeProperty { get; set; }
 
             public TimeClassExample ComplexProperty { get; set; }
         }

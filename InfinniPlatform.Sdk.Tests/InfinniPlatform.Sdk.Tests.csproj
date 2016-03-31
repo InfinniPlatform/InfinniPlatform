@@ -52,6 +52,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
@@ -67,6 +68,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\XmlDateMemberValueConverterTest.cs" />
     <Compile Include="TestData\ActionUnitHelloWorld.cs" />
     <Compile Include="TestData\ActionUnitHelloWorld2.cs" />
     <Compile Include="TestData\ActionUnitLike.cs" />
