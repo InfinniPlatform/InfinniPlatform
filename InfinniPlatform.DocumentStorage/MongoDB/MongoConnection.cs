@@ -62,9 +62,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                         {
                             var convertConventions = new ConventionPack { new MongoMemberValueConverterResolver(converterList) };
                             ConventionRegistry.Register("ConvertRules", convertConventions, t => true);
-                        }
 
-                        _applyConverters = true;
+                            _applyConverters = true;
+                        }
                     }
                 }
             }
