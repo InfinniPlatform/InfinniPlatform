@@ -10,9 +10,18 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// <summary>
     /// Реализует логику сериализации и десериализации <see cref="Date"/> для MongoDB.
     /// </summary>
-    internal sealed class MongoDateBsonSerializer : MongoBsonSerializerBase<Date>
+    internal sealed class MongoDateBsonSerializer : MongoBsonSerializerBase<Date>, IBsonPolymorphicSerializer
     {
         public static readonly MongoDateBsonSerializer Default = new MongoDateBsonSerializer();
+
+
+        /// <summary>
+        /// Определяет, что тип <see cref="ValueType"/> в динамическом контексте следует интерпретировать,
+        /// как известный, а экземпляры этого типа следует сохранять с использованием текущего сериализатора.
+        /// В противном случае экземпляр типа <see cref="ValueType"/> будет сохранен в обертке { _t, _v } с
+        /// использованием стандартного сериализатора для объектов.
+        /// </summary>
+        public bool IsDiscriminatorCompatibleWithObjectSerializer => true;
 
 
         protected override void SerializeValue(BsonSerializationContext context, object value)

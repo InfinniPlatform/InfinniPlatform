@@ -28,12 +28,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             ConventionRegistry.Register("IgnoreRules", defaultConventions, t => true);
 
             // Установка правил сериализации и десериализации внутренних типов данных
-            BsonSerializer.RegisterSerializer(MongoDynamicWrapperBsonSerializer.Default);
             BsonSerializer.RegisterSerializer(MongoDateBsonSerializer.Default);
             BsonSerializer.RegisterSerializer(MongoTimeBsonSerializer.Default);
-            BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
+            BsonSerializer.RegisterSerializer(MongoDynamicWrapperBsonSerializer.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDateBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoTimeBsonSerializationProvider.Default);
+            BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
         }
 
 
