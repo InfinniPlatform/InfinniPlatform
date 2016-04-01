@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewTreeBuilders
 {
@@ -77,7 +76,7 @@ namespace InfinniPlatform.PrintViewDesigner.Controls.PrintViewTreeBuilders
             {
                 foreach (var itemMetadata in elementMetadata)
                 {
-                    BuildElement(elements, elementParent, itemMetadata.ToDynamic());
+                    BuildElement(elements, elementParent, itemMetadata);
                 }
             }
         }
