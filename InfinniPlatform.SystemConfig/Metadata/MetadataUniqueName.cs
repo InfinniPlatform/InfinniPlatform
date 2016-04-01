@@ -34,7 +34,7 @@ namespace InfinniPlatform.Core.Metadata
 
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return ToString().ToLower().GetHashCode();
         }
 
         public override string ToString()
