@@ -216,7 +216,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Builders.Factories.Inlines
 
             // Then
             Assert.IsNotNull(element);
-            Assert.IsNullOrEmpty(element.Text);
+            Assert.True(string.IsNullOrEmpty(element.Text));
         }
 
         [Test]
