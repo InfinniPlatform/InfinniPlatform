@@ -22,9 +22,13 @@ x86/
 [Aa]ssemblies/
 [Dd]esigner[Bb]in/
 [Ll]ogs/
+project.lock.json
 
-# Visual Studo 2015 cache/options directory
+# Visual Studio 2015 cache/options directory
 .vs/
+
+# Visual Studio Code cache/options directory
+.vscode/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -137,7 +141,6 @@ publish/
 
 # NuGet Packages
 *.nupkg
-Files/Packaging/InfinniPlatform.nuspec
 # The packages folder can be ignored because of Package Restore
 /packages/*
 # except build/, which is used as an MSBuild target.
@@ -195,3 +198,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# .NET Portability Analyzer
+PortabilityAnalysis.html
