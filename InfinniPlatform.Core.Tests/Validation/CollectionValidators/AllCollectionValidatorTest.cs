@@ -19,19 +19,19 @@ namespace InfinniPlatform.Core.Tests.Validation.CollectionValidators
 
 
         private static readonly object[] FailureTestCase =
-            {
-                new object[] {1},
-                new object[] {1, 2},
-                new object[] {1, 2, 3}
-            };
+        {
+            new object[] { 1, 2 },
+            new object[] { 1, 2, 3 }
+        };
 
         private static readonly object[] SuccessTestCase =
-            {
-                new object[] {},
-                new object[] {3},
-                new object[] {3, 3},
-                new object[] {3, 3, 3}
-            };
+        {
+            new object[] { },
+            new object[] { 3 },
+            new object[] { 3, 3 },
+            new object[] { 3, 3, 3 }
+        };
+
 
         [Test]
         public void ShouldBuildValidationResult()
@@ -55,7 +55,7 @@ namespace InfinniPlatform.Core.Tests.Validation.CollectionValidators
 
 
         [Test]
-        [TestCaseSource("FailureTestCase")]
+        [TestCaseSource(nameof(FailureTestCase))]
         public void ShouldValidateWhenFailure(object validationObjejct)
         {
             // Given
@@ -68,16 +68,13 @@ namespace InfinniPlatform.Core.Tests.Validation.CollectionValidators
             // Then
             Assert.IsFalse(isValid);
             Assert.IsFalse(result.IsValid);
-            int falseItemCount = (validationObjejct != null)
-                                     ? ((object[]) validationObjejct).Count(i => !Predicate(i))
-                                     : 0;
-            Assert.IsTrue((result.Items != null && result.Items.Count == falseItemCount &&
-                           result.Items.All(i => i.Message == PredicateOperator.Message)) || falseItemCount == 0);
+            int falseItemCount = ((object[])validationObjejct)?.Count(i => !Predicate(i)) ?? 0;
+            Assert.IsTrue((result.Items != null && result.Items.Count == falseItemCount && result.Items.All(i => i.Message == PredicateOperator.Message)) || falseItemCount == 0);
         }
 
 
         [Test]
-        [TestCaseSource("SuccessTestCase")]
+        [TestCaseSource(nameof(SuccessTestCase))]
         public void ShouldValidateWhenSuccess(object validationObjejct)
         {
             // Given

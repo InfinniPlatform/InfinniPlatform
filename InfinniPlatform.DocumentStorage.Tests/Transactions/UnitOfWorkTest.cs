@@ -106,7 +106,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Transactions
         }
 
         [Test]
-        public async void ShouldCommitAsync()
+        public async Task ShouldCommitAsync()
         {
             // Given
 
