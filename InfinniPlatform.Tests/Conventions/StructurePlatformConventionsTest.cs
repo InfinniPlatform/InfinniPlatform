@@ -14,26 +14,26 @@ namespace InfinniPlatform.Conventions
     [Category(TestCategories.UnitTest)]
     public sealed class StructurePlatformConventionsTest
     {
+        static StructurePlatformConventionsTest()
+        {
+            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath));
+            PackagesDir = ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
+
+            SolutionProjects = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*").ToArray();
+            SolutionCodeProjects = SolutionProjects.Where(p => !p.EndsWith(".Tests")).ToArray();
+            SolutionTestProjects = SolutionProjects.Where(p => p.EndsWith(".Tests")).ToArray();
+
+            ProjectNamespace = XNamespace.Get("http://schemas.microsoft.com/developer/msbuild/2003");
+        }
+
+
         private const string SolutionName = "InfinniPlatform";
-
-        private static readonly string SolutionDir
-            = Path.GetFullPath(".." + Path.DirectorySeparatorChar);
-
-        private static readonly string PackagesDir
-            = ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
-
-        private static readonly string[] SolutionProjects
-            = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*")
-                       .Where(p => !p.EndsWith(".Deploy")).ToArray();
-
-        private static readonly string[] SolutionCodeProjects
-            = SolutionProjects.Where(p => !p.EndsWith(".Tests")).ToArray();
-
-        private static readonly string[] SolutionTestProjects
-            = SolutionProjects.Where(p => p.EndsWith(".Tests")).ToArray();
-
-        private static readonly XNamespace ProjectNamespace
-            = XNamespace.Get("http://schemas.microsoft.com/developer/msbuild/2003");
+        private static readonly string SolutionDir;
+        private static readonly string PackagesDir;
+        private static readonly string[] SolutionProjects;
+        private static readonly string[] SolutionCodeProjects;
+        private static readonly string[] SolutionTestProjects;
+        private static readonly XNamespace ProjectNamespace;
 
 
         [Test]
@@ -136,7 +136,7 @@ namespace InfinniPlatform.Conventions
                 .All(i => i != null
                     && string.IsNullOrWhiteSpace(i.Value) == false
                     && i.Value.StartsWith(@"..\")
-                    && ToNormPath(Path.GetFullPath(i.Value.Insert(3, SolutionName + @"\").Replace('\\', Path.DirectorySeparatorChar)))
+                    && ToNormPath(i.Value.Replace(@"..\", SolutionDir + @"\"))
                         .StartsWith(ToNormPath(SolutionDir)));
 
             // Then
