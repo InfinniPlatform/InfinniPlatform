@@ -24,6 +24,8 @@ namespace InfinniPlatform.Conventions
             SolutionTestProjects = SolutionProjects.Where(p => p.EndsWith(".Tests")).ToArray();
 
             ProjectNamespace = XNamespace.Get("http://schemas.microsoft.com/developer/msbuild/2003");
+
+            Console.WriteLine(@"SolutionDir={0}", SolutionDir);
         }
 
 
