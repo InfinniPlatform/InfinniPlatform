@@ -18,7 +18,7 @@ namespace InfinniPlatform.FastReport.Tests.ReportTemplateBuilders.Data
 		private readonly FrReportObjectTemplateBuilderContext _context
 			= new FrReportObjectTemplateBuilderContext();
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void Setup()
 		{
 			var report = new Report();

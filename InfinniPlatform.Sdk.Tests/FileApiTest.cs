@@ -14,7 +14,7 @@ namespace InfinniPlatform.Sdk.Tests
         private DocumentApiClient _documentApiClient;
         private FileApiClient _fileApiClient;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetupApi()
         {
             _fileApiClient = new FileApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port);

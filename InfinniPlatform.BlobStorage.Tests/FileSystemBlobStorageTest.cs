@@ -16,7 +16,7 @@ namespace InfinniPlatform.BlobStorage.Tests
     [Category(TestCategories.IntegrationTest)]
     public sealed class FileSystemBlobStorageTest
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             var mimeTypeResolverMock = new Mock<IMimeTypeResolver>();

@@ -34,7 +34,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
         private RegisterApiClient _registerApi;
 
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             _server = InfinniPlatformInprocessHost.Start();
@@ -44,7 +44,7 @@ namespace InfinniPlatform.Core.Tests.RestBehavior.Registers
             InitTestData();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             _server.Dispose();

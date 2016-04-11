@@ -13,13 +13,13 @@ namespace InfinniPlatform.SignalR.Tests
     {
         private IDisposable _server;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             _server = InfinniPlatformInprocessHost.Start();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             _server.Dispose();

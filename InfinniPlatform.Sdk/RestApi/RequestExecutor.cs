@@ -20,19 +20,34 @@ namespace InfinniPlatform.Sdk.RestApi
     public sealed class RequestExecutor
     {
         [ThreadStatic]
-        private static readonly HttpClient Client;
+        private static HttpClient _client;
+        private static readonly object ClientSync = new object();
 
 
-        static RequestExecutor()
+        private static HttpClient Client
         {
-            var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() };
-            var client = new HttpClient(clientHandler);
+            get
+            {
+                if (_client == null)
+                {
+                    lock (ClientSync)
+                    {
+                        if (_client == null)
+                        {
+                            var clientHandler = new HttpClientHandler { CookieContainer = new CookieContainer() };
+                            var client = new HttpClient(clientHandler);
 
 #if DEBUG
-            client.Timeout = Timeout.InfiniteTimeSpan;
+                            client.Timeout = Timeout.InfiniteTimeSpan;
 #endif
 
-            Client = client;
+                            _client = client;
+                        }
+                    }
+                }
+
+                return _client;
+            }
         }
 
 
