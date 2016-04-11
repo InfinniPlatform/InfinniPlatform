@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.Sdk.Dynamic;
@@ -16,7 +17,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
     public class MongoDocumentStorageManagerTest
     {
         [Test]
-        public async void ShouldCreateStorageAsync()
+        public async Task ShouldCreateStorageAsync()
         {
             // Given
 
@@ -107,7 +108,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldRenameStorageAsync()
+        public async Task ShouldRenameStorageAsync()
         {
             // Given
 
@@ -147,7 +148,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldDropStorageAsync()
+        public async Task ShouldDropStorageAsync()
         {
             // Given
 

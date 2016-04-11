@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 using NUnit.Framework;
@@ -359,36 +358,6 @@ namespace InfinniPlatform.Conventions
 
             // Then
             Assert.AreEqual(ToNormPath(appConfig), ToNormPath(result), @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для платформы ""{1}""", project, appConfig);
-        }
-
-        [Test]
-        [Ignore("Исправлено в Mono 4.3")]
-        [Description(@"В коде нельзя использовать операторы ?. и ?[] из-за отсутствия их поддержки в Mono 4.2")]
-        public void CodeCannotUseMaybeOperatorBecauseMono()
-        {
-            // Given
-
-            var codeFiles = Directory.EnumerateFiles(SolutionDir, "*.cs", SearchOption.AllDirectories)
-                                     .Where(i => !i.Contains(@"\obj\Debug\"))
-                                     .Where(i => !i.EndsWith(@"\SyntaxTest.cs"));
-
-            // When
-
-            var result = new List<string>();
-            var operatorMatch = new Regex(@"\S+((\?\.)|(\?\[))\S+", RegexOptions.Compiled);
-
-            foreach (var codeFile in codeFiles)
-            {
-                var codeText = File.ReadAllText(codeFile);
-
-                if (operatorMatch.IsMatch(codeText))
-                {
-                    result.Add(codeFile);
-                }
-            }
-
-            // Then
-            Assert.IsTrue(result.Count == 0, Environment.NewLine + string.Join(Environment.NewLine, result));
         }
 
 
