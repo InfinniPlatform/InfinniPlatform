@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 using NUnit.Framework;
@@ -14,26 +13,28 @@ namespace InfinniPlatform.Conventions
     [Category(TestCategories.UnitTest)]
     public sealed class StructurePlatformConventionsTest
     {
+        static StructurePlatformConventionsTest()
+        {
+            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath));
+            PackagesDir = ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
+
+            SolutionProjects = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*").ToArray();
+            SolutionCodeProjects = SolutionProjects.Where(p => !p.EndsWith(".Tests")).ToArray();
+            SolutionTestProjects = SolutionProjects.Where(p => p.EndsWith(".Tests")).ToArray();
+
+            ProjectNamespace = XNamespace.Get("http://schemas.microsoft.com/developer/msbuild/2003");
+
+            Console.WriteLine(@"SolutionDir={0}", SolutionDir);
+        }
+
+
         private const string SolutionName = "InfinniPlatform";
-
-        private static readonly string SolutionDir
-            = Path.GetFullPath(".." + Path.DirectorySeparatorChar);
-
-        private static readonly string PackagesDir
-            = ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
-
-        private static readonly string[] SolutionProjects
-            = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*")
-                       .Where(p => !p.EndsWith(".Deploy")).ToArray();
-
-        private static readonly string[] SolutionCodeProjects
-            = SolutionProjects.Where(p => !p.EndsWith(".Tests")).ToArray();
-
-        private static readonly string[] SolutionTestProjects
-            = SolutionProjects.Where(p => p.EndsWith(".Tests")).ToArray();
-
-        private static readonly XNamespace ProjectNamespace
-            = XNamespace.Get("http://schemas.microsoft.com/developer/msbuild/2003");
+        private static readonly string SolutionDir;
+        private static readonly string PackagesDir;
+        private static readonly string[] SolutionProjects;
+        private static readonly string[] SolutionCodeProjects;
+        private static readonly string[] SolutionTestProjects;
+        private static readonly XNamespace ProjectNamespace;
 
 
         [Test]
@@ -136,7 +137,7 @@ namespace InfinniPlatform.Conventions
                 .All(i => i != null
                     && string.IsNullOrWhiteSpace(i.Value) == false
                     && i.Value.StartsWith(@"..\")
-                    && ToNormPath(Path.GetFullPath(i.Value.Insert(3, SolutionName + @"\").Replace('\\', Path.DirectorySeparatorChar)))
+                    && ToNormPath(i.Value.Replace(@"..\", SolutionDir + @"\"))
                         .StartsWith(ToNormPath(SolutionDir)));
 
             // Then
@@ -357,36 +358,6 @@ namespace InfinniPlatform.Conventions
 
             // Then
             Assert.AreEqual(ToNormPath(appConfig), ToNormPath(result), @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для платформы ""{1}""", project, appConfig);
-        }
-
-        [Test]
-        [Ignore("Исправлено в Mono 4.3")]
-        [Description(@"В коде нельзя использовать операторы ?. и ?[] из-за отсутствия их поддержки в Mono 4.2")]
-        public void CodeCannotUseMaybeOperatorBecauseMono()
-        {
-            // Given
-
-            var codeFiles = Directory.EnumerateFiles(SolutionDir, "*.cs", SearchOption.AllDirectories)
-                                     .Where(i => !i.Contains(@"\obj\Debug\"))
-                                     .Where(i => !i.EndsWith(@"\SyntaxTest.cs"));
-
-            // When
-
-            var result = new List<string>();
-            var operatorMatch = new Regex(@"\S+((\?\.)|(\?\[))\S+", RegexOptions.Compiled);
-
-            foreach (var codeFile in codeFiles)
-            {
-                var codeText = File.ReadAllText(codeFile);
-
-                if (operatorMatch.IsMatch(codeText))
-                {
-                    result.Add(codeFile);
-                }
-            }
-
-            // Then
-            Assert.IsTrue(result.Count == 0, Environment.NewLine + string.Join(Environment.NewLine, result));
         }
 
 

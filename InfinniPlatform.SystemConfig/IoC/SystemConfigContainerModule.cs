@@ -28,10 +28,6 @@ namespace InfinniPlatform.SystemConfig.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<ElasticTypesMigrationHelper>()
-                   .AsSelf()
-                   .SingleInstance();
-
             // Security
 
             builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<UserStorageSettings>(UserStorageSettings.SectionName))

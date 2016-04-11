@@ -56,7 +56,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 				  };
 
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void SetUp()
 		{
 			WindowsServices.StartService(ServiceName, WaitTimeout);

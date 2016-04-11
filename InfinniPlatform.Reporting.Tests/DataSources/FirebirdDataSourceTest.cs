@@ -23,7 +23,7 @@ namespace InfinniPlatform.Reporting.Tests.DataSources
 		private static readonly string ConnectionString = string.Format("data source=localhost;initial catalog={0};user id=sysdba;password=masterkey;character set=UTF8;dialect=3", Path.GetFullPath("TESTDB.FDB"));
 
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void SetUp()
 		{
 			ExecuteCommand("drop table \"Result\";");

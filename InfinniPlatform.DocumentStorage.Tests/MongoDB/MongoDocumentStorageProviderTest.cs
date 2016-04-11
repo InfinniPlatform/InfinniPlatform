@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
@@ -30,7 +31,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldCountAsync()
+        public async Task ShouldCountAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldCountAsync));
@@ -68,7 +69,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldCountWithExpressionAsync()
+        public async Task ShouldCountWithExpressionAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldCountWithExpression));
@@ -120,7 +121,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldDistinctAsync()
+        public async Task ShouldDistinctAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDistinctAsync));
@@ -1318,7 +1319,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldInsertOneAsync()
+        public async Task ShouldInsertOneAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertOneAsync));
@@ -1348,7 +1349,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldInsertManyAsync()
+        public async Task ShouldInsertManyAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertManyAsync));
@@ -1410,7 +1411,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldUpdateOneAsync()
+        public async Task ShouldUpdateOneAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateOneAsync));
@@ -1515,7 +1516,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShoudlUpdateManyAsync()
+        public async Task ShoudlUpdateManyAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShoudlUpdateManyAsync));
@@ -1849,7 +1850,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldReplaceOneAsync()
+        public async Task ShouldReplaceOneAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldReplaceOneAsync));
@@ -1968,7 +1969,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldDeleteOneAsync()
+        public async Task ShouldDeleteOneAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDeleteOneAsync));
@@ -2048,7 +2049,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldDeleteManyAsync()
+        public async Task ShouldDeleteManyAsync()
         {
             // Given
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldDeleteManyAsync));

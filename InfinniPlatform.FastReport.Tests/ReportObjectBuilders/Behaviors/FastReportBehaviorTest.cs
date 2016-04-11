@@ -33,7 +33,7 @@ namespace InfinniPlatform.FastReport.Tests.ReportObjectBuilders.Behaviors
     public class FastReportBehaviorTest
     {
         [Test]
-        [Ignore]
+        [Ignore("Manual")]
         public void CreateReport()
         {
             var template = CreateReportTemplateConfig()

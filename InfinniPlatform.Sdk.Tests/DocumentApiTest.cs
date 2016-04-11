@@ -21,14 +21,14 @@ namespace InfinniPlatform.Sdk.Tests
         private IDisposable _server;
         private DocumentApiClient _documentApiClient;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             _server = InfinniPlatformInprocessHost.Start();
             _documentApiClient = new DocumentApiClient(HostingConfig.Default.Name, HostingConfig.Default.Port, true);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             _server.Dispose();

@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Dynamic;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.Sdk.Dynamic;
 
 using MongoDB.Driver;
 
@@ -24,7 +26,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldDropDatabaseAsync()
+        public async Task ShouldDropDatabaseAsync()
         {
             // Given
             var connection = MongoTestHelpers.GetConnection();
@@ -54,7 +56,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
-        public async void ShouldReturnsDatabaseStatus()
+        public async Task ShouldReturnsDatabaseStatus()
         {
             // Given
             var connection = MongoTestHelpers.GetConnection();

@@ -21,7 +21,7 @@ namespace InfinniPlatform.Reporting.Tests.DataSources
 		private const string ConnectionString = "Data Source=.;Initial Catalog=Test;Integrated Security=SSPI";
 
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void SetUp()
 		{
 			using (var connection = new SqlConnection("Data Source=.;Initial Catalog=master;Integrated Security=SSPI"))

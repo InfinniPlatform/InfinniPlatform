@@ -15,7 +15,7 @@ namespace InfinniPlatform.FastReport.Tests.Templates.Data
 	{
 		private static readonly CultureInfo Culture = new CultureInfo("en-US");
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void SetUp()
 		{
 			Thread.CurrentThread.CurrentCulture = Culture;

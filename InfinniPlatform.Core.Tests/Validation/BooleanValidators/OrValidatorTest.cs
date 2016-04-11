@@ -11,36 +11,31 @@ namespace InfinniPlatform.Core.Tests.Validation.BooleanValidators
     [Category(TestCategories.UnitTest)]
     public sealed class OrValidatorTest
     {
-        private static readonly FaseValidationOperator FasleOperator = new FaseValidationOperator
-            {
-                Message = "ErrorFalse"
-            };
+        private static readonly FaseValidationOperator FasleOperator = new FaseValidationOperator { Message = "ErrorFalse" };
 
         private static readonly IValidationOperator TrueOperator = new TrueValidationOperator {Message = "ErrorTrue"};
 
-
         private static readonly object[] FailureTestCase =
-            {
-                new IValidationOperator[] {},
-                new IValidationOperator[] {FasleOperator},
-                new IValidationOperator[] {FasleOperator, FasleOperator},
-                new IValidationOperator[] {FasleOperator, FasleOperator, FasleOperator},
-            };
+        {
+            new IValidationOperator[] { },
+            new IValidationOperator[] { FasleOperator, FasleOperator },
+            new IValidationOperator[] { FasleOperator, FasleOperator, FasleOperator },
+        };
 
         private static readonly object[] SuccessTestCase =
-            {
-                new[] {TrueOperator},
-                new[] {FasleOperator, TrueOperator},
-                new[] {TrueOperator, FasleOperator},
-                new[] {TrueOperator, TrueOperator},
-                new[] {FasleOperator, FasleOperator, TrueOperator},
-                new[] {FasleOperator, TrueOperator, FasleOperator},
-                new[] {FasleOperator, TrueOperator, TrueOperator},
-                new[] {TrueOperator, FasleOperator, FasleOperator},
-                new[] {TrueOperator, FasleOperator, TrueOperator},
-                new[] {TrueOperator, TrueOperator, FasleOperator},
-                new[] {TrueOperator, TrueOperator, TrueOperator},
-            };
+        {
+            new[] { FasleOperator, TrueOperator },
+            new[] { TrueOperator, FasleOperator },
+            new[] { TrueOperator, TrueOperator },
+            new[] { FasleOperator, FasleOperator, TrueOperator },
+            new[] { FasleOperator, TrueOperator, FasleOperator },
+            new[] { FasleOperator, TrueOperator, TrueOperator },
+            new[] { TrueOperator, FasleOperator, FasleOperator },
+            new[] { TrueOperator, FasleOperator, TrueOperator },
+            new[] { TrueOperator, TrueOperator, FasleOperator },
+            new[] { TrueOperator, TrueOperator, TrueOperator },
+        };
+
 
         [Test]
         [TestCase(null, null, "")]
@@ -72,7 +67,7 @@ namespace InfinniPlatform.Core.Tests.Validation.BooleanValidators
 
 
         [Test]
-        [TestCaseSource("FailureTestCase")]
+        [TestCaseSource(nameof(FailureTestCase))]
         public void ShouldValidateWhenFailure(IValidationOperator[] operators)
         {
             // Given
@@ -86,13 +81,12 @@ namespace InfinniPlatform.Core.Tests.Validation.BooleanValidators
             Assert.IsFalse(isValid);
             Assert.IsFalse(result.IsValid);
             int falseOperatorCount = operators.Count(o => o.Equals(FasleOperator));
-            Assert.IsTrue((result.Items != null && result.Items.Count == falseOperatorCount &&
-                           result.Items.All(i => i.Message == FasleOperator.Message)) || falseOperatorCount == 0);
+            Assert.IsTrue((result.Items != null && result.Items.Count == falseOperatorCount && result.Items.All(i => i.Message == FasleOperator.Message)) || falseOperatorCount == 0);
         }
 
 
         [Test]
-        [TestCaseSource("SuccessTestCase")]
+        [TestCaseSource(nameof(SuccessTestCase))]
         public void ShouldValidateWhenSuccess(IValidationOperator[] operators)
         {
             // Given

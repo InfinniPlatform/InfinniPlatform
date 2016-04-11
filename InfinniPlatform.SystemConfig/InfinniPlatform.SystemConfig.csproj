@@ -40,16 +40,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elasticsearch.Net.1.7.1\lib\net45\Elasticsearch.Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Nest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\NEST.1.7.1\lib\net45\Nest.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -68,16 +60,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Documents\DocumentApi.cs" />
     <Compile Include="Metadata\MetadataUniqueName.cs" />
     <Compile Include="Registers\AggregationUtils.cs" />
     <Compile Include="Registers\RegisterApi.cs" />
     <Compile Include="Services\SystemInfoHttpService.cs" />
-    <Compile Include="Transactions\DocumentTransactionLog.cs" />
-    <Compile Include="Transactions\DocumentTransactionScope.cs" />
-    <Compile Include="UserStorage\ElasticSearchUserStorage.cs" />
-    <Compile Include="Documents\GetDocumentExecutor.cs" />
-    <Compile Include="Documents\SetDocumentExecutor.cs" />
     <Compile Include="PrintView\PrintViewApi.cs" />
     <Compile Include="Runtime\ActionUnitFactory.cs" />
     <Compile Include="Runtime\ScriptProcessor.cs" />
@@ -88,11 +74,8 @@
     <Compile Include="Services\MetadataApiHttpService.cs" />
     <Compile Include="Services\PrintViewApiHttpService.cs" />
     <Compile Include="Services\SessionApiHttpService.cs" />
-    <Compile Include="StartupInitializers\DocumentSchemaHelper.cs" />
     <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
-    <Compile Include="StartupInitializers\ElasticTypesMigrationHelper.cs" />
     <Compile Include="StartupInitializers\PackageJsonConfigurationsInitializer.cs" />
-    <Compile Include="StartupInitializers\DocumentIndexTypeInitializer.cs" />
     <Compile Include="IoC\SystemConfigContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
@@ -104,8 +87,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Transactions\DocumentTransactionAction.cs" />
-    <Compile Include="Transactions\DocumentTransactionCommand.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStorePersistentStorage.cs" />
     <Compile Include="UserStorage\UserStorageSettings.cs" />
@@ -131,10 +112,6 @@
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.ElasticSearch\InfinniPlatform.ElasticSearch.csproj">
-      <Project>{F7EC0A7A-49CD-4D63-B755-BF539ADCF688}</Project>
-      <Name>InfinniPlatform.ElasticSearch</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
