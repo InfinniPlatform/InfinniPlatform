@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
+using System.Threading;
 
 using InfinniPlatform.FlowDocument.Builders.Factories;
 using InfinniPlatform.FlowDocument.Model;
@@ -242,46 +244,92 @@ namespace InfinniPlatform.FlowDocument.Converters.Pdf
                 process.StartInfo.RedirectStandardError = true;
                 process.StartInfo.CreateNoWindow = true;
 
-                bool isStarted;
+                var outputBuilder = new StringBuilder();
+                var errorBuilder = new StringBuilder();
 
-                try
+                using (var outputCloseEvent = new AutoResetEvent(false))
+                using (var errorCloseEvent = new AutoResetEvent(false))
                 {
-                    isStarted = process.Start();
-                }
-                catch (Exception error)
-                {
-                    // Не удалось запустить процесс, скорей всего, файл не существует или не является исполняемым
+                    // Подписка на события записи в выходные потоки процесса
 
-                    result.Completed = true;
-                    result.ExitCode = -1;
-                    result.Output = string.Format(Resources.CannotExecuteCommand, command, arguments, error.Message);
+                    var copyOutputCloseEvent = outputCloseEvent;
 
-                    isStarted = false;
-                }
+                    process.OutputDataReceived += (s, e) =>
+                                                  {
+                                                      // Поток output закрылся (процесс завершил работу)
+                                                      if (string.IsNullOrEmpty(e.Data))
+                                                      {
+                                                          copyOutputCloseEvent.Set();
+                                                      }
+                                                      else
+                                                      {
+                                                          outputBuilder.AppendLine(e.Data);
+                                                      }
+                                                  };
 
-                if (isStarted)
-                {
-                    if (process.WaitForExit(timeout))
+                    var copyErrorCloseEvent = errorCloseEvent;
+
+                    process.ErrorDataReceived += (s, e) =>
+                                                 {
+                                                     // Поток error закрылся (процесс завершил работу)
+                                                     if (string.IsNullOrEmpty(e.Data))
+                                                     {
+                                                         copyErrorCloseEvent.Set();
+                                                     }
+                                                     else
+                                                     {
+                                                         errorBuilder.AppendLine(e.Data);
+                                                     }
+                                                 };
+
+                    bool isStarted;
+
+                    try
                     {
-                        result.Completed = true;
-                        result.ExitCode = process.ExitCode;
-
-                        // Вывод актуален только при наличии ошибки
-                        if (process.ExitCode != 0)
-                        {
-                            result.Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-                        }
+                        isStarted = process.Start();
                     }
-                    else
+                    catch (Exception error)
                     {
-                        try
+                        // Не удалось запустить процесс, скорей всего, файл не существует или не является исполняемым
+
+                        result.Completed = true;
+                        result.ExitCode = -1;
+                        result.Output = string.Format(Resources.CannotExecuteCommand, command, arguments, error.Message);
+
+                        isStarted = false;
+                    }
+
+                    if (isStarted)
+                    {
+                        // Начало чтения выходных потоков процесса в асинхронном режиме, чтобы не создать блокировку
+                        process.BeginOutputReadLine();
+                        process.BeginErrorReadLine();
+
+                        // Ожидание завершения процесса и закрытия выходных потоков
+                        if (process.WaitForExit(timeout)
+                            && outputCloseEvent.WaitOne(timeout)
+                            && errorCloseEvent.WaitOne(timeout))
                         {
-                            // Зависшие процессы завершаются принудительно
-                            process.Kill();
+                            result.Completed = true;
+                            result.ExitCode = process.ExitCode;
+
+                            // Вывод актуален только при наличии ошибки
+                            if (process.ExitCode != 0)
+                            {
+                                result.Output = $"{outputBuilder}{errorBuilder}";
+                            }
                         }
-                        catch
+                        else
                         {
-                            // Любые ошибки в данном случае игнорируются
+                            try
+                            {
+                                // Зависшие процессы завершаются принудительно
+                                process.Kill();
+                            }
+                            catch
+                            {
+                                // Любые ошибки в данном случае игнорируются
+                            }
                         }
                     }
                 }
