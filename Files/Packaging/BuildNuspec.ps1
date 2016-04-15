@@ -7,7 +7,7 @@
 	param
 	(
 		[Parameter(HelpMessage = "Путь к шаблону nuspec-фала.")]
-		[String] $template = 'Files\Packaging\Templates\InfinniPlatform.Template.nuspec',
+		[String] $template = 'Files\Packaging\Templates\InfinniPlatform.nuspec',
 
 		[Parameter(HelpMessage = "Путь к результирующему nuspec-файлу.")]
 		[String] $output = 'Assemblies\InfinniPlatform.nuspec',
@@ -38,7 +38,7 @@ function Build-NuspecByValues
 	param
 	(
 		[Parameter(HelpMessage = "Путь к шаблону nuspec-фала.")]
-		[String] $template = 'Files\Packaging\Templates\InfinniPlatform.Template.nuspec',
+		[String] $template = 'Files\Packaging\Templates\InfinniPlatform.nuspec',
 
 		[Parameter(HelpMessage = "Путь к результирующему nuspec-файлу.")]
 		[String] $output = 'Assemblies\InfinniPlatform.nuspec',

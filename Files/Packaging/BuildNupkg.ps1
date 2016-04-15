@@ -1,11 +1,11 @@
 ﻿<#
 .Synopsis
-	Осуществляет сборку проекта и формирует NuGet-пакет.
+	Осуществляет сборку проекта и формирует NuGet-пакеты.
 #>
 param
 (
-	[Parameter(HelpMessage = "Путь к шаблону nuspec-фала.")]
-	[String] $template = 'Files\Packaging\Templates\InfinniPlatform.Template.nuspec',
+	[Parameter(HelpMessage = "Путь к шаблонам nuspec-фалов.")]
+	[String] $templateDir = 'Files\Packaging\Templates',
 
 	[Parameter(HelpMessage = "Путь к результирующему nuspec-файлу.")]
 	[String] $outputDir = 'Assemblies',
@@ -23,8 +23,6 @@ param
 # Script dependencies
 . (Join-Path $PSScriptRoot 'BuildNuspec.ps1')
 
-$nuspecFile = Join-Path $outputDir 'InfinniPlatform.nuspec'
-
 # Clean build folder
 Remove-Item -Path 'Assemblies' -Recurse -ErrorAction SilentlyContinue
 
@@ -35,11 +33,15 @@ Remove-Item -Path 'Assemblies' -Recurse -ErrorAction SilentlyContinue
 & "${Env:ProgramFiles(x86)}\MSBuild\14.0\bin\msbuild.exe" 'InfinniPlatform.sln' /t:Clean /p:Configuration=$buildMode /verbosity:quiet /consoleloggerparameters:ErrorsOnly
 & "${Env:ProgramFiles(x86)}\MSBuild\14.0\bin\msbuild.exe" 'InfinniPlatform.sln' /p:Configuration=$buildMode /verbosity:quiet /consoleloggerparameters:ErrorsOnly
 
-# Build nuspec file
-Build-Nuspec -template $template -output $nuspecFile -assemblyInfo $assemblyInfo -commitHash $commitHash
+Get-ChildItem $templateDir -Filter '*.nuspec' | Foreach-Object {
+	$nuspecFile = Join-Path $outputDir $_.Name
 
-# Build nupkg file
-& "${Env:ProgramFiles(x86)}\NuGet\nuget.exe" pack $nuspecFile -OutputDirectory $outputDir -NoDefaultExcludes -NonInteractive
+	# Build nuspec file
+	Build-Nuspec -template $_.FullName -output $nuspecFile -assemblyInfo $assemblyInfo -commitHash $commitHash
 
-# Remove nuspec file
-Remove-Item -Path $nuspecFile
+	# Build nupkg file
+	& "${Env:ProgramFiles(x86)}\NuGet\nuget.exe" pack $nuspecFile -OutputDirectory $outputDir -NoDefaultExcludes -NonInteractive
+
+	# Remove nuspec file
+	Remove-Item -Path $nuspecFile
+}
