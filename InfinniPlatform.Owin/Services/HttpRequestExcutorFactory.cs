@@ -47,8 +47,8 @@ namespace InfinniPlatform.Owin.Services
             var afterExcutor = new AfterHttpRequestExcutor(onAfter);
             var errorExcutor = new ErrorHttpRequestExcutor(onError, _log);
 
-            beforeExcutor.After = beforeExcutor;
             beforeExcutor.Handler = handlerExcutor;
+            beforeExcutor.After = afterExcutor;
             beforeExcutor.Error = errorExcutor;
 
             handlerExcutor.After = afterExcutor;
@@ -80,19 +80,19 @@ namespace InfinniPlatform.Owin.Services
                 if (resultConverter != null)
                 {
                     return async request =>
-                           {
-                               var context = new HttpRequestExcutorContext(request);
-                               await firstExcutor.Execute(context);
-                               return resultConverter(context.Result);
-                           };
+                                 {
+                                     var context = new HttpRequestExcutorContext(request);
+                                     await firstExcutor.Execute(context);
+                                     return resultConverter(context.Result);
+                                 };
                 }
 
                 return async request =>
-                       {
-                           var context = new HttpRequestExcutorContext(request);
-                           await firstExcutor.Execute(context);
-                           return context.Result;
-                       };
+                             {
+                                 var context = new HttpRequestExcutorContext(request);
+                                 await firstExcutor.Execute(context);
+                                 return context.Result;
+                             };
             }
 
             return null;
