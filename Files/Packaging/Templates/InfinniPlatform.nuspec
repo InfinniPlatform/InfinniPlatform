@@ -8,11 +8,14 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>InfinniPlatform. Commit hash: {COMMIT}.</description>
         <copyright>Copyright 2015</copyright>
+        <dependencies>
+            <dependency id="InfinniPlatform.Sdk" version="{VERSION}" />
+        </dependencies>
     </metadata>
     <files>
         <!-- Libraries -->
-        <file target="lib\net45" src="*.dll" exclude="*.Tests.dll" />
-        <file target="lib\net45" src="*.pdb" exclude="*.Tests.pdb" />
+        <file target="lib\net45" src="*.dll" exclude="*.Tests.dll;InfinniPlatform.Sdk.dll" />
+        <file target="lib\net45" src="*.pdb" exclude="*.Tests.pdb;InfinniPlatform.Sdk.pdb" />
         <!-- Metadata -->
         <file target="content\metadata\Authorization" src="content\InfinniPlatform\metadata\Authorization\**\*.*" />
         <!-- Configurations -->

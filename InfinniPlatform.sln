@@ -143,7 +143,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{FA9372
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{EE369BF1-62B4-40CD-83DA-467710B4E376}"
 	ProjectSection(SolutionItems) = preProject
-		Files\Packaging\Templates\InfinniPlatform.Template.nuspec = Files\Packaging\Templates\InfinniPlatform.Template.nuspec
+		Files\Packaging\Templates\InfinniPlatform.nuspec = Files\Packaging\Templates\InfinniPlatform.nuspec
+		Files\Packaging\Templates\InfinniPlatform.Sdk.nuspec = Files\Packaging\Templates\InfinniPlatform.Sdk.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentStorage", "InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj", "{8EAF5465-16FB-456F-B562-6E4F38DD8885}"
