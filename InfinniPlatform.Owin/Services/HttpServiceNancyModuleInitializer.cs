@@ -187,13 +187,14 @@ namespace InfinniPlatform.Owin.Services
                                                                          var start = DateTime.Now;
 
                                                                          var method = $"{nancyContext.Request.Method}::{nancyContext.Request.Path}";
-
+                                                                         
                                                                          try
                                                                          {
-                                                                             Thread.CurrentThread.CurrentCulture = nancyContext.Culture;
-                                                                             Thread.CurrentThread.CurrentUICulture = nancyContext.Culture;
-
                                                                              var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
+
+                                                                             // Локализация ответа в зависимости от CultureInfo запроса.
+                                                                             Thread.CurrentThread.CurrentUICulture = httpRequest.Culture;
+
                                                                              var result = await onHandleGlobal(httpRequest);
                                                                              var nancyHttpResponse = CreateNancyHttpResponse(nancyContext, result);
 

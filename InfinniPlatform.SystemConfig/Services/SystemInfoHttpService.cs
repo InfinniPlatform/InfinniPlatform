@@ -28,8 +28,6 @@ namespace InfinniPlatform.SystemConfig.Services
 
         private Task<object> GetSystemInfo(IHttpRequest request)
         {
-            Thread.CurrentThread.CurrentCulture = request.Culture;
-            Thread.CurrentThread.CurrentUICulture = request.Culture;
             return _systemStatusProvider.GetStatus();
         }
     }

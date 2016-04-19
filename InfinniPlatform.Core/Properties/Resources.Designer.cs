@@ -59,7 +59,18 @@ namespace InfinniPlatform.Core.Properties {
                 resourceCulture = value;
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to User &quot;{0}&quot; access denied to configuration &quot;{1}&quot;, document &quot;{2}&quot;, action &quot;{3}&quot;. .
+        /// </summary>
+        public static string Ok
+        {
+            get
+            {
+                return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to User &quot;{0}&quot; access denied to configuration &quot;{1}&quot;, document &quot;{2}&quot;, action &quot;{3}&quot;. .
         /// </summary>
@@ -849,15 +860,6 @@ namespace InfinniPlatform.Core.Properties {
         public static string NotAllRequestParamsAreSpecified {
             get {
                 return ResourceManager.GetString("NotAllRequestParamsAreSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OK..
-        /// </summary>
-        public static string Ok {
-            get {
-                return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
         
