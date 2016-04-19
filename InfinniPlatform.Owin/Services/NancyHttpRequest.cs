@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -24,6 +25,7 @@ namespace InfinniPlatform.Owin.Services
             _jsonObjectSerializer = jsonObjectSerializer;
 
             Parameters = nancyContext.Parameters;
+            Culture = nancyContext.Culture;
 
             _form = new Lazy<dynamic>(() => ParseRequestForm());
             _headers = new Lazy<IHttpRequestHeaders>(() => new NancyHttpRequestHeaders(_nancyRequest.Headers));
@@ -57,6 +59,8 @@ namespace InfinniPlatform.Owin.Services
         public Stream Content => _nancyRequest.Body;
 
         public IIdentity User => _userIdentityProvider();
+
+        public CultureInfo Culture { get; }
 
 
         private object ParseRequestForm()

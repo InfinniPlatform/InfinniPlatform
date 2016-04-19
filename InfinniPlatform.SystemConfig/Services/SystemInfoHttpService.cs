@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Sdk.Services;
@@ -27,9 +28,9 @@ namespace InfinniPlatform.SystemConfig.Services
 
         private Task<object> GetSystemInfo(IHttpRequest request)
         {
+            Thread.CurrentThread.CurrentCulture = request.Culture;
+            Thread.CurrentThread.CurrentUICulture = request.Culture;
             return _systemStatusProvider.GetStatus();
-            var status = _systemStatusProvider.GetStatus().Result;
-            return Task.FromResult(status);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Globalization;
+using System.IO;
 using System.Threading;
 
 using InfinniPlatform.Core.Hosting;
@@ -48,6 +50,12 @@ namespace InfinniPlatform.NodeServiceHost
                         }
                         catch (Exception error)
                         {
+                            if (error.GetType() == typeof(FileNotFoundException))
+                            {
+                                Logger.Log.Fatal($"Cannot find resources file for current culture ({CultureInfo.CurrentCulture.Name})", null, error);
+                                throw;
+                            }
+
                             Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, null, error);
 
                             _status = prevStatus;

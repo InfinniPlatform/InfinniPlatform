@@ -853,6 +853,15 @@ namespace InfinniPlatform.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OK..
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property name cannot be null or empty..
         /// </summary>
         public static string PropertyNameShouldNotBeEmpty {

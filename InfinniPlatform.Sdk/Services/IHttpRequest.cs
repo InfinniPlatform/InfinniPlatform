@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Security.Principal;
 
@@ -53,5 +54,10 @@ namespace InfinniPlatform.Sdk.Services
         /// Пользователь запроса.
         /// </summary>
         IIdentity User { get; }
+
+        /// <summary>
+        /// Региональные параметры запроса.
+        /// </summary>
+        CultureInfo Culture { get; }
     }
 }

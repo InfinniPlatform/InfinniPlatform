@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Logging;
@@ -189,6 +190,9 @@ namespace InfinniPlatform.Owin.Services
 
                                                                          try
                                                                          {
+                                                                             Thread.CurrentThread.CurrentCulture = nancyContext.Culture;
+                                                                             Thread.CurrentThread.CurrentUICulture = nancyContext.Culture;
+
                                                                              var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
                                                                              var result = await onHandleGlobal(httpRequest);
                                                                              var nancyHttpResponse = CreateNancyHttpResponse(nancyContext, result);

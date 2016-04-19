@@ -83,6 +83,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.NodeServiceHost\InfinniPlatform.NodeServiceHost.csproj">
