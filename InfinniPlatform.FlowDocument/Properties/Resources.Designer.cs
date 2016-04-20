@@ -88,15 +88,6 @@ namespace InfinniPlatform.FlowDocument.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout.
-        /// </summary>
-        internal static string ConvertHtmlToPdfTimeout {
-            get {
-                return ResourceManager.GetString("ConvertHtmlToPdfTimeout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to File format &apos;{0}&apos; is not supported..
         /// </summary>
         internal static string PrintViewFileFormatIsNotSupported {

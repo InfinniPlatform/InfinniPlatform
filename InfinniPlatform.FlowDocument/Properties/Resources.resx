@@ -126,9 +126,6 @@
   <data name="CannotExecuteCommand" xml:space="preserve">
     <value>Can not execute command '{0}' with arguments '{1}'. Error: '{2}'.</value>
   </data>
-  <data name="ConvertHtmlToPdfTimeout" xml:space="preserve">
-    <value>Timeout</value>
-  </data>
   <data name="PrintViewFileFormatIsNotSupported" xml:space="preserve">
     <value>File format '{0}' is not supported.</value>
   </data>

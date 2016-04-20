@@ -61,114 +61,6 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active role cannot be null or whitespace..
-        /// </summary>
-        internal static string ActiveRoleCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("ActiveRoleCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ADFS server name cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationActiveDirectoryAdfsServerNameCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationActiveDirectoryAdfsServerNameCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ESIA Client ID cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationEsiaClientIdCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationEsiaClientIdCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ESIA Client Secret Certificate cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationEsiaClientSecretCertCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationEsiaClientSecretCertCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ESIA server cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationEsiaServerCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationEsiaServerCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Facebook Client ID cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationFacebookClientIdCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationFacebookClientIdCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Facebook Client Secret cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationFacebookClientSecretCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationFacebookClientSecretCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Google Client ID cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationGoogleClientIdCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationGoogleClientIdCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Google Client Secret cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationGoogleClientSecretCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationGoogleClientSecretCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AuthenticationManager not found..
-        /// </summary>
-        internal static string AuthenticationManagerNotFound {
-            get {
-                return ResourceManager.GetString("AuthenticationManagerNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vk Client ID cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationVkClientIdCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationVkClientIdCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vk Client Secret cannot be null or whitespace..
-        /// </summary>
-        internal static string AuthenticationVkClientSecretCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("AuthenticationVkClientSecretCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Duplicate e-mail: &apos;{0}&apos;..
         /// </summary>
         internal static string DuplicateEmail {
@@ -259,15 +151,6 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation has cancelled by timeout..
-        /// </summary>
-        internal static string OperationHasCancelledByTimeout {
-            get {
-                return ResourceManager.GetString("OperationHasCancelledByTimeout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Request is not authenticated..
         /// </summary>
         internal static string RequestIsNotAuthenticated {
@@ -291,33 +174,6 @@ namespace InfinniPlatform.Authentication.Properties {
         internal static string UnsuccessfulSignInWithExternalProvider {
             get {
                 return ResourceManager.GetString("UnsuccessfulSignInWithExternalProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to UserId not found..
-        /// </summary>
-        internal static string UserIdNotFound {
-            get {
-                return ResourceManager.GetString("UserIdNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User is not in the role &apos;{0}&apos;..
-        /// </summary>
-        internal static string UserIsNotInRole {
-            get {
-                return ResourceManager.GetString("UserIsNotInRole", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to UserManager not found. Register IApplicationUserStore..
-        /// </summary>
-        internal static string UserManagerNotFound {
-            get {
-                return ResourceManager.GetString("UserManagerNotFound", resourceCulture);
             }
         }
         

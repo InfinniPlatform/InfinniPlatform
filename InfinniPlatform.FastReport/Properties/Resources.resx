@@ -117,47 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CircularReferenceWasDetected" xml:space="preserve">
-    <value>A circular reference on '{0}' was detected while analyzing property '{1}'.</value>
-  </data>
-  <data name="CollectionHasNoDataSchemaOfItems" xml:space="preserve">
-    <value>The collection '{0}' has no data schema of items.</value>
-  </data>
-  <data name="CouldNotResolveSchemaForCollection" xml:space="preserve">
-    <value>Could not resolve schema for collection '{0}'.</value>
-  </data>
-  <data name="CouldNotResolveSchemaForProperty" xml:space="preserve">
-    <value>Could not resolve schema for property '{0}'.</value>
-  </data>
-  <data name="CouldNotResolveSchemaReferenceForCollection" xml:space="preserve">
-    <value>Could not resolve schema reference '{0}' for collection '{1}'.</value>
-  </data>
-  <data name="CouldNotResolveSchemaReferenceForProperty" xml:space="preserve">
-    <value>Could not resolve schema reference '{0}' for property '{1}'.</value>
-  </data>
   <data name="DataBandShouldReferencedOnDataSource" xml:space="preserve">
     <value>Data band should referenced on data source.</value>
-  </data>
-  <data name="DataSchemaAlreadyDeclared" xml:space="preserve">
-    <value>Data schema '{0}' is already declared.</value>
   </data>
   <data name="DataSourceAlreadyRegistered" xml:space="preserve">
     <value>Data source '{0}' already registered.</value>
   </data>
   <data name="NotSupportedReportFileFormat" xml:space="preserve">
     <value>Not supported report file format '{0}'.</value>
-  </data>
-  <data name="ObjectShouldHaveAtLeastOneProperty" xml:space="preserve">
-    <value>The object '{0}' should have at least one property.</value>
-  </data>
-  <data name="PropertyHasNoDataSchema" xml:space="preserve">
-    <value>The property '{0}' has no data schema.</value>
-  </data>
-  <data name="PropertyPathIsIncorrect" xml:space="preserve">
-    <value>Property path '{0}' is incorrect.</value>
-  </data>
-  <data name="PropertyShouldBeOfTypeObject" xml:space="preserve">
-    <value>The property '{0}' should be of type 'Object'.</value>
   </data>
   <data name="ReportObjectIsNotSupported" xml:space="preserve">
     <value>Report object '{0}' is not supported.</value>
@@ -170,9 +137,6 @@
   </data>
   <data name="ExpressionShouldReferencedOnProperty" xml:space="preserve">
     <value>Expression '{0}' should referenced on property.</value>
-  </data>
-  <data name="TotalAlreadyRegistered" xml:space="preserve">
-    <value>Total '{0}' already registered.</value>
   </data>
   <data name="ExpressionReferencedOnUnknownDataSource" xml:space="preserve">
     <value>Expression '{0}' referenced on unknown data source '{1}'.</value>

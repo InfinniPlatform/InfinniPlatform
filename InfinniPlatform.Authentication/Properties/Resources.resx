@@ -117,42 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActiveRoleCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Active role cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationActiveDirectoryAdfsServerNameCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>ADFS server name cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationEsiaClientIdCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>ESIA Client ID cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationEsiaClientSecretCertCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>ESIA Client Secret Certificate cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationEsiaServerCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>ESIA server cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationGoogleClientIdCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Google Client ID cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationGoogleClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Google Client Secret cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationFacebookClientIdCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Facebook Client ID cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationFacebookClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Facebook Client Secret cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationVkClientIdCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Vk Client ID cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationVkClientSecretCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Vk Client Secret cannot be null or whitespace.</value>
-  </data>
-  <data name="AuthenticationManagerNotFound" xml:space="preserve">
-    <value>AuthenticationManager not found.</value>
-  </data>
   <data name="ExternalProviderCannotBeNullOrWhiteSpace" xml:space="preserve">
     <value>External provider cannot be null or whitespace.</value>
   </data>
@@ -177,12 +141,6 @@
   <data name="UnsuccessfulSignInWithExternalProvider" xml:space="preserve">
     <value>Unsuccessful signin with external provider.</value>
   </data>
-  <data name="UserIsNotInRole" xml:space="preserve">
-    <value>User is not in the role '{0}'.</value>
-  </data>
-  <data name="UserManagerNotFound" xml:space="preserve">
-    <value>UserManager not found. Register IApplicationUserStore.</value>
-  </data>
   <data name="UserNameCannotBeNullOrWhiteSpace" xml:space="preserve">
     <value>Username cannot be null or whitespace.</value>
   </data>
@@ -203,11 +161,5 @@
   </data>
   <data name="InvalidUserName" xml:space="preserve">
     <value>Invalid username: '{0}'.</value>
-  </data>
-  <data name="UserIdNotFound" xml:space="preserve">
-    <value>UserId not found.</value>
-  </data>
-  <data name="OperationHasCancelledByTimeout" xml:space="preserve">
-    <value>Operation has cancelled by timeout.</value>
   </data>
 </root>
