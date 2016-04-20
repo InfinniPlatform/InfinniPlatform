@@ -84,12 +84,12 @@ namespace InfinniPlatform.Sdk.Serialization
 
             if (_types.ContainsKey(type))
             {
-                throw new ArgumentException(Resources.TypeIsAlreadyAdded, nameof(type));
+                throw new ArgumentException(string.Format(Resources.TypeIsAlreadyAdded, type), nameof(type));
             }
 
             if (_names.ContainsKey(name))
             {
-                throw new ArgumentException(Resources.NameIsAlreadyAdded, nameof(name));
+                throw new ArgumentException(string.Format(Resources.NameIsAlreadyAdded, name), nameof(name));
             }
 
             if (type.IsInterface || type.IsAbstract)

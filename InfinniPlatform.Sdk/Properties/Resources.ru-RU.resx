@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PropertyPathCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Property path cannot be null or empty.</value>
+    <value>Путь до свойства не может быть пустым.</value>
   </data>
   <data name="TargetObjectCannotBeNull" xml:space="preserve">
-    <value>Target object cannot be null.</value>
+    <value>Целевой объект не может быть пустым.</value>
   </data>
   <data name="CollectionCanNotBeModified" xml:space="preserve">
-    <value>Collection can not be modified</value>
+    <value>Коллекция не может быть изменена.</value>
   </data>
   <data name="NameIsAlreadyAdded" xml:space="preserve">
-    <value>Name '{0}' is already added.</value>
+    <value>Имя '{0}' уже добавлено.</value>
   </data>
   <data name="TypeIsAlreadyAdded" xml:space="preserve">
-    <value>Type '{0}' is already added.</value>
+    <value>Тип '{0}' уже добавлен.</value>
   </data>
   <data name="TypeShouldHaveDefaultConstructor" xml:space="preserve">
-    <value>Type should have default constructor.</value>
+    <value>Тип должен иметь конструктор по умолчанию.</value>
   </data>
   <data name="TypeShouldNotBeAbstract" xml:space="preserve">
-    <value>Type should not be abstract.</value>
+    <value>Тип не может быть абстрактным.</value>
   </data>
   <data name="CannotDeserializeTypeError" xml:space="preserve">
-    <value>Cannot deserialize type '{0}'.</value>
+    <value>Не удается десериализовать тип '{0}'.</value>
   </data>
 </root>

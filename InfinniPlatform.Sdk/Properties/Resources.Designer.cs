@@ -79,7 +79,7 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name is already added..
+        ///   Looks up a localized string similar to Name &apos;{0}&apos; is already added..
         /// </summary>
         internal static string NameIsAlreadyAdded {
             get {
@@ -106,7 +106,7 @@ namespace InfinniPlatform.Sdk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type is already added..
+        ///   Looks up a localized string similar to Type &apos;{0}&apos; is already added..
         /// </summary>
         internal static string TypeIsAlreadyAdded {
             get {

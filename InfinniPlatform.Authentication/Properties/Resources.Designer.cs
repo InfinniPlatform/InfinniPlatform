@@ -61,7 +61,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate e-mail: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Пользователь с таким e-mail уже существует: &apos;{0}&apos;..
         /// </summary>
         internal static string DuplicateEmail {
             get {
@@ -70,7 +70,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate phone number: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Пользователь с таким номером телефона уже существует: &apos;{0}&apos;..
         /// </summary>
         internal static string DuplicatePhoneNumber {
             get {
@@ -79,7 +79,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate username: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Пользователь с таким именем уже существует: &apos;{0}&apos;..
         /// </summary>
         internal static string DuplicateUserName {
             get {
@@ -88,7 +88,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to External provider cannot be null or whitespace..
+        ///   Looks up a localized string similar to Внешний провайдер не может быть пустым..
         /// </summary>
         internal static string ExternalProviderCannotBeNullOrWhiteSpace {
             get {
@@ -97,7 +97,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to External provider key cannot be null or whitespace..
+        ///   Looks up a localized string similar to Ключ внешнего провайдера не может быть пустым..
         /// </summary>
         internal static string ExternalProviderKeyCannotBeNullOrWhiteSpace {
             get {
@@ -106,7 +106,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failure URL cannot be null or whitespace..
+        ///   Looks up a localized string similar to Failure URL не может быть пустым..
         /// </summary>
         internal static string FailureUrlCannotBeNullOrWhiteSpace {
             get {
@@ -115,7 +115,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid e-mail: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Некорректный e-mail: &apos;{0}&apos;..
         /// </summary>
         internal static string InvalidEmail {
             get {
@@ -124,7 +124,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid username: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Некорректное имя пользователя: &apos;{0}&apos;..
         /// </summary>
         internal static string InvalidUserName {
             get {
@@ -133,7 +133,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid username or password..
+        ///   Looks up a localized string similar to Некорректное имя пользователя или пароль..
         /// </summary>
         internal static string InvalidUsernameOrPassword {
             get {
@@ -142,7 +142,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New password cannot be null or whitespace..
+        ///   Looks up a localized string similar to Новый пароль не может быть пустым..
         /// </summary>
         internal static string NewPasswordCannotBeNullOrWhiteSpace {
             get {
@@ -151,7 +151,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Request is not authenticated..
+        ///   Looks up a localized string similar to Запрос не прошел проверку подлинности..
         /// </summary>
         internal static string RequestIsNotAuthenticated {
             get {
@@ -160,7 +160,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Success URL cannot be null or whitespace..
+        ///   Looks up a localized string similar to Success URL не может быть пустым..
         /// </summary>
         internal static string SuccessUrlCannotBeNullOrWhiteSpace {
             get {
@@ -169,7 +169,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unsuccessful signin with external provider..
+        ///   Looks up a localized string similar to Неудачный вход с внешним провайдером..
         /// </summary>
         internal static string UnsuccessfulSignInWithExternalProvider {
             get {
@@ -178,7 +178,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username cannot be null or whitespace..
+        ///   Looks up a localized string similar to Имя пользователя не может быть мустым..
         /// </summary>
         internal static string UserNameCannotBeNullOrWhiteSpace {
             get {
@@ -187,7 +187,7 @@ namespace InfinniPlatform.Authentication.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User not found..
+        ///   Looks up a localized string similar to Пользователь не найден..
         /// </summary>
         internal static string UserNotFound {
             get {
