@@ -192,7 +192,8 @@ namespace InfinniPlatform.Owin.Services
                                                                          {
                                                                              var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
 
-                                                                             // Локализация ответа в зависимости от CultureInfo запроса.
+                                                                             // Локализация ответа в зависимости от региональных параметров запроса.
+                                                                             Thread.CurrentThread.CurrentCulture = httpRequest.Culture;
                                                                              Thread.CurrentThread.CurrentUICulture = httpRequest.Culture;
 
                                                                              var result = await onHandleGlobal(httpRequest);

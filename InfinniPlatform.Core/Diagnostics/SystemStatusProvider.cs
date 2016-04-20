@@ -28,7 +28,7 @@ namespace InfinniPlatform.Core.Diagnostics
 
         public async Task<object> GetStatus()
         {
-            var status = new DynamicWrapper { { Resources.Ok, true }, { "version", GetSystemVersion() } };
+            var status = new DynamicWrapper { { "Ok", true }, { "version", GetSystemVersion() } };
 
             var allOk = true;
 
