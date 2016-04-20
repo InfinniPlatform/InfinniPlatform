@@ -11,6 +11,8 @@ using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.SystemConfig.Metadata;
 
+using Newtonsoft.Json.Linq;
+
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
     /// <summary>
@@ -23,9 +25,10 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
             _metadataApi = metadataApi;
             _log = log;
 
-            dynamic metadataSection = appConfiguration.GetSection("metadata");
+            var metadataSection = appConfiguration.GetSection("metadata");
+            
+            _contentDirectory = metadataSection?.GetValue("ContentDirectory", StringComparison.OrdinalIgnoreCase).ToString() ?? "content";
 
-            _contentDirectory = ((metadataSection != null) ? metadataSection.ContentDirectory as string : null) ?? "content";
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
             var watcher = new FileSystemWatcher(_contentDirectory, "*.json")
