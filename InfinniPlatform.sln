@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.csproj", "{EE5AD8E7-4D3E-462D-AF0B-38430185396F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Core", "InfinniPlatform.Core\InfinniPlatform.Core.csproj", "{EBC684B7-B72A-475F-BBC1-B6293B607B9B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.MessageQueue", "InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj", "{E14CCE42-2563-4C36-919F-B389FF87EA65}"
@@ -18,8 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.MessageQueue.Tests", "InfinniPlatform.MessageQueue.Tests\InfinniPlatform.MessageQueue.Tests.csproj", "{21B5752E-D14B-45FF-B13E-9F435B9283AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Tests", "InfinniPlatform.Tests\InfinniPlatform.Tests.csproj", "{A46F638C-C9C5-49BE-BC8D-8144E8C8F87A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.csproj", "{EE5AD8E7-4D3E-462D-AF0B-38430185396F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{76075218-7249-4C01-A184-35E066952A8F}"
 EndProject

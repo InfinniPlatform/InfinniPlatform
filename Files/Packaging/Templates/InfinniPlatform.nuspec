@@ -16,8 +16,8 @@
         <!-- Libraries -->
         <file target="lib\net45" src="*.dll" exclude="*.Tests.dll;InfinniPlatform.Sdk.dll" />
         <file target="lib\net45" src="*.pdb" exclude="*.Tests.pdb;InfinniPlatform.Sdk.pdb" />
-        <file target="lib\net45\en" src="en\*.*"  />
-        <file target="lib\net45\ru" src="ru\*.*"  />
+        <file target="lib\net45\en-US" src="en-US\*.*"  />
+        <file target="lib\net45\ru-RU" src="ru-RU\*.*"  />
         <!-- Metadata -->
         <file target="content\metadata\Authorization" src="content\InfinniPlatform\metadata\Authorization\**\*.*" />
         <!-- Configurations -->
