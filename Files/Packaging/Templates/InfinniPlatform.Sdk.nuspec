@@ -16,5 +16,6 @@
         <file target="lib\net45\InfinniPlatform.Sdk.dll" src="InfinniPlatform.Sdk.dll" />
         <file target="lib\net45\InfinniPlatform.Sdk.pdb" src="InfinniPlatform.Sdk.pdb" />
         <file target="lib\net45\InfinniPlatform.Sdk.xml" src="InfinniPlatform.Sdk.xml" />
+        <file target="lib\net45\ru" src="ru\InfinniPlatform.Sdk.resources.dll"  />
     </files>
 </package>
