@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConfigurationListIsEmpty" xml:space="preserve">
-    <value>Configuration list should not be empty.</value>
+    <value>Список конфигураций не может быть пустым.</value>
   </data>
   <data name="ServiceHostHasBeenSuccessfullyStarted" xml:space="preserve">
-    <value>Service host has been successfully started.</value>
+    <value>Узел службы успешно запущен.</value>
   </data>
   <data name="ServiceHostHasBeenSuccessfullyStopped" xml:space="preserve">
-    <value>Service host has been successfully stopped.</value>
+    <value>Узел службы успешно остановлен.</value>
   </data>
   <data name="ServiceHostHasNotBeenStarted" xml:space="preserve">
-    <value>Service host has not been started.</value>
-  </data>
-  <data name="ServiceHostHasNotBeenStopped" xml:space="preserve">
-    <value>Service host has not been stopped.</value>
+    <value>Узел службы не удалось запустить.</value>
   </data>
   <data name="ServiceHostIsStarting" xml:space="preserve">
-    <value>Service host is starting.</value>
+    <value>Узел службы запускается...</value>
   </data>
   <data name="ServiceHostIsStopping" xml:space="preserve">
-    <value>Service host is stopping.</value>
+    <value>Узел службы останавливается</value>
+  </data>
+  <data name="Узел службы" xml:space="preserve">
+    <value>Узел службы не удалось остановить.</value>
   </data>
 </root>
