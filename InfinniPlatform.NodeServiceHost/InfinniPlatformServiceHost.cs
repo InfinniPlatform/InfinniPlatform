@@ -53,6 +53,9 @@ namespace InfinniPlatform.NodeServiceHost
                             if (error.GetType() == typeof(FileNotFoundException))
                             {
                                 Logger.Log.Fatal($"Cannot find resources file for current culture ({CultureInfo.CurrentCulture.Name})", null, error);
+
+                                _status = prevStatus;
+
                                 throw;
                             }
 
