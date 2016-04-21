@@ -148,6 +148,8 @@
   /* Настройки хранения метаданных */
   "metadata": {
     /* Каталог с файлами метаданных (по умолчанию - 'content') */
-    "ContentDirectory": "content"
+    "ContentDirectory": "content",
+    /* Разрешает обновление кэша метаданных на сервере при их изменении на диске (для разработчиков) */
+    "EnableFileSystemWatcher": false
   }
 }

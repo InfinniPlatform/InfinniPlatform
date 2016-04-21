@@ -23,6 +23,10 @@ namespace InfinniPlatform.SystemConfig.IoC
         {
             // Metadata
 
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<MetadataSettings>(MetadataSettings.SectionName))
+                   .As<MetadataSettings>()
+                   .SingleInstance();
+
             builder.RegisterType<MetadataApi>()
                    .As<IMetadataApi>()
                    .AsSelf()

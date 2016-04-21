@@ -8,10 +8,7 @@ using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.SystemConfig.Metadata;
-
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.SystemConfig.StartupInitializers
 {
@@ -20,36 +17,35 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
     /// </summary>
     internal sealed class PackageJsonConfigurationsInitializer : ApplicationEventHandler
     {
-        public PackageJsonConfigurationsInitializer(MetadataApi metadataApi, IAppConfiguration appConfiguration, ILog log) : base(0)
+        public PackageJsonConfigurationsInitializer(MetadataApi metadataApi, MetadataSettings metadataSettings, ILog log) : base(0)
         {
             _metadataApi = metadataApi;
             _log = log;
 
-            var metadataSection = appConfiguration.GetSection("metadata");
-            
-            _contentDirectory = metadataSection?.GetValue("ContentDirectory", StringComparison.OrdinalIgnoreCase).ToString() ?? "content";
-
+            _contentDirectory = metadataSettings.ContentDirectory;
             _configurations = new Lazy<IEnumerable<DynamicWrapper>>(LoadConfigsMetadata);
 
-            var watcher = new FileSystemWatcher(_contentDirectory, "*.json")
+            if (metadataSettings.EnableFileSystemWatcher)
             {
-                IncludeSubdirectories = true
-            };
+                var watcher = new FileSystemWatcher(_contentDirectory, "*.json")
+                              {
+                                  IncludeSubdirectories = true
+                              };
 
-            watcher.Changed += (sender, args) => { UpdateConfigsMetadata(args); };
-            watcher.Created += (sender, args) => { UpdateConfigsMetadata(args); };
-            watcher.Deleted += (sender, args) => { UpdateConfigsMetadata(args); };
+                watcher.Changed += (sender, args) => { UpdateConfigsMetadata(args); };
+                watcher.Created += (sender, args) => { UpdateConfigsMetadata(args); };
+                watcher.Deleted += (sender, args) => { UpdateConfigsMetadata(args); };
 
-            watcher.EnableRaisingEvents = true;
+                watcher.EnableRaisingEvents = true;
+            }
         }
 
-
-        private readonly MetadataApi _metadataApi;
-        private readonly ILog _log;
-
-        private readonly string _contentDirectory;
         private readonly Lazy<IEnumerable<DynamicWrapper>> _configurations;
 
+        private readonly string _contentDirectory;
+        private readonly ILog _log;
+
+        private readonly MetadataApi _metadataApi;
 
         public override void OnBeforeStart()
         {
@@ -62,7 +58,6 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
                 InstallConfiguration(configuration);
             }
         }
-
 
         private void UpdateConfigsMetadata(FileSystemEventArgs args)
         {

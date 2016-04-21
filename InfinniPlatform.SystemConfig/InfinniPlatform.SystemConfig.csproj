@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Metadata\MetadataSettings.cs" />
     <Compile Include="Metadata\MetadataUniqueName.cs" />
     <Compile Include="Registers\AggregationUtils.cs" />
     <Compile Include="Registers\RegisterApi.cs" />
