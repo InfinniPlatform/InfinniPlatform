@@ -200,4 +200,4 @@ FakesAssemblies/
 *.opt
 
 # .NET Portability Analyzer
-PortabilityAnalysis.html
+*/PortabilityAnalysis*.html
