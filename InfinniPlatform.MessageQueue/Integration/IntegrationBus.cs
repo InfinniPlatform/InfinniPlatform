@@ -5,7 +5,7 @@ using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.Core.MessageQueue.Integration;
 using InfinniPlatform.MessageQueue.Properties;
-using InfinniPlatform.RabbitMq;
+using InfinniPlatform.MessageQueue.RabbitMq;
 
 namespace InfinniPlatform.MessageQueue.Integration
 {

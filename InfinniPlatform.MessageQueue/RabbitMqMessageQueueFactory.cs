@@ -3,9 +3,9 @@
 using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.MessageQueue;
-using InfinniPlatform.RabbitMq;
-using InfinniPlatform.RabbitMq.Client;
-using InfinniPlatform.RabbitMq.Policies;
+using InfinniPlatform.MessageQueue.RabbitMq;
+using InfinniPlatform.MessageQueue.RabbitMq.Client;
+using InfinniPlatform.MessageQueue.RabbitMq.Policies;
 using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.MessageQueue

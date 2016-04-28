@@ -1,7 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Core.MessageQueue;
-using InfinniPlatform.RabbitMq.Policies;
+using InfinniPlatform.MessageQueue.RabbitMq.Policies;
 
 namespace InfinniPlatform.MessageQueue
 {

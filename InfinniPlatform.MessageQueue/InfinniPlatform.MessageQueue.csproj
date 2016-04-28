@@ -39,6 +39,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -64,6 +68,44 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RabbitMqSettings.cs" />
+    <Compile Include="RabbitMq\AlwaysAfterHandlingAcknowledgePolicy.cs" />
+    <Compile Include="RabbitMq\AlwaysBeforeHandlingAcknowledgePolicy.cs" />
+    <Compile Include="RabbitMq\Client\RabbitMqMessageConverter.cs" />
+    <Compile Include="RabbitMq\Client\RabbitMqQueue.cs" />
+    <Compile Include="RabbitMq\Client\RabbitMqRetryDecisionProvider.cs" />
+    <Compile Include="RabbitMq\Client\RabbitMqSession.cs" />
+    <Compile Include="RabbitMq\Client\RabbitMqSessionFactory.cs" />
+    <Compile Include="RabbitMq\ExchangeBinding.cs" />
+    <Compile Include="RabbitMq\ExchangeConfig.cs" />
+    <Compile Include="RabbitMq\ICommandExecutor.cs" />
+    <Compile Include="RabbitMq\IMessageQueue.cs" />
+    <Compile Include="RabbitMq\IMessageQueueCommandExecutor.cs" />
+    <Compile Include="RabbitMq\IMessageQueueSession.cs" />
+    <Compile Include="RabbitMq\IMessageQueueSessionFactory.cs" />
+    <Compile Include="RabbitMq\IMessageQueueSessionManager.cs" />
+    <Compile Include="RabbitMq\IMessageQueueWorker.cs" />
+    <Compile Include="RabbitMq\IMessageQueueWorkerContainer.cs" />
+    <Compile Include="RabbitMq\MessageQueueCommandExecutor.cs" />
+    <Compile Include="RabbitMq\MessageQueueListener.cs" />
+    <Compile Include="RabbitMq\MessageQueueManager.cs" />
+    <Compile Include="RabbitMq\MessageQueuePublisher.cs" />
+    <Compile Include="RabbitMq\MessageQueueSessionManagerPerCommand.cs" />
+    <Compile Include="RabbitMq\MessageQueueSessionManagerPerThread.cs" />
+    <Compile Include="RabbitMq\MessageQueueWorker.cs" />
+    <Compile Include="RabbitMq\NeverRejectPolicy.cs" />
+    <Compile Include="RabbitMq\OnlyOnSuccessHandlingAcknowledgePolicy.cs" />
+    <Compile Include="RabbitMq\Policies\ConstantRetryPolicy.cs" />
+    <Compile Include="RabbitMq\Policies\ConstantRetrySchedulePolicy.cs" />
+    <Compile Include="RabbitMq\Policies\ExponentialRetrySchedulePolicy.cs" />
+    <Compile Include="RabbitMq\Policies\IRetryDecisionProvider.cs" />
+    <Compile Include="RabbitMq\Policies\IRetryPolicy.cs" />
+    <Compile Include="RabbitMq\Policies\IRetrySchedule.cs" />
+    <Compile Include="RabbitMq\Policies\IRetrySchedulePolicy.cs" />
+    <Compile Include="RabbitMq\Policies\IRetryScope.cs" />
+    <Compile Include="RabbitMq\Policies\RetryCommandExecutor.cs" />
+    <Compile Include="RabbitMq\Policies\RetryDecision.cs" />
+    <Compile Include="RabbitMq\QueueConfig.cs" />
+    <Compile Include="RabbitMq\ResourceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -79,10 +121,6 @@
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.RabbitMq\InfinniPlatform.RabbitMq.csproj">
-      <Project>{8adbad22-f161-438a-af0c-4116b670a392}</Project>
-      <Name>InfinniPlatform.RabbitMq</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>

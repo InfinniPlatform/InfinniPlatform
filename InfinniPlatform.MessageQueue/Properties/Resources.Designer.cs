@@ -10,8 +10,8 @@
 
 namespace InfinniPlatform.MessageQueue.Properties {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace InfinniPlatform.MessageQueue.Properties {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Address cannot be null or white space..
         /// </summary>
@@ -68,7 +68,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("AddressCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Address should be absolute URI to HTTP or HTTPS service..
         /// </summary>
@@ -77,7 +77,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("AddressShouldBeAbsoluteUriToHttpOrHttpsService", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Consumer identifier cannot be null or white space..
         /// </summary>
@@ -86,7 +86,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("ConsumerIdCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Exchange name cannot be null or white space..
         /// </summary>
@@ -95,7 +95,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("ExchangeNameCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Exchange type cannot be null or white space..
         /// </summary>
@@ -104,7 +104,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("ExchangeTypeCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Incorrect security token..
         /// </summary>
@@ -113,7 +113,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("IntegrationBusSecurityTokenIsNotValid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Queue name cannot be null or white space..
         /// </summary>
@@ -122,7 +122,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("QueueNameCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Exchange type &apos;{0}&apos; is not supported..
         /// </summary>
@@ -131,13 +131,49 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("SpecifiedExchangeTypeIsNotSupported", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Service &apos;{0}&apos; is not available..
         /// </summary>
         internal static string SubscriptionServiceIsNotAvailable {
             get {
                 return ResourceManager.GetString("SubscriptionServiceIsNotAvailable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Exchange &apos;{0}&apos; is not exists..
+        /// </summary>
+        internal static string MessageQueueExchangeIsNotExists {
+            get {
+                return ResourceManager.GetString("MessageQueueExchangeIsNotExists", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reconnection delay should be positive..
+        /// </summary>
+        internal static string ReconnectionDelayShouldBePositive {
+            get {
+                return ResourceManager.GetString("ReconnectionDelayShouldBePositive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reconnection max delay should be greater than base delay..
+        /// </summary>
+        internal static string ReconnectionMaxDelayShouldBeGreaterThanBaseDelay {
+            get {
+                return ResourceManager.GetString("ReconnectionMaxDelayShouldBeGreaterThanBaseDelay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Retry count should be positive..
+        /// </summary>
+        internal static string RetryCountShouldBePositive {
+            get {
+                return ResourceManager.GetString("RetryCountShouldBePositive", resourceCulture);
             }
         }
     }
