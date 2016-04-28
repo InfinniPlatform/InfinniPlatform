@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.MessageQueue
+namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
     ///     Интерфейс для настройки свойств очереди сообщений.

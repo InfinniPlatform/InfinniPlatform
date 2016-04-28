@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading;
 
-using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.Helpers;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues;
 
 using Moq;
 

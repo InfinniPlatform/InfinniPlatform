@@ -2,7 +2,7 @@
 using System.Threading;
 
 using InfinniPlatform.Core.Extensions;
-using InfinniPlatform.Core.MessageQueue;
+using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {

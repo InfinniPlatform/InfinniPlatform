@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.MessageQueue.Integration
+﻿namespace InfinniPlatform.Sdk.Queues.Integration
 {
     /// <summary>
     ///     Информация о подписке на очередь сообщений интеграционной шины.

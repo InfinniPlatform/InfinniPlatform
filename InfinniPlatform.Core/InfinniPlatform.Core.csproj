@@ -102,11 +102,6 @@
     <Compile Include="Logging\Log4NetLog.cs" />
     <Compile Include="Logging\LogManagerCache.cs" />
     <Compile Include="Logging\Log4NetPerformanceLog.cs" />
-    <Compile Include="MessageQueue\Integration\IIntegrationBus.cs" />
-    <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorage.cs" />
-    <Compile Include="MessageQueue\Integration\IIntegrationBusSubscriptionStorageManager.cs" />
-    <Compile Include="MessageQueue\Integration\IntegrationBusMessage.cs" />
-    <Compile Include="MessageQueue\Integration\IntegrationBusSubscription.cs" />
     <Compile Include="Metadata\DataType.cs" />
     <Compile Include="Metadata\MetadataType.cs" />
     <Compile Include="Metadata\Validation\IMetadataSchemaValidator.cs" />
@@ -158,22 +153,6 @@
     <Compile Include="Factories\IMessageQueueFactory.cs" />
     <Compile Include="Factories\ISqlQueryExecutorFactory.cs" />
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="MessageQueue\IAcknowledgePolicy.cs" />
-    <Compile Include="MessageQueue\IExchangeConfig.cs" />
-    <Compile Include="MessageQueue\IExchangeDirectBinding.cs" />
-    <Compile Include="MessageQueue\IExchangeFanoutBinding.cs" />
-    <Compile Include="MessageQueue\IExchangeHeadersBinding.cs" />
-    <Compile Include="MessageQueue\IExchangeTopicBinding.cs" />
-    <Compile Include="MessageQueue\IMessageQueueListener.cs" />
-    <Compile Include="MessageQueue\IMessageQueuePublisher.cs" />
-    <Compile Include="MessageQueue\IMessageQueueManager.cs" />
-    <Compile Include="MessageQueue\IQueueConfig.cs" />
-    <Compile Include="MessageQueue\IQueueConsumer.cs" />
-    <Compile Include="MessageQueue\IRejectPolicy.cs" />
-    <Compile Include="MessageQueue\Message.cs" />
-    <Compile Include="MessageQueue\MessageHeaders.cs" />
-    <Compile Include="MessageQueue\MessageProperties.cs" />
-    <Compile Include="MessageQueue\MessageQueueExtensions.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>

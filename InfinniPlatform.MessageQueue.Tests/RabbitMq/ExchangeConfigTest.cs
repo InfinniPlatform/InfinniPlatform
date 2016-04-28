@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Core.MessageQueue;
-using InfinniPlatform.MessageQueue.RabbitMq;
+﻿using InfinniPlatform.MessageQueue.RabbitMq;
+using InfinniPlatform.Sdk.Queues;
 
 using NUnit.Framework;
 

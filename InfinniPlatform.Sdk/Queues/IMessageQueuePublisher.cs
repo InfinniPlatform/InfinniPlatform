@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.MessageQueue
+﻿namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
     ///     Сервис для публикации сообщений.

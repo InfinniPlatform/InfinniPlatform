@@ -5,7 +5,7 @@ using InfinniPlatform.Cassandra;
 using InfinniPlatform.Cassandra.DataAdapter;
 using InfinniPlatform.Cassandra.Repository;
 using InfinniPlatform.Cassandra.Storage;
-using InfinniPlatform.Core.MessageQueue.Integration;
+using InfinniPlatform.Sdk.Queues.Integration;
 using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.MessageQueue.Integration

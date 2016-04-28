@@ -2,11 +2,11 @@
 
 using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Client;
 using InfinniPlatform.MessageQueue.RabbitMq.Policies;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue
 {

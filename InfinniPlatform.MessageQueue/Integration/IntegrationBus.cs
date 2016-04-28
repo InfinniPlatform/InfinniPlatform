@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Core.Factories;
-using InfinniPlatform.Core.MessageQueue;
-using InfinniPlatform.Core.MessageQueue.Integration;
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq;
+using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Integration;
 
 namespace InfinniPlatform.MessageQueue.Integration
 {

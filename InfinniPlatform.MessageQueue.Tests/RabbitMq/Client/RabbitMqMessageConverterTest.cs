@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.MessageQueue;
 using InfinniPlatform.MessageQueue.RabbitMq.Client;
+using InfinniPlatform.Sdk.Queues;
 
 using Moq;
 

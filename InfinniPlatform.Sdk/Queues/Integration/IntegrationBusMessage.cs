@@ -1,24 +1,19 @@
-﻿namespace InfinniPlatform.Core.MessageQueue
+﻿namespace InfinniPlatform.Sdk.Queues.Integration
 {
     /// <summary>
-    ///     Сообщение очереди.
+    ///     Сообщение интеграционной шины.
     /// </summary>
-    public sealed class Message
+    public sealed class IntegrationBusMessage
     {
-        /// <summary>
-        ///     Уникальный идентификатор сообещения в очереди сообщений.
-        /// </summary>
-        public ulong DeliveryTag { get; set; }
-
         /// <summary>
         ///     Уникальный идентификатор обработчика очереди сообщений.
         /// </summary>
         public string ConsumerId { get; set; }
 
         /// <summary>
-        ///     Наименование точки обмена сообщениями.
+        ///     Наименование точки обмена.
         /// </summary>
-        public string Exchange { get; set; }
+        public string ExchangeName { get; set; }
 
         /// <summary>
         ///     Ключ маршрутизации сообщения.

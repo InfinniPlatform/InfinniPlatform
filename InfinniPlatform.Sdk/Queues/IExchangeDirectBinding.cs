@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.MessageQueue
+namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
     ///     Интерфейс для объявления очередей, связанных с точкой обмена сообщениями типа "Direct".

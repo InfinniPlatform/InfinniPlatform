@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.MessageQueue.Integration
+﻿namespace InfinniPlatform.Sdk.Queues.Integration
 {
     /// <summary>
     ///     Менеджер для хранилища подписок интеграционной шины.

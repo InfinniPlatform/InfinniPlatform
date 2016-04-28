@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.MessageQueue
+﻿namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
     ///     Обработчик очереди сообщений.

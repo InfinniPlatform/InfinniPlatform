@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-using InfinniPlatform.Core.MessageQueue;
+using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.Tests
 {

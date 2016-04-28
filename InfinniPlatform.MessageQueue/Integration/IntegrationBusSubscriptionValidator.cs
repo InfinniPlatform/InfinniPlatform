@@ -2,8 +2,8 @@
 using System.Text;
 
 using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.MessageQueue.Integration;
 using InfinniPlatform.MessageQueue.Properties;
+using InfinniPlatform.Sdk.Queues.Integration;
 
 namespace InfinniPlatform.MessageQueue.Integration
 {

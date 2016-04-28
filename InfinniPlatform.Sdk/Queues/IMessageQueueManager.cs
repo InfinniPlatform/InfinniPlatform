@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.MessageQueue
+namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
     ///     Сервис для управления подписками на очереди сообщений.

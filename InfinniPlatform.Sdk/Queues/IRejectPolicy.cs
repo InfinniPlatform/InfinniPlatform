@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.MessageQueue
+﻿namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
     ///     Политика подтверждения отказа от выполнения действия.
