@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using InfinniPlatform.DocumentStorage.MongoDB.Conventions;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 
@@ -24,7 +25,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         static MongoConnection()
         {
             // Игнорирование null значений в свойствах документов, игнорирование свойств id в классах
-            var defaultConventions = new ConventionPack { new IgnoreIfNullConvention(true), new NoIdMemberConvention() };
+            var defaultConventions = new ConventionPack { new IgnoreIfNullConvention(true), new NoIdMemberConvention(), new IgnoreDiscriminatorConvention()};
             ConventionRegistry.Register("IgnoreRules", defaultConventions, t => true);
 
             // Установка правил сериализации и десериализации внутренних типов данных

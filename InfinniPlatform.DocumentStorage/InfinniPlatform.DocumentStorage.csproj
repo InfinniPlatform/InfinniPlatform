@@ -53,6 +53,7 @@
     </Compile>
     <Compile Include="Diagnostics\MongoStatusProvider.cs" />
     <Compile Include="IoC\DocumentStorageContainerModule.cs" />
+    <Compile Include="MongoDB\Conventions\IgnoreDiscriminatorConvention.cs" />
     <Compile Include="MongoDB\MongoBsonSerializerBase.cs" />
     <Compile Include="MongoDB\MongoConnection.cs" />
     <Compile Include="MongoDB\MongoConnectionSettings.cs" />

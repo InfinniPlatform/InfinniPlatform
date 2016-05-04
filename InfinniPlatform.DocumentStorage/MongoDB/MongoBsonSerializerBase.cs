@@ -62,7 +62,14 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         protected void WriteValue(BsonSerializationContext context, object value)
         {
-            ObjectSerializer.Serialize(context, value);
+            var nominalType = value?.GetType() ?? ObjectSerializer.ValueType;
+
+            ObjectSerializer.Serialize(context,
+                                       new BsonSerializationArgs
+                                       {
+                                           NominalType = nominalType
+                                       },
+                                       value);
         }
 
         protected abstract void SerializeValue(BsonSerializationContext context, object value);
