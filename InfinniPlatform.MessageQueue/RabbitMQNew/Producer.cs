@@ -6,19 +6,12 @@ using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQNew
 {
-    public class Producer : IProducer
+    internal sealed class Producer : IProducer
     {
-        public Producer()
+        public Producer(RabbitMqConnection connection)
         {
-            var factory = new ConnectionFactory
-                          {
-                              HostName = "localhost"
-                          };
-
-            _connection = factory.CreateConnection();
-
-            _channel = _connection.CreateModel();
-            _channel.QueueDeclare("task_queue", true, false, false, null);
+            _channel = connection.GetConnection().CreateModel();
+            _channel.QueueDeclare("test_queue", false, false, false, null);
             var properties = _channel.CreateBasicProperties();
             properties.Persistent = true;
 
@@ -28,13 +21,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
         private readonly IBasicProperties _properties;
 
         private IModel _channel;
-        private IConnection _connection;
 
         public void Produce(string message)
         {
             var body = Encoding.UTF8.GetBytes(message);
 
-            _channel.BasicPublish("", "task_queue", _properties, body);
+            _channel.BasicPublish("", "test_queue", _properties, body);
 
             Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId} [x] Sent {message}");
         }
@@ -45,11 +37,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
             {
                 _channel.Close();
                 _channel = null;
-                if (_connection != null)
-                {
-                    _connection.Close();
-                    _connection = null;
-                }
             }
         }
     }

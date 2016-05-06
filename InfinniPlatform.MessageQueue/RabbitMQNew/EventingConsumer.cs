@@ -5,25 +5,17 @@ using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQNew
 {
-    public class EventingConsumer : IEventingConsumer
+    internal sealed class EventingConsumer : IEventingConsumer
     {
-        public EventingConsumer()
+        public EventingConsumer(RabbitMqConnection connection)
         {
-            var factory = new ConnectionFactory
-                          {
-                              HostName = "localhost"
-                          };
-
-            _connection = factory.CreateConnection();
-
-            _channel = _connection.CreateModel();
-
-            _channel.QueueDeclare("task_queue", true, false, false, null);
+            _channel = connection.GetConnection().CreateModel();
+            _channel.QueueDeclare("test_queue", false, false, false, null);
             _channel.BasicQos(0, 1, false);
 
             _eventingConsumer = new EventingBasicConsumer(_channel);
 
-            _channel.BasicConsume("task_queue", false, _eventingConsumer);
+            _channel.BasicConsume("test_queue", false, _eventingConsumer);
         }
 
         private readonly EventingBasicConsumer _eventingConsumer;
@@ -46,7 +38,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
             }
         }
 
-        public void AddRecievedEvend(EventHandler<BasicDeliverEventArgs> eventingConsumerOnReceived)
+        public void AddRecievedEvent(EventHandler<BasicDeliverEventArgs> eventingConsumerOnReceived)
         {
             _eventingConsumer.Received += eventingConsumerOnReceived;
         }

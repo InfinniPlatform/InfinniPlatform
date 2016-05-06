@@ -1,24 +1,18 @@
 ﻿using System.Text;
 
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQNew
 {
-    public class QueningConsumer : IQueningConsumer
+    internal sealed class QueningConsumer : IQueningConsumer
     {
-        public QueningConsumer()
+        public QueningConsumer(RabbitMqConnection connection)
         {
-            var factory = new ConnectionFactory
-                          {
-                              HostName = "localhost"
-                          };
-
-            _connection = factory.CreateConnection();
-
-            _channel = _connection.CreateModel();
-
-            _channel.QueueDeclare("task_queue", true, false, false, null);
+            _channel = connection.GetConnection().CreateModel();
+            _channel.QueueDeclare("test_queue", false, false, false, null);
             _channel.BasicQos(0, 1, false);
+
             _queueingConsumer = new QueueingBasicConsumer(_channel);
         }
 
@@ -26,12 +20,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
 
 
         private IModel _channel;
-        private IConnection _connection;
 
         public string Consume()
         {
-            _channel.BasicConsume("task_queue", false, _queueingConsumer);
-            var args = _queueingConsumer.Queue.Dequeue();
+            BasicDeliverEventArgs args;
+            _channel.BasicConsume("test_queue", false, _queueingConsumer);
+            _queueingConsumer.Queue.Dequeue(100, out args);
 
             return args == null ? null : Encoding.UTF8.GetString(args.Body);
         }
@@ -42,11 +36,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
             {
                 _channel.Close();
                 _channel = null;
-                if (_connection != null)
-                {
-                    _connection.Close();
-                    _connection = null;
-                }
             }
         }
     }

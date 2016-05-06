@@ -6,6 +6,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
 {
     public interface IEventingConsumer : IDisposable
     {
-        void AddRecievedEvend(EventHandler<BasicDeliverEventArgs> eventingConsumerOnReceived);
+        void AddRecievedEvent(EventHandler<BasicDeliverEventArgs> eventingConsumerOnReceived);
     }
 }
