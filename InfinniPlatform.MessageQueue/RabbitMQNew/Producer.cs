@@ -11,7 +11,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
 
         public Producer(RabbitMqManager manager)
         {
-            _channel = manager.GetConnection().CreateModel();
+            _channel = manager.GetChannel(QueueKey);
             manager.GetQueue(QueueKey);
         }
 
@@ -21,7 +21,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
         {
             var body = Encoding.UTF8.GetBytes(message);
 
-            _channel.BasicPublish("", "test_queue", null, body);
+            _channel.BasicPublish("", QueueKey, null, body);
 
             Console.WriteLine($"Produce: {message}");
         }

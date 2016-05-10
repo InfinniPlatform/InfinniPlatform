@@ -11,9 +11,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
 
         public BasicConsumer(RabbitMqManager manager)
         {
-            _channel = manager.GetConnection().CreateModel();
+            _channel = manager.GetChannel(QueueKey);
             manager.GetQueue(QueueKey);
-            _channel.BasicQos(0, 1, false);
         }
 
         private IModel _channel;

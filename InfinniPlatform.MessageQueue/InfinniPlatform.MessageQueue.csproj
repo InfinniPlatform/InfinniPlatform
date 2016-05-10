@@ -69,7 +69,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RabbitMQNew\EventingConsumer.cs" />
-    <Compile Include="RabbitMQNew\IEventingConsumer.cs" />
     <Compile Include="RabbitMQNew\BasicConsumer.cs" />
     <Compile Include="RabbitMQNew\IConsumer.cs" />
     <Compile Include="RabbitMQNew\IProducer.cs" />

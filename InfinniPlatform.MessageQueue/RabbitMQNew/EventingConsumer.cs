@@ -1,46 +1,35 @@
-using System;
+using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.Sdk.Queues;
 
-using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQNew
 {
-    internal sealed class EventingConsumer : IEventingConsumer
+    internal sealed class EventingConsumer : ApplicationEventHandler
     {
-        private const string QueueKey = "test_queue";
-
-        public EventingConsumer(RabbitMqManager manager)
+        public EventingConsumer(RabbitMqManager manager, IEventingConsumer[] consumers)
         {
-            _channel = manager.GetConnection().CreateModel();
-            manager.GetQueue(QueueKey);
-            _channel.BasicQos(0, 1, false);
-
-            _eventingConsumer = new EventingBasicConsumer(_channel);
+            _manager = manager;
+            _consumers = consumers;
         }
 
-        private readonly EventingBasicConsumer _eventingConsumer;
+        private readonly IEventingConsumer[] _consumers;
+        private readonly RabbitMqManager _manager;
 
-        private IModel _channel;
-        private IConnection _connection;
-
-        public void Dispose()
+        public override void OnAfterStart()
         {
-            if (_channel != null)
+            var channel = _manager.GetChannel("test_queue");
+
+            _manager.GetQueue("test_queue");
+
+            var eventingConsumer = new EventingBasicConsumer(channel);
+
+            foreach (var consumer in _consumers)
             {
-                _channel.Close();
-                _channel = null;
-                if (_connection != null)
-                {
-                    _connection.Close();
-                    _connection = null;
-                }
+                eventingConsumer.Received += (o, e) => { consumer.Consume(e.Body); };
             }
-        }
 
-        public void AddRecievedEvent(EventHandler<BasicDeliverEventArgs> eventingConsumerOnReceived)
-        {
-            _eventingConsumer.Received += eventingConsumerOnReceived;
-            _channel.BasicConsume(QueueKey, true, _eventingConsumer);
+            channel.BasicConsume("test_queue", true, eventingConsumer);
         }
     }
 }

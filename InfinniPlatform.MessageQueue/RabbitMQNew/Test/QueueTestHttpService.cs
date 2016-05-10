@@ -2,29 +2,27 @@
 using System.Text;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
 {
     public class QueueTestHttpService : IHttpService
     {
-        public QueueTestHttpService(IProducer producer, IBasicConsumer basicConsumer, IEventingConsumer eventingConsumer)
+        public QueueTestHttpService(IProducer producer, IBasicConsumer basicConsumer)
         {
             _producer = producer;
             _basicConsumer = basicConsumer;
-            _eventingConsumer = eventingConsumer;
         }
 
         private readonly IBasicConsumer _basicConsumer;
 
-        private readonly IEventingConsumer _eventingConsumer;
         private readonly IProducer _producer;
 
         public void Load(IHttpServiceBuilder builder)
         {
             builder.Get["/produce"] = Produce;
             builder.Get["/consume"] = Consume;
-            builder.Get["/register"] = RegisterEvent;
         }
 
         private Task<object> Produce(IHttpRequest request)
@@ -57,16 +55,23 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
                                                Message = message
                                            });
         }
+    }
 
-        private Task<object> RegisterEvent(IHttpRequest request)
+
+    public class TestConsumer : IEventingConsumer
+    {
+        public void Consume(byte[] messageBytes)
         {
-            _eventingConsumer.AddRecievedEvent((sender, args) => { Console.WriteLine($"EventingConsumer: {Encoding.UTF8.GetString(args.Body)}"); });
+            Console.WriteLine($"EventingConsumer1: {Encoding.UTF8.GetString(messageBytes)}");
+        }
+    }
 
-            return Task.FromResult<object>(new
-                                           {
-                                               IsValid = true,
-                                               Message = "Event handler registered."
-                                           });
+
+    public class TestConsumer2 : IEventingConsumer
+    {
+        public void Consume(byte[] messageBytes)
+        {
+            Console.WriteLine($"EventingConsumer2: {Encoding.UTF8.GetString(messageBytes)}");
         }
     }
 }

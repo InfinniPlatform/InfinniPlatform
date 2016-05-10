@@ -1,5 +1,9 @@
-﻿using InfinniPlatform.MessageQueue.RabbitMQNew;
+﻿using System.Reflection;
+
+using InfinniPlatform.MessageQueue.RabbitMQNew;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
@@ -26,10 +30,12 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .InstancePerDependency();
 
             builder.RegisterType<EventingConsumer>()
-                   .As<IEventingConsumer>()
-                   .InstancePerDependency();
+                   .As<IApplicationEventHandler>()
+                   .SingleInstance();
 
-            builder.RegisterHttpServices(GetType().Assembly);
+            builder.RegisterHttpServices(GetType().GetTypeInfo().Assembly);
+
+            builder.RegisterEventingConsumers(GetType().GetTypeInfo().Assembly);
         }
 
         private static RabbitMqConnectionSettings GetRabbitMqConnectionSettings(IContainerResolver resolver)

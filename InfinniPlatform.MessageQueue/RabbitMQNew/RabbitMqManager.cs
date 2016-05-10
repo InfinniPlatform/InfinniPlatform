@@ -29,7 +29,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
             return _connection.Value;
         }
 
-        public IModel GetModel(string key)
+        /// <summary>
+        /// Создает канал, если он еще не существует.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public IModel GetChannel(string key)
         {
             if (_channels.ContainsKey(key))
             {
@@ -41,6 +46,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
             return model;
         }
 
+        /// <summary>
+        /// Создает точку обмена, если она еще не существует.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string GetExchange(string key)
         {
             if (_exchanges.ContainsKey(key))
@@ -48,11 +58,16 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
                 return _exchanges[key];
             }
 
-            GetModel(key).ExchangeDeclare(key, ExchangeType.Direct);
+            GetChannel(key).ExchangeDeclare(key, ExchangeType.Direct);
             _exchanges.Add(key, key);
             return key;
         }
 
+        /// <summary>
+        /// Создает очередь, если она еще не существует.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string GetQueue(string key)
         {
             if (_queues.ContainsKey(key))
@@ -60,7 +75,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
                 return _queues[key];
             }
 
-            GetModel(key).QueueDeclare(key, false, false, false, null);
+            GetChannel(key).QueueDeclare(key, false, false, false, null);
             _queues.Add(key, key);
             return key;
         }
