@@ -70,11 +70,11 @@
     </Compile>
     <Compile Include="RabbitMQNew\EventingConsumer.cs" />
     <Compile Include="RabbitMQNew\IEventingConsumer.cs" />
-    <Compile Include="RabbitMQNew\QueningConsumer.cs" />
+    <Compile Include="RabbitMQNew\BasicConsumer.cs" />
     <Compile Include="RabbitMQNew\IConsumer.cs" />
     <Compile Include="RabbitMQNew\IProducer.cs" />
     <Compile Include="RabbitMQNew\Producer.cs" />
-    <Compile Include="RabbitMQNew\RabbitMqConnection.cs" />
+    <Compile Include="RabbitMQNew\RabbitMqManager.cs" />
     <Compile Include="RabbitMQNew\RabbitMqConnectionSettings.cs" />
     <Compile Include="RabbitMQNew\Test\QueueTestHttpService.cs" />
     <Compile Include="RabbitMqSettings.cs" />
