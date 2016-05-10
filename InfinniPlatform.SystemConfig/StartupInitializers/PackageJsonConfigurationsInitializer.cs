@@ -120,39 +120,34 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
         {
             var itemsMetadataCache = new Dictionary<MetadataUniqueName, DynamicWrapper>();
 
-            var metadataSubDirectories = Directory.EnumerateDirectories(metadataDirectory);
+            var itemsDirectories = Directory.EnumerateDirectories(metadataDirectory);
 
-            foreach (var metadataDir in metadataSubDirectories)
+            foreach (var itemsDir in itemsDirectories)
             {
-                var itemsDirectories = Directory.EnumerateDirectories(metadataDir);
+                var defaultNamespace = Path.GetFileNameWithoutExtension(itemsDir);
 
-                foreach (var itemsDir in itemsDirectories)
+                var itemsMetadata = Directory.EnumerateFiles(itemsDir, "*.json", SearchOption.AllDirectories)
+                                             .Select(LoadItemMetadata)
+                                             .ToArray();
+
+                foreach (var item in itemsMetadata)
                 {
-                    var defaultNamespace = Path.GetFileNameWithoutExtension(itemsDir);
+                    var ns = (string)item["Namespace"];
 
-                    var itemsMetadata = Directory.EnumerateFiles(itemsDir, "*.json", SearchOption.AllDirectories)
-                                                 .Select(LoadItemMetadata)
-                                                 .ToArray();
-
-                    foreach (var item in itemsMetadata)
+                    if (string.IsNullOrEmpty(ns))
                     {
-                        var ns = (string)item["Namespace"];
-
-                        if (string.IsNullOrEmpty(ns))
-                        {
-                            ns = defaultNamespace;
-                        }
-
-                        var name = (string)item["Name"];
-                        var metadataName = new MetadataUniqueName(ns, name);
-
-                        if (itemsMetadataCache.ContainsKey(metadataName))
-                        {
-                            throw new InvalidOperationException($"Metadata object '{metadataName}' is duplicate.");
-                        }
-
-                        itemsMetadataCache.Add(metadataName, item);
+                        ns = defaultNamespace;
                     }
+
+                    var name = (string)item["Name"];
+                    var metadataName = new MetadataUniqueName(ns, name);
+
+                    if (itemsMetadataCache.ContainsKey(metadataName))
+                    {
+                        throw new InvalidOperationException($"Metadata object '{metadataName}' is duplicate.");
+                    }
+
+                    itemsMetadataCache.Add(metadataName, item);
                 }
             }
 
