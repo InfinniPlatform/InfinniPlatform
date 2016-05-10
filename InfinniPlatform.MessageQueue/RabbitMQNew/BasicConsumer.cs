@@ -20,7 +20,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
 
         public string Get()
         {
-            var message = _channel.BasicGet(QueueKey, false);
+            var message = _channel.BasicGet(QueueKey, true);
             var serializedMessage = message == null
                                         ? null
                                         : Encoding.UTF8.GetString(message.Body);

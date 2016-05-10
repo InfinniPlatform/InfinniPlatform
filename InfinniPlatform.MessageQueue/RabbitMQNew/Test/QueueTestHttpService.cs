@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Services;
@@ -61,7 +60,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
 
         private Task<object> RegisterEvent(IHttpRequest request)
         {
-            _eventingConsumer.AddRecievedEvent((sender, args) => { Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId} EventingConsumer: {Encoding.UTF8.GetString(args.Body)}"); });
+            _eventingConsumer.AddRecievedEvent((sender, args) => { Console.WriteLine($"EventingConsumer: {Encoding.UTF8.GetString(args.Body)}"); });
 
             return Task.FromResult<object>(new
                                            {
