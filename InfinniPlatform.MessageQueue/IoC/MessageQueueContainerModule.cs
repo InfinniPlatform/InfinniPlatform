@@ -21,8 +21,8 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IProducer>()
                    .InstancePerDependency();
 
-            builder.RegisterType<QueningConsumer>()
-                   .As<IQueningConsumer>()
+            builder.RegisterType<BasicConsumer>()
+                   .As<IBasicConsumer>()
                    .InstancePerDependency();
 
             builder.RegisterType<EventingConsumer>()

@@ -7,17 +7,17 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
 {
     public class QueueTestHttpService : IHttpService
     {
-        public QueueTestHttpService(IProducer producer, IQueningConsumer queningConsumer, IEventingConsumer eventingConsumer)
+        public QueueTestHttpService(IProducer producer, IBasicConsumer basicConsumer, IEventingConsumer eventingConsumer)
         {
             _producer = producer;
-            _queningConsumer = queningConsumer;
+            _basicConsumer = basicConsumer;
             _eventingConsumer = eventingConsumer;
         }
 
         private readonly IEventingConsumer _eventingConsumer;
         private readonly IProducer _producer;
 
-        private readonly IQueningConsumer _queningConsumer;
+        private readonly IBasicConsumer _basicConsumer;
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -28,7 +28,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
 
         private Task<object> Produce(IHttpRequest request)
         {
-            _producer.Produce("Success.");
+            _producer.Publish(DateTime.Now.ToString("U"));
 
             return Task.FromResult<object>(new
                                            {
@@ -39,7 +39,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
 
         private Task<object> Consume(IHttpRequest request)
         {
-            var message = _queningConsumer.Consume();
+            var message = _basicConsumer.Get();
 
             if (message == null)
             {

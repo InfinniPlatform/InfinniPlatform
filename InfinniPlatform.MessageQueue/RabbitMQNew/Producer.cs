@@ -12,21 +12,24 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
         {
             _channel = connection.GetConnection().CreateModel();
             _channel.QueueDeclare("test_queue", false, false, false, null);
-            var properties = _channel.CreateBasicProperties();
-            properties.Persistent = true;
-
-            _properties = properties;
+            //            var properties = _channel.CreateBasicProperties();
+            //            properties.Persistent = true;
+            //
+            //            _properties = properties;
+            _channel.BasicPublish("", "test_queue", null, Encoding.UTF8.GetBytes(DateTime.Now.ToString("U")));
         }
 
-        private readonly IBasicProperties _properties;
+        //private readonly IBasicProperties _properties;
 
         private IModel _channel;
 
-        public void Produce(string message)
+        public void Publish(string message)
         {
             var body = Encoding.UTF8.GetBytes(message);
 
-            _channel.BasicPublish("", "test_queue", _properties, body);
+            var properties = _channel.CreateBasicProperties();
+            
+            _channel.BasicPublish("", "test_queue", properties, body);
 
             Console.WriteLine($"{Thread.CurrentThread.ManagedThreadId} [x] Sent {message}");
         }

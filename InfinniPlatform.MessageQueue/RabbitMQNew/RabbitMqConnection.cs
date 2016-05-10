@@ -23,5 +23,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
         {
             return _connection.Value;
         }
+
+        public void CreateExchange()
+        {
+            var model = _connection.Value.CreateModel();
+
+        }
+
+        public void CreateQueue()
+        {
+        }
     }
 }

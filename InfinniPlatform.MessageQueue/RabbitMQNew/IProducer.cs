@@ -4,6 +4,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
 {
     public interface IProducer : IDisposable
     {
-        void Produce(string message);
+        void Publish(string message);
     }
 }
