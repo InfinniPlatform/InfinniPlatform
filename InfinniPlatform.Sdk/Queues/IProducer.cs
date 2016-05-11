@@ -7,6 +7,6 @@
         /// </summary>
         /// <param name="queueName">Имя очереди.</param>
         /// <param name="message">Сообщение.</param>
-        void Produce(string queueName, byte[] message);
+        void Produce(string queueName, IMessage message);
     }
 }

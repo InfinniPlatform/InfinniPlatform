@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.MessageQueue.RabbitMq;
+using InfinniPlatform.MessageQueue.RabbitMq.Outdated;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Outdated;
 

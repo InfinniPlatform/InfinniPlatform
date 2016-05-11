@@ -2,9 +2,9 @@
 
 using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Client;
-using InfinniPlatform.MessageQueue.RabbitMq.Policies;
+using InfinniPlatform.MessageQueue.RabbitMq.Outdated;
+using InfinniPlatform.MessageQueue.RabbitMq.Outdated.Client;
+using InfinniPlatform.MessageQueue.RabbitMq.Outdated.Policies;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Outdated;

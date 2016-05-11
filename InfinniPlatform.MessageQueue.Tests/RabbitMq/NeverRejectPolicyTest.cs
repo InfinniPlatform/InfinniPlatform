@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.MessageQueue.RabbitMq;
+﻿using InfinniPlatform.MessageQueue.RabbitMq.Outdated;
 
 using NUnit.Framework;
 

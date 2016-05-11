@@ -82,6 +82,7 @@
     <Compile Include="Documents\Services\DocumentPostQueryResult.cs" />
     <Compile Include="Documents\Services\DocumentQueryResult.cs" />
     <Compile Include="Queues\IProducer.cs" />
+    <Compile Include="Queues\Message.cs" />
     <Compile Include="Queues\Outdated\IAcknowledgePolicy.cs" />
     <Compile Include="Queues\IConsumer.cs" />
     <Compile Include="Queues\Outdated\IExchangeConfig.cs" />

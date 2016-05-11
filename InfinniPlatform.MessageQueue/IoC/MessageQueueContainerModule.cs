@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-using InfinniPlatform.MessageQueue.RabbitMQNew;
+using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Queues;
@@ -29,7 +29,7 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IBasicConsumer>()
                    .InstancePerDependency();
 
-            builder.RegisterType<Producer>()
+            builder.RegisterType<ProducerBase>()
                    .As<IProducer>()
                    .InstancePerDependency();
 

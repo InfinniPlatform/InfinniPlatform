@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.MessageQueue.RabbitMq.Client;
-using InfinniPlatform.MessageQueue.RabbitMq.Policies;
+using InfinniPlatform.MessageQueue.RabbitMq.Outdated.Client;
+using InfinniPlatform.MessageQueue.RabbitMq.Outdated.Policies;
 
 using NUnit.Framework;
 

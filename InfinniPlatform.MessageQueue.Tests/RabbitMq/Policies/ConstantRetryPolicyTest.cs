@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.MessageQueue.RabbitMq.Policies;
+using InfinniPlatform.MessageQueue.RabbitMq.Outdated.Policies;
 
 using NUnit.Framework;
 
