@@ -27,7 +27,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
 
         private Task<object> Produce(IHttpRequest request)
         {
-            _producer.Produce(Encoding.UTF8.GetBytes(DateTime.Now.ToString("U")));
+            _producer.Produce("test_queue", Encoding.UTF8.GetBytes(DateTime.Now.ToString("U")));
 
             return Task.FromResult<object>(new
                                            {

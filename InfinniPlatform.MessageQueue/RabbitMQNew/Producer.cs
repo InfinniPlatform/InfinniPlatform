@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Text;
 
-using RabbitMQ.Client;
+using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQNew
 {
@@ -8,19 +9,18 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
     {
         public Producer(RabbitMqManager manager)
         {
-            _channel = manager.GetChannel(QueueName);
-            manager.GetQueue(QueueName);
+            _manager = manager;
         }
 
-        private readonly IModel _channel;
+        private readonly RabbitMqManager _manager;
 
-        public string QueueName => "test_queue";
-
-        public void Produce(byte[] message)
+        public void Produce(string queueName, byte[] message)
         {
-            _channel.BasicPublish("", QueueName, null, message);
+            var channel = _manager.GetChannel(queueName);
+            _manager.GetQueue(queueName);
+            channel.BasicPublish("", queueName, null, message);
 
-            Console.WriteLine($"{nameof(Producer)}: {message}");
+            Console.WriteLine($"{nameof(Producer)}: {Encoding.UTF8.GetString(message)}");
         }
     }
 }

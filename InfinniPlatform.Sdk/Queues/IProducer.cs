@@ -1,13 +1,12 @@
-﻿namespace InfinniPlatform.MessageQueue.RabbitMQNew
+﻿namespace InfinniPlatform.Sdk.Queues
 {
     public interface IProducer
     {
-        string QueueName { get; }
-
         /// <summary>
         /// Публикует сообщение.
         /// </summary>
+        /// <param name="queueName">Имя очереди.</param>
         /// <param name="message">Сообщение.</param>
-        void Produce(byte[] message);
+        void Produce(string queueName, byte[] message);
     }
 }
