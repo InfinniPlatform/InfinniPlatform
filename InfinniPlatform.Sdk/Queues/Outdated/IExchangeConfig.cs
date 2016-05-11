@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Queues
+﻿namespace InfinniPlatform.Sdk.Queues.Outdated
 {
     /// <summary>
     ///     Интерфейс для настройки свойств точки обмена сообщениями.

@@ -7,6 +7,7 @@ using InfinniPlatform.MessageQueue.RabbitMq.Client;
 using InfinniPlatform.MessageQueue.RabbitMq.Policies;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Outdated;
 
 namespace InfinniPlatform.MessageQueue
 {

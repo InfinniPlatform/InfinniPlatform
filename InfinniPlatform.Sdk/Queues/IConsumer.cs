@@ -1,7 +1,9 @@
 namespace InfinniPlatform.Sdk.Queues
 {
-    public interface IEventingConsumer
+    public interface IConsumer
     {
+        string QueueName { get; }
+
         /// <summary>
         /// Обработчик сообщения.
         /// </summary>

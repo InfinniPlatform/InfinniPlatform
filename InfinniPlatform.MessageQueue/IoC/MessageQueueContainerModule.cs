@@ -21,21 +21,17 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<RabbitMqManager>()
                    .SingleInstance();
 
-            builder.RegisterType<Producer>()
-                   .As<IProducer>()
-                   .InstancePerDependency();
+            builder.RegisterType<MessageConsumersManager>()
+                   .As<IApplicationEventHandler>()
+                   .SingleInstance();
 
             builder.RegisterType<BasicConsumer>()
                    .As<IBasicConsumer>()
                    .InstancePerDependency();
 
-            builder.RegisterType<EventingConsumer>()
-                   .As<IApplicationEventHandler>()
-                   .SingleInstance();
-
             builder.RegisterHttpServices(GetType().GetTypeInfo().Assembly);
-
-            builder.RegisterEventingConsumers(GetType().GetTypeInfo().Assembly);
+            builder.RegisterConsumers(GetType().GetTypeInfo().Assembly);
+            builder.RegisterPublishers(GetType().GetTypeInfo().Assembly);
         }
 
         private static RabbitMqConnectionSettings GetRabbitMqConnectionSettings(IContainerResolver resolver)

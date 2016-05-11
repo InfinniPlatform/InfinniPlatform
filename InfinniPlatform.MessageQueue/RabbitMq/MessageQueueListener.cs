@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Outdated;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {

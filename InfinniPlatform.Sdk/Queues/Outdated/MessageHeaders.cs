@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.Sdk.Queues.Outdated
 {
     /// <summary>
     ///     Заголовок сообщения.

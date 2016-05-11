@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Cassandra;
 using InfinniPlatform.Core.Factories;
-using InfinniPlatform.Sdk.Queues.Integration;
+using InfinniPlatform.Sdk.Queues.Outdated.Integration;
 using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.MessageQueue.Integration

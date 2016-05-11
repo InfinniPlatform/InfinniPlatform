@@ -7,35 +7,26 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew
 {
     internal sealed class BasicConsumer : IBasicConsumer
     {
-        private const string QueueKey = "test_queue";
-
         public BasicConsumer(RabbitMqManager manager)
         {
-            _channel = manager.GetChannel(QueueKey);
-            manager.GetQueue(QueueKey);
+            _channel = manager.GetChannel(QueueName);
+            manager.GetQueue(QueueName);
         }
 
-        private IModel _channel;
+        private readonly IModel _channel;
 
-        public string Get()
+        public string QueueName => "test_queue";
+
+        public string Consume()
         {
-            var message = _channel.BasicGet(QueueKey, true);
+            var message = _channel.BasicGet(QueueName, true);
             var serializedMessage = message == null
                                         ? null
                                         : Encoding.UTF8.GetString(message.Body);
 
-            Console.WriteLine($"BasicConsumer: {serializedMessage}");
+            Console.WriteLine($"{nameof(BasicConsumer)}: {serializedMessage}");
 
             return serializedMessage;
-        }
-
-        public void Dispose()
-        {
-            if (_channel != null)
-            {
-                _channel.Close();
-                _channel = null;
-            }
         }
     }
 }

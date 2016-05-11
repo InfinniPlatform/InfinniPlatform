@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Outdated;
 
 using RabbitMQ.Client;
 

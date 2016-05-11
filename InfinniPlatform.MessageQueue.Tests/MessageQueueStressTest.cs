@@ -5,6 +5,7 @@ using System.Threading;
 using InfinniPlatform.Helpers;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Outdated;
 
 using Moq;
 

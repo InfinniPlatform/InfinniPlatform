@@ -27,7 +27,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
 
         private Task<object> Produce(IHttpRequest request)
         {
-            _producer.Publish(DateTime.Now.ToString("U"));
+            _producer.Produce(Encoding.UTF8.GetBytes(DateTime.Now.ToString("U")));
 
             return Task.FromResult<object>(new
                                            {
@@ -38,7 +38,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
 
         private Task<object> Consume(IHttpRequest request)
         {
-            var message = _basicConsumer.Get();
+            var message = _basicConsumer.Consume();
 
             if (message == null)
             {
@@ -58,20 +58,24 @@ namespace InfinniPlatform.MessageQueue.RabbitMQNew.Test
     }
 
 
-    public class TestConsumer : IEventingConsumer
+    public class TestConsumer : IConsumer
     {
+        public string QueueName => "test_queue";
+
         public void Consume(byte[] messageBytes)
         {
-            Console.WriteLine($"EventingConsumer1: {Encoding.UTF8.GetString(messageBytes)}");
+            Console.WriteLine($"{nameof(TestConsumer)}: {Encoding.UTF8.GetString(messageBytes)}");
         }
     }
 
 
-    public class TestConsumer2 : IEventingConsumer
+    public class TestConsumer2 : IConsumer
     {
+        public string QueueName => "test_queue";
+
         public void Consume(byte[] messageBytes)
         {
-            Console.WriteLine($"EventingConsumer2: {Encoding.UTF8.GetString(messageBytes)}");
+            Console.WriteLine($"{nameof(TestConsumer2)}: {Encoding.UTF8.GetString(messageBytes)}");
         }
     }
 }

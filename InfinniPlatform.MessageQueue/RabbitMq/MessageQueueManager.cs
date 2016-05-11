@@ -2,6 +2,7 @@
 
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Outdated;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {

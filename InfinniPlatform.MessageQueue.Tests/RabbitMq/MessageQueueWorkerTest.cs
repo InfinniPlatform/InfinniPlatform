@@ -3,6 +3,7 @@ using System.IO;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Outdated;
 
 using Moq;
 

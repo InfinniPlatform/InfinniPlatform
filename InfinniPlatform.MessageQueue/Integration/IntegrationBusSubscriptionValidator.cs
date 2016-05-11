@@ -3,7 +3,7 @@ using System.Text;
 
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.MessageQueue.Properties;
-using InfinniPlatform.Sdk.Queues.Integration;
+using InfinniPlatform.Sdk.Queues.Outdated.Integration;
 
 namespace InfinniPlatform.MessageQueue.Integration
 {

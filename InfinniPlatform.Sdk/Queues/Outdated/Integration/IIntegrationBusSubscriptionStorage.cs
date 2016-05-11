@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Queues.Integration
+﻿namespace InfinniPlatform.Sdk.Queues.Outdated.Integration
 {
     /// <summary>
     ///     Хранилище подписок интеграционной шины.

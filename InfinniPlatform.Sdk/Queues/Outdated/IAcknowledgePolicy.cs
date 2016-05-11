@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.Sdk.Queues.Outdated
 {
     /// <summary>
     ///     Политика подтверждения окончания выполнения действия.

@@ -68,10 +68,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RabbitMQNew\EventingConsumer.cs" />
+    <Compile Include="RabbitMQNew\MessageConsumersManager.cs" />
     <Compile Include="RabbitMQNew\BasicConsumer.cs" />
-    <Compile Include="RabbitMQNew\IConsumer.cs" />
-    <Compile Include="RabbitMQNew\IProducer.cs" />
+    <Compile Include="RabbitMQNew\IBasicConsumer.cs" />
     <Compile Include="RabbitMQNew\Producer.cs" />
     <Compile Include="RabbitMQNew\RabbitMqManager.cs" />
     <Compile Include="RabbitMQNew\RabbitMqConnectionSettings.cs" />

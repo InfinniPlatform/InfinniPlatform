@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Queues.Integration;
+﻿using InfinniPlatform.Sdk.Queues.Outdated.Integration;
 
 namespace InfinniPlatform.Core.Factories
 {

@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Core.Factories;
-using InfinniPlatform.Sdk.Queues.Integration;
+using InfinniPlatform.Sdk.Queues.Outdated.Integration;
 
 namespace InfinniPlatform.MessageQueue.Integration
 {

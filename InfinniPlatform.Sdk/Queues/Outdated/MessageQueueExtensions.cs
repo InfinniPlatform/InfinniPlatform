@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Sdk.Serialization;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.Sdk.Queues.Outdated
 {
     /// <summary>
     ///     Методы расширения для работы с абстракциями очереди сообщений.
