@@ -1,18 +1,18 @@
-using InfinniPlatform.Sdk.Queues;
+п»їusing InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
     /// <summary>
-    /// Получатель сообщений из очереди по запросу.
+    /// РџРѕР»СѓС‡Р°С‚РµР»СЊ СЃРѕРѕР±С‰РµРЅРёР№ РёР· РѕС‡РµСЂРµРґРё РїРѕ Р·Р°РїСЂРѕСЃСѓ.
     /// </summary>
     public interface IBasicConsumer
     {
         string QueueName { get; }
 
         /// <summary>
-        /// Получает сообщение из очереди.
+        /// РџРѕР»СѓС‡Р°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ РёР· РѕС‡РµСЂРµРґРё.
         /// </summary>
-        /// <returns>Первое сообщение в очереди или null, если сообщений нет.</returns>
+        /// <returns>РџРµСЂРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІ РѕС‡РµСЂРµРґРё РёР»Рё null, РµСЃР»Рё СЃРѕРѕР±С‰РµРЅРёР№ РЅРµС‚.</returns>
         IMessage Consume<T>() where T : class;
     }
 }

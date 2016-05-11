@@ -1,4 +1,4 @@
-using InfinniPlatform.Sdk.Hosting;
+﻿using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Queues;
 
 using RabbitMQ.Client.Events;
