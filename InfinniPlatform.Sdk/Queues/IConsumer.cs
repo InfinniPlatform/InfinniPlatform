@@ -1,17 +1,23 @@
-using System;
+п»їusing System;
 
 namespace InfinniPlatform.Sdk.Queues
 {
     public interface IConsumer
     {
+        /// <summary>
+        /// РРјСЏ РѕС‡РµСЂРµРґРё.
+        /// </summary>
         string QueueName { get; }
 
+        /// <summary>
+        /// РўРёРї С‚РµР»Р° СЃРѕРѕР±С‰РµРЅРёСЏ.
+        /// </summary>
         Type MessageType { get; }
 
         /// <summary>
-        /// Обработчик сообщения.
+        /// РћР±СЂР°Р±РѕС‚С‡РёРє СЃРѕРѕР±С‰РµРЅРёСЏ.
         /// </summary>
-        /// <param name="message">Сообщение.</param>
+        /// <param name="message">РЎРѕРѕР±С‰РµРЅРёРµ.</param>
         void Consume(IMessage message);
     }
 }
