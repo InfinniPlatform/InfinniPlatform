@@ -2,15 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Settings;
-
 using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 {
     internal sealed class RabbitMqManager
     {
-        public RabbitMqManager(RabbitMqConnectionSettings connectionSettings, IAppEnvironment appSettings)
+        public RabbitMqManager(RabbitMqConnectionSettings connectionSettings, string applicationName)
         {
             var connectionFactory = new ConnectionFactory
                                     {
@@ -24,14 +22,14 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
                                                     var connection = connectionFactory.CreateConnection();
                                                     var model = connection.CreateModel();
 
-                                                    model.ExchangeDeclare($"{appSettings.Name}.{Defaults.Exchange.Type.Direct}", Defaults.Exchange.Type.Direct, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-                                                    model.ExchangeDeclare($"{appSettings.Name}.{Defaults.Exchange.Type.Topic}", Defaults.Exchange.Type.Topic, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-                                                    model.ExchangeDeclare($"{appSettings.Name}.{Defaults.Exchange.Type.Fanout}", Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Direct}", Defaults.Exchange.Type.Direct, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Topic}", Defaults.Exchange.Type.Topic, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Fanout}", Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
                                                     _exchangeNames = new Dictionary<string, string>
                                                                      {
-                                                                         { Defaults.Exchange.Type.Direct, $"{appSettings.Name}.{Defaults.Exchange.Type.Direct}" },
-                                                                         { Defaults.Exchange.Type.Topic, $"{appSettings.Name}.{Defaults.Exchange.Type.Topic}" },
-                                                                         { Defaults.Exchange.Type.Fanout, $"{appSettings.Name}.{Defaults.Exchange.Type.Fanout}" }
+                                                                         { Defaults.Exchange.Type.Direct, $"{applicationName}.{Defaults.Exchange.Type.Direct}" },
+                                                                         { Defaults.Exchange.Type.Topic, $"{applicationName}.{Defaults.Exchange.Type.Topic}" },
+                                                                         { Defaults.Exchange.Type.Fanout, $"{applicationName}.{Defaults.Exchange.Type.Fanout}" }
                                                                      };
 
                                                     model.Close();
