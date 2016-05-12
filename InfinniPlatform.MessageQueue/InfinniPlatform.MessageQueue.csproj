@@ -72,14 +72,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RabbitMq\Connection\Defaults.cs" />
     <Compile Include="RabbitMq\ConsumerBase.cs" />
+    <Compile Include="RabbitMq\Serialization\IMessageSerializer.cs" />
     <Compile Include="RabbitMq\MessageConsumersManager.cs" />
     <Compile Include="RabbitMq\BasicConsumer.cs" />
     <Compile Include="RabbitMq\IBasicConsumer.cs" />
-    <Compile Include="RabbitMq\MessageSerializer.cs" />
+    <Compile Include="RabbitMq\Serialization\MessageSerializer.cs" />
     <Compile Include="RabbitMq\ProducerBase.cs" />
-    <Compile Include="RabbitMq\RabbitMqManager.cs" />
-    <Compile Include="RabbitMq\RabbitMqConnectionSettings.cs" />
+    <Compile Include="RabbitMq\Connection\RabbitMqManager.cs" />
+    <Compile Include="RabbitMq\Connection\RabbitMqConnectionSettings.cs" />
     <Compile Include="RabbitMq\Test\TestMessage.cs" />
     <Compile Include="RabbitMq\Test\QueueTestHttpService.cs" />
     <Compile Include="RabbitMqSettings.cs" />

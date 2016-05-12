@@ -37,7 +37,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Test
 
         private Task<object> Consume(IHttpRequest request)
         {
-            var message = _basicConsumer.Consume<TestMessage>();
+            var message = _basicConsumer.Consume<TestMessage>("test_queue");
 
             if (message == null)
             {

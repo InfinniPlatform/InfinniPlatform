@@ -7,12 +7,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     /// </summary>
     public interface IBasicConsumer
     {
-        string QueueName { get; }
-
         /// <summary>
         /// Получает сообщение из очереди.
         /// </summary>
+        /// <param name="queueName">Имя очереди.</param>
         /// <returns>Первое сообщение в очереди или null, если сообщений нет.</returns>
-        IMessage Consume<T>() where T : class;
+        IMessage Consume<T>(string queueName) where T : class;
     }
 }

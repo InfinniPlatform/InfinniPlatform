@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
+using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Queues;
@@ -33,6 +35,10 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IProducer>()
                    .InstancePerDependency();
 
+            builder.RegisterType<MessageSerializer>()
+                   .As<IMessageSerializer>()
+                   .SingleInstance();
+
             builder.RegisterHttpServices(GetType().GetTypeInfo().Assembly);
             builder.RegisterConsumers(GetType().GetTypeInfo().Assembly);
         }
@@ -44,7 +50,7 @@ namespace InfinniPlatform.MessageQueue.IoC
 
         private static RabbitMqManager GetRabbitMqConnection(IContainerResolver resolver)
         {
-            return new RabbitMqManager(resolver.Resolve<RabbitMqConnectionSettings>());
+            return new RabbitMqManager(resolver.Resolve<RabbitMqConnectionSettings>(), resolver.Resolve<IAppEnvironment>());
         }
     }
 }

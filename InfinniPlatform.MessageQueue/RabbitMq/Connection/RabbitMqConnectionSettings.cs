@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.MessageQueue.RabbitMq
+﻿namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 {
     /// <summary>
     /// Настройки подключения к MongoDB.

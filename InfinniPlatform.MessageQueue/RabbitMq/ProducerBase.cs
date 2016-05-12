@@ -1,5 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
@@ -19,11 +21,13 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             var messageToBytes = _messageSerializer.MessageToBytes(message);
 
-            var channel = _manager.GetChannel(queueName);
-            _manager.GetQueue(queueName);
+            const string channelKey = nameof(ProducerBase);
+
+            var channel = _manager.GetChannel(channelKey);
+            _manager.DeclareQueue(queueName, channelKey);
             channel.BasicPublish("", queueName, null, messageToBytes);
 
-            Console.WriteLine($"{nameof(ProducerBase)}: {message.GetBody()}");
+            Console.WriteLine($"{channelKey}: {message.GetBody()}");
         }
     }
 }
