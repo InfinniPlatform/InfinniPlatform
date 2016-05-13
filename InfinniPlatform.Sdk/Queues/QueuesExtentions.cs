@@ -13,7 +13,7 @@ namespace InfinniPlatform.Sdk.Queues
         /// Сервисы будут зарегистрированы со стратегией SingleInstance().
         /// </remarks>
         /// <example>
-        ///     <code>
+        /// <code>
         /// RegisterConsumers(GetType().Assembly)
         /// </code>
         /// </example>

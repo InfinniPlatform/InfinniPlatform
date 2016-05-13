@@ -57,8 +57,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnotherTestConsumer.cs" />
-    <Compile Include="ConnectionTest.cs" />
+    <Compile Include="IntegrationTests\ConnectionTest.cs" />
+    <Compile Include="IntegrationTests\ConsumersByQueueNameTest.cs" />
+    <Compile Include="IntegrationTests\ConsumersByTypeTest.cs" />
     <Compile Include="Outdated\CountdownConsumer.cs" />
     <Compile Include="Outdated\MessageQueueDirectIntegrationTest.cs" />
     <Compile Include="Outdated\MessageQueueFanoutIntegrationTest.cs" />
@@ -95,9 +96,10 @@
     <Compile Include="Outdated\RabbitMq\QueueConfigTest.cs" />
     <Compile Include="Outdated\RabbitMq\ResourceManagerTest.cs" />
     <Compile Include="Outdated\TestConsumer.cs" />
-    <Compile Include="QueueTestHttpService.cs" />
-    <Compile Include="TestConsumer.cs" />
-    <Compile Include="TestMessage.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\StringConsumer.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\NamedQueueStringConsumer.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\TestMessage.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\TestMessageConsumer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">

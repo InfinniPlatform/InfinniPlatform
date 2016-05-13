@@ -1,8 +1,12 @@
-﻿namespace InfinniPlatform.Sdk.Queues
+﻿using System;
+
+namespace InfinniPlatform.Sdk.Queues
 {
     public interface IMessage
     {
         object GetBody();
+
+        Type GetBodyType();
     }
 
 
@@ -24,6 +28,11 @@
         public object GetBody()
         {
             return Body;
+        }
+
+        public Type GetBodyType()
+        {
+            return Body.GetType();
         }
     }
 }

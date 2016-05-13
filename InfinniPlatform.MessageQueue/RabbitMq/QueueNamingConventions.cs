@@ -1,0 +1,26 @@
+﻿using System;
+using System.Reflection;
+
+using InfinniPlatform.Sdk.Queues;
+
+namespace InfinniPlatform.MessageQueue.RabbitMq
+{
+    public static class QueueNamingConventions
+    {
+        public static string GetProducerQueueName(IMessage message)
+        {
+            return message.GetBodyType().ToString();
+        }
+
+        public static string GetConsumerQueueName(IConsumer consumer)
+        {
+            var queueNameAttribute = consumer.GetType().GetCustomAttribute<QueueNameAttribute>()?.Value;
+            return queueNameAttribute ?? consumer.MessageType.ToString();
+        }
+
+        public static string GetBasicConsumerQueueName(Type type)
+        {
+            return type.ToString();
+        }
+    }
+}

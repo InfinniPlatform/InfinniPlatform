@@ -1,6 +1,4 @@
-﻿using System;
-
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+﻿using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Queues;
 
@@ -17,17 +15,20 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
 
-        public void Produce(string queueName, IMessage message)
+        public void Produce(IMessage message, string queueName = null)
         {
             var messageToBytes = _messageSerializer.MessageToBytes(message);
 
-            const string channelKey = nameof(ProducerBase);
+            if (queueName == null)
+            {
+                queueName = QueueNamingConventions.GetProducerQueueName(message);
+            }
 
-            var channel = _manager.GetChannel(channelKey);
-            _manager.DeclareQueue(queueName, channelKey);
+            var channel = _manager.GetChannel();
+
+            _manager.DeclareQueue(queueName);
+
             channel.BasicPublish("", queueName, null, messageToBytes);
-
-            Console.WriteLine($"{channelKey}: {message.GetBody()}");
         }
     }
 }

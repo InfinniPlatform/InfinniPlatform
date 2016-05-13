@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 using RabbitMQ.Client;
@@ -38,10 +37,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
                                                 });
         }
 
-        private readonly Dictionary<string, IModel> _channels = new Dictionary<string, IModel>();
-
         private readonly Lazy<IConnection> _connection;
-        private readonly ConcurrentDictionary<string, string> _queues = new ConcurrentDictionary<string, string>();
         private Dictionary<string, string> _exchangeNames;
 
         public IConnection GetConnection()
@@ -50,44 +46,23 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         }
 
         /// <summary>
-        /// Создает канал, если он еще не существует.
+        /// Создает канал.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public IModel GetChannel(string key)
+        public IModel GetChannel()
         {
-            if (_channels.ContainsKey(key))
-            {
-                return _channels[key];
-            }
-
-            var model = _connection.Value.CreateModel();
-            _channels.Add(key, model);
-            return model;
+            return _connection.Value.CreateModel();
         }
 
         /// <summary>
         /// Создает очередь, если она еще не существует.
         /// </summary>
         /// <param name="queueKey">Ключ/имя очереди.</param>
-        /// <param name="channelKey"></param>
         /// <returns></returns>
-        public string DeclareQueue(string queueKey, string channelKey)
+        public void DeclareQueue(string queueKey)
         {
-            string queueName;
-
-            if (_queues.TryGetValue(queueKey, out queueName))
-            {
-                return queueName;
-            }
-
-            var channel = GetChannel(channelKey);
+            var channel = GetChannel();
             channel.QueueDeclare(queueKey, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete, null);
             channel.QueueBind(queueKey, _exchangeNames[ExchangeType.Direct], queueKey);
-
-            queueName = _queues.GetOrAdd(queueKey, queueKey);
-
-            return queueName;
         }
     }
 }

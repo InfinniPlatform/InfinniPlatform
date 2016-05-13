@@ -74,16 +74,15 @@
     </Compile>
     <Compile Include="RabbitMq\Connection\Defaults.cs" />
     <Compile Include="RabbitMq\ConsumerBase.cs" />
+    <Compile Include="RabbitMq\QueueNamingConventions.cs" />
     <Compile Include="RabbitMq\Serialization\IMessageSerializer.cs" />
-    <Compile Include="RabbitMq\MessageConsumersManager.cs" />
+    <Compile Include="RabbitMq\Hosting\MessageConsumersManager.cs" />
     <Compile Include="RabbitMq\BasicConsumer.cs" />
     <Compile Include="RabbitMq\IBasicConsumer.cs" />
     <Compile Include="RabbitMq\Serialization\MessageSerializer.cs" />
     <Compile Include="RabbitMq\ProducerBase.cs" />
     <Compile Include="RabbitMq\Connection\RabbitMqManager.cs" />
     <Compile Include="RabbitMq\Connection\RabbitMqConnectionSettings.cs" />
-    <Compile Include="RabbitMq\Test\TestMessage.cs" />
-    <Compile Include="RabbitMq\Test\QueueTestHttpService.cs" />
     <Compile Include="RabbitMqSettings.cs" />
     <Compile Include="RabbitMq\Outdated\AlwaysAfterHandlingAcknowledgePolicy.cs" />
     <Compile Include="RabbitMq\Outdated\AlwaysBeforeHandlingAcknowledgePolicy.cs" />
@@ -123,6 +122,7 @@
     <Compile Include="RabbitMq\Outdated\Policies\RetryDecision.cs" />
     <Compile Include="RabbitMq\Outdated\QueueConfig.cs" />
     <Compile Include="RabbitMq\Outdated\ResourceManager.cs" />
+    <Compile Include="TestConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

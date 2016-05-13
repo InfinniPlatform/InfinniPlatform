@@ -3,7 +3,8 @@
     /// <summary>
     /// Базовый класс обработчика событий приложения.
     /// </summary>
-    public abstract class ApplicationEventHandler : IApplicationEventHandler
+    public abstract class 
+        ApplicationEventHandler : IApplicationEventHandler
     {
         protected ApplicationEventHandler(int order = 0)
         {

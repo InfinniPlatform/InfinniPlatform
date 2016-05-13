@@ -1,6 +1,4 @@
-﻿using System;
-
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+﻿using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Queues;
 
@@ -17,12 +15,13 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
 
-        public IMessage Consume<T>(string queueName) where T : class
+        public IMessage Consume<T>() where T : class
         {
-            var channel = _manager.GetChannel(queueName);
-            var channelKey = nameof(BasicConsumer);
+            var channel = _manager.GetChannel();
 
-            _manager.DeclareQueue(queueName, channelKey);
+            var queueName = QueueNamingConventions.GetBasicConsumerQueueName(typeof(T));
+
+            _manager.DeclareQueue(queueName);
 
             var getResult = channel.BasicGet(queueName, false);
 
@@ -34,8 +33,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             var message = _messageSerializer.BytesToMessage(getResult.Body, typeof(Message<T>));
 
             channel.BasicAck(getResult.DeliveryTag, false);
-
-            Console.WriteLine($"{channelKey}: {message.GetBody()}");
 
             return message;
         }

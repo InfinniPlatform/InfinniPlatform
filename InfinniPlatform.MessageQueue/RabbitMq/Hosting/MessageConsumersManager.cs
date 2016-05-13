@@ -5,7 +5,7 @@ using InfinniPlatform.Sdk.Queues;
 
 using RabbitMQ.Client.Events;
 
-namespace InfinniPlatform.MessageQueue.RabbitMq
+namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 {
     internal sealed class MessageConsumersManager : ApplicationEventHandler
     {
@@ -37,16 +37,18 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             foreach (var consumer in _consumers)
             {
-                var channelKey = consumer.GetType().ToString();
-                var channel = _manager.GetChannel(channelKey);
+                var channelKey = QueueNamingConventions.GetConsumerQueueName(consumer); 
 
-                _manager.DeclareQueue(consumer.QueueName, channelKey);
+                var channel = _manager.GetChannel();
+
+                _manager.DeclareQueue(channelKey);
 
                 var eventingConsumer = new EventingBasicConsumer(channel);
 
                 eventingConsumer.Received += (o, e) =>
                                              {
                                                  var messageType = typeof(Message<>).MakeGenericType(consumer.MessageType);
+
                                                  var message = _messageSerializer.BytesToMessage(e.Body, messageType);
 
                                                  consumer.Consume(message);
@@ -54,7 +56,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                                                  channel.BasicAck(e.DeliveryTag, false);
                                              };
 
-                channel.BasicConsume(consumer.QueueName, false, eventingConsumer);
+                channel.BasicConsume(channelKey, false, eventingConsumer);
             }
         }
     }
