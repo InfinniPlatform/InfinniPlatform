@@ -106,28 +106,41 @@ namespace InfinniPlatform.SystemConfig.StartupInitializers
 
         private static DynamicWrapper LoadConfigMetadata(string configDirectory)
         {
-            dynamic configuration = new DynamicWrapper { { "Name", Path.GetDirectoryName(configDirectory) } };
+            dynamic configuration = new DynamicWrapper
+                                    {
+                                        { "Name", Path.GetDirectoryName(configDirectory) }
+                                    };
 
             configuration.ItemsMetadata = LoadItemsMetadata(configDirectory);
 
             return configuration;
         }
 
-        private static Dictionary<MetadataUniqueName, DynamicWrapper> LoadItemsMetadata(string documentDirectory)
+        private static Dictionary<MetadataUniqueName, DynamicWrapper> LoadItemsMetadata(string metadataDirectory)
         {
-            var enumerateDirectories = Directory.EnumerateDirectories(documentDirectory);
-
             var itemsMetadataCache = new Dictionary<MetadataUniqueName, DynamicWrapper>();
 
-            foreach (var dir in enumerateDirectories)
+            var itemsDirectories = Directory.EnumerateDirectories(metadataDirectory);
+
+            foreach (var itemsDir in itemsDirectories)
             {
-                var itemsMetadata = Directory.EnumerateFiles(dir, "*.json", SearchOption.AllDirectories)
+                var defaultNamespace = Path.GetFileNameWithoutExtension(itemsDir);
+
+                var itemsMetadata = Directory.EnumerateFiles(itemsDir, "*.json", SearchOption.AllDirectories)
                                              .Select(LoadItemMetadata)
                                              .ToArray();
 
                 foreach (var item in itemsMetadata)
                 {
-                    var metadataName = new MetadataUniqueName((string)item["Namespace"], (string)item["Name"]);
+                    var ns = (string)item["Namespace"];
+
+                    if (string.IsNullOrEmpty(ns))
+                    {
+                        ns = defaultNamespace;
+                    }
+
+                    var name = (string)item["Name"];
+                    var metadataName = new MetadataUniqueName(ns, name);
 
                     if (itemsMetadataCache.ContainsKey(metadataName))
                     {

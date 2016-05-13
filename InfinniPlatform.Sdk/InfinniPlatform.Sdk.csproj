@@ -107,6 +107,7 @@
     <Compile Include="Queues\Outdated\MessageProperties.cs" />
     <Compile Include="Queues\Outdated\MessageQueueExtensions.cs" />
     <Compile Include="Queues\QueuesExtentions.cs" />
+    <Compile Include="RestApi\Blob\BlobHttpServiceClient.cs" />
     <Compile Include="RestApi\Documents\DocumentDeleteQueryClient.cs" />
     <Compile Include="RestApi\Documents\DocumentGetQueryClient.cs" />
     <Compile Include="RestApi\Documents\DocumentHttpServiceClient.cs" />
@@ -198,10 +199,7 @@
     <Compile Include="Registers\IRegisterApi.cs" />
     <Compile Include="RestApi\BaseRestClient.cs" />
     <Compile Include="Hosting\HostingConfig.cs" />
-    <Compile Include="RestApi\SessionApiClient.cs" />
-    <Compile Include="RestApi\CustomApiClient.cs" />
-    <Compile Include="RestApi\AuthApiClient.cs" />
-    <Compile Include="RestApi\PrintViewApiClient.cs" />
+    <Compile Include="RestApi\Auth\AuthApiClient.cs" />
     <Compile Include="Security\IApplicationUserManager.cs" />
     <Compile Include="Serialization\IObjectSerializer.cs" />
     <Compile Include="Serialization\JsonObjectSerializer.cs" />
@@ -230,8 +228,6 @@
     <Compile Include="Dynamic\ReflectionCache.cs" />
     <Compile Include="Dynamic\ReflectionExtensions.cs" />
     <Compile Include="Documents\Obsolete\FilterBuilder.cs" />
-    <Compile Include="RestApi\DocumentApiClient.cs" />
-    <Compile Include="RestApi\FileApiClient.cs" />
     <Compile Include="IoC\ContainerExtensions.cs" />
     <Compile Include="IoC\IContainerBuilder.cs" />
     <Compile Include="IoC\IContainerInstanceActivator.cs" />

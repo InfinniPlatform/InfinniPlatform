@@ -81,10 +81,10 @@ namespace InfinniPlatform.Sdk.Services
 
         private static IHttpResponse CreateErrorHttpResponse(Exception exception)
         {
-            var error = new DynamicWrapper
+            var error = new ServiceResult<DynamicWrapper>
             {
-                ["Success"] = false,
-                ["Error"] = exception.GetFullMessage()
+                Success = false,
+                Error = exception.GetFullMessage()
             };
 
             return new JsonHttpResponse(error) { StatusCode = 500 };

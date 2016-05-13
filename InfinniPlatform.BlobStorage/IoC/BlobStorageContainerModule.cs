@@ -1,5 +1,7 @@
-﻿using InfinniPlatform.Sdk.BlobStorage;
+﻿using InfinniPlatform.BlobStorage.Services;
+using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.BlobStorage.IoC
@@ -14,6 +16,10 @@ namespace InfinniPlatform.BlobStorage.IoC
 
             builder.RegisterType<FileSystemBlobStorage>()
                    .As<IBlobStorage>()
+                   .SingleInstance();
+
+            builder.RegisterType<BlobHttpService>()
+                   .As<IHttpService>()
                    .SingleInstance();
         }
     }
