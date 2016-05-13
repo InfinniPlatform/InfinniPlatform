@@ -1,4 +1,4 @@
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 {
