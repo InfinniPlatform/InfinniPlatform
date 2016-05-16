@@ -28,6 +28,12 @@ namespace InfinniPlatform.Sdk.Documents.Services
 
 
         /// <summary>
+        /// Работать с системными документами.
+        /// </summary>
+        public bool AsSystem { get; set; }
+
+
+        /// <summary>
         /// Разрешено ли получение документов.
         /// </summary>
         public virtual bool CanGet { get; set; } = true;
@@ -134,6 +140,12 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// Имя типа документа.
         /// </summary>
         public string DocumentType { get; }
+
+
+        /// <summary>
+        /// Работать с системными документами.
+        /// </summary>
+        public bool AsSystem { get; set; }
 
 
         /// <summary>

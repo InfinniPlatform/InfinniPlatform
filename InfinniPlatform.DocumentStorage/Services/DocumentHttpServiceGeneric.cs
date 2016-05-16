@@ -20,12 +20,15 @@ namespace InfinniPlatform.DocumentStorage.Services
         public DocumentHttpService(IDocumentHttpServiceHandlerBase serviceHandler,
                                    IDocumentQueryFactory<TDocument> queryFactory,
                                    IDocumentStorageFactory storageFactory,
+                                   ISystemDocumentStorageFactory systemStorageFactory,
                                    IBlobStorage blobStorage,
                                    IPerformanceLog performanceLog,
                                    ILog log)
             : base(performanceLog, log)
         {
-            var storage = storageFactory.GetStorage<TDocument>(serviceHandler.DocumentType);
+            var storage = serviceHandler.AsSystem
+                ? systemStorageFactory.GetStorage<TDocument>(serviceHandler.DocumentType)
+                : storageFactory.GetStorage<TDocument>(serviceHandler.DocumentType);
 
             DocumentType = storage.DocumentType;
             CanGet = serviceHandler.CanGet;
