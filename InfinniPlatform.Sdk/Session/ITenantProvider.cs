@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Transactions
+﻿namespace InfinniPlatform.Sdk.Session
 {
     /// <summary>
     /// Предоставляет методы определения пользователя системы по модели SaaS.

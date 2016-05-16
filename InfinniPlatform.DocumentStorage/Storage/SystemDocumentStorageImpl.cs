@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Core.Documents;
-using InfinniPlatform.Sdk.Documents;
+﻿using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {

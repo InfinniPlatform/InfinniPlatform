@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Transactions
+﻿namespace InfinniPlatform.DocumentStorage.Storage
 {
     internal class SystemTenantProvider : ISystemTenantProvider
     {

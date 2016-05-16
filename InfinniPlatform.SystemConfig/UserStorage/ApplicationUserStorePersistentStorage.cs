@@ -3,6 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.Documents;
 using InfinniPlatform.Core.Security;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.SystemConfig.Properties;

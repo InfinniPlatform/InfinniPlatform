@@ -141,11 +141,14 @@
     <Compile Include="Storage\IDocumentStorageInterceptorProvider.cs" />
     <Compile Include="Storage\ISystemDocumentStorageFilterProvider.cs" />
     <Compile Include="Storage\ISystemDocumentStorageHeaderProvider.cs" />
+    <Compile Include="Storage\ISystemTenantProvider.cs" />
     <Compile Include="Storage\SystemDocumentStorageFactory.cs" />
     <Compile Include="Storage\SystemDocumentStorageFilterProvider.cs" />
     <Compile Include="Storage\SystemDocumentStorageHeaderProvider.cs" />
     <Compile Include="Storage\SystemDocumentStorageImpl.cs" />
     <Compile Include="Storage\SystemDocumentStorageImplGeneric.cs" />
+    <Compile Include="Storage\SystemTenantProvider.cs" />
+    <Compile Include="Storage\TenantProvider.cs" />
     <Compile Include="Transactions\UnitOfWorkFactory.cs" />
     <Compile Include="Transactions\UnitOfWorkItem.cs" />
     <Compile Include="Transactions\UnitOfWork.cs" />

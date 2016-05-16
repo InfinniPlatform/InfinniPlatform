@@ -1,8 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Documents;
-
-namespace InfinniPlatform.Core.Documents
+namespace InfinniPlatform.Sdk.Documents
 {
     /// <summary>
     /// Фабрика для получения экземпляров <see cref="ISystemDocumentStorage" /> и <see cref="ISystemDocumentStorage" />.

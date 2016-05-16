@@ -63,9 +63,6 @@
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Diagnostics\SystemStatusProvider.cs" />
-    <Compile Include="Documents\ISystemDocumentStorage.cs" />
-    <Compile Include="Documents\ISystemDocumentStorageFactory.cs" />
-    <Compile Include="Documents\ISystemDocumentStorageGeneric.cs" />
     <Compile Include="Logging\JsonEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\IMetadataApi.cs" />
@@ -168,10 +165,6 @@
     <Compile Include="Transactions\DocumentTransactionScopeProvider.cs" />
     <Compile Include="Transactions\IDocumentTransactionScope.cs" />
     <Compile Include="Transactions\IDocumentTransactionScopeProvider.cs" />
-    <Compile Include="Transactions\ISystemTenantProvider.cs" />
-    <Compile Include="Transactions\ITenantProvider.cs" />
-    <Compile Include="Transactions\SystemTenantProvider.cs" />
-    <Compile Include="Transactions\TenantProvider.cs" />
     <Compile Include="Validation\BaseValidationOperator.cs" />
     <Compile Include="Validation\BooleanValidators\AndValidator.cs" />
     <Compile Include="Validation\BooleanValidators\CompositeValidator.cs" />

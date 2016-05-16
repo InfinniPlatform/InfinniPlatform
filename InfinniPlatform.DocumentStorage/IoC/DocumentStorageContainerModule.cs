@@ -15,6 +15,7 @@ using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 
 using ISystemDocumentStorageFilterProvider = InfinniPlatform.DocumentStorage.Storage.ISystemDocumentStorageFilterProvider;
@@ -117,6 +118,16 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             builder.RegisterType<UnitOfWorkFactory>()
                    .As<IUnitOfWorkFactory>()
+                   .SingleInstance();
+
+            // SaaS
+
+            builder.RegisterType<TenantProvider>()
+                   .As<ITenantProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<SystemTenantProvider>()
+                   .As<ISystemTenantProvider>()
                    .SingleInstance();
 
             // Services

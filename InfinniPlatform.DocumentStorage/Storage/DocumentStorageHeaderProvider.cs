@@ -1,9 +1,9 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
