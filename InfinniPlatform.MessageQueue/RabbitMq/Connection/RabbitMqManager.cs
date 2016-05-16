@@ -50,7 +50,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         /// </summary>
         public IModel GetChannel()
         {
-            return _connection.Value.CreateModel();
+            var channel = _connection.Value.CreateModel();
+            channel.BasicQos(0,1,false);
+
+            return channel;
         }
 
         /// <summary>
