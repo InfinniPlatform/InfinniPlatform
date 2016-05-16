@@ -26,7 +26,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
             var channel = _manager.GetChannel();
 
-            _manager.DeclareQueue(queueName);
+            _manager.DeclareTaskQueue(queueName);
 
             channel.BasicPublish("", queueName, null, messageToBytes);
         }

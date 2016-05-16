@@ -13,7 +13,7 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
-    public class ConsumersByQueueNameTest
+    public class QueueNameAttributeConsumersTest
     {
         [Test]
         public void StringConsumerTest()
@@ -34,7 +34,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var completeEvent = new CountdownEvent(assertMessages.Length);
             IConsumer[] listOfConsumers =
             {
-                new NamedQueueStringConsumer(actualMessages, completeEvent)
+                new StringConsumerWithAttribute(actualMessages, completeEvent)
             };
 
             var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
@@ -43,7 +43,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var producerBase = new ProducerBase(rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Produce(new Message<string>(message), "String");
+                producerBase.Produce(new Message<string>(message), "StringConsumerWithAttributeTest");
             }
 
             const int timeout = 5000;

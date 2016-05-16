@@ -41,7 +41,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
                 var channel = _manager.GetChannel();
 
-                _manager.DeclareQueue(channelKey);
+                _manager.DeclareTaskQueue(channelKey);
 
                 var eventingConsumer = new EventingBasicConsumer(channel);
 

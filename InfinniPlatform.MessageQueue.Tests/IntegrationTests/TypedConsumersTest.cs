@@ -15,7 +15,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
-    public class ConsumersByTypeTest
+    public class TypedConsumersTest
     {
         [Test]
         public void StringConsumerTest()

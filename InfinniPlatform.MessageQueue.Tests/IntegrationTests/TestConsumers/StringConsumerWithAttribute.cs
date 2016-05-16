@@ -6,10 +6,10 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {
-    [QueueName("String")]
-    public class NamedQueueStringConsumer : ConsumerBase<string>
+    [QueueName("StringConsumerWithAttributeTest")]
+    public class StringConsumerWithAttribute : ConsumerBase<string>
     {
-        public NamedQueueStringConsumer(List<string> messages, CountdownEvent completeEvent)
+        public StringConsumerWithAttribute(List<string> messages, CountdownEvent completeEvent)
         {
             _messages = messages;
             _completeEvent = completeEvent;

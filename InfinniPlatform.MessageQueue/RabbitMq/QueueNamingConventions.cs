@@ -20,6 +20,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             return queueNameAttribute ?? consumer.MessageType.ToString();
         }
 
+        public static string GetConsumerQueueName(Type type)
+        {
+            var queueNameAttribute = type.GetCustomAttribute<QueueNameAttribute>()?.Value;
+            return queueNameAttribute ?? type.ToString();
+        }
+
         public static string GetBasicConsumerQueueName(Type type)
         {
             return type.ToString();
