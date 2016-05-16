@@ -72,6 +72,9 @@
     <Compile Include="Documents\IDocumentStorageFactory.cs" />
     <Compile Include="Documents\IDocumentStorageGeneric.cs" />
     <Compile Include="Documents\IDocumentStorageProviderFactory.cs" />
+    <Compile Include="Documents\ISystemDocumentStorage.cs" />
+    <Compile Include="Documents\ISystemDocumentStorageFactory.cs" />
+    <Compile Include="Documents\ISystemDocumentStorageGeneric.cs" />
     <Compile Include="Documents\Services\DocumentHttpServiceExtensions.cs" />
     <Compile Include="Documents\Services\DocumentHttpServiceHandler.cs" />
     <Compile Include="Documents\Services\DocumentDeleteQuery.cs" />
@@ -169,6 +172,7 @@
     <Compile Include="Serialization\IJsonObjectSerializer.cs" />
     <Compile Include="Services\IHttpServiceSource.cs" />
     <Compile Include="Services\IMimeTypeProvider.cs" />
+    <Compile Include="Session\ITenantProvider.cs" />
     <Compile Include="Settings\IAppEnvironment.cs" />
     <Compile Include="Security\IUserIdentityProvider.cs" />
     <Compile Include="Serialization\SerializationExtensions.cs" />

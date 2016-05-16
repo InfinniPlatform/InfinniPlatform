@@ -3,7 +3,7 @@
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 
-namespace InfinniPlatform.Core.Transactions
+namespace InfinniPlatform.DocumentStorage.Storage
 {
     /// <summary>
     /// Предоставляет методы определения пользователя системы по модели SaaS.

@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Core.Transactions;
-using InfinniPlatform.Sdk.Security;
+﻿using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {

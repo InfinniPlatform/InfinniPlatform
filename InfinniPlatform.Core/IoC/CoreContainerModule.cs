@@ -6,6 +6,7 @@ using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Core.IoC
@@ -40,16 +41,6 @@ namespace InfinniPlatform.Core.IoC
 
             builder.OnCreateInstance(new LogContainerParameterResolver<IPerformanceLog>(LogManagerCache.GetPerformanceLog));
             builder.OnActivateInstance(new LogContainerInstanceActivator<IPerformanceLog>(LogManagerCache.GetPerformanceLog));
-
-            // SaaS
-
-            builder.RegisterType<TenantProvider>()
-                   .As<ITenantProvider>()
-                   .SingleInstance();
-
-            builder.RegisterType<SystemTenantProvider>()
-                   .As<ISystemTenantProvider>()
-                   .SingleInstance();
 
             // Transaction
 

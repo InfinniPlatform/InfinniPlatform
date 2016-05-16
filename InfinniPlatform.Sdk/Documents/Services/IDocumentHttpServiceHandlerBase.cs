@@ -14,6 +14,12 @@ namespace InfinniPlatform.Sdk.Documents.Services
 
 
         /// <summary>
+        /// Работать с системными документами.
+        /// </summary>
+        bool AsSystem { get; }
+
+
+        /// <summary>
         /// Разрешено ли получение документов.
         /// </summary>
         bool CanGet { get; }

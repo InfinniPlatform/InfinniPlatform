@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.DocumentStorage.Storage
