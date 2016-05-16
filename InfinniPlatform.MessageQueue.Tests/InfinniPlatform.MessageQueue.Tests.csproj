@@ -60,6 +60,8 @@
     <Compile Include="IntegrationTests\ConnectionTest.cs" />
     <Compile Include="IntegrationTests\ConsumersByQueueNameTest.cs" />
     <Compile Include="IntegrationTests\ConsumersByTypeTest.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\TestMessageWithAttribute.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\TestMessageWithAttributeConsumer.cs" />
     <Compile Include="Outdated\CountdownConsumer.cs" />
     <Compile Include="Outdated\MessageQueueDirectIntegrationTest.cs" />
     <Compile Include="Outdated\MessageQueueFanoutIntegrationTest.cs" />

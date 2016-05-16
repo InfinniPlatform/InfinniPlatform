@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
@@ -6,9 +6,10 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {
-    public class StringConsumer : ConsumerBase<string>
+    [QueueName("TestMessageWithAttributeTestQueue")]
+    public class TestMessageWithAttributeConsumer : ConsumerBase<TestMessageWithAttribute>
     {
-        public StringConsumer(List<string> messages, CountdownEvent completeEvent)
+        public TestMessageWithAttributeConsumer(List<TestMessageWithAttribute> messages, CountdownEvent completeEvent)
         {
             _messages = messages;
             _completeEvent = completeEvent;
@@ -16,9 +17,9 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 
         private readonly CountdownEvent _completeEvent;
 
-        private readonly List<string> _messages;
+        private readonly List<TestMessageWithAttribute> _messages;
 
-        protected override void Consume(Message<string> message)
+        protected override void Consume(Message<TestMessageWithAttribute> message)
         {
             _messages.Add(message.Body);
             _completeEvent.Signal();

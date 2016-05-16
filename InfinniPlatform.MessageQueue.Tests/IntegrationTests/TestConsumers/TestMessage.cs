@@ -1,5 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Sdk.Queues;
+
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {
     public class TestMessage
@@ -13,16 +15,11 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
             SomeDateTime = someDateTime;
         }
 
-        public string SomeString { get; }
+        public string SomeString { get; internal set; }
 
-        public int SomeInt { get; }
+        public int SomeInt { get; internal set; }
 
-        public DateTime SomeDateTime { get; }
-
-        public override string ToString()
-        {
-            return $"{SomeString} - {SomeInt} - {SomeDateTime.ToString("g")}";
-        }
+        public DateTime SomeDateTime { get; internal set; }
 
         public override bool Equals(object obj)
         {

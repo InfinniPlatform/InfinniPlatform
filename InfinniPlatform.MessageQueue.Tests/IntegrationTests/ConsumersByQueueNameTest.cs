@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
@@ -43,6 +44,42 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             foreach (var message in assertMessages)
             {
                 producerBase.Produce(new Message<string>(message), "String");
+            }
+
+            const int timeout = 5000;
+            Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+            CollectionAssert.AreEquivalent(assertMessages, actualMessages);
+        }
+
+        [Test]
+        public void TestMessageConsumerTest()
+        {
+            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
+            var messageSerializer = new MessageSerializer();
+
+            var actualMessages = new List<TestMessageWithAttribute>();
+            TestMessageWithAttribute[] assertMessages =
+            {
+                new TestMessageWithAttribute("1"),
+                new TestMessageWithAttribute("2"),
+                new TestMessageWithAttribute("3"),
+                new TestMessageWithAttribute("4"),
+                new TestMessageWithAttribute("5")
+            };
+
+            var completeEvent = new CountdownEvent(assertMessages.Length);
+            IConsumer[] listOfConsumers =
+            {
+                new TestMessageWithAttributeConsumer(actualMessages, completeEvent), 
+            };
+
+            var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
+            messageConsumersManager.OnAfterStart();
+
+            var producerBase = new ProducerBase(rabbitMqManager, messageSerializer);
+            foreach (var message in assertMessages)
+            {
+                producerBase.Produce(new Message<TestMessageWithAttribute>(message));
             }
 
             const int timeout = 5000;
