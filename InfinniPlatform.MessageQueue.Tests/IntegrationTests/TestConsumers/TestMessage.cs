@@ -1,10 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Queues;
-
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {
-    public class TestMessage
+    public class TestMessage : IEquatable<TestMessage>
     {
         public TestMessage(string someString,
                            int someInt,
@@ -15,22 +13,32 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
             SomeDateTime = someDateTime;
         }
 
-        public string SomeString { get; internal set; }
+        public string SomeString { get; }
 
-        public int SomeInt { get; internal set; }
+        public int SomeInt { get; }
 
-        public DateTime SomeDateTime { get; internal set; }
+        public DateTime SomeDateTime { get; }
+
+        public bool Equals(TestMessage other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            return string.Equals(SomeString, other.SomeString) &&
+                   SomeInt == other.SomeInt &&
+                   SomeDateTime.Equals(other.SomeDateTime);
+        }
 
         public override bool Equals(object obj)
         {
-            var message = obj as TestMessage;
-            return message != null &&
-                   Equals(this, message);
-        }
-
-        protected bool Equals(TestMessage other)
-        {
-            return string.Equals(SomeString, other.SomeString) && SomeInt == other.SomeInt && SomeDateTime.Equals(other.SomeDateTime);
+            if (ReferenceEquals(null, obj))
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+            if (obj.GetType() != typeof(TestMessage))
+                return false;
+            return Equals((TestMessage)obj);
         }
 
         public override int GetHashCode()
@@ -44,6 +52,16 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                 hashCode = (hashCode * 397) ^ SomeDateTime.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public static bool operator ==(TestMessage left, TestMessage right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(TestMessage left, TestMessage right)
+        {
+            return !Equals(left, right);
         }
     }
 }

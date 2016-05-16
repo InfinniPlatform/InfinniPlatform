@@ -70,6 +70,7 @@
     <Compile Include="IntegrationTests\TestConsumers\StringConsumer.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessage.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessageConsumer.cs" />
+    <Compile Include="MessageSerializationTests\MessageSerializerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
