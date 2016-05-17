@@ -1,19 +1,19 @@
-using System;
+п»їusing System;
 
 namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
-    /// Сообщение в очереди.
+    /// РЎРѕРѕР±С‰РµРЅРёРµ РІ РѕС‡РµСЂРµРґРё.
     /// </summary>
     public interface IMessage
     {
         /// <summary>
-        /// Возвращает тело сообщения.
+        /// Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚РµР»Рѕ СЃРѕРѕР±С‰РµРЅРёСЏ.
         /// </summary>
         object GetBody();
 
         /// <summary>
-        /// Возвращает тип тела сообщения.
+        /// Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚РёРї С‚РµР»Р° СЃРѕРѕР±С‰РµРЅРёСЏ.
         /// </summary>
         Type GetBodyType();
     }
