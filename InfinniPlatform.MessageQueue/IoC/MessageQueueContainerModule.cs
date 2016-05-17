@@ -28,8 +28,8 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IApplicationEventHandler>()
                    .SingleInstance();
 
-            builder.RegisterType<BasicConsumer>()
-                   .As<IBasicConsumer>()
+            builder.RegisterType<OnDemandConsumer>()
+                   .As<IOnDemandConsumer>()
                    .InstancePerDependency();
 
             builder.RegisterType<ProducerBase>()

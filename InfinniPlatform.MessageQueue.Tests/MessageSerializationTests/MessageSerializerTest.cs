@@ -13,7 +13,7 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
     public class MessageSerializerTest
     {
         [Test]
-        public void SerializeTestMessage()
+        public void TestMessageSerializeAndDeserializeWithoutErrors()
         {
             var messageSerializer = new MessageSerializer();
             var expected = new TestMessage("1", 1, new DateTime(1, 1, 1));
@@ -27,7 +27,7 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
         }
 
         [Test]
-        public void SerializeStringMessage()
+        public void StringMessageSerializeAndDeserializeWithoutErrors()
         {
             var messageSerializer = new MessageSerializer();
             const string expected = "message";

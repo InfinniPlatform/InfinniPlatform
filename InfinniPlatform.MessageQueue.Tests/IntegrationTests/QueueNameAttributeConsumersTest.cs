@@ -18,7 +18,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
     public class QueueNameAttributeConsumersTest
     {
         [Test]
-        public void StringConsumerTest()
+        public void AllStringMessagesDelivered()
         {
             var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
             var messageSerializer = new MessageSerializer();
@@ -54,7 +54,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         }
 
         [Test]
-        public void TestMessageConsumerTest()
+        public void AllTestMessagesDelivered()
         {
             var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
             var messageSerializer = new MessageSerializer();

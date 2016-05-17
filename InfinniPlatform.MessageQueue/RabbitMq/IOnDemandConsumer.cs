@@ -5,7 +5,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     /// <summary>
     /// Получатель сообщений из очереди по запросу.
     /// </summary>
-    public interface IBasicConsumer
+    public interface IOnDemandConsumer
     {
         /// <summary>
         /// Получает сообщение из очереди.

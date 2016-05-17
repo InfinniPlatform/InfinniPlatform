@@ -19,7 +19,43 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
     public class TypedConsumersTest
     {
         [Test]
-        public void StringConsumerTest()
+        public void AllDynamicWrapperMessagesDelivered()
+        {
+            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
+            var messageSerializer = new MessageSerializer();
+
+            var actualMessages = new List<DynamicWrapper>();
+            DynamicWrapper[] assertMessages =
+            {
+                new DynamicWrapper { { "Field1", "string" } },
+                new DynamicWrapper { { "Field2", 1 } },
+                new DynamicWrapper { { "Field3", new DateTime(1, 1, 1) } },
+                new DynamicWrapper { { "Field4", 1.2 } },
+                new DynamicWrapper { { "Field5", false } }
+            };
+
+            var completeEvent = new CountdownEvent(assertMessages.Length);
+            IConsumer[] listOfConsumers =
+            {
+                new DynamicWrapperConsumer(actualMessages, completeEvent)
+            };
+
+            var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
+            messageConsumersManager.OnAfterStart();
+
+            var producerBase = new ProducerBase(rabbitMqManager, messageSerializer);
+            foreach (var message in assertMessages)
+            {
+                producerBase.Produce(new Message<DynamicWrapper>(message));
+            }
+
+            const int timeout = 5000;
+            Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+            CollectionAssert.AreEquivalent(assertMessages, actualMessages);
+        }
+
+        [Test]
+        public void AllStringMessagesDelivered()
         {
             var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
             var messageSerializer = new MessageSerializer();
@@ -55,7 +91,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         }
 
         [Test]
-        public void TestMessageConsumerTest()
+        public void AllTestMessagesDelivered()
         {
             var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
             var messageSerializer = new MessageSerializer();
@@ -88,42 +124,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             const int timeout = 5000;
             Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
             CollectionAssert.AreEquivalent(actualMessages, actualMessages);
-        }
-
-        [Test]
-        public void DynamicWrapperMessageConsumerTest()
-        {
-            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
-            var messageSerializer = new MessageSerializer();
-
-            var actualMessages = new List<DynamicWrapper>();
-            DynamicWrapper[] assertMessages =
-            {
-                new DynamicWrapper { { "Field1", "string" } },
-                new DynamicWrapper { { "Field2", 1 } },
-                new DynamicWrapper { { "Field3", new DateTime(1, 1, 1) } },
-                new DynamicWrapper { { "Field4", 1.2 } },
-                new DynamicWrapper { { "Field5", false } }
-            };
-
-            var completeEvent = new CountdownEvent(assertMessages.Length);
-            IConsumer[] listOfConsumers =
-            {
-                new DynamicWrapperConsumer(actualMessages, completeEvent)
-            };
-
-            var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
-            messageConsumersManager.OnAfterStart();
-
-            var producerBase = new ProducerBase(rabbitMqManager, messageSerializer);
-            foreach (var message in assertMessages)
-            {
-                producerBase.Produce(new Message<DynamicWrapper>(message));
-            }
-
-            const int timeout = 5000;
-            Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
-            CollectionAssert.AreEquivalent(assertMessages, actualMessages);
         }
     }
 }

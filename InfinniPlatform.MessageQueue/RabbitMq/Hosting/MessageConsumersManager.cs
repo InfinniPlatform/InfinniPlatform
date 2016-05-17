@@ -1,8 +1,13 @@
-﻿using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Queues;
 
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
@@ -13,7 +18,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// Регистрирует потребителей сообщений.
         /// </summary>
         /// <param name="manager">Мэнеджер соединения с RabbitMQ.</param>
-        /// <param name="consumers">Потребители сообщений, зарегистрированные в IoC.</param>
+        /// <param name="consumers">Потребители сообщений.</param>
         /// <param name="messageSerializer">Сериализатор сообщений.</param>
         public MessageConsumersManager(RabbitMqManager manager,
                                        IConsumer[] consumers,
@@ -30,34 +35,56 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
         public override void OnAfterStart()
         {
-            RegisterConsumers();
+            var direct = _consumers.Where(consumer => consumer is IDirectConsumer);
+            var fanout = _consumers.Where(consumer => consumer is IFanoutConsumer);
+
+            InitializeDirectConsumers(direct);
+            InitializeFanoutConsumers(fanout);
         }
 
-        private void RegisterConsumers()
+        private void InitializeDirectConsumers(IEnumerable<IConsumer> consumers)
         {
-            foreach (var consumer in _consumers)
+            foreach (var consumer in consumers)
             {
-                var channelKey = QueueNamingConventions.GetConsumerQueueName(consumer); 
-
                 var channel = _manager.GetChannel();
-
+                var channelKey = QueueNamingConventions.GetConsumerQueueName(consumer);
                 _manager.DeclareTaskQueue(channelKey);
 
-                var eventingConsumer = new EventingBasicConsumer(channel);
-
-                eventingConsumer.Received += (o, e) =>
-                                             {
-                                                 var messageType = typeof(Message<>).MakeGenericType(consumer.MessageType);
-
-                                                 var message = _messageSerializer.BytesToMessage(e.Body, messageType);
-
-                                                 consumer.Consume(message);
-
-                                                 channel.BasicAck(e.DeliveryTag, false);
-                                             };
-
-                channel.BasicConsume(channelKey, false, eventingConsumer);
+                InitializeConsumer(channelKey, channel, consumer);
             }
+        }
+
+        private void InitializeFanoutConsumers(IEnumerable<IConsumer> consumers)
+        {
+            foreach (var consumer in consumers)
+            {
+                var channel = _manager.GetChannel();
+                var channelKey = _manager.DeclareFanoutQueue();
+
+                InitializeConsumer(channelKey, channel, consumer);
+            }
+        }
+
+        private void InitializeConsumer(string channelKey, IModel channel, IConsumer consumer)
+        {
+            if (channelKey == null)
+            {
+                throw new ArgumentException("Не указан ключ очереди.");
+            }
+
+            var eventingConsumer = new EventingBasicConsumer(channel);
+            eventingConsumer.Received += (o, e) =>
+                                         {
+                                             var messageType = typeof(Message<>).MakeGenericType(consumer.MessageType);
+
+                                             var message = _messageSerializer.BytesToMessage(e.Body, messageType);
+
+                                             consumer.Consume(message);
+
+                                             channel.BasicAck(e.DeliveryTag, false);
+                                         };
+
+            channel.BasicConsume(channelKey, false, eventingConsumer);
         }
     }
 }

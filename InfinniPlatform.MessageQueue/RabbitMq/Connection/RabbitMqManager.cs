@@ -21,15 +21,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
                                                     var connection = connectionFactory.CreateConnection();
                                                     var model = connection.CreateModel();
 
-//                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Direct}", Defaults.Exchange.Type.Direct, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-//                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Topic}", Defaults.Exchange.Type.Topic, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-//                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Fanout}", Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-//                                                    _exchangeNames = new Dictionary<string, string>
-//                                                                     {
-//                                                                         { Defaults.Exchange.Type.Direct, $"{applicationName}.{Defaults.Exchange.Type.Direct}" },
-//                                                                         { Defaults.Exchange.Type.Topic, $"{applicationName}.{Defaults.Exchange.Type.Topic}" },
-//                                                                         { Defaults.Exchange.Type.Fanout, $"{applicationName}.{Defaults.Exchange.Type.Fanout}" }
-//                                                                     };
+                                                    //                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Direct}", Defaults.Exchange.Type.Direct, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    //                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Topic}", Defaults.Exchange.Type.Topic, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Fanout}", Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    _exchangeNames = new Dictionary<string, string>
+                                                                     {
+                                                                         //                                                                         { Defaults.Exchange.Type.Direct, $"{applicationName}.{Defaults.Exchange.Type.Direct}" },
+                                                                         //                                                                         { Defaults.Exchange.Type.Topic, $"{applicationName}.{Defaults.Exchange.Type.Topic}" },
+                                                                         { Defaults.Exchange.Type.Fanout, $"{applicationName}.{Defaults.Exchange.Type.Fanout}" }
+                                                                     };
 
                                                     model.Close();
 
@@ -51,21 +51,35 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         public IModel GetChannel()
         {
             var channel = _connection.Value.CreateModel();
-            channel.BasicQos(0,1,false);
+            channel.BasicQos(0, 1, false);
 
             return channel;
         }
 
         /// <summary>
-        /// Создает очередь, если она еще не существует.
+        /// Создает очередь для сообщений по ключу.
         /// </summary>
         /// <param name="queueKey">Ключ/имя очереди.</param>
-        /// <returns></returns>
         public void DeclareTaskQueue(string queueKey)
         {
             var channel = GetChannel();
             channel.QueueDeclare(queueKey, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete, null);
-//            channel.QueueBind(queueKey, _exchangeNames[ExchangeType.Direct], queueKey);
+        }
+
+        /// <summary>
+        /// Создает очередь для широковещательных сообщений.
+        /// </summary>
+        public string DeclareFanoutQueue()
+        {
+            var channel = GetChannel();
+            var queueName = channel.QueueDeclare().QueueName;
+            channel.QueueBind(queueName, _exchangeNames[Defaults.Exchange.Type.Fanout], "");
+            return queueName;
+        }
+
+        public string GetExchangeNameByType(string type)
+        {
+            return _exchangeNames[type];
         }
     }
 }

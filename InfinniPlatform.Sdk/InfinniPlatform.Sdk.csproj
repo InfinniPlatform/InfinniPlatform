@@ -84,6 +84,7 @@
     <Compile Include="Documents\Services\DocumentGetQuery.cs" />
     <Compile Include="Documents\Services\DocumentPostQueryResult.cs" />
     <Compile Include="Documents\Services\DocumentQueryResult.cs" />
+    <Compile Include="Queues\IFanoutProducer.cs" />
     <Compile Include="Queues\IMessage.cs" />
     <Compile Include="Queues\IMessageGeneric.cs" />
     <Compile Include="Queues\QueueNameAttribute.cs" />

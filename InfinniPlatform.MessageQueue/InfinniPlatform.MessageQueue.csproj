@@ -63,11 +63,13 @@
     </Compile>
     <Compile Include="RabbitMq\Connection\Defaults.cs" />
     <Compile Include="RabbitMq\ConsumerBase.cs" />
+    <Compile Include="RabbitMq\FanoutConsumerBase.cs" />
+    <Compile Include="RabbitMq\FanoutProducerBase.cs" />
     <Compile Include="RabbitMq\QueueNamingConventions.cs" />
     <Compile Include="RabbitMq\Serialization\IMessageSerializer.cs" />
     <Compile Include="RabbitMq\Hosting\MessageConsumersManager.cs" />
-    <Compile Include="RabbitMq\BasicConsumer.cs" />
-    <Compile Include="RabbitMq\IBasicConsumer.cs" />
+    <Compile Include="RabbitMq\OnDemandConsumer.cs" />
+    <Compile Include="RabbitMq\IOnDemandConsumer.cs" />
     <Compile Include="RabbitMq\Serialization\MessageSerializer.cs" />
     <Compile Include="RabbitMq\ProducerBase.cs" />
     <Compile Include="RabbitMq\Connection\RabbitMqManager.cs" />

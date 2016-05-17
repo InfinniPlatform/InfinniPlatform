@@ -4,9 +4,9 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
-    internal sealed class BasicConsumer : IBasicConsumer
+    internal sealed class OnDemandConsumer : IOnDemandConsumer
     {
-        public BasicConsumer(RabbitMqManager manager, IMessageSerializer messageSerializer)
+        public OnDemandConsumer(RabbitMqManager manager, IMessageSerializer messageSerializer)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;

@@ -4,7 +4,7 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
-    public abstract class ConsumerBase<T> : IDirectConsumer where T : class
+    public abstract class FanoutConsumerBase<T> : IFanoutConsumer where T : class
     {
         public Type MessageType => typeof(T);
 

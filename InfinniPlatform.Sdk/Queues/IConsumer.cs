@@ -15,4 +15,14 @@ namespace InfinniPlatform.Sdk.Queues
         /// <param name="message">Сообщение.</param>
         void Consume(IMessage message);
     }
+
+
+    public interface IDirectConsumer : IConsumer
+    {
+    }
+
+
+    public interface IFanoutConsumer : IConsumer
+    {
+    }
 }

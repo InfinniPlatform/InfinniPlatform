@@ -58,8 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationTests\ConnectionTest.cs" />
+    <Compile Include="IntegrationTests\FanoutConsumersTest.cs" />
     <Compile Include="IntegrationTests\QueueNameAttributeConsumersTest.cs" />
     <Compile Include="IntegrationTests\TestConsumers\DynamicWrapperConsumer.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\TestMessageFanoutConsumer.cs" />
     <Compile Include="IntegrationTests\TypedConsumersTest.cs" />
     <Compile Include="IntegrationTests\TestConsumers\StringConsumerWithAttribute.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessageWithAttribute.cs" />
