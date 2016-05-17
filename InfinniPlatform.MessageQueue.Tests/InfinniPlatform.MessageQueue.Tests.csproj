@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="IntegrationTests\ConnectionTest.cs" />
     <Compile Include="IntegrationTests\QueueNameAttributeConsumersTest.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\DynamicWrapperConsumer.cs" />
     <Compile Include="IntegrationTests\TypedConsumersTest.cs" />
     <Compile Include="IntegrationTests\TestConsumers\StringConsumerWithAttribute.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessageWithAttribute.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="IntegrationTests\TestConsumers\TestMessage.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessageConsumer.cs" />
     <Compile Include="MessageSerializationTests\MessageSerializerTest.cs" />
+    <Compile Include="TestConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">

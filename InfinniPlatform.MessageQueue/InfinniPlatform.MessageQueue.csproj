@@ -122,7 +122,6 @@
     <Compile Include="RabbitMq\Outdated\Policies\RetryDecision.cs" />
     <Compile Include="RabbitMq\Outdated\QueueConfig.cs" />
     <Compile Include="RabbitMq\Outdated\ResourceManager.cs" />
-    <Compile Include="TestConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
