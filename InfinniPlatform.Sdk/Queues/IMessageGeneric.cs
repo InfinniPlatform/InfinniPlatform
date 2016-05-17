@@ -1,13 +1,13 @@
-namespace InfinniPlatform.Sdk.Queues
+п»їnamespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
-    /// Сообщение в очереди.
+    /// РЎРѕРѕР±С‰РµРЅРёРµ РІ РѕС‡РµСЂРµРґРё.
     /// </summary>
-    /// <typeparam name="T">Тип тела сообщения.</typeparam>
+    /// <typeparam name="T">РўРёРї С‚РµР»Р° СЃРѕРѕР±С‰РµРЅРёСЏ.</typeparam>
     public interface IMessage<out T> : IMessage where T : class
     {
         /// <summary>
-        /// Тело сообщения.
+        /// РўРµР»Рѕ СЃРѕРѕР±С‰РµРЅРёСЏ.
         /// </summary>
         T Body { get; }
     }
