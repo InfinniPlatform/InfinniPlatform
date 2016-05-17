@@ -8,6 +8,8 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
 {
+    [TestFixture]
+    [Category(TestCategories.UnitTest)]
     public class MessageSerializerTest
     {
         [Test]
