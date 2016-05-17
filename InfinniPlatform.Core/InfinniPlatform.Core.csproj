@@ -81,8 +81,6 @@
     <Compile Include="Index\SortOrder.cs" />
     <Compile Include="Contracts\ActionContext.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />
-    <Compile Include="Factories\IIntegrationBusFactory.cs" />
-    <Compile Include="Factories\IIntegrationBusStorageFactory.cs" />
     <Compile Include="Hosting\IHostingService.cs" />
     <Compile Include="Index\DimensionType.cs" />
     <Compile Include="Index\ICalculatedFieldFactory.cs" />
@@ -147,7 +145,6 @@
     <Compile Include="Settings\ConnectionStrings.cs" />
     <Compile Include="Sql\ISqlQueryExecutor.cs" />
     <Compile Include="Sql\SqlQueryObject.cs" />
-    <Compile Include="Factories\IMessageQueueFactory.cs" />
     <Compile Include="Factories\ISqlQueryExecutorFactory.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">

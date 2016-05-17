@@ -51,18 +51,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\IntegrationBusFactory.cs" />
     <Compile Include="IoC\MessageQueueContainerModule.cs" />
-    <Compile Include="IRabbitMqMessageQueueConfig.cs" />
-    <Compile Include="RabbitMqMessageQueueFactory.cs" />
-    <Compile Include="Integration\IIntegrationBusSecurityTokenValidator.cs" />
-    <Compile Include="Integration\IIntegrationBusSubscriptionValidator.cs" />
-    <Compile Include="Integration\IntegrationBus.cs" />
-    <Compile Include="Integration\IntegrationBusConsumer.cs" />
-    <Compile Include="Integration\EmptyIntegrationBusSecurityTokenValidator.cs" />
-    <Compile Include="Integration\IntegrationBusSubscriptionValidator.cs" />
-    <Compile Include="Integration\CassandraIntegrationBusStorageFactory.cs" />
-    <Compile Include="Integration\CassandraIntegrationBusSubscriptionStorage.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
@@ -83,45 +72,6 @@
     <Compile Include="RabbitMq\ProducerBase.cs" />
     <Compile Include="RabbitMq\Connection\RabbitMqManager.cs" />
     <Compile Include="RabbitMq\Connection\RabbitMqConnectionSettings.cs" />
-    <Compile Include="RabbitMqSettings.cs" />
-    <Compile Include="RabbitMq\Outdated\AlwaysAfterHandlingAcknowledgePolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\AlwaysBeforeHandlingAcknowledgePolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\Client\RabbitMqMessageConverter.cs" />
-    <Compile Include="RabbitMq\Outdated\Client\RabbitMqQueue.cs" />
-    <Compile Include="RabbitMq\Outdated\Client\RabbitMqRetryDecisionProvider.cs" />
-    <Compile Include="RabbitMq\Outdated\Client\RabbitMqSession.cs" />
-    <Compile Include="RabbitMq\Outdated\Client\RabbitMqSessionFactory.cs" />
-    <Compile Include="RabbitMq\Outdated\ExchangeBinding.cs" />
-    <Compile Include="RabbitMq\Outdated\ExchangeConfig.cs" />
-    <Compile Include="RabbitMq\Outdated\ICommandExecutor.cs" />
-    <Compile Include="RabbitMq\Outdated\IMessageQueue.cs" />
-    <Compile Include="RabbitMq\Outdated\IMessageQueueCommandExecutor.cs" />
-    <Compile Include="RabbitMq\Outdated\IMessageQueueSession.cs" />
-    <Compile Include="RabbitMq\Outdated\IMessageQueueSessionFactory.cs" />
-    <Compile Include="RabbitMq\Outdated\IMessageQueueSessionManager.cs" />
-    <Compile Include="RabbitMq\Outdated\IMessageQueueWorker.cs" />
-    <Compile Include="RabbitMq\Outdated\IMessageQueueWorkerContainer.cs" />
-    <Compile Include="RabbitMq\Outdated\MessageQueueCommandExecutor.cs" />
-    <Compile Include="RabbitMq\Outdated\MessageQueueListener.cs" />
-    <Compile Include="RabbitMq\Outdated\MessageQueueManager.cs" />
-    <Compile Include="RabbitMq\Outdated\MessageQueuePublisher.cs" />
-    <Compile Include="RabbitMq\Outdated\MessageQueueSessionManagerPerCommand.cs" />
-    <Compile Include="RabbitMq\Outdated\MessageQueueSessionManagerPerThread.cs" />
-    <Compile Include="RabbitMq\Outdated\MessageQueueWorker.cs" />
-    <Compile Include="RabbitMq\Outdated\NeverRejectPolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\OnlyOnSuccessHandlingAcknowledgePolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\ConstantRetryPolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\ConstantRetrySchedulePolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\ExponentialRetrySchedulePolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\IRetryDecisionProvider.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\IRetryPolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\IRetrySchedule.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\IRetrySchedulePolicy.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\IRetryScope.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\RetryCommandExecutor.cs" />
-    <Compile Include="RabbitMq\Outdated\Policies\RetryDecision.cs" />
-    <Compile Include="RabbitMq\Outdated\QueueConfig.cs" />
-    <Compile Include="RabbitMq\Outdated\ResourceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
