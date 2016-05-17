@@ -25,7 +25,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
-            return string.Equals(SomeString, other.SomeString) &&
+            return SomeString.Equals(other.SomeString) &&
                    SomeInt == other.SomeInt &&
                    SomeDateTime.Equals(other.SomeDateTime);
         }
@@ -36,7 +36,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                 return false;
             if (ReferenceEquals(this, obj))
                 return true;
-            if (obj.GetType() != typeof(TestMessage))
+            if (!(obj is TestMessage))
                 return false;
             return Equals((TestMessage)obj);
         }
@@ -45,9 +45,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         {
             unchecked
             {
-                var hashCode = SomeString != null
-                                   ? SomeString.GetHashCode()
-                                   : 0;
+                var hashCode = SomeString?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ SomeInt;
                 hashCode = (hashCode * 397) ^ SomeDateTime.GetHashCode();
                 return hashCode;
