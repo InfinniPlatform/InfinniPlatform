@@ -46,21 +46,21 @@ namespace InfinniPlatform.Authentication.InternalIdentity
         /// </summary>
         public bool RequireUniquePhoneNumber { get; set; }
 
-        public Task<IdentityResult> ValidateAsync(IdentityApplicationUser user)
+        public async Task<IdentityResult> ValidateAsync(IdentityApplicationUser user)
         {
             var errors = new List<string>();
-            ValidateUserName(user, errors);
-            ValidateEmail(user, errors);
-            ValidatePhoneNumber(user, errors);
+            await ValidateUserName(user, errors);
+            await ValidateEmail(user, errors);
+            await ValidatePhoneNumber(user, errors);
 
-            var  result = (errors.Count <= 0)
+            var result = (errors.Count <= 0)
                 ? IdentityResult.Success
                 : IdentityResult.Failed(errors.ToArray());
 
-            return Task.FromResult(result);
+            return result;
         }
 
-        private void ValidateUserName(IdentityApplicationUser user, List<string> errors)
+        private async Task ValidateUserName(IdentityApplicationUser user, List<string> errors)
         {
             var userName = user.UserName;
 
@@ -79,7 +79,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             {
                 // Проверка уникальности
 
-                var owner = _store.FindByUserNameAsync(userName).Result;
+                var owner = await _store.FindByUserNameAsync(userName);
 
                 if (owner != null && !string.Equals(owner.Id, user.Id))
                 {
@@ -88,7 +88,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             }
         }
 
-        private void ValidateEmail(IdentityApplicationUser user, List<string> errors)
+        private async Task ValidateEmail(IdentityApplicationUser user, List<string> errors)
         {
             var email = user.Email;
 
@@ -115,7 +115,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
                 if (RequireUniqueEmail)
                 {
-                    var owner = _store.FindByEmailAsync(email).Result;
+                    var owner = await _store.FindByEmailAsync(email);
 
                     if (owner != null && !string.Equals(owner.Id, user.Id))
                     {
@@ -125,7 +125,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             }
         }
 
-        private void ValidatePhoneNumber(IdentityApplicationUser user, List<string> errors)
+        private async Task ValidatePhoneNumber(IdentityApplicationUser user, List<string> errors)
         {
             var phoneNumber = user.PhoneNumber;
 
@@ -137,7 +137,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
                 if (RequireUniquePhoneNumber)
                 {
-                    var owner = _store.FindByPhoneNumberAsync(phoneNumber).Result;
+                    var owner = await _store.FindByPhoneNumberAsync(phoneNumber);
 
                     if (owner != null && !string.Equals(owner.Id, user.Id))
                     {
