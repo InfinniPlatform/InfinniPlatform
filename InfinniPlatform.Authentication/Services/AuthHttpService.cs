@@ -257,10 +257,9 @@ namespace InfinniPlatform.Authentication.Services
 
             var owinResponse = OwinContext.Response;
             var response = new HttpResponse(owinResponse.StatusCode, owinResponse.ContentType)
-                           {
-                               ReasonPhrase = owinResponse.ReasonPhrase,
-                               Headers = owinResponse.Headers.ToDictionary(i => i.Key, kv => string.Join(";", kv.Value))
-                           };
+            {
+                ReasonPhrase = owinResponse.ReasonPhrase,
+            };
 
             return Task.FromResult<object>(response);
         }
@@ -397,10 +396,9 @@ namespace InfinniPlatform.Authentication.Services
 
             var owinResponse = OwinContext.Response;
             var response = new HttpResponse(owinResponse.StatusCode, owinResponse.ContentType)
-                           {
-                               ReasonPhrase = owinResponse.ReasonPhrase,
-                               Headers = owinResponse.Headers.ToDictionary(i => i.Key, kv => string.Join(";", kv.Value))
-                           };
+            {
+                ReasonPhrase = owinResponse.ReasonPhrase,
+            };
 
             return response;
         }
