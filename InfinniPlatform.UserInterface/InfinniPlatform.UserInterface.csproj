@@ -683,10 +683,6 @@
       <Project>{5e5c6503-e141-4dec-a930-58c0e4de0d30}</Project>
       <Name>InfinniPlatform.PrintViewDesigner</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.ReportDesigner\InfinniPlatform.ReportDesigner.csproj">
-      <Project>{65734184-a04c-4509-bf68-6f07ca324104}</Project>
-      <Name>InfinniPlatform.ReportDesigner</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
