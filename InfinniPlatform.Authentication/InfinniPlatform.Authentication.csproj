@@ -119,9 +119,7 @@
     <Compile Include="IoC\AuthenticationContainerModule.cs" />
     <Compile Include="Modules\CookieAuthOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthAdfsOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\ExternalAuthEsiaOwinHostingModule.cs" />
     <Compile Include="Modules\ExternalAuthAdfsOwinHostingModule.cs" />
-    <Compile Include="Modules\ExternalAuthEsiaOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthFacebookOwinHostingModule.cs" />
     <Compile Include="Modules\ExternalAuthFacebookOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthGoogleOwinHostingModule.cs" />
@@ -163,10 +161,6 @@
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Esia\InfinniPlatform.Esia.csproj">
-      <Project>{da365183-b83d-4f73-a5bb-d8b0df4ee52b}</Project>
-      <Name>InfinniPlatform.Esia</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
       <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>

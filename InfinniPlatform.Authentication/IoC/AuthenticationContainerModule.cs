@@ -45,10 +45,6 @@ namespace InfinniPlatform.Authentication.IoC
                    .As<IOwinHostingModule>()
                    .SingleInstance();
 
-            builder.RegisterType<ExternalAuthEsiaOwinHostingModule>()
-                   .As<IOwinHostingModule>()
-                   .SingleInstance();
-
             builder.RegisterType<ExternalAuthFacebookOwinHostingModule>()
                    .As<IOwinHostingModule>()
                    .SingleInstance();
