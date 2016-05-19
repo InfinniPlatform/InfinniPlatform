@@ -48,12 +48,6 @@ namespace InfinniPlatform.Conventions
             // When
             var result = project.EndsWith("InfinniPlatform.ServiceHost")
                          || project.EndsWith("InfinniPlatform.NodeServiceHost")
-                         || project.EndsWith("InfinniPlatform.MetadataDesigner")
-                         || project.EndsWith("InfinniPlatform.QueryDesigner")
-                         || project.EndsWith("InfinniPlatform.ReportDesigner")
-                         || project.EndsWith("InfinniPlatform.PrintViewDesigner")
-                         || project.EndsWith("InfinniPlatform.DesignControls")
-                         || project.EndsWith("InfinniPlatform.UserInterface")
                          || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
 
             // Then
