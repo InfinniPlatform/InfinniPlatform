@@ -73,14 +73,14 @@ namespace InfinniPlatform.Authentication.Services
         {
             if (!IsAuthenticated())
             {
-                return new TextHttpResponse(Resources.RequestIsNotAuthenticated) { StatusCode = 401 };
+                return CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
 
             var user = await GetUserInfo();
 
             var userInfo = BuildPublicUserInfo(user, Identity);
 
-            return new JsonHttpResponse(userInfo) { StatusCode = 200 };
+            return CreateSuccesResponse(userInfo);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace InfinniPlatform.Authentication.Services
         {
             if (!IsAuthenticated())
             {
-                return new TextHttpResponse(Resources.RequestIsNotAuthenticated) { StatusCode = 401 };
+                return CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
 
             dynamic changePasswordForm = request.Form;
@@ -99,7 +99,7 @@ namespace InfinniPlatform.Authentication.Services
 
             if (string.IsNullOrWhiteSpace(newPassword))
             {
-                return new TextHttpResponse(Resources.NewPasswordCannotBeNullOrWhiteSpace) { StatusCode = 400 };
+                return CreateErrorResponse(Resources.NewPasswordCannotBeNullOrWhiteSpace, 400);
             }
 
             var user = await GetUserInfo();
@@ -114,10 +114,10 @@ namespace InfinniPlatform.Authentication.Services
                                        ? string.Join(Environment.NewLine, changePasswordTask.Errors)
                                        : null;
 
-                return new JsonHttpResponse(errorMessage) { StatusCode = 400 };
+                return CreateErrorResponse(errorMessage, 400);
             }
 
-            return HttpResponse.Ok;
+            return CreateSuccesResponse<object>(null);
         }
 
         // SIGNIN & SIGNOUT
@@ -134,21 +134,19 @@ namespace InfinniPlatform.Authentication.Services
 
             if (string.IsNullOrWhiteSpace(userName))
             {
-                return new TextHttpResponse(Resources.UserNameCannotBeNullOrWhiteSpace) { StatusCode = 400 };
+                return CreateErrorResponse(Resources.UserNameCannotBeNullOrWhiteSpace, 400);
             }
 
             var user = await ApplicationUserManager.FindAsync(userName, password);
 
             if (user == null)
             {
-                return new TextHttpResponse(Resources.InvalidUsernameOrPassword) { StatusCode = 400 };
+                return CreateErrorResponse(Resources.InvalidUsernameOrPassword, 400);
             }
 
-            var safeUserInfo = await SignIn(user, remember);
+            var userInfo = await SignIn(user, remember);
 
-            return safeUserInfo != null
-                       ? new JsonHttpResponse(safeUserInfo) { StatusCode = 200 }
-                       : HttpResponse.Ok;
+            return CreateSuccesResponse(userInfo);
         }
 
         /// <summary>
@@ -205,7 +203,7 @@ namespace InfinniPlatform.Authentication.Services
         /// <summary>
         /// Осуществляет вход указанного пользователя в систему.
         /// </summary>
-        private async Task<object> SignIn(IdentityApplicationUser user, bool? remember)
+        private async Task<PublicUserInfo> SignIn(IdentityApplicationUser user, bool? remember)
         {
             // Выход из системы
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
@@ -230,7 +228,7 @@ namespace InfinniPlatform.Authentication.Services
 
             if (loginInfo.Login != null)
             {
-                userName = $"{loginInfo.Login.LoginProvider}{loginInfo.Login.ProviderKey}".Replace(" ", "");
+                userName = $"{loginInfo.Login.LoginProvider}{loginInfo.Login.ProviderKey}".Replace(" ", string.Empty);
             }
 
             var user = new IdentityApplicationUser
@@ -277,9 +275,7 @@ namespace InfinniPlatform.Authentication.Services
             var loginProviders = AuthenticationManager.GetExternalAuthenticationTypes();
             var loginProvidersList = loginProviders?.Select(i => new { Type = i.AuthenticationType, Name = i.Caption }).ToArray();
 
-            var httpResponse = loginProvidersList != null
-                                   ? new JsonHttpResponse(loginProvidersList) { StatusCode = 200 }
-                                   : HttpResponse.Ok;
+            var httpResponse = CreateSuccesResponse(loginProvidersList);
 
             return Task.FromResult<object>(httpResponse);
         }
@@ -291,7 +287,8 @@ namespace InfinniPlatform.Authentication.Services
         {
             if (!IsAuthenticated())
             {
-                return Task.FromResult<object>(new TextHttpResponse(Resources.RequestIsNotAuthenticated) { StatusCode = 401 });
+                var response = CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
+                return Task.FromResult<object>(response);
             }
 
             var challengeResult = ChallengeExternalProvider(request, "/Auth/LinkExternalLoginCallback");
@@ -325,7 +322,7 @@ namespace InfinniPlatform.Authentication.Services
         {
             if (!IsAuthenticated())
             {
-                return new TextHttpResponse(Resources.RequestIsNotAuthenticated) { StatusCode = 401 };
+                return CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
 
             dynamic unlinkExternalLoginForm = request.Form;
@@ -334,12 +331,12 @@ namespace InfinniPlatform.Authentication.Services
 
             if (string.IsNullOrWhiteSpace(provider))
             {
-                return new TextHttpResponse(Resources.ExternalProviderCannotBeNullOrWhiteSpace) { StatusCode = 400 };
+                return CreateErrorResponse(Resources.ExternalProviderCannotBeNullOrWhiteSpace, 400);
             }
 
             if (string.IsNullOrWhiteSpace(providerKey))
             {
-                return new TextHttpResponse(Resources.ExternalProviderKeyCannotBeNullOrWhiteSpace) { StatusCode = 400 };
+                return CreateErrorResponse(Resources.ExternalProviderKeyCannotBeNullOrWhiteSpace, 400);
             }
 
             // Определение текущего пользователя
@@ -354,10 +351,10 @@ namespace InfinniPlatform.Authentication.Services
                                        ? string.Join(Environment.NewLine, removeLoginTask.Errors)
                                        : null;
 
-                return new TextHttpResponse(errorMessage) { StatusCode = 400 };
+                return CreateErrorResponse(errorMessage, 400);
             }
 
-            return HttpResponse.Ok;
+            return CreateSuccesResponse<object>(null);
         }
 
         // CHALLENGE
@@ -374,17 +371,17 @@ namespace InfinniPlatform.Authentication.Services
 
             if (string.IsNullOrWhiteSpace(provider))
             {
-                return new TextHttpResponse(Resources.ExternalProviderCannotBeNullOrWhiteSpace) { StatusCode = 400 };
+                return CreateErrorResponse(Resources.ExternalProviderCannotBeNullOrWhiteSpace, 400);
             }
 
             if (string.IsNullOrWhiteSpace(successUrl))
             {
-                return new TextHttpResponse(Resources.SuccessUrlCannotBeNullOrWhiteSpace) { StatusCode = 400 };
+                return CreateErrorResponse(Resources.SuccessUrlCannotBeNullOrWhiteSpace, 400);
             }
 
             if (string.IsNullOrWhiteSpace(failureUrl))
             {
-                return new TextHttpResponse(Resources.FailureUrlCannotBeNullOrWhiteSpace) { StatusCode = 400 };
+                return CreateErrorResponse(Resources.FailureUrlCannotBeNullOrWhiteSpace, 400);
             }
 
             // Адрес возврата для приема подтверждения от внешнего провайдера
@@ -454,8 +451,6 @@ namespace InfinniPlatform.Authentication.Services
             return response;
         }
 
-        // USER INFO
-
         private bool IsAuthenticated()
         {
             return Identity != null && Identity.IsAuthenticated;
@@ -511,6 +506,21 @@ namespace InfinniPlatform.Authentication.Services
                    };
         }
 
+        //RESPONSE
+
+        private static JsonHttpResponse CreateErrorResponse(string errorMessage, int statusCode)
+        {
+            var errorResponse = new JsonHttpResponse(new ServiceResult<object> { Success = false, Error = errorMessage }) { StatusCode = statusCode };
+            return errorResponse;
+        }
+
+        private static JsonHttpResponse CreateSuccesResponse<TResult>(TResult result) where TResult : class
+        {
+            var successResponse = new JsonHttpResponse(new ServiceResult<TResult> { Success = true, Result = result }) { StatusCode = 200 };
+            return successResponse;
+        }
+
+        // USER INFO
 
         /// <summary>
         /// Информация о пользователе, доступная через AuthHttpService.
