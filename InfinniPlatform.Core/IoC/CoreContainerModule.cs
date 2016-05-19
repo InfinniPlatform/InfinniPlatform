@@ -9,7 +9,6 @@ using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Core.IoC

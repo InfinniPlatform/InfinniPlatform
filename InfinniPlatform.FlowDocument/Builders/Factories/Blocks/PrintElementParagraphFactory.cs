@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.FlowDocument.Model;
-using InfinniPlatform.FlowDocument.Model.Blocks;
+﻿using InfinniPlatform.FlowDocument.Model.Blocks;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Blocks
 {

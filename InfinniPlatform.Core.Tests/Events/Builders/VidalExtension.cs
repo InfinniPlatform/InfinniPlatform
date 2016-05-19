@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Text.RegularExpressions;
+
 using InfinniPlatform.Core.Tests.Events.Builders.Models;
 
 namespace InfinniPlatform.Core.Tests.Events.Builders

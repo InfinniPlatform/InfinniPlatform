@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Obsolete;
 
 namespace InfinniPlatform.Core.Index

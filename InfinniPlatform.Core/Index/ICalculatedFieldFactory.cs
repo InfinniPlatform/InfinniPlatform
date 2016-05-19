@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Obsolete;
+﻿using InfinniPlatform.Sdk.Documents.Obsolete;
 
 namespace InfinniPlatform.Core.Index
 {
