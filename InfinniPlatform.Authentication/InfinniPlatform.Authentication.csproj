@@ -147,7 +147,6 @@
     <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
     <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="Services\AuthHttpService.cs" />
-    <Compile Include="Services\SafeUserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -48,20 +48,20 @@ namespace InfinniPlatform.Authentication.Services
             builder.ServicePath = "/Auth";
 
             // Методы работы с учетной записью
-            builder.Post["/GetCurrentUser"] = GetCurrentUser; //safeuserinfo
-            builder.Post["/ChangePassword"] = ChangePassword; //TextHttpResponse or HttpResponce.Ok
+            builder.Post["/GetCurrentUser"] = GetCurrentUser;
+            builder.Post["/ChangePassword"] = ChangePassword;
 
             // Методы входа и выхода в систему
-            builder.Post["/SignInInternal"] = SignInInternal; //TextHttpRespnce or JsonHttpResponse
-            builder.Post["/SignInExternal"] = SignInExternal; //TextHttpResponse or new HttpResponce
-            builder.Get["/SignInExternalCallback"] = SignInExternalCallback; //callback
-            builder.Post["/SignOut"] = SignOut; // new HttpResponse
+            builder.Post["/SignInInternal"] = SignInInternal;
+            builder.Post["/SignInExternal"] = SignInExternal;
+            builder.Get["/SignInExternalCallback"] = SignInExternalCallback;
+            builder.Post["/SignOut"] = SignOut;
 
             // Методы для работы с внешними провайдерами аутентификации
-            builder.Post["/GetExternalProviders"] = GetExternalProviders; //JsonHttpResponse or HttpResponse.Ok
-            builder.Post["/LinkExternalLogin"] = LinkExternalLogin; //TextHttpResponse or new HttpResponse
-            builder.Get["/LinkExternalLoginCallback"] = LinkExternalLoginCallback; //callback
-            builder.Post["/UnlinkExternalLogin"] = UnlinkExternalLogin; //TextHttpResponse or HttpResponse.Ok
+            builder.Post["/GetExternalProviders"] = GetExternalProviders;
+            builder.Post["/LinkExternalLogin"] = LinkExternalLogin;
+            builder.Get["/LinkExternalLoginCallback"] = LinkExternalLoginCallback;
+            builder.Post["/UnlinkExternalLogin"] = UnlinkExternalLogin;
         }
 
         // ACCOUNT
@@ -78,9 +78,9 @@ namespace InfinniPlatform.Authentication.Services
 
             var user = await GetUserInfo();
 
-            var userInfo = BuildSafeUserInfo(user, Identity);
+            var userInfo = BuildPublicUserInfo(user, Identity);
 
-            return userInfo;
+            return new JsonHttpResponse(userInfo) { StatusCode = 200 };
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace InfinniPlatform.Authentication.Services
                                        ? string.Join(Environment.NewLine, changePasswordTask.Errors)
                                        : null;
 
-                return new TextHttpResponse(errorMessage) { StatusCode = 400 };
+                return new JsonHttpResponse(errorMessage) { StatusCode = 400 };
             }
 
             return HttpResponse.Ok;
@@ -144,9 +144,11 @@ namespace InfinniPlatform.Authentication.Services
                 return new TextHttpResponse(Resources.InvalidUsernameOrPassword) { StatusCode = 400 };
             }
 
-            var signInInternal = await SignIn(user, remember);
+            var safeUserInfo = await SignIn(user, remember);
 
-            return signInInternal;
+            return safeUserInfo != null
+                       ? new JsonHttpResponse(safeUserInfo) { StatusCode = 200 }
+                       : HttpResponse.Ok;
         }
 
         /// <summary>
@@ -214,11 +216,9 @@ namespace InfinniPlatform.Authentication.Services
             // Вход в систему с новыми учетными данными
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = remember == true }, identity);
 
-            var userInfo = BuildSafeUserInfo(user, identity);
+            var userInfo = BuildPublicUserInfo(user, identity);
 
-            return userInfo != null
-                       ? new JsonHttpResponse(userInfo) { StatusCode = 200 }
-                       : HttpResponse.Ok;
+            return userInfo;
         }
 
         /// <summary>
@@ -398,11 +398,11 @@ namespace InfinniPlatform.Authentication.Services
             var authProperties = new AuthenticationProperties { RedirectUri = callbackUri };
             AuthenticationManager.Challenge(authProperties, provider);
 
-            var response1 = OwinContext.Response;
-            var response = new HttpResponse(response1.StatusCode, response1.ContentType)
+            var owinResponse = OwinContext.Response;
+            var response = new HttpResponse(owinResponse.StatusCode, owinResponse.ContentType)
                            {
-                               ReasonPhrase = response1.ReasonPhrase,
-                               Headers = response1.Headers.ToDictionary(i => i.Key, kv => string.Join(";", kv.Value))
+                               ReasonPhrase = owinResponse.ReasonPhrase,
+                               Headers = owinResponse.Headers.ToDictionary(i => i.Key, kv => string.Join(";", kv.Value))
                            };
 
             return response;
@@ -470,7 +470,7 @@ namespace InfinniPlatform.Authentication.Services
             return userInfo;
         }
 
-        private static object BuildSafeUserInfo(IdentityApplicationUser user, IIdentity identity)
+        private static PublicUserInfo BuildPublicUserInfo(ApplicationUser user, IIdentity identity)
         {
             var claims = new List<ApplicationUserClaim>();
 
@@ -499,7 +499,7 @@ namespace InfinniPlatform.Authentication.Services
                 }
             }
 
-            return new SafeUserInfo(user.UserName, user.DisplayName, user.Description, user.Roles, user.Logins, claims);
+            return new PublicUserInfo(user.UserName, user.DisplayName, user.Description, user.Roles, user.Logins, claims);
         }
 
         private static ApplicationUserClaim CreateUserClaim(Claim claim)
@@ -509,6 +509,49 @@ namespace InfinniPlatform.Authentication.Services
                        Type = new ForeignKey { Id = claim.Type },
                        Value = claim.Value
                    };
+        }
+
+
+        /// <summary>
+        /// Информация о пользователе, доступная через AuthHttpService.
+        /// </summary>
+        internal class PublicUserInfo
+        {
+            /// <summary>
+            /// Конструктор.
+            /// </summary>
+            /// <param name="userName">Имя пользователя.</param>
+            /// <param name="displayName">Отображаемое имя пользователя.</param>
+            /// <param name="description">Описание.</param>
+            /// <param name="roles">Роли пользователя.</param>
+            /// <param name="logins">Учетные записи пользователя.</param>
+            /// <param name="claims">Утверждения пользователя.</param>
+            public PublicUserInfo(string userName,
+                                  string displayName,
+                                  string description,
+                                  IEnumerable<ForeignKey> roles,
+                                  IEnumerable<ApplicationUserLogin> logins,
+                                  List<ApplicationUserClaim> claims)
+            {
+                UserName = userName;
+                DisplayName = displayName;
+                Description = description;
+                Roles = roles;
+                Logins = logins;
+                Claims = claims;
+            }
+
+            public string UserName { get; set; }
+
+            public string DisplayName { get; set; }
+
+            public string Description { get; set; }
+
+            public IEnumerable<ForeignKey> Roles { get; set; }
+
+            public IEnumerable<ApplicationUserLogin> Logins { get; set; }
+
+            public List<ApplicationUserClaim> Claims { get; set; }
         }
     }
 }
