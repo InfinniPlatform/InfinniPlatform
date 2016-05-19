@@ -1,4 +1,4 @@
-{
+﻿{
   "Events": {
     "ValidationPointError": "InfinniPlatform.Core.Tests.RestBehavior.TestActions.ValidationUnitTestComplexValidator",
     "SuccessPoint": null,
