@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-using Newtonsoft.Json;
-
-namespace InfinniPlatform.Sdk.Documents
+namespace InfinniPlatform.Sdk.Documents.Obsolete
 {
     [Serializable]
     [DebuggerDisplay("{Property}, {CriteriaType}, {Value}")]

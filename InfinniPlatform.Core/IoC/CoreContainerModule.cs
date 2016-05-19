@@ -1,8 +1,11 @@
 ﻿using InfinniPlatform.Core.Compression;
 using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Core.StartupInitializers;
 using InfinniPlatform.Core.Transactions;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
@@ -53,6 +56,23 @@ namespace InfinniPlatform.Core.IoC
             builder.RegisterType<JsonObjectSerializer>()
                    .As<IObjectSerializer>()
                    .As<IJsonObjectSerializer>()
+                   .SingleInstance();
+
+            // Metadata
+
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<MetadataSettings>(MetadataSettings.SectionName))
+                   .As<MetadataSettings>()
+                   .SingleInstance();
+
+            builder.RegisterType<MetadataApi>()
+                   .As<IMetadataApi>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            // Hosting
+
+            builder.RegisterType<PackageJsonConfigurationsInitializer>()
+                   .As<IApplicationEventHandler>()
                    .SingleInstance();
         }
     }

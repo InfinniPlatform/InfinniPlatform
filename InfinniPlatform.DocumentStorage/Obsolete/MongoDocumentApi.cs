@@ -5,6 +5,7 @@ using System.IO;
 using InfinniPlatform.Core.Documents;
 using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Obsolete;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Obsolete

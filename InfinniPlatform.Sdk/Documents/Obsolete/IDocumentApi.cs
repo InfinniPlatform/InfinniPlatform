@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace InfinniPlatform.Sdk.Documents
+namespace InfinniPlatform.Sdk.Documents.Obsolete
 {
     public interface IDocumentApi
     {

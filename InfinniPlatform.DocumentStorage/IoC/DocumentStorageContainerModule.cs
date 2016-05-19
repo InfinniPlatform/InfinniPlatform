@@ -11,6 +11,7 @@ using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Transactions;
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Obsolete;
 using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;

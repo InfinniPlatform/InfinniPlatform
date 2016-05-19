@@ -66,6 +66,13 @@
     <Compile Include="Logging\JsonEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\IMetadataApi.cs" />
+    <Compile Include="Metadata\MetadataApi.cs" />
+    <Compile Include="Metadata\MetadataSettings.cs" />
+    <Compile Include="Metadata\MetadataUniqueName.cs" />
+    <Compile Include="Services\FileApiHttpService.cs" />
+    <Compile Include="Services\MetadataApiHttpService.cs" />
+    <Compile Include="Services\PrintViewApiHttpService.cs" />
+    <Compile Include="Services\SystemInfoHttpService.cs" />
     <Compile Include="Settings\AppEnvironment.cs" />
     <Compile Include="Index\AggregationResult.cs" />
     <Compile Include="Index\IAggregationProvider.cs" />
@@ -161,6 +168,8 @@
     </Compile>
     <Compile Include="Hosting\WebRequestHelper.cs" />
     <Compile Include="Diagnostics\ISystemStatusProvider.cs" />
+    <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
+    <Compile Include="StartupInitializers\PackageJsonConfigurationsInitializer.cs" />
     <Compile Include="Threading\AsyncHelper.cs" />
     <Compile Include="Transactions\DocumentTransactionScopeProvider.cs" />
     <Compile Include="Transactions\IDocumentTransactionScope.cs" />

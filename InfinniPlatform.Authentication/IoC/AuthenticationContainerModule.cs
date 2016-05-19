@@ -1,11 +1,13 @@
 ﻿using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Authentication.Security;
+using InfinniPlatform.Authentication.UserStorage;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.Identity;
 
@@ -59,6 +61,18 @@ namespace InfinniPlatform.Authentication.IoC
 
             builder.RegisterType<InternalAuthOwinHostingModule>()
                    .As<IOwinHostingModule>()
+                   .SingleInstance();
+
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<UserStorageSettings>(UserStorageSettings.SectionName))
+                   .As<UserStorageSettings>()
+                   .SingleInstance();
+
+            builder.RegisterType<ApplicationUserStoreCache>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ApplicationUserStorePersistentStorage>()
+                   .As<IApplicationUserStore>()
                    .SingleInstance();
 
             // Сервисы аутентификации

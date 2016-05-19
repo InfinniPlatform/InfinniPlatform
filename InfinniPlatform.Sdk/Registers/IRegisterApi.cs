@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Obsolete;
 
 namespace InfinniPlatform.Sdk.Registers
 {

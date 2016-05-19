@@ -7,6 +7,7 @@ using InfinniPlatform.Core.Validation;
 using InfinniPlatform.Core.Validation.BooleanValidators;
 using InfinniPlatform.Core.Validation.ObjectValidators;
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Obsolete;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Core.Index

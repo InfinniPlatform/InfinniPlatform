@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
-namespace InfinniPlatform.Sdk.Documents
+namespace InfinniPlatform.Sdk.Documents.Obsolete
 {
     /// <summary>
     /// Позволяет задать одно условие
