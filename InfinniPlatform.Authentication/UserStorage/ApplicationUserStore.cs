@@ -9,9 +9,9 @@ using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.Authentication.UserStorage
 {
-    internal sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
+    internal sealed class ApplicationUserStore : IApplicationUserStore
     {
-        public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache,
+        public ApplicationUserStore(Lazy<ApplicationUserStoreCache> userCache,
                                                      ISystemDocumentStorageFactory documentStorageFactory)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу

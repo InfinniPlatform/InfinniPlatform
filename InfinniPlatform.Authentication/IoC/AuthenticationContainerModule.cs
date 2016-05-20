@@ -71,7 +71,7 @@ namespace InfinniPlatform.Authentication.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<ApplicationUserStorePersistentStorage>()
+            builder.RegisterType<ApplicationUserStore>()
                    .As<IApplicationUserStore>()
                    .SingleInstance();
 

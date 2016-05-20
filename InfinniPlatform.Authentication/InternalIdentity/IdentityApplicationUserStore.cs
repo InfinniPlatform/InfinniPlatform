@@ -33,7 +33,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         static IdentityApplicationUserStore()
         {
-            Mapper.CreateMap<ApplicationUser, IdentityApplicationUser>();
+            Mapper.Initialize(cfg => cfg.CreateMap<ApplicationUser, IdentityApplicationUser>());
         }
 
         public IdentityApplicationUserStore(IApplicationUserStore userStore)
