@@ -136,7 +136,6 @@
     <Compile Include="Security\StringHasher.cs" />
     <Compile Include="Settings\AppConfiguration.cs" />
     <Compile Include="Settings\AppSettings.cs" />
-    <Compile Include="Factories\IMessageQueueFactory.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
