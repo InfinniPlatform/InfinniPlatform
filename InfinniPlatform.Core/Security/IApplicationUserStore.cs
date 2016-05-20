@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Core.Security
+﻿using InfinniPlatform.Sdk.Security;
+
+namespace InfinniPlatform.Core.Security
 {
     /// <summary>
     /// Хранилище сведений о пользователях системы <see cref="ApplicationUser" />.

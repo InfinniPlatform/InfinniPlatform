@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using InfinniPlatform.Expressions.Parser;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.FlowDocument.Builders
 {
@@ -69,7 +70,7 @@ namespace InfinniPlatform.FlowDocument.Builders
 
                 foreach (var itemMetadata in elementMetadata)
                 {
-                    var item = BuildElement(buildContext.Clone(), itemMetadata.ToDynamic());
+                    var item = BuildElement(buildContext.Clone(), JsonObjectSerializer.Default.ConvertFromDynamic<DynamicWrapper>(itemMetadata));
 
                     if (item != null)
                     {

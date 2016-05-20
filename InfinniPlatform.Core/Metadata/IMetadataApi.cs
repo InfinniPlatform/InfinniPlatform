@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Dynamic;
-
 namespace InfinniPlatform.Core.Metadata
 {
     public interface IMetadataApi

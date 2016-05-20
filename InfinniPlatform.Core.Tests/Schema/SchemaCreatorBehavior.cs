@@ -95,24 +95,23 @@ namespace InfinniPlatform.Core.Tests.Schema
 
             var schemaCreator = new SchemaCreator();
             dynamic schema = schemaCreator.BuildSchema(new[] {item1, item2, item3, item4});
+            
+            Assert.IsNotNull(schema);
 
-            dynamic instance = DynamicWrapperExtensions.ToDynamic(schema);
-            Assert.IsNotNull(instance);
+            Assert.IsNotNull(schema.Properties.Patient);
 
-            Assert.IsNotNull(instance.Properties.Patient);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Address);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Policies);
 
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Address);
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Policies);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Address.Properties);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Address.Properties.Street);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Address.Properties.House);
 
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Address.Properties);
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Address.Properties.Street);
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Address.Properties.House);
-
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Policies);
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Policies.Items);
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Policies.Items.Properties);
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Policies.Items.Properties.Series);
-            Assert.IsNotNull(instance.Properties.Patient.Properties.Policies.Items.Properties.Number);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Policies);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Policies.Items);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Policies.Items.Properties);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Policies.Items.Properties.Series);
+            Assert.IsNotNull(schema.Properties.Patient.Properties.Policies.Items.Properties.Number);
         }
     }
 }

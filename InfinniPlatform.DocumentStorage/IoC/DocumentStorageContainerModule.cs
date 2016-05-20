@@ -1,10 +1,7 @@
 ﻿using InfinniPlatform.Core.Diagnostics;
-using InfinniPlatform.Core.Documents;
-using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.DocumentStorage.Diagnostics;
 using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.DocumentStorage.Obsolete;
 using InfinniPlatform.DocumentStorage.Services;
 using InfinniPlatform.DocumentStorage.Services.QueryFactories;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
@@ -174,20 +171,6 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             builder.RegisterType<MongoStatusProvider>()
                    .As<ISubsystemStatusProvider>()
-                   .SingleInstance();
-
-            // Obsolete
-
-            builder.RegisterType<MongoSetDocumentExecutor>()
-                   .As<ISetDocumentExecutor>()
-                   .SingleInstance();
-
-            builder.RegisterType<MongoDocumentTransactionScope>()
-                   .As<IDocumentTransactionScope>()
-                   .InstancePerRequest();
-
-            builder.RegisterType<MongoDocumentApi>()
-                   .As<IDocumentApi>()
                    .SingleInstance();
         }
 

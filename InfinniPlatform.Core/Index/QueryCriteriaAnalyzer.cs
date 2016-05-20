@@ -3,7 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Schema;
-using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Obsolete;
 
 namespace InfinniPlatform.Core.Index
 {

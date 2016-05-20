@@ -10,8 +10,8 @@
 
 namespace InfinniPlatform.Authentication.Properties {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace InfinniPlatform.Authentication.Properties {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Пользователь с таким e-mail уже существует: &apos;{0}&apos;..
         /// </summary>
@@ -68,7 +68,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("DuplicateEmail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Пользователь с таким номером телефона уже существует: &apos;{0}&apos;..
         /// </summary>
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("DuplicatePhoneNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Пользователь с таким именем уже существует: &apos;{0}&apos;..
         /// </summary>
@@ -86,7 +86,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("DuplicateUserName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Внешний провайдер не может быть пустым..
         /// </summary>
@@ -95,7 +95,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("ExternalProviderCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ключ внешнего провайдера не может быть пустым..
         /// </summary>
@@ -104,7 +104,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("ExternalProviderKeyCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Failure URL не может быть пустым..
         /// </summary>
@@ -113,7 +113,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("FailureUrlCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Некорректный e-mail: &apos;{0}&apos;..
         /// </summary>
@@ -122,7 +122,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("InvalidEmail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Некорректное имя пользователя: &apos;{0}&apos;..
         /// </summary>
@@ -131,7 +131,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("InvalidUserName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Некорректное имя пользователя или пароль..
         /// </summary>
@@ -140,7 +140,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("InvalidUsernameOrPassword", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Новый пароль не может быть пустым..
         /// </summary>
@@ -149,7 +149,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("NewPasswordCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Запрос не прошел проверку подлинности..
         /// </summary>
@@ -158,7 +158,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("RequestIsNotAuthenticated", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Success URL не может быть пустым..
         /// </summary>
@@ -167,7 +167,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("SuccessUrlCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Неудачный вход с внешним провайдером..
         /// </summary>
@@ -176,7 +176,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("UnsuccessfulSignInWithExternalProvider", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Имя пользователя не может быть мустым..
         /// </summary>
@@ -185,13 +185,76 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("UserNameCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Пользователь не найден..
         /// </summary>
         internal static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ActionUnit completed with error..
+        /// </summary>
+        internal static string ActionUnitCompletedWithError {
+            get {
+                return ResourceManager.GetString("ActionUnitCompletedWithError", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ActionUnit is not registered..
+        /// </summary>
+        internal static string ActionUnitIsNotRegistered {
+            get {
+                return ResourceManager.GetString("ActionUnitIsNotRegistered", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t add unsaved user to role..
+        /// </summary>
+        internal static string CantAddUnsavedUserToRole {
+            get {
+                return ResourceManager.GetString("CantAddUnsavedUserToRole", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t remove unsaved user from role..
+        /// </summary>
+        internal static string CantRemoveUnsavedUserFromRole {
+            get {
+                return ResourceManager.GetString("CantRemoveUnsavedUserFromRole", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Subscribing on UserStorage cache....
+        /// </summary>
+        internal static string SubscribingOnUserStorageCache {
+            get {
+                return ResourceManager.GetString("SubscribingOnUserStorageCache", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Subscribing on UserStorage cache has successfuly completed..
+        /// </summary>
+        internal static string SubscribingOnUserStorageCacheHasCompleted {
+            get {
+                return ResourceManager.GetString("SubscribingOnUserStorageCacheHasCompleted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Subscribing on UserStorage cache has completed with error..
+        /// </summary>
+        internal static string SubscribingOnUserStorageCacheHasCompletedWithError {
+            get {
+                return ResourceManager.GetString("SubscribingOnUserStorageCacheHasCompletedWithError", resourceCulture);
             }
         }
     }

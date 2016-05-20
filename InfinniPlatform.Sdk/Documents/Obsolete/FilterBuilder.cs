@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Sdk.Documents
+namespace InfinniPlatform.Sdk.Documents.Obsolete
 {
     /// <summary>
     /// Позволяет описать набор критериев

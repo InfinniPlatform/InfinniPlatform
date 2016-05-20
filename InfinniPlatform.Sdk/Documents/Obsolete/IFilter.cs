@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Documents
+﻿namespace InfinniPlatform.Sdk.Documents.Obsolete
 {
     /// <summary>
     /// Фильтр, поддерживающий логические операции И, ИЛИ, отрицание

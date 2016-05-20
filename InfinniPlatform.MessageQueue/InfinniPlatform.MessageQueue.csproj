@@ -82,10 +82,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Cassandra\InfinniPlatform.Cassandra.csproj">
-      <Project>{ec8e01a2-76c8-453a-b957-f83265778971}</Project>
-      <Name>InfinniPlatform.Cassandra</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
       <Name>InfinniPlatform.Core</Name>

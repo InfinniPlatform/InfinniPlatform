@@ -102,37 +102,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\SchemaCreatorBehavior.cs" />
     <Compile Include="Serialization\JsonObjectSerializerTest.cs" />
-    <Compile Include="Validation\BaseValidationOperatorTest.cs" />
-    <Compile Include="Validation\BooleanValidators\AndValidatorTest.cs" />
-    <Compile Include="Validation\BooleanValidators\NotValidatorTest.cs" />
-    <Compile Include="Validation\BooleanValidators\OrValidatorTest.cs" />
-    <Compile Include="Validation\CollectionValidators\AllCollectionValidatorTest.cs" />
-    <Compile Include="Validation\CollectionValidators\AnyCollectionValidatorTest.cs" />
-    <Compile Include="Validation\CollectionValidators\ContainsCollectionValidatorTest.cs" />
-    <Compile Include="Validation\CollectionValidators\NullOrEmptyCollectionValidatorTest.cs" />
-    <Compile Include="Validation\FaseValidationOperator.cs" />
-    <Compile Include="Validation\ObjectValidators\AbsoluteUriValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\ContainsValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\DefaultValueValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\EndsWithValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\EqualValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\GuidValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\InValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\LessThanOrEqualValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\LessThanValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\MoreThanOrEqualValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\MoreThanValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\NullOrEmptyValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\NullOrWhiteSpaceValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\NullValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\RegexValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\RelativeUriValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\StartsWithValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\UriValidatorTest.cs" />
-    <Compile Include="Validation\ObjectValidators\ValidatorTestCase.cs" />
-    <Compile Include="Validation\PredicateValidationOperator.cs" />
-    <Compile Include="Validation\Serialization\ValidationOperatorSerializerTest.cs" />
-    <Compile Include="Validation\TrueValidationOperator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">

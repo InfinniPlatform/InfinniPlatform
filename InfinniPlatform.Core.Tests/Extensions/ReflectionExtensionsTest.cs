@@ -22,7 +22,6 @@ namespace InfinniPlatform.Core.Tests.Extensions
             public static readonly object BaseStaticReadonlyField = new object();
             public readonly object BaseReadonlyField = new object();
             public object BaseField = new object();
-            public int BaseIntField;
 
             static BaseClass()
             {
@@ -36,7 +35,6 @@ namespace InfinniPlatform.Core.Tests.Extensions
             }
 
             // Properties
-            public int BaseIntProperty { get; set; }
             public object BaseProperty { get; set; }
 
             public object BaseReadonlyProperty

@@ -109,6 +109,7 @@
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
   </ItemGroup>
@@ -119,9 +120,7 @@
     <Compile Include="IoC\AuthenticationContainerModule.cs" />
     <Compile Include="Modules\CookieAuthOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthAdfsOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\ExternalAuthEsiaOwinHostingModule.cs" />
     <Compile Include="Modules\ExternalAuthAdfsOwinHostingModule.cs" />
-    <Compile Include="Modules\ExternalAuthEsiaOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthFacebookOwinHostingModule.cs" />
     <Compile Include="Modules\ExternalAuthFacebookOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthGoogleOwinHostingModule.cs" />
@@ -147,6 +146,9 @@
     <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
     <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="Services\AuthHttpService.cs" />
+    <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
+    <Compile Include="UserStorage\ApplicationUserStore.cs" />
+    <Compile Include="UserStorage\UserStorageSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -157,16 +159,17 @@
     <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".metadata\Authorization\Documents\UserStore.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj">
+      <Project>{BD628B04-C2DF-458A-8406-6BB60729FC1C}</Project>
+      <Name>InfinniPlatform.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Esia\InfinniPlatform.Esia.csproj">
-      <Project>{da365183-b83d-4f73-a5bb-d8b0df4ee52b}</Project>
-      <Name>InfinniPlatform.Esia</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
       <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>
@@ -177,13 +180,15 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <MetadataFiles Include=".metadata\**\*.*">
+      <Visible>false</Visible>
+    </MetadataFiles>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
+    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
   </Target>
-  -->
 </Project>

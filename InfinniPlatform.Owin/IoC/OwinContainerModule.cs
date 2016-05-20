@@ -3,7 +3,6 @@ using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Owin.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;

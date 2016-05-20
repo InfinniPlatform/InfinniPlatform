@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Schema
 {
@@ -18,7 +19,7 @@ namespace InfinniPlatform.Core.Schema
                 FillDataSchema(partialObject, schemaObject);
             }
 
-            return ((object) ProcessSchema(partialObject)).ToDynamic();
+            return JsonObjectSerializer.Default.ConvertToDynamic((object)ProcessSchema(partialObject));
         }
 
         private void FillDataSchema(DataSchema partialObject, SchemaObject schemaObject)
@@ -93,8 +94,7 @@ namespace InfinniPlatform.Core.Schema
 
         private DataSchema CreateItems(SchemaObject schemaObject)
         {
-            var result = new DataSchema();
-            result.Type = SchemaDataTypeExtensions.ConvertFromString(schemaObject.ArrayItemType);
+            var result = new DataSchema { Type = SchemaDataTypeExtensions.ConvertFromString(schemaObject.ArrayItemType) };
             if (schemaObject.IsDocumentArray)
             {
                 result.Properties = CreateProperties(schemaObject);
@@ -171,14 +171,12 @@ namespace InfinniPlatform.Core.Schema
         /// <summary>
         ///     Выполняет постобработку схемы для замены IDictionary<string, DataSchema> на dynamic object
         /// </summary>
-        private dynamic ProcessSchema(DataSchema sourceSchema)
+        private static dynamic ProcessSchema(DataSchema sourceSchema)
         {
-            dynamic updatedSchema = new
-            {
-                sourceSchema.Type,
-                sourceSchema.Id,
-                sourceSchema.Sortable
-            }.ToDynamic();
+            dynamic updatedSchema = new DynamicWrapper();
+            updatedSchema.Type = sourceSchema.Type;
+            updatedSchema.Id = sourceSchema.Id;
+            updatedSchema.Sortable = sourceSchema.Sortable;
 
             if (sourceSchema.Items != null)
             {

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Documents
+﻿namespace InfinniPlatform.Sdk.Documents.Obsolete
 {
     /// <summary>
     /// Интерфейс для создания экземпляров <see cref="IFilter" />

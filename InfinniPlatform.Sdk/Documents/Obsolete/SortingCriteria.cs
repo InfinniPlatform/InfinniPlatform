@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace InfinniPlatform.Sdk.Documents
+namespace InfinniPlatform.Sdk.Documents.Obsolete
 {
     [Serializable]
     [DebuggerDisplay("{PropertyName}, {SortingOrder}")]

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Documents
+﻿namespace InfinniPlatform.Sdk.Documents.Obsolete
 {
     public enum CriteriaType
     {
