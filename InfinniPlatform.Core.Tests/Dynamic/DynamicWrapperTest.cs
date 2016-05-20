@@ -33,7 +33,9 @@ namespace InfinniPlatform.Core.Tests.Dynamic
                 return arg;
             }
 
+#pragma warning disable 67
             public event Action PrototypeEvent;
+#pragma warning restore 67
         }
 
         [Test]

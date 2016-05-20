@@ -107,13 +107,6 @@
     <Compile Include="Logging\Log4NetPerformanceLog.cs" />
     <Compile Include="Metadata\DataType.cs" />
     <Compile Include="Metadata\MetadataType.cs" />
-    <Compile Include="Metadata\Validation\IMetadataSchemaValidator.cs" />
-    <Compile Include="Metadata\Validation\IMetadataSchemaValidatorFactory.cs" />
-    <Compile Include="Metadata\Validation\MetadataJsonSchemaResolver.cs" />
-    <Compile Include="Metadata\Validation\MetadataJsonSchemaValidator.cs" />
-    <Compile Include="Metadata\Validation\MetadataJsonSchemaValidatorFactory.cs" />
-    <Compile Include="Metadata\Validation\MetadataSchemaError.cs" />
-    <Compile Include="Metadata\Validation\MetadataSchemaException.cs" />
     <Compile Include="PrintView\IPrintViewBuilder.cs" />
     <Compile Include="Registers\RegisterConstants.cs" />
     <Compile Include="Registers\RegisterPeriod.cs" />
