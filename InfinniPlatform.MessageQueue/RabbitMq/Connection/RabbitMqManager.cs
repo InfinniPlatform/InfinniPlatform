@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using EasyNetQ.Management.Client;
+using EasyNetQ.Management.Client.Model;
+
 using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
@@ -35,9 +38,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 
                                                     return connection;
                                                 });
+            
+            _managementClient = new ManagementClient($"http://{connectionSettings.HostName}", connectionSettings.UserName, connectionSettings.Password, connectionSettings.ManagementApiPort);
         }
 
         private readonly Lazy<IConnection> _connection;
+        private readonly ManagementClient _managementClient;
         private Dictionary<string, string> _exchangeNames;
 
         public IConnection GetConnection()
@@ -80,6 +86,29 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         public string GetExchangeNameByType(string type)
         {
             return _exchangeNames[type];
+        }
+
+        public IEnumerable<Queue> GetQueues()
+        {
+            return _managementClient.GetQueues();
+        }
+
+        public void DeleteQueues(IEnumerable<Queue> queues)
+        {
+            foreach (var q in queues)
+            {
+                _managementClient.DeleteQueue(q);
+            }
+        }
+
+        public IEnumerable<Binding> GetBindings()
+        {
+            return _managementClient.GetBindings();
+        }
+
+        public IEnumerable<Exchange> GetExchanges()
+        {
+            return _managementClient.GetExchanges();
         }
     }
 }

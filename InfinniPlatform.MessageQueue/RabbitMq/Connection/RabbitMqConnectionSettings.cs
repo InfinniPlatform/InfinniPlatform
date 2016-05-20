@@ -14,6 +14,9 @@
         {
             HostName = "localhost";
             Port = 5672;
+            UserName = "guest";
+            Password = "guest";
+            ManagementApiPort = 15672;
         }
 
 
@@ -36,5 +39,10 @@
         /// Пароль пользователя.
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// Пароль пользователя.
+        /// </summary>
+        public int ManagementApiPort { get; set; }
     }
 }

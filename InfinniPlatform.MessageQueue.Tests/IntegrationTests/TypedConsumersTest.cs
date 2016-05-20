@@ -18,10 +18,19 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
     [Category(TestCategories.IntegrationTest)]
     public class TypedConsumersTest
     {
+        private static RabbitMqManager _rabbitMqManager;
+
+        [OneTimeSetUp]
+        public void Init()
+        {
+            _rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
+            var enumerable = _rabbitMqManager.GetQueues();
+            _rabbitMqManager.DeleteQueues(enumerable);
+        }
+
         [Test]
         public void AllDynamicWrapperMessagesDelivered()
         {
-            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
             var messageSerializer = new MessageSerializer();
 
             var actualMessages = new List<DynamicWrapper>();
@@ -40,10 +49,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new DynamicWrapperConsumer(actualMessages, completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(_rabbitMqManager, listOfConsumers, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
-            var producerBase = new ProducerBase(rabbitMqManager, messageSerializer);
+            var producerBase = new ProducerBase(_rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.Produce(new Message<DynamicWrapper>(message));
@@ -57,7 +66,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void AllStringMessagesDelivered()
         {
-            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
             var messageSerializer = new MessageSerializer();
 
             var actualMessages = new List<string>();
@@ -76,10 +84,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new StringConsumer(actualMessages, completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(_rabbitMqManager, listOfConsumers, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
-            var producerBase = new ProducerBase(rabbitMqManager, messageSerializer);
+            var producerBase = new ProducerBase(_rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.Produce(new Message<string>(message));
