@@ -5,25 +5,23 @@ using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.Authentication.UserStorage
 {
     internal sealed class ApplicationUserStorePersistentStorage : IApplicationUserStore
     {
-        private const string UserStorageTypeName = "UserStore";
-
         public ApplicationUserStorePersistentStorage(Lazy<ApplicationUserStoreCache> userCache,
                                                      ISystemDocumentStorageFactory documentStorageFactory)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
             _userCache = userCache;
-            _userStorage = new Lazy<ISystemDocumentStorage>(() => documentStorageFactory.GetStorage(UserStorageTypeName));
+            _userStorage = new Lazy<ISystemDocumentStorage<ApplicationUser>>(() => documentStorageFactory.GetStorage<ApplicationUser>());
         }
 
         private readonly Lazy<ApplicationUserStoreCache> _userCache;
-        private readonly Lazy<ISystemDocumentStorage> _userStorage;
+        private readonly Lazy<ISystemDocumentStorage<ApplicationUser>> _userStorage;
 
         public void CreateUser(ApplicationUser user)
         {
@@ -43,34 +41,49 @@ namespace InfinniPlatform.Authentication.UserStorage
 
         public void DeleteUser(ApplicationUser user)
         {
-            _userStorage.Value.DeleteOne(f => f.Eq("_id", user.Id));
+            _userStorage.Value.DeleteOne(f => f._id == user._id);
 
             RemoveUserFromCache(user.Id);
         }
 
         public ApplicationUser FindUserById(string userId)
         {
-            return FindUserInCache(c => c.FindUserById(userId), () => FindUser("_id", userId));
+            return FindUserInCache(c => c.FindUserById(userId), () =>
+                                                                {
+                                                                    return _userStorage.Value.Find(f => f._header._deleted==null && f.Id == userId).FirstOrDefault();
+                                                                });
         }
 
         public ApplicationUser FindUserByUserName(string userName)
         {
-            return FindUserInCache(c => c.FindUserByUserName(userName), () => FindUser("UserName", userName));
+            return FindUserInCache(c => c.FindUserByUserName(userName), () =>
+                                                                        {
+                                                                            return _userStorage.Value.Find(f => f._header._deleted == null && f.UserName == userName).FirstOrDefault();
+                                                                        });
         }
 
         public ApplicationUser FindUserByEmail(string email)
         {
-            return FindUserInCache(c => c.FindUserByEmail(email), () => FindUser("Email", email));
+            return FindUserInCache(c => c.FindUserByEmail(email), () =>
+                                                                  {
+                                                                      return _userStorage.Value.Find(f => f._header._deleted == null && f.Email == email).FirstOrDefault();
+                                                                  });
         }
 
         public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
         {
-            return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => FindUser("PhoneNumber", phoneNumber));
+            return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () =>
+                                                                              {
+                                                                                  return _userStorage.Value.Find(f => f._header._deleted == null && f.PhoneNumber == phoneNumber).FirstOrDefault();
+                                                                              });
         }
 
         public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
         {
-            return FindUserInCache(c => c.FindUserByLogin(userLogin), () => FindUser("Logins.ProviderKey", userLogin.ProviderKey));
+            return FindUserInCache(c => c.FindUserByLogin(userLogin), () =>
+                                                                      {
+                                                                          return _userStorage.Value.Find(f => f._header._deleted == null && f.Logins.Any(l => l.ProviderKey == userLogin.ProviderKey)).FirstOrDefault();
+                                                                      });
         }
 
         public ApplicationUser FindUserByName(string name)
@@ -163,24 +176,7 @@ namespace InfinniPlatform.Authentication.UserStorage
         {
             user.SecurityStamp = CreateUnique();
 
-            var dynamicUser = (DynamicWrapper)JsonObjectSerializer.Default.ConvertToDynamic(user);
-            dynamicUser["_id"] = user.Id;
-
-            _userStorage.Value.ReplaceOne(dynamicUser, f => f.Eq("_id", user.Id), true);
-        }
-
-        private ApplicationUser FindUser(string property, string value)
-        {
-            var dynamicUser = _userStorage.Value.Find(f => f.And(f.Exists("_header._deleted", false), f.Eq(property, value))).FirstOrDefault();
-
-            if (dynamicUser != null)
-            {
-                var user = JsonObjectSerializer.Default.ConvertFromDynamic<ApplicationUser>(dynamicUser);
-                user.Id = (string)dynamicUser["_id"];
-                return user;
-            }
-
-            return null;
+            _userStorage.Value.ReplaceOne(user, f => f._id == user._id, true);
         }
 
         /// <summary>

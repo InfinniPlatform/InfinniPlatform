@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Security
+﻿namespace InfinniPlatform.Sdk.Security
 {
     /// <summary>
     /// Имя входа пользователя системы у внешнего провайдера.

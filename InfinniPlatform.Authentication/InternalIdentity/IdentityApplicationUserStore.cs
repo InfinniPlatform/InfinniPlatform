@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using InfinniPlatform.Core.Security;
+using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
 
@@ -252,7 +253,8 @@ namespace InfinniPlatform.Authentication.InternalIdentity
 
         private static IdentityApplicationUser ToIdentityUser(ApplicationUser user)
         {
-            return Mapper.Map<IdentityApplicationUser>(user);
+            var identityApplicationUser = Mapper.Map<IdentityApplicationUser>(user);
+            return identityApplicationUser;
         }
 
         private Task InvokeUserStore<T1>(Action<IApplicationUserStore, T1> action, T1 arg1)

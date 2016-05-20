@@ -139,11 +139,7 @@
     <Compile Include="Security\ApplicationClaimType.cs" />
     <Compile Include="Security\ApplicationClaimTypes.cs" />
     <Compile Include="Security\ApplicationRole.cs" />
-    <Compile Include="Security\ApplicationUser.cs" />
-    <Compile Include="Security\ApplicationUserClaim.cs" />
-    <Compile Include="Security\ApplicationUserLogin.cs" />
     <Compile Include="Security\DefaultApplicationUserPasswordHasher.cs" />
-    <Compile Include="Security\ForeignKey.cs" />
     <Compile Include="Security\IApplicationUserPasswordHasher.cs" />
     <Compile Include="Security\IApplicationUserStore.cs" />
     <Compile Include="Security\MemoryApplicationUserStore.cs" />

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Sdk.Security;
+
 namespace InfinniPlatform.Core.Security
 {
     /// <summary>

@@ -111,6 +111,10 @@
     <Compile Include="RestApi\Documents\DocumentHttpServiceClient.cs" />
     <Compile Include="RestApi\Documents\DocumentPostQueryClient.cs" />
     <Compile Include="RestApi\Documents\HttpRequestFileClient.cs" />
+    <Compile Include="Security\ApplicationUser.cs" />
+    <Compile Include="Security\ApplicationUserClaim.cs" />
+    <Compile Include="Security\ApplicationUserLogin.cs" />
+    <Compile Include="Security\ForeignKey.cs" />
     <Compile Include="Serialization\IMemberValueConverter.cs" />
     <Compile Include="Serialization\JsonMemberValueConverter.cs" />
     <Compile Include="Serialization\JsonMemberValueConverterResolver.cs" />

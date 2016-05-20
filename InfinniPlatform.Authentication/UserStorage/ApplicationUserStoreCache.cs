@@ -8,6 +8,7 @@ using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Caching;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.Authentication.UserStorage
 {

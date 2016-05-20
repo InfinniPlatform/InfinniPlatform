@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace InfinniPlatform.Core.Security
+using InfinniPlatform.Sdk.Documents;
+
+namespace InfinniPlatform.Sdk.Security
 {
     /// <summary>
     /// Сведения о пользователе системы.
     /// </summary>
-    public class ApplicationUser
+    [DocumentType("UserStore")]
+    public class ApplicationUser : Document
     {
+        private string _idProp;
+
         public ApplicationUser()
         {
             Roles = new List<ForeignKey>();
@@ -20,7 +26,11 @@ namespace InfinniPlatform.Core.Security
         /// <example>
         /// 55088CAE-6F34-457E-AC2A-2FAE316C4D0C
         /// </example>
-        public string Id { get; set; }
+        public string Id
+        {
+            get { return _id?.ToString(); }
+            set { _id = value; }
+        }
 
         /// <summary>
         /// Уникальное имя пользователя.

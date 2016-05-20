@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Security
+﻿namespace InfinniPlatform.Sdk.Security
 {
     /// <summary>
     /// Ссылка на внешний документ.
