@@ -4,7 +4,6 @@ using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Core.StartupInitializers;
-using InfinniPlatform.Core.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
@@ -43,12 +42,6 @@ namespace InfinniPlatform.Core.IoC
 
             builder.OnCreateInstance(new LogContainerParameterResolver<IPerformanceLog>(LogManagerCache.GetPerformanceLog));
             builder.OnActivateInstance(new LogContainerInstanceActivator<IPerformanceLog>(LogManagerCache.GetPerformanceLog));
-
-            // Transaction
-
-            builder.RegisterType<DocumentTransactionScopeProvider>()
-                   .As<IDocumentTransactionScopeProvider>()
-                   .SingleInstance();
 
             // Serialization
 

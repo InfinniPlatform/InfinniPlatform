@@ -128,7 +128,6 @@
     <Compile Include="Schema\SchemaDataTypeExtensions.cs" />
     <Compile Include="Schema\SchemaIterator.cs" />
     <Compile Include="Schema\SchemaObject.cs" />
-    <Compile Include="SearchOptions\SearchType.cs" />
     <Compile Include="Security\ApplicationClaimType.cs" />
     <Compile Include="Security\ApplicationClaimTypes.cs" />
     <Compile Include="Security\ApplicationRole.cs" />
@@ -139,11 +138,7 @@
     <Compile Include="Security\StringHasher.cs" />
     <Compile Include="Settings\AppConfiguration.cs" />
     <Compile Include="Settings\AppSettings.cs" />
-    <Compile Include="Settings\ConnectionStrings.cs" />
-    <Compile Include="Sql\ISqlQueryExecutor.cs" />
-    <Compile Include="Sql\SqlQueryObject.cs" />
     <Compile Include="Factories\IMessageQueueFactory.cs" />
-    <Compile Include="Factories\ISqlQueryExecutorFactory.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
@@ -159,9 +154,6 @@
     <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
     <Compile Include="StartupInitializers\PackageJsonConfigurationsInitializer.cs" />
     <Compile Include="Threading\AsyncHelper.cs" />
-    <Compile Include="Transactions\DocumentTransactionScopeProvider.cs" />
-    <Compile Include="Transactions\IDocumentTransactionScope.cs" />
-    <Compile Include="Transactions\IDocumentTransactionScopeProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
