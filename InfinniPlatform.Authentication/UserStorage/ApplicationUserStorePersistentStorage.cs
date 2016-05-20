@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.Authentication.UserStorage
@@ -48,42 +48,27 @@ namespace InfinniPlatform.Authentication.UserStorage
 
         public ApplicationUser FindUserById(string userId)
         {
-            return FindUserInCache(c => c.FindUserById(userId), () =>
-                                                                {
-                                                                    return _userStorage.Value.Find(f => f._header._deleted==null && f.Id == userId).FirstOrDefault();
-                                                                });
+            return FindUserInCache(c => c.FindUserById(userId), () => FindUser(f => f._header._deleted == null && f.Id == userId));
         }
 
         public ApplicationUser FindUserByUserName(string userName)
         {
-            return FindUserInCache(c => c.FindUserByUserName(userName), () =>
-                                                                        {
-                                                                            return _userStorage.Value.Find(f => f._header._deleted == null && f.UserName == userName).FirstOrDefault();
-                                                                        });
+            return FindUserInCache(c => c.FindUserByUserName(userName), () => FindUser(f => f._header._deleted == null && f.UserName == userName));
         }
 
         public ApplicationUser FindUserByEmail(string email)
         {
-            return FindUserInCache(c => c.FindUserByEmail(email), () =>
-                                                                  {
-                                                                      return _userStorage.Value.Find(f => f._header._deleted == null && f.Email == email).FirstOrDefault();
-                                                                  });
+            return FindUserInCache(c => c.FindUserByEmail(email), () => FindUser(f => f._header._deleted == null && f.Email == email));
         }
 
         public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
         {
-            return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () =>
-                                                                              {
-                                                                                  return _userStorage.Value.Find(f => f._header._deleted == null && f.PhoneNumber == phoneNumber).FirstOrDefault();
-                                                                              });
+            return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => FindUser(f => f._header._deleted == null && f.PhoneNumber == phoneNumber));
         }
 
         public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
         {
-            return FindUserInCache(c => c.FindUserByLogin(userLogin), () =>
-                                                                      {
-                                                                          return _userStorage.Value.Find(f => f._header._deleted == null && f.Logins.Any(l => l.ProviderKey == userLogin.ProviderKey)).FirstOrDefault();
-                                                                      });
+            return FindUserInCache(c => c.FindUserByLogin(userLogin), () => FindUser(f => f._header._deleted == null && f.Logins.Any(l => l.ProviderKey == userLogin.ProviderKey)));
         }
 
         public ApplicationUser FindUserByName(string name)
@@ -106,11 +91,6 @@ namespace InfinniPlatform.Authentication.UserStorage
                 roles.Add(new ForeignKey { Id = roleName, DisplayName = roleName });
                 user.Roles = roles;
                 UpdateUser(user);
-
-                // Добавление связки пользователь-роль
-                dynamic userRole = new DynamicWrapper();
-                userRole.UserName = user.UserName;
-                userRole.RoleName = roleName;
             }
         }
 
@@ -170,6 +150,11 @@ namespace InfinniPlatform.Authentication.UserStorage
                 user.Logins = user.Logins.Where(f => !(f.Provider == userLogin.Provider && f.ProviderKey == userLogin.ProviderKey)).ToList();
                 UpdateUser(user);
             }
+        }
+
+        private ApplicationUser FindUser(Expression<Func<ApplicationUser, bool>> expression)
+        {
+            return _userStorage.Value.Find(expression).FirstOrDefault();
         }
 
         private void SaveUser(ApplicationUser user)

@@ -6,7 +6,6 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Authentication.Properties;
-using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Threading;
 using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Sdk.Security;
