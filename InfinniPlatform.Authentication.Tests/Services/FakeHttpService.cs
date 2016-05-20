@@ -21,6 +21,7 @@ namespace InfinniPlatform.Authentication.Tests.Services
             builder.Post["/SomePost"] = request => Task.FromResult<object>((request.User != null) ? request.User.Name : null);
             builder.Post["/CreateUser"] = request => { _userManager.CreateUser(request.Form.UserName, request.Form.Password); return Task.FromResult<object>(null); };
             builder.Post["/FindUser"] = request => { _userManager.FindUserByName(request.Form.UserName); return Task.FromResult<object>(null); };
+            builder.Post["/FindUserAsync"] = async request => await _userManager.FindUserByNameAsync(request.Form.UserName);
         }
     }
 }
