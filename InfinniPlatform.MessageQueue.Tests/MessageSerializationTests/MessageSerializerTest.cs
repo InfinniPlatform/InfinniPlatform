@@ -13,20 +13,6 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
     public class MessageSerializerTest
     {
         [Test]
-        public void TestMessageSerializeAndDeserializeWithoutErrors()
-        {
-            var messageSerializer = new MessageSerializer();
-            var expected = new TestMessage("1", 1, new DateTime(1, 1, 1));
-            var message = new Message<TestMessage>(expected);
-
-            var bytes = messageSerializer.MessageToBytes(message);
-
-            var actual = messageSerializer.BytesToMessage(bytes, typeof(Message<TestMessage>)).GetBody();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
         public void StringMessageSerializeAndDeserializeWithoutErrors()
         {
             var messageSerializer = new MessageSerializer();
@@ -36,6 +22,20 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
             var bytes = messageSerializer.MessageToBytes(message);
 
             var actual = messageSerializer.BytesToMessage(bytes, typeof(Message<string>)).GetBody();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void TestMessageSerializeAndDeserializeWithoutErrors()
+        {
+            var messageSerializer = new MessageSerializer();
+            var expected = new TestMessage("1", 1, new DateTime(1, 1, 1));
+            var message = new Message<TestMessage>(expected);
+
+            var bytes = messageSerializer.MessageToBytes(message);
+
+            var actual = messageSerializer.BytesToMessage(bytes, typeof(Message<TestMessage>)).GetBody();
 
             Assert.AreEqual(expected, actual);
         }

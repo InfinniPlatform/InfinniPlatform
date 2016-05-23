@@ -22,9 +22,13 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         public bool Equals(TestMessage other)
         {
             if (ReferenceEquals(null, other))
+            {
                 return false;
+            }
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
             return SomeString.Equals(other.SomeString) &&
                    SomeInt == other.SomeInt &&
                    SomeDateTime.Equals(other.SomeDateTime);
@@ -33,11 +37,17 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
+            {
                 return false;
+            }
             if (ReferenceEquals(this, obj))
+            {
                 return true;
+            }
             if (!(obj is TestMessage))
+            {
                 return false;
+            }
             return Equals((TestMessage)obj);
         }
 

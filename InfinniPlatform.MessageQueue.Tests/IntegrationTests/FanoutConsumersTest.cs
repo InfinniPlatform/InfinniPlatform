@@ -15,7 +15,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
-    public class FanoutConsumersTest
+    public class FanoutConsumersTest : RabbitMqTestBase
     {
         [Test]
         public void EachFanoutConsumerRecieveAllMessages()

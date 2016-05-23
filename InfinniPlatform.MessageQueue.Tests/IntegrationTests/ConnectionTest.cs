@@ -14,31 +14,21 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
-    public class ConnectionTest
+    public class ConnectionTest : RabbitMqTestBase
     {
-        private const string ApplicationName = "RabbitTest";
-        private const int WaitTimeout = 30000;
-        private const string ServiceName = "RabbitMQ";
-
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            WindowsServices.StartService(ServiceName, WaitTimeout);
-        }
-
         [Test]
         public void AutoRecconectAfterServerRestart()
         {
-            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, ApplicationName);
+            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
             var connection = rabbitMqManager.GetConnection();
 
             Assert.DoesNotThrow(() => connection.CreateModel());
 
-            WindowsServices.StopService(ServiceName, WaitTimeout);
+            WindowsServices.StopService(TestConstants.ServiceName, TestConstants.WaitTimeout);
 
             Assert.Throws<AlreadyClosedException>(() => connection.CreateModel());
 
-            WindowsServices.StartService(ServiceName, WaitTimeout);
+            WindowsServices.StartService(TestConstants.ServiceName, TestConstants.WaitTimeout);
             Thread.Sleep(5000);
 
             Assert.DoesNotThrow(() => connection.CreateModel());
@@ -49,7 +39,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         {
             var message = Encoding.UTF8.GetBytes(DateTime.Now.ToString("s"));
 
-            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, ApplicationName);
+            var rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
             var connection = rabbitMqManager.GetConnection();
 
             var model = connection.CreateModel();
@@ -61,11 +51,11 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             model.BasicPublish("", "auto_reconnect_test", null, message);
             model.BasicConsume("auto_reconnect_test", true, eventingBasicConsumer);
 
-            WindowsServices.StopService(ServiceName, WaitTimeout);
+            WindowsServices.StopService(TestConstants.ServiceName, TestConstants.WaitTimeout);
 
             Assert.Throws<AlreadyClosedException>(() => model.BasicPublish("", "auto_reconnect_test", null, message));
 
-            WindowsServices.StartService(ServiceName, WaitTimeout);
+            WindowsServices.StartService(TestConstants.ServiceName, TestConstants.WaitTimeout);
             Thread.Sleep(5000);
 
             Assert.DoesNotThrow(() => model.BasicPublish("", "auto_reconnect_test", null, message));

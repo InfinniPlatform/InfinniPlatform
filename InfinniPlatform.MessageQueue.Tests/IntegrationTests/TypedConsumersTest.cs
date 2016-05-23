@@ -16,18 +16,8 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
-    public class TypedConsumersTest
+    public class TypedConsumersTest : RabbitMqTestBase
     {
-        private static RabbitMqManager _rabbitMqManager;
-
-        [OneTimeSetUp]
-        public void Init()
-        {
-            _rabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
-            var enumerable = _rabbitMqManager.GetQueues();
-            _rabbitMqManager.DeleteQueues(enumerable);
-        }
-
         [Test]
         public void AllDynamicWrapperMessagesDelivered()
         {
@@ -49,10 +39,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new DynamicWrapperConsumer(actualMessages, completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(_rabbitMqManager, listOfConsumers, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(RabbitMqManager, listOfConsumers, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
-            var producerBase = new ProducerBase(_rabbitMqManager, messageSerializer);
+            var producerBase = new ProducerBase(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.Produce(new Message<DynamicWrapper>(message));
@@ -84,10 +74,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new StringConsumer(actualMessages, completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(_rabbitMqManager, listOfConsumers, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(RabbitMqManager, listOfConsumers, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
-            var producerBase = new ProducerBase(_rabbitMqManager, messageSerializer);
+            var producerBase = new ProducerBase(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.Produce(new Message<string>(message));

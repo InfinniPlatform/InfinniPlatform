@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
@@ -15,7 +14,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
-    public class QueueNameAttributeConsumersTest
+    public class QueueNameAttributeConsumersTest : RabbitMqTestBase
     {
         [Test]
         public void AllStringMessagesDelivered()
@@ -72,7 +71,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var completeEvent = new CountdownEvent(assertMessages.Length);
             IConsumer[] listOfConsumers =
             {
-                new TestMessageWithAttributeConsumer(actualMessages, completeEvent), 
+                new TestMessageWithAttributeConsumer(actualMessages, completeEvent)
             };
 
             var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);

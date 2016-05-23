@@ -38,7 +38,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 
                                                     return connection;
                                                 });
-            
+
             _managementClient = new ManagementClient($"http://{connectionSettings.HostName}", connectionSettings.UserName, connectionSettings.Password, connectionSettings.ManagementApiPort);
         }
 

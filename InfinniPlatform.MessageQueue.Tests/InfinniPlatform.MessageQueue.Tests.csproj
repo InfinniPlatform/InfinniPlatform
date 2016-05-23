@@ -78,6 +78,7 @@
     <Compile Include="IntegrationTests\TestConsumers\TestMessage.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessageConsumer.cs" />
     <Compile Include="MessageSerializationTests\MessageSerializerTest.cs" />
+    <Compile Include="RabbitMqTestBase.cs" />
     <Compile Include="TestConstants.cs" />
   </ItemGroup>
   <ItemGroup>
