@@ -48,7 +48,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 producerBase.Produce(new Message<DynamicWrapper>(message));
             }
 
-            const int timeout = 5000;
+            const int timeout = 500;
             Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
             CollectionAssert.AreEquivalent(assertMessages, actualMessages);
         }
@@ -83,7 +83,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 producerBase.Produce(new Message<string>(message));
             }
 
-            const int timeout = 5000;
+            const int timeout = 500;
             Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
             CollectionAssert.AreEquivalent(assertMessages, actualMessages);
         }
@@ -119,7 +119,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 producerBase.Produce(new Message<TestMessage>(message));
             }
 
-            const int timeout = 5000;
+            const int timeout = 500;
             Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
             CollectionAssert.AreEquivalent(actualMessages, actualMessages);
         }

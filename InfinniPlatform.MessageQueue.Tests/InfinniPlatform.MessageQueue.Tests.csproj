@@ -62,8 +62,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationTests\ConnectionTest.cs" />
+    <Compile Include="IntegrationTests\FairDispatchTest.cs" />
     <Compile Include="IntegrationTests\FanoutConsumersTest.cs" />
+    <Compile Include="IntegrationTests\MultipleConsumers.cs" />
+    <Compile Include="IntegrationTests\OnDemandConsumerTest.cs" />
     <Compile Include="IntegrationTests\QueueNameAttributeConsumersTest.cs" />
+    <Compile Include="IntegrationTests\RoutingTest.cs" />
     <Compile Include="IntegrationTests\TestConsumers\DynamicWrapperConsumer.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessageFanoutConsumer.cs" />
     <Compile Include="IntegrationTests\TypedConsumersTest.cs" />

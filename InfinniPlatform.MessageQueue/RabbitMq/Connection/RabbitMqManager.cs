@@ -47,6 +47,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         private readonly ManagementClient _managementClient;
         private Dictionary<string, string> _exchangeNames;
 
+        /// <summary>
+        /// Возвращает абстракцию соединения с RabbitMq.
+        /// </summary>
         public IConnection GetConnection()
         {
             return _connection.Value;
@@ -89,11 +92,18 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
             return _exchangeNames[type];
         }
 
+        /// <summary>
+        /// Получить список очередей.
+        /// </summary>
         public IEnumerable<Queue> GetQueues()
         {
             return _managementClient.GetQueues();
         }
 
+        /// <summary>
+        /// Удаляет очереди из списка.
+        /// </summary>
+        /// <param name="queues">Список очередей.</param>
         public void DeleteQueues(IEnumerable<Queue> queues)
         {
             foreach (var q in queues.Where(queue => queue.AutoDelete != true))
@@ -102,14 +112,29 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
             }
         }
 
+        /// <summary>
+        /// Возвращает список связей между точками обмена и очередью.
+        /// </summary>
         public IEnumerable<Binding> GetBindings()
         {
             return _managementClient.GetBindings();
         }
 
+        /// <summary>
+        /// Возвращает список точек обмена.
+        /// </summary>
         public IEnumerable<Exchange> GetExchanges()
         {
             return _managementClient.GetExchanges();
+        }
+
+        /// <summary>
+        /// Удаляет все сообщения из очереди.
+        /// </summary>
+        /// <param name="queue">Очередь.</param>
+        public void Get(Queue queue)
+        {
+            _managementClient.Purge(queue);
         }
     }
 }

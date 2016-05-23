@@ -55,7 +55,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 producerBase.Produce(new Message<TestMessage>(message));
             }
 
-            const int timeout = 5000;
+            const int timeout = 500;
             Assert.IsTrue(completeEvent1.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(fanoutConsumer1)}.");
             Assert.IsTrue(completeEvent2.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(fanoutConsumer2)}.");
             CollectionAssert.AreEquivalent(assertMessages, actualMessages1);
