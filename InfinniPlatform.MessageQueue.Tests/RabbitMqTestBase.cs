@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -20,10 +21,8 @@ namespace InfinniPlatform.MessageQueue.Tests
         {
             RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
 
-            var bindings = RabbitMqManager.GetBindings();
-            Trace.WriteLine(bindings.Count());
-
-            RabbitMqManager.DeleteQueues(RabbitMqManager.GetQueues());
+            var queues = RabbitMqManager.GetQueues();
+            RabbitMqManager.DeleteQueues(queues);
 
             WindowsServices.StartService(TestConstants.ServiceName, TestConstants.WaitTimeout);
         }

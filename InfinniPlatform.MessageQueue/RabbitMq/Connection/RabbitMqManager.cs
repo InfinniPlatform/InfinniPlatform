@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
@@ -95,7 +96,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 
         public void DeleteQueues(IEnumerable<Queue> queues)
         {
-            foreach (var q in queues)
+            foreach (var q in queues.Where(queue => queue.AutoDelete != true))
             {
                 _managementClient.DeleteQueue(q);
             }
