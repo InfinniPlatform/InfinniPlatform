@@ -34,7 +34,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .As<MongoConnectionSettings>()
                    .SingleInstance();
 
-            builder.RegisterFactory(GetMongoConnection)
+            builder.RegisterType<MongoConnection>()
                    .As<MongoConnection>()
                    .SingleInstance();
 
@@ -181,11 +181,6 @@ namespace InfinniPlatform.DocumentStorage.IoC
         private static MongoConnectionSettings GetMongoConnectionSettings(IContainerResolver resolver)
         {
             return resolver.Resolve<IAppConfiguration>().GetSection<MongoConnectionSettings>(MongoConnectionSettings.SectionName);
-        }
-
-        private static MongoConnection GetMongoConnection(IContainerResolver resolver)
-        {
-            return new MongoConnection(resolver.Resolve<IAppEnvironment>().Name, resolver.Resolve<MongoConnectionSettings>(), resolver.Resolve<IEnumerable<IMemberValueConverter>>());
         }
     }
 }
