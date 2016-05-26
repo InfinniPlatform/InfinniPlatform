@@ -16,8 +16,9 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
         public static MongoConnection GetConnection(IEnumerable<IMemberValueConverter> converters = null)
         {
-            var appEnvironment = new Mock<IAppEnvironment>().SetupProperty(environment => environment.Name, DatabaseName).Object;
-            return new MongoConnection(appEnvironment, MongoConnectionSettings.Default, converters);
+            var appEnvironmentMock = new Mock<IAppEnvironment>();
+            appEnvironmentMock.SetupGet(e => e.Name).Returns(DatabaseName);
+            return new MongoConnection(appEnvironmentMock.Object, MongoConnectionSettings.Default, converters);
         }
 
 
