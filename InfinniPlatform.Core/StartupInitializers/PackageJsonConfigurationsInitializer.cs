@@ -105,49 +105,45 @@ namespace InfinniPlatform.Core.StartupInitializers
 
         private static DynamicWrapper LoadConfigMetadata(string configDirectory)
         {
-            dynamic configuration = new DynamicWrapper
-                                    {
-                                        { "Name", Path.GetDirectoryName(configDirectory) }
-                                    };
+            dynamic configuration = new DynamicWrapper { { "Name", Path.GetDirectoryName(configDirectory) } };
 
             configuration.ItemsMetadata = LoadItemsMetadata(configDirectory);
 
             return configuration;
         }
 
-        private static Dictionary<MetadataUniqueName, DynamicWrapper> LoadItemsMetadata(string metadataDirectory)
+        private static Dictionary<MetadataUniqueName, DynamicWrapper> LoadItemsMetadata(string documentDirectory)
         {
+            var enumerateDirectories = Directory.EnumerateDirectories(documentDirectory).ToArray();
             var itemsMetadataCache = new Dictionary<MetadataUniqueName, DynamicWrapper>();
+            var itemsMetadata = new List<DynamicWrapper>();
 
-            var itemsDirectories = Directory.EnumerateDirectories(metadataDirectory);
-
-            foreach (var itemsDir in itemsDirectories)
+            if (enumerateDirectories.Any())
             {
-                var defaultNamespace = Path.GetFileNameWithoutExtension(itemsDir);
-
-                var itemsMetadata = Directory.EnumerateFiles(itemsDir, "*.json", SearchOption.AllDirectories)
-                                             .Select(LoadItemMetadata)
-                                             .ToArray();
-
-                foreach (var item in itemsMetadata)
+                foreach (var dir in enumerateDirectories)
                 {
-                    var ns = (string)item["Namespace"];
-
-                    if (string.IsNullOrEmpty(ns))
-                    {
-                        ns = defaultNamespace;
-                    }
-
-                    var name = (string)item["Name"];
-                    var metadataName = new MetadataUniqueName(ns, name);
-
-                    if (itemsMetadataCache.ContainsKey(metadataName))
-                    {
-                        throw new InvalidOperationException($"Metadata object '{metadataName}' is duplicate.");
-                    }
-
-                    itemsMetadataCache.Add(metadataName, item);
+                    itemsMetadata.AddRange(Directory.EnumerateFiles(dir, "*.json", SearchOption.AllDirectories)
+                                                    .Select(LoadItemMetadata)
+                                                    .ToArray());
                 }
+            }
+            else
+            {
+                itemsMetadata = Directory.EnumerateFiles(documentDirectory, "*.json", SearchOption.AllDirectories)
+                                         .Select(LoadItemMetadata)
+                                         .ToList();
+            }
+
+            foreach (var item in itemsMetadata)
+            {
+                var metadataName = new MetadataUniqueName((string)item["Namespace"], (string)item["Name"]);
+
+                if (itemsMetadataCache.ContainsKey(metadataName))
+                {
+                    throw new InvalidOperationException($"Metadata object '{metadataName}' is duplicate.");
+                }
+
+                itemsMetadataCache.Add(metadataName, item);
             }
 
             return itemsMetadataCache;
