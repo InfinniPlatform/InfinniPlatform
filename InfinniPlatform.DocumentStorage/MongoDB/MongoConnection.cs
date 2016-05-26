@@ -36,7 +36,6 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             BsonSerializer.RegisterSerializationProvider(MongoDateBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoTimeBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
-            BsonSerializer.RegisterSerializationProvider(UnknownTypeBsonSerializationProvider.Default);
         }
 
 
