@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Core.Diagnostics;
+﻿using System.Collections.Generic;
+
+using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.DocumentStorage.Diagnostics;
 using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB;
@@ -11,6 +13,7 @@ using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
@@ -182,7 +185,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
         private static MongoConnection GetMongoConnection(IContainerResolver resolver)
         {
-            return new MongoConnection(resolver.Resolve<IAppEnvironment>().Name, resolver.Resolve<MongoConnectionSettings>());
+            return new MongoConnection(resolver.Resolve<IAppEnvironment>().Name, resolver.Resolve<MongoConnectionSettings>(), resolver.Resolve<IEnumerable<IMemberValueConverter>>());
         }
     }
 }
