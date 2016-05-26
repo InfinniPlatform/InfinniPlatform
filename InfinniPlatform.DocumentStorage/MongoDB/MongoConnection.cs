@@ -38,17 +38,31 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
         }
 
-
-        public MongoConnection(IAppEnvironment appEnvironment, MongoConnectionSettings connectionSettings, IEnumerable<IMemberValueConverter> converters = null)
+        public MongoConnection(IAppEnvironment appEnvironment,
+                               MongoConnectionSettings connectionSettings,
+                               IEnumerable<IMemberValueConverter> converters = null,
+                               IDocumentKnownTypeSource knownTypeSource = null)
         {
             ApplyConverters(converters);
+            RegisterKnownTypes(knownTypeSource);
 
             _database = new Lazy<IMongoDatabase>(() => CreateMongoDatabase(appEnvironment.Name, connectionSettings));
         }
 
-
         private readonly Lazy<IMongoDatabase> _database;
 
+        private static void RegisterKnownTypes(IDocumentKnownTypeSource source)
+        {
+            if (source == null)
+            {
+                return;
+            }
+
+            foreach (var bsonClassMap in source.KnownTypes.Select(type => new BsonClassMap(type)))
+            {
+                BsonClassMap.RegisterClassMap(bsonClassMap);
+            }
+        }
 
         private static void ApplyConverters(IEnumerable<IMemberValueConverter> converters)
         {
