@@ -30,7 +30,7 @@
 
 		if ($branchName -notlike 'release-*')
 		{
-			$version = $version + '-' + ($branchName -replace '^(refs/heads/){0,1}f\-', '')
+			$version = $version + '-' + ($branchName -replace '^(refs/heads/){0,1}(f\-){0,1}', '')
 		}
 
 		Build-NuspecByValues -template $template -output $output -values @{ '{VERSION}' = $version; '{COMMIT}' = $commitHash }
