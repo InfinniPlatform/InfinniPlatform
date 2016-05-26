@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.DocumentStorage.MongoDB.Conventions;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Settings;
 
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
@@ -35,14 +36,15 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             BsonSerializer.RegisterSerializationProvider(MongoDateBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoTimeBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
+            BsonSerializer.RegisterSerializationProvider(UnknownTypeBsonSerializationProvider.Default);
         }
 
 
-        public MongoConnection(string databaseName, MongoConnectionSettings connectionSettings, IEnumerable<IMemberValueConverter> converters = null)
+        public MongoConnection(IAppEnvironment appEnvironment, MongoConnectionSettings connectionSettings, IEnumerable<IMemberValueConverter> converters = null)
         {
             ApplyConverters(converters);
 
-            _database = new Lazy<IMongoDatabase>(() => CreateMongoDatabase(databaseName, connectionSettings));
+            _database = new Lazy<IMongoDatabase>(() => CreateMongoDatabase(appEnvironment.Name, connectionSettings));
         }
 
 
