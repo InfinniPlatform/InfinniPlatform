@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.FlowDocument.PrintView;
+﻿using InfinniPlatform.Core.PrintView;
+using InfinniPlatform.FlowDocument.PrintView;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.PrintView;
 
@@ -10,6 +11,10 @@ namespace InfinniPlatform.FlowDocument.IoC
         {
             builder.RegisterType<PrintViewApi>()
                    .As<IPrintViewApi>()
+                   .SingleInstance();
+
+            builder.RegisterType<FlowDocumentPrintViewBuilder>()
+                   .As<IPrintViewBuilder>()
                    .SingleInstance();
         }
     }
