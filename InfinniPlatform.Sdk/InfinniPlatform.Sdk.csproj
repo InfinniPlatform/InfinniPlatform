@@ -69,6 +69,7 @@
     <Compile Include="Documents\DocumentValidationResult.cs" />
     <Compile Include="Documents\DocumentValidationResultItem.cs" />
     <Compile Include="Documents\IDocumentIdGenerator.cs" />
+    <Compile Include="Documents\IDocumentKnownTypeSource.cs" />
     <Compile Include="Documents\IDocumentStorageFactory.cs" />
     <Compile Include="Documents\IDocumentStorageGeneric.cs" />
     <Compile Include="Documents\IDocumentStorageProviderFactory.cs" />
