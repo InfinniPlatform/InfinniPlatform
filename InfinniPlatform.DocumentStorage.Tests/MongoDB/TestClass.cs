@@ -2,8 +2,7 @@
 
 using InfinniPlatform.Sdk.Documents;
 
-namespace FakeNamespace.DontChange
-//namespace InfinniPlatform.DocumentStorage.Tests.Storage
+namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 {
     internal class Doc : Document
     {
