@@ -4,9 +4,9 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
-    internal sealed class ProducerBase : IProducer
+    internal class BroadcastProducerBase : IBroadcastProducer
     {
-        public ProducerBase(RabbitMqManager manager, IMessageSerializer messageSerializer)
+        public BroadcastProducerBase(RabbitMqManager manager, IMessageSerializer messageSerializer)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
@@ -15,20 +15,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
 
-        public void Produce(IMessage message, string queueName = null)
+        public void Publish(IMessage message)
         {
             var messageToBytes = _messageSerializer.MessageToBytes(message);
-
-            if (queueName == null)
-            {
-                queueName = QueueNamingConventions.GetProducerQueueName(message);
-            }
-
             var channel = _manager.GetChannel();
 
-            _manager.DeclareTaskQueue(queueName);
-
-            channel.BasicPublish("", queueName, null, messageToBytes);
+            channel.BasicPublish(_manager.GetExchangeNameByType(Defaults.Exchange.Type.Fanout), "", null, messageToBytes);
         }
     }
 }

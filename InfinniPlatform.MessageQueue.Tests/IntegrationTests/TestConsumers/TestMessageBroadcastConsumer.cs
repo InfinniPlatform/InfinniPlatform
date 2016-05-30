@@ -6,9 +6,9 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {
-    public class TestMessageFanoutConsumer : FanoutConsumerBase<TestMessage>
+    public class TestMessageBroadcastConsumer : BroadcastConsumerBase<TestMessage>
     {
-        public TestMessageFanoutConsumer(List<TestMessage> messages, CountdownEvent completeEvent)
+        public TestMessageBroadcastConsumer(List<TestMessage> messages, CountdownEvent completeEvent)
         {
             _messages = messages;
             _completeEvent = completeEvent;

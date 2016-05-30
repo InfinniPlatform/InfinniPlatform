@@ -34,11 +34,11 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             var actualMessages1 = new List<TestMessage>();
             var completeEvent1 = new CountdownEvent(assertMessages.Length);
-            var fanoutConsumer1 = new TestMessageFanoutConsumer(actualMessages1, completeEvent1);
+            var fanoutConsumer1 = new TestMessageBroadcastConsumer(actualMessages1, completeEvent1);
 
             var actualMessages2 = new List<TestMessage>();
             var completeEvent2 = new CountdownEvent(assertMessages.Length);
-            var fanoutConsumer2 = new TestMessageFanoutConsumer(actualMessages2, completeEvent2);
+            var fanoutConsumer2 = new TestMessageBroadcastConsumer(actualMessages2, completeEvent2);
 
             IConsumer[] listOfConsumers =
             {
@@ -49,10 +49,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
-            var producerBase = new FanoutProducerBase(rabbitMqManager, messageSerializer);
+            var producerBase = new BroadcastProducerBase(rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Produce(new Message<TestMessage>(message));
+                producerBase.Publish(new Message<TestMessage>(message));
             }
 
             const int timeout = 500;

@@ -67,15 +67,15 @@
     </Compile>
     <Compile Include="RabbitMq\Connection\Defaults.cs" />
     <Compile Include="RabbitMq\ConsumerBase.cs" />
-    <Compile Include="RabbitMq\FanoutConsumerBase.cs" />
-    <Compile Include="RabbitMq\FanoutProducerBase.cs" />
+    <Compile Include="RabbitMq\BroadcastConsumerBase.cs" />
+    <Compile Include="RabbitMq\BroadcastProducerBase.cs" />
     <Compile Include="RabbitMq\QueueNamingConventions.cs" />
     <Compile Include="RabbitMq\Serialization\IMessageSerializer.cs" />
     <Compile Include="RabbitMq\Hosting\MessageConsumersManager.cs" />
     <Compile Include="RabbitMq\OnDemandConsumer.cs" />
     <Compile Include="RabbitMq\IOnDemandConsumer.cs" />
     <Compile Include="RabbitMq\Serialization\MessageSerializer.cs" />
-    <Compile Include="RabbitMq\ProducerBase.cs" />
+    <Compile Include="RabbitMq\TaskProducerBase.cs" />
     <Compile Include="RabbitMq\Connection\RabbitMqManager.cs" />
     <Compile Include="RabbitMq\Connection\RabbitMqConnectionSettings.cs" />
   </ItemGroup>

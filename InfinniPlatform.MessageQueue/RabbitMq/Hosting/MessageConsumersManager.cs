@@ -35,8 +35,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
         public override void OnAfterStart()
         {
-            var direct = _consumers.Where(consumer => consumer is IDirectConsumer);
-            var fanout = _consumers.Where(consumer => consumer is IFanoutConsumer);
+            var direct = _consumers.Where(consumer => consumer is ITaskConsumer);
+            var fanout = _consumers.Where(consumer => consumer is IBroadcastConsumer);
 
             InitializeDirectConsumers(direct);
             InitializeFanoutConsumers(fanout);

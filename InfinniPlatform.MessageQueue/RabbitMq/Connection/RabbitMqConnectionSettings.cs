@@ -9,7 +9,6 @@
 
         public static RabbitMqConnectionSettings Default = new RabbitMqConnectionSettings();
 
-
         public RabbitMqConnectionSettings()
         {
             HostName = "localhost";
@@ -18,7 +17,6 @@
             Password = "guest";
             ManagementApiPort = 15672;
         }
-
 
         /// <summary>
         /// Имя/адрес сервера.

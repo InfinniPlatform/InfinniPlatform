@@ -32,8 +32,8 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IOnDemandConsumer>()
                    .InstancePerDependency();
 
-            builder.RegisterType<ProducerBase>()
-                   .As<IProducer>()
+            builder.RegisterType<TaskProducerBase>()
+                   .As<ITaskProducer>()
                    .InstancePerDependency();
 
             builder.RegisterType<MessageSerializer>()

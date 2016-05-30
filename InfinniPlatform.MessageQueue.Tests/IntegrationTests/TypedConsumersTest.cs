@@ -42,10 +42,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var messageConsumersManager = new MessageConsumersManager(RabbitMqManager, listOfConsumers, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
-            var producerBase = new ProducerBase(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Produce(new Message<DynamicWrapper>(message));
+                producerBase.Publish(new Message<DynamicWrapper>(message));
             }
 
             const int timeout = 500;
@@ -77,10 +77,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var messageConsumersManager = new MessageConsumersManager(RabbitMqManager, listOfConsumers, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
-            var producerBase = new ProducerBase(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Produce(new Message<string>(message));
+                producerBase.Publish(new Message<string>(message));
             }
 
             const int timeout = 500;
@@ -113,10 +113,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
-            var producerBase = new ProducerBase(rabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducerBase(rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Produce(new Message<TestMessage>(message));
+                producerBase.Publish(new Message<TestMessage>(message));
             }
 
             const int timeout = 500;

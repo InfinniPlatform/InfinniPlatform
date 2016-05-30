@@ -1,11 +1,14 @@
 ﻿namespace InfinniPlatform.Sdk.Queues
 {
-    public interface IFanoutProducer
+    /// <summary>
+    /// Отправитель сообщений в широковещательную очередь.
+    /// </summary>
+    public interface IBroadcastProducer
     {
         /// <summary>
         /// Публикует широковещательные сообщения.
         /// </summary>
         /// <param name="message">Сообщение</param>
-        void Produce(IMessage message);
+        void Publish(IMessage message);
     }
 }

@@ -24,10 +24,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new DynamicWrapper { { "SomeField", "Message3" } }
             };
 
-            var producerBase = new ProducerBase(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Produce(new Message<DynamicWrapper>(message));
+                producerBase.Publish(new Message<DynamicWrapper>(message));
             }
 
             foreach (var message in assertMessages)

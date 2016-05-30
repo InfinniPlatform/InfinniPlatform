@@ -2,6 +2,9 @@
 
 namespace InfinniPlatform.Sdk.Queues
 {
+    /// <summary>
+    /// Потребитель сообщений.
+    /// </summary>
     public interface IConsumer
     {
         /// <summary>
@@ -14,15 +17,5 @@ namespace InfinniPlatform.Sdk.Queues
         /// </summary>
         /// <param name="message">Сообщение.</param>
         void Consume(IMessage message);
-    }
-
-
-    public interface IDirectConsumer : IConsumer
-    {
-    }
-
-
-    public interface IFanoutConsumer : IConsumer
-    {
     }
 }

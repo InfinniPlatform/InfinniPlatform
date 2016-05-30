@@ -85,11 +85,13 @@
     <Compile Include="Documents\Services\DocumentGetQuery.cs" />
     <Compile Include="Documents\Services\DocumentPostQueryResult.cs" />
     <Compile Include="Documents\Services\DocumentQueryResult.cs" />
-    <Compile Include="Queues\IFanoutProducer.cs" />
+    <Compile Include="Queues\IBroadcastConsumer.cs" />
+    <Compile Include="Queues\IBroadcastProducer.cs" />
     <Compile Include="Queues\IMessage.cs" />
     <Compile Include="Queues\IMessageGeneric.cs" />
+    <Compile Include="Queues\ITaskConsumer.cs" />
     <Compile Include="Queues\QueueNameAttribute.cs" />
-    <Compile Include="Queues\IProducer.cs" />
+    <Compile Include="Queues\ITaskProducer.cs" />
     <Compile Include="Queues\Message.cs" />
     <Compile Include="Queues\IConsumer.cs" />
     <Compile Include="Queues\QueuesExtentions.cs" />
