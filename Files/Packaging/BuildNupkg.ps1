@@ -4,14 +4,17 @@
 #>
 param
 (
-	[Parameter(HelpMessage = "Путь к шаблонам nuspec-фалов.")]
-	[String] $templateDir = 'Files\Packaging\Templates',
+	[Parameter(HelpMessage = "Каталог решения.")]
+	[String] $solutionDir = '',
 
-	[Parameter(HelpMessage = "Путь к результирующему nuspec-файлу.")]
+	[Parameter(HelpMessage = "Каталог результатов.")]
 	[String] $outputDir = 'Assemblies',
 
 	[Parameter(HelpMessage = "Путь к файлу с версией проекта.")]
 	[String] $assemblyInfo = 'Files\Packaging\GlobalAssemblyInfo.cs',
+
+	[Parameter(HelpMessage = "Ветка VCS версии проекта.")]
+	[String] $branchName = '',
 
 	[Parameter(HelpMessage = "Номер VCS версии проекта.")]
 	[String] $commitHash = '',
@@ -21,26 +24,47 @@ param
 )
 
 # Script dependencies
-. (Join-Path $PSScriptRoot 'BuildNuspec.ps1')
+. (Join-Path $PSScriptRoot 'CreateNuspec.ps1')
 
 # Clean build folder
 Remove-Item -Path 'Assemblies' -Recurse -ErrorAction SilentlyContinue
 
+# Install NuGet
+
+$nugetDir = Join-Path $env:ProgramData 'NuGet'
+$nugetPath = Join-Path $nugetDir 'nuget.exe'
+
+if (-not (Test-Path $nugetPath))
+{
+	if (-not (Test-Path $nugetDir))
+	{
+		New-Item $nugetDir -ItemType Directory -ErrorAction SilentlyContinue
+	}
+
+	$nugetSourceUri = 'http://dist.nuget.org/win-x86-commandline/latest/nuget.exe'
+	Invoke-WebRequest -Uri $nugetSourceUri -OutFile $nugetPath
+}
+
 # Restore packages
-& "${Env:ProgramFiles(x86)}\NuGet\nuget.exe" restore 'InfinniPlatform.sln' -NonInteractive
+& "$nugetPath" restore 'InfinniPlatform.sln' -NonInteractive
 
 # Rebuild solution
 & "${Env:ProgramFiles(x86)}\MSBuild\14.0\bin\msbuild.exe" 'InfinniPlatform.sln' /t:Clean /p:Configuration=$buildMode /verbosity:quiet /consoleloggerparameters:ErrorsOnly
 & "${Env:ProgramFiles(x86)}\MSBuild\14.0\bin\msbuild.exe" 'InfinniPlatform.sln' /p:Configuration=$buildMode /verbosity:quiet /consoleloggerparameters:ErrorsOnly
 
-Get-ChildItem $templateDir -Filter '*.nuspec' | Foreach-Object {
+# Rebuild nuspec files
+Create-Nuspec `
+	-solutionDir $solutionDir `
+	-outputDir $outputDir `
+	-assemblyInfo $assemblyInfo `
+	-branchName $branchName `
+	-commitHash $commitHash
+
+Get-ChildItem $outputDir -Filter '*.nuspec' | Foreach-Object {
 	$nuspecFile = Join-Path $outputDir $_.Name
 
-	# Build nuspec file
-	Build-Nuspec -template $_.FullName -output $nuspecFile -assemblyInfo $assemblyInfo -commitHash $commitHash
-
 	# Build nupkg file
-	& "${Env:ProgramFiles(x86)}\NuGet\nuget.exe" pack $nuspecFile -OutputDirectory $outputDir -NoDefaultExcludes -NonInteractive
+	& "$nugetPath" pack $nuspecFile -OutputDirectory $outputDir -NoDefaultExcludes -NonInteractive -Symbols
 
 	# Remove nuspec file
 	Remove-Item -Path $nuspecFile
