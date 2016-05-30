@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Sdk.Queues;
-
-namespace InfinniPlatform.MessageQueue.RabbitMq
+﻿namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
     /// Получатель сообщений из очереди по запросу.

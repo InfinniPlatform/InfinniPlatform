@@ -6,9 +6,10 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {
-    public class TestMessageConsumer : ConsumerBase<TestMessage>
+    [QueueName("TestMessageWithAttributeTestQueue")]
+    public class TestMessageWithAttributeTaskConsumer : TaskConsumerBase<TestMessageWithAttribute>
     {
-        public TestMessageConsumer(List<TestMessage> messages, CountdownEvent completeEvent)
+        public TestMessageWithAttributeTaskConsumer(List<TestMessageWithAttribute> messages, CountdownEvent completeEvent)
         {
             _messages = messages;
             _completeEvent = completeEvent;
@@ -16,9 +17,9 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 
         private readonly CountdownEvent _completeEvent;
 
-        private readonly List<TestMessage> _messages;
+        private readonly List<TestMessageWithAttribute> _messages;
 
-        protected override void Consume(Message<TestMessage> message)
+        protected override void Consume(Message<TestMessageWithAttribute> message)
         {
             _messages.Add(message.Body);
             _completeEvent.Signal();

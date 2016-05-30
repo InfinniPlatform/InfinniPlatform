@@ -89,6 +89,7 @@
     <Compile Include="Queues\IBroadcastProducer.cs" />
     <Compile Include="Queues\IMessage.cs" />
     <Compile Include="Queues\IMessageGeneric.cs" />
+    <Compile Include="Queues\IOnDemandConsumer.cs" />
     <Compile Include="Queues\ITaskConsumer.cs" />
     <Compile Include="Queues\QueueNameAttribute.cs" />
     <Compile Include="Queues\ITaskProducer.cs" />

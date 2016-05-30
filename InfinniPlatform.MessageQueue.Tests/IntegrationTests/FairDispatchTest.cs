@@ -46,8 +46,8 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             IConsumer[] listOfConsumers =
             {
-                new DynamicWrapperConsumer(actualMessagesLists[0], completeEvent1, 1000),
-                new DynamicWrapperConsumer(actualMessagesLists[1], completeEvent2)
+                new DynamicWrapperTaskConsumer(actualMessagesLists[0], completeEvent1, 1000),
+                new DynamicWrapperTaskConsumer(actualMessagesLists[1], completeEvent2)
             };
 
             var messageConsumersManager = new MessageConsumersManager(RabbitMqManager, listOfConsumers, messageSerializer);

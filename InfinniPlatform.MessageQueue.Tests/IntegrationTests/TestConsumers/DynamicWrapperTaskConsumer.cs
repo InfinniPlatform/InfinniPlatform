@@ -7,9 +7,9 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {
-    public class DynamicWrapperConsumer : ConsumerBase<DynamicWrapper>
+    public class DynamicWrapperTaskConsumer : TaskConsumerBase<DynamicWrapper>
     {
-        public DynamicWrapperConsumer(List<DynamicWrapper> messages,
+        public DynamicWrapperTaskConsumer(List<DynamicWrapper> messages,
                                       CountdownEvent completeEvent,
                                       int taskWorkTime = 0)
         {

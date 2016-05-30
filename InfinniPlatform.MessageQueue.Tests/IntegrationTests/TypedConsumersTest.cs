@@ -36,7 +36,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var completeEvent = new CountdownEvent(assertMessages.Length);
             IConsumer[] listOfConsumers =
             {
-                new DynamicWrapperConsumer(actualMessages, completeEvent)
+                new DynamicWrapperTaskConsumer(actualMessages, completeEvent)
             };
 
             var messageConsumersManager = new MessageConsumersManager(RabbitMqManager, listOfConsumers, messageSerializer);
@@ -71,7 +71,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var completeEvent = new CountdownEvent(assertMessages.Length);
             IConsumer[] listOfConsumers =
             {
-                new StringConsumer(actualMessages, completeEvent)
+                new StringTaskConsumer(actualMessages, completeEvent)
             };
 
             var messageConsumersManager = new MessageConsumersManager(RabbitMqManager, listOfConsumers, messageSerializer);
@@ -107,7 +107,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var completeEvent = new CountdownEvent(assertMessages.Length);
             IConsumer[] listOfConsumers =
             {
-                new TestMessageConsumer(actualMessages, completeEvent)
+                new TestMessageTaskConsumer(actualMessages, completeEvent)
             };
 
             var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
