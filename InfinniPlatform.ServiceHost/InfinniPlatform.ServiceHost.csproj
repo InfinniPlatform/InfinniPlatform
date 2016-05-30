@@ -76,6 +76,7 @@
     <None Include="..\Files\Config\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
