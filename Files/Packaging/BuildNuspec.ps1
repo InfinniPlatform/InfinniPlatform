@@ -16,7 +16,10 @@
 		[String] $assemblyInfo = 'Files\Packaging\GlobalAssemblyInfo.cs',
 
 		[Parameter(HelpMessage = "Номер VCS версии проекта.")]
-		[String] $commitHash = ''
+		[String] $commitHash = '',
+
+		[Parameter(HelpMessage = "Ветка VCS версии проекта.")]
+		[String] $branchName = ''
 	)
 
 	process 
@@ -24,6 +27,11 @@
 		$version = Get-Content $assemblyInfo `
 			| Select-String -Pattern 'AssemblyVersion\s*\(\s*\"(?<version>.*?)\"\s*\)' `
 			| ForEach-Object { $_.Matches[0].Groups['version'].Value }
+
+		if ($branchName -and $branchName -notlike 'release-*')
+		{
+			$version = $version + '-' + ($branchName -replace '^(refs/heads/){0,1}(f\-){0,1}', '')
+		}
 
 		Build-NuspecByValues -template $template -output $output -values @{ '{VERSION}' = $version; '{COMMIT}' = $commitHash }
 	}

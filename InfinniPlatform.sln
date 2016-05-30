@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}"
 EndProject
@@ -65,7 +65,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{
 	ProjectSection(SolutionItems) = preProject
 		Files\Packaging\BuildNupkg.bat = Files\Packaging\BuildNupkg.bat
 		Files\Packaging\BuildNupkg.ps1 = Files\Packaging\BuildNupkg.ps1
-		Files\Packaging\BuildNuspec.ps1 = Files\Packaging\BuildNuspec.ps1
+		Files\Packaging\CreateNuspec.ps1 = Files\Packaging\CreateNuspec.ps1
 		Files\Packaging\GlobalAssemblyInfo.cs = Files\Packaging\GlobalAssemblyInfo.cs
 	EndProjectSection
 EndProject
@@ -86,12 +86,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{FA9372
 		Files\Config\App.config = Files\Config\App.config
 		Files\Config\AppCommon.json = Files\Config\AppCommon.json
 		Files\Config\AppExtension.json = Files\Config\AppExtension.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{EE369BF1-62B4-40CD-83DA-467710B4E376}"
-	ProjectSection(SolutionItems) = preProject
-		Files\Packaging\Templates\InfinniPlatform.nuspec = Files\Packaging\Templates\InfinniPlatform.nuspec
-		Files\Packaging\Templates\InfinniPlatform.Sdk.nuspec = Files\Packaging\Templates\InfinniPlatform.Sdk.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentStorage", "InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj", "{8EAF5465-16FB-456F-B562-6E4F38DD8885}"
@@ -249,6 +243,5 @@ Global
 		{197A078F-F42F-4F87-B8B2-463129ED4797} = {76075218-7249-4C01-A184-35E066952A8F}
 		{075765EF-E0DF-45D4-86E3-5DE2AFBAE5F5} = {76075218-7249-4C01-A184-35E066952A8F}
 		{FA93727B-56AC-452A-8F91-F09C6620134F} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
-		{EE369BF1-62B4-40CD-83DA-467710B4E376} = {8237A533-D176-4BB1-86F7-F07C7AEFBA03}
 	EndGlobalSection
 EndGlobal

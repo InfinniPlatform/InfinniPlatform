@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 
 using InfinniPlatform.DocumentStorage.MongoDB;
+using InfinniPlatform.DocumentStorage.MongoDB.Conventions;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Metadata.Documents;
 using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Settings;
+
+using Moq;
 
 namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 {
@@ -11,20 +16,22 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public const string DatabaseName = "MongoTest";
 
 
-        public static MongoConnection GetConnection(IEnumerable<IMemberValueConverter> converters = null)
+        public static MongoConnection GetConnection(IEnumerable<IMemberValueConverter> converters = null, IDocumentKnownTypeSource source = null)
         {
-            return new MongoConnection(DatabaseName, MongoConnectionSettings.Default, converters);
+            var appEnvironmentMock = new Mock<IAppEnvironment>();
+            appEnvironmentMock.SetupGet(e => e.Name).Returns(DatabaseName);
+            return new MongoConnection(appEnvironmentMock.Object, MongoConnectionSettings.Default, converters, source);
         }
 
 
-        public static MongoDocumentStorageProvider GetStorageProvider(string documentType = null, IEnumerable<IMemberValueConverter> converters = null)
+        public static MongoDocumentStorageProvider GetStorageProvider(string documentType = null, IEnumerable<IMemberValueConverter> converters = null, IDocumentKnownTypeSource source = null)
         {
-            return new MongoDocumentStorageProvider(GetConnection(converters), documentType);
+            return new MongoDocumentStorageProvider(GetConnection(converters, source), documentType);
         }
 
-        public static MongoDocumentStorageProvider<TDocument> GetStorageProvider<TDocument>(string documentType = null, IEnumerable<IMemberValueConverter> converters = null)
+        public static MongoDocumentStorageProvider<TDocument> GetStorageProvider<TDocument>(string documentType = null, IEnumerable<IMemberValueConverter> converters = null, IDocumentKnownTypeSource source = null)
         {
-            return new MongoDocumentStorageProvider<TDocument>(GetConnection(converters), documentType);
+            return new MongoDocumentStorageProvider<TDocument>(GetConnection(converters, source), documentType);
         }
 
 
@@ -34,7 +41,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             return new MongoDocumentStorageProvider(connection, documentType);
         }
 
-        public static MongoDocumentStorageProvider GetEmptyStorageProvider(string documentType, IEnumerable<IMemberValueConverter> converters = null, params DocumentIndex[] indexes)
+        public static MongoDocumentStorageProvider GetEmptyStorageProvider(string documentType, IEnumerable<IMemberValueConverter> converters = null, IDocumentKnownTypeSource source = null, params DocumentIndex[] indexes)
         {
             var connection = CreateEmptyStorage(documentType, converters, indexes);
             return new MongoDocumentStorageProvider(connection, documentType);
@@ -47,7 +54,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             return new MongoDocumentStorageProvider<TDocument>(connection, documentType);
         }
 
-        public static MongoDocumentStorageProvider<TDocument> GetEmptyStorageProvider<TDocument>(string documentType, IEnumerable<IMemberValueConverter> converters = null, params DocumentIndex[] indexes)
+        public static MongoDocumentStorageProvider<TDocument> GetEmptyStorageProvider<TDocument>(string documentType, IEnumerable<IMemberValueConverter> converters = null, IDocumentKnownTypeSource source = null, params DocumentIndex[] indexes)
         {
             var connection = CreateEmptyStorage(documentType, converters, indexes);
             return new MongoDocumentStorageProvider<TDocument>(connection, documentType);
