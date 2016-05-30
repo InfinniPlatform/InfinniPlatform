@@ -90,8 +90,6 @@
 			{
 				foreach ($item in $dependencies)
 				{
-					$references += "$item.$version\lib\$framework\"
-
 					$projectNuspec = $projectNuspec + "            <dependency id=""$item"" version=""$version"" />`r`n"
 				}
 			}
