@@ -65,6 +65,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{
 	ProjectSection(SolutionItems) = preProject
 		Files\Packaging\BuildNupkg.bat = Files\Packaging\BuildNupkg.bat
 		Files\Packaging\BuildNupkg.ps1 = Files\Packaging\BuildNupkg.ps1
+		Files\Packaging\BuildSymbols.ps1 = Files\Packaging\BuildSymbols.ps1
 		Files\Packaging\CreateNuspec.ps1 = Files\Packaging\CreateNuspec.ps1
 		Files\Packaging\GlobalAssemblyInfo.cs = Files\Packaging\GlobalAssemblyInfo.cs
 	EndProjectSection

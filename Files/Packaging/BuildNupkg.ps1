@@ -5,7 +5,7 @@
 param
 (
 	[Parameter(HelpMessage = "Каталог решения.")]
-	[String] $solutionDir = '',
+	[String] $solutionDir = '.',
 
 	[Parameter(HelpMessage = "Каталог результатов.")]
 	[String] $outputDir = 'Assemblies',
@@ -23,13 +23,14 @@ param
 	[String] $buildMode = 'Release'
 )
 
-# Script dependencies
+# Зависимости скрипта
 . (Join-Path $PSScriptRoot 'CreateNuspec.ps1')
+. (Join-Path $PSScriptRoot 'BuildSymbols.ps1')
 
-# Clean build folder
-Remove-Item -Path 'Assemblies' -Recurse -ErrorAction SilentlyContinue
+# Очистка результатов
+Remove-Item -Path $outputDir -Recurse -ErrorAction SilentlyContinue
 
-# Install NuGet
+# Установка NuGet
 
 $nugetDir = Join-Path $env:ProgramData 'NuGet'
 $nugetPath = Join-Path $nugetDir 'nuget.exe'
@@ -45,14 +46,14 @@ if (-not (Test-Path $nugetPath))
 	Invoke-WebRequest -Uri $nugetSourceUri -OutFile $nugetPath
 }
 
-# Restore packages
+# Восстановление пакетов
 & "$nugetPath" restore 'InfinniPlatform.sln' -NonInteractive
 
-# Rebuild solution
+# Сборка проектов решения
 & "${Env:ProgramFiles(x86)}\MSBuild\14.0\bin\msbuild.exe" 'InfinniPlatform.sln' /t:Clean /p:Configuration=$buildMode /verbosity:quiet /consoleloggerparameters:ErrorsOnly
 & "${Env:ProgramFiles(x86)}\MSBuild\14.0\bin\msbuild.exe" 'InfinniPlatform.sln' /p:Configuration=$buildMode /verbosity:quiet /consoleloggerparameters:ErrorsOnly
 
-# Rebuild nuspec files
+# Создание nuspec-файлов
 Create-Nuspec `
 	-solutionDir $solutionDir `
 	-outputDir $outputDir `
@@ -63,9 +64,9 @@ Create-Nuspec `
 Get-ChildItem $outputDir -Filter '*.nuspec' | Foreach-Object {
 	$nuspecFile = Join-Path $outputDir $_.Name
 
-	# Build nupkg file
-	& "$nugetPath" pack $nuspecFile -OutputDirectory $outputDir -NoDefaultExcludes -NonInteractive -Symbols
+	# Создание nupkg-файлов
+	& "$nugetPath" pack $nuspecFile -OutputDirectory $outputDir -NoDefaultExcludes -NonInteractive
 
-	# Remove nuspec file
+	# Удаление nuspec-файлов
 	Remove-Item -Path $nuspecFile
 }
