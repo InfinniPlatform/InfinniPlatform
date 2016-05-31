@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues;
@@ -50,6 +52,48 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             _manager.DeclareTaskQueue(queueName);
 
             channel.BasicPublish("", queueName, null, messageToBytes);
+        }
+
+        public async Task PublishAsync<T>(T message, string queueName = null) where T : class
+        {
+            await Task.Run(() =>
+                           {
+                               var innerMessage = new Message<T>(message);
+
+                               var messageToBytes = _messageSerializer.MessageToBytes(innerMessage);
+
+                               if (queueName == null)
+                               {
+                                   queueName = QueueNamingConventions.GetProducerQueueName(innerMessage);
+                               }
+
+                               var channel = _manager.GetChannel();
+
+                               _manager.DeclareTaskQueue(queueName);
+
+                               channel.BasicPublish("", queueName, null, messageToBytes);
+                           });
+        }
+
+        public async Task PublishAsync(DynamicWrapper message, string queueName)
+        {
+            await Task.Run(() =>
+                           {
+                               var innerMessage = new Message(message);
+
+                               var messageToBytes = _messageSerializer.MessageToBytes(innerMessage);
+
+                               if (queueName == null)
+                               {
+                                   queueName = QueueNamingConventions.GetProducerQueueName(innerMessage);
+                               }
+
+                               var channel = _manager.GetChannel();
+
+                               _manager.DeclareTaskQueue(queueName);
+
+                               channel.BasicPublish("", queueName, null, messageToBytes);
+                           });
         }
     }
 }

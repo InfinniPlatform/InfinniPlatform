@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Dynamic;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Sdk.Queues
 {
@@ -20,5 +22,19 @@ namespace InfinniPlatform.Sdk.Queues
         /// <param name="message">Сообщение.</param>
         /// <param name="queueName">Имя очереди.</param>
         void Publish(DynamicWrapper message, string queueName);
+
+        /// <summary>
+        /// Публикует сообщение в очередь задач.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        /// <param name="queueName">Имя очереди.</param>
+        Task PublishAsync<T>(T message, string queueName = null) where T : class;
+
+        /// <summary>
+        /// Публикует сообщение в очередь задач.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        /// <param name="queueName">Имя очереди.</param>
+        Task PublishAsync(DynamicWrapper message, string queueName);
     }
 }
