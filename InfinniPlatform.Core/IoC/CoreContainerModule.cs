@@ -8,6 +8,7 @@ using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Core.IoC
@@ -66,6 +67,8 @@ namespace InfinniPlatform.Core.IoC
             builder.RegisterType<PackageJsonConfigurationsInitializer>()
                    .As<IApplicationEventHandler>()
                    .SingleInstance();
+
+            builder.RegisterHttpServices(GetType().Assembly);
         }
     }
 }
