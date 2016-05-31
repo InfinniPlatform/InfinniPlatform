@@ -19,7 +19,10 @@
 		[String] $branchName = '',
 
 		[Parameter(HelpMessage = "Номер VCS версии проекта.")]
-		[String] $commitHash = ''
+		[String] $commitHash = '',
+
+		[Parameter(HelpMessage = "Версия .NET.")]
+		[String] $framework = 'net45'
 	)
 
 	process
@@ -38,6 +41,7 @@
 		### Create nuspec for all projects
 
 		$projects = Get-ChildItem -Path $solutionDir -Filter '*.csproj' -Exclude '*.Tests.csproj' -Recurse
+		$references = @()
 
 		foreach ($project in $projects)
 		{
@@ -63,7 +67,9 @@
 
 			# NuGet packages
 
-			$dependencies = $projectXml.Project.ItemGroup.Reference.HintPath | Where { $_ -like '..\packages\*.dll' } | % { $_ -replace '\\[^\\]+\.dll', '' } | Get-Unique
+			$projectPackages = $projectXml.Project.ItemGroup.Reference.HintPath | Where { $_ -like '..\packages\*.dll' }
+			$dependencies = $projectPackages | % { $_ -replace '\\[^\\]+\.dll', '' } | Sort-Object | Get-Unique -AsString
+			$references += $projectPackages | % { $_ -replace '^\.\.\\packages\\', '' }
 
 			if ($dependencies)
 			{
@@ -78,14 +84,13 @@
 
 			# Project references
 
-			$dependencies = $projectXml.Project.ItemGroup.ProjectReference.Name | Get-Unique
+			$dependencies = $projectXml.Project.ItemGroup.ProjectReference.Name | Sort-Object | Get-Unique -AsString
 
 			if ($dependencies)
 			{
 				foreach ($item in $dependencies)
 				{
-					$projectNuspec = $projectNuspec + `
-						"            <dependency id=""$item"" version=""$version"" />`r`n"
+					$projectNuspec = $projectNuspec + "            <dependency id=""$item"" version=""$version"" />`r`n"
 				}
 			}
 
@@ -96,10 +101,10 @@
 
 			# Project assembly
 
-			$projectAssembly = $projectAssemblyName + $(if (($projectXml.Project.PropertyGroup.OutputType) -like '*Library*') { '.dll' } else { '.exe' })
-
-			$projectNuspec = $projectNuspec + `
-				"        <file target=""lib\net45\$projectAssembly"" src=""$projectAssembly"" />`r`n"
+			$projectIsLibrary = $projectXml.Project.PropertyGroup.OutputType -like '*Library*'
+			$projectAssembly = $projectAssemblyName + $(if ($projectIsLibrary) { '.dll' } else { '.exe' })
+			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\$projectAssembly"" src=""$projectAssembly"" />`r`n"
+			$references += "$projectName.$version\lib\$framework\$projectAssembly"
 
 			# Project resources for ru-RU
 
@@ -107,8 +112,8 @@
 
 			if ($projectResourcesRu -and $projectResourcesRu.Count -gt 0 -and $projectResourcesRu[0])
 			{
-				$projectNuspec = $projectNuspec + `
-					"        <file target=""lib\net45\ru-RU"" src=""ru-RU\$projectAssemblyName.resources.dll"" />`r`n"
+				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\ru-RU"" src=""ru-RU\$projectAssemblyName.resources.dll"" />`r`n"
+				$references += "$projectName.$version\lib\$framework\ru-RU\$projectAssemblyName.resources.dll"
 			}
 
 			# Project resources for en-US
@@ -117,14 +122,13 @@
 
 			if ($projectResourcesEn -and $projectResourcesEn.Count -gt 0 -and $projectResourcesEn[0])
 			{
-				$projectNuspec = $projectNuspec + `
-					"        <file target=""lib\net45\en-US"" src=""en-US\$projectAssemblyName.resources.dll"" />`r`n"
+				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\en-US"" src=""en-US\$projectAssemblyName.resources.dll"" />`r`n"
+				$references += "$projectName.$version\lib\$framework\en-US\$projectAssemblyName.resources.dll"
 			}
 
 			# Project symbols
 
-			$projectNuspec = $projectNuspec + `
-				"        <file target=""lib\net45"" src=""$projectAssemblyName.pdb"" />`r`n"
+			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.pdb"" />`r`n"
 
 			# Project docs
 
@@ -132,8 +136,15 @@
 
 			if ($projectDocs -and $projectDocs.Count -gt 0 -and $projectDocs[0])
 			{
-				$projectNuspec = $projectNuspec + `
-					"        <file target=""lib\net45"" src=""$projectAssemblyName.xml"" />`r`n"
+				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.xml"" />`r`n"
+			}
+
+			# Project config
+
+			if (-not $projectIsLibrary)
+			{
+				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.exe.config"" />`r`n"
+				$references += "$projectName.$version\lib\$framework\$projectAssemblyName.exe.config"
 			}
 
 			$projectNuspec = $projectNuspec + `
@@ -165,8 +176,7 @@
 		{
 			$projectName = (Get-ChildItem $project).BaseName
 
-			$solutionNuspec = $solutionNuspec + `
-				"            <dependency id=""$projectName"" version=""$version"" />`r`n"
+			$solutionNuspec = $solutionNuspec + "            <dependency id=""$projectName"" version=""$version"" />`r`n"
 		}
 
 		$solutionNuspec = $solutionNuspec + `
@@ -174,13 +184,18 @@
 			"    </metadata>`r`n" + `
 			"    <files>`r`n" + `
 			"        <file target=""content\metadata\Authorization"" src=""content\InfinniPlatform\metadata\Authorization\**\*.*"" />`r`n" + `
-			"        <file target=""lib\net45\App.config"" src=""InfinniPlatform.NodeServiceHost.dll.config"" />`r`n" + `
-			"        <file target=""lib\net45\AppLog.config"" src=""AppLog.config"" />`r`n" + `
-			"        <file target=""lib\net45\AppCommon.json"" src=""AppCommon.json"" />`r`n" + `
-			"        <file target=""lib\net45\AppExtension.json"" src=""AppExtension.json"" />`r`n" + `
+			"        <file target=""lib\$framework\App.config"" src=""App.config"" />`r`n" + `
+			"        <file target=""lib\$framework\AppLog.config"" src=""AppLog.config"" />`r`n" + `
+			"        <file target=""lib\$framework\AppCommon.json"" src=""AppCommon.json"" />`r`n" + `
+			"        <file target=""lib\$framework\AppExtension.json"" src=""AppExtension.json"" />`r`n" + `
+			"        <file target=""lib\$framework\references.lock"" src=""references.lock"" />`r`n" + `
 			"    </files>`r`n" + `
 			"</package>"
 
 		Set-Content (Join-Path $outputDir 'InfinniPlatform.nuspec') -Value $solutionNuspec
+
+		### Create file with solution references
+
+		Set-Content (Join-Path $outputDir 'references.lock') -Value ($references | Sort-Object | Get-Unique -AsString)
 	}
 }
