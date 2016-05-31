@@ -1,40 +1,11 @@
-﻿using System;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Sdk.Queues
 {
-    /// <summary>
-    /// Сообщение в очереди.
-    /// </summary>
-    public class Message<T> : IMessage<T> where T : class
+    public class Message : Message<DynamicWrapper>
     {
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="body">Тело сообщения.</param>
-        public Message(T body)
+        public Message(DynamicWrapper body) : base(body)
         {
-            Body = body;
-        }
-
-        /// <summary>
-        /// Тело сообщения.
-        /// </summary>
-        public T Body { get; }
-
-        /// <summary>
-        /// Возвращает тело сообщения.
-        /// </summary>
-        public object GetBody()
-        {
-            return Body;
-        }
-
-        /// <summary>
-        /// Возвращает тип тела сообщения.
-        /// </summary>
-        public Type GetBodyType()
-        {
-            return Body.GetType();
         }
     }
 }

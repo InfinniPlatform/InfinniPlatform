@@ -91,9 +91,10 @@
     <Compile Include="Queues\IMessageGeneric.cs" />
     <Compile Include="Queues\IOnDemandConsumer.cs" />
     <Compile Include="Queues\ITaskConsumer.cs" />
+    <Compile Include="Queues\Message.cs" />
     <Compile Include="Queues\QueueNameAttribute.cs" />
     <Compile Include="Queues\ITaskProducer.cs" />
-    <Compile Include="Queues\Message.cs" />
+    <Compile Include="Queues\MessageGeneric.cs" />
     <Compile Include="Queues\IConsumer.cs" />
     <Compile Include="Queues\QueuesExtentions.cs" />
     <Compile Include="RestApi\Blob\BlobHttpServiceClient.cs" />

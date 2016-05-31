@@ -44,7 +44,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var producerBase = new TaskProducerBase(rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Publish(new Message<string>(message), "StringConsumerWithAttributeTest");
+                producerBase.Publish(message, "StringConsumerWithAttributeTest");
             }
 
             const int timeout = 500;
@@ -80,7 +80,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var producerBase = new TaskProducerBase(rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Publish(new Message<TestMessageWithAttribute>(message));
+                producerBase.Publish(message);
             }
 
             const int timeout = 500;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace InfinniPlatform.Sdk.Queues
 {
@@ -17,5 +18,11 @@ namespace InfinniPlatform.Sdk.Queues
         /// </summary>
         /// <param name="message">Сообщение.</param>
         void Consume(IMessage message);
+
+        /// <summary>
+        /// Обработчик сообщения.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        Task ConsumeAsync(IMessage message);
     }
 }

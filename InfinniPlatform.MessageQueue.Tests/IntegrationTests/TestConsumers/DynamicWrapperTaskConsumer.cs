@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.Sdk.Dynamic;
@@ -27,6 +28,11 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
             _messages.Add(message.Body);
             _completeEvent.Signal();
             Thread.Sleep(_taskWorkTime);
+        }
+
+        protected override Task ConsumeAsync(Message<DynamicWrapper> message)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

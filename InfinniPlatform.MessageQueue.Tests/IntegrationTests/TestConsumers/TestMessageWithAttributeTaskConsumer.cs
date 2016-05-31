@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.Sdk.Queues;
@@ -23,6 +24,11 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         {
             _messages.Add(message.Body);
             _completeEvent.Signal();
+        }
+
+        protected override Task ConsumeAsync(Message<TestMessageWithAttribute> message)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
