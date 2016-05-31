@@ -20,6 +20,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         }
 
         protected abstract void Consume(Message<T> message);
+
         protected abstract Task ConsumeAsync(Message<T> message);
     }
 }

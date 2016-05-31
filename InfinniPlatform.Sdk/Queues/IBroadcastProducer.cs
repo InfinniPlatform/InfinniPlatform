@@ -9,6 +9,6 @@
         /// Публикует широковещательные сообщения.
         /// </summary>
         /// <param name="message">Сообщение</param>
-        void Publish(IMessage message);
+        void Publish<T>(T message) where T : class;
     }
 }

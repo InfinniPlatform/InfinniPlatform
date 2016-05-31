@@ -52,7 +52,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var producerBase = new BroadcastProducerBase(rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Publish(new Message<TestMessage>(message));
+                producerBase.Publish(message);
             }
 
             const int timeout = 500;

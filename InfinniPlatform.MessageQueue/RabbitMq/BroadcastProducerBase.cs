@@ -15,9 +15,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
 
-        public void Publish(IMessage message)
+        public void Publish<T>(T message) where T : class
         {
-            var messageToBytes = _messageSerializer.MessageToBytes(message);
+            var innerMessage = new Message<T>(message);
+
+            var messageToBytes = _messageSerializer.MessageToBytes(innerMessage);
             var channel = _manager.GetChannel();
 
             channel.BasicPublish(_manager.GetExchangeNameByType(Defaults.Exchange.Type.Fanout), "", null, messageToBytes);

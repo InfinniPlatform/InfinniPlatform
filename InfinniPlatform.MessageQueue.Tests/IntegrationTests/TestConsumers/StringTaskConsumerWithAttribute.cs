@@ -26,9 +26,13 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
             _completeEvent.Signal();
         }
 
-        protected override Task ConsumeAsync(Message<string> message)
+        protected override async Task ConsumeAsync(Message<string> message)
         {
-            throw new System.NotImplementedException();
+            await Task.Run(() =>
+                           {
+                               _messages.Add(message.Body);
+                               _completeEvent.Signal();
+                           });
         }
     }
 }

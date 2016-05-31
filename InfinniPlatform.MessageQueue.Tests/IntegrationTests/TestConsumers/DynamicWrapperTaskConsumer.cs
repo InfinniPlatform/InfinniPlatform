@@ -11,8 +11,8 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
     public class DynamicWrapperTaskConsumer : TaskConsumerBase<DynamicWrapper>
     {
         public DynamicWrapperTaskConsumer(List<DynamicWrapper> messages,
-                                      CountdownEvent completeEvent,
-                                      int taskWorkTime = 0)
+                                          CountdownEvent completeEvent,
+                                          int taskWorkTime = 0)
         {
             _messages = messages;
             _completeEvent = completeEvent;
@@ -30,9 +30,14 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
             Thread.Sleep(_taskWorkTime);
         }
 
-        protected override Task ConsumeAsync(Message<DynamicWrapper> message)
+        protected override async Task ConsumeAsync(Message<DynamicWrapper> message)
         {
-            throw new System.NotImplementedException();
+            await Task.Run(() =>
+                           {
+                               _messages.Add(message.Body);
+                               _completeEvent.Signal();
+                               Thread.Sleep(_taskWorkTime);
+                           });
         }
     }
 }

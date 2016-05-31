@@ -1,7 +1,6 @@
 ﻿using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Queues;
 
 using NUnit.Framework;
 

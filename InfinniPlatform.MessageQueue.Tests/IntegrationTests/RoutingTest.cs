@@ -6,6 +6,5 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
     [Category(TestCategories.IntegrationTest)]
     public class RoutingTest
     {
-         
     }
 }
