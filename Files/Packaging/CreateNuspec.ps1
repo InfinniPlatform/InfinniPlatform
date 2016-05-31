@@ -144,6 +144,7 @@
 			if (-not $projectIsLibrary)
 			{
 				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.exe.config"" />`r`n"
+				$references += "$projectName.$version\lib\$framework\$projectAssemblyName.exe.config"
 			}
 
 			$projectNuspec = $projectNuspec + `
