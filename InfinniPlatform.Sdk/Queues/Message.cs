@@ -1,4 +1,4 @@
-using InfinniPlatform.Sdk.Dynamic;
+﻿using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Sdk.Queues
 {
