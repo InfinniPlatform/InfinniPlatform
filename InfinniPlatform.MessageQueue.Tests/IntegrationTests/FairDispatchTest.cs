@@ -50,7 +50,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new DynamicWrapperTaskConsumer(actualMessagesLists[1], completeEvent2)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(RabbitMqManager, listOfConsumers, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, RabbitMqManager, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
             var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);

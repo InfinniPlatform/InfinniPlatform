@@ -17,11 +17,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <summary>
         /// Регистрирует потребителей сообщений.
         /// </summary>
-        /// <param name="manager">Мэнеджер соединения с RabbitMQ.</param>
         /// <param name="consumers">Потребители сообщений.</param>
+        /// <param name="manager">Мэнеджер соединения с RabbitMQ.</param>
         /// <param name="messageSerializer">Сериализатор сообщений.</param>
-        public MessageConsumersManager(RabbitMqManager manager,
-                                       IConsumer[] consumers,
+        public MessageConsumersManager(IConsumer[] consumers,
+                                       RabbitMqManager manager,
                                        IMessageSerializer messageSerializer)
         {
             _manager = manager;

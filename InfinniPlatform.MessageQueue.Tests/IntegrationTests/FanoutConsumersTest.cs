@@ -46,7 +46,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 fanoutConsumer2
             };
 
-            var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
             var producerBase = new BroadcastProducerBase(rabbitMqManager, messageSerializer);

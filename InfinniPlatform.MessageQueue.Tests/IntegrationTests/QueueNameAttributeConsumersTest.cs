@@ -38,7 +38,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new StringTaskConsumerWithAttribute(actualMessages, completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
             var producerBase = new TaskProducerBase(rabbitMqManager, messageSerializer);
@@ -74,7 +74,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new TestMessageWithAttributeTaskConsumer(actualMessages, completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(rabbitMqManager, listOfConsumers, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer);
             messageConsumersManager.OnAfterStart();
 
             var producerBase = new TaskProducerBase(rabbitMqManager, messageSerializer);
