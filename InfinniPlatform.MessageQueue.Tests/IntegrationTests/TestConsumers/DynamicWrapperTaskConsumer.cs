@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,21 +24,16 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         private readonly List<DynamicWrapper> _messages;
         private readonly int _taskWorkTime;
 
-        protected override void Consume(Message<DynamicWrapper> message)
+        protected override async Task Consume(Message<DynamicWrapper> message)
         {
-            _messages.Add(message.Body);
-            _completeEvent.Signal();
-            Thread.Sleep(_taskWorkTime);
-        }
-
-        protected override async Task ConsumeAsync(Message<DynamicWrapper> message)
-        {
-            await Task.Run(() =>
-                           {
-                               _messages.Add(message.Body);
-                               _completeEvent.Signal();
-                               Thread.Sleep(_taskWorkTime);
-                           });
+            await Task.Run(async () =>
+                                 {
+                                     _messages.Add(message.Body);
+                                     _completeEvent.Signal();
+                                     Console.WriteLine($"{DateTime.Now.Millisecond} Wait.");
+                                     await Task.Delay(_taskWorkTime);
+                                     Console.WriteLine($"{DateTime.Now.Millisecond} Wait complete.");
+                                 });
         }
     }
 }

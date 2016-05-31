@@ -17,12 +17,6 @@ namespace InfinniPlatform.Sdk.Queues
         /// Обработчик сообщения.
         /// </summary>
         /// <param name="message">Сообщение.</param>
-        void Consume(IMessage message);
-
-        /// <summary>
-        /// Обработчик сообщения.
-        /// </summary>
-        /// <param name="message">Сообщение.</param>
-        Task ConsumeAsync(IMessage message);
+        Task Consume(IMessage message);
     }
 }

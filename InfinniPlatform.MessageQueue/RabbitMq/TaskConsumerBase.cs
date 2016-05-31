@@ -16,18 +16,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         /// </summary>
         public Type MessageType => typeof(T);
 
-        void IConsumer.Consume(IMessage message)
+        async Task IConsumer.Consume(IMessage message)
         {
-            Consume((Message<T>)message);
+            await Consume((Message<T>)message);
         }
 
-        public async Task ConsumeAsync(IMessage message)
-        {
-            await ConsumeAsync((Message<T>)message);
-        }
-
-        protected abstract void Consume(Message<T> message);
-
-        protected abstract Task ConsumeAsync(Message<T> message);
+        protected abstract Task Consume(Message<T> message);
     }
 }

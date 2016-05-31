@@ -20,13 +20,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 
         private readonly List<TestMessageWithAttribute> _messages;
 
-        protected override void Consume(Message<TestMessageWithAttribute> message)
-        {
-            _messages.Add(message.Body);
-            _completeEvent.Signal();
-        }
-
-        protected override async Task ConsumeAsync(Message<TestMessageWithAttribute> message)
+        protected override async Task Consume(Message<TestMessageWithAttribute> message)
         {
             await Task.Run(() =>
                            {

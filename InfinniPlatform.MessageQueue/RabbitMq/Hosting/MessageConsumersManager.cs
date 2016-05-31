@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
 
 using RabbitMQ.Client;
@@ -20,16 +22,20 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <param name="consumers">Потребители сообщений.</param>
         /// <param name="manager">Мэнеджер соединения с RabbitMQ.</param>
         /// <param name="messageSerializer">Сериализатор сообщений.</param>
+        /// <param name="log"></param>
         public MessageConsumersManager(IConsumer[] consumers,
                                        RabbitMqManager manager,
-                                       IMessageSerializer messageSerializer)
+                                       IMessageSerializer messageSerializer,
+                                       ILog log)
         {
             _manager = manager;
             _consumers = consumers;
             _messageSerializer = messageSerializer;
+            _log = log;
         }
 
         private readonly IConsumer[] _consumers;
+        private readonly ILog _log;
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
 
@@ -79,9 +85,25 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
                                              var message = _messageSerializer.BytesToMessage(e.Body, messageType);
 
-                                             consumer.Consume(message);
-
-                                             channel.BasicAck(e.DeliveryTag, false);
+                                             Task.Run(async () =>
+                                                      {
+                                                          _log.Info($"{DateTime.Now.Millisecond} Consumed by {consumer.GetType().Name}.");
+                                                          Console.WriteLine($"{DateTime.Now.Millisecond} Consumed by {consumer.GetType().Name}.");
+                                                          await consumer.Consume(message);
+                                                      })
+                                                 .ContinueWith(task =>
+                                                               {
+                                                                   if (!task.IsFaulted)
+                                                                   {
+                                                                       _log.Info($"{DateTime.Now.Millisecond} Acked by {consumer.GetType().Name}.");
+                                                                       Console.WriteLine($"{DateTime.Now.Millisecond} Acked by {consumer.GetType().Name}.");
+                                                                       channel.BasicAck(e.DeliveryTag, false);
+                                                                   }
+                                                                   else
+                                                                   {
+                                                                       Console.WriteLine(task.Exception);
+                                                                   }
+                                                               });
                                          };
 
             channel.BasicConsume(channelKey, false, eventingConsumer);

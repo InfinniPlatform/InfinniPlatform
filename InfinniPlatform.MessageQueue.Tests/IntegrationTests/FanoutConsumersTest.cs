@@ -7,7 +7,10 @@ using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -46,7 +49,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 fanoutConsumer2
             };
 
-            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer, new Mock<ILog>().Object);
             messageConsumersManager.OnAfterStart();
 
             var producerBase = new BroadcastProducerBase(rabbitMqManager, messageSerializer);

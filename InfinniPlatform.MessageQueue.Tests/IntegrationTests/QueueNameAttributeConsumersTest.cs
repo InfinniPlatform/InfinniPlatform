@@ -6,7 +6,10 @@ using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -38,7 +41,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new StringTaskConsumerWithAttribute(actualMessages, completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer, new Mock<ILog>().Object);
             messageConsumersManager.OnAfterStart();
 
             var producerBase = new TaskProducerBase(rabbitMqManager, messageSerializer);
@@ -74,7 +77,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new TestMessageWithAttributeTaskConsumer(actualMessages, completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer, new Mock<ILog>().Object);
             messageConsumersManager.OnAfterStart();
 
             var producerBase = new TaskProducerBase(rabbitMqManager, messageSerializer);

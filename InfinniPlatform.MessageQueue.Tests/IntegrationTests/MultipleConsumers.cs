@@ -6,7 +6,10 @@ using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -51,7 +54,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new DynamicWrapperTaskConsumer(actualMessagesLists[3], completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, RabbitMqManager, messageSerializer);
+            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
             messageConsumersManager.OnAfterStart();
 
             var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);
