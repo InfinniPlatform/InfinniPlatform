@@ -88,7 +88,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                              Task.Run(async () =>
                                                       {
                                                           _log.Info($"{DateTime.Now.Millisecond} Consumed by {consumer.GetType().Name}.");
-                                                          Console.WriteLine($"{DateTime.Now.Millisecond} Consumed by {consumer.GetType().Name}.");
                                                           await consumer.Consume(message);
                                                       })
                                                  .ContinueWith(task =>
@@ -96,12 +95,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                                                    if (!task.IsFaulted)
                                                                    {
                                                                        _log.Info($"{DateTime.Now.Millisecond} Acked by {consumer.GetType().Name}.");
-                                                                       Console.WriteLine($"{DateTime.Now.Millisecond} Acked by {consumer.GetType().Name}.");
                                                                        channel.BasicAck(e.DeliveryTag, false);
                                                                    }
                                                                    else
                                                                    {
-                                                                       Console.WriteLine(task.Exception);
+                                                                       _log.Error(task.Exception);
                                                                    }
                                                                });
                                          };

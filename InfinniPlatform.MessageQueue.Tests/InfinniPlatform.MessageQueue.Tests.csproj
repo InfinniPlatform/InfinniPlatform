@@ -73,6 +73,7 @@
     <Compile Include="IntegrationTests\QueueNameAttributeConsumersTest.cs" />
     <Compile Include="IntegrationTests\RoutingTest.cs" />
     <Compile Include="IntegrationTests\TestConsumers\DynamicWrapperTaskConsumer.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\NamedQueuesDynamicWrapperConsumers.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessageBroadcastConsumer.cs" />
     <Compile Include="IntegrationTests\TypedConsumersTest.cs" />
     <Compile Include="IntegrationTests\TestConsumers\StringTaskConsumerWithAttribute.cs" />

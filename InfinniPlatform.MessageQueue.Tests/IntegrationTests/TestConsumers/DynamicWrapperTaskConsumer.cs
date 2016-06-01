@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,9 +29,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                                   {
                                       _messages.Add(message.Body);
                                       _completeEvent.Signal();
-                                      Console.WriteLine($"{DateTime.Now.Millisecond} Wait.");
                                       await Task.Delay(_taskWorkTime);
-                                      Console.WriteLine($"{DateTime.Now.Millisecond} Wait complete.");
                                   });
         }
     }

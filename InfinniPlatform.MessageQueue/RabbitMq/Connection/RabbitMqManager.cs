@@ -136,5 +136,20 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         {
             _managementClient.Purge(queue);
         }
+
+        public bool IsAlive()
+        {
+            var defaultVhost = new Vhost { Name = "/" };
+
+            try
+            {
+                var isAlive = _managementClient.IsAlive(defaultVhost);
+                return isAlive;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
