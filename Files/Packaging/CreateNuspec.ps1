@@ -77,8 +77,7 @@
 				{
 					$result = $item -match '^\.\.\\packages\\(?<name>.*?)\.(?<version>([0-9]+\.[0-9\.]+)|([0-9]+\.[0-9\.]+\-.*?))\\lib($|(\\.*?))'
 
-					$projectNuspec = $projectNuspec + `
-						"            <dependency id=""$($matches.name)"" version=""$($matches.version)"" />`r`n"
+					$projectNuspec = $projectNuspec + "            <dependency id=""$($matches.name)"" version=""$($matches.version)"" />`r`n"
 				}
 			}
 
@@ -129,6 +128,7 @@
 			# Добавление символьных файлов
 
 			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.pdb"" />`r`n"
+			$references += "$projectName.$version\lib\$framework\$projectAssemblyName.pdb"
 
 			# Добавление документации
 
