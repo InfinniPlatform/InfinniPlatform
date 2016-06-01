@@ -3,13 +3,13 @@
 using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Producers;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
-    internal sealed class TaskProducerBase : ITaskProducer
+    internal sealed class TaskProducer : ITaskProducer
     {
-        public TaskProducerBase(RabbitMqManager manager, IMessageSerializer messageSerializer)
+        public TaskProducer(RabbitMqManager manager, IMessageSerializer messageSerializer)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
@@ -18,15 +18,13 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
 
-        public void Publish<T>(T message, string queueName = null) where T : class
+        public void Publish<T>(T messageBody, string queueName = null)
         {
-            var innerMessage = new Message<T>(message);
-
-            var messageToBytes = _messageSerializer.MessageToBytes(innerMessage);
+            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
 
             if (queueName == null)
             {
-                queueName = QueueNamingConventions.GetProducerQueueName(innerMessage);
+                queueName = QueueNamingConventions.GetProducerQueueName(messageBody);
             }
 
             var channel = _manager.GetChannel();
@@ -36,16 +34,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             channel.BasicPublish("", queueName, null, messageToBytes);
         }
 
-        public void Publish(DynamicWrapper message, string queueName)
+        public void PublishDynamic(DynamicWrapper messageBody, string queueName)
         {
-            var innerMessage = new Message(message);
-
-            var messageToBytes = _messageSerializer.MessageToBytes(innerMessage);
-
-            if (queueName == null)
-            {
-                queueName = QueueNamingConventions.GetProducerQueueName(innerMessage);
-            }
+            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
 
             var channel = _manager.GetChannel();
 
@@ -54,17 +45,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             channel.BasicPublish("", queueName, null, messageToBytes);
         }
 
-        public async Task PublishAsync<T>(T message, string queueName = null) where T : class
+        public async Task PublishAsync<T>(T messageBody, string queueName = null)
         {
             await Task.Run(() =>
                            {
-                               var innerMessage = new Message<T>(message);
-
-                               var messageToBytes = _messageSerializer.MessageToBytes(innerMessage);
+                               var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
 
                                if (queueName == null)
                                {
-                                   queueName = QueueNamingConventions.GetProducerQueueName(innerMessage);
+                                   queueName = QueueNamingConventions.GetProducerQueueName(messageBody);
                                }
 
                                var channel = _manager.GetChannel();
@@ -75,18 +64,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                            });
         }
 
-        public async Task PublishAsync(DynamicWrapper message, string queueName)
+        public async Task PublishDynamicAsync(DynamicWrapper messageBody, string queueName)
         {
             await Task.Run(() =>
                            {
-                               var innerMessage = new Message(message);
-
-                               var messageToBytes = _messageSerializer.MessageToBytes(innerMessage);
-
-                               if (queueName == null)
-                               {
-                                   queueName = QueueNamingConventions.GetProducerQueueName(innerMessage);
-                               }
+                               var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
 
                                var channel = _manager.GetChannel();
 

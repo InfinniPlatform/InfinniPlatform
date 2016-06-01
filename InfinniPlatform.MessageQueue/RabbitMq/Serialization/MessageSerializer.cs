@@ -1,33 +1,34 @@
 ﻿using System;
-using System.Text;
 
 using InfinniPlatform.Sdk.Queues;
-
-using Newtonsoft.Json;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Serialization
 {
     public class MessageSerializer : IMessageSerializer
     {
-        private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
-                                                                      {
-                                                                          TypeNameHandling = TypeNameHandling.Auto
-                                                                      };
+        private readonly JsonObjectSerializer _serializer = new JsonObjectSerializer();
 
-        public byte[] MessageToBytes(IMessage message)
+        public byte[] MessageToBytes(object message)
         {
-            return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message, _serializerSettings));
+            return _serializer.Serialize(message);
         }
 
         public IMessage BytesToMessage(byte[] bytes, Type type)
         {
-            if (bytes == null)
-            {
-                return null;
-            }
+            var body = _serializer.Deserialize(bytes, type);
+            var genericType = typeof(Message<>).MakeGenericType(type);
+            var message = Activator.CreateInstance(genericType, body);
 
-            var value = Encoding.UTF8.GetString(bytes);
-            return (IMessage)JsonConvert.DeserializeObject(value, type, _serializerSettings);
+            return (IMessage)message;
+        }
+
+        public IMessage BytesToMessage<T>(byte[] bytes)
+        {
+            var body = _serializer.Deserialize<T>(bytes);
+            var message = new Message<T>(body);
+
+            return message;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Sdk.Queues
+﻿using System.Threading.Tasks;
+
+namespace InfinniPlatform.Sdk.Queues.Consumers
 {
     /// <summary>
     /// Получатель сообщений из очереди по запросу.
@@ -8,7 +10,9 @@
         /// <summary>
         /// Получает сообщение из очереди.
         /// </summary>
+        /// <typeparam name="T">Тип тела сообщения.</typeparam>
+        /// <param name="queueName">Имя очереди.</param>
         /// <returns>Первое сообщение в очереди или null, если сообщений нет.</returns>
-        IMessage Consume<T>() where T : class;
+        Task<IMessage> Consume<T>(string queueName = null);
     }
 }

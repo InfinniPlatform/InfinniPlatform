@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Sdk.Dynamic;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.Sdk.Queues.Producers
 {
     /// <summary>
     /// Отправитель сообщений в очередь задач.
@@ -12,29 +12,29 @@ namespace InfinniPlatform.Sdk.Queues
         /// <summary>
         /// Публикует сообщение в очередь задач.
         /// </summary>
-        /// <param name="message">Сообщение.</param>
+        /// <param name="messageBody">Сообщение.</param>
         /// <param name="queueName">Имя очереди.</param>
-        void Publish<T>(T message, string queueName = null) where T : class;
+        void Publish<T>(T messageBody, string queueName = null);
 
         /// <summary>
         /// Публикует сообщение в очередь задач.
         /// </summary>
-        /// <param name="message">Сообщение.</param>
+        /// <param name="messageBody">Сообщение.</param>
         /// <param name="queueName">Имя очереди.</param>
-        void Publish(DynamicWrapper message, string queueName);
+        void PublishDynamic(DynamicWrapper messageBody, string queueName);
 
         /// <summary>
         /// Публикует сообщение в очередь задач.
         /// </summary>
-        /// <param name="message">Сообщение.</param>
+        /// <param name="messageBody">Сообщение.</param>
         /// <param name="queueName">Имя очереди.</param>
-        Task PublishAsync<T>(T message, string queueName = null) where T : class;
+        Task PublishAsync<T>(T messageBody, string queueName = null);
 
         /// <summary>
         /// Публикует сообщение в очередь задач.
         /// </summary>
-        /// <param name="message">Сообщение.</param>
+        /// <param name="messageBody">Сообщение.</param>
         /// <param name="queueName">Имя очереди.</param>
-        Task PublishAsync(DynamicWrapper message, string queueName);
+        Task PublishDynamicAsync(DynamicWrapper messageBody, string queueName);
     }
 }

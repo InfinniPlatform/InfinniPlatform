@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-
-using Moq;
+using InfinniPlatform.Sdk.Queues.Consumers;
 
 using NUnit.Framework;
 
@@ -49,17 +45,16 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var queue3CountdownEvent = new CountdownEvent(1);
             var queue3TaskConsumer = new Queue3DynamicWrapperTaskConsumer(queue3Messages, queue3CountdownEvent);
 
-            IConsumer[] listOfConsumers =
+            ITaskConsumer[] taskConsumers =
             {
                 queue1TaskConsumer,
                 queue2TaskConsumer,
                 queue3TaskConsumer
             };
 
-            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
-            messageConsumersManager.OnAfterStart();
+            RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
             foreach (var message in queue1AssertMessages)
             {
                 producerBase.Publish(message, "Queue1");
@@ -110,17 +105,16 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 "message1"
             };
 
-            IConsumer[] listOfConsumers =
+            ITaskConsumer[] taskConsumers =
             {
                 dynamicWrapperConsumer,
                 stringConsumer,
                 testMessageConsumer
             };
 
-            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
-            messageConsumersManager.OnAfterStart();
+            RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

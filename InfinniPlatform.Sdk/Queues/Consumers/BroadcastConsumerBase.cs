@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Queues;
-
-namespace InfinniPlatform.MessageQueue.RabbitMq
+namespace InfinniPlatform.Sdk.Queues.Consumers
 {
     public abstract class BroadcastConsumerBase<T> : IBroadcastConsumer where T : class
     {

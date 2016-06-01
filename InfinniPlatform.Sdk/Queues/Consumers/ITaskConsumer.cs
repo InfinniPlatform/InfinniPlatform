@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Queues
+﻿namespace InfinniPlatform.Sdk.Queues.Consumers
 {
     /// <summary>
     /// Потребитель сообщений из очереди задач.

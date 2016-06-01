@@ -85,18 +85,19 @@
     <Compile Include="Documents\Services\DocumentGetQuery.cs" />
     <Compile Include="Documents\Services\DocumentPostQueryResult.cs" />
     <Compile Include="Documents\Services\DocumentQueryResult.cs" />
-    <Compile Include="Queues\IBroadcastConsumer.cs" />
-    <Compile Include="Queues\IBroadcastProducer.cs" />
+    <Compile Include="Queues\Consumers\BroadcastConsumerBase.cs" />
+    <Compile Include="Queues\Consumers\IBroadcastConsumer.cs" />
+    <Compile Include="Queues\Producers\IBroadcastProducer.cs" />
     <Compile Include="Queues\IMessage.cs" />
     <Compile Include="Queues\IMessageGeneric.cs" />
-    <Compile Include="Queues\IOnDemandConsumer.cs" />
-    <Compile Include="Queues\ITaskConsumer.cs" />
-    <Compile Include="Queues\Message.cs" />
+    <Compile Include="Queues\Consumers\IOnDemandConsumer.cs" />
+    <Compile Include="Queues\Consumers\ITaskConsumer.cs" />
     <Compile Include="Queues\QueueNameAttribute.cs" />
-    <Compile Include="Queues\ITaskProducer.cs" />
-    <Compile Include="Queues\MessageGeneric.cs" />
-    <Compile Include="Queues\IConsumer.cs" />
+    <Compile Include="Queues\Producers\ITaskProducer.cs" />
+    <Compile Include="Queues\Message.cs" />
+    <Compile Include="Queues\Consumers\IConsumer.cs" />
     <Compile Include="Queues\QueuesExtentions.cs" />
+    <Compile Include="Queues\Consumers\TaskConsumerBase.cs" />
     <Compile Include="RestApi\Blob\BlobHttpServiceClient.cs" />
     <Compile Include="RestApi\Documents\DocumentDeleteQueryClient.cs" />
     <Compile Include="RestApi\Documents\DocumentGetQueryClient.cs" />
@@ -241,6 +242,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

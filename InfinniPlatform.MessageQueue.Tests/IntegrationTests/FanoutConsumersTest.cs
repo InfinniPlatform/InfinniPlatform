@@ -4,13 +4,9 @@ using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Connection;
-using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-
-using Moq;
+using InfinniPlatform.Sdk.Queues.Consumers;
 
 using NUnit.Framework;
 
@@ -37,30 +33,29 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             var actualMessages1 = new List<TestMessage>();
             var completeEvent1 = new CountdownEvent(assertMessages.Length);
-            var fanoutConsumer1 = new TestMessageBroadcastConsumer(actualMessages1, completeEvent1);
+            var broadcastConsumer1 = new TestMessageBroadcastConsumer(actualMessages1, completeEvent1);
 
             var actualMessages2 = new List<TestMessage>();
             var completeEvent2 = new CountdownEvent(assertMessages.Length);
-            var fanoutConsumer2 = new TestMessageBroadcastConsumer(actualMessages2, completeEvent2);
+            var broadcastConsumer2 = new TestMessageBroadcastConsumer(actualMessages2, completeEvent2);
 
-            IConsumer[] listOfConsumers =
+            IBroadcastConsumer[] broadcastConsumers =
             {
-                fanoutConsumer1,
-                fanoutConsumer2
+                broadcastConsumer1,
+                broadcastConsumer2
             };
 
-            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, rabbitMqManager, messageSerializer, new Mock<ILog>().Object);
-            messageConsumersManager.OnAfterStart();
+            RegisterConsumers(null, broadcastConsumers);
 
-            var producerBase = new BroadcastProducerBase(rabbitMqManager, messageSerializer);
+            var producerBase = new BroadcastProducer(rabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);
             }
 
             const int timeout = 500;
-            Assert.IsTrue(completeEvent1.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(fanoutConsumer1)}.");
-            Assert.IsTrue(completeEvent2.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(fanoutConsumer2)}.");
+            Assert.IsTrue(completeEvent1.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(broadcastConsumer1)}.");
+            Assert.IsTrue(completeEvent2.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(broadcastConsumer2)}.");
             CollectionAssert.AreEquivalent(assertMessages, actualMessages1);
             CollectionAssert.AreEquivalent(assertMessages, actualMessages2);
         }

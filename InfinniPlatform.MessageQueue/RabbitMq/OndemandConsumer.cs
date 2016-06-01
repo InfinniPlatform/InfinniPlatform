@@ -1,6 +1,9 @@
-﻿using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Consumers;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
@@ -15,26 +18,29 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
 
-        public IMessage Consume<T>() where T : class
+        public Task<IMessage> Consume<T>(string queueName = null)
         {
             var channel = _manager.GetChannel();
 
-            var queueName = QueueNamingConventions.GetBasicConsumerQueueName(typeof(T));
+            if (queueName == null)
+            {
+                queueName = QueueNamingConventions.GetBasicConsumerQueueName(typeof(T));
+            }
 
             _manager.DeclareTaskQueue(queueName);
 
-            var getResult = channel.BasicGet(queueName, false);
+            var result = channel.BasicGet(queueName, false);
 
-            if (getResult == null)
+            if (result == null)
             {
                 return null;
             }
 
-            var message = _messageSerializer.BytesToMessage(getResult.Body, typeof(Message<T>));
+            var message = _messageSerializer.BytesToMessage(result.Body, typeof(T));
 
-            channel.BasicAck(getResult.DeliveryTag, false);
+            channel.BasicAck(result.DeliveryTag, false);
 
-            return message;
+            return Task.FromResult(message);
         }
     }
 }

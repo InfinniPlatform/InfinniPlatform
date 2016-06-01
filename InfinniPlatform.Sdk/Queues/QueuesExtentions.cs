@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Queues.Consumers;
 
 namespace InfinniPlatform.Sdk.Queues
 {
@@ -21,7 +22,7 @@ namespace InfinniPlatform.Sdk.Queues
         {
             builder.RegisterAssemblyTypes(assembly,
                                           t => typeof(IConsumer).IsAssignableFrom(t),
-                                          r => r.As<IConsumer>().SingleInstance());
+                                          r => r.AsImplementedInterfaces().SingleInstance());
         }
     }
 }

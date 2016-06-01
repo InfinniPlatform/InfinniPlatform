@@ -1,13 +1,11 @@
-﻿using System.Reflection;
-
-using InfinniPlatform.MessageQueue.RabbitMq;
+﻿using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Queues.Consumers;
+using InfinniPlatform.Sdk.Queues.Producers;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.MessageQueue.IoC
@@ -24,24 +22,25 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<RabbitMqManager>()
                    .SingleInstance();
 
-            builder.RegisterType<MessageConsumersManager>()
+            builder.RegisterType<MessageConsumersStartupInitializer>()
                    .As<IApplicationEventHandler>()
                    .SingleInstance();
 
             builder.RegisterType<OnDemandConsumer>()
                    .As<IOnDemandConsumer>()
-                   .InstancePerDependency();
+                   .SingleInstance();
 
-            builder.RegisterType<TaskProducerBase>()
+            builder.RegisterType<TaskProducer>()
                    .As<ITaskProducer>()
-                   .InstancePerDependency();
+                   .SingleInstance();
+
+            builder.RegisterType<BroadcastProducer>()
+                   .As<IBroadcastProducer>()
+                   .SingleInstance();
 
             builder.RegisterType<MessageSerializer>()
                    .As<IMessageSerializer>()
                    .SingleInstance();
-
-            builder.RegisterHttpServices(GetType().GetTypeInfo().Assembly);
-            builder.RegisterConsumers(GetType().GetTypeInfo().Assembly);
         }
 
         private static RabbitMqConnectionSettings GetRabbitMqConnectionSettings(IContainerResolver resolver)

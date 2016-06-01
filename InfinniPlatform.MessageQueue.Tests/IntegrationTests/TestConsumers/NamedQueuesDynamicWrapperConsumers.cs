@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Consumers;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {

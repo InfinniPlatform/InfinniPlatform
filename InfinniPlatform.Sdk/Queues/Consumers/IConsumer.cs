@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.Sdk.Queues.Consumers
 {
     /// <summary>
     /// Потребитель сообщений.

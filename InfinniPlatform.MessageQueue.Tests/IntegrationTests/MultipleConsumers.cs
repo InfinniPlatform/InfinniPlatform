@@ -2,14 +2,10 @@
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-
-using Moq;
+using InfinniPlatform.Sdk.Queues.Consumers;
 
 using NUnit.Framework;
 
@@ -46,7 +42,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             var completeEvent = new CountdownEvent(assertMessages.Length);
 
-            IConsumer[] listOfConsumers =
+            ITaskConsumer[] taskConsumers =
             {
                 new DynamicWrapperTaskConsumer(actualMessagesLists[0], completeEvent),
                 new DynamicWrapperTaskConsumer(actualMessagesLists[1], completeEvent),
@@ -54,10 +50,9 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new DynamicWrapperTaskConsumer(actualMessagesLists[3], completeEvent)
             };
 
-            var messageConsumersManager = new MessageConsumersManager(listOfConsumers, RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
-            messageConsumersManager.OnAfterStart();
+            RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

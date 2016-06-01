@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.MessageQueue.RabbitMq;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -11,7 +13,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
     public class OnDemandConsumerTest : RabbitMqTestBase
     {
         [Test]
-        public void OnDemandConsumerReturnsMessageOrNull()
+        public async Task OnDemandConsumerReturnsMessageOrNull()
         {
             var messageSerializer = new MessageSerializer();
             var onDemandConsumer = new OnDemandConsumer(RabbitMqManager, messageSerializer);
@@ -23,7 +25,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new DynamicWrapper { { "SomeField", "Message3" } }
             };
 
-            var producerBase = new TaskProducerBase(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);
@@ -31,7 +33,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             foreach (var message in assertMessages)
             {
-                var actualMessage = onDemandConsumer.Consume<DynamicWrapper>();
+                var actualMessage = await onDemandConsumer.Consume<DynamicWrapper>();
                 var body = actualMessage.GetBody();
                 Assert.AreEqual(message, body);
             }
