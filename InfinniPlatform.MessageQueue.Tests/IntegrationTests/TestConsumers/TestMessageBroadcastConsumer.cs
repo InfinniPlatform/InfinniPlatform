@@ -19,13 +19,13 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 
         private readonly List<TestMessage> _messages;
 
-        protected override async Task Consume(Message<TestMessage> message)
+        protected override Task Consume(Message<TestMessage> message)
         {
-            await Task.Run(() =>
-                           {
-                               _messages.Add(message.Body);
-                               _completeEvent.Signal();
-                           });
+            return Task.Run(() =>
+                            {
+                                _messages.Add(message.Body);
+                                _completeEvent.Signal();
+                            });
         }
     }
 }

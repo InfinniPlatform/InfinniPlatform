@@ -24,16 +24,16 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         private readonly List<DynamicWrapper> _messages;
         private readonly int _taskWorkTime;
 
-        protected override async Task Consume(Message<DynamicWrapper> message)
+        protected override Task Consume(Message<DynamicWrapper> message)
         {
-            await Task.Run(async () =>
-                                 {
-                                     _messages.Add(message.Body);
-                                     _completeEvent.Signal();
-                                     Console.WriteLine($"{DateTime.Now.Millisecond} Wait.");
-                                     await Task.Delay(_taskWorkTime);
-                                     Console.WriteLine($"{DateTime.Now.Millisecond} Wait complete.");
-                                 });
+            return Task.Run(async () =>
+                                  {
+                                      _messages.Add(message.Body);
+                                      _completeEvent.Signal();
+                                      Console.WriteLine($"{DateTime.Now.Millisecond} Wait.");
+                                      await Task.Delay(_taskWorkTime);
+                                      Console.WriteLine($"{DateTime.Now.Millisecond} Wait complete.");
+                                  });
         }
     }
 }
