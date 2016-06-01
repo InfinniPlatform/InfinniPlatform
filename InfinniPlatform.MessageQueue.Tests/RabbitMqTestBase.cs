@@ -48,8 +48,6 @@ namespace InfinniPlatform.MessageQueue.Tests
                    .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
 
             var perfLogMock = new Mock<IPerformanceLog>();
-            perfLogMock.Setup(log => log.Log(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<string>()))
-                       .Callback((string method, DateTime start, string outcome) => { Console.WriteLine(method); });
 
             var messageConsumersManager = new MessageConsumersStartupInitializer(taskConsumers ?? Enumerable.Empty<ITaskConsumer>(), broadcastConsumers ?? Enumerable.Empty<IBroadcastConsumer>(), RabbitMqManager, new MessageSerializer(), logMock.Object, perfLogMock.Object);
 
