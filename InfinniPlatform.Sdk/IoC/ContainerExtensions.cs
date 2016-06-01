@@ -5,28 +5,6 @@ namespace InfinniPlatform.Sdk.IoC
 {
     public static class ContainerExtensions
     {
-        private const string ActionUnitPrefix = "ActionUnit";
-        private const string ValidationUnitPrefix = "ValidationUnit";
-
-        /// <summary>
-        /// Регистрирует все прикладные скрипты текущей сборки.
-        /// </summary>
-        /// <remarks>
-        /// Прикладные скрипты будут зарегистрированы со стратегией SingleInstance().
-        /// </remarks>
-        /// <example>
-        /// <code>
-        /// RegisterActionUnits(GetType().Assembly)
-        /// </code>
-        /// </example>
-        public static void RegisterActionUnits(this IContainerBuilder builder, Assembly assembly)
-        {
-            RegisterAssemblyTypes(builder, assembly,
-                t => (t.Name.IndexOf(ActionUnitPrefix, StringComparison.OrdinalIgnoreCase) >= 0
-                      || t.Name.IndexOf(ValidationUnitPrefix, StringComparison.OrdinalIgnoreCase) >= 0),
-                r => r.AsSelf().SingleInstance());
-        }
-
         /// <summary>
         /// Регистрирует указанные типы текущей сборки.
         /// </summary>
