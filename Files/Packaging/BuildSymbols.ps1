@@ -46,6 +46,11 @@
 
 		# Сборка символьных файлов
 
+		if ($repositoryUrl -like '*.git')
+		{
+			$repositoryUrl = $repositoryUrl -replace '\.git$', ''
+		}
+
 		& "$gitLinkPath" $solutionDir -u $repositoryUrl -s $commitHash
 	}
 }
