@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.csproj", "{EE5AD8E7-4D3E-462D-AF0B-38430185396F}"
 EndProject
@@ -65,6 +68,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{
 	ProjectSection(SolutionItems) = preProject
 		Files\Packaging\BuildNupkg.bat = Files\Packaging\BuildNupkg.bat
 		Files\Packaging\BuildNupkg.ps1 = Files\Packaging\BuildNupkg.ps1
+		Files\Packaging\BuildSymbols.ps1 = Files\Packaging\BuildSymbols.ps1
 		Files\Packaging\CreateNuspec.ps1 = Files\Packaging\CreateNuspec.ps1
 		Files\Packaging\GlobalAssemblyInfo.cs = Files\Packaging\GlobalAssemblyInfo.cs
 	EndProjectSection

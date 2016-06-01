@@ -2,12 +2,12 @@
 {
 	<#
 	.Synopsis
-		Создает шаблоны nuspec-файлов на основе файлов проекта.
+		Создает nuspec-файлы решения на основе файлов проекта.
 	#>
 	param
 	(
 		[Parameter(HelpMessage = "Каталог решения.")]
-		[String] $solutionDir = '',
+		[String] $solutionDir = '.',
 
 		[Parameter(HelpMessage = "Каталог результатов.")]
 		[String] $outputDir = 'Assemblies',
@@ -27,7 +27,7 @@
 
 	process
 	{
-		### Retrieve version for packages
+		### Определение версии пакетов
 
 		$version = Get-Content $assemblyInfo `
 			| Select-String -Pattern 'AssemblyVersion\s*\(\s*\"(?<version>.*?)\"\s*\)' `
@@ -38,7 +38,7 @@
 			$version = $version + '-' + ($branchName -replace '^(refs/heads/){0,1}(f\-){0,1}', '')
 		}
 
-		### Create nuspec for all projects
+		### Создание nuspec-файлов для всех проектов
 
 		$projects = Get-ChildItem -Path $solutionDir -Filter '*.csproj' -Exclude '*.Tests.csproj' -Recurse
 		$references = @()
@@ -65,7 +65,7 @@
 				"        <copyright>Infinnity Solutions $(Get-Date -Format yyyy)</copyright>`r`n" + `
 				"        <dependencies>`r`n"
 
-			# NuGet packages
+			# Добавление ссылок на сторонние NuGet-пакеты
 
 			$projectPackages = $projectXml.Project.ItemGroup.Reference.HintPath | Where { $_ -like '..\packages\*.dll' }
 			$dependencies = $projectPackages | % { $_ -replace '\\[^\\]+\.dll', '' } | Sort-Object | Get-Unique -AsString
@@ -77,12 +77,11 @@
 				{
 					$result = $item -match '^\.\.\\packages\\(?<name>.*?)\.(?<version>([0-9]+\.[0-9\.]+)|([0-9]+\.[0-9\.]+\-.*?))\\lib($|(\\.*?))'
 
-					$projectNuspec = $projectNuspec + `
-						"            <dependency id=""$($matches.name)"" version=""$($matches.version)"" />`r`n"
+					$projectNuspec = $projectNuspec + "            <dependency id=""$($matches.name)"" version=""$($matches.version)"" />`r`n"
 				}
 			}
 
-			# Project references
+			# Добавление ссылок на проекты
 
 			$dependencies = $projectXml.Project.ItemGroup.ProjectReference.Name | Sort-Object | Get-Unique -AsString
 
@@ -99,14 +98,14 @@
 				"    </metadata>`r`n" + `
 				"    <files>`r`n"
 
-			# Project assembly
+			# Добавление сборки проекта
 
 			$projectIsLibrary = $projectXml.Project.PropertyGroup.OutputType -like '*Library*'
 			$projectAssembly = $projectAssemblyName + $(if ($projectIsLibrary) { '.dll' } else { '.exe' })
 			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\$projectAssembly"" src=""$projectAssembly"" />`r`n"
 			$references += "$projectName.$version\lib\$framework\$projectAssembly"
 
-			# Project resources for ru-RU
+			# Добавление ресурсов для ru-RU
 
 			$projectResourcesRu = $projectXml.Project.ItemGroup.EmbeddedResource.Include | Where { $_ -like '*.ru-RU.*' }
 
@@ -116,7 +115,7 @@
 				$references += "$projectName.$version\lib\$framework\ru-RU\$projectAssemblyName.resources.dll"
 			}
 
-			# Project resources for en-US
+			# Добавление ресурсов для en-US
 
 			$projectResourcesEn = $projectXml.Project.ItemGroup.EmbeddedResource.Include | Where { $_ -like '*.en-US.*' }
 
@@ -126,11 +125,12 @@
 				$references += "$projectName.$version\lib\$framework\en-US\$projectAssemblyName.resources.dll"
 			}
 
-			# Project symbols
+			# Добавление символьных файлов
 
 			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.pdb"" />`r`n"
+			$references += "$projectName.$version\lib\$framework\$projectAssemblyName.pdb"
 
-			# Project docs
+			# Добавление документации
 
 			$projectDocs = $projectXml.Project.PropertyGroup.DocumentationFile
 
@@ -139,7 +139,7 @@
 				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.xml"" />`r`n"
 			}
 
-			# Project config
+			# Добавление конфигурации
 
 			if (-not $projectIsLibrary)
 			{
@@ -148,14 +148,13 @@
 			}
 
 			$projectNuspec = $projectNuspec + `
-				"        <file target=""src"" src=""..\$projectName\**\*.cs"" exclude=""..\$projectName\obj\**\*.cs"" />`r`n" + `
 				"    </files>`r`n" + `
 				"</package>"
 
 			Set-Content (Join-Path $outputDir ($projectName + '.nuspec')) -Value $projectNuspec
 		}
 
-		### Create nuspec for solution
+		### Создание nuspec-файла для всего решения
 
 		Write-Host "Create InfinniPlatform.nuspec"
 
@@ -194,7 +193,7 @@
 
 		Set-Content (Join-Path $outputDir 'InfinniPlatform.nuspec') -Value $solutionNuspec
 
-		### Create file with solution references
+		### Создание файла со списком всех зависимостей решения
 
 		Set-Content (Join-Path $outputDir 'references.lock') -Value ($references | Sort-Object | Get-Unique -AsString)
 	}
