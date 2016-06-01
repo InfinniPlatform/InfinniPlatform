@@ -17,6 +17,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
                                     {
                                         HostName = connectionSettings.HostName,
                                         Port = connectionSettings.Port,
+                                        UserName = connectionSettings.UserName,
+                                        Password = connectionSettings.Password,
                                         AutomaticRecoveryEnabled = Defaults.Connection.AutomaticRecoveryEnabled
                                     };
 
