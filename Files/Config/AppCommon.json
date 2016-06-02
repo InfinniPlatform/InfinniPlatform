@@ -88,6 +88,22 @@
     /* Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR) */
     "Password": ""
   },
+  /* Настройки подключения к RabbitMQ */
+  "rabbitmq": {
+    /* Адрес или доменное имя (по умолчанию - 'localhost') */
+    "HostName": "localhost",
+    /* Номер порта (по умолчанию - 5672) */
+    "Port": 5672,
+    /* Имя пользователя (по умолчанию - guest) */
+    "UserName": "guest",
+    /* Пароль пользователя (по умолчанию - guest) */
+    "Password": "guest",
+    /* Номер порта для RabbitMQ Management HTTP API (по умолчанию - 15672) */
+    /* Для включения RabbitMQ Management HTTP API выполнить команду rabbitmq-plugins enable rabbitmq_management */
+    /* по пути <путь до RabbitMQ Server>\sbin */
+    /* Подробнее - https://www.rabbitmq.com/management.html */
+    "ManagementApiPort": 15672
+  },
   /* Настройки подключения к ElasticSearch */
   "elasticSearch": {
     /* Список базовых адресов узлов ElasticSearch (по умолчанию - 'http://localhost:9200') */

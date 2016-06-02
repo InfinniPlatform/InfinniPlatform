@@ -75,8 +75,6 @@
     <Compile Include="Settings\AppEnvironment.cs" />
     <Compile Include="Contracts\ActionContext.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />
-    <Compile Include="Factories\IIntegrationBusFactory.cs" />
-    <Compile Include="Factories\IIntegrationBusStorageFactory.cs" />
     <Compile Include="Hosting\IHostingService.cs" />
     <Compile Include="IoC\CoreContainerModule.cs" />
     <Compile Include="Logging\LogContainerInstanceActivator.cs" />
@@ -109,7 +107,6 @@
     <Compile Include="Security\StringHasher.cs" />
     <Compile Include="Settings\AppConfiguration.cs" />
     <Compile Include="Settings\AppSettings.cs" />
-    <Compile Include="Factories\IMessageQueueFactory.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

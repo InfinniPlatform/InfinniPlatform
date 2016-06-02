@@ -39,6 +39,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EasyNetQ.Management.Client, Version=0.51.1.102, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyNetQ.Management.Client.0.51.1.102\lib\net40\EasyNetQ.Management.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RabbitMQ.Client, Version=3.6.2.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.3.6.2\lib\net45\RabbitMQ.Client.dll</HintPath>
       <Private>True</Private>
@@ -47,15 +55,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\IntegrationBusFactory.cs" />
-    <Compile Include="IRabbitMqMessageQueueConfig.cs" />
-    <Compile Include="RabbitMqMessageQueueFactory.cs" />
-    <Compile Include="Integration\IIntegrationBusSecurityTokenValidator.cs" />
-    <Compile Include="Integration\IIntegrationBusSubscriptionValidator.cs" />
-    <Compile Include="Integration\IntegrationBus.cs" />
-    <Compile Include="Integration\IntegrationBusConsumer.cs" />
-    <Compile Include="Integration\EmptyIntegrationBusSecurityTokenValidator.cs" />
-    <Compile Include="Integration\IntegrationBusSubscriptionValidator.cs" />
+    <Compile Include="IoC\MessageQueueContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
@@ -65,51 +65,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RabbitMqSettings.cs" />
-    <Compile Include="RabbitMq\AlwaysAfterHandlingAcknowledgePolicy.cs" />
-    <Compile Include="RabbitMq\AlwaysBeforeHandlingAcknowledgePolicy.cs" />
-    <Compile Include="RabbitMq\Client\RabbitMqMessageConverter.cs" />
-    <Compile Include="RabbitMq\Client\RabbitMqQueue.cs" />
-    <Compile Include="RabbitMq\Client\RabbitMqRetryDecisionProvider.cs" />
-    <Compile Include="RabbitMq\Client\RabbitMqSession.cs" />
-    <Compile Include="RabbitMq\Client\RabbitMqSessionFactory.cs" />
-    <Compile Include="RabbitMq\ExchangeBinding.cs" />
-    <Compile Include="RabbitMq\ExchangeConfig.cs" />
-    <Compile Include="RabbitMq\ICommandExecutor.cs" />
-    <Compile Include="RabbitMq\IMessageQueue.cs" />
-    <Compile Include="RabbitMq\IMessageQueueCommandExecutor.cs" />
-    <Compile Include="RabbitMq\IMessageQueueSession.cs" />
-    <Compile Include="RabbitMq\IMessageQueueSessionFactory.cs" />
-    <Compile Include="RabbitMq\IMessageQueueSessionManager.cs" />
-    <Compile Include="RabbitMq\IMessageQueueWorker.cs" />
-    <Compile Include="RabbitMq\IMessageQueueWorkerContainer.cs" />
-    <Compile Include="RabbitMq\MessageQueueCommandExecutor.cs" />
-    <Compile Include="RabbitMq\MessageQueueListener.cs" />
-    <Compile Include="RabbitMq\MessageQueueManager.cs" />
-    <Compile Include="RabbitMq\MessageQueuePublisher.cs" />
-    <Compile Include="RabbitMq\MessageQueueSessionManagerPerCommand.cs" />
-    <Compile Include="RabbitMq\MessageQueueSessionManagerPerThread.cs" />
-    <Compile Include="RabbitMq\MessageQueueWorker.cs" />
-    <Compile Include="RabbitMq\NeverRejectPolicy.cs" />
-    <Compile Include="RabbitMq\OnlyOnSuccessHandlingAcknowledgePolicy.cs" />
-    <Compile Include="RabbitMq\Policies\ConstantRetryPolicy.cs" />
-    <Compile Include="RabbitMq\Policies\ConstantRetrySchedulePolicy.cs" />
-    <Compile Include="RabbitMq\Policies\ExponentialRetrySchedulePolicy.cs" />
-    <Compile Include="RabbitMq\Policies\IRetryDecisionProvider.cs" />
-    <Compile Include="RabbitMq\Policies\IRetryPolicy.cs" />
-    <Compile Include="RabbitMq\Policies\IRetrySchedule.cs" />
-    <Compile Include="RabbitMq\Policies\IRetrySchedulePolicy.cs" />
-    <Compile Include="RabbitMq\Policies\IRetryScope.cs" />
-    <Compile Include="RabbitMq\Policies\RetryCommandExecutor.cs" />
-    <Compile Include="RabbitMq\Policies\RetryDecision.cs" />
-    <Compile Include="RabbitMq\QueueConfig.cs" />
-    <Compile Include="RabbitMq\ResourceManager.cs" />
+    <Compile Include="RabbitMq\Connection\Defaults.cs" />
+    <Compile Include="RabbitMq\BroadcastProducer.cs" />
+    <Compile Include="RabbitMq\Connection\RabbitMqHtttpManager.cs" />
+    <Compile Include="RabbitMq\QueueNamingConventions.cs" />
+    <Compile Include="RabbitMq\Serialization\IMessageSerializer.cs" />
+    <Compile Include="RabbitMq\Hosting\MessageConsumersStartupInitializer.cs" />
+    <Compile Include="RabbitMq\OnDemandConsumer.cs" />
+    <Compile Include="RabbitMq\Serialization\MessageSerializer.cs" />
+    <Compile Include="RabbitMq\TaskProducer.cs" />
+    <Compile Include="RabbitMq\Connection\RabbitMqManager.cs" />
+    <Compile Include="RabbitMq\Connection\RabbitMqConnectionSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
