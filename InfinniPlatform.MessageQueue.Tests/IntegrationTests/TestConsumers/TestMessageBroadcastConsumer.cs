@@ -28,4 +28,27 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                             });
         }
     }
+
+    [QueueName("NamedQueueTestMessageBroadcast")]
+    public class NamedQueueTestMessageBroadcastConsumer : BroadcastConsumerBase<TestMessage>
+    {
+        public NamedQueueTestMessageBroadcastConsumer(List<TestMessage> messages, CountdownEvent completeEvent)
+        {
+            _messages = messages;
+            _completeEvent = completeEvent;
+        }
+
+        private readonly CountdownEvent _completeEvent;
+
+        private readonly List<TestMessage> _messages;
+
+        protected override Task Consume(Message<TestMessage> message)
+        {
+            return Task.Run(() =>
+            {
+                _messages.Add(message.Body);
+                _completeEvent.Signal();
+            });
+        }
+    }
 }

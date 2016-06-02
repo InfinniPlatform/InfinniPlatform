@@ -79,6 +79,51 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         }
 
         [Test]
+        public void AllTypedMessagesRoutedToCorrespondedBroadcastConsumers()
+        {
+            var messageSerializer = new MessageSerializer();
+
+            var namedQueueMessages = new List<TestMessage>();
+            var namedQueueCountdownEvent = new CountdownEvent(6);
+            var namedQueueConsumer = new NamedQueueTestMessageBroadcastConsumer(namedQueueMessages, namedQueueCountdownEvent);
+
+            var testMessages = new List<TestMessage>();
+            var testMessageCountdownEvent = new CountdownEvent(6);
+            var testMessageConsumer = new TestMessageBroadcastConsumer(testMessages, testMessageCountdownEvent);
+
+            object[] assertMessages =
+            {
+                new TestMessage("1", 1, new DateTime(1, 1, 1)),
+                new TestMessage("2", 2, new DateTime(2, 2, 2)),
+                new TestMessage("3", 3, new DateTime(3, 3, 3)),
+                new TestMessage("4", 4, new DateTime(4, 4, 4)),
+                new TestMessage("5", 5, new DateTime(5, 5, 5)),
+                new TestMessage("6", 6, new DateTime(6, 6, 6))
+            };
+
+            IBroadcastConsumer[] broadcastConsumers =
+            {
+                namedQueueConsumer,
+                testMessageConsumer
+            };
+
+            RegisterConsumers(null, broadcastConsumers);
+
+            var producerBase = new BroadcastProducer(RabbitMqManager, messageSerializer);
+            foreach (var message in assertMessages)
+            {
+                producerBase.Publish(message);
+            }
+
+            const int timeout = 500;
+            Assert.IsTrue(namedQueueCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+            Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+
+            CollectionAssert.AreEquivalent(assertMessages, namedQueueMessages);
+            CollectionAssert.AreEquivalent(assertMessages, testMessages);
+        }
+
+        [Test]
         public void AllTypedMessagesRoutedToCorrespondedConsumers()
         {
             var messageSerializer = new MessageSerializer();
@@ -130,8 +175,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             actualMessages.AddRange(stringMessages);
             actualMessages.AddRange(testMessages);
 
-            CollectionAssert.AreEquivalent(assertMessages, actualMessages);
-            CollectionAssert.AreEquivalent(assertMessages, actualMessages);
             CollectionAssert.AreEquivalent(assertMessages, actualMessages);
         }
     }
