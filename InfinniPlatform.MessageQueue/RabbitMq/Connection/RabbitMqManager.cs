@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 
+using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.Sdk.Settings;
 
 using RabbitMQ.Client;
@@ -74,7 +75,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
             }
             if (aggregateException.InnerExceptions.Count == 0)
             {
-                throw new AggregateException(new InvalidOperationException("Unable to create RabbitMQ channel."));
+                throw new AggregateException(new InvalidOperationException(Resources.UnableToCreateRabbitMQChannel));
             }
 
             throw aggregateException;

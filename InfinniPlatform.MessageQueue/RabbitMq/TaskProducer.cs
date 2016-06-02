@@ -20,7 +20,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
         public void Publish<T>(T messageBody, string queueName = null)
         {
-            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
+            var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
 
             if (queueName == null)
             {
@@ -31,25 +31,25 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
             _manager.DeclareTaskQueue(queueName);
 
-            channel.BasicPublish("", queueName, null, messageToBytes);
+            channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
         }
 
         public void PublishDynamic(DynamicWrapper messageBody, string queueName)
         {
-            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
+            var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
 
             var channel = _manager.GetChannel();
 
             _manager.DeclareTaskQueue(queueName);
 
-            channel.BasicPublish("", queueName, null, messageToBytes);
+            channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
         }
 
         public async Task PublishAsync<T>(T messageBody, string queueName = null)
         {
             await Task.Run(() =>
                            {
-                               var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
+                               var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
 
                                if (queueName == null)
                                {
@@ -60,7 +60,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
                                _manager.DeclareTaskQueue(queueName);
 
-                               channel.BasicPublish("", queueName, null, messageToBytes);
+                               channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
                            });
         }
 
@@ -68,13 +68,13 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             await Task.Run(() =>
                            {
-                               var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
+                               var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
 
                                var channel = _manager.GetChannel();
 
                                _manager.DeclareTaskQueue(queueName);
 
-                               channel.BasicPublish("", queueName, null, messageToBytes);
+                               channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
                            });
         }
     }

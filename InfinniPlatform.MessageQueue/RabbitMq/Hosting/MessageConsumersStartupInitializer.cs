@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
@@ -19,7 +20,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// Регистрирует потребителей сообщений.
         /// </summary>
         /// <param name="taskConsumers">Потребители сообщений очереди задач.</param>
-        /// ///
         /// <param name="broadcastConsumers">Потребители сообщений широковещательной очереди.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="messageSerializer">Сериализатор сообщений.</param>
@@ -81,7 +81,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         {
             if (queueName == null)
             {
-                throw new ArgumentException("Не указано имя очереди.");
+                throw new ArgumentException(Resources.UnableToGetQueueName);
             }
 
             var eventingConsumer = new EventingBasicConsumer(channel);
@@ -96,11 +96,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                              Task.Run(async () =>
                                                             {
                                                                 startDate = DateTime.Now;
-                                                                _log.Debug($"Started consume {e.DeliveryTag} by {name}.");
+                                                                
+                                                                _log.Debug(string.Format(Resources.ConsumeStart, e.DeliveryTag, name));
 
                                                                 await consumer.Consume(message);
 
-                                                                _log.Debug($"Finished consume {e.DeliveryTag} by {name}.");
+                                                                _log.Debug(string.Format(Resources.ConsumeSuccess, e.DeliveryTag, name));
                                                             })
                                                  .ContinueWith(task =>
                                                                {
@@ -112,11 +113,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                                                    else
                                                                    {
                                                                        _performanceLog.Log(name, startDate);
-                                                                       _log.Debug($"Started ack {e.DeliveryTag} by {name}.");
+                                                                       _log.Debug(string.Format(Resources.AckStart, e.DeliveryTag, name));
 
                                                                        channel.BasicAck(e.DeliveryTag, false);
 
-                                                                       _log.Debug($"Finished ack {e.DeliveryTag} by {name}.");
+                                                                       _log.Debug(string.Format(Resources.AckSuccess, e.DeliveryTag, name));
                                                                    }
                                                                });
                                          };
