@@ -50,7 +50,7 @@ namespace InfinniPlatform.MessageQueue.IoC
 
         private static RabbitMqManager GetRabbitMqConnection(IContainerResolver resolver)
         {
-            return new RabbitMqManager(resolver.Resolve<RabbitMqConnectionSettings>(), resolver.Resolve<IAppEnvironment>().Name);
+            return new RabbitMqManager(resolver.Resolve<RabbitMqConnectionSettings>(), resolver.Resolve<IAppEnvironment>());
         }
     }
 }

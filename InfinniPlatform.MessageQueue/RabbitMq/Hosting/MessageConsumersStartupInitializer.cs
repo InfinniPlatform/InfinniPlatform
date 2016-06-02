@@ -70,17 +70,18 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             foreach (var consumer in consumers)
             {
                 var channel = _manager.GetChannel();
-                var channelKey = _manager.DeclareFanoutQueue();
+                var routingKey = QueueNamingConventions.GetConsumerQueueName(consumer);
+                var queueName = _manager.DeclareBroadcastQueue(routingKey);
 
-                InitializeConsumer(channelKey, channel, consumer);
+                InitializeConsumer(queueName, channel, consumer);
             }
         }
 
-        private void InitializeConsumer(string channelKey, IModel channel, IConsumer consumer)
+        private void InitializeConsumer(string queueName, IModel channel, IConsumer consumer)
         {
-            if (channelKey == null)
+            if (queueName == null)
             {
-                throw new ArgumentException("Не указан ключ очереди.");
+                throw new ArgumentException("Не указано имя очереди.");
             }
 
             var eventingConsumer = new EventingBasicConsumer(channel);
@@ -120,7 +121,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                                                });
                                          };
 
-            channel.BasicConsume(channelKey, false, eventingConsumer);
+            channel.BasicConsume(queueName, false, eventingConsumer);
         }
     }
 }

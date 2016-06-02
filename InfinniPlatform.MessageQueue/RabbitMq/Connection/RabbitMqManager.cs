@@ -6,6 +6,8 @@ using System.Threading;
 using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
 
+using InfinniPlatform.Sdk.Settings;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
@@ -13,33 +15,25 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 {
     internal sealed class RabbitMqManager
     {
-        public RabbitMqManager(RabbitMqConnectionSettings connectionSettings, string applicationName)
+        public RabbitMqManager(RabbitMqConnectionSettings connectionSettings, IAppEnvironment appEnvironment)
         {
-            var connectionFactory = new ConnectionFactory
-                                    {
-                                        HostName = connectionSettings.HostName,
-                                        Port = connectionSettings.Port,
-                                        UserName = connectionSettings.UserName,
-                                        Password = connectionSettings.Password,
-                                        AutomaticRecoveryEnabled = Defaults.Connection.AutomaticRecoveryEnabled
-                                    };
+            BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Fanout}";
 
             _connection = new Lazy<IConnection>(() =>
                                                 {
+                                                    var connectionFactory = new ConnectionFactory
+                                                                            {
+                                                                                HostName = connectionSettings.HostName,
+                                                                                Port = connectionSettings.Port,
+                                                                                UserName = connectionSettings.UserName,
+                                                                                Password = connectionSettings.Password,
+                                                                                AutomaticRecoveryEnabled = Defaults.Connection.AutomaticRecoveryEnabled
+                                                                            };
+
                                                     var connection = connectionFactory.CreateConnection();
-                                                    var model = connection.CreateModel();
-
-                                                    //                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Direct}", Defaults.Exchange.Type.Direct, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-                                                    //                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Topic}", Defaults.Exchange.Type.Topic, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-                                                    model.ExchangeDeclare($"{applicationName}.{Defaults.Exchange.Type.Fanout}", Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-                                                    _exchangeNames = new Dictionary<string, string>
-                                                                     {
-                                                                         //                                                                         { Defaults.Exchange.Type.Direct, $"{applicationName}.{Defaults.Exchange.Type.Direct}" },
-                                                                         //                                                                         { Defaults.Exchange.Type.Topic, $"{applicationName}.{Defaults.Exchange.Type.Topic}" },
-                                                                         { Defaults.Exchange.Type.Fanout, $"{applicationName}.{Defaults.Exchange.Type.Fanout}" }
-                                                                     };
-
-                                                    model.Close();
+                                                    var channel = connection.CreateModel();
+                                                    channel.ExchangeDeclare(BroadcastExchangeName, Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    channel.Close();
 
                                                     return connection;
                                                 });
@@ -49,7 +43,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 
         private readonly Lazy<IConnection> _connection;
         private readonly ManagementClient _managementClient;
-        private Dictionary<string, string> _exchangeNames;
+
+        public string BroadcastExchangeName { get; }
 
         /// <summary>
         /// Возвращает абстракцию соединения с RabbitMq.
@@ -96,17 +91,14 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         /// <summary>
         /// Создает очередь для широковещательных сообщений.
         /// </summary>
-        public string DeclareFanoutQueue()
+        public string DeclareBroadcastQueue(string routingKey)
         {
             var channel = GetChannel();
             var queueName = channel.QueueDeclare().QueueName;
-            channel.QueueBind(queueName, _exchangeNames[Defaults.Exchange.Type.Fanout], "");
-            return queueName;
-        }
 
-        public string GetExchangeNameByType(string type)
-        {
-            return _exchangeNames[type];
+            channel.QueueBind(queueName, BroadcastExchangeName, routingKey);
+
+            return queueName;
         }
 
         /// <summary>

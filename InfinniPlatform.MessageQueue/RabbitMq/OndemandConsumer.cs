@@ -36,7 +36,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                 return null;
             }
 
-            var message = _messageSerializer.BytesToMessage(result.Body, typeof(T));
+            var message = _messageSerializer.BytesToMessage<T>(result.Body);
 
             channel.BasicAck(result.DeliveryTag, false);
 

@@ -18,41 +18,41 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
 
-        public void Publish<T>(T message, string queueName = null)
+        public void Publish<T>(T messageBody, string queueName = null)
         {
-            var messageToBytes = _messageSerializer.MessageToBytes(message);
+            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
             var channel = _manager.GetChannel();
 
-            channel.BasicPublish(_manager.GetExchangeNameByType(Defaults.Exchange.Type.Fanout), "", null, messageToBytes);
+            channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
         }
 
-        public void PublishDynamic(DynamicWrapper message, string queueName)
+        public void PublishDynamic(DynamicWrapper messageBody, string queueName)
         {
-            var messageToBytes = _messageSerializer.MessageToBytes(message);
+            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
             var channel = _manager.GetChannel();
 
-            channel.BasicPublish(_manager.GetExchangeNameByType(Defaults.Exchange.Type.Fanout), "", null, messageToBytes);
+            channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
         }
 
-        public async Task PublishAsync<T>(T message, string queueName = null)
+        public async Task PublishAsync<T>(T messageBody, string queueName = null)
         {
             await Task.Run(() =>
                            {
-                               var messageToBytes = _messageSerializer.MessageToBytes(message);
+                               var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
                                var channel = _manager.GetChannel();
 
-                               channel.BasicPublish(_manager.GetExchangeNameByType(Defaults.Exchange.Type.Fanout), "", null, messageToBytes);
+                               channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
                            });
         }
 
-        public async Task PublishDynamicAsync(DynamicWrapper message, string queueName)
+        public async Task PublishDynamicAsync(DynamicWrapper messageBody, string queueName)
         {
             await Task.Run(() =>
                            {
-                               var messageToBytes = _messageSerializer.MessageToBytes(message);
+                               var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
                                var channel = _manager.GetChannel();
 
-                               channel.BasicPublish(_manager.GetExchangeNameByType(Defaults.Exchange.Type.Fanout), "", null, messageToBytes);
+                               channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
                            });
         }
     }

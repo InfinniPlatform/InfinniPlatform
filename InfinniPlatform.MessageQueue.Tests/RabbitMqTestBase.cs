@@ -8,6 +8,7 @@ using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Consumers;
+using InfinniPlatform.Sdk.Settings;
 
 using Moq;
 
@@ -22,7 +23,10 @@ namespace InfinniPlatform.MessageQueue.Tests
         [OneTimeSetUp]
         public void SetUp()
         {
-            RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, TestConstants.ApplicationName);
+            var appEnvironmentMock = new Mock<IAppEnvironment>();
+            appEnvironmentMock.SetupGet(env => env.Name).Returns(TestConstants.ApplicationName);
+
+            RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object);
 
             RabbitMqManager.DeleteQueues(RabbitMqManager.GetQueues());
 

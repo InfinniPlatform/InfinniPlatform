@@ -12,25 +12,25 @@ namespace InfinniPlatform.Sdk.Queues.Producers
         /// <summary>
         /// Публикует широковещательные сообщения.
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        void Publish<T>(T message, string queueName = null);
+        /// <param name="messageBody">Сообщение</param>
+        void Publish<T>(T messageBody, string queueName = null);
 
         /// <summary>
         /// Публикует широковещательные сообщения.
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        void PublishDynamic(DynamicWrapper message, string queueName);
+        /// <param name="messageBody">Сообщение</param>
+        void PublishDynamic(DynamicWrapper messageBody, string queueName);
 
         /// <summary>
         /// Публикует широковещательные сообщения.
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        Task PublishAsync<T>(T message, string queueName = null);
+        /// <param name="messageBody">Сообщение</param>
+        Task PublishAsync<T>(T messageBody, string queueName = null);
 
         /// <summary>
         /// Публикует широковещательные сообщения.
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        Task PublishDynamicAsync(DynamicWrapper message, string queueName);
+        /// <param name="messageBody">Сообщение</param>
+        Task PublishDynamicAsync(DynamicWrapper messageBody, string queueName);
     }
 }
