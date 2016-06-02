@@ -2,6 +2,10 @@
 
 http://infinniplatform.readthedocs.io/
 
+# NuGet Source
+
+http://nuget.infinnity.ru
+
 # Builds
 
 ## Windows
