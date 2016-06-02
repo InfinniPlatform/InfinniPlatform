@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 // Look in: */Packaging/GlobalAssemblyInfo.cs
 // Find what: ((AssemblyVersion|AssemblyFileVersion)\s*\(\s*@?\")(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)\.(?<build>[0-9]+)(\"\s*\))
 // Replace with: $1$3.$4.$5.\%build.number%$7
+
 [assembly: AssemblyVersion("1.5.0.0")]
 [assembly: AssemblyFileVersion("1.5.0.0")]
 
@@ -20,4 +21,5 @@ using System.Runtime.InteropServices;
 // Look in: */Packaging/GlobalAssemblyInfo.cs
 // Find what: (AssemblyInformationalVersion\s*\(\s*@?\").*?(\"\s*\))
 // Replace with: $1\%build.vcs.number%$2
+
 [assembly: AssemblyInformationalVersion("")]

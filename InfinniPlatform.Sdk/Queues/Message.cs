@@ -1,38 +1,40 @@
-﻿namespace InfinniPlatform.Sdk.Queues
+﻿using System;
+
+namespace InfinniPlatform.Sdk.Queues
 {
     /// <summary>
-    ///     Сообщение очереди.
+    /// Сообщение в очереди.
     /// </summary>
-    public sealed class Message
+    public class Message<T> : IMessage<T>
     {
         /// <summary>
-        ///     Уникальный идентификатор сообещения в очереди сообщений.
+        /// Конструктор.
         /// </summary>
-        public ulong DeliveryTag { get; set; }
+        /// <param name="body">Тело сообщения.</param>
+        public Message(T body)
+        {
+            Body = body;
+        }
 
         /// <summary>
-        ///     Уникальный идентификатор обработчика очереди сообщений.
+        /// Тело сообщения.
         /// </summary>
-        public string ConsumerId { get; set; }
+        public T Body { get; }
 
         /// <summary>
-        ///     Наименование точки обмена сообщениями.
+        /// Возвращает тело сообщения.
         /// </summary>
-        public string Exchange { get; set; }
+        public object GetBody()
+        {
+            return Body;
+        }
 
         /// <summary>
-        ///     Ключ маршрутизации сообщения.
+        /// Возвращает тип тела сообщения.
         /// </summary>
-        public string RoutingKey { get; set; }
-
-        /// <summary>
-        ///     Свойства сообщения.
-        /// </summary>
-        public MessageProperties Properties { get; set; }
-
-        /// <summary>
-        ///     Тело сообщения.
-        /// </summary>
-        public byte[] Body { get; set; }
+        public Type GetBodyType()
+        {
+            return Body.GetType();
+        }
     }
 }
