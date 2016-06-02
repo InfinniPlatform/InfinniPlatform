@@ -33,7 +33,7 @@
 			| Select-String -Pattern 'AssemblyVersion\s*\(\s*\"(?<version>.*?)\"\s*\)' `
 			| ForEach-Object { $_.Matches[0].Groups['version'].Value }
 
-		if ($branchName -and $branchName -notlike 'release-*')
+		if ($branchName -and $branchName -notlike '*release-*')
 		{
 			$version = $version + '-' + ($branchName -replace '^(refs/heads/){0,1}(f\-){0,1}', '')
 		}
