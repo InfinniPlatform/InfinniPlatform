@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 using EasyNetQ.Management.Client;
 using EasyNetQ.Management.Client.Model;
 
 using RabbitMQ.Client;
+using RabbitMQ.Client.Exceptions;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 {
@@ -62,10 +64,23 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         /// </summary>
         public IModel GetChannel()
         {
-            var channel = _connection.Value.CreateModel();
-            channel.BasicQos(0, 1, false);
+            var alreadyClosedException = new AlreadyClosedException(new ShutdownEventArgs(ShutdownInitiator.Application, 200, "Unable to create channel."));
+            for (var i = 0; i < 10; i++)
+            {
+                try
+                {
+                    var channel = _connection.Value.CreateModel();
+                    channel.BasicQos(0, 1, false);
 
-            return channel;
+                    return channel;
+                }
+                catch (AlreadyClosedException e)
+                {
+                    alreadyClosedException = e;
+                    Thread.Sleep(1000);
+                }
+            }
+            throw alreadyClosedException;
         }
 
         /// <summary>
