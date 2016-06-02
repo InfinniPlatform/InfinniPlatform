@@ -51,7 +51,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             Assert.Throws<AlreadyClosedException>(() => channel.BasicPublish(string.Empty, routingKey, null, message));
 
             WindowsServices.StartService(TestConstants.ServiceName, TestConstants.WaitTimeout);
-            Thread.Sleep(5000);
+            Thread.Sleep(10000);
             Assert.DoesNotThrow(() => channel.BasicPublish(string.Empty, routingKey, null, message));
         }
     }

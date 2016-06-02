@@ -58,7 +58,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         {
             var aggregateException = new AggregateException();
 
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 120; i++)
             {
                 try
                 {
@@ -70,7 +70,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
                 catch (AlreadyClosedException e)
                 {
                     aggregateException = new AggregateException(e);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                 }
             }
             if (aggregateException.InnerExceptions.Count == 0)
