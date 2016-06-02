@@ -29,6 +29,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         }
     }
 
+
     [QueueName("NamedQueueTestMessageBroadcast")]
     public class NamedQueueTestMessageBroadcastConsumer : BroadcastConsumerBase<TestMessage>
     {
@@ -45,10 +46,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         protected override Task Consume(Message<TestMessage> message)
         {
             return Task.Run(() =>
-            {
-                _messages.Add(message.Body);
-                _completeEvent.Signal();
-            });
+                            {
+                                _messages.Add(message.Body);
+                                _completeEvent.Signal();
+                            });
         }
     }
 }

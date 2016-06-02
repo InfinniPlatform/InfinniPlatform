@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-
-using EasyNetQ.Management.Client;
-using EasyNetQ.Management.Client.Model;
 
 using InfinniPlatform.Sdk.Settings;
 
@@ -13,9 +8,13 @@ using RabbitMQ.Client.Exceptions;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 {
+    /// <summary>
+    /// Менеджер RabbitMQ, инкапсулирующий функции, доступные через RabbitMQ .NET-драйвер.
+    /// </summary>
     internal sealed class RabbitMqManager
     {
-        public RabbitMqManager(RabbitMqConnectionSettings connectionSettings, IAppEnvironment appEnvironment)
+        public RabbitMqManager(RabbitMqConnectionSettings connectionSettings,
+                               IAppEnvironment appEnvironment)
         {
             BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Fanout}";
 
@@ -37,12 +36,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
 
                                                     return connection;
                                                 });
-
-            _managementClient = new ManagementClient($"http://{connectionSettings.HostName}", connectionSettings.UserName, connectionSettings.Password, connectionSettings.ManagementApiPort);
         }
 
         private readonly Lazy<IConnection> _connection;
-        private readonly ManagementClient _managementClient;
 
         public string BroadcastExchangeName { get; }
 
@@ -59,7 +55,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         /// </summary>
         public IModel GetChannel()
         {
-            var alreadyClosedException = new AlreadyClosedException(new ShutdownEventArgs(ShutdownInitiator.Application, 200, "Unable to create channel."));
+            var aggregateException = new AggregateException();
+
             for (var i = 0; i < 10; i++)
             {
                 try
@@ -71,11 +68,16 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
                 }
                 catch (AlreadyClosedException e)
                 {
-                    alreadyClosedException = e;
+                    aggregateException = new AggregateException(e);
                     Thread.Sleep(1000);
                 }
             }
-            throw alreadyClosedException;
+            if (aggregateException.InnerExceptions.Count == 0)
+            {
+                throw new AggregateException(new InvalidOperationException("Unable to create RabbitMQ channel."));
+            }
+
+            throw aggregateException;
         }
 
         /// <summary>
@@ -99,66 +101,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
             channel.QueueBind(queueName, BroadcastExchangeName, routingKey);
 
             return queueName;
-        }
-
-        /// <summary>
-        /// Получить список очередей.
-        /// </summary>
-        public IEnumerable<Queue> GetQueues()
-        {
-            return _managementClient.GetQueues();
-        }
-
-        /// <summary>
-        /// Удаляет очереди из списка.
-        /// </summary>
-        /// <param name="queues">Список очередей.</param>
-        public void DeleteQueues(IEnumerable<Queue> queues)
-        {
-            foreach (var q in queues.Where(queue => queue.AutoDelete != true))
-            {
-                _managementClient.DeleteQueue(q);
-            }
-        }
-
-        /// <summary>
-        /// Возвращает список связей между точками обмена и очередью.
-        /// </summary>
-        public IEnumerable<Binding> GetBindings()
-        {
-            return _managementClient.GetBindings();
-        }
-
-        /// <summary>
-        /// Возвращает список точек обмена.
-        /// </summary>
-        public IEnumerable<Exchange> GetExchanges()
-        {
-            return _managementClient.GetExchanges();
-        }
-
-        /// <summary>
-        /// Удаляет все сообщения из очереди.
-        /// </summary>
-        /// <param name="queue">Очередь.</param>
-        public void Get(Queue queue)
-        {
-            _managementClient.Purge(queue);
-        }
-
-        public bool IsAlive()
-        {
-            var defaultVhost = new Vhost { Name = "/" };
-
-            try
-            {
-                var isAlive = _managementClient.IsAlive(defaultVhost);
-                return isAlive;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
     }
 }

@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="RabbitMq\Connection\Defaults.cs" />
     <Compile Include="RabbitMq\BroadcastProducer.cs" />
+    <Compile Include="RabbitMq\Connection\RabbitMqHtttpManager.cs" />
     <Compile Include="RabbitMq\QueueNamingConventions.cs" />
     <Compile Include="RabbitMq\Serialization\IMessageSerializer.cs" />
     <Compile Include="RabbitMq\Hosting\MessageConsumersStartupInitializer.cs" />

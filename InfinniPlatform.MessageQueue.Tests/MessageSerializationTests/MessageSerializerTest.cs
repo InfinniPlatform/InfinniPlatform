@@ -24,18 +24,6 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
         }
 
         [Test]
-        public void TestMessageSerializeAndDeserializeWithoutErrorsWithGeneric()
-        {
-            var messageSerializer = new MessageSerializer();
-            var message = new TestMessage("1", 1, new DateTime(1, 1, 1));
-
-            var bytes = messageSerializer.MessageToBytes(message);
-            var actual = messageSerializer.BytesToMessage<TestMessage>(bytes);
-
-            Assert.AreEqual(message, actual.GetBody());
-        }
-
-        [Test]
         public void TestMessageSerializeAndDeserializeWithoutErrors()
         {
             var messageSerializer = new MessageSerializer();
@@ -43,6 +31,18 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
 
             var bytes = messageSerializer.MessageToBytes(message);
             var actual = messageSerializer.BytesToMessage(bytes, typeof(TestMessage));
+
+            Assert.AreEqual(message, actual.GetBody());
+        }
+
+        [Test]
+        public void TestMessageSerializeAndDeserializeWithoutErrorsWithGeneric()
+        {
+            var messageSerializer = new MessageSerializer();
+            var message = new TestMessage("1", 1, new DateTime(1, 1, 1));
+
+            var bytes = messageSerializer.MessageToBytes(message);
+            var actual = messageSerializer.BytesToMessage<TestMessage>(bytes);
 
             Assert.AreEqual(message, actual.GetBody());
         }

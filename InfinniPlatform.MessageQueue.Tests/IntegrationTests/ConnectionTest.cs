@@ -22,7 +22,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             WindowsServices.StopService(TestConstants.ServiceName, TestConstants.WaitTimeout);
 
-            Assert.Throws<AlreadyClosedException>(() => RabbitMqManager.GetChannel());
+            Assert.Throws<AggregateException>(() => RabbitMqManager.GetChannel());
 
             WindowsServices.StartService(TestConstants.ServiceName, TestConstants.WaitTimeout);
 

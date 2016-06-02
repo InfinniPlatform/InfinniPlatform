@@ -18,8 +18,12 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<RabbitMqConnectionSettings>()
                    .SingleInstance();
 
-            builder.RegisterFactory(GetRabbitMqConnection)
+            builder.RegisterType<RabbitMqManager>()
                    .As<RabbitMqManager>()
+                   .SingleInstance();
+
+            builder.RegisterType<RabbitMqHttpManager>()
+                   .As<RabbitMqHttpManager>()
                    .SingleInstance();
 
             builder.RegisterType<MessageConsumersStartupInitializer>()
@@ -46,11 +50,6 @@ namespace InfinniPlatform.MessageQueue.IoC
         private static RabbitMqConnectionSettings GetRabbitMqConnectionSettings(IContainerResolver resolver)
         {
             return resolver.Resolve<IAppConfiguration>().GetSection<RabbitMqConnectionSettings>(RabbitMqConnectionSettings.SectionName);
-        }
-
-        private static RabbitMqManager GetRabbitMqConnection(IContainerResolver resolver)
-        {
-            return new RabbitMqManager(resolver.Resolve<RabbitMqConnectionSettings>(), resolver.Resolve<IAppEnvironment>());
         }
     }
 }
