@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Web.Http.Dependencies;
 
 using Autofac;
 
 using InfinniPlatform.IoC.Owin.Modules;
 using InfinniPlatform.IoC.Properties;
-using InfinniPlatform.IoC.WebApi;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
@@ -50,18 +48,11 @@ namespace InfinniPlatform.IoC.Owin
             autofacContainerBuilder.RegisterInstance(containerResolverFactory);
             autofacContainerBuilder.Register(r => r.Resolve<Func<IContainerResolver>>()()).As<IContainerResolver>().SingleInstance();
 
-            // Регистрация контейнера для WebApi
-            IDependencyResolver webApiDependencyResolver = null;
-            Func<IDependencyResolver> webApiDependencyResolverFactory = () => webApiDependencyResolver;
-            autofacContainerBuilder.RegisterInstance(webApiDependencyResolverFactory);
-            autofacContainerBuilder.Register(r => r.Resolve<Func<IDependencyResolver>>()()).As<IDependencyResolver>().SingleInstance();
-
             // ReSharper restore AccessToModifiedClosure
 
             // Построение контейнера зависимостей
             autofacRootContainer = autofacContainerBuilder.Build();
             containerResolver = new AutofacContainerResolver(autofacRootContainer, Middleware.AutofacRequestLifetimeScopeOwinMiddleware.TryGetRequestContainer);
-            webApiDependencyResolver = new AutofacWebApiDependencyResolver(autofacRootContainer);
 
             return new OwinHostingContext(hostingConfig, containerResolver, new AutofacOwinMiddlewareResolver());
         }

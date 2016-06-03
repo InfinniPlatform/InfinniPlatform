@@ -38,7 +38,7 @@ namespace InfinniPlatform.IoC
 
             var result = new List<ContainerModuleInfo>();
 
-            var modules = FindContainerModulesWithoutLoad();
+            var modules = FindBaseDirectoryContainerModules();
 
             if (modules != null)
             {
@@ -90,41 +90,6 @@ namespace InfinniPlatform.IoC
 
             return assembly;
         }
-
-
-        private static IEnumerable<ContainerModuleLocation> FindContainerModulesWithoutLoad()
-        {
-            // Поиск модулей без загрузки сборок, в которых они находятся,
-            // чтобы не "засорять" текущий домен приложения раньше времени.
-
-            IEnumerable<ContainerModuleLocation> result;
-
-            var currentDomainInfo = AppDomain.CurrentDomain.SetupInformation;
-
-            var tempDomain = AppDomain.CreateDomain("ContainerModuleScanner", null, new AppDomainSetup
-            {
-                LoaderOptimization = LoaderOptimization.MultiDomainHost,
-                ApplicationBase = currentDomainInfo.ApplicationBase,
-                ConfigurationFile = currentDomainInfo.ConfigurationFile
-            });
-
-            try
-            {
-                tempDomain.DoCallBack(() =>
-                {
-                    AppDomain.CurrentDomain.SetData("Modules", FindBaseDirectoryContainerModules());
-                });
-
-                result = tempDomain.GetData("Modules") as IEnumerable<ContainerModuleLocation>;
-            }
-            finally
-            {
-                AppDomain.Unload(tempDomain);
-            }
-
-            return result;
-        }
-
 
         private static IEnumerable<ContainerModuleLocation> FindBaseDirectoryContainerModules()
         {
