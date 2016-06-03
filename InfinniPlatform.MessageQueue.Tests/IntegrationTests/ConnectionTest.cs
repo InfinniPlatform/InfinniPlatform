@@ -13,6 +13,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
+    [Ignore("Due to results inconsistency.")]
     public class ConnectionTest : RabbitMqTestBase
     {
         [Test]
