@@ -8,8 +8,8 @@ using NUnit.Framework;
 namespace InfinniPlatform.SignalR.Tests
 {
     [TestFixture]
-    [Category(TestCategories.AcceptanceTest)]
-    public sealed class ClientNotificationServiceAcceptanceTest
+    [Category(TestCategories.IntegrationTest)]
+    public sealed class ClientNotificationServiceTest
     {
         private IDisposable _server;
 

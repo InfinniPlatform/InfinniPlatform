@@ -29,10 +29,5 @@
 		/// Интеграционные тесты.
 		/// </summary>
 		public const string IntegrationTest = "IntegrationTest";
-
-		/// <summary>
-		/// Приемочные тесты.
-		/// </summary>
-		public const string AcceptanceTest = "AcceptanceTest";
 	}
 }

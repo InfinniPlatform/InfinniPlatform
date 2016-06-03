@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Core.Tests.Schema
 {
     [TestFixture]
-    [Category(TestCategories.AcceptanceTest)]
+    [Category(TestCategories.UnitTest)]
     public sealed class SchemaCreatorBehavior
     {
         [Test]
