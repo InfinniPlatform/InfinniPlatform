@@ -77,7 +77,7 @@
 				{
 					$result = $item -match '^\.\.\\packages\\(?<name>.*?)\.(?<version>([0-9]+\.[0-9\.]+)|([0-9]+\.[0-9\.]+\-.*?))\\lib($|(\\.*?))'
 
-					$projectNuspec = $projectNuspec + "            <dependency id=""$($matches.name)"" version=""$($matches.version)"" />`r`n"
+					$projectNuspec = $projectNuspec + "            <dependency id=""$($matches.name)"" version=""[$($matches.version)]"" />`r`n"
 				}
 			}
 
@@ -89,7 +89,7 @@
 			{
 				foreach ($item in $dependencies)
 				{
-					$projectNuspec = $projectNuspec + "            <dependency id=""$item"" version=""$version"" />`r`n"
+					$projectNuspec = $projectNuspec + "            <dependency id=""$item"" version=""[$version]"" />`r`n"
 				}
 			}
 
@@ -175,7 +175,7 @@
 		{
 			$projectName = (Get-ChildItem $project).BaseName
 
-			$solutionNuspec = $solutionNuspec + "            <dependency id=""$projectName"" version=""$version"" />`r`n"
+			$solutionNuspec = $solutionNuspec + "            <dependency id=""$projectName"" version=""[$version]"" />`r`n"
 		}
 
 		$solutionNuspec = $solutionNuspec + `
