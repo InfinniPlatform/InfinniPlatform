@@ -1,36 +1,36 @@
 ﻿<#
 .Synopsis
-	Осуществляет сборку проекта и формирует NuGet-пакеты.
+	Builds solution and creates NuGet packages.
 #>
 param
 (
-	[Parameter(HelpMessage = "Каталог решения.")]
+	[Parameter(HelpMessage = "Path to the solution directory.")]
 	[String] $solutionDir = '.',
 
-	[Parameter(HelpMessage = "Каталог результатов.")]
+	[Parameter(HelpMessage = "Path to the solution output directory.")]
 	[String] $outputDir = 'Assemblies',
 
-	[Parameter(HelpMessage = "Путь к файлу с версией проекта.")]
+	[Parameter(HelpMessage = "Path to GlobalAssemblyInfo.cs.")]
 	[String] $assemblyInfo = 'Files\Packaging\GlobalAssemblyInfo.cs',
 
-	[Parameter(HelpMessage = "Ветка VCS версии проекта.")]
+	[Parameter(HelpMessage = "VCS branch name.")]
 	[String] $branchName = '',
 
-	[Parameter(HelpMessage = "Номер VCS версии проекта.")]
+	[Parameter(HelpMessage = "VCS commit hash.")]
 	[String] $commitHash = '',
 
-	[Parameter(HelpMessage = "Режим сборки проекта.")]
+	[Parameter(HelpMessage = "Build mode.")]
 	[String] $buildMode = 'Release'
 )
 
-# Зависимости скрипта
+# Script dependencies
 . (Join-Path $PSScriptRoot 'CreateNuspec.ps1')
 . (Join-Path $PSScriptRoot 'BuildSymbols.ps1')
 
-# Очистка результатов
+# Clear output directory
 Remove-Item -Path $outputDir -Recurse -ErrorAction SilentlyContinue
 
-# Установка NuGet
+# Install NuGet package manager
 
 $nugetDir = Join-Path $env:ProgramData 'NuGet'
 $nugetPath = Join-Path $nugetDir 'nuget.exe'
@@ -46,14 +46,14 @@ if (-not (Test-Path $nugetPath))
 	Invoke-WebRequest -Uri $nugetSourceUri -OutFile $nugetPath
 }
 
-# Восстановление пакетов
+# Restore packages
 & "$nugetPath" restore 'InfinniPlatform.sln' -NonInteractive
 
-# Сборка проектов решения
+# Build the solution
 & "${Env:ProgramFiles(x86)}\MSBuild\14.0\bin\msbuild.exe" 'InfinniPlatform.sln' /t:Clean /p:Configuration=$buildMode /verbosity:quiet /consoleloggerparameters:ErrorsOnly
 & "${Env:ProgramFiles(x86)}\MSBuild\14.0\bin\msbuild.exe" 'InfinniPlatform.sln' /p:Configuration=$buildMode /verbosity:quiet /consoleloggerparameters:ErrorsOnly
 
-# Создание nuspec-файлов
+# Create nuspec-files
 Create-Nuspec `
 	-solutionDir $solutionDir `
 	-outputDir $outputDir `
@@ -64,9 +64,9 @@ Create-Nuspec `
 Get-ChildItem $outputDir -Filter '*.nuspec' | Foreach-Object {
 	$nuspecFile = Join-Path $outputDir $_.Name
 
-	# Создание nupkg-файлов
+	# Create nupkg-file
 	& "$nugetPath" pack $nuspecFile -OutputDirectory $outputDir -NoDefaultExcludes -NonInteractive
 
-	# Удаление nuspec-файлов
+	# Remove nuspec-file
 	Remove-Item -Path $nuspecFile
 }

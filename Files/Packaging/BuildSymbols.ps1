@@ -2,23 +2,23 @@
 {
 	<#
 	.Synopsis
-		Включает в pdb-файлы проекта информацию о источнике кода.
+		Includes into pdb-files information about the source of the code.
 	#>
 	param
 	(
-		[Parameter(HelpMessage = "Каталог решения.")]
+		[Parameter(HelpMessage = "Path to the solution directory.")]
 		[String] $solutionDir = '.',
 
-		[Parameter(HelpMessage = "Адрес VCS проекта.")]
+		[Parameter(HelpMessage = "VCS repository URL.")]
 		[String] $repositoryUrl = '',
 
-		[Parameter(HelpMessage = "Номер VCS версии проекта.")]
+		[Parameter(HelpMessage = "VCS commit hash.")]
 		[String] $commitHash = ''
 	)
 
 	process
 	{
-		# Установка NuGet
+		# Install NuGet package manager
 
 		$nugetDir = Join-Path $env:ProgramData 'NuGet'
 		$nugetPath = Join-Path $nugetDir 'nuget.exe'
@@ -34,7 +34,7 @@
 			Invoke-WebRequest -Uri $nugetSourceUri -OutFile $nugetPath
 		}
 
-		# Установка GitLink
+		# Install GitLink package
 
 		$gitLinkDir = Join-Path $env:ProgramData 'GitLink'
 		$gitLinkPath = Join-Path $gitLinkDir 'lib\net45\GitLink.exe'
@@ -44,7 +44,7 @@
 			& "$nugetPath" install 'GitLink' -OutputDirectory $env:ProgramData -NonInteractive -Prerelease -ExcludeVersion
 		}
 
-		# Сборка символьных файлов
+		# Build symbol files
 
 		if ($repositoryUrl -like '*.git')
 		{
