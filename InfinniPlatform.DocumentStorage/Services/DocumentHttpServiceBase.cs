@@ -152,6 +152,9 @@ namespace InfinniPlatform.DocumentStorage.Services
             {
                 var success = (error == null && (result?.ValidationResult == null || result.ValidationResult.IsValid));
 
+                var serverError = error != null;
+                var validationError = result?.ValidationResult != null && result.ValidationResult.IsValid == false;
+
                 var requestResult = new ServiceResult<TResult>
                 {
                     Success = success,
@@ -159,10 +162,27 @@ namespace InfinniPlatform.DocumentStorage.Services
                     Error = error?.GetFullMessage()
                 };
 
-                response = new JsonHttpResponse(requestResult)
+                var statusCode = 200;
+
+                if (!success)
                 {
-                    StatusCode = success ? 200 : 500
-                };
+                    if (serverError)
+                    {
+                        statusCode = 500;
+                    }
+                    else
+                    {
+                        if (validationError)
+                        {
+                            statusCode = 400;
+                        }
+                    }
+                }
+
+                response = new JsonHttpResponse(requestResult)
+                           {
+                               StatusCode = statusCode
+                           };
             }
 
             // Запись в журнал
