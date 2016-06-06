@@ -65,6 +65,14 @@ namespace InfinniPlatform.DocumentStorage.Services
                         ? _storage.Find(query.Filter)
                         : _storage.FindText(query.Search, filter: query.Filter);
 
+                    long? count = null;
+
+                    if (query.Count)
+                    {
+                        // Подсчет общего количества документов по фильтру
+                        count = await cursor.CountAsync();
+                    }
+
                     // Установка правил сортировки
                     if (query.Order != null)
                     {
@@ -107,14 +115,6 @@ namespace InfinniPlatform.DocumentStorage.Services
                     {
                         // Выборка проекции документов
                         items = await cursor.Project(query.Select).ToListAsync();
-                    }
-
-                    long? count = null;
-
-                    if (query.Count)
-                    {
-                        // Подсчет общего количества документов по фильтру
-                        count = await cursor.CountAsync();
                     }
 
                     return new DocumentGetQueryResult { Items = items, Count = count };
