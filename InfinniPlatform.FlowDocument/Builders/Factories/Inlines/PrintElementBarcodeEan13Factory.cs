@@ -1,56 +1,57 @@
-﻿using System.Linq;
-using FastReport.Barcode;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Linq;
+
+using InfinniPlatform.FlowDocument.Model;
+
+using ZXing;
+using ZXing.Common;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
-	sealed class PrintElementBarcodeEan13Factory : PrintElementBarcodeBaseFactory
-	{
-		protected override BarcodeBase CreateBarcode(dynamic elementMetadata)
-		{
-			var barcode = new BarcodeEAN13();
-			ApplyCalcCheckSum(barcode, elementMetadata.CalcCheckSum);
-			ApplyWideBarRatio(barcode, elementMetadata.WideBarRatio);
+    internal sealed class PrintElementBarcodeEan13Factory : PrintElementBarcodeBaseFactory
+    {
+        protected override Bitmap CreateBarcode(dynamic elementMetadata, string textString, PrintElementSize imageSize, bool showText)
+        {
+            //TODO: Реализация Zxing отличается от FastReport, необходимы уточнения сценариев.
+            //			ApplyCalcCheckSum(barcode, elementMetadata.CalcCheckSum);
+            //			ApplyWideBarRatio(barcode, elementMetadata.WideBarRatio);
 
-			return barcode;
-		}
+            var height = imageSize.Height == null
+                             ? 64
+                             : Convert.ToInt32(imageSize.Height);
 
-		protected override string PrepareText(string barcodeText)
-		{
-			if (!string.IsNullOrWhiteSpace(barcodeText))
-			{
-				barcodeText = barcodeText.Trim();
+            var width = imageSize.Width == null
+                            ? 128
+                            : Convert.ToInt32(imageSize.Width);
 
-				if (barcodeText.All(char.IsDigit))
-				{
-					return barcodeText;
-				}
-			}
+            var barcodeWriter = new BarcodeWriter
+                                {
+                                    Format = BarcodeFormat.EAN_13,
+                                    Options = new EncodingOptions { Height = 64, Width = 128, PureBarcode = !showText }
+                                };
 
-			return "0";
-		}
+            imageSize.Height = height;
+            imageSize.Width = width;
 
-		private static void ApplyCalcCheckSum(BarcodeEAN13 barcode, dynamic calcCheckSum)
-		{
-			bool calcCheckSumBool;
+            var bitmap = barcodeWriter.Write(textString);
+            bitmap.Save(@"C:\Projects\InfinniPlatform\Assemblies\ean.png", ImageFormat.Png);
+            return bitmap;
+        }
 
-			if (!ConvertHelper.TryToBool(calcCheckSum, out calcCheckSumBool))
-			{
-				calcCheckSumBool = true;
-			}
+        protected override string PrepareText(string barcodeText)
+        {
+            if (string.IsNullOrWhiteSpace(barcodeText))
+            {
+                return "0";
+            }
 
-			barcode.CalcCheckSum = calcCheckSumBool;
-		}
+            barcodeText = barcodeText.Trim();
 
-		private static void ApplyWideBarRatio(BarcodeEAN13 barcode, dynamic wideBarRatio)
-		{
-			double wideBarRatioDouble;
-
-			if (!ConvertHelper.TryToDouble(wideBarRatio, out wideBarRatioDouble) || wideBarRatioDouble < 2)
-			{
-				wideBarRatioDouble = 2;
-			}
-
-			barcode.WideBarRatio = (float)wideBarRatioDouble;
-		}
-	}
+            return barcodeText.All(char.IsDigit)
+                       ? barcodeText
+                       : "0";
+        }
+    }
 }

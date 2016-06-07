@@ -24,10 +24,10 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
             var element = new PrintViewDocument();
             var result = new TextWriterWrapper();
 
-            var image0 = new PrintElementImage(_getStream(Resources.ImageRotate0));
-            var image90 = new PrintElementImage(_getStream(Resources.ImageRotate90));
-            var image180 = new PrintElementImage(_getStream(Resources.ImageRotate180));
-            var image270 = new PrintElementImage(_getStream(Resources.ImageRotate270));
+            var image0 = new PrintElementImage(Resources.ImageRotate0);
+            var image90 = new PrintElementImage(Resources.ImageRotate90);
+            var image180 = new PrintElementImage(Resources.ImageRotate180);
+            var image270 = new PrintElementImage(Resources.ImageRotate270);
 
             image0.Size = new PrintElementSize {Height = 50, Width = 150};
             image90.Size = new PrintElementSize {Height = 150, Width = 50};
@@ -80,17 +80,6 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html
 
             //Then
             Assert.AreEqual(Resources.ResultTestShouldBuildDocumentWithContents, result.GetText());
-        }
-
-        private Stream _getStream(Bitmap image)
-        {
-            var stream = new MemoryStream();
-
-            image.Save(stream, ImageFormat.Png);
-
-            stream.Position = 0;
-
-            return stream;
         }
     }
 }

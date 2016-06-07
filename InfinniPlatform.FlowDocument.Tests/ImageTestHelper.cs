@@ -28,7 +28,7 @@ namespace InfinniPlatform.FlowDocument.Tests
 
         public static void AssertImagesAreEqual(Bitmap expected, PrintElementImage image)
         {
-            CollectionAssert.AreEqual(BitmapToPixels(expected), ImageToPixels(image));
+            CollectionAssert.AreEqual(BitmapToPixels(expected), BitmapToPixels(image.Source));
         }
 
         private static IEnumerable<byte> BitmapToPixels(Bitmap bitmap)
@@ -44,36 +44,6 @@ namespace InfinniPlatform.FlowDocument.Tests
             bitmap.UnlockBits(bitmapData);
 
             return pixels;
-        }
-
-        private static IEnumerable<byte> ImageToPixels(PrintElementImage image)
-        {
-            //var bitmap = image.Source as BitmapSource;
-
-            //if (bitmap != null)
-            //{
-            //    var stride = bitmap.PixelWidth * 4;
-            //    var size = bitmap.PixelHeight * stride;
-            //    var pixels = new byte[size];
-            //    bitmap.CopyPixels(pixels, stride, 0);
-
-            //    return pixels;
-            //}
-
-            //return null;
-
-            var stream = image.Source;
-
-            if (stream == null)
-            {
-                return null;
-            }
-
-            using (var ms = new MemoryStream())
-            {
-                stream.CopyTo(ms);
-                return ms.ToArray();
-            }
         }
     }
 }

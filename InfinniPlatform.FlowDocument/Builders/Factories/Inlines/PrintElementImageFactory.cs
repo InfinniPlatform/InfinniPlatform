@@ -37,7 +37,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             try
             {
                 imageStream = ApplyRotation(imageStream, elementMetadata.Rotation);
-                var image = new PrintElementImage(imageStream);
+                var image = new PrintElementImage(new Bitmap(imageStream));
                 ApplySize(image, elementMetadata.Size);
                 ApplyStretch(image, elementMetadata.Stretch);
                 return image;
@@ -65,7 +65,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 
                         if (!string.IsNullOrEmpty(buildContext.ElementSourceProperty))
                         {
-                            result = GetImageDataStreamStub(string.Format("[{0}]", buildContext.ElementSourceProperty));
+                            result = GetImageDataStreamStub($"[{buildContext.ElementSourceProperty}]");
                         }
                         else if (!string.IsNullOrEmpty(buildContext.ElementSourceExpression))
                         {

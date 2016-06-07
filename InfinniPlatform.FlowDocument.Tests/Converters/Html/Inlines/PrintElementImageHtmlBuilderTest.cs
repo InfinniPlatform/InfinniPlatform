@@ -17,7 +17,7 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
         {
             // Given
             var context = HtmlBuilderTestHelper.CreateHtmlBuilderContext();
-            var element = new PrintElementImage(_getStream(Resources.BarcodeQrRotate0));
+            var element = new PrintElementImage(Resources.BarcodeQrRotate0);
             var result = new TextWriterWrapper();
 
             // When
@@ -25,17 +25,6 @@ namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines
 
             // Then
             Assert.AreEqual(Resources.ResultTestShouldBuildImage, result.GetText());
-        }
-
-        private Stream _getStream(Bitmap image)
-        {
-            var stream = new MemoryStream();
-
-            image.Save(stream, ImageFormat.Png);
-
-            stream.Position = 0;
-
-            return stream;
         }
     }
 }

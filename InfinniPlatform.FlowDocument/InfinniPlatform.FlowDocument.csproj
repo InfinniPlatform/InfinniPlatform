@@ -39,22 +39,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FastReport, Version=2013.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FastReport.Net.2013.4.6\lib\net40\FastReport.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FastReport.Bars, Version=2013.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FastReport.Net.2013.4.6\lib\net40\FastReport.Bars.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FastReport.Editor, Version=2013.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FastReport.Net.2013.4.6\lib\net40\FastReport.Editor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="zxing, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\net40\zxing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\net40\zxing.presentation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\Factories\Blocks\PrintElementTableFactory.cs" />

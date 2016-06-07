@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using FastReport;
-using FastReport.Barcode;
-using FastReport.Utils;
+
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.Model.Inlines;
+
+using ZXing;
 
 namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
 {
@@ -41,7 +41,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             return null;
         }
 
-        private static Stream ApplyRotation(Stream bitmap, dynamic rotation, PrintElementSize imageSize)
+        private static Bitmap ApplyRotation(Bitmap bitmap, dynamic rotation, PrintElementSize imageSize)
         {
             string rotationString;
 
@@ -61,23 +61,16 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             return bitmap;
         }
 
-        private static Stream RotateImage(Stream image, RotateFlipType rotation, PrintElementSize imageSize)
+        private static Bitmap RotateImage(Bitmap image, RotateFlipType rotation, PrintElementSize imageSize)
         {
             try
             {
-                using (var bitmap = new Bitmap(image))
-                {
-                    bitmap.RotateFlip(rotation);
+                image.RotateFlip(rotation);
 
-                    imageSize.Width = bitmap.Width;
-                    imageSize.Height = bitmap.Height;
+                imageSize.Width = image.Width;
+                imageSize.Height = image.Height;
 
-                    var result = new MemoryStream();
-                    bitmap.Save(result, ImageFormat.Png);
-                    result.Seek(0, SeekOrigin.Begin);
-
-                    return result;
-                }
+                return image;
             }
             catch
             {
@@ -85,7 +78,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
             }
         }
 
-        private Stream CreateBarcodeImageStream(PrintElementBuildContext buildContext, dynamic elementMetadata, PrintElementSize imageSize)
+        private Bitmap CreateBarcodeImageStream(PrintElementBuildContext buildContext, dynamic elementMetadata, PrintElementSize imageSize)
         {
             string textSting = BuildHelper.FormatValue(buildContext, elementMetadata.Text, elementMetadata.SourceFormat);
 
@@ -96,46 +89,9 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
                 bool showText;
                 showText = !ConvertHelper.TryToBool(elementMetadata.ShowText, out showText) || showText;
 
-                // Для генерации штрих-кода используется функциональность FastReport
-
                 try
                 {
-                    var barcode = new BarcodeObject
-                                  {
-                                      Barcode = CreateBarcode(elementMetadata),
-                                      ShowText = showText,
-                                      Text = textSting,
-                                      Height = 64
-                                  };
-
-                    // Для получения размеров штрих-кода рисуем его первый раз
-                    using (var codeBmp = new Bitmap(1, 1))
-                    using (var graphics = Graphics.FromImage(codeBmp))
-                    using (var graphicCache = new GraphicCache())
-                    {
-                        barcode.Draw(new FRPaintEventArgs(graphics, 1, 1, graphicCache));
-                    }
-
-                    // Теперь, зная размеры штрих-кода, рисуем его второй раз
-                    if (barcode.Width > 0 && barcode.Height > 0)
-                    {
-                        using (var codeBmp = new Bitmap((int)barcode.Width, (int)barcode.Height))
-                        using (var graphics = Graphics.FromImage(codeBmp))
-                        using (var graphicCache = new GraphicCache())
-                        {
-                            graphics.Clear(Color.White);
-                            barcode.Draw(new FRPaintEventArgs(graphics, 1, 1, graphicCache));
-
-                            imageSize.Width = codeBmp.Width;
-                            imageSize.Height = codeBmp.Height;
-
-                            var codeStream = new MemoryStream();
-                            codeBmp.Save(codeStream, ImageFormat.Png);
-                            codeStream.Seek(0, SeekOrigin.Begin);
-
-                            return codeStream;
-                        }
-                    }
+                    return CreateBarcode(elementMetadata, textSting, imageSize, showText);
                 }
                 catch
                 {
@@ -146,7 +102,7 @@ namespace InfinniPlatform.FlowDocument.Builders.Factories.Inlines
         }
 
 
-        protected abstract BarcodeBase CreateBarcode(dynamic elementMetadata);
+        protected abstract Bitmap CreateBarcode(dynamic metadata, string elementMetadata, PrintElementSize imageSize, bool showText);
 
         protected abstract string PrepareText(string barcodeText);
     }

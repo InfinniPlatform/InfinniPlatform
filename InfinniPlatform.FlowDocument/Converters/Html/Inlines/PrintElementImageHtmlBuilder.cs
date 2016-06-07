@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Drawing;
+using System.IO;
 
 using InfinniPlatform.FlowDocument.Model.Inlines;
 
@@ -9,7 +11,8 @@ namespace InfinniPlatform.FlowDocument.Converters.Html.Inlines
         public override void Build(HtmlBuilderContext context, PrintElementImage element, TextWriter result)
         {
             result.Write("<img src=\"data:image/png;base64,");
-            result.StreamToBase64(element.Source);
+
+            result.Write(Convert.ToBase64String(element.SourceBytes.Value));
 
             result.Write("\" style=\"");
 

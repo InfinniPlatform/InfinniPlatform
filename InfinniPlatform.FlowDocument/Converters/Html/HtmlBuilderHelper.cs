@@ -516,19 +516,6 @@ namespace InfinniPlatform.FlowDocument.Converters.Html
             }
         }
 
-        public static void StreamToBase64(this TextWriter result, Stream stream)
-        {
-            if (stream != null && stream.CanRead)
-            {
-                using (var memory = new MemoryStream())
-                {
-                    stream.CopyTo(memory);
-
-                    result.Write(Convert.ToBase64String(memory.ToArray()));
-                }
-            }
-        }
-
         public static void ApplyImageStyles(this TextWriter result, PrintElementImage element)
         {
             if (element.Size != null)
