@@ -261,7 +261,7 @@ namespace InfinniPlatform.Authentication.Services
                 ReasonPhrase = owinResponse.ReasonPhrase,
             };
 
-            return Task.FromResult<object>(response);
+            return Task.FromResult<object>(CreateSuccesResponse(response));
         }
 
         // EXTERNAL PROVIDERS
