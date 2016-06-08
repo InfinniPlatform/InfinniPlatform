@@ -40,13 +40,14 @@
 
 		### Create nuspec-files for all projects
 
-		$projects = Get-ChildItem -Path $solutionDir -Filter '*.csproj' -Exclude '*.Tests.csproj' -Recurse
 		$references = @()
+		$projects = Get-ChildItem -Path $solutionDir -Filter '*.csproj' -Exclude '*.Tests.csproj' -Recurse
 
 		foreach ($project in $projects)
 		{
 			[xml] $projectXml = Get-Content $project
 
+			$projectRefs = @()
 			$projectName = (Get-ChildItem $project).BaseName
 			$projectAssemblyName = ($projectXml.Project.PropertyGroup.AssemblyName[0])
 
@@ -67,29 +68,34 @@
 
 			# Add external dependencies
 
-			$projectPackages = $projectXml.Project.ItemGroup.Reference.HintPath | Where { $_ -like '..\packages\*.dll' }
-			$dependencies = $projectPackages | % { $_ -replace '\\[^\\]+\.dll', '' } | Sort-Object | Get-Unique -AsString
-			$references += $projectPackages | % { $_ -replace '^\.\.\\packages\\', '' }
+			$packagesConfigPath = Join-Path $project.Directory.FullName 'packages.config'
 
-			if ($dependencies)
+			if (Test-Path $packagesConfigPath)
 			{
-				foreach ($item in $dependencies)
-				{
-					$result = $item -match '^\.\.\\packages\\(?<name>.*?)\.(?<version>([0-9]+\.[0-9\.]+)|([0-9]+\.[0-9\.]+\-.*?))\\lib($|(\\.*?))'
+				[xml] $packagesConfigXml = Get-Content $packagesConfigPath
 
-					$projectNuspec = $projectNuspec + "            <dependency id=""$($matches.name)"" version=""[$($matches.version)]"" />`r`n"
+				$packages = $packagesConfigXml.packages.package
+
+				if ($packages)
+				{
+					foreach ($package in $packages)
+					{
+						$projectNuspec = $projectNuspec + "            <dependency id=""$($package.id)"" version=""[$($package.version)]"" />`r`n"
+					}
 				}
 			}
 
+			$projectRefs += $projectXml.Project.ItemGroup.Reference.HintPath | Where { $_ -like '..\packages\*.dll' } | % { $_ -replace '^\.\.\\packages\\', '' }
+
 			# Add internal dependencies
 
-			$dependencies = $projectXml.Project.ItemGroup.ProjectReference.Name | Sort-Object | Get-Unique -AsString
+			$projectReferences = $projectXml.Project.ItemGroup.ProjectReference.Name | Sort-Object | Get-Unique -AsString
 
-			if ($dependencies)
+			if ($projectReferences)
 			{
-				foreach ($item in $dependencies)
+				foreach ($projectReference in $projectReferences)
 				{
-					$projectNuspec = $projectNuspec + "            <dependency id=""$item"" version=""[$version]"" />`r`n"
+					$projectNuspec = $projectNuspec + "            <dependency id=""$projectReference"" version=""[$version]"" />`r`n"
 				}
 			}
 
@@ -103,7 +109,7 @@
 			$projectIsLibrary = $projectXml.Project.PropertyGroup.OutputType -like '*Library*'
 			$projectAssembly = $projectAssemblyName + $(if ($projectIsLibrary) { '.dll' } else { '.exe' })
 			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\$projectAssembly"" src=""$projectAssembly"" />`r`n"
-			$references += "$projectName.$version\lib\$framework\$projectAssembly"
+			$projectRefs += "$projectName.$version\lib\$framework\$projectAssembly"
 
 			# Add resources for ru-RU (if exists)
 
@@ -112,7 +118,7 @@
 			if ($projectResourcesRu -and $projectResourcesRu.Count -gt 0 -and $projectResourcesRu[0])
 			{
 				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\ru-RU"" src=""ru-RU\$projectAssemblyName.resources.dll"" />`r`n"
-				$references += "$projectName.$version\lib\$framework\ru-RU\$projectAssemblyName.resources.dll"
+				$projectRefs += "$projectName.$version\lib\$framework\ru-RU\$projectAssemblyName.resources.dll"
 			}
 
 			# Add resources for en-US (if exists)
@@ -122,13 +128,13 @@
 			if ($projectResourcesEn -and $projectResourcesEn.Count -gt 0 -and $projectResourcesEn[0])
 			{
 				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\en-US"" src=""en-US\$projectAssemblyName.resources.dll"" />`r`n"
-				$references += "$projectName.$version\lib\$framework\en-US\$projectAssemblyName.resources.dll"
+				$projectRefs += "$projectName.$version\lib\$framework\en-US\$projectAssemblyName.resources.dll"
 			}
 
 			# Add symbol file
 
 			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.pdb"" />`r`n"
-			$references += "$projectName.$version\lib\$framework\$projectAssemblyName.pdb"
+			$projectRefs += "$projectName.$version\lib\$framework\$projectAssemblyName.pdb"
 
 			# Add XML-documentation (if exists)
 
@@ -144,14 +150,18 @@
 			if (-not $projectIsLibrary)
 			{
 				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.exe.config"" />`r`n"
-				$references += "$projectName.$version\lib\$framework\$projectAssemblyName.exe.config"
+				$projectRefs += "$projectName.$version\lib\$framework\$projectAssemblyName.exe.config"
 			}
 
 			$projectNuspec = $projectNuspec + `
+				"        <file target=""lib\$framework\$projectName.references"" src=""$projectName.references"" />`r`n" + `
 				"    </files>`r`n" + `
 				"</package>"
 
+			Set-Content (Join-Path $outputDir "$projectName.references") -Value ($projectRefs | Sort-Object | Get-Unique -AsString)
 			Set-Content (Join-Path $outputDir ($projectName + '.nuspec')) -Value $projectNuspec
+
+			$references += $projectRefs
 		}
 
 		### Create nuspec-file for the solution
@@ -187,14 +197,11 @@
 			"        <file target=""lib\$framework\AppLog.config"" src=""AppLog.config"" />`r`n" + `
 			"        <file target=""lib\$framework\AppCommon.json"" src=""AppCommon.json"" />`r`n" + `
 			"        <file target=""lib\$framework\AppExtension.json"" src=""AppExtension.json"" />`r`n" + `
-			"        <file target=""lib\$framework\references.lock"" src=""references.lock"" />`r`n" + `
+			"        <file target=""lib\$framework\InfinniPlatform.references"" src=""InfinniPlatform.references"" />`r`n" + `
 			"    </files>`r`n" + `
 			"</package>"
 
+		Set-Content (Join-Path $outputDir 'InfinniPlatform.references') -Value ($references | Sort-Object | Get-Unique -AsString)
 		Set-Content (Join-Path $outputDir 'InfinniPlatform.nuspec') -Value $solutionNuspec
-
-		### Create file with all dependencies
-
-		Set-Content (Join-Path $outputDir 'references.lock') -Value ($references | Sort-Object | Get-Unique -AsString)
 	}
 }
