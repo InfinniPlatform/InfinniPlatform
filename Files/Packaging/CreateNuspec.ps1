@@ -159,7 +159,7 @@
 				"</package>"
 
 			Set-Content (Join-Path $outputDir "$projectName.references") -Value ($projectRefs | Sort-Object | Get-Unique -AsString)
-			Set-Content (Join-Path $outputDir ($projectName + '.nuspec')) -Value $projectNuspec
+			Set-Content (Join-Path $outputDir "$projectName.nuspec") -Value $projectNuspec
 
 			$references += $projectRefs
 		}
