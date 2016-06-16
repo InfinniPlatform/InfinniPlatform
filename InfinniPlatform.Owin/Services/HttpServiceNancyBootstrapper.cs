@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using InfinniPlatform.Core.Metadata;
+﻿using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;
@@ -60,18 +57,9 @@ namespace InfinniPlatform.Owin.Services
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            //base.ApplicationStartup(container, pipelines);
+            base.ApplicationStartup(container, pipelines);
 
-//            Conventions.ViewLocationConventions
-//                       .Add((viewName, model, context) =>
-//                            $"{_metadataSettings.ViewsDirectoryPath}/{viewName}");
-
-//
-//            Conventions.StaticContentsConventions = new List<Func<NancyContext, string, Response>>
-//                                                    {
-//                                                        StaticContentConventionBuilder.AddDirectory("moo", _metadataSettings.ViewsDirectoryPath)
-//                                                    };
-
+            Conventions.StaticContentsConventions.AddDirectory("/content", $"{_metadataSettings.ContentDirectory}", "json");
         }
     }
 }
