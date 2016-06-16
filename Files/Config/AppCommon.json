@@ -154,6 +154,8 @@
   "metadata": {
     /* Каталог с файлами метаданных (по умолчанию - 'content') */
     "ContentDirectory": "content",
+    /* Путь до каталога с файлами Razor-представлений (по умолчанию - 'content/Views') */
+    "ViewsDirectoryPath": "content/Views",
     /* Разрешает обновление кэша метаданных на сервере при их изменении на диске (для разработчиков) */
     "EnableFileSystemWatcher": false
   }

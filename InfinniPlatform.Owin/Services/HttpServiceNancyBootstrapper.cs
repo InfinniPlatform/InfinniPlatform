@@ -1,6 +1,11 @@
-﻿using InfinniPlatform.Sdk.Services;
+﻿using System;
+using System.Collections.Generic;
+
+using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Sdk.Services;
 
 using Nancy;
+using Nancy.Bootstrapper;
 using Nancy.Conventions;
 using Nancy.TinyIoc;
 
@@ -11,10 +16,13 @@ namespace InfinniPlatform.Owin.Services
     /// </summary>
     internal sealed class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
-        public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog)
+        public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog, MetadataSettings metadataSettings)
         {
             _nancyModuleCatalog = nancyModuleCatalog;
+            _metadataSettings = metadataSettings;
         }
+
+        private readonly MetadataSettings _metadataSettings;
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
 
@@ -48,6 +56,22 @@ namespace InfinniPlatform.Owin.Services
             }
 
             base.ConfigureConventions(nancyConventions);
+        }
+
+        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
+        {
+            //base.ApplicationStartup(container, pipelines);
+
+//            Conventions.ViewLocationConventions
+//                       .Add((viewName, model, context) =>
+//                            $"{_metadataSettings.ViewsDirectoryPath}/{viewName}");
+
+//
+//            Conventions.StaticContentsConventions = new List<Func<NancyContext, string, Response>>
+//                                                    {
+//                                                        StaticContentConventionBuilder.AddDirectory("moo", _metadataSettings.ViewsDirectoryPath)
+//                                                    };
+
         }
     }
 }

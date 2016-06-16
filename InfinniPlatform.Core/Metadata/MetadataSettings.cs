@@ -1,6 +1,6 @@
 ﻿namespace InfinniPlatform.Core.Metadata
 {
-    internal sealed class MetadataSettings
+    public class MetadataSettings
     {
         /// <summary>
         /// Настройки хранения метаданных.
@@ -10,6 +10,7 @@
         public MetadataSettings()
         {
             ContentDirectory = "content";
+            ViewsDirectoryPath = "content/Views";
             EnableFileSystemWatcher = false;
         }
 
@@ -17,6 +18,11 @@
         /// Каталог с файлами метаданных.
         /// </summary>
         public string ContentDirectory { get; set; }
+
+        /// <summary>
+        /// Путь до каталога с файлами Razor-представлений.
+        /// </summary>
+        public string ViewsDirectoryPath { get; set; }
 
         /// <summary>
         /// Разрешает обновление кэша метаданных на сервере при их изменении на диске.

@@ -91,11 +91,11 @@ namespace InfinniPlatform.Owin.Services
 
             if (_nancyHttpServices.Value.TryGetValue(typeof(TService), out nancyHttpService))
             {
-                ApplyNancyHttpServiceRoutes(() => nancyModule.Context, nancyModule.Get, nancyHttpService.Get);
-                ApplyNancyHttpServiceRoutes(() => nancyModule.Context, nancyModule.Post, nancyHttpService.Post);
-                ApplyNancyHttpServiceRoutes(() => nancyModule.Context, nancyModule.Put, nancyHttpService.Put);
-                ApplyNancyHttpServiceRoutes(() => nancyModule.Context, nancyModule.Patch, nancyHttpService.Patch);
-                ApplyNancyHttpServiceRoutes(() => nancyModule.Context, nancyModule.Delete, nancyHttpService.Delete);
+                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Get, nancyHttpService.Get);
+                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Post, nancyHttpService.Post);
+                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Put, nancyHttpService.Put);
+                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Patch, nancyHttpService.Patch);
+                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Delete, nancyHttpService.Delete);
             }
         }
 
@@ -182,34 +182,36 @@ namespace InfinniPlatform.Owin.Services
                 var onHandleGlobal = _httpRequestExcutorFactory.CreateExecutor(httpGlobalHandler.OnBefore, onHandle, httpGlobalHandler.OnAfter, httpGlobalHandler.OnError, httpGlobalHandler.ResultConverter);
 
                 // Функция обработки метода сервиса в контексте выполнения Nancy
-                Func<NancyContext, Task<object>> nancyAction = async nancyContext =>
-                                                                     {
-                                                                         var start = DateTime.Now;
+                Func<NancyModule, Task<object>> nancyAction = async nancyModule =>
+                                                                    {
+                                                                        var nancyContext = nancyModule.Context;
 
-                                                                         var method = $"{nancyContext.Request.Method}::{nancyContext.Request.Path}";
-                                                                         
-                                                                         try
-                                                                         {
-                                                                             var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
+                                                                        var start = DateTime.Now;
 
-                                                                             // Локализация ответа в зависимости от региональных параметров запроса.
-                                                                             Thread.CurrentThread.CurrentCulture = httpRequest.Culture;
-                                                                             Thread.CurrentThread.CurrentUICulture = httpRequest.Culture;
+                                                                        var method = $"{nancyContext.Request.Method}::{nancyContext.Request.Path}";
 
-                                                                             var result = await onHandleGlobal(httpRequest);
-                                                                             var nancyHttpResponse = CreateNancyHttpResponse(nancyContext, result);
+                                                                        try
+                                                                        {
+                                                                            var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
 
-                                                                             _performanceLog.Log(method, start);
+                                                                            // Локализация ответа в зависимости от региональных параметров запроса.
+                                                                            Thread.CurrentThread.CurrentCulture = httpRequest.Culture;
+                                                                            Thread.CurrentThread.CurrentUICulture = httpRequest.Culture;
 
-                                                                             return nancyHttpResponse;
-                                                                         }
-                                                                         catch (Exception exception)
-                                                                         {
-                                                                             _performanceLog.Log(method, start, exception);
+                                                                            var result = await onHandleGlobal(httpRequest);
+                                                                            var nancyHttpResponse = CreateNancyHttpResponse(nancyModule, result);
 
-                                                                             throw;
-                                                                         }
-                                                                     };
+                                                                            _performanceLog.Log(method, start);
+
+                                                                            return nancyHttpResponse;
+                                                                        }
+                                                                        catch (Exception exception)
+                                                                        {
+                                                                            _performanceLog.Log(method, start, exception);
+
+                                                                            throw;
+                                                                        }
+                                                                    };
 
                 var nancyRoute = new NancyHttpServiceRoute
                 {
@@ -221,12 +223,19 @@ namespace InfinniPlatform.Owin.Services
             }
         }
 
-        private object CreateNancyHttpResponse(NancyContext nancyContext, object result)
+        private object CreateNancyHttpResponse(NancyModule nancyModule, object result)
         {
             var httpResponse = result as IHttpResponse;
 
             if (httpResponse != null)
             {
+                var viewHttpRespose = result as ViewHttpResponce;
+
+                if (viewHttpRespose != null)
+                {
+                    return nancyModule.View[viewHttpRespose.ViewName, viewHttpRespose.Model];
+                }
+
                 var nancyResponse = new Response
                 {
                     StatusCode = (HttpStatusCode)httpResponse.StatusCode,
@@ -263,7 +272,7 @@ namespace InfinniPlatform.Owin.Services
 
                 if (streamHttpResponse != null)
                 {
-                    SetNancyStreamHttpResponse(nancyContext, nancyResponse, streamHttpResponse);
+                    SetNancyStreamHttpResponse(nancyModule.Context, nancyResponse, streamHttpResponse);
                 }
 
                 return nancyResponse;
@@ -313,11 +322,11 @@ namespace InfinniPlatform.Owin.Services
         }
 
 
-        private static void ApplyNancyHttpServiceRoutes(Func<NancyContext> nancyContext, NancyModule.RouteBuilder nancyRouteBuilder, IEnumerable<NancyHttpServiceRoute> nancyHttpServiceRoutes)
+        private static void ApplyNancyHttpServiceRoutes(NancyModule nancyModule, NancyModule.RouteBuilder nancyRouteBuilder, IEnumerable<NancyHttpServiceRoute> nancyHttpServiceRoutes)
         {
             foreach (var route in nancyHttpServiceRoutes)
             {
-                nancyRouteBuilder[route.Path, true] = (p, t) => route.Action(nancyContext());
+                nancyRouteBuilder[route.Path, true] = (p, t) => route.Action(nancyModule);
             }
         }
 
@@ -345,7 +354,13 @@ namespace InfinniPlatform.Owin.Services
         private sealed class NancyHttpServiceRoute
         {
             public string Path;
-            public Func<NancyContext, Task<object>> Action;
+            public Func<NancyModule, Task<object>> Action;
         }
+    }
+
+
+    public class ViewRenderModule : NancyModule
+    {
+        
     }
 }
