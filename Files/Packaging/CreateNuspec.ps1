@@ -192,7 +192,7 @@
 			"        </dependencies>`r`n" + `
 			"    </metadata>`r`n" + `
 			"    <files>`r`n" + `
-			"        <file target=""content\metadata\Authorization"" src=""content\metadata\Authorization\**\*.*"" />`r`n" + `
+			"        <file target=""content\metadata"" src=""content\metadata\**\*.*"" />`r`n" + `
 			"        <file target=""lib\$framework\App.config"" src=""App.config"" />`r`n" + `
 			"        <file target=""lib\$framework\AppLog.config"" src=""AppLog.config"" />`r`n" + `
 			"        <file target=""lib\$framework\AppCommon.json"" src=""AppCommon.json"" />`r`n" + `
