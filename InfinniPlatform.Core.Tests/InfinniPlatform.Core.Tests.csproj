@@ -126,32 +126,6 @@
       <Link>App.config</Link>
       <SubType>Designer</SubType>
     </None>
-    <None Include=".metadata\Documents\AddressDocument.json" />
-    <None Include=".metadata\Documents\AfterDocumentSaveDocument.json" />
-    <None Include=".metadata\Documents\ContentUploadDocument.json" />
-    <None Include=".metadata\Documents\DeleteReferencedDocument.json" />
-    <None Include=".metadata\Documents\ExceptionHandlingDocument.json" />
-    <None Include=".metadata\Documents\InfinniPlatform_Registers.json" />
-    <None Include=".metadata\Documents\InlineSortingDocument.json" />
-    <None Include=".metadata\Documents\OneDateSortingFieldDocument.json" />
-    <None Include=".metadata\Documents\OneIntSortingFieldDocument.json" />
-    <None Include=".metadata\Documents\OneSortingFieldInArrayDocument.json" />
-    <None Include=".metadata\Documents\OneSortingFieldInNestedObjectDocument.json" />
-    <None Include=".metadata\Documents\OneStringSortingFieldDocument.json" />
-    <None Include=".metadata\Documents\PrefillDocument.json" />
-    <None Include=".metadata\Documents\RegisterTest_AvailableBedsRegister.json" />
-    <None Include=".metadata\Documents\RegisterTest_BedsRegistrationDocument.json" />
-    <None Include=".metadata\Documents\RegisterTest_InfoRegister.json" />
-    <None Include=".metadata\Documents\RegisterTest_PatientMovementDocument.json" />
-    <None Include=".metadata\Documents\RegisterTotals_RegisterTest_AvailableBedsRegister.json" />
-    <None Include=".metadata\Documents\RegisterTotals_RegisterTest_InfoRegister.json" />
-    <None Include=".metadata\Documents\Register_RegisterTest_AvailableBedsRegister.json" />
-    <None Include=".metadata\Documents\Register_RegisterTest_InfoRegister.json" />
-    <None Include=".metadata\Documents\TestDocument.json" />
-    <None Include=".metadata\Documents\TwoSortingFieldsDocument.json" />
-    <None Include=".metadata\Documents\ValidationDocument.json" />
-    <None Include=".metadata\Registers\RegisterTest_AvailableBedsRegister.json" />
-    <None Include=".metadata\Registers\RegisterTest_InfoRegister.json" />
     <None Include="packages.config" />
     <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>
@@ -168,9 +142,6 @@
       <Visible>false</Visible>
     </MetadataFiles>
   </ItemGroup>
-  <Target Name="AfterBuild">
-    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -189,6 +189,6 @@
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\$(SolutionName)\metadata\%(RecursiveDir)" />
+    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\metadata\%(RecursiveDir)" />
   </Target>
 </Project>
