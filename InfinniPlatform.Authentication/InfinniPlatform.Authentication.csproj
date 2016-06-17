@@ -159,7 +159,7 @@
     <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".metadata\Authorization\Documents\UserStore.json" />
+    <None Include=".metadata\Documents\UserStore.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
