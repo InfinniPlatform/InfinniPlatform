@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Threading;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Hosting;
@@ -16,47 +16,38 @@ namespace InfinniPlatform.DocumentStorage.Hosting
     internal class MongoCollectionInitializer : ApplicationEventHandler
     {
         public MongoCollectionInitializer(IDocumentStorageManager documentStorageManager,
-                                          IJsonObjectSerializer jsonObjectSerializer,
-                                          IMetadataApi metadataApi,
                                           ILog log) : base(1)
         {
             _documentStorageManager = documentStorageManager;
-            _jsonObjectSerializer = jsonObjectSerializer;
-            _metadataApi = metadataApi;
             _log = log;
         }
 
-
         private readonly IDocumentStorageManager _documentStorageManager;
-        private readonly IJsonObjectSerializer _jsonObjectSerializer;
-        private readonly IMetadataApi _metadataApi;
         private readonly ILog _log;
-
 
         public override void OnBeforeStart()
         {
             _log.Info("Creating the document storage started.");
 
-            var documentTypes = _metadataApi.GetMetadataItemNames("Documents");
+            //TODO Add feature to create storages in runtime. Remove hardcoded values.
+            var strings = Directory.GetFiles("content\\metadata\\Documents");
+            var documentTypes = strings.Select(s =>
+                                               {
+                                                   var bytes = File.ReadAllBytes(s);
+
+                                                   var documentMetadata = JsonObjectSerializer.Default.Deserialize<DocumentMetadata>(bytes);
+                                                   documentMetadata.Type = Path.GetFileNameWithoutExtension(s);
+                                                   return documentMetadata;
+                                               });
 
             foreach (var documentType in documentTypes)
             {
-                var documentMetadata = new DocumentMetadata { Type = documentType };
-
-                var documentIndexes = _metadataApi.GetDocumentIndexes(documentType);
-
-                if (documentIndexes != null)
-                {
-                    documentMetadata.Indexes = documentIndexes.Select(i => _jsonObjectSerializer.ConvertFromDynamic<DocumentIndex>(i)).ToArray();
-                }
-
                 // Специально для Mono пришлось выполнять создание коллекций в последовательном режиме
-                AsyncHelper.RunSync(() => CreateStorageAsync(documentMetadata));
+                AsyncHelper.RunSync(() => CreateStorageAsync(documentType));
             }
 
             _log.Info("Creating the document storage successfully completed.");
         }
-
 
         private async Task CreateStorageAsync(DocumentMetadata documentMetadata)
         {
