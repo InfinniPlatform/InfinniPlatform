@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 
 using InfinniPlatform.Core.Metadata;
@@ -70,7 +69,6 @@ namespace InfinniPlatform.Owin.Services
 
         public static void CheckForIfModifiedSince(NancyContext context)
         {
-            Debugger.Launch();
             var request = context.Request;
             var response = context.Response;
 
