@@ -23,24 +23,6 @@
         },
         "2": {
           "id": 2,
-          "color": "#EF843C",
-          "alias": "ScriptProcessor",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "component:ScriptProcessor"
-        },
-        "3": {
-          "id": 3,
-          "color": "#967302",
-          "alias": "TransactionScope",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "component:TransactionScope"
-        },
-        "4": {
-          "id": 4,
           "color": "#E24D42",
           "alias": "Redis",
           "pin": false,
@@ -48,17 +30,8 @@
           "enable": true,
           "query": "component:Redis"
         },
-        "5": {
-          "id": 5,
-          "color": "#1F78C1",
-          "alias": "ElasticSearch",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "component:ElasticSearch"
-        },
-        "6": {
-          "id": 6,
+        "3": {
+          "id": 3,
           "color": "#BA43A9",
           "alias": "Nancy",
           "pin": false,
@@ -66,8 +39,8 @@
           "enable": true,
           "query": "component:Nancy"
         },
-        "7": {
-          "id": 7,
+        "4": {
+          "id": 4,
           "color": "#705DA0",
           "alias": "BlobStorage",
           "pin": false,
@@ -75,14 +48,23 @@
           "enable": true,
           "query": "component:BlobStorage"
         },
-        "8": {
-          "id": 8,
-          "color": "#508642",
-          "alias": "DocumentApiHttpService",
+        "5": {
+          "id": 5,
+          "color": "#22C930",
+          "alias": "BlobHttpService",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:DocumentApiHttpService"
+          "query": "component:BlobHttpService"
+        },
+        "6": {
+          "id": 6,
+          "color": "#508642",
+          "alias": "DocumentHttpService",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "component:DocumentHttpService"
         }
       },
       "ids": [
@@ -92,8 +74,6 @@
         3,
         4,
         5,
-        7,
-        8,
         6
       ]
     },
@@ -147,17 +127,16 @@
           "spyable": true,
           "queries": {
             "mode": "all",
-            "ids": [
-              0,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7,
-              8
-            ]
-          },
+                  "ids": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                  ]
+                },
           "tmode": "terms",
           "tstat": "total",
           "valuefield": "",
@@ -189,13 +168,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -229,13 +207,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -269,13 +246,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -309,13 +285,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -349,13 +324,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "tmode": "terms_stats",
@@ -383,13 +357,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "style": {
@@ -425,13 +398,13 @@
           "queries": {
             "mode": "selected",
             "ids": [
+              0,
               1,
               2,
               3,
               4,
               5,
-              6,
-              7
+              6
             ]
           },
           "style": {
@@ -483,13 +456,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "tmode": "terms",
@@ -871,13 +843,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "style": {
@@ -920,13 +891,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "style": {
@@ -969,13 +939,12 @@
             "mode": "all",
             "ids": [
               0,
+              1,
               2,
               3,
               4,
               5,
-              6,
-              7,
-              8
+              6
             ]
           },
           "style": {
@@ -1006,16 +975,13 @@
       "query": "*",
       "pinned": true,
       "history": [
-        "component:DocumentApiHttpService",
+        "component:DocumentHttpService",
         "component:BlobStorage",
         "component:Nancy",
-        "component:ElasticSearch",
         "component:Redis",
-        "component:TransactionScope",
-        "component:ScriptProcessor",
         "component:OWIN",
-        "_exists_:result.raw",
-        "component:FileSystemBlobStorage"
+        "component:FileSystemBlobStorage",
+        "_exists_:result.raw"
       ],
       "remember": 10,
       "enable": true
