@@ -60,14 +60,17 @@ namespace InfinniPlatform.Owin.Services
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            // Проверка заголовка Last-Modified при обработке запросов к файлам.
             pipelines.AfterRequest += CheckForIfModifiedSince;
 
             base.ApplicationStartup(container, pipelines);
+
+            // Добавление сопоставления между виртуальной (запрашиваемый в браузере путь) и физической папкой в файловой системе.
             Conventions.StaticContentsConventions.Clear();
             Conventions.StaticContentsConventions.AddDirectory("/content", $"{_metadataSettings.ContentDirectory}", "json");
         }
 
-        public static void CheckForIfModifiedSince(NancyContext context)
+        private static void CheckForIfModifiedSince(NancyContext context)
         {
             var request = context.Request;
             var response = context.Response;
@@ -80,7 +83,8 @@ namespace InfinniPlatform.Owin.Services
 
             DateTime lastModified;
 
-            if (!request.Headers.IfModifiedSince.HasValue || !DateTime.TryParseExact(responseLastModified, "R", CultureInfo.InvariantCulture, DateTimeStyles.None, out lastModified))
+            if (!request.Headers.IfModifiedSince.HasValue
+                || !DateTime.TryParseExact(responseLastModified, "R", CultureInfo.InvariantCulture, DateTimeStyles.None, out lastModified))
             {
                 return;
             }
