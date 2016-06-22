@@ -1,4 +1,8 @@
-﻿using InfinniPlatform.Core.Metadata;
+﻿using System;
+using System.Diagnostics;
+using System.Globalization;
+
+using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;
@@ -57,9 +61,36 @@ namespace InfinniPlatform.Owin.Services
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            base.ApplicationStartup(container, pipelines);
+            pipelines.AfterRequest += CheckForIfModifiedSince;
 
+            base.ApplicationStartup(container, pipelines);
+            Conventions.StaticContentsConventions.Clear();
             Conventions.StaticContentsConventions.AddDirectory("/content", $"{_metadataSettings.ContentDirectory}", "json");
+        }
+
+        public static void CheckForIfModifiedSince(NancyContext context)
+        {
+            Debugger.Launch();
+            var request = context.Request;
+            var response = context.Response;
+
+            string responseLastModified;
+            if (!response.Headers.TryGetValue("Last-Modified", out responseLastModified))
+            {
+                return;
+            }
+
+            DateTime lastModified;
+
+            if (!request.Headers.IfModifiedSince.HasValue || !DateTime.TryParseExact(responseLastModified, "R", CultureInfo.InvariantCulture, DateTimeStyles.None, out lastModified))
+            {
+                return;
+            }
+
+            if (lastModified <= request.Headers.IfModifiedSince.Value)
+            {
+                context.Response = HttpStatusCode.NotModified;
+            }
         }
     }
 }
