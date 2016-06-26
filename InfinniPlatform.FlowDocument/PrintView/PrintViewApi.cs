@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.PrintView;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.PrintView;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.FlowDocument.PrintView
 {
@@ -34,7 +37,9 @@ namespace InfinniPlatform.FlowDocument.PrintView
 
             //Build view name
 
-            var printViewMetadata = _metadataApi.GetMetadata($"PrintViews.{documentType}.{printViewName}");
+            //TODO Move to static files?
+            var bytes = File.ReadAllBytes($"content\\metadata\\PrintViews\\{documentType}\\{printViewName}.json");
+            var printViewMetadata = JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(bytes);
 
             if (printViewMetadata == null)
             {
