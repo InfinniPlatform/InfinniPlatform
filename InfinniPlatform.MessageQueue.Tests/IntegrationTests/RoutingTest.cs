@@ -41,7 +41,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var queue2TaskConsumer = new Queue2DynamicWrapperTaskConsumer(queue2Messages, queue2CountdownEvent);
 
             var queue3Messages = new List<DynamicWrapper>();
-            var queue3AssertMessages = new List<DynamicWrapper> { new DynamicWrapper { { "SomeField", "Message6" } } };
+            var queue3AssertMessages = new List<DynamicWrapper>
+                                       {
+                                           new DynamicWrapper { { "SomeField", "Message6" } }
+                                       };
             var queue3CountdownEvent = new CountdownEvent(1);
             var queue3TaskConsumer = new Queue3DynamicWrapperTaskConsumer(queue3Messages, queue3CountdownEvent);
 
@@ -57,15 +60,15 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
             foreach (var message in queue1AssertMessages)
             {
-                producerBase.Publish(message, "Queue1");
+                producerBase.PublishDynamic(message, "Queue1");
             }
             foreach (var message in queue2AssertMessages)
             {
-                producerBase.Publish(message, "Queue2");
+                producerBase.PublishDynamic(message, "Queue2");
             }
             foreach (var message in queue3AssertMessages)
             {
-                producerBase.Publish(message, "Queue3");
+                producerBase.PublishDynamic(message, "Queue3");
             }
 
             const int timeout = 500;

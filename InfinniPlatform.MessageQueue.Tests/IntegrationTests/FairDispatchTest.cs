@@ -54,7 +54,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Publish(message);
+                producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);
             }
 
             const int timeout = 5000;
