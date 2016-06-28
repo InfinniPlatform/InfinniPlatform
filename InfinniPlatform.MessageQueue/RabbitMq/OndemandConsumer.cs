@@ -33,7 +33,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
             if (result == null)
             {
-                return null;
+                return Task.FromResult<IMessage>(null);
             }
 
             var message = _messageSerializer.BytesToMessage<T>(result.Body);
