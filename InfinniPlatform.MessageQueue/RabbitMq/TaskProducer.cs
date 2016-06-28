@@ -20,6 +20,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
         public void Publish<T>(T messageBody, string queueName = null)
         {
+            Helpers.CheckTypeRestrictions<T>();
+
             var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
 
             if (queueName == null)
@@ -47,6 +49,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
         public async Task PublishAsync<T>(T messageBody, string queueName = null)
         {
+            Helpers.CheckTypeRestrictions<T>();
+
             await Task.Run(() =>
                            {
                                var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);

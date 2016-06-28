@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
@@ -20,11 +21,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
         public void Publish<T>(T messageBody, string queueName = null)
         {
+            Helpers.CheckTypeRestrictions<T>();
+
             var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
             var channel = _manager.GetChannel();
 
             channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
         }
+
+
 
         public void PublishDynamic(DynamicWrapper messageBody, string queueName)
         {
@@ -36,6 +41,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
         public async Task PublishAsync<T>(T messageBody, string queueName = null)
         {
+            Helpers.CheckTypeRestrictions<T>();
+
             await Task.Run(() =>
                            {
                                var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
