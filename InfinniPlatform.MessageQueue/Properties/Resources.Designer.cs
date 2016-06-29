@@ -113,5 +113,14 @@ namespace InfinniPlatform.MessageQueue.Properties {
                 return ResourceManager.GetString("UnableToGetQueueName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Unable to initialize consumers.&quot;.
+        /// </summary>
+        internal static string UnableToInitializeConsumers {
+            get {
+                return ResourceManager.GetString("UnableToInitializeConsumers", resourceCulture);
+            }
+        }
     }
 }

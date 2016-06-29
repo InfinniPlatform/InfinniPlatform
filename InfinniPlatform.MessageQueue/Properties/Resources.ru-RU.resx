@@ -135,4 +135,7 @@
   <data name="AckSuccess" xml:space="preserve">
     <value>"Получение сообщения {0} успешно подтверждено - {1}."</value>
   </data>
+  <data name="UnableToInitializeConsumers" xml:space="preserve">
+    <value>"Не удалось инициализировать получателей сообщений."</value>
+  </data>
 </root>
