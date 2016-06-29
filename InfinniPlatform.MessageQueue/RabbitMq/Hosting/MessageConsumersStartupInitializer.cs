@@ -49,8 +49,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
         public override void OnAfterStart()
         {
-            InitializeTaskConsumers(_taskConsumers);
-            InitializeBroadcastConsumers(_broadcastConsumers);
+            try
+            {
+                InitializeTaskConsumers(_taskConsumers);
+                InitializeBroadcastConsumers(_broadcastConsumers);
+            }
+            catch (Exception e)
+            {
+                _log.Error(Resources.UnableToInitializeConsumers, exception: e);
+            }
         }
 
         private void InitializeTaskConsumers(IEnumerable<IConsumer> consumers)
