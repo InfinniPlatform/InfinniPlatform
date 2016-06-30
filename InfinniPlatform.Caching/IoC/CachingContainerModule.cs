@@ -49,17 +49,17 @@ namespace InfinniPlatform.Caching.IoC
                    .AsSelf()
                    .SingleInstance();
 
-//            builder.RegisterType<MemoryCacheImpl>()
-//                   .As<IMemoryCache>()
-//                   .SingleInstance();
+            builder.RegisterFactory(GetMemoryCache)
+                   .As<IMemoryCache>()
+                   .SingleInstance();
 
             builder.RegisterFactory(GetSharedCache)
                    .As<ISharedCache>()
                    .SingleInstance();
 
-//            builder.RegisterType<TwoLayerCacheImpl>()
-//                   .As<ITwoLayerCache>()
-//                   .SingleInstance();
+            builder.RegisterFactory(GetTwoLayerCache)
+                   .As<ITwoLayerCache>()
+                   .SingleInstance();
 
             builder.RegisterFactory(GetCache)
                    .As<ICache>()
@@ -116,14 +116,32 @@ namespace InfinniPlatform.Caching.IoC
                            .GetSection<RedisConnectionSettings>(RedisConnectionSettings.SectionName);
         }
 
+        private static IMemoryCache GetMemoryCache(IContainerResolver resolver)
+        {
+            var keyspace = resolver.Resolve<IAppEnvironment>()?.Name;
+
+            var redisCacheFactory = resolver.Resolve<Func<string, MemoryCacheImpl>>();
+            IMemoryCache cache = redisCacheFactory(keyspace);
+
+            return cache;
+        }
+
         private static ISharedCache GetSharedCache(IContainerResolver resolver)
         {
-            var appSettings = resolver.Resolve<IAppEnvironment>();
-            var cacheSettings = resolver.Resolve<CacheSettings>();
+            var keyspace = resolver.Resolve<IAppEnvironment>()?.Name;
 
-            var keyspace = appSettings.Name;
             var redisCacheFactory = resolver.Resolve<Func<string, RedisCacheImpl>>();
             ISharedCache cache = redisCacheFactory(keyspace);
+
+            return cache;
+        }
+
+        private static ITwoLayerCache GetTwoLayerCache(IContainerResolver resolver)
+        {
+            var keyspace = resolver.Resolve<IAppEnvironment>()?.Name;
+
+            var redisCacheFactory = resolver.Resolve<Func<string, TwoLayerCacheImpl>>();
+            ITwoLayerCache cache = redisCacheFactory(keyspace);
 
             return cache;
         }
