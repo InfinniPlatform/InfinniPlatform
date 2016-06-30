@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using InfinniPlatform.Sdk.Cache;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Caching

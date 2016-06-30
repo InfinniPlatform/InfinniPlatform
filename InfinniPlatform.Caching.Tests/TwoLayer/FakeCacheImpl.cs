@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Sdk;
+using InfinniPlatform.Sdk.Cache;
+
 namespace InfinniPlatform.Caching.Tests.TwoLayer
 {
-    internal sealed class FakeCacheImpl : ICache
+    internal sealed class FakeCacheImpl : IMemoryCache, ISharedCache, ITwoLayerCache
     {
         private readonly Dictionary<string, string> Data
             = new Dictionary<string, string>();

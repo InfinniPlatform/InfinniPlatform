@@ -2,12 +2,14 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Cache;
+
 namespace InfinniPlatform.Caching.TwoLayer
 {
     /// <summary>
     /// Реализует интерфейс для управления двухуровневым кэшем.
     /// </summary>
-    public sealed class TwoLayerCacheImpl : ICache, IDisposable
+    public sealed class TwoLayerCacheImpl : ITwoLayerCache, IDisposable
     {
         /// <summary>
         /// Конструктор.
@@ -15,7 +17,7 @@ namespace InfinniPlatform.Caching.TwoLayer
         /// <param name="memoryCache">Локальный кэш.</param>
         /// <param name="sharedCache">Распределенный кэш.</param>
         /// <param name="sharedMessageBus">Шина для синхронизации локальных кэшей.</param>
-        public TwoLayerCacheImpl(ICache memoryCache, ICache sharedCache, IMessageBus sharedMessageBus)
+        public TwoLayerCacheImpl(IMemoryCache memoryCache, ISharedCache sharedCache, IMessageBus sharedMessageBus)
         {
             _memoryCache = memoryCache;
             _sharedCache = sharedCache;
@@ -26,8 +28,8 @@ namespace InfinniPlatform.Caching.TwoLayer
         }
 
 
-        private readonly ICache _memoryCache;
-        private readonly ICache _sharedCache;
+        private readonly IMemoryCache _memoryCache;
+        private readonly ISharedCache _sharedCache;
         private readonly IMessageBus _sharedMessageBus;
 
         private readonly string _sharedCachePublisherId;

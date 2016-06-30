@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Runtime.Caching;
 
+using InfinniPlatform.Sdk.Cache;
+
 namespace InfinniPlatform.Caching.Memory
 {
     /// <summary>
     /// Реализует интерфейс для управления кэшем в памяти.
     /// </summary>
-    internal sealed class MemoryCacheImpl : ICache, IDisposable
+    internal sealed class MemoryCacheImpl : IMemoryCache, IDisposable
     {
         /// <summary>
         /// Конструктор.

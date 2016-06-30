@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Caching
+﻿namespace InfinniPlatform.Sdk.Cache
 {
     /// <summary>
     /// Предоставляет интерфейс для управления кэшем.

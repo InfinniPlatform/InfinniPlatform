@@ -4,6 +4,7 @@ using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
+using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
@@ -47,6 +48,18 @@ namespace InfinniPlatform.Caching.IoC
             builder.RegisterType<TwoLayerCacheImpl>()
                    .AsSelf()
                    .SingleInstance();
+
+//            builder.RegisterType<MemoryCacheImpl>()
+//                   .As<IMemoryCache>()
+//                   .SingleInstance();
+
+            builder.RegisterFactory(GetSharedCache)
+                   .As<ISharedCache>()
+                   .SingleInstance();
+
+//            builder.RegisterType<TwoLayerCacheImpl>()
+//                   .As<ITwoLayerCache>()
+//                   .SingleInstance();
 
             builder.RegisterFactory(GetCache)
                    .As<ICache>()
@@ -101,6 +114,18 @@ namespace InfinniPlatform.Caching.IoC
         {
             return resolver.Resolve<IAppConfiguration>()
                            .GetSection<RedisConnectionSettings>(RedisConnectionSettings.SectionName);
+        }
+
+        private static ISharedCache GetSharedCache(IContainerResolver resolver)
+        {
+            var appSettings = resolver.Resolve<IAppEnvironment>();
+            var cacheSettings = resolver.Resolve<CacheSettings>();
+
+            var keyspace = appSettings.Name;
+            var redisCacheFactory = resolver.Resolve<Func<string, RedisCacheImpl>>();
+            ISharedCache cache = redisCacheFactory(keyspace);
+
+            return cache;
         }
 
 
