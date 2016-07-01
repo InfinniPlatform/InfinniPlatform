@@ -59,8 +59,15 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                 return;
             }
 
-            foreach (var bsonClassMap in source.KnownTypes.Select(type => new BsonClassMap(type)))
+            foreach (var type in source.KnownTypes)
             {
+                var bsonClassMap = new BsonClassMap(type);
+
+                foreach (var property in type.GetProperties())
+                {
+                    bsonClassMap.MapProperty(property.Name);
+                }
+                
                 BsonClassMap.RegisterClassMap(bsonClassMap);
             }
         }
