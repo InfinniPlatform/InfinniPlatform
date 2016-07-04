@@ -160,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".metadata\Documents\UserStore.json" />
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
