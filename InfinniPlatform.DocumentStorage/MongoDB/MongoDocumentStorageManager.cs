@@ -72,15 +72,6 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             // Получение требуемого списка индексов коллекции документов
             var neededIndexes = SystemIndexes.Union((documentMetadata.Indexes ?? new DocumentIndex[] { })).ToArray();
 
-            // Удаление неактуальных индексов
-
-            var dropIndexes = actualIndexes.Except(neededIndexes).Distinct();
-
-            foreach (var dropIndex in dropIndexes)
-            {
-                await collection.Indexes.DropOneAsync(dropIndex.Name);
-            }
-
             // Создание недостающих индексов
 
             var createIndexes = neededIndexes.Except(actualIndexes).Distinct();

@@ -1,8 +1,10 @@
-﻿using InfinniPlatform.Authentication.InternalIdentity;
+﻿using InfinniPlatform.Authentication.Hosting;
+using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Authentication.Security;
 using InfinniPlatform.Authentication.UserStorage;
 using InfinniPlatform.Core.Security;
+using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Security;
@@ -78,6 +80,12 @@ namespace InfinniPlatform.Authentication.IoC
             // Сервисы аутентификации
 
             builder.RegisterHttpServices(GetType().Assembly);
+
+            // Документы
+
+            builder.RegisterType<AuthenticationDocumentMetadataSource>()
+                   .As<IDocumentMetadataSource>()
+                   .SingleInstance();
         }
 
         private static UserManager<IdentityApplicationUser> CreateUserManager(IContainerResolver resolver)
@@ -95,10 +103,10 @@ namespace InfinniPlatform.Authentication.IoC
             var identityPasswordHasher = new IdentityApplicationUserPasswordHasher(appPasswordHasher);
 
             var userManager = new UserManager<IdentityApplicationUser>(identityUserStore)
-            {
-                UserValidator = identityUserValidator,
-                PasswordHasher = identityPasswordHasher
-            };
+                              {
+                                  UserValidator = identityUserValidator,
+                                  PasswordHasher = identityPasswordHasher
+                              };
 
             return userManager;
         }

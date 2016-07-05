@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,19 +8,22 @@ using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Metadata.Documents;
-using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.DocumentStorage.Hosting
 {
     internal class MongoCollectionInitializer : ApplicationEventHandler
     {
         public MongoCollectionInitializer(IDocumentStorageManager documentStorageManager,
-                                          ILog log) : base(1)
+                                          IEnumerable<IDocumentMetadataSource> documentMetadataSources,
+                                          ILog log)
+            : base(1)
         {
             _documentStorageManager = documentStorageManager;
+            _documentMetadataSources = documentMetadataSources;
             _log = log;
         }
 
+        private readonly IEnumerable<IDocumentMetadataSource> _documentMetadataSources;
         private readonly IDocumentStorageManager _documentStorageManager;
         private readonly ILog _log;
 
@@ -29,21 +31,12 @@ namespace InfinniPlatform.DocumentStorage.Hosting
         {
             _log.Info("Creating the document storage started.");
 
-            //TODO Add feature to create storages in runtime. Remove hardcoded values.
-            var strings = Directory.GetFiles("content\\metadata\\Documents");
-            var documentTypes = strings.Select(s =>
-                                               {
-                                                   var bytes = File.ReadAllBytes(s);
+            var documentMetadataSources = _documentMetadataSources.SelectMany(documentMetadataSource => documentMetadataSource.GetDocumentsMetadata());
 
-                                                   var documentMetadata = JsonObjectSerializer.Default.Deserialize<DocumentMetadata>(bytes);
-                                                   documentMetadata.Type = Path.GetFileNameWithoutExtension(s);
-                                                   return documentMetadata;
-                                               });
-
-            foreach (var documentType in documentTypes)
+            foreach (var metadata in documentMetadataSources)
             {
                 // Специально для Mono пришлось выполнять создание коллекций в последовательном режиме
-                AsyncHelper.RunSync(() => CreateStorageAsync(documentType));
+                AsyncHelper.RunSync(() => CreateStorageAsync(metadata));
             }
 
             _log.Info("Creating the document storage successfully completed.");

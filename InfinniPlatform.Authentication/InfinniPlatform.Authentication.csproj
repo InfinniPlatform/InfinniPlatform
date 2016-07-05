@@ -117,6 +117,7 @@
     <Compile Include="DataProtectors\AesDataProtectionProvider.cs" />
     <Compile Include="DataProtectors\AesDataProtector.cs" />
     <Compile Include="DataProtectors\AesSecureTokenFormatter.cs" />
+    <Compile Include="Hosting\AuthenticationDocumentMetadataSource.cs" />
     <Compile Include="IoC\AuthenticationContainerModule.cs" />
     <Compile Include="Modules\CookieAuthOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthAdfsOwinHostingModuleSettings.cs" />
@@ -159,7 +160,6 @@
     <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".metadata\Documents\UserStore.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -180,15 +180,9 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <MetadataFiles Include=".metadata\**\*.*">
-      <Visible>false</Visible>
-    </MetadataFiles>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\metadata\%(RecursiveDir)" />
   </Target>
 </Project>

@@ -85,6 +85,7 @@
     <Compile Include="Documents\Services\DocumentGetQuery.cs" />
     <Compile Include="Documents\Services\DocumentPostQueryResult.cs" />
     <Compile Include="Documents\Services\DocumentQueryResult.cs" />
+    <Compile Include="Hosting\IDocumentMetadataSource.cs" />
     <Compile Include="Queues\Consumers\BroadcastConsumerBase.cs" />
     <Compile Include="Queues\Consumers\IBroadcastConsumer.cs" />
     <Compile Include="Queues\Producers\IBroadcastProducer.cs" />

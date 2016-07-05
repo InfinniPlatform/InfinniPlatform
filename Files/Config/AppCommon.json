@@ -104,22 +104,6 @@
     /* Подробнее - https://www.rabbitmq.com/management.html */
     "ManagementApiPort": 15672
   },
-  /* Настройки подключения к ElasticSearch */
-  "elasticSearch": {
-    /* Список базовых адресов узлов ElasticSearch (по умолчанию - 'http://localhost:9200') */
-    "Nodes": [
-      "http://localhost:9200"
-    ],
-    /* Логин для доступа к ElasticSearch через Shield (значения по умолчанию нет) */
-    "Login": "",
-    /* Пароль для доступа к ElasticSearch через Shield (значения по умолчанию нет) */
-    "Password": "",
-    /* Разрешить трассировку запросов к ElasticSearch (значение по умолчанию - false) */
-    /* При включении желательно указать уровень DEBUG в AppLog.config */
-    "EnableTrace": false,
-    /* Разрешить resolve вложенных документов */
-    "EnableResolve": true
-  },
   /* Настройки хранения BLOB и файлов */
   "blobStorage": {
     /* Базовый каталог для хранения файлов системы (по умолчанию - 'BlobStorage') */
@@ -155,8 +139,6 @@
     /* Каталог с файлами метаданных (по умолчанию - 'content') */
     "ContentDirectory": "content",
     /* Путь до каталога с файлами Razor-представлений (по умолчанию - 'content/Views') */
-    "ViewsDirectoryPath": "content/Views",
-    /* Разрешает обновление кэша метаданных на сервере при их изменении на диске (для разработчиков) */
-    "EnableFileSystemWatcher": false
+    "ViewsDirectoryPath": "content/Views"    
   }
 }

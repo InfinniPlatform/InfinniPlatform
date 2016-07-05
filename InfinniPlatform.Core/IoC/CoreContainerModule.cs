@@ -3,8 +3,7 @@ using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Settings;
-using InfinniPlatform.Core.StartupInitializers;
-using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
@@ -57,18 +56,13 @@ namespace InfinniPlatform.Core.IoC
                    .As<MetadataSettings>()
                    .SingleInstance();
 
-            builder.RegisterType<MetadataApi>()
-                   .As<IMetadataApi>()
-                   .AsSelf()
-                   .SingleInstance();
-
             // Hosting
 
-            builder.RegisterType<PackageJsonConfigurationsInitializer>()
-                   .As<IApplicationEventHandler>()
-                   .SingleInstance();
-
             builder.RegisterHttpServices(GetType().Assembly);
+
+            builder.RegisterType<JsonDocumentMetadataSource>()
+                   .As<IDocumentMetadataSource>()
+                   .SingleInstance();
         }
     }
 }
