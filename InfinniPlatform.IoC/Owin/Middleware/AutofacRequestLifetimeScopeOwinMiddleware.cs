@@ -15,17 +15,17 @@ namespace InfinniPlatform.IoC.Owin.Middleware
     /// <remarks>
     /// Данный слой необходим для работоспособности стратегии InstancePerRequest.
     /// </remarks>
-    /// <seealso cref="AutofacWrapperOwinMiddleware{T}"/>
+    /// <seealso cref="AutofacWrapperOwinMiddleware{T}" />
     internal sealed class AutofacRequestLifetimeScopeOwinMiddleware : OwinMiddleware
     {
+        private const string RequestContainerKey = "RequestContainer";
+
         public AutofacRequestLifetimeScopeOwinMiddleware(OwinMiddleware next, ILifetimeScope rootContainer) : base(next)
         {
             _rootContainer = rootContainer;
         }
 
-
         private readonly ILifetimeScope _rootContainer;
-
 
         public override async Task Invoke(IOwinContext context)
         {
@@ -50,9 +50,6 @@ namespace InfinniPlatform.IoC.Owin.Middleware
             }
         }
 
-
-        private const string RequestContainerKey = "RequestContainer";
-
         /// <summary>
         /// Устанавливает контейнер зависимостей запроса.
         /// </summary>
@@ -67,7 +64,8 @@ namespace InfinniPlatform.IoC.Owin.Middleware
         private static void SetRequestContainer(ILifetimeScope requestContainer)
         {
             var requestContainerReference = new WeakReference<ILifetimeScope>(requestContainer);
-            CallContext.LogicalSetData(RequestContainerKey, requestContainerReference);
+            var noSerializeAppDomain = new NoSerializeAppDomain { LifetimeScope = requestContainerReference };
+            CallContext.LogicalSetData(RequestContainerKey, noSerializeAppDomain);
         }
 
         /// <summary>
@@ -76,8 +74,39 @@ namespace InfinniPlatform.IoC.Owin.Middleware
         public static ILifetimeScope TryGetRequestContainer()
         {
             ILifetimeScope requestContainer;
-            var requestContainerReference = CallContext.LogicalGetData(RequestContainerKey) as WeakReference<ILifetimeScope>;
-            return (requestContainerReference != null && requestContainerReference.TryGetTarget(out requestContainer)) ? requestContainer : null;
+            var noSerializeAppDomain = CallContext.LogicalGetData(RequestContainerKey) as NoSerializeAppDomain;
+            var requestContainerReference = noSerializeAppDomain?.LifetimeScope;
+            return requestContainerReference != null && requestContainerReference.TryGetTarget(out requestContainer)
+                       ? requestContainer
+                       : null;
+        }
+
+
+        /// <summary>
+        /// Обертка, позволяющая передавать <see cref="ILifetimeScope" /> между потоками, но не позволяет передавать
+        /// <see cref="ILifetimeScope" /> между доменами приложений.
+        /// </summary>
+        /// <remarks>
+        /// Необходимость в этом классе появилась ввиду следующих причин:
+        /// 1) <see cref="CallContext" /> передает данные не только между потоками, но и между доменами приложения.
+        /// 2) Для передачи контекста между доменами, он должен быть сериализуемым.
+        /// 3) Библиотека Autofac (следовательно и реализации <see cref="ILifetimeScope" />) не поддерживает бинарную сериализацию,
+        /// т.к является кроссплатформенной.
+        /// (см.
+        /// http://www.wintellect.com/devcenter/jeffreyr/logical-call-context-flowing-data-across-threads-appdomains-and-processes
+        /// и https://github.com/autofac/Autofac/issues/456)
+        /// </remarks>
+        [Serializable]
+        private class NoSerializeAppDomain
+        {
+            [NonSerialized]
+            private WeakReference<ILifetimeScope> _lifetimeScope;
+
+            public WeakReference<ILifetimeScope> LifetimeScope
+            {
+                get { return _lifetimeScope; }
+                set { _lifetimeScope = value; }
+            }
         }
     }
 }
