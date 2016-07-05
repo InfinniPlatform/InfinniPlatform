@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 using InfinniPlatform.NodeServiceHost;
 using InfinniPlatform.ServiceHost.Properties;
@@ -9,9 +10,11 @@ namespace InfinniPlatform.ServiceHost
     {
         public static void Main()
         {
+            var infinniPlatformServiceHost = new InfinniPlatformServiceHost();
+
             try
             {
-                InfinniPlatformInprocessHost.Start();
+                infinniPlatformServiceHost.Start(Timeout.InfiniteTimeSpan);
 
                 Console.WriteLine(Resources.ServerStarted);
                 Console.ReadLine();
