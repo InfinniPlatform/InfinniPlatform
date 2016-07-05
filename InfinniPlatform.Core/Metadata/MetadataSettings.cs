@@ -10,17 +10,35 @@
         public MetadataSettings()
         {
             ContentDirectory = "content";
-            ViewsDirectoryPath = "content/Views";
+            ViewsPath = "metadata/Views";
+            DocumentsPath = "metadata/Documents";
+            PrintViewsPath = "metadata/PrintViews";
+            RazorViewsPath = "Views";
         }
 
         /// <summary>
-        /// Каталог с файлами метаданных.
+        /// Корневой каталог со статическими файлами.
         /// </summary>
         public string ContentDirectory { get; set; }
 
         /// <summary>
+        /// Путь до подкаталога с файлами метаданных представлений.
+        /// </summary>
+        public string ViewsPath { get; set; }
+
+        /// <summary>
+        /// Путь до подкаталога  с файлами метаданных документов.
+        /// </summary>
+        public string DocumentsPath { get; set; }
+
+        /// <summary>
+        /// Путь до подкаталога  с файлами метаданных печатных представлений.
+        /// </summary>
+        public string PrintViewsPath { get; set; }
+
+        /// <summary>
         /// Путь до каталога с файлами Razor-представлений.
         /// </summary>
-        public string ViewsDirectoryPath { get; set; }
+        public string RazorViewsPath { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace InfinniPlatform.Core.Metadata
 
         public IEnumerable<DocumentMetadata> GetDocumentsMetadata()
         {
-            var strings = Directory.GetFiles(Path.Combine(_metadataSettings.ContentDirectory, "metadata\\Documents"));
+            var strings = Directory.GetFiles(Path.Combine(_metadataSettings.ContentDirectory, _metadataSettings.DocumentsPath));
 
             var documentsMetadata = strings.Select(s =>
                                                    {

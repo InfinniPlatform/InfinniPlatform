@@ -136,9 +136,15 @@
   },
   /* Настройки хранения метаданных */
   "metadata": {
-    /* Каталог с файлами метаданных (по умолчанию - 'content') */
+    /* Корневой каталог со статическими файлами (по умолчанию - 'content') */
     "ContentDirectory": "content",
-    /* Путь до каталога с файлами Razor-представлений (по умолчанию - 'content/Views') */
-    "ViewsDirectoryPath": "content/Views"    
+    /* Путь до подкаталога с файлами метаданных представлений (по умолчанию - 'metadata/Views') */
+    "ViewsPath": "metadata/Views",
+    /* Путь до подкаталога  с файлами метаданных документов (по умолчанию - 'metadata/Documents') */
+    "DocumentsPath": "metadata/Documents",
+    /* Путь до подкаталога  с файлами метаданных печатных представлений (по умолчанию - 'metadata/PrintViews') */
+    "PrintViewsPath": "metadata/PrintViews",
+    /* Путь до подкаталога  с файлами Razor-представлений (по умолчанию - 'content/Views') */
+    "RazorViewsPath": "Views"
   }
 }

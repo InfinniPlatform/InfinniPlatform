@@ -105,7 +105,6 @@
     </Compile>
     <Compile Include="Hosting\WebRequestHelper.cs" />
     <Compile Include="Diagnostics\ISystemStatusProvider.cs" />
-    <Compile Include="StartupInitializers\FileHistoryHelper.cs" />
     <Compile Include="Threading\AsyncHelper.cs" />
   </ItemGroup>
   <ItemGroup>

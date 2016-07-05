@@ -39,8 +39,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 
             //Build view name
 
-            //TODO Move to static files?
-            var bytes = File.ReadAllBytes(Path.Combine(_metadataSettings.ContentDirectory, "metadata", "PrintViews", documentType, printViewName, ".json"));
+            var bytes = File.ReadAllBytes(Path.Combine(_metadataSettings.ContentDirectory, _metadataSettings.PrintViewsPath, documentType, printViewName, ".json"));
             var printViewMetadata = JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(bytes);
 
             if (printViewMetadata == null)
