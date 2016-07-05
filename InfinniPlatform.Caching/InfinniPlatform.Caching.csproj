@@ -34,8 +34,8 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sider, Version=0.10.0.23354, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sider.0.10.0\lib\Sider.dll</HintPath>
+    <Reference Include="Sider, Version=0.10.1.41913, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sider.0.10.1\lib\Sider.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
