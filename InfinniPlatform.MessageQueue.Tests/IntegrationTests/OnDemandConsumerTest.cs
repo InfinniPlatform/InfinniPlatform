@@ -28,7 +28,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
-                producerBase.Publish(message);
+                producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);
             }
 
             foreach (var message in assertMessages)
@@ -38,7 +38,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 Assert.AreEqual(message, body);
             }
 
-            var emptyMessage = onDemandConsumer.Consume<DynamicWrapper>();
+            var emptyMessage = await onDemandConsumer.Consume<DynamicWrapper>();
             Assert.IsNull(emptyMessage);
         }
     }
