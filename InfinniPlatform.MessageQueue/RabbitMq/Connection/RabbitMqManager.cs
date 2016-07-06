@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading;
 
-using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.Sdk.Settings;
 
 using RabbitMQ.Client;
@@ -56,29 +54,17 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         /// </summary>
         public IModel GetChannel()
         {
-            var aggregateException = new AggregateException();
-
-            for (var i = 0; i < 120; i++)
+            try
             {
-                try
-                {
-                    var channel = _connection.Value.CreateModel();
-                    channel.BasicQos(0, 1, false);
+                var channel = _connection.Value.CreateModel();
+                channel.BasicQos(0, 1, false);
 
-                    return channel;
-                }
-                catch (AlreadyClosedException e)
-                {
-                    aggregateException = new AggregateException(e);
-                    Thread.Sleep(500);
-                }
+                return channel;
             }
-            if (aggregateException.InnerExceptions.Count == 0)
+            catch (AlreadyClosedException e)
             {
-                throw new AggregateException(new InvalidOperationException(Resources.UnableToCreateRabbitMQChannel));
+                throw new AggregateException(e);
             }
-
-            throw aggregateException;
         }
 
         /// <summary>
@@ -87,8 +73,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         /// <param name="queueKey">Ключ/имя очереди.</param>
         public void DeclareTaskQueue(string queueKey)
         {
-            var channel = GetChannel();
-            channel.QueueDeclare(queueKey, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete, null);
+            using (var channel = GetChannel())
+            {
+                channel.QueueDeclare(queueKey, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete, null);
+            }
         }
 
         /// <summary>
@@ -96,12 +84,14 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         /// </summary>
         public string DeclareBroadcastQueue(string routingKey)
         {
-            var channel = GetChannel();
-            var queueName = channel.QueueDeclare().QueueName;
+            using (var channel = GetChannel())
+            {
+                var queueName = channel.QueueDeclare().QueueName;
 
-            channel.QueueBind(queueName, BroadcastExchangeName, routingKey);
+                channel.QueueBind(queueName, BroadcastExchangeName, routingKey);
 
-            return queueName;
+                return queueName;
+            }
         }
     }
 }
