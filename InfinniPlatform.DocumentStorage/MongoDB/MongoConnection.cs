@@ -63,7 +63,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             {
                 var bsonClassMap = new BsonClassMap(type);
 
-                foreach (var property in type.GetProperties())
+                foreach (var property in type.GetProperties().Where(i => i.DeclaringType == type))
                 {
                     bsonClassMap.MapProperty(property.Name);
                 }
