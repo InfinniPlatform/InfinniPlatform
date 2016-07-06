@@ -20,27 +20,28 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
         public Task<IMessage> Consume<T>(string queueName = null)
         {
-            var channel = _manager.GetChannel();
-
-            if (queueName == null)
+            using (var channel = _manager.GetChannel())
             {
-                queueName = QueueNamingConventions.GetBasicConsumerQueueName(typeof(T));
+                if (queueName == null)
+                {
+                    queueName = QueueNamingConventions.GetBasicConsumerQueueName(typeof(T));
+                }
+
+                _manager.DeclareTaskQueue(queueName);
+
+                var result = channel.BasicGet(queueName, false);
+
+                if (result == null)
+                {
+                    return Task.FromResult<IMessage>(null);
+                }
+
+                var message = _messageSerializer.BytesToMessage<T>(result.Body);
+
+                channel.BasicAck(result.DeliveryTag, false);
+
+                return Task.FromResult(message);
             }
-
-            _manager.DeclareTaskQueue(queueName);
-
-            var result = channel.BasicGet(queueName, false);
-
-            if (result == null)
-            {
-                return null;
-            }
-
-            var message = _messageSerializer.BytesToMessage<T>(result.Body);
-
-            channel.BasicAck(result.DeliveryTag, false);
-
-            return Task.FromResult(message);
         }
     }
 }
