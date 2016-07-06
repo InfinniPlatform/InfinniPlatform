@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 
+using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.Sdk.Metadata.Documents;
 using InfinniPlatform.Sdk.Serialization;
@@ -19,15 +20,22 @@ namespace InfinniPlatform.Core.Metadata
 
         public IEnumerable<DocumentMetadata> GetDocumentsMetadata()
         {
-            var strings = Directory.GetFiles(Path.Combine(_metadataSettings.ContentDirectory, _metadataSettings.DocumentsPath));
+            var documentsPath = Path.Combine(_metadataSettings.ContentDirectory, _metadataSettings.DocumentsPath).ToFileSystemPath();
 
-            var documentsMetadata = strings.Select(s =>
+            if (!Directory.Exists(documentsPath))
+            {
+                return Enumerable.Empty<DocumentMetadata>();
+            }
+
+            var strings = Directory.GetFiles(documentsPath);
+
+            var documentsMetadata = strings.Select(file =>
                                                    {
-                                                       var bytes = File.ReadAllBytes(s);
+                                                       var bytes = File.ReadAllBytes(file);
 
                                                        var documentMetadata = JsonObjectSerializer.Default.Deserialize<DocumentMetadata>(bytes);
 
-                                                       documentMetadata.Type = Path.GetFileNameWithoutExtension(s);
+                                                       documentMetadata.Type = Path.GetFileNameWithoutExtension(file);
 
                                                        return documentMetadata;
                                                    });

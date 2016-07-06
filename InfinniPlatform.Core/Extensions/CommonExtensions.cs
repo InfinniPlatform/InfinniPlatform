@@ -74,7 +74,9 @@ namespace InfinniPlatform.Core.Extensions
                         var targetCopy = target;
                         var evaluator = new MatchEvaluator(match => WholeWordEvaluator(match, targetCopy, newValue));
 
-                        target = Regex.Replace(target, oldValue, evaluator, matchCase ? RegexOptions.None : RegexOptions.IgnoreCase);
+                        target = Regex.Replace(target, oldValue, evaluator, matchCase
+                                                                                ? RegexOptions.None
+                                                                                : RegexOptions.IgnoreCase);
                     }
                     else
                     {
@@ -99,7 +101,9 @@ namespace InfinniPlatform.Core.Extensions
                 {
                     value = Regex.Escape(value);
 
-                    var matches = Regex.Matches(target, value, matchCase ? RegexOptions.None : RegexOptions.IgnoreCase);
+                    var matches = Regex.Matches(target, value, matchCase
+                                                                   ? RegexOptions.None
+                                                                   : RegexOptions.IgnoreCase);
 
                     foreach (Match match in matches)
                     {
@@ -112,7 +116,9 @@ namespace InfinniPlatform.Core.Extensions
                 }
                 else
                 {
-                    var comparisonType = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+                    var comparisonType = matchCase
+                                             ? StringComparison.Ordinal
+                                             : StringComparison.OrdinalIgnoreCase;
 
                     index = target.IndexOf(value, startIndex, comparisonType);
                 }
@@ -134,7 +140,9 @@ namespace InfinniPlatform.Core.Extensions
                 {
                     value = Regex.Escape(value);
 
-                    var matches = Regex.Matches(target, value, matchCase ? RegexOptions.None : RegexOptions.IgnoreCase);
+                    var matches = Regex.Matches(target, value, matchCase
+                                                                   ? RegexOptions.None
+                                                                   : RegexOptions.IgnoreCase);
 
                     foreach (Match match in matches)
                     {
@@ -153,13 +161,19 @@ namespace InfinniPlatform.Core.Extensions
                 }
                 else
                 {
-                    var comparisonType = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+                    var comparisonType = matchCase
+                                             ? StringComparison.Ordinal
+                                             : StringComparison.OrdinalIgnoreCase;
 
-                    index = (startIndex > 0) ? target.LastIndexOf(value, startIndex, comparisonType) : -1;
+                    index = startIndex > 0
+                                ? target.LastIndexOf(value, startIndex, comparisonType)
+                                : -1;
 
                     if (index != -1 && index + value.Length > startIndex)
                     {
-                        index = (index > 0) ? target.LastIndexOf(value, index - 1, comparisonType) : -1;
+                        index = index > 0
+                                    ? target.LastIndexOf(value, index - 1, comparisonType)
+                                    : -1;
                     }
                 }
             }
@@ -167,9 +181,29 @@ namespace InfinniPlatform.Core.Extensions
             return index;
         }
 
+        /// <summary>
+        /// Заменяет обратную косую черту в строке на прямую косую черту.
+        /// </summary>
+        /// <param name="s">Исходная строка.</param>
+        public static string ToWebPath(this string s)
+        {
+            return s.Replace("\\", "/");
+        }
+
+        /// <summary>
+        /// Заменяет прямую косую черту в строке на обратную косую черту.
+        /// </summary>
+        /// <param name="s">Исходная строка.</param>
+        public static string ToFileSystemPath(this string s)
+        {
+            return s.Replace("/", "\\");
+        }
+
         private static string WholeWordEvaluator(Match match, string target, string newValue)
         {
-            return IsWholeWord(match, target) ? newValue : match.Value;
+            return IsWholeWord(match, target)
+                       ? newValue
+                       : match.Value;
         }
 
         private static bool IsWholeWord(Match match, string target)

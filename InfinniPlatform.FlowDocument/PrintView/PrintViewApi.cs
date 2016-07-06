@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 
+using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.PrintView;
 using InfinniPlatform.Sdk.Dynamic;
@@ -22,7 +23,6 @@ namespace InfinniPlatform.FlowDocument.PrintView
         }
 
         private readonly MetadataSettings _metadataSettings;
-
         private readonly IPrintViewBuilder _printViewBuilder;
 
         public byte[] Build(string documentType, string printViewName, object printViewSource, PrintViewFileFormat printViewFormat = PrintViewFileFormat.Pdf)
@@ -39,7 +39,10 @@ namespace InfinniPlatform.FlowDocument.PrintView
 
             //Build view name
 
-            var bytes = File.ReadAllBytes(Path.Combine(_metadataSettings.ContentDirectory, _metadataSettings.PrintViewsPath, documentType, printViewName, ".json"));
+            var printViewPath = Path.Combine(_metadataSettings.ContentDirectory, _metadataSettings.PrintViewsPath, documentType, printViewName, ".json").ToFileSystemPath();
+
+            var bytes = File.ReadAllBytes(printViewPath);
+
             var printViewMetadata = JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(bytes);
 
             if (printViewMetadata == null)
