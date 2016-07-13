@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 
+using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.PrintView;
 using InfinniPlatform.Sdk.Dynamic;
@@ -14,16 +15,17 @@ namespace InfinniPlatform.FlowDocument.PrintView
     /// </summary>
     internal sealed class PrintViewApi : IPrintViewApi
     {
-        public PrintViewApi(IMetadataApi metadataApi, IPrintViewBuilder printViewBuilder)
+        public PrintViewApi(IPrintViewBuilder printViewBuilder,
+                            MetadataSettings metadataSettings)
         {
-            _metadataApi = metadataApi;
             _printViewBuilder = printViewBuilder;
+            _metadataSettings = metadataSettings;
         }
 
-        private readonly IMetadataApi _metadataApi;
+        private readonly MetadataSettings _metadataSettings;
         private readonly IPrintViewBuilder _printViewBuilder;
 
-        public byte[] Build(string documentType, string printViewName, object printViewSource, PrintViewFileFormat priiViewFormat = PrintViewFileFormat.Pdf)
+        public byte[] Build(string documentType, string printViewName, object printViewSource, PrintViewFileFormat printViewFormat = PrintViewFileFormat.Pdf)
         {
             if (string.IsNullOrEmpty(documentType))
             {
@@ -37,8 +39,10 @@ namespace InfinniPlatform.FlowDocument.PrintView
 
             //Build view name
 
-            //TODO Move to static files?
-            var bytes = File.ReadAllBytes($"content\\metadata\\PrintViews\\{documentType}\\{printViewName}.json");
+            var printViewPath = Path.Combine(_metadataSettings.ContentDirectory, _metadataSettings.PrintViewsPath, documentType, printViewName, ".json").ToFileSystemPath();
+
+            var bytes = File.ReadAllBytes(printViewPath);
+
             var printViewMetadata = JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(bytes);
 
             if (printViewMetadata == null)
@@ -46,7 +50,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
                 throw new ArgumentException($"Print view '{documentType}/{printViewName}' not found.");
             }
 
-            var printViewData = _printViewBuilder.BuildFile(printViewMetadata, printViewSource, priiViewFormat);
+            var printViewData = _printViewBuilder.BuildFile(printViewMetadata, printViewSource, printViewFormat);
 
             return printViewData;
         }

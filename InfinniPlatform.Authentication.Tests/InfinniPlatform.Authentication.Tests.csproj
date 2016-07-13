@@ -75,7 +75,6 @@
     </Compile>
     <Compile Include="AnotherFakeHttpService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AuthHttpServiceTest.cs" />
     <Compile Include="Services\FakeContainerModule.cs" />
     <Compile Include="Services\FakeHttpService.cs" />
   </ItemGroup>

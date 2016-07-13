@@ -29,22 +29,24 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                 queueName = QueueNamingConventions.GetProducerQueueName(messageBody);
             }
 
-            var channel = _manager.GetChannel();
+            using (var channel = _manager.GetChannel())
+            {
+                _manager.DeclareTaskQueue(queueName);
 
-            _manager.DeclareTaskQueue(queueName);
-
-            channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
+                channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
+            }
         }
 
         public void PublishDynamic(DynamicWrapper messageBody, string queueName)
         {
             var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
 
-            var channel = _manager.GetChannel();
+            using (var channel = _manager.GetChannel())
+            {
+                _manager.DeclareTaskQueue(queueName);
 
-            _manager.DeclareTaskQueue(queueName);
-
-            channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
+                channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
+            }
         }
 
         public async Task PublishAsync<T>(T messageBody, string queueName = null)
@@ -60,11 +62,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                                    queueName = QueueNamingConventions.GetProducerQueueName(messageBody);
                                }
 
-                               var channel = _manager.GetChannel();
+                               using (var channel = _manager.GetChannel())
+                               {
+                                   _manager.DeclareTaskQueue(queueName);
 
-                               _manager.DeclareTaskQueue(queueName);
-
-                               channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
+                                   channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
+                               }
                            });
         }
 
@@ -74,11 +77,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                            {
                                var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
 
-                               var channel = _manager.GetChannel();
+                               using (var channel = _manager.GetChannel())
+                               {
+                                   _manager.DeclareTaskQueue(queueName);
 
-                               _manager.DeclareTaskQueue(queueName);
-
-                               channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
+                                   channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
+                               }
                            });
         }
     }

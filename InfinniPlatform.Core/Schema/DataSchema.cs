@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Sdk.Metadata.Documents;
+
 namespace InfinniPlatform.Core.Schema
 {
     /// <summary>
@@ -26,7 +28,7 @@ namespace InfinniPlatform.Core.Schema
         /// <remarks>
         /// Модель должна иметь строго определенный тип.
         /// </remarks>
-        public SchemaDataType Type { get; set; }
+        public DataType Type { get; set; }
 
         /// <summary>
         /// Возможна ли сортировка

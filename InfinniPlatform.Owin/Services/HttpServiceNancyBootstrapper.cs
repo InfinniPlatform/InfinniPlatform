@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
+using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Services;
 
@@ -67,7 +68,7 @@ namespace InfinniPlatform.Owin.Services
 
             // Добавление сопоставления между виртуальной (запрашиваемый в браузере путь) и физической папкой в файловой системе.
             Conventions.StaticContentsConventions.Clear();
-            Conventions.StaticContentsConventions.AddDirectory("/content", $"{_metadataSettings.ContentDirectory}", "json");
+            Conventions.StaticContentsConventions.AddDirectory("/content", $"{_metadataSettings.ContentDirectory.ToWebPath()}", "json");
         }
 
         private static void CheckForIfModifiedSince(NancyContext context)
