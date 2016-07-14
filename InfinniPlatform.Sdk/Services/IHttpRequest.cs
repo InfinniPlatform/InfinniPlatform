@@ -59,5 +59,10 @@ namespace InfinniPlatform.Sdk.Services
         /// Региональные параметры запроса.
         /// </summary>
         CultureInfo Culture { get; }
+
+        /// <summary>
+        /// Адрес клиента.
+        /// </summary>
+        string UserHostAddress { get; }
     }
 }
