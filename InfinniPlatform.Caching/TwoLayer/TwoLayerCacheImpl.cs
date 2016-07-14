@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Sdk.Cache;
 
 namespace InfinniPlatform.Caching.TwoLayer
@@ -9,7 +10,7 @@ namespace InfinniPlatform.Caching.TwoLayer
     /// <summary>
     /// Реализует интерфейс для управления двухуровневым кэшем.
     /// </summary>
-    public sealed class TwoLayerCacheImpl : ITwoLayerCache, IDisposable
+    public sealed class TwoLayerCacheImpl : ICache, IDisposable
     {
         /// <summary>
         /// Конструктор.
@@ -142,14 +143,7 @@ namespace InfinniPlatform.Caching.TwoLayer
         {
             try
             {
-                try
-                {
-                    _memoryCache.Clear();
-                }
-                finally
-                {
-                    _sharedCache.Clear();
-                }
+                _memoryCache.Clear();
             }
             finally
             {

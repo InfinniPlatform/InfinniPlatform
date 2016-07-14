@@ -1,74 +1,41 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Authentication.Tests
 {
-    public class CacheHttpServiceOne : IHttpService
+    public class CacheHttpService : IHttpService
     {
-        public CacheHttpServiceOne(IMemoryCache memoryCache,
-                                   ISharedCache sharedCache,
-                                   ITwoLayerCache twoLayerCache)
+        public CacheHttpService(ICache cacheApi)
         {
-            _memoryCache = memoryCache;
-            _sharedCache = sharedCache;
-            _twoLayerCache = twoLayerCache;
+            _cacheApi = cacheApi;
         }
 
-        private readonly IMemoryCache _memoryCache;
-        private readonly ISharedCache _sharedCache;
-        private readonly ITwoLayerCache _twoLayerCache;
+        private readonly ICache _cacheApi;
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.ServicePath = "/cacheo";
-            builder.Get["/set"] = Set;
+            builder.ServicePath = "/cache";
+            builder.Post["/set"] = Set;
+            builder.Post["/get"] = Get;
         }
 
         private Task<object> Set(IHttpRequest httpRequest)
         {
-            _memoryCache.Clear();
-            _memoryCache.Set("memory", "memory");
-            _sharedCache.Clear();
-            _sharedCache.Set("shared", "shared");
-            _twoLayerCache.Clear();
-            _twoLayerCache.Set("twoLayer", "twoLayer");
+            var key = httpRequest.Form.Key as string;
+            var value = httpRequest.Form.Value.Value as string;
 
-            return Task.FromResult<object>("Ok.");
-        }
-    }
+            _cacheApi.Set("twoLayer", value);
 
-
-    public class CacheHttpServiceTwo : IHttpService
-    {
-        public CacheHttpServiceTwo(IMemoryCache memoryCache,
-                                   ISharedCache sharedCache,
-                                   ITwoLayerCache twoLayerCache)
-        {
-            _memoryCache = memoryCache;
-            _sharedCache = sharedCache;
-            _twoLayerCache = twoLayerCache;
-        }
-
-        private readonly IMemoryCache _memoryCache;
-        private readonly ISharedCache _sharedCache;
-        private readonly ITwoLayerCache _twoLayerCache;
-
-        public void Load(IHttpServiceBuilder builder)
-        {
-            builder.ServicePath = "/cachet";
-            builder.Get["/get"] = Get;
+            return Task.FromResult<object>($"Set: {"twoLayer"} = {value}.");
         }
 
         private Task<object> Get(IHttpRequest httpRequest)
         {
-            var s = _memoryCache.Get("memory");
-            var s1 = _sharedCache.Get("shared");
-            var s2 = _twoLayerCache.Get("twoLayer");
+            var s2 = _cacheApi.Get("twoLayer");
 
-            return Task.FromResult<object>($"memory: {s}{Environment.NewLine}shared: {s1}{Environment.NewLine}twoLayer: {s2}");
+            return Task.FromResult<object>($"Get: {s2}.");
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿namespace InfinniPlatform.Sdk.Cache
+﻿namespace InfinniPlatform.Caching
 {
-    /// <summary>
-    /// Предоставляет интерфейс для управления кэшем.
-    /// </summary>
-    public interface ICache
+    public interface IMemoryCache
     {
         /// <summary>
         /// Проверяет наличие ключа в кэше.
@@ -39,5 +36,10 @@
         /// </summary>
         /// <param name="key">Ключ.</param>
         bool Remove(string key);
+
+        /// <summary>
+        /// Очищает кэш.
+        /// </summary>
+        void Clear();
     }
 }

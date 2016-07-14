@@ -3,6 +3,7 @@ using System.Threading;
 
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Settings;
 
 using Moq;
 
@@ -19,7 +20,9 @@ namespace InfinniPlatform.Caching.Tests.Redis
         {
             // GIVEN
 
-            var cacheName = GetType().Name;
+            var appEnvironmentMock = new Mock<IAppEnvironment>();
+            appEnvironmentMock.SetupGet(env => env.Name)
+                              .Returns(nameof(RedisMessageBusTest));
 
             var settings = new RedisConnectionSettings
             {
@@ -30,8 +33,8 @@ namespace InfinniPlatform.Caching.Tests.Redis
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
-            var redisMessageBusManager = new RedisMessageBusManager(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
-            var redisMessageBusPublisher = new RedisMessageBusPublisher(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisMessageBusManager = new RedisMessageBusManager(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisMessageBusPublisher = new RedisMessageBusPublisher(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
             var redisMessageBus = new MessageBusImpl(redisMessageBusManager, redisMessageBusPublisher);
 
             // subscriber1 for Key1

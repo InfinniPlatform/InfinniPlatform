@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Caching.Properties;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.Redis
 {
@@ -16,13 +17,13 @@ namespace InfinniPlatform.Caching.Redis
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="keyspace">Пространство имен для ключей.</param>
+        /// <param name="appEnvironment">Пространство имен для ключей.</param>
         /// <param name="connectionFactory">Фабрика подключений к Redis.</param>
         /// <param name="log">Сервис регистрации событий.</param>
         /// <param name="performanceLog">Сервис регистрации длительности выполнения методов.</param>
-        public RedisMessageBusPublisher(string keyspace, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
+        public RedisMessageBusPublisher(IAppEnvironment appEnvironment, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
         {
-            _keyspace = keyspace;
+            _keyspace = appEnvironment.Name;
             _connectionFactory = connectionFactory;
 
             _log = log;

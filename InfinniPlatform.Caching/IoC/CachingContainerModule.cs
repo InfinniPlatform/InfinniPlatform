@@ -49,19 +49,15 @@ namespace InfinniPlatform.Caching.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterFactory(GetMemoryCache)
+            builder.RegisterType<MemoryCacheImpl>()
                    .As<IMemoryCache>()
                    .SingleInstance();
 
-            builder.RegisterFactory(GetSharedCache)
+            builder.RegisterFactory(GetSharedCache) // if settings?
                    .As<ISharedCache>()
                    .SingleInstance();
 
-            builder.RegisterFactory(GetTwoLayerCache)
-                   .As<ITwoLayerCache>()
-                   .SingleInstance();
-
-            builder.RegisterFactory(GetCache)
+            builder.RegisterType<TwoLayerCacheImpl>()
                    .As<ICache>()
                    .SingleInstance();
 
@@ -116,66 +112,17 @@ namespace InfinniPlatform.Caching.IoC
                            .GetSection<RedisConnectionSettings>(RedisConnectionSettings.SectionName);
         }
 
-        private static IMemoryCache GetMemoryCache(IContainerResolver resolver)
-        {
-            var keyspace = resolver.Resolve<IAppEnvironment>()?.Name;
-
-            var redisCacheFactory = resolver.Resolve<Func<string, MemoryCacheImpl>>();
-            IMemoryCache cache = redisCacheFactory(keyspace);
-
-            return cache;
-        }
-
         private static ISharedCache GetSharedCache(IContainerResolver resolver)
         {
-            var keyspace = resolver.Resolve<IAppEnvironment>()?.Name;
-
-            var redisCacheFactory = resolver.Resolve<Func<string, RedisCacheImpl>>();
-            ISharedCache cache = redisCacheFactory(keyspace);
-
-            return cache;
-        }
-
-        private static ITwoLayerCache GetTwoLayerCache(IContainerResolver resolver)
-        {
-            var keyspace = resolver.Resolve<IAppEnvironment>()?.Name;
-
-            var redisCacheFactory = resolver.Resolve<Func<string, TwoLayerCacheImpl>>();
-            ITwoLayerCache cache = redisCacheFactory(keyspace);
-
-            return cache;
-        }
-
-
-        private static ICache GetCache(IContainerResolver resolver)
-        {
-            var appSettings = resolver.Resolve<IAppEnvironment>();
             var cacheSettings = resolver.Resolve<CacheSettings>();
 
-            ICache cache;
-
-            var keyspace = appSettings.Name;
-
-            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase))
+            if (cacheSettings.Type == CacheSettings.MemoryCacheKey)
             {
-                var redisCacheFactory = resolver.Resolve<Func<string, RedisCacheImpl>>();
-
-                cache = redisCacheFactory(keyspace);
+                return new RedisCacheStub();
             }
-            else if (string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
-            {
-                var memoryCacheFactory = resolver.Resolve<Func<string, MemoryCacheImpl>>();
-                var redisCacheFactory = resolver.Resolve<Func<string, RedisCacheImpl>>();
-                var twoLayerCacheFactory = resolver.Resolve<TwoLayerCacheFactory>();
 
-                cache = twoLayerCacheFactory(memoryCacheFactory(keyspace), redisCacheFactory(keyspace));
-            }
-            else
-            {
-                var memoryCacheFactory = resolver.Resolve<Func<string, MemoryCacheImpl>>();
-
-                cache = memoryCacheFactory(keyspace);
-            }
+            var redisCacheFactory = resolver.Resolve<Func<IAppEnvironment, RedisCacheImpl>>();
+            ISharedCache cache = redisCacheFactory(resolver.Resolve<IAppEnvironment>());
 
             return cache;
         }
@@ -189,8 +136,7 @@ namespace InfinniPlatform.Caching.IoC
 
             IMessageBusManager messageBusManager;
 
-            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
             {
                 var redisMessageBusManagerFactory = resolver.Resolve<Func<string, RedisMessageBusManager>>();
 
@@ -213,8 +159,7 @@ namespace InfinniPlatform.Caching.IoC
 
             IMessageBusPublisher messageBusPublisher;
 
-            if (string.Equals(cacheSettings.Type, CacheSettings.RedisCacheKey, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(cacheSettings.Type, CacheSettings.TwoLayerCacheKey, StringComparison.OrdinalIgnoreCase))
             {
                 var redisMessageBusPublisherFactory = resolver.Resolve<Func<string, RedisMessageBusPublisher>>();
 
@@ -227,8 +172,5 @@ namespace InfinniPlatform.Caching.IoC
 
             return messageBusPublisher;
         }
-
-
-        private delegate TwoLayerCacheImpl TwoLayerCacheFactory(ICache memoryCache, ICache sharedCache);
     }
 }

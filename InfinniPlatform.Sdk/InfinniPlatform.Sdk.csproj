@@ -60,9 +60,6 @@
     </Compile>
     <Compile Include="BlobStorage\BlobStorageExtensions.cs" />
     <Compile Include="Cache\ICache.cs" />
-    <Compile Include="Cache\IMemoryCache.cs" />
-    <Compile Include="Cache\ISharedCache.cs" />
-    <Compile Include="Cache\ITwoLayerCache.cs" />
     <Compile Include="ClientNotification\IClientNotificationService.cs" />
     <Compile Include="Documents\Document.cs" />
     <Compile Include="Documents\DocumentHeader.cs" />

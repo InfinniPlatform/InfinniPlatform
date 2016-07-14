@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.Caching;
 
 using InfinniPlatform.Sdk.Cache;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.Memory
 {
@@ -14,10 +15,10 @@ namespace InfinniPlatform.Caching.Memory
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="keyspace">Пространство имен для ключей.</param>
-        public MemoryCacheImpl(string keyspace)
+        /// <param name="appEnvironment">Пространство имен для ключей.</param>
+        public MemoryCacheImpl(IAppEnvironment appEnvironment)
         {
-            _cache = new MemoryCache(keyspace);
+            _cache = new MemoryCache(appEnvironment.Name);
         }
 
 

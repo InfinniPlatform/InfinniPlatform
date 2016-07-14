@@ -7,18 +7,14 @@
     {
         public const string SectionName = "cache";
 
-        public const string MemoryCacheKey = "Redis";
+        public const string MemoryCacheKey = "Memory";
 
-        public const string RedisCacheKey = "Redis";
-
-        public const string TwoLayerCacheKey = "TwoLayer";
-
+        public const string TwoLayerCacheKey = "Shared";
 
         public CacheSettings()
         {
             Type = MemoryCacheKey;
         }
-
 
         /// <summary>
         /// Тип кэша для приложения.

@@ -1,9 +1,12 @@
-﻿namespace InfinniPlatform.Sdk.Cache
+﻿namespace InfinniPlatform.Caching
 {
     /// <summary>
-    /// Предоставляет интерфейс для управления кэшем.
+    /// Распределленый кэш.
     /// </summary>
-    public interface ICache
+    /// <remarks>
+    /// Предоставляет возможность разделить кэш между несколькими приложениями.
+    /// </remarks>
+    public interface ISharedCache
     {
         /// <summary>
         /// Проверяет наличие ключа в кэше.
