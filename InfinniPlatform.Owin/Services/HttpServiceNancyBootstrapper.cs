@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 
 using InfinniPlatform.Core.Extensions;
-using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;
@@ -17,15 +17,15 @@ namespace InfinniPlatform.Owin.Services
     /// </summary>
     internal sealed class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
-        public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog, MetadataSettings metadataSettings)
+        public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog, StaticContentSettings staticContentSettings)
         {
             _nancyModuleCatalog = nancyModuleCatalog;
-            _metadataSettings = metadataSettings;
+            _staticContentSettings = staticContentSettings;
         }
 
-        private readonly MetadataSettings _metadataSettings;
-
         private readonly INancyModuleCatalog _nancyModuleCatalog;
+
+        private readonly StaticContentSettings _staticContentSettings;
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
         {
@@ -63,12 +63,16 @@ namespace InfinniPlatform.Owin.Services
         {
             // Проверка заголовка Last-Modified при обработке запросов к файлам.
             pipelines.AfterRequest += CheckForIfModifiedSince;
+            pipelines.AfterRequest += CheckForIfNonMatch;
 
             base.ApplicationStartup(container, pipelines);
 
-            // Добавление сопоставления между виртуальной (запрашиваемый в браузере путь) и физической папкой в файловой системе.
+            // Добавление сопоставления между виртуальными (запрашиваемый в браузере путь) и физическими директориями в файловой системе.
             Conventions.StaticContentsConventions.Clear();
-            Conventions.StaticContentsConventions.AddDirectory("/content", $"{_metadataSettings.ContentDirectory.ToWebPath()}", "json");
+            foreach (var s in _staticContentSettings.StaticContentMapping)
+            {
+                Conventions.StaticContentsConventions.AddDirectory(s.Key, s.Value.ToWebPath());
+            }
         }
 
         private static void CheckForIfModifiedSince(NancyContext context)
@@ -91,6 +95,22 @@ namespace InfinniPlatform.Owin.Services
             }
 
             if (lastModified <= request.Headers.IfModifiedSince.Value)
+            {
+                context.Response = HttpStatusCode.NotModified;
+            }
+        }
+
+        public static void CheckForIfNonMatch(NancyContext context)
+        {
+            var request = context.Request;
+            var response = context.Response;
+
+            string responseETag;
+            if (!response.Headers.TryGetValue("ETag", out responseETag))
+            {
+                return;
+            }
+            if (request.Headers.IfNoneMatch.Contains(responseETag))
             {
                 context.Response = HttpStatusCode.NotModified;
             }

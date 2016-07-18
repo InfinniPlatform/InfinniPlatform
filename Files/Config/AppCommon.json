@@ -136,15 +136,18 @@
   },
   /* Настройки хранения метаданных */
   "metadata": {
-    /* Корневой каталог со статическими файлами (по умолчанию - 'content') */
-    "ContentDirectory": "content",
-    /* Путь до подкаталога с файлами метаданных представлений (по умолчанию - 'metadata/Views') */
-    "ViewsPath": "metadata/Views",
-    /* Путь до подкаталога  с файлами метаданных документов (по умолчанию - 'metadata/Documents') */
-    "DocumentsPath": "metadata/Documents",
-    /* Путь до подкаталога  с файлами метаданных печатных представлений (по умолчанию - 'metadata/PrintViews') */
-    "PrintViewsPath": "metadata/PrintViews",
-    /* Путь до подкаталога  с файлами Razor-представлений (по умолчанию - 'content/Views') */
-    "RazorViewsPath": "Views"
+    /* Путь до подкаталога  с файлами метаданных документов (по умолчанию - 'content/metadata/Documents') */
+    "DocumentsPath": "content/metadata/Documents",
+    /* Путь до подкаталога  с файлами метаданных печатных представлений (по умолчанию - 'content/metadata/PrintViews') */
+    "PrintViewsPath": "content/metadata/PrintViews"
+  },
+  /* Настройки хостинга статических файлов */
+  "staticContent": {
+    /* Соответствие виртуальных и физических путей до статических файлов */
+    "StaticContentMapping": {
+      /* Виртуальный путь: физический путь, относительно рабочей папки */
+      "/metadata": "content/metadata",
+      "/": "content/www"
+    }
   }
 }
