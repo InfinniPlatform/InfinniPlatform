@@ -49,14 +49,14 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
               };
 
 
-        private ExpressionFilterQuerySyntaxVisitor(Type type) : base(type)
+        private ExpressionFilterQuerySyntaxVisitor(Type type, int level) : base(type, level)
         {
         }
 
 
-        public static Expression CreateFilterExpression(Type type, InvocationQuerySyntaxNode node)
+        public static Expression CreateFilterExpression(Type type, InvocationQuerySyntaxNode node, int level = 0)
         {
-            var visitor = new ExpressionFilterQuerySyntaxVisitor(type);
+            var visitor = new ExpressionFilterQuerySyntaxVisitor(type, level);
             var filterBody = visitor.Visit(node);
             return Expression.Lambda(filterBody, visitor.Parameter);
         }
@@ -208,7 +208,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             // match(arrayProperty, filter) --> Enumerable.Any(i.arrayProperty, ii => filter(ii))
             var arrayProperty = visitor.Visit(node.Arguments[0]);
             var itemType = QuerySyntaxHelper.GetCollectionItemType(arrayProperty.Type);
-            var itemFilter = CreateFilterExpression(itemType, (InvocationQuerySyntaxNode)node.Arguments[1]);
+            var itemFilter = CreateFilterExpression(itemType, (InvocationQuerySyntaxNode)node.Arguments[1], visitor.Level + 1);
             return QuerySyntaxHelper.InvokeAny(itemType, arrayProperty, itemFilter);
         }
 
