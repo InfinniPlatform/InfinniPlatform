@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 
 using InfinniPlatform.Core.Extensions;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;
@@ -17,15 +18,19 @@ namespace InfinniPlatform.Owin.Services
     /// </summary>
     internal sealed class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
-        public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog, StaticContentSettings staticContentSettings)
+        public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
+                                            StaticContentSettings staticContentSettings,
+                                            ILog log)
         {
             _nancyModuleCatalog = nancyModuleCatalog;
             _staticContentSettings = staticContentSettings;
+            _log = log;
         }
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
 
         private readonly StaticContentSettings _staticContentSettings;
+        private readonly ILog _log;
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
         {
@@ -69,9 +74,11 @@ namespace InfinniPlatform.Owin.Services
 
             // Добавление сопоставления между виртуальными (запрашиваемый в браузере путь) и физическими директориями в файловой системе.
             Conventions.StaticContentsConventions.Clear();
+
             foreach (var s in _staticContentSettings.StaticContentMapping)
             {
                 Conventions.StaticContentsConventions.AddDirectory(s.Key, s.Value.ToWebPath());
+                _log.Info($"Serving static content from '{s.Value.ToWebPath()}' as '{s.Key}'.");
             }
         }
 
@@ -100,7 +107,7 @@ namespace InfinniPlatform.Owin.Services
             }
         }
 
-        public static void CheckForIfNonMatch(NancyContext context)
+        private static void CheckForIfNonMatch(NancyContext context)
         {
             var request = context.Request;
             var response = context.Response;
