@@ -148,6 +148,8 @@
       /* Виртуальный путь: физический путь, относительно рабочей папки */
       "/metadata": "content/metadata",
       "/": "content/www"
-    }
+    },
+    /* Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews) */
+    "RazorViewsPath": "content/RazorViews"
   }
 }
