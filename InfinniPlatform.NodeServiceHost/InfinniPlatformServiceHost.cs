@@ -15,7 +15,7 @@ using InfinniPlatform.Sdk.Hosting;
 
 namespace InfinniPlatform.NodeServiceHost
 {
-    [Export("Infinni.NodeWorker.ServiceHost.IWorkerServiceHost")]
+    [Export("InfinniPlatformServiceHost")]
     public sealed class InfinniPlatformServiceHost
     {
         private volatile Status _status = Status.Stopped;

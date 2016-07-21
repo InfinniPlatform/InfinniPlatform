@@ -95,11 +95,9 @@ namespace InfinniPlatform.IoC
         {
             var result = new List<ContainerModuleLocation>();
 
-            var directory = AppDomain.CurrentDomain.BaseDirectory;
-
             // Поиск всех исполняемых модулей в каталоге текущего домена приложения
-            var assemblyFiles = Directory.EnumerateFiles(directory, "*.dll", SearchOption.TopDirectoryOnly)
-                                         .Concat(Directory.EnumerateFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
+            var assemblyFiles = Directory.EnumerateFiles(".", "*.dll", SearchOption.AllDirectories)
+                                         .Concat(Directory.EnumerateFiles(".", "*.exe", SearchOption.AllDirectories));
 
             foreach (var assemblyFile in assemblyFiles)
             {

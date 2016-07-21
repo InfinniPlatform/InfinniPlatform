@@ -9,14 +9,16 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {
     internal abstract class ExpressionBaseQuerySyntaxVisitor : QuerySyntaxVisitor<Expression>
     {
-        protected ExpressionBaseQuerySyntaxVisitor(Type type)
+        protected ExpressionBaseQuerySyntaxVisitor(Type type, int level = 0)
         {
             Type = type;
-            Parameter = Expression.Parameter(type);
+            Level = level;
+            Parameter = Expression.Parameter(type, $"i_{level}");
         }
 
 
         protected readonly Type Type;
+        protected readonly int Level;
         protected readonly ParameterExpression Parameter;
 
 

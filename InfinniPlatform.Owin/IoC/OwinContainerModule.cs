@@ -4,6 +4,7 @@ using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Owin.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Settings;
 
 using Nancy;
 using Nancy.Bootstrapper;
@@ -60,6 +61,12 @@ namespace InfinniPlatform.Owin.IoC
 
             builder.RegisterType<ErrorHandlingOwinMiddleware>()
                    .AsSelf()
+                   .SingleInstance();
+
+            // StaticContent
+
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<StaticContentSettings>(StaticContentSettings.SectionName))
+                   .As<StaticContentSettings>()
                    .SingleInstance();
         }
     }

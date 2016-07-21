@@ -109,11 +109,6 @@
       <Name>InfinniPlatform.Tests</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Files\Config\App.config">
-      <Link>App.config</Link>
-    </None>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />

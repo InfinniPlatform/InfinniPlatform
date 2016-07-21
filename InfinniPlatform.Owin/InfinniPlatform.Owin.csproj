@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="Services\HttpServiceNancyModuleCatalog.cs" />
     <Compile Include="Services\HttpServiceNancyModuleInitializer.cs" />
+    <Compile Include="Services\StaticContentSettings.cs" />
     <Compile Include="UrlBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

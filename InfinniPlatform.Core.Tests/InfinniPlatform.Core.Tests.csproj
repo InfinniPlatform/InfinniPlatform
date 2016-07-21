@@ -121,10 +121,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Files\Config\App.config">
-      <Link>App.config</Link>
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="TestData\UploadBinaryContent.zip" />
   </ItemGroup>

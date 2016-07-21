@@ -23,6 +23,7 @@ namespace InfinniPlatform.Cors.Tests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
+    [Ignore("Because need process AppDomain.AssemblyResolve")]
     public sealed class CorsOwinHostingModuleIntegrationTest
     {
         private static IOwinHostingContext CreateTestOwinHostingContext(params IOwinHostingModule[] owinHostingModules)
