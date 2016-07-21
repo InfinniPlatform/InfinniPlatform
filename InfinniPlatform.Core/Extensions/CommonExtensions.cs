@@ -187,7 +187,7 @@ namespace InfinniPlatform.Core.Extensions
         /// <param name="s">Исходная строка.</param>
         public static string ToWebPath(this string s)
         {
-            return s.Replace("\\", "/");
+            return s.Replace( "\\", "/").TrimEnd('/');
         }
 
         /// <summary>
