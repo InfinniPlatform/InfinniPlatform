@@ -190,6 +190,8 @@ namespace InfinniPlatform.Owin.Services
 
                                                                         var method = $"{nancyContext.Request.Method}::{nancyContext.Request.Path}";
 
+                                                                        Exception error = null;
+
                                                                         try
                                                                         {
                                                                             var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
@@ -201,15 +203,20 @@ namespace InfinniPlatform.Owin.Services
                                                                             var result = await onHandleGlobal(httpRequest);
                                                                             var nancyHttpResponse = CreateNancyHttpResponse(nancyModule, result);
 
-                                                                            _performanceLog.Log(method, start);
-
                                                                             return nancyHttpResponse;
                                                                         }
                                                                         catch (Exception exception)
                                                                         {
-                                                                            _performanceLog.Log(method, start, exception);
+                                                                            error = exception;
 
-                                                                            throw;
+                                                                            var errorResult = DefaultHttpResultConverter.Instance.Convert(exception);
+                                                                            var nancyErrorHttpResponse = CreateNancyHttpResponse(nancyModule, errorResult);
+
+                                                                            return nancyErrorHttpResponse;
+                                                                        }
+                                                                        finally
+                                                                        {
+                                                                            _performanceLog.Log(method, start, error);
                                                                         }
                                                                     };
 
