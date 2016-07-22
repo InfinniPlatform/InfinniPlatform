@@ -12,7 +12,7 @@ namespace InfinniPlatform.Authentication.UserStorage
     internal sealed class ApplicationUserStore : IApplicationUserStore
     {
         public ApplicationUserStore(Lazy<ApplicationUserStoreCache> userCache,
-                                                     ISystemDocumentStorageFactory documentStorageFactory)
+                                    ISystemDocumentStorageFactory documentStorageFactory)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 

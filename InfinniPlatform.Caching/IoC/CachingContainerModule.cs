@@ -1,11 +1,14 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Memory;
+using InfinniPlatform.Caching.RabbitMQ;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 
@@ -89,6 +92,14 @@ namespace InfinniPlatform.Caching.IoC
 
             builder.RegisterType<MessageBusImpl>()
                    .As<IMessageBus>()
+                   .SingleInstance();
+
+            builder.RegisterType<RabbitBus>()
+                   .As<IRabbitBus>()
+                   .SingleInstance();
+
+            builder.RegisterType<RabbitBus>()
+                   .As<IBroadcastConsumer>()
                    .SingleInstance();
 
             // СЕССИЯ ПОЛЬЗОВАТЕЛЯ

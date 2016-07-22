@@ -23,7 +23,7 @@ namespace InfinniPlatform.Authentication.Tests
 
         private Task<object> Set(IHttpRequest httpRequest)
         {
-            var key = httpRequest.Form.Key as string;
+            var key = httpRequest.Form.Key.Value as string;
             var value = httpRequest.Form.Value.Value as string;
 
             _cacheApi.Set("twoLayer", value);

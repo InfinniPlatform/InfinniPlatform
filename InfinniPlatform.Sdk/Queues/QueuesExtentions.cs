@@ -8,7 +8,7 @@ namespace InfinniPlatform.Sdk.Queues
     public static class QueuesExtentions
     {
         /// <summary>
-        /// Регистрирует всех прикладных потребителей сообщений текущей сборки.
+        /// Регистрирует всех потребителей сообщений текущей сборки.
         /// </summary>
         /// <remarks>
         /// Сервисы будут зарегистрированы со стратегией SingleInstance().
