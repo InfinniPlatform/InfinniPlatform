@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using InfinniPlatform.Expressions.Parser;
@@ -1412,10 +1413,10 @@ namespace InfinniPlatform.Expressions.Tests
 
         private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
         {
-            var assemblyName = new AssemblyName(args.Name).Name;
-
-            return string.Equals(assemblyName, "System.Collections.Immutable", StringComparison.OrdinalIgnoreCase)
-                ? Assembly.LoadFile(Path.GetFullPath(assemblyName + ".dll")) : null;
+            var assemblyFileName = new AssemblyName(args.Name).Name + ".dll";
+            var currentDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath) ?? ".";
+            var assemblyFilePath = Directory.EnumerateFiles(currentDirectory, assemblyFileName, SearchOption.AllDirectories).FirstOrDefault();
+            return !string.IsNullOrEmpty(assemblyFilePath) ? Assembly.LoadFile(assemblyFilePath) : null;
         }
 
 
