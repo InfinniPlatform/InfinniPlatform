@@ -1412,7 +1412,10 @@ namespace InfinniPlatform.Expressions.Tests
 
         private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
         {
-            return Assembly.LoadFile(Path.GetFullPath(new AssemblyName(args.Name).Name + ".dll"));
+            var assemblyName = new AssemblyName(args.Name).Name;
+
+            return string.Equals(assemblyName, "System.Collections.Immutable", StringComparison.OrdinalIgnoreCase)
+                ? Assembly.LoadFile(Path.GetFullPath(assemblyName + ".dll")) : null;
         }
 
 
