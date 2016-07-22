@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
 
 using InfinniPlatform.Expressions.Parser;
 
@@ -1398,12 +1400,19 @@ namespace InfinniPlatform.Expressions.Tests
         public void OneTimeSetUp()
         {
             Trace.Listeners.Add(NUnitTraceListener.Default);
+            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
             Trace.Listeners.Remove(NUnitTraceListener.Default);
+            AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
+        }
+
+        private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return Assembly.LoadFile(Path.GetFullPath(new AssemblyName(args.Name).Name + ".dll"));
         }
 
 
