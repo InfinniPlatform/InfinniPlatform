@@ -96,6 +96,7 @@
 				foreach ($projectReference in $projectReferences)
 				{
 					$projectNuspec = $projectNuspec + "            <dependency id=""$projectReference"" version=""[$version]"" />`r`n"
+					$projectRefs += "$projectReference.$version\lib\$framework\$projectReference.dll"
 				}
 			}
 
@@ -104,53 +105,65 @@
 				"    </metadata>`r`n" + `
 				"    <files>`r`n"
 
+			$projectLibPath = "$projectName.$version\lib\$framework";
+
 			# Add project assembly
 
 			$projectIsLibrary = $projectXml.Project.PropertyGroup.OutputType -like '*Library*'
 			$projectAssembly = $projectAssemblyName + $(if ($projectIsLibrary) { '.dll' } else { '.exe' })
-			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\$projectAssembly"" src=""$projectAssembly"" />`r`n"
-			$projectRefs += "$projectName.$version\lib\$framework\$projectAssembly"
+			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssembly"" />`r`n"
+			$references += "$projectLibPath\$projectAssembly"
 
-			# Add resources for ru-RU (if exists)
+			# Add resources for ru-RU
 
-			$projectResourcesRu = $projectXml.Project.ItemGroup.EmbeddedResource.Include | Where { $_ -like '*.ru-RU.*' }
-
-			if ($projectResourcesRu -and $projectResourcesRu.Count -gt 0 -and $projectResourcesRu[0])
+			if (($projectXml.Project.ItemGroup.EmbeddedResource.Include | Where { $_ -like '*.ru-RU.*' }).Count -gt 0)
 			{
 				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\ru-RU"" src=""ru-RU\$projectAssemblyName.resources.dll"" />`r`n"
-				$projectRefs += "$projectName.$version\lib\$framework\ru-RU\$projectAssemblyName.resources.dll"
+				$references += "$projectLibPath\ru-RU\$projectAssemblyName.resources.dll"
 			}
 
-			# Add resources for en-US (if exists)
+			# Add resources for en-US
 
-			$projectResourcesEn = $projectXml.Project.ItemGroup.EmbeddedResource.Include | Where { $_ -like '*.en-US.*' }
-
-			if ($projectResourcesEn -and $projectResourcesEn.Count -gt 0 -and $projectResourcesEn[0])
+			if (($projectXml.Project.ItemGroup.EmbeddedResource.Include | Where { $_ -like '*.en-US.*' }).Count -gt 0)
 			{
 				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework\en-US"" src=""en-US\$projectAssemblyName.resources.dll"" />`r`n"
-				$projectRefs += "$projectName.$version\lib\$framework\en-US\$projectAssemblyName.resources.dll"
+				$references += "$projectLibPath\en-US\$projectAssemblyName.resources.dll"
 			}
 
 			# Add symbol file
 
 			$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.pdb"" />`r`n"
-			$projectRefs += "$projectName.$version\lib\$framework\$projectAssemblyName.pdb"
+			$references += "$projectLibPath\$projectAssemblyName.pdb"
 
-			# Add XML-documentation (if exists)
+			# Add XML-documentation
 
-			$projectDocs = $projectXml.Project.PropertyGroup.DocumentationFile
-
-			if ($projectDocs -and $projectDocs.Count -gt 0 -and $projectDocs[0])
+			if (($projectXml.Project.PropertyGroup.DocumentationFile | Where { $_ }).Count -gt 0)
 			{
 				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.xml"" />`r`n"
 			}
 
-			# Add config-file (if applicable)
+			# Add app config-file
 
-			if (-not $projectIsLibrary)
+			if (($projectXml.Project.ItemGroup.None.Include | Where { $_ -match '(^|\\)App.config$' }).Count -gt 0)
 			{
-				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.exe.config"" />`r`n"
-				$projectRefs += "$projectName.$version\lib\$framework\$projectAssemblyName.exe.config"
+				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssembly.config"" />`r`n"
+				$references += "$projectLibPath\$projectAssembly.config"
+			}
+
+			# Add log config-file
+
+			if (($projectXml.Project.ItemGroup.None.Include | Where { $_ -match '(^|\\)AppLog.config$' }).Count -gt 0)
+			{
+				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""AppLog.config"" />`r`n"
+				$references += "$projectLibPath\AppLog.config"
+			}
+
+			# Add platform config-file
+
+			if (($projectXml.Project.ItemGroup.None.Include | Where { $_ -match '(^|\\)AppCommon.json$' }).Count -gt 0)
+			{
+				$projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""AppCommon.json"" />`r`n"
+				$references += "$projectLibPath\AppCommon.json"
 			}
 
 			$projectNuspec = $projectNuspec + `
@@ -158,10 +171,10 @@
 				"    </files>`r`n" + `
 				"</package>"
 
+			$references += $projectRefs
+
 			Set-Content (Join-Path $outputDir "$projectName.references") -Value ($projectRefs | Sort-Object | Get-Unique -AsString)
 			Set-Content (Join-Path $outputDir "$projectName.nuspec") -Value $projectNuspec
-
-			$references += $projectRefs
 		}
 
 		### Create nuspec-file for the solution
@@ -192,10 +205,6 @@
 			"        </dependencies>`r`n" + `
 			"    </metadata>`r`n" + `
 			"    <files>`r`n" + `
-			"        <file target=""lib\$framework\App.config"" src=""App.config"" />`r`n" + `
-			"        <file target=""lib\$framework\AppLog.config"" src=""AppLog.config"" />`r`n" + `
-			"        <file target=""lib\$framework\AppCommon.json"" src=""AppCommon.json"" />`r`n" + `
-			"        <file target=""lib\$framework\AppExtension.json"" src=""AppExtension.json"" />`r`n" + `
 			"        <file target=""lib\$framework\InfinniPlatform.references"" src=""InfinniPlatform.references"" />`r`n" + `
 			"    </files>`r`n" + `
 			"</package>"
