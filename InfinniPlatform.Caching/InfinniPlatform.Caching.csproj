@@ -56,6 +56,8 @@
     <Compile Include="IMessageBusPublisher.cs" />
     <Compile Include="Memory\MemoryMessageBusManager.cs" />
     <Compile Include="Memory\MemoryMessageBusPublisher.cs" />
+    <Compile Include="RabbitMQ\SharedCacheMessage.cs" />
+    <Compile Include="RabbitMQ\IRabbitBus.cs" />
     <Compile Include="RabbitMQ\RabbitBus.cs" />
     <Compile Include="Redis\RedisMessageBusManager.cs" />
     <Compile Include="Redis\RedisMessageBusPublisher.cs" />

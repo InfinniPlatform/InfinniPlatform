@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Caching;
 using System.Threading;
 
 using InfinniPlatform.Authentication.Properties;
 using InfinniPlatform.Caching;
+using InfinniPlatform.Caching.RabbitMQ;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
@@ -14,19 +16,14 @@ namespace InfinniPlatform.Authentication.UserStorage
 {
     internal sealed class ApplicationUserStoreCache
     {
-        private const string ApplicationUserStoreCacheEvent = nameof(ApplicationUserStoreCache);
-
-        private static readonly string ApplicationUserStoreCacheId = Guid.NewGuid().ToString("N");
-
-
-        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, IMessageBus messageBus, ILog log)
+        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, ILog log, IRabbitBus rabbitBus)
         {
             var cacheTimeout = (userStorageSettings.UserCacheTimeout <= 0)
                 ? UserStorageSettings.DefaultUserCacheTimeout
                 : userStorageSettings.UserCacheTimeout;
 
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
-            _messageBus = messageBus;
+            _rabbitBus = rabbitBus;
             _log = log;
 
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
@@ -43,7 +40,13 @@ namespace InfinniPlatform.Authentication.UserStorage
 
             try
             {
-                _subscription = _messageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
+                rabbitBus.OnMessageRecieve = message =>
+                                          {
+                                              if (!string.IsNullOrEmpty(message?.Value))
+                                              {
+                                                  RemoveUser(message.Value);
+                                              }
+                                          };
 
                 log.Info(Resources.SubscribingOnUserStorageCacheHasCompleted);
             }
@@ -57,10 +60,9 @@ namespace InfinniPlatform.Authentication.UserStorage
 
 
         private readonly TimeSpan _cacheTimeout;
-        private readonly IMessageBus _messageBus;
         private readonly ILog _log;
+        private readonly IRabbitBus _rabbitBus;
 
-        private readonly IDisposable _subscription;
         private readonly ReaderWriterLockSlim _cacheLockSlim;
 
         private readonly MemoryCache _usersById;
@@ -206,29 +208,8 @@ namespace InfinniPlatform.Authentication.UserStorage
         {
             // Оповещаем другие узлы об изменении сведений пользователя
 
-            var userChangedEvent = $"{ApplicationUserStoreCacheId}:{userId}";
-
-            _messageBus.Publish(ApplicationUserStoreCacheEvent, userChangedEvent);
+            _rabbitBus.Publish(userId, userId);
         }
-
-        private void OnApplicationUserStoreCacheEvent(string key, string userChangedEvent)
-        {
-            // Обрабатываем сообщение о том, что сведения пользователя изменились
-
-            if (!string.IsNullOrEmpty(userChangedEvent))
-            {
-                if (!userChangedEvent.StartsWith(ApplicationUserStoreCacheId + ':'))
-                {
-                    var userId = userChangedEvent.Substring(ApplicationUserStoreCacheId.Length);
-
-                    if (!string.IsNullOrEmpty(userId))
-                    {
-                        RemoveUser(userId);
-                    }
-                }
-            }
-        }
-
 
         private static string GetUserLoginKey(ApplicationUserLogin userLogin)
         {

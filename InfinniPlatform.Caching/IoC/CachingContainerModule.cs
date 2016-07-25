@@ -96,9 +96,6 @@ namespace InfinniPlatform.Caching.IoC
 
             builder.RegisterType<RabbitBus>()
                    .As<IRabbitBus>()
-                   .SingleInstance();
-
-            builder.RegisterType<RabbitBus>()
                    .As<IBroadcastConsumer>()
                    .SingleInstance();
 
