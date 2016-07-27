@@ -5,6 +5,8 @@ using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 
 using NUnit.Framework;
 
+using RabbitMQ.Client.Events;
+
 namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
 {
     [TestFixture]
@@ -17,8 +19,12 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
             var messageSerializer = new MessageSerializer();
             const int message = 42;
 
-            var bytes = messageSerializer.MessageToBytes(message);
-            var actual = messageSerializer.BytesToMessage<int>(bytes);
+            var args = new BasicDeliverEventArgs
+                       {
+                           Body = messageSerializer.MessageToBytes(message)
+                       };
+
+            var actual = messageSerializer.BytesToMessage<int>(args);
 
             Assert.AreEqual(message, actual.GetBody());
         }
@@ -29,8 +35,11 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
             var messageSerializer = new MessageSerializer();
             var message = new TestMessage("1", 1, new DateTime(1, 1, 1));
 
-            var bytes = messageSerializer.MessageToBytes(message);
-            var actual = messageSerializer.BytesToMessage(bytes, typeof(TestMessage));
+            var args = new BasicDeliverEventArgs
+                       {
+                           Body = messageSerializer.MessageToBytes(message)
+                       };
+            var actual = messageSerializer.BytesToMessage(args, typeof(TestMessage));
 
             Assert.AreEqual(message, actual.GetBody());
         }
@@ -41,8 +50,11 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
             var messageSerializer = new MessageSerializer();
             var message = new TestMessage("1", 1, new DateTime(1, 1, 1));
 
-            var bytes = messageSerializer.MessageToBytes(message);
-            var actual = messageSerializer.BytesToMessage<TestMessage>(bytes);
+            var args = new BasicDeliverEventArgs
+                       {
+                           Body = messageSerializer.MessageToBytes(message)
+                       };
+            var actual = messageSerializer.BytesToMessage<TestMessage>(args);
 
             Assert.AreEqual(message, actual.GetBody());
         }

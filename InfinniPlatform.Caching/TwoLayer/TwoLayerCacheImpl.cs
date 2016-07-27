@@ -1,41 +1,49 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Caching.RabbitMQ;
 using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.Core;
 using InfinniPlatform.Sdk.Cache;
+using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Consumers;
+using InfinniPlatform.Sdk.Queues.Producers;
 
 namespace InfinniPlatform.Caching.TwoLayer
 {
     /// <summary>
     /// Реализует интерфейс для управления двухуровневым кэшем.
     /// </summary>
-    public sealed class TwoLayerCacheImpl : ICache, IDisposable
+    public class TwoLayerCacheImpl : BroadcastConsumerBase<SharedCacheMessage>, ICache
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="memoryCache">Локальный кэш.</param>
         /// <param name="sharedCache">Распределенный кэш.</param>
-        /// <param name="sharedMessageBus">Шина для синхронизации локальных кэшей.</param>
-        public TwoLayerCacheImpl(IMemoryCache memoryCache, ISharedCache sharedCache, IMessageBus sharedMessageBus)
+        /// <param name="broadcastProducer">Шина для синхронизации локальных кэшей.</param>
+        /// <param name="appIdentity"></param>
+        /// <param name="log"></param>
+        public TwoLayerCacheImpl(IMemoryCache memoryCache,
+                                 ISharedCache sharedCache,
+                                 IBroadcastProducer broadcastProducer,
+                                 IAppIdentity appIdentity,
+                                 ILog log)
         {
             _memoryCache = memoryCache;
             _sharedCache = sharedCache;
-            _sharedMessageBus = sharedMessageBus;
-
-            _sharedCachePublisherId = Guid.NewGuid().ToString("N");
-            _sharedCacheSubscriptions = new ConcurrentDictionary<string, IDisposable>();
+            _broadcastProducer = broadcastProducer;
+            _appIdentity = appIdentity;
+            _log = log;
         }
 
-
+        private readonly IAppIdentity _appIdentity;
+        private readonly ILog _log;
+        private readonly IBroadcastProducer _broadcastProducer;
         private readonly IMemoryCache _memoryCache;
         private readonly ISharedCache _sharedCache;
-        private readonly IMessageBus _sharedMessageBus;
-
-        private readonly string _sharedCachePublisherId;
-        private readonly ConcurrentDictionary<string, IDisposable> _sharedCacheSubscriptions;
-
 
         public bool Contains(string key)
         {
@@ -76,8 +84,6 @@ namespace InfinniPlatform.Caching.TwoLayer
                     exists = true;
 
                     _memoryCache.Set(key, value);
-
-                    SubscribeOnKeyChanged(key);
                 }
             }
             else
@@ -104,7 +110,6 @@ namespace InfinniPlatform.Caching.TwoLayer
             _sharedCache.Set(key, value);
 
             NotifyOnKeyChanged(key);
-            SubscribeOnKeyChanged(key);
         }
 
         public bool Remove(string key)
@@ -131,7 +136,6 @@ namespace InfinniPlatform.Caching.TwoLayer
             {
                 if (deleted)
                 {
-                    UnsubscribeOnKeyChanged(key);
                     NotifyOnKeyChanged(key);
                 }
             }
@@ -139,86 +143,45 @@ namespace InfinniPlatform.Caching.TwoLayer
             return deleted;
         }
 
-        public void Clear()
-        {
-            try
-            {
-                _memoryCache.Clear();
-            }
-            finally
-            {
-                foreach (var subscription in _sharedCacheSubscriptions.ToArray())
-                {
-                    UnsubscribeOnKeyChanged(subscription.Key);
-                    NotifyOnKeyChanged(subscription.Key);
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-            foreach (var subscription in _sharedCacheSubscriptions.ToArray())
-            {
-                UnsubscribeOnKeyChanged(subscription.Key);
-            }
-        }
-
-
         private void NotifyOnKeyChanged(string key)
         {
-            ExecuteAsync(() => _sharedMessageBus.Publish(key, _sharedCachePublisherId));
-        }
-
-        private void SubscribeOnKeyChanged(string key)
-        {
-            if (!_sharedCacheSubscriptions.ContainsKey(key))
+            if (!(_sharedCache is RedisCacheStubImpl))
             {
-                ExecuteAsync(() =>
-                {
-                    var subscription = _sharedMessageBus.Subscribe(key, (k, v) =>
-                    {
-                        if (v != _sharedCachePublisherId)
-                        {
-                            try
-                            {
-                                _memoryCache.Remove(k);
-                            }
-                            catch
-                            {
-                                // ignored
-                            }
-                        }
-                    });
-
-                    _sharedCacheSubscriptions.TryAdd(key, subscription);
-                });
+                _broadcastProducer.Publish(new SharedCacheMessage(key));
             }
         }
 
-        private void UnsubscribeOnKeyChanged(string key)
+        protected override Task Consume(Message<SharedCacheMessage> message)
         {
-            IDisposable subscription;
+            return Task.Run(() =>
+                            {
+                                if (_sharedCache is RedisCacheStubImpl)
+                                {
+                                    return;
+                                }
+                                try
+                                {
+                                    var sharedCacheMessage1 = (SharedCacheMessage)message.GetBody();
 
-            if (_sharedCacheSubscriptions.TryRemove(key, out subscription))
-            {
-                ExecuteAsync(subscription.Dispose);
-            }
-        }
+                                    if (message.PublisherId == _appIdentity.Id)
+                                    {
+                                        //ignore own message
+                                    }
+                                    else
+                                    {
+                                        var key1 = sharedCacheMessage1.Key;
 
-
-        private static void ExecuteAsync(Action action)
-        {
-            Task.Run(() =>
-            {
-                try
-                {
-                    action();
-                }
-                catch
-                {
-                    // ignored
-                }
-            });
+                                        if (!string.IsNullOrEmpty(key1))
+                                        {
+                                            _memoryCache.Remove(key1);
+                                        }
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    _log.Error(e);
+                                }
+                            });
         }
     }
 }

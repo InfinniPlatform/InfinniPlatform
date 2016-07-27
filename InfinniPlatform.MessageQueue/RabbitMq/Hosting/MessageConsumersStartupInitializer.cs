@@ -94,7 +94,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             var eventingConsumer = new EventingBasicConsumer(channel);
             eventingConsumer.Received += (o, e) =>
                                          {
-                                             var message = _messageSerializer.BytesToMessage(e.Body, consumer.MessageType);
+                                             var message = _messageSerializer.BytesToMessage(e, consumer.MessageType);
 
                                              var startDate = DateTime.Now;
 
@@ -103,7 +103,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                              Task.Run(async () =>
                                                             {
                                                                 startDate = DateTime.Now;
-                                                                
+
                                                                 _log.Debug(string.Format(Resources.ConsumeStart, e.DeliveryTag, name));
 
                                                                 await consumer.Consume(message);

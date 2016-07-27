@@ -16,26 +16,27 @@ namespace InfinniPlatform.Authentication.Tests
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.ServicePath = "/cache";
-            builder.Post["/set"] = Set;
-            builder.Post["/get"] = Get;
+            builder.ServicePath = "/Cache";
+            builder.Post["/Set"] = Set;
+            builder.Post["/Get"] = Get;
         }
 
         private Task<object> Set(IHttpRequest httpRequest)
         {
-            var key = httpRequest.Form.Key.Value as string;
-            var value = httpRequest.Form.Value.Value as string;
+            var key = httpRequest.Form.Key as string;
+            var value = httpRequest.Form.Value as string;
 
-            _cacheApi.Set("twoLayer", value);
+            _cacheApi.Set(key, value);
 
-            return Task.FromResult<object>($"Set: {"twoLayer"} = {value}.");
+            return Task.FromResult<object>($"Set: {key} = {value}.");
         }
 
         private Task<object> Get(IHttpRequest httpRequest)
         {
-            var s2 = _cacheApi.Get("twoLayer");
+            var key = httpRequest.Form.Key as string;
+            var value = _cacheApi.Get(key);
 
-            return Task.FromResult<object>($"Get: {s2}.");
+            return Task.FromResult<object>($"Get: {value}.");
         }
     }
 }

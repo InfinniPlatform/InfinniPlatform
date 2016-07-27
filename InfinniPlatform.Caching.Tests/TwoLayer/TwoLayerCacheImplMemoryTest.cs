@@ -1,9 +1,12 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Memory;
+using InfinniPlatform.Caching.RabbitMQ;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.TwoLayer;
+using InfinniPlatform.Core;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues.Producers;
 using InfinniPlatform.Sdk.Settings;
 
 using Moq;
@@ -43,7 +46,8 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             var redisMessageBusManager = new RedisMessageBusManager(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
             var redisMessageBusPublisher = new RedisMessageBusPublisher(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
             var redisMessageBus = new MessageBusImpl(redisMessageBusManager, redisMessageBusPublisher);
-            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisMessageBus);
+
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, new Mock<IBroadcastProducer>().Object, new Mock<IAppIdentity>().Object, new Mock<ILog>().Object);
 
             const string key = "GetMemoryTest_Key";
 
@@ -59,8 +63,6 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
                 cache.Set(key, value);
                 cache.Get(key);
             }
-
-            cache.Dispose();
 
             double stopSize = GC.GetTotalMemory(true);
 

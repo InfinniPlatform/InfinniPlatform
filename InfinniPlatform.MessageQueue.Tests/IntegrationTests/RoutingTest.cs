@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
+using InfinniPlatform.Core;
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
@@ -57,7 +58,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new AppIdentity());
             foreach (var message in queue1AssertMessages)
             {
                 producerBase.PublishDynamic(message, "Queue1");
@@ -112,7 +113,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(null, broadcastConsumers);
 
-            var producerBase = new BroadcastProducer(RabbitMqManager, messageSerializer);
+            var producerBase = new BroadcastProducer(RabbitMqManager, messageSerializer, new AppIdentity());
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);
@@ -162,7 +163,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new AppIdentity());
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

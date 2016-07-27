@@ -59,10 +59,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppIdentity.cs" />
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Diagnostics\SystemStatusProvider.cs" />
+    <Compile Include="IAppIdentity.cs" />
     <Compile Include="Logging\JsonEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\JsonDocumentMetadataSource.cs" />

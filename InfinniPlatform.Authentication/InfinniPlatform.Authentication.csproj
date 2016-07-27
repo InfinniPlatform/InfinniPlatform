@@ -149,6 +149,7 @@
     <Compile Include="Services\AuthHttpService.cs" />
     <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
     <Compile Include="UserStorage\ApplicationUserStore.cs" />
+    <Compile Include="UserStorage\UserCacheMessage.cs" />
     <Compile Include="UserStorage\UserStorageSettings.cs" />
   </ItemGroup>
   <ItemGroup>

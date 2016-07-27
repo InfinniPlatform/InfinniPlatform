@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.Caching;
 using System.Threading;
+using System.Threading.Tasks;
 
-using InfinniPlatform.Authentication.Properties;
-using InfinniPlatform.Caching;
 using InfinniPlatform.Caching.RabbitMQ;
-using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Consumers;
+using InfinniPlatform.Sdk.Queues.Producers;
 using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.Authentication.UserStorage
 {
-    internal sealed class ApplicationUserStoreCache
+    internal sealed class ApplicationUserStoreCache : BroadcastConsumerBase<UserCacheMessage>
     {
-        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, ILog log, IRabbitBus rabbitBus)
+        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, ILog log, IBroadcastProducer broadcastProducer, IAppIdentity appIdentity)
         {
-            var cacheTimeout = (userStorageSettings.UserCacheTimeout <= 0)
-                ? UserStorageSettings.DefaultUserCacheTimeout
-                : userStorageSettings.UserCacheTimeout;
+            var cacheTimeout = userStorageSettings.UserCacheTimeout <= 0
+                                   ? UserStorageSettings.DefaultUserCacheTimeout
+                                   : userStorageSettings.UserCacheTimeout;
 
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
-            _rabbitBus = rabbitBus;
             _log = log;
+            _broadcastProducer = broadcastProducer;
+            _appIdentity = appIdentity;
 
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
@@ -33,44 +35,21 @@ namespace InfinniPlatform.Authentication.UserStorage
             _usersByEmail = new ConcurrentDictionary<string, ApplicationUser>();
             _usersByPhone = new ConcurrentDictionary<string, ApplicationUser>();
             _usersByLogin = new ConcurrentDictionary<string, ApplicationUser>();
-
-            // Подписываемся на событие изменения сведений пользователя на других узлах
-
-            log.Info(Resources.SubscribingOnUserStorageCache);
-
-            try
-            {
-                rabbitBus.OnMessageRecieve = message =>
-                                          {
-                                              if (!string.IsNullOrEmpty(message?.Value))
-                                              {
-                                                  RemoveUser(message.Value);
-                                              }
-                                          };
-
-                log.Info(Resources.SubscribingOnUserStorageCacheHasCompleted);
-            }
-            catch (Exception exception)
-            {
-                log.Error(Resources.SubscribingOnUserStorageCacheHasCompletedWithError, exception: exception);
-
-                throw;
-            }
         }
 
-
-        private readonly TimeSpan _cacheTimeout;
-        private readonly ILog _log;
-        private readonly IRabbitBus _rabbitBus;
+        private readonly IAppIdentity _appIdentity;
+        private readonly IBroadcastProducer _broadcastProducer;
 
         private readonly ReaderWriterLockSlim _cacheLockSlim;
 
-        private readonly MemoryCache _usersById;
-        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByName;
+        private readonly TimeSpan _cacheTimeout;
+        private readonly ILog _log;
         private readonly ConcurrentDictionary<string, ApplicationUser> _usersByEmail;
-        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByPhone;
-        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByLogin;
 
+        private readonly MemoryCache _usersById;
+        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByLogin;
+        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByName;
+        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByPhone;
 
         /// <summary>
         /// Возвращает сведения о пользователе системы по его идентификатору.
@@ -121,7 +100,6 @@ namespace InfinniPlatform.Authentication.UserStorage
         {
             return GetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin));
         }
-
 
         /// <summary>
         /// Добавляет или обновляет сведения о пользователе системы.
@@ -174,7 +152,6 @@ namespace InfinniPlatform.Authentication.UserStorage
             }
         }
 
-
         private void OnRemoveUserFromCache(CacheEntryRemovedArguments args)
         {
             var removedUser = (ApplicationUser)args.CacheItem.Value;
@@ -203,19 +180,17 @@ namespace InfinniPlatform.Authentication.UserStorage
             }
         }
 
-
         private void NotifyUserChanged(string userId)
         {
             // Оповещаем другие узлы об изменении сведений пользователя
 
-            _rabbitBus.Publish(userId, userId);
+            _broadcastProducer.Publish(new UserCacheMessage(userId));
         }
 
         private static string GetUserLoginKey(ApplicationUserLogin userLogin)
         {
             return $"{userLogin.Provider},{userLogin.ProviderKey}";
         }
-
 
         private ApplicationUser GetUserCache(string userId)
         {
@@ -242,7 +217,6 @@ namespace InfinniPlatform.Authentication.UserStorage
         {
             _usersById.Remove(userId);
         }
-
 
         private ApplicationUser GetAdditionalUserCache(IDictionary<string, ApplicationUser> additionalCache, string userKey)
         {
@@ -274,6 +248,33 @@ namespace InfinniPlatform.Authentication.UserStorage
             {
                 additionalCache.Remove(userKey);
             }
+        }
+
+        protected override async Task Consume(Message<UserCacheMessage> message)
+        {
+            await Task.Run(() =>
+                           {
+                               try
+                               {
+                                   if (message.PublisherId == _appIdentity.Id)
+                                   {
+                                       //ignore own message
+                                   }
+                                   else
+                                   {
+                                       var userCacheMessage = (UserCacheMessage)message.GetBody();
+
+                                       if (!string.IsNullOrEmpty(userCacheMessage.UserId))
+                                       {
+                                           RemoveUser(userCacheMessage.UserId);
+                                       }
+                                   }
+                               }
+                               catch (Exception e)
+                               {
+                                   _log.Error(e);
+                               }
+                           });
         }
     }
 }

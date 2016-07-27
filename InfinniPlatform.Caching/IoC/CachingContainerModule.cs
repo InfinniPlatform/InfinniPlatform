@@ -49,19 +49,16 @@ namespace InfinniPlatform.Caching.IoC
                    .SingleInstance();
 
             builder.RegisterType<TwoLayerCacheImpl>()
-                   .AsSelf()
+                   .As<IBroadcastConsumer>()
+                   .As<ICache>()
                    .SingleInstance();
 
             builder.RegisterType<MemoryCacheImpl>()
                    .As<IMemoryCache>()
                    .SingleInstance();
 
-            builder.RegisterFactory(GetSharedCache) // if settings?
+            builder.RegisterFactory(GetSharedCache)
                    .As<ISharedCache>()
-                   .SingleInstance();
-
-            builder.RegisterType<TwoLayerCacheImpl>()
-                   .As<ICache>()
                    .SingleInstance();
 
             // РЕАЛИЗАЦИИ ШИНЫ СООБЩЕНИЙ
@@ -94,11 +91,6 @@ namespace InfinniPlatform.Caching.IoC
                    .As<IMessageBus>()
                    .SingleInstance();
 
-            builder.RegisterType<RabbitBus>()
-                   .As<IRabbitBus>()
-                   .As<IBroadcastConsumer>()
-                   .SingleInstance();
-
             // СЕССИЯ ПОЛЬЗОВАТЕЛЯ
 
             builder.RegisterType<SessionManager>()
@@ -126,7 +118,7 @@ namespace InfinniPlatform.Caching.IoC
 
             if (cacheSettings.Type == CacheSettings.MemoryCacheKey)
             {
-                return new RedisCacheStub();
+                return new RedisCacheStubImpl();
             }
 
             var redisCacheFactory = resolver.Resolve<Func<IAppEnvironment, RedisCacheImpl>>();
