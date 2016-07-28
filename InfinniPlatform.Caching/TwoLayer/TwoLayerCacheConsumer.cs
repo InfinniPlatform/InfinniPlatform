@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+п»їusing System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Queues;
@@ -7,7 +7,7 @@ using InfinniPlatform.Sdk.Queues.Consumers;
 namespace InfinniPlatform.Caching.TwoLayer
 {
     /// <summary>
-    /// Обработчик сообщений синхронизации кэша.
+    /// РћР±СЂР°Р±РѕС‚С‡РёРє СЃРѕРѕР±С‰РµРЅРёР№ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РєСЌС€Р°.
     /// </summary>
     [QueueName(nameof(TwoLayerCacheImpl))]
     public class TwoLayerCacheConsumer : BroadcastConsumerBase<string>

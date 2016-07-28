@@ -1,24 +1,24 @@
-using System.Threading.Tasks;
+п»їusing System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.Authentication.UserStorage
 {
     /// <summary>
-    /// Интерфейс синхронизации кэша пользователей через очередь сообщений.
+    /// РРЅС‚РµСЂС„РµР№СЃ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РєСЌС€Р° РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ С‡РµСЂРµР· РѕС‡РµСЂРµРґСЊ СЃРѕРѕР±С‰РµРЅРёР№.
     /// </summary>
     public interface IUserCacheSynchronizer
     {
         /// <summary>
-        /// Обрабатывает сообщение из очереди.
+        /// РћР±СЂР°Р±Р°С‚С‹РІР°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ РёР· РѕС‡РµСЂРµРґРё.
         /// </summary>
-        /// <param name="message">Сообщение из очереди.</param>
+        /// <param name="message">РЎРѕРѕР±С‰РµРЅРёРµ РёР· РѕС‡РµСЂРµРґРё.</param>
         Task ProcessMessage(Message<string> message);
 
         /// <summary>
-        /// Оповестить получателей об изменении пользователя.
+        /// РћРїРѕРІРµСЃС‚РёС‚СЊ РїРѕР»СѓС‡Р°С‚РµР»РµР№ РѕР± РёР·РјРµРЅРµРЅРёРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
         /// </summary>
-        /// <param name="userId">Идентификатор пользователя.</param>
+        /// <param name="userId">РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.</param>
         void NotifyUserChanged(string userId);
     }
 }
