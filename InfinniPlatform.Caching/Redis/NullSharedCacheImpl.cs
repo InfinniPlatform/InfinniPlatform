@@ -6,7 +6,7 @@ namespace InfinniPlatform.Caching.Redis
     /// Реализует интерфейс для управления распределенным кэшем на базе Redis.
     /// </summary>
     [LoggerName("Redis")]
-    internal sealed class RedisCacheStubImpl : ISharedCache
+    internal sealed class NullSharedCacheImpl : ISharedCache
     {
         public bool Contains(string key)
         {

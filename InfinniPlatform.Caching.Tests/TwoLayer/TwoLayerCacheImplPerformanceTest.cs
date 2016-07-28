@@ -2,11 +2,8 @@
 using System.Diagnostics;
 
 using InfinniPlatform.Caching.Memory;
-using InfinniPlatform.Caching.RabbitMQ;
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Caching.Tests.Memory;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Core;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
 using InfinniPlatform.Sdk.Settings;
@@ -42,11 +39,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
 
             var memoryCache = new MemoryCacheImpl(appEnvironmentMock.Object);
             var redisCache = new RedisCacheImpl(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
-            var redisMessageBusManager = new RedisMessageBusManager(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
-            var redisMessageBusPublisher = new RedisMessageBusPublisher(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
-            var redisMessageBus = new MessageBusImpl(redisMessageBusManager, redisMessageBusPublisher);
-            
-            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, new Mock<IBroadcastProducer>().Object, new Mock<IAppIdentity>().Object, new Mock<ILog>().Object);
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, appEnvironmentMock.Object, new Mock<IBroadcastProducer>().Object, new Mock<ILog>().Object);
 
             _cache = twoLayerCache;
         }

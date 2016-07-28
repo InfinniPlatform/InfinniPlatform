@@ -11,7 +11,7 @@ using InfinniPlatform.Sdk.Metadata.Documents;
 
 namespace InfinniPlatform.DocumentStorage.Hosting
 {
-    internal class MongoCollectionInitializer : ApplicationEventHandler
+    internal class MongoCollectionInitializer : AppEventHandler
     {
         public MongoCollectionInitializer(IDocumentStorageManager documentStorageManager,
                                           IEnumerable<IDocumentMetadataSource> documentMetadataSources,

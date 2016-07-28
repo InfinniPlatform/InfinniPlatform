@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
+using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
@@ -22,12 +23,12 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<RabbitMqManager>()
                    .SingleInstance();
 
-            builder.RegisterType<RabbitMqHttpManager>()
-                   .As<RabbitMqHttpManager>()
+            builder.RegisterType<RabbitMqManagementHttpClient>()
+                   .As<RabbitMqManagementHttpClient>()
                    .SingleInstance();
 
             builder.RegisterType<MessageConsumersStartupInitializer>()
-                   .As<IApplicationEventHandler>()
+                   .As<IAppEventHandler>()
                    .SingleInstance();
 
             builder.RegisterType<OnDemandConsumer>()

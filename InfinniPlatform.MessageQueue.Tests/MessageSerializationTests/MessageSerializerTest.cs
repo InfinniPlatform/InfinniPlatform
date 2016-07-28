@@ -6,6 +6,7 @@ using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using NUnit.Framework;
 
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
 {
@@ -21,7 +22,8 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
 
             var args = new BasicDeliverEventArgs
                        {
-                           Body = messageSerializer.MessageToBytes(message)
+                           Body = messageSerializer.MessageToBytes(message),
+                           BasicProperties = new BasicProperties { AppId = Guid.NewGuid().ToString() }
                        };
 
             var actual = messageSerializer.BytesToMessage<int>(args);
@@ -37,7 +39,8 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
 
             var args = new BasicDeliverEventArgs
                        {
-                           Body = messageSerializer.MessageToBytes(message)
+                           Body = messageSerializer.MessageToBytes(message),
+                           BasicProperties = new BasicProperties { AppId = Guid.NewGuid().ToString() }
                        };
             var actual = messageSerializer.BytesToMessage(args, typeof(TestMessage));
 
@@ -52,7 +55,8 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
 
             var args = new BasicDeliverEventArgs
                        {
-                           Body = messageSerializer.MessageToBytes(message)
+                           Body = messageSerializer.MessageToBytes(message),
+                           BasicProperties = new BasicProperties { AppId = Guid.NewGuid().ToString() }
                        };
             var actual = messageSerializer.BytesToMessage<TestMessage>(args);
 

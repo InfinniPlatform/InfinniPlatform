@@ -11,10 +11,11 @@ namespace InfinniPlatform.Sdk.Queues
         /// Конструктор.
         /// </summary>
         /// <param name="body">Тело сообщения.</param>
-        public Message(T body, string publisherId = null)
+        /// <param name="appId">Идентификатор отправителя сообщения.</param>
+        public Message(T body, string appId = null)
         {
             Body = body;
-            PublisherId = publisherId;
+            AppId = appId;
         }
 
         /// <summary>
@@ -38,6 +39,6 @@ namespace InfinniPlatform.Sdk.Queues
             return Body.GetType();
         }
 
-        public string PublisherId { get; }
+        public string AppId { get; }
     }
 }

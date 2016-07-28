@@ -26,13 +26,13 @@ namespace InfinniPlatform.Authentication.IoC
                    .ExternallyOwned();
 
             // Сервис хэширования паролей пользователей на уровне приложения
-            builder.RegisterType<DefaultApplicationUserPasswordHasher>()
-                   .As<IApplicationUserPasswordHasher>()
+            builder.RegisterType<DefaultAppUserPasswordHasher>()
+                   .As<IAppUserPasswordHasher>()
                    .SingleInstance();
 
             // Менеджер работы с учетными записями пользователей на уровне приложения
-            builder.RegisterType<IdentityApplicationUserManager>()
-                   .As<IApplicationUserManager>()
+            builder.RegisterType<IdentityAppUserManager>()
+                   .As<IAppUserManager>()
                    .SingleInstance();
 
             // Идентификационные данных текущего пользователя
@@ -70,13 +70,17 @@ namespace InfinniPlatform.Authentication.IoC
                    .As<UserStorageSettings>()
                    .SingleInstance();
 
-            builder.RegisterType<ApplicationUserStoreCache>()
+            builder.RegisterType<AppUserStoreCache>()
                    .AsSelf()
+                   .As<IUserCacheSynchronizer>()
+                   .SingleInstance();
+
+            builder.RegisterType<AppUserStoreConsumer>()
                    .As<IBroadcastConsumer>()
                    .SingleInstance();
 
-            builder.RegisterType<ApplicationUserStore>()
-                   .As<IApplicationUserStore>()
+            builder.RegisterType<AppUserStore>()
+                   .As<IAppUserStore>()
                    .SingleInstance();
 
             // Сервисы аутентификации
@@ -92,8 +96,8 @@ namespace InfinniPlatform.Authentication.IoC
 
         private static UserManager<IdentityApplicationUser> CreateUserManager(IContainerResolver resolver)
         {
-            var appUserStore = resolver.Resolve<IApplicationUserStore>();
-            var appPasswordHasher = resolver.Resolve<IApplicationUserPasswordHasher>();
+            var appUserStore = resolver.Resolve<IAppUserStore>();
+            var appPasswordHasher = resolver.Resolve<IAppUserPasswordHasher>();
 
             // Хранилище учетных записей пользователей для AspNet.Identity
             var identityUserStore = new IdentityApplicationUserStore(appUserStore);

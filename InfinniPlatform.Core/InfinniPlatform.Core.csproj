@@ -59,12 +59,10 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppIdentity.cs" />
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Diagnostics\SystemStatusProvider.cs" />
-    <Compile Include="IAppIdentity.cs" />
     <Compile Include="Logging\JsonEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\JsonDocumentMetadataSource.cs" />
@@ -88,10 +86,10 @@
     <Compile Include="Security\ApplicationClaimType.cs" />
     <Compile Include="Security\ApplicationClaimTypes.cs" />
     <Compile Include="Security\ApplicationRole.cs" />
-    <Compile Include="Security\DefaultApplicationUserPasswordHasher.cs" />
-    <Compile Include="Security\IApplicationUserPasswordHasher.cs" />
-    <Compile Include="Security\IApplicationUserStore.cs" />
-    <Compile Include="Security\MemoryApplicationUserStore.cs" />
+    <Compile Include="Security\DefaultAppUserPasswordHasher.cs" />
+    <Compile Include="Security\IAppUserPasswordHasher.cs" />
+    <Compile Include="Security\IAppUserStore.cs" />
+    <Compile Include="Security\MemoryAppUserStore.cs" />
     <Compile Include="Security\StringHasher.cs" />
     <Compile Include="Settings\AppConfiguration.cs" />
     <Compile Include="Settings\AppSettings.cs" />

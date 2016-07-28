@@ -26,7 +26,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                 new DynamicWrapper { { "SomeField", "Message3" } }
             };
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new AppIdentity());
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer);
             foreach (var message in assertMessages)
             {
                 producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);

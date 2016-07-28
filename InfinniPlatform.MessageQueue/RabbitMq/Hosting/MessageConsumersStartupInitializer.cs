@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.Properties;
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
@@ -14,7 +14,7 @@ using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 {
-    internal sealed class MessageConsumersStartupInitializer : ApplicationEventHandler
+    internal sealed class MessageConsumersStartupInitializer : AppEventHandler
     {
         /// <summary>
         /// Регистрирует потребителей сообщений.

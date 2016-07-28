@@ -39,10 +39,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EasyNetQ.Management.Client, Version=0.51.1.102, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EasyNetQ.Management.Client.0.51.1.102\lib\net40\EasyNetQ.Management.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -53,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IoC\MessageQueueContainerModule.cs" />
@@ -65,9 +62,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RabbitMq\Connection\Defaults.cs" />
+    <Compile Include="RabbitMq\Management\HttpAPI\Binding.cs" />
+    <Compile Include="RabbitMq\Management\HttpAPI\Connection.cs" />
+    <Compile Include="RabbitMq\Management\Defaults.cs" />
     <Compile Include="RabbitMq\BroadcastProducer.cs" />
-    <Compile Include="RabbitMq\Connection\RabbitMqHtttpManager.cs" />
+    <Compile Include="RabbitMq\Management\HttpAPI\Exchange.cs" />
+    <Compile Include="RabbitMq\Management\HttpAPI\Queue.cs" />
+    <Compile Include="RabbitMq\Management\HttpAPI\RabbitMqManagementHttpClient.cs" />
     <Compile Include="RabbitMq\QueueNamingConventions.cs" />
     <Compile Include="RabbitMq\Helpers.cs" />
     <Compile Include="RabbitMq\Serialization\IMessageSerializer.cs" />
@@ -75,8 +76,8 @@
     <Compile Include="RabbitMq\OnDemandConsumer.cs" />
     <Compile Include="RabbitMq\Serialization\MessageSerializer.cs" />
     <Compile Include="RabbitMq\TaskProducer.cs" />
-    <Compile Include="RabbitMq\Connection\RabbitMqManager.cs" />
-    <Compile Include="RabbitMq\Connection\RabbitMqConnectionSettings.cs" />
+    <Compile Include="RabbitMq\Management\RabbitMqManager.cs" />
+    <Compile Include="RabbitMq\Management\RabbitMqConnectionSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

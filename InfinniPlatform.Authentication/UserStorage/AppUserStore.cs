@@ -9,10 +9,10 @@ using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.Authentication.UserStorage
 {
-    internal sealed class ApplicationUserStore : IApplicationUserStore
+    internal sealed class AppUserStore : IAppUserStore
     {
-        public ApplicationUserStore(Lazy<ApplicationUserStoreCache> userCache,
-                                    ISystemDocumentStorageFactory documentStorageFactory)
+        public AppUserStore(Lazy<AppUserStoreCache> userCache,
+                            ISystemDocumentStorageFactory documentStorageFactory)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
@@ -20,7 +20,7 @@ namespace InfinniPlatform.Authentication.UserStorage
             _userStorage = new Lazy<ISystemDocumentStorage<ApplicationUser>>(() => documentStorageFactory.GetStorage<ApplicationUser>());
         }
 
-        private readonly Lazy<ApplicationUserStoreCache> _userCache;
+        private readonly Lazy<AppUserStoreCache> _userCache;
         private readonly Lazy<ISystemDocumentStorage<ApplicationUser>> _userStorage;
 
         public void CreateUser(ApplicationUser user)
@@ -183,7 +183,7 @@ namespace InfinniPlatform.Authentication.UserStorage
         /// <summary>
         /// Ищет сведения о пользователе в локальном кэше.
         /// </summary>
-        private ApplicationUser FindUserInCache(Func<ApplicationUserStoreCache, ApplicationUser> cacheSelector, Func<ApplicationUser> storageSelector)
+        private ApplicationUser FindUserInCache(Func<AppUserStoreCache, ApplicationUser> cacheSelector, Func<ApplicationUser> storageSelector)
         {
             var user = cacheSelector(_userCache.Value);
 

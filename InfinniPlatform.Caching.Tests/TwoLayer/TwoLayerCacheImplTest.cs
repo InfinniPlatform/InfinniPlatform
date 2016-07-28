@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading;
 
-using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Core;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.Sdk.Settings;
 
 using Moq;
 
@@ -20,18 +19,18 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         private TwoLayerCacheImpl _cache;
         private FakeCacheImpl _memoryCache;
         private FakeCacheImpl _sharedCache;
-        private MessageBusImpl _sharedCacheMessageBus;
-
+        private Mock<IBroadcastProducer> _broadcastProducerMock;
 
         [SetUp]
         public void SetUp()
         {
-            var subscriptions = new MessageBusSubscriptions();
+            var appEnvironment = new Mock<IAppEnvironment>();
 
             _memoryCache = new FakeCacheImpl();
             _sharedCache = new FakeCacheImpl();
-            _sharedCacheMessageBus = new MessageBusImpl(new MemoryMessageBusManager(subscriptions), new MemoryMessageBusPublisher(subscriptions));
-            _cache = new TwoLayerCacheImpl(_memoryCache, _sharedCache, new Mock<IBroadcastProducer>().Object, new Mock<IAppIdentity>().Object, new Mock<ILog>().Object);
+            _broadcastProducerMock = new Mock<IBroadcastProducer>();
+            
+            _cache = new TwoLayerCacheImpl(_memoryCache, _sharedCache, appEnvironment.Object, _broadcastProducerMock.Object, new Mock<ILog>().Object);
         }
 
         [Test]
@@ -248,14 +247,11 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             const string key = "Set_PublishKey";
             const string value = "Set_PublishValue";
 
-            var published = new AutoResetEvent(false);
-            _sharedCacheMessageBus.Subscribe(key, (k, v) => published.Set());
-
             // When
             _cache.Set(key, value);
 
             // Then
-            Assert.IsTrue(published.WaitOne(5000));
+            _broadcastProducerMock.Verify(producer => producer.Publish(key, nameof(TwoLayerCacheImpl)), Times.Once);
         }
 
 
@@ -298,7 +294,6 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             Assert.IsFalse(result);
         }
 
-
         [Test]
         public void RemoveShoudPublishMessage()
         {
@@ -309,14 +304,11 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
 
             _cache.Set(key, value);
 
-            var published = new AutoResetEvent(false);
-            _sharedCacheMessageBus.Subscribe(key, (k, v) => published.Set());
-
             // When
             _cache.Remove(key);
 
             // Then
-            Assert.IsTrue(published.WaitOne(5000));
+            _broadcastProducerMock.Verify(producer => producer.Publish(key, nameof(TwoLayerCacheImpl)), Times.Exactly(2));
         }
     }
 }

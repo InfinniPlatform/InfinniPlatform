@@ -154,7 +154,7 @@
     <Compile Include="Documents\IDocumentUpdateBuilder.cs" />
     <Compile Include="Documents\IDocumentUpdateBuilderGeneric.cs" />
     <Compile Include="Documents\Interceptors\IDocumentWriteCommand.cs" />
-    <Compile Include="Hosting\ApplicationEventHandler.cs" />
+    <Compile Include="Hosting\AppEventHandler.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
     <Compile Include="Logging\LoggerNameAttribute.cs" />
     <Compile Include="Metadata\Documents\DataType.cs" />
@@ -191,13 +191,13 @@
     <Compile Include="RestApi\BaseRestClient.cs" />
     <Compile Include="Hosting\HostingConfig.cs" />
     <Compile Include="RestApi\Auth\AuthApiClient.cs" />
-    <Compile Include="Security\IApplicationUserManager.cs" />
+    <Compile Include="Security\IAppUserManager.cs" />
     <Compile Include="Serialization\IObjectSerializer.cs" />
     <Compile Include="Serialization\JsonObjectSerializer.cs" />
     <Compile Include="Serialization\KnownTypesContainer.cs" />
     <Compile Include="Serialization\KnownTypesJsonConverter.cs" />
     <Compile Include="Session\ISessionManager.cs" />
-    <Compile Include="Hosting\IApplicationEventHandler.cs" />
+    <Compile Include="Hosting\IAppEventHandler.cs" />
     <Compile Include="Logging\IPerformanceLog.cs" />
     <Compile Include="Settings\IAppConfiguration.cs" />
     <Compile Include="BlobStorage\BlobData.cs" />

@@ -3,16 +3,22 @@
     /// <summary>
     /// Предоставляет методы хэширования пароля.
     /// </summary>
-    public interface IApplicationUserPasswordHasher
+    public sealed class DefaultAppUserPasswordHasher : IAppUserPasswordHasher
     {
         /// <summary>
         /// Возвращает хэш пароля.
         /// </summary>
-        string HashPassword(string password);
+        public string HashPassword(string password)
+        {
+            return StringHasher.HashValue(password);
+        }
 
         /// <summary>
         /// Проверяет, что пароль соответствует хэшу.
         /// </summary>
-        bool VerifyHashedPassword(string hashedPassword, string providedPassword);
+        public bool VerifyHashedPassword(string hashedPassword, string providedPassword)
+        {
+            return StringHasher.VerifyValue(hashedPassword, providedPassword);
+        }
     }
 }

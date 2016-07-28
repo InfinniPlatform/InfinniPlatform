@@ -63,10 +63,6 @@ namespace InfinniPlatform.Core.IoC
             builder.RegisterType<JsonDocumentMetadataSource>()
                    .As<IDocumentMetadataSource>()
                    .SingleInstance();
-
-            builder.RegisterType<AppIdentity>()
-                   .As<IAppIdentity>()
-                   .SingleInstance();
         }
     }
 }

@@ -16,9 +16,9 @@ using Microsoft.Owin;
 
 namespace InfinniPlatform.Authentication.InternalIdentity
 {
-    internal sealed class IdentityApplicationUserManager : IApplicationUserManager
+    internal sealed class IdentityAppUserManager : IAppUserManager
     {
-        public IdentityApplicationUserManager(IOwinContextProvider owinContextProvider, IUserIdentityProvider userIdentityProvider)
+        public IdentityAppUserManager(IOwinContextProvider owinContextProvider, IUserIdentityProvider userIdentityProvider)
         {
             _owinContextProvider = owinContextProvider;
             _userIdentityProvider = userIdentityProvider;

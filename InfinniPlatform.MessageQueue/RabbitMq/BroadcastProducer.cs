@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core;
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues.Producers;
@@ -13,15 +12,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     internal class BroadcastProducer : IBroadcastProducer
     {
         public BroadcastProducer(RabbitMqManager manager,
-                                 IMessageSerializer messageSerializer,
-                                 IAppIdentity appIdentity)
+                                 IMessageSerializer messageSerializer)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
-            _appIdentity = appIdentity;
         }
-
-        private readonly IAppIdentity _appIdentity;
 
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
@@ -57,7 +52,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             using (var channel = _manager.GetChannel())
             {
                 var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
-                var basicProperties = new BasicProperties { AppId = _appIdentity.Id };
+                var basicProperties = new BasicProperties { AppId = _manager.AppId };
 
                 channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, basicProperties, messageToBytes);
             }

@@ -20,6 +20,6 @@ namespace InfinniPlatform.Sdk.Queues
         /// <summary>
         /// Идентификатор отправителя сообщения.
         /// </summary>
-        string PublisherId { get; }
+        string AppId { get; }
     }
 }

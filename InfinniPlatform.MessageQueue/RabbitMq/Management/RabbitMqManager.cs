@@ -5,7 +5,7 @@ using InfinniPlatform.Sdk.Settings;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
-namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
+namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 {
     /// <summary>
     /// Менеджер RabbitMQ, инкапсулирующий функции, доступные через RabbitMQ .NET-драйвер.
@@ -16,6 +16,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
                                IAppEnvironment appEnvironment)
         {
             BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Fanout}";
+            AppId = appEnvironment.Id;
 
             _connection = new Lazy<IConnection>(() =>
                                                 {
@@ -40,6 +41,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
         private readonly Lazy<IConnection> _connection;
 
         public string BroadcastExchangeName { get; }
+        public string AppId { get; }
 
         /// <summary>
         /// Возвращает абстракцию соединения с RabbitMq.

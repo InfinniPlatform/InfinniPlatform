@@ -6,6 +6,11 @@
     public interface IAppEnvironment
     {
         /// <summary>
+        /// Идентификатор текущего экземпляра приложения.
+        /// </summary>
+        string Id { get; }
+
+        /// <summary>
         /// Уникальное имя приложения.
         /// </summary>
         /// <remarks>

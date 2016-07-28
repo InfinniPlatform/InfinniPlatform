@@ -7,12 +7,12 @@ namespace InfinniPlatform.Authentication.Tests.Services
 {
     internal sealed class FakeHttpService : IHttpService
     {
-        public FakeHttpService(IApplicationUserManager userManager)
+        public FakeHttpService(IAppUserManager userManager)
         {
             _userManager = userManager;
         }
 
-        private readonly IApplicationUserManager _userManager;
+        private readonly IAppUserManager _userManager;
 
         public void Load(IHttpServiceBuilder builder)
         {

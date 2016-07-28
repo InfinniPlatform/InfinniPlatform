@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Cache;
+using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.Caching.Tests.TwoLayer
 {
@@ -36,6 +38,11 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         public bool Remove(string key)
         {
             return _data.Remove(key);
+        }
+
+        public Task ProcessMessage(Message<string> message)
+        {
+            return Task.FromResult<object>(null);
         }
 
         public void Clear()

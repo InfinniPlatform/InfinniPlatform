@@ -36,12 +36,5 @@ namespace InfinniPlatform.Caching
 
             cache.Set(key, stringValue);
         }
-
-        public static void PublishObject(this IMessageBusPublisher messageBusPublisher, string key, object value)
-        {
-            var stringValue = JsonConvert.SerializeObject(value);
-
-            messageBusPublisher.Publish(key, stringValue);
-        }
     }
 }

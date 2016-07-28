@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Core;
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues.Producers;
@@ -13,15 +13,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     internal sealed class TaskProducer : ITaskProducer
     {
         public TaskProducer(RabbitMqManager manager,
-                            IMessageSerializer messageSerializer,
-                            IAppIdentity appIdentity)
+                            IMessageSerializer messageSerializer)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
-            _appIdentity = appIdentity;
         }
-
-        private readonly IAppIdentity _appIdentity;
 
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
@@ -54,11 +50,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
             var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
-            var basicProperties = new BasicProperties { AppId = _appIdentity.Id };
+            var basicProperties = new BasicProperties { AppId = _manager.AppId };
 
             using (var channel = _manager.GetChannel())
             {
-                _manager.DeclareTaskQueue(queueName);
+                _manager.DeclareTaskQueue(routingKey);
 
                 channel.BasicPublish(string.Empty, routingKey, basicProperties, messageBodyToBytes);
             }
