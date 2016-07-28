@@ -29,6 +29,7 @@ namespace InfinniPlatform.MessageQueue.Tests
         {
             var appEnvironmentMock = new Mock<IAppEnvironment>();
             appEnvironmentMock.SetupGet(env => env.Name).Returns(TestConstants.ApplicationName);
+            appEnvironmentMock.SetupGet(env => env.Id).Returns(TestConstants.ApplicationName);
 
             var logMock = new Mock<ILog>();
             logMock.Setup(log => log.Error(It.IsAny<object>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<Exception>()))
