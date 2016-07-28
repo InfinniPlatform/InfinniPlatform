@@ -1,9 +1,6 @@
 ﻿namespace InfinniPlatform.Caching
 {
-    /// <summary>
-    /// Предоставляет интерфейс для управления кэшем.
-    /// </summary>
-    public interface ICache
+    public interface IMemoryCache
     {
         /// <summary>
         /// Проверяет наличие ключа в кэше.

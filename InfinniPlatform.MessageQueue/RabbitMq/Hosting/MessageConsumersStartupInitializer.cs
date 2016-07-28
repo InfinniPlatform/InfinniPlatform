@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.Properties;
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
@@ -14,7 +14,7 @@ using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 {
-    internal sealed class MessageConsumersStartupInitializer : ApplicationEventHandler
+    internal sealed class MessageConsumersStartupInitializer : AppEventHandler
     {
         /// <summary>
         /// Регистрирует потребителей сообщений.
@@ -94,7 +94,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             var eventingConsumer = new EventingBasicConsumer(channel);
             eventingConsumer.Received += (o, e) =>
                                          {
-                                             var message = _messageSerializer.BytesToMessage(e.Body, consumer.MessageType);
+                                             var message = _messageSerializer.BytesToMessage(e, consumer.MessageType);
 
                                              var startDate = DateTime.Now;
 
@@ -103,7 +103,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                              Task.Run(async () =>
                                                             {
                                                                 startDate = DateTime.Now;
-                                                                
+
                                                                 _log.Debug(string.Format(Resources.ConsumeStart, e.DeliveryTag, name));
 
                                                                 await consumer.Consume(message);

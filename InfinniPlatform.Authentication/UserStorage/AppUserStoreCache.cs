@@ -3,31 +3,31 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.Caching;
 using System.Threading;
+using System.Threading.Tasks;
 
-using InfinniPlatform.Authentication.Properties;
-using InfinniPlatform.Caching;
-using InfinniPlatform.Core.Security;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Producers;
 using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Authentication.UserStorage
 {
-    internal sealed class ApplicationUserStoreCache
+    internal sealed class AppUserStoreCache : IUserCacheSynchronizer
     {
-        private const string ApplicationUserStoreCacheEvent = nameof(ApplicationUserStoreCache);
-
-        private static readonly string ApplicationUserStoreCacheId = Guid.NewGuid().ToString("N");
-
-
-        public ApplicationUserStoreCache(UserStorageSettings userStorageSettings, IMessageBus messageBus, ILog log)
+        public AppUserStoreCache(UserStorageSettings userStorageSettings,
+                                 ILog log,
+                                 IBroadcastProducer broadcastProducer,
+                                 IAppEnvironment appEnvironment)
         {
-            var cacheTimeout = (userStorageSettings.UserCacheTimeout <= 0)
-                ? UserStorageSettings.DefaultUserCacheTimeout
-                : userStorageSettings.UserCacheTimeout;
+            var cacheTimeout = userStorageSettings.UserCacheTimeout <= 0
+                                   ? UserStorageSettings.DefaultUserCacheTimeout
+                                   : userStorageSettings.UserCacheTimeout;
 
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
-            _messageBus = messageBus;
             _log = log;
+            _broadcastProducer = broadcastProducer;
+            _appEnvironment = appEnvironment;
 
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
@@ -36,39 +36,20 @@ namespace InfinniPlatform.Authentication.UserStorage
             _usersByEmail = new ConcurrentDictionary<string, ApplicationUser>();
             _usersByPhone = new ConcurrentDictionary<string, ApplicationUser>();
             _usersByLogin = new ConcurrentDictionary<string, ApplicationUser>();
-
-            // Подписываемся на событие изменения сведений пользователя на других узлах
-
-            log.Info(Resources.SubscribingOnUserStorageCache);
-
-            try
-            {
-                _subscription = _messageBus.Subscribe(ApplicationUserStoreCacheEvent, OnApplicationUserStoreCacheEvent);
-
-                log.Info(Resources.SubscribingOnUserStorageCacheHasCompleted);
-            }
-            catch (Exception exception)
-            {
-                log.Error(Resources.SubscribingOnUserStorageCacheHasCompletedWithError, exception: exception);
-
-                throw;
-            }
         }
 
+        private readonly IAppEnvironment _appEnvironment;
+        private readonly IBroadcastProducer _broadcastProducer;
 
-        private readonly TimeSpan _cacheTimeout;
-        private readonly IMessageBus _messageBus;
-        private readonly ILog _log;
-
-        private readonly IDisposable _subscription;
         private readonly ReaderWriterLockSlim _cacheLockSlim;
+        private readonly TimeSpan _cacheTimeout;
+        private readonly ILog _log;
+        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByEmail;
 
         private readonly MemoryCache _usersById;
-        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByName;
-        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByEmail;
-        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByPhone;
         private readonly ConcurrentDictionary<string, ApplicationUser> _usersByLogin;
-
+        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByName;
+        private readonly ConcurrentDictionary<string, ApplicationUser> _usersByPhone;
 
         /// <summary>
         /// Возвращает сведения о пользователе системы по его идентификатору.
@@ -119,7 +100,6 @@ namespace InfinniPlatform.Authentication.UserStorage
         {
             return GetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin));
         }
-
 
         /// <summary>
         /// Добавляет или обновляет сведения о пользователе системы.
@@ -172,6 +152,31 @@ namespace InfinniPlatform.Authentication.UserStorage
             }
         }
 
+        public Task ProcessMessage(Message<string> message)
+        {
+            try
+            {
+                if (message.AppId == _appEnvironment.Id)
+                {
+                    //ignore own message
+                }
+                else
+                {
+                    var userId = (string)message.GetBody();
+
+                    if (!string.IsNullOrEmpty(userId))
+                    {
+                        RemoveUser(userId);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
+            }
+
+            return Task.FromResult<object>(null);
+        }
 
         private void OnRemoveUserFromCache(CacheEntryRemovedArguments args)
         {
@@ -201,40 +206,17 @@ namespace InfinniPlatform.Authentication.UserStorage
             }
         }
 
-
-        private void NotifyUserChanged(string userId)
+        public void NotifyUserChanged(string userId)
         {
             // Оповещаем другие узлы об изменении сведений пользователя
 
-            var userChangedEvent = $"{ApplicationUserStoreCacheId}:{userId}";
-
-            _messageBus.Publish(ApplicationUserStoreCacheEvent, userChangedEvent);
+            _broadcastProducer.Publish(userId);
         }
-
-        private void OnApplicationUserStoreCacheEvent(string key, string userChangedEvent)
-        {
-            // Обрабатываем сообщение о том, что сведения пользователя изменились
-
-            if (!string.IsNullOrEmpty(userChangedEvent))
-            {
-                if (!userChangedEvent.StartsWith(ApplicationUserStoreCacheId + ':'))
-                {
-                    var userId = userChangedEvent.Substring(ApplicationUserStoreCacheId.Length);
-
-                    if (!string.IsNullOrEmpty(userId))
-                    {
-                        RemoveUser(userId);
-                    }
-                }
-            }
-        }
-
 
         private static string GetUserLoginKey(ApplicationUserLogin userLogin)
         {
             return $"{userLogin.Provider},{userLogin.ProviderKey}";
         }
-
 
         private ApplicationUser GetUserCache(string userId)
         {
@@ -261,7 +243,6 @@ namespace InfinniPlatform.Authentication.UserStorage
         {
             _usersById.Remove(userId);
         }
-
 
         private ApplicationUser GetAdditionalUserCache(IDictionary<string, ApplicationUser> additionalCache, string userKey)
         {

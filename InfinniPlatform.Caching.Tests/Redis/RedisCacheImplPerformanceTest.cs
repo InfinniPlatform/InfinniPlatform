@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Settings;
 
 using Moq;
 
@@ -20,7 +21,9 @@ namespace InfinniPlatform.Caching.Tests.Redis
         [SetUp]
         public void SetUp()
         {
-            var cacheName = GetType().Name;
+            var appEnvironmentMock = new Mock<IAppEnvironment>();
+            appEnvironmentMock.SetupGet(env => env.Name)
+                              .Returns(nameof(RedisCacheImplPerformanceTest));
 
             var settings = new RedisConnectionSettings
             {
@@ -31,7 +34,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
-            _cache = new RedisCacheImpl(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
+            _cache = new RedisCacheImpl(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
         }
 
         [Test]

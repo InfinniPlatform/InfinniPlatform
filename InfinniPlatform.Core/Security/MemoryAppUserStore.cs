@@ -12,7 +12,7 @@ namespace InfinniPlatform.Core.Security
     /// <remarks>
     /// Данная реализация может быть использована в тестах или как руководство к созданию реального хранилища.
     /// </remarks>
-    public sealed class MemoryApplicationUserStore : IApplicationUserStore
+    public sealed class MemoryAppUserStore : IAppUserStore
     {
         private readonly List<ApplicationUser> _users
             = new List<ApplicationUser>();

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using InfinniPlatform.Sdk.Cache;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Caching
@@ -33,13 +35,6 @@ namespace InfinniPlatform.Caching
             var stringValue = JsonConvert.SerializeObject(value);
 
             cache.Set(key, stringValue);
-        }
-
-        public static void PublishObject(this IMessageBusPublisher messageBusPublisher, string key, object value)
-        {
-            var stringValue = JsonConvert.SerializeObject(value);
-
-            messageBusPublisher.Publish(key, stringValue);
         }
     }
 }

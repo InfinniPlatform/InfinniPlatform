@@ -2,6 +2,9 @@
 using System.Diagnostics;
 
 using InfinniPlatform.Caching.Memory;
+using InfinniPlatform.Sdk.Settings;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -17,7 +20,11 @@ namespace InfinniPlatform.Caching.Tests.Memory
         [SetUp]
         public void SetUp()
         {
-            _cache = new MemoryCacheImpl(nameof(MemoryCacheImplPerformanceTest));
+            var appEnvironmentMock = new Mock<IAppEnvironment>();
+            appEnvironmentMock.SetupGet(env => env.Name)
+                              .Returns(nameof(MemoryCacheImplPerformanceTest));
+
+            _cache = new MemoryCacheImpl(appEnvironmentMock.Object);
         }
 
         [TearDown]

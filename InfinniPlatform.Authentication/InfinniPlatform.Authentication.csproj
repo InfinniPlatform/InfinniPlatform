@@ -129,7 +129,7 @@
     <Compile Include="Modules\ExternalAuthVkOwinHostingModule.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationRole.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUser.cs" />
-    <Compile Include="InternalIdentity\IdentityApplicationUserManager.cs" />
+    <Compile Include="InternalIdentity\IdentityAppUserManager.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserPasswordHasher.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserValidator.cs" />
     <Compile Include="Modules\ExternalAuthVkOwinHostingModuleSettings.cs" />
@@ -147,8 +147,10 @@
     <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
     <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="Services\AuthHttpService.cs" />
-    <Compile Include="UserStorage\ApplicationUserStoreCache.cs" />
-    <Compile Include="UserStorage\ApplicationUserStore.cs" />
+    <Compile Include="UserStorage\AppUserStoreCache.cs" />
+    <Compile Include="UserStorage\AppUserStore.cs" />
+    <Compile Include="UserStorage\AppUserStoreConsumer.cs" />
+    <Compile Include="UserStorage\IUserCacheSynchronizer.cs" />
     <Compile Include="UserStorage\UserStorageSettings.cs" />
   </ItemGroup>
   <ItemGroup>

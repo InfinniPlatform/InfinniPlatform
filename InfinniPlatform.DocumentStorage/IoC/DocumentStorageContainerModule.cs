@@ -167,7 +167,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
             // Hosting
 
             builder.RegisterType<MongoCollectionInitializer>()
-                   .As<IApplicationEventHandler>()
+                   .As<IAppEventHandler>()
                    .SingleInstance();
 
             // Diagnostics

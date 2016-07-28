@@ -5,7 +5,7 @@ namespace InfinniPlatform.Core.Security
     /// <summary>
     /// Хранилище сведений о пользователях системы <see cref="ApplicationUser" />.
     /// </summary>
-    public interface IApplicationUserStore
+    public interface IAppUserStore
     {
         /// <summary>
         /// Создает сведения о пользователе системы.

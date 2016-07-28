@@ -6,7 +6,7 @@ namespace InfinniPlatform.Sdk.Security
     /// <summary>
     /// Предоставляет методы управления информацией текущего пользователя.
     /// </summary>
-    public interface IApplicationUserManager
+    public interface IAppUserManager
     {
         /// <summary>
         /// Возвращает сведения о текущем пользователе.

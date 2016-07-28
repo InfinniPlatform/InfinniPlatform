@@ -2,20 +2,23 @@
 using System.Linq;
 using System.Runtime.Caching;
 
+using InfinniPlatform.Sdk.Cache;
+using InfinniPlatform.Sdk.Settings;
+
 namespace InfinniPlatform.Caching.Memory
 {
     /// <summary>
     /// Реализует интерфейс для управления кэшем в памяти.
     /// </summary>
-    internal sealed class MemoryCacheImpl : ICache, IDisposable
+    internal sealed class MemoryCacheImpl : IMemoryCache, IDisposable
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="keyspace">Пространство имен для ключей.</param>
-        public MemoryCacheImpl(string keyspace)
+        /// <param name="appEnvironment">Пространство имен для ключей.</param>
+        public MemoryCacheImpl(IAppEnvironment appEnvironment)
         {
-            _cache = new MemoryCache(keyspace);
+            _cache = new MemoryCache(appEnvironment.Name);
         }
 
 

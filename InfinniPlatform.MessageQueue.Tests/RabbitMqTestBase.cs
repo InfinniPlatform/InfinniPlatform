@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Helpers;
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
 using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
+using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Consumers;
@@ -20,30 +22,31 @@ namespace InfinniPlatform.MessageQueue.Tests
     {
         internal static RabbitMqManager RabbitMqManager { get; set; }
 
-        internal static RabbitMqHttpManager RabbitMqHttpManager { get; set; }
+        internal static RabbitMqManagementHttpClient RabbitMqManagementHttpClient { get; set; }
 
         [OneTimeSetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var appEnvironmentMock = new Mock<IAppEnvironment>();
             appEnvironmentMock.SetupGet(env => env.Name).Returns(TestConstants.ApplicationName);
+            appEnvironmentMock.SetupGet(env => env.Id).Returns(TestConstants.ApplicationName);
 
             var logMock = new Mock<ILog>();
             logMock.Setup(log => log.Error(It.IsAny<object>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<Exception>()))
                    .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
 
             RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object);
-            RabbitMqHttpManager = new RabbitMqHttpManager(RabbitMqConnectionSettings.Default, logMock.Object);
+            RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqConnectionSettings.Default);
 
-            RabbitMqHttpManager.DeleteQueues(RabbitMqHttpManager.GetQueues());
+            await RabbitMqManagementHttpClient.DeleteQueues(await RabbitMqManagementHttpClient.GetQueues());
 
             WindowsServices.StartService(TestConstants.ServiceName, TestConstants.WaitTimeout);
         }
 
         [OneTimeTearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
-            RabbitMqHttpManager.DeleteQueues(RabbitMqHttpManager.GetQueues());
+            await RabbitMqManagementHttpClient.DeleteQueues(await RabbitMqManagementHttpClient.GetQueues());
         }
 
         public static void RegisterConsumers(IEnumerable<ITaskConsumer> taskConsumers, IEnumerable<IBroadcastConsumer> broadcastConsumers)

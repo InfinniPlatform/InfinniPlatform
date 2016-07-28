@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace InfinniPlatform.MessageQueue.RabbitMq.Connection
+namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 {
     internal static class Defaults
     {

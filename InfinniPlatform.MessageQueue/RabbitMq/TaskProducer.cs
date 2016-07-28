@@ -1,15 +1,19 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.Core;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues.Producers;
+
+using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
     internal sealed class TaskProducer : ITaskProducer
     {
-        public TaskProducer(RabbitMqManager manager, IMessageSerializer messageSerializer)
+        public TaskProducer(RabbitMqManager manager,
+                            IMessageSerializer messageSerializer)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
@@ -22,68 +26,38 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             Helpers.CheckTypeRestrictions<T>();
 
-            var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
-
-            if (queueName == null)
-            {
-                queueName = QueueNamingConventions.GetProducerQueueName(messageBody);
-            }
-
-            using (var channel = _manager.GetChannel())
-            {
-                _manager.DeclareTaskQueue(queueName);
-
-                channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
-            }
+            BasicPublish(messageBody, queueName);
         }
 
         public void PublishDynamic(DynamicWrapper messageBody, string queueName)
         {
-            var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
-
-            using (var channel = _manager.GetChannel())
-            {
-                _manager.DeclareTaskQueue(queueName);
-
-                channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
-            }
+            BasicPublish(messageBody, queueName);
         }
 
         public async Task PublishAsync<T>(T messageBody, string queueName = null)
         {
             Helpers.CheckTypeRestrictions<T>();
 
-            await Task.Run(() =>
-                           {
-                               var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
-
-                               if (queueName == null)
-                               {
-                                   queueName = QueueNamingConventions.GetProducerQueueName(messageBody);
-                               }
-
-                               using (var channel = _manager.GetChannel())
-                               {
-                                   _manager.DeclareTaskQueue(queueName);
-
-                                   channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
-                               }
-                           });
+            await Task.Run(() => { BasicPublish(messageBody, queueName); });
         }
 
         public async Task PublishDynamicAsync(DynamicWrapper messageBody, string queueName)
         {
-            await Task.Run(() =>
-                           {
-                               var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
+            await Task.Run(() => { BasicPublish(messageBody, queueName); });
+        }
 
-                               using (var channel = _manager.GetChannel())
-                               {
-                                   _manager.DeclareTaskQueue(queueName);
+        private void BasicPublish<T>(T messageBody, string queueName)
+        {
+            var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
+            var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
+            var basicProperties = new BasicProperties { AppId = _manager.AppId };
 
-                                   channel.BasicPublish(string.Empty, queueName, null, messageBodyToBytes);
-                               }
-                           });
+            using (var channel = _manager.GetChannel())
+            {
+                _manager.DeclareTaskQueue(routingKey);
+
+                channel.BasicPublish(string.Empty, routingKey, basicProperties, messageBodyToBytes);
+            }
         }
     }
 }

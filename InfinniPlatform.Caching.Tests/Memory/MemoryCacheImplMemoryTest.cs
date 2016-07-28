@@ -1,6 +1,9 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Memory;
+using InfinniPlatform.Sdk.Settings;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -19,9 +22,11 @@ namespace InfinniPlatform.Caching.Tests.Memory
         {
             // Given
 
-            const string cacheName = nameof(MemoryCacheImplMemoryTest);
+            var appEnvironmentMock = new Mock<IAppEnvironment>();
+            appEnvironmentMock.SetupGet(env => env.Name)
+                              .Returns(nameof(MemoryCacheImplMemoryTest));
 
-            var memoryCache = new MemoryCacheImpl(cacheName);
+            var memoryCache = new MemoryCacheImpl(appEnvironmentMock.Object);
 
             const string key = "GetMemoryTest_Key";
 

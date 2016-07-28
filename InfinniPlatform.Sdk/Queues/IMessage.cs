@@ -16,5 +16,10 @@ namespace InfinniPlatform.Sdk.Queues
         /// Возвращает тип тела сообщения.
         /// </summary>
         Type GetBodyType();
+
+        /// <summary>
+        /// Идентификатор отправителя сообщения.
+        /// </summary>
+        string AppId { get; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Settings;
+﻿using System;
+
+using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Core.Settings
 {
@@ -8,8 +10,11 @@ namespace InfinniPlatform.Core.Settings
 
         public AppEnvironment()
         {
+            Id = Guid.NewGuid().ToString("N");
             Name = "InfinniPlatform";
         }
+
+        public string Id { get; }
 
         public string Name { get; set; }
     }

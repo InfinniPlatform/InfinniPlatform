@@ -1,15 +1,18 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues.Producers;
+
+using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
     internal class BroadcastProducer : IBroadcastProducer
     {
-        public BroadcastProducer(RabbitMqManager manager, IMessageSerializer messageSerializer)
+        public BroadcastProducer(RabbitMqManager manager,
+                                 IMessageSerializer messageSerializer)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
@@ -22,49 +25,37 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             Helpers.CheckTypeRestrictions<T>();
 
-            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
-
-            using (var channel = _manager.GetChannel())
-            {
-                channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
-            }
+            BasicPublish(messageBody, queueName);
         }
 
         public void PublishDynamic(DynamicWrapper messageBody, string queueName)
         {
-            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
-
-            using (var channel = _manager.GetChannel())
-            {
-                channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
-            }
+            BasicPublish(messageBody, queueName);
         }
 
         public async Task PublishAsync<T>(T messageBody, string queueName = null)
         {
             Helpers.CheckTypeRestrictions<T>();
 
-            await Task.Run(() =>
-                           {
-                               var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
-
-                               using (var channel = _manager.GetChannel())
-                               {
-                                   channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
-                               }
-                           });
+            await Task.Run(() => { BasicPublish(messageBody, queueName); });
         }
 
         public async Task PublishDynamicAsync(DynamicWrapper messageBody, string queueName)
         {
-            await Task.Run(() =>
-                           {
-                               var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
-                               using (var channel = _manager.GetChannel())
-                               {
-                                   channel.BasicPublish(_manager.BroadcastExchangeName, queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody), null, messageToBytes);
-                               }
-                           });
+            await Task.Run(() => { BasicPublish(messageBody, queueName); });
+        }
+
+        private void BasicPublish<T>(T messageBody, string queueName)
+        {
+            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
+
+            using (var channel = _manager.GetChannel())
+            {
+                var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
+                var basicProperties = new BasicProperties { AppId = _manager.AppId };
+
+                channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, basicProperties, messageToBytes);
+            }
         }
     }
 }

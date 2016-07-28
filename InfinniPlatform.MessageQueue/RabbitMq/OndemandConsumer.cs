@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.MessageQueue.RabbitMq.Connection;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
@@ -36,7 +36,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                     return Task.FromResult<IMessage>(null);
                 }
 
-                var message = _messageSerializer.BytesToMessage<T>(result.Body);
+                var message = _messageSerializer.BytesToMessage<T>(result);
 
                 channel.BasicAck(result.DeliveryTag, false);
 

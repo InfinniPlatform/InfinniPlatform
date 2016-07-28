@@ -5,6 +5,8 @@ using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.Sdk.Settings;
 
 using Moq;
 
@@ -22,7 +24,9 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         [SetUp]
         public void SetUp()
         {
-            var cacheName = GetType().Name;
+            var appEnvironmentMock = new Mock<IAppEnvironment>();
+            appEnvironmentMock.SetupGet(env => env.Name)
+                              .Returns(nameof(TwoLayerCacheImplPerformanceTest));
 
             var settings = new RedisConnectionSettings
             {
@@ -33,20 +37,11 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
-            var memoryCache = new MemoryCacheImpl(cacheName);
-            var redisCache = new RedisCacheImpl(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
-            var redisMessageBusManager = new RedisMessageBusManager(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
-            var redisMessageBusPublisher = new RedisMessageBusPublisher(cacheName, new RedisConnectionFactory(settings), log, performanceLog);
-            var redisMessageBus = new MessageBusImpl(redisMessageBusManager, redisMessageBusPublisher);
-            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, redisMessageBus);
+            var memoryCache = new MemoryCacheImpl(appEnvironmentMock.Object);
+            var redisCache = new RedisCacheImpl(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, appEnvironmentMock.Object, new Mock<IBroadcastProducer>().Object, new Mock<ILog>().Object);
 
             _cache = twoLayerCache;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _cache.Dispose();
         }
 
 

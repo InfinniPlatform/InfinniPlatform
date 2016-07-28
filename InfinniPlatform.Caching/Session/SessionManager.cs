@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Properties;
+using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 

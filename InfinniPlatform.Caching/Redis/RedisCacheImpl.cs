@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Caching.Properties;
+using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Settings;
 
 using Sider;
 
@@ -12,18 +14,18 @@ namespace InfinniPlatform.Caching.Redis
     /// Реализует интерфейс для управления распределенным кэшем на базе Redis.
     /// </summary>
     [LoggerName("Redis")]
-    internal sealed class RedisCacheImpl : ICache
+    internal sealed class RedisCacheImpl : ISharedCache
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="keyspace">Пространство имен для ключей.</param>
+        /// <param name="appEnvironment">Пространство имен для ключей.</param>
         /// <param name="connectionFactory">Фабрика подключений к Redis.</param>
         /// <param name="log">Сервис регистрации событий.</param>
         /// <param name="performanceLog">Сервис регистрации длительности выполнения методов.</param>
-        public RedisCacheImpl(string keyspace, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
+        public RedisCacheImpl(IAppEnvironment appEnvironment, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
         {
-            _keyspace = keyspace;
+            _keyspace = appEnvironment.Name;
             _connectionFactory = connectionFactory;
 
             _log = log;

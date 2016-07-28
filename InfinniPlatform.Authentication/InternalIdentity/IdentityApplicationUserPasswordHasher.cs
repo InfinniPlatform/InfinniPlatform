@@ -11,7 +11,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
     /// </summary>
     internal sealed class IdentityApplicationUserPasswordHasher : IPasswordHasher
     {
-        public IdentityApplicationUserPasswordHasher(IApplicationUserPasswordHasher passwordHasher)
+        public IdentityApplicationUserPasswordHasher(IAppUserPasswordHasher passwordHasher)
         {
             if (passwordHasher == null)
             {
@@ -21,7 +21,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             _passwordHasher = passwordHasher;
         }
 
-        private readonly IApplicationUserPasswordHasher _passwordHasher;
+        private readonly IAppUserPasswordHasher _passwordHasher;
 
         public string HashPassword(string password)
         {

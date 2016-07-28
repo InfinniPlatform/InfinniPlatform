@@ -2,6 +2,9 @@
 
 using InfinniPlatform.Sdk.Queues;
 
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+
 namespace InfinniPlatform.MessageQueue.RabbitMq.Serialization
 {
     public interface IMessageSerializer
@@ -15,15 +18,22 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Serialization
         /// <summary>
         /// Преобразует массив байтов из шины сообщения в строготипизированный объект.
         /// </summary>
-        /// <param name="bytes">Массив байтов из шины сообщений.</param>
+        /// <param name="args">Сообщения из шины.</param>
         /// <param name="type">Тип тела сообщения.</param>
-        IMessage BytesToMessage(byte[] bytes, Type type);
+        IMessage BytesToMessage(BasicDeliverEventArgs args, Type type);
 
         /// <summary>
         /// Преобразует массив байтов из шины сообщения в строготипизированный объект.
         /// </summary>
         /// <typeparam name="T">Тип тела сообщения.</typeparam>
-        /// <param name="bytes">Массив байтов из шины сообщений.</param>
-        IMessage BytesToMessage<T>(byte[] bytes);
+        /// <param name="args">Сообщения из шины.</param>
+        IMessage BytesToMessage<T>(BasicDeliverEventArgs args);
+
+        /// <summary>
+        /// Преобразует массив байтов из шины сообщения в строготипизированный объект.
+        /// </summary>
+        /// <typeparam name="T">Тип тела сообщения.</typeparam>
+        /// <param name="args">Сообщения из шины.</param>
+        IMessage BytesToMessage<T>(BasicGetResult args);
     }
 }

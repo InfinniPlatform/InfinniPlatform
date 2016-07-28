@@ -36,7 +36,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             Mapper.Initialize(cfg => cfg.CreateMap<ApplicationUser, IdentityApplicationUser>());
         }
 
-        public IdentityApplicationUserStore(IApplicationUserStore userStore)
+        public IdentityApplicationUserStore(IAppUserStore userStore)
         {
             if (userStore == null)
             {
@@ -46,7 +46,7 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             _userStore = userStore;
         }
 
-        private readonly IApplicationUserStore _userStore;
+        private readonly IAppUserStore _userStore;
 
         // IUserClaimStore
 
@@ -257,21 +257,21 @@ namespace InfinniPlatform.Authentication.InternalIdentity
             return identityApplicationUser;
         }
 
-        private Task InvokeUserStore<T1>(Action<IApplicationUserStore, T1> action, T1 arg1)
+        private Task InvokeUserStore<T1>(Action<IAppUserStore, T1> action, T1 arg1)
         {
             action(_userStore, arg1);
 
             return Task.FromResult<object>(null);
         }
 
-        private Task InvokeUserStore<T1, T2>(Action<IApplicationUserStore, T1, T2> action, T1 arg1, T2 arg2)
+        private Task InvokeUserStore<T1, T2>(Action<IAppUserStore, T1, T2> action, T1 arg1, T2 arg2)
         {
             action(_userStore, arg1, arg2);
 
             return Task.FromResult<object>(null);
         }
 
-        private Task<T> InvokeUserStore<T, T1>(Func<IApplicationUserStore, T1, T> action, T1 arg1)
+        private Task<T> InvokeUserStore<T, T1>(Func<IAppUserStore, T1, T> action, T1 arg1)
         {
             var result = action(_userStore, arg1);
 

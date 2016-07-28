@@ -51,14 +51,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Memory\MemoryCacheImplTest.cs" />
-    <Compile Include="Memory\MemoryMessageBusTest.cs" />
     <Compile Include="Memory\MemoryCacheImplPerformanceTest.cs" />
-    <Compile Include="Memory\MemoryMessageBusPerformanceTest.cs" />
     <Compile Include="Memory\MemoryCacheImplMemoryTest.cs" />
     <Compile Include="Redis\RedisCacheImplMemoryTest.cs" />
     <Compile Include="Redis\RedisCacheImplPerformanceTest.cs" />
-    <Compile Include="Redis\RedisMessageBusPerformanceTest.cs" />
-    <Compile Include="Redis\RedisMessageBusTest.cs" />
     <Compile Include="Redis\RedisCacheImplTest.cs" />
     <Compile Include="TwoLayer\FakeCacheImpl.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheImplMemoryTest.cs" />
@@ -75,6 +71,10 @@
     <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj">
       <Project>{bd628b04-c2df-458a-8406-6bb60729fc1c}</Project>
       <Name>InfinniPlatform.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
+      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
+      <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
