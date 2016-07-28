@@ -1,22 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Diagnostics;
+
+using InfinniPlatform.Expressions.Properties;
 
 namespace InfinniPlatform.Expressions.Parser
 {
     public static class ExpressionExecutor
     {
-        private static readonly Dictionary<string, ICompiledExpression> Expressions
-            = new Dictionary<string, ICompiledExpression>();
+        private static readonly ConcurrentDictionary<string, ICompiledExpression> Expressions
+            = new ConcurrentDictionary<string, ICompiledExpression>();
 
         public static object Execute(string expression, object dataContext = null)
         {
             var compiledExpression = Compile(expression);
 
-            if (compiledExpression != null)
-            {
-                return compiledExpression.Execute(dataContext, new ExpressionScope());
-            }
-
-            return null;
+            return compiledExpression?.Execute(dataContext, new ExpressionScope());
         }
 
         private static ICompiledExpression Compile(string expression)
@@ -32,23 +31,19 @@ namespace InfinniPlatform.Expressions.Parser
 
                 if (!Expressions.TryGetValue(expression, out compiledExpression))
                 {
-                    lock (Expressions)
+                    try
                     {
-                        if (!Expressions.TryGetValue(expression, out compiledExpression))
-                        {
-                            try
-                            {
-                                compiledExpression = ExpressionCompiler.Compile(expression);
-                            }
-                            catch
-                            {
-                                // Пока просто игнорируем ошибки компиляции
-                                compiledExpression = null;
-                            }
-
-                            Expressions.Add(expression, compiledExpression);
-                        }
+                        compiledExpression = ExpressionCompiler.Compile(expression);
                     }
+                    catch (Exception exception)
+                    {
+                        // Пока просто игнорируем ошибки компиляции
+                        compiledExpression = null;
+
+                        Trace.TraceWarning(Resources.CompilationError, expression, exception);
+                    }
+
+                    compiledExpression = Expressions.GetOrAdd(expression, compiledExpression);
                 }
             }
 
