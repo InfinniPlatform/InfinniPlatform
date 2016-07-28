@@ -24,7 +24,7 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .SingleInstance();
 
             builder.RegisterType<RabbitMqManagementHttpClient>()
-                   .As<RabbitMqManagementHttpClient>()
+                   .AsSelf()
                    .SingleInstance();
 
             builder.RegisterType<MessageConsumersStartupInitializer>()

@@ -21,24 +21,34 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
 
         public RabbitMqManagementHttpClient(RabbitMqConnectionSettings connectionSettings)
         {
-            var httpMessageHandler = new HttpClientHandler { Credentials = new NetworkCredential(connectionSettings.UserName, connectionSettings.Password) };
-            _httpClient = new HttpClient(httpMessageHandler) { BaseAddress = new Uri($"http://{connectionSettings.HostName}:{connectionSettings.ManagementApiPort}") };
-
-            var connections = Task.Run(() => Get<IEnumerable<Connection>>("/api/connections")).Result;
-            if (connections == null)
-            {
-                throw new AggregateException("Cannot connect to RabbitMQ Management HTTP API.");
-            }
+            _httpClient = new Lazy<HttpClient>(() => GetHttpClient(connectionSettings));
         }
 
-        private readonly HttpClient _httpClient;
+        private readonly Lazy<HttpClient> _httpClient;
+
+        private static HttpClient GetHttpClient(RabbitMqConnectionSettings connectionSettings)
+        {
+            var httpMessageHandler = new HttpClientHandler { Credentials = new NetworkCredential(connectionSettings.UserName, connectionSettings.Password) };
+            var httpClient = new HttpClient(httpMessageHandler) { BaseAddress = new Uri($"http://{connectionSettings.HostName}:{connectionSettings.ManagementApiPort}") };
+
+            try
+            {
+                var httpResponseMessage = httpClient.GetAsync("/").Result;
+            }
+            catch (Exception e)
+            {
+                throw new AggregateException("RabbitMQ Management plugin must be enabled to run tests.", e);
+            }
+
+            return httpClient;
+        }
 
         /// <summary>
         /// Получить список очередей.
         /// </summary>
         public async Task<IEnumerable<Queue>> GetQueues()
         {
-            return await Get<IEnumerable<Queue>>("/api/queues");
+            return await Get<Queue>("/api/queues");
         }
 
         /// <summary>
@@ -58,7 +68,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
         /// </summary>
         public async Task<IEnumerable<Binding>> GetBindings()
         {
-            return await Get<IEnumerable<Binding>>("/api/bindings");
+            return await Get<Binding>("/api/bindings");
         }
 
         /// <summary>
@@ -66,7 +76,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
         /// </summary>
         public async Task<IEnumerable<Exchange>> GetExchanges()
         {
-            return await Get<IEnumerable<Exchange>>("/api/exchanges");
+            return await Get<Exchange>("/api/exchanges");
         }
 
         /// <summary>
@@ -78,17 +88,16 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
             await Delete($"/api/queues/{DefaultVhost}/{queue.Name}/contents");
         }
 
-        private async Task<T> Get<T>(string relativeUrl)
+        private async Task<IEnumerable<T>> Get<T>(string relativeUrl)
         {
-            var httpResponseMessage = await _httpClient.GetAsync(new Uri(relativeUrl, UriKind.Relative));
+            var httpResponseMessage = await _httpClient.Value.GetAsync(new Uri(relativeUrl, UriKind.Relative));
             var content = await httpResponseMessage.Content.ReadAsStringAsync();
-
-            return JsonObjectSerializer.Default.Deserialize<T>(content);
+            return JsonObjectSerializer.Default.Deserialize<IEnumerable<T>>(content);
         }
 
         private async Task Delete(string relativeUrl)
         {
-            await _httpClient.DeleteAsync(new Uri(relativeUrl, UriKind.Relative));
+            await _httpClient.Value.DeleteAsync(new Uri(relativeUrl, UriKind.Relative));
         }
     }
 }

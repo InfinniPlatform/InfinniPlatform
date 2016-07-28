@@ -39,8 +39,6 @@ namespace InfinniPlatform.MessageQueue.Tests
             RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqConnectionSettings.Default);
 
             await RabbitMqManagementHttpClient.DeleteQueues(await RabbitMqManagementHttpClient.GetQueues());
-
-            WindowsServices.StartService(TestConstants.ServiceName, TestConstants.WaitTimeout);
         }
 
         [OneTimeTearDown]
