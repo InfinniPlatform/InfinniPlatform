@@ -117,7 +117,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
                                              try
                                              {
-                                                 message = _messageSerializer.BytesToMessage(args.Body, consumer.MessageType);
+                                                 message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
                                                  typeName = consumer.GetType().Name;
                                              }
                                              catch (Exception e)
