@@ -31,7 +31,7 @@ namespace InfinniPlatform.DocumentStorage.Hosting
         {
             _log.Info("Creating the document storage started.");
 
-            var documentMetadataSources = _documentMetadataSources.SelectMany(documentMetadataSource => documentMetadataSource.GetDocumentsMetadata());
+            var documentMetadataSources = _documentMetadataSources.SelectMany(documentMetadataSource => documentMetadataSource.GetDocumentsMetadata()).ToArray();
 
             foreach (var metadata in documentMetadataSources)
             {
@@ -39,7 +39,7 @@ namespace InfinniPlatform.DocumentStorage.Hosting
                 AsyncHelper.RunSync(() => CreateStorageAsync(metadata));
             }
 
-            _log.Info($"Creating the document storage for {documentTypes.Length} types successfully completed.");
+            _log.Info($"Creating the document storage for {documentMetadataSources.Length} types successfully completed.");
         }
 
         private async Task CreateStorageAsync(DocumentMetadata documentMetadata)
