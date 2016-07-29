@@ -23,7 +23,7 @@ namespace InfinniPlatform.Core.Settings
         private readonly Lazy<JObject> _appConfig;
 
 
-        public JObject GetSection(string sectionName)
+        public dynamic GetSection(string sectionName)
         {
             if (string.IsNullOrEmpty(sectionName))
             {

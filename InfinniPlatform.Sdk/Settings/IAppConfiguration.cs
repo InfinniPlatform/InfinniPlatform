@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace InfinniPlatform.Sdk.Settings
+﻿namespace InfinniPlatform.Sdk.Settings
 {
     /// <summary>
     /// Конфигурация приложения.
@@ -11,7 +9,7 @@ namespace InfinniPlatform.Sdk.Settings
         /// Возвращает динамический объект с описанием секции конфигурации.
         /// </summary>
         /// <param name="sectionName">Имя секции конфигурации.</param>
-        JObject GetSection(string sectionName);
+        dynamic GetSection(string sectionName);
 
         /// <summary>
         /// Возвращает типизированный объект с описанием секции конфигурации.
