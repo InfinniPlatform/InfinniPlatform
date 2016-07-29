@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 
-using InfinniPlatform.Core;
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
