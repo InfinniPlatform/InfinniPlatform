@@ -18,7 +18,7 @@ http://nuget.infinnity.ru
 
 <a href="http://teamcity.infinnity.ru/viewType.html?buildTypeId=InfinniPlatform_Stage3_CreateNuGetPackage&guest=1"><img src="http://teamcity.infinnity.ru/app/rest/builds/buildType:(id:InfinniPlatform_Stage3_CreateNuGetPackage),branch:(default:true)/statusIcon" alt="Create NuGet Package" title="Create NuGet Package" /></a>
 
-## Ubuntu 14.04 (Mono 4.2.2)
+## Ubuntu 14.04 (Mono 4.4)
 
 <a href="http://teamcity.infinnity.ru/viewType.html?buildTypeId=InfinniPlatformLinux_Stage1RunUnitTests&guest=1"><img src="http://teamcity.infinnity.ru/app/rest/builds/buildType:(id:InfinniPlatformLinux_Stage1RunUnitTests),branch:(default:true)/statusIcon" alt="Run Unit Tests" title="Run Unit Tests" /></a>
 
