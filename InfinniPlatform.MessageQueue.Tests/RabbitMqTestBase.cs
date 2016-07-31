@@ -37,13 +37,22 @@ namespace InfinniPlatform.MessageQueue.Tests
             RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object);
             RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqConnectionSettings.Default);
 
-            await RabbitMqManagementHttpClient.DeleteQueues(await RabbitMqManagementHttpClient.GetQueues());
+            var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();
+
+            foreach (var queue in queues)
+            {
+                RabbitMqManager.GetChannel().QueueDelete(queue.Name);
+            }
         }
 
         [OneTimeTearDown]
         public async Task TearDown()
         {
-            await RabbitMqManagementHttpClient.DeleteQueues(await RabbitMqManagementHttpClient.GetQueues());
+            var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();
+            foreach (var queue in queues)
+            {
+                RabbitMqManager.GetChannel().QueueDelete(queue.Name);
+            }
         }
 
         public static void RegisterConsumers(IEnumerable<ITaskConsumer> taskConsumers, IEnumerable<IBroadcastConsumer> broadcastConsumers)

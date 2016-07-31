@@ -28,8 +28,14 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
 
         private static HttpClient GetHttpClient(RabbitMqConnectionSettings connectionSettings)
         {
-            var httpMessageHandler = new HttpClientHandler { Credentials = new NetworkCredential(connectionSettings.UserName, connectionSettings.Password) };
-            var httpClient = new HttpClient(httpMessageHandler) { BaseAddress = new Uri($"http://{connectionSettings.HostName}:{connectionSettings.ManagementApiPort}") };
+            var httpMessageHandler = new HttpClientHandler
+                                     {
+                                         Credentials = new NetworkCredential(connectionSettings.UserName, connectionSettings.Password)
+                                     };
+            var httpClient = new HttpClient(httpMessageHandler)
+                             {
+                                 BaseAddress = new Uri($"http://{connectionSettings.HostName}:{connectionSettings.ManagementApiPort}")
+                             };
 
             try
             {
@@ -55,6 +61,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
         /// Удаляет очереди из списка.
         /// </summary>
         /// <param name="queues">Список очередей.</param>
+        [Obsolete("Returns method not allowed.")]
         public async Task DeleteQueues(IEnumerable<Queue> queues)
         {
             foreach (var q in queues.Where(queue => queue.AutoDelete != true))
@@ -97,7 +104,21 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
 
         private async Task Delete(string relativeUrl)
         {
-            await _httpClient.Value.DeleteAsync(new Uri(relativeUrl, UriKind.Relative));
+            var requestUri = new Uri(relativeUrl, UriKind.Relative);
+            var response = await _httpClient.Value.DeleteAsync(requestUri);
+            var s = await response.Content.ReadAsStringAsync();
+            //            var webClient = new WebClient
+            //                            {
+            //                                BaseAddress = "http://localhost:15672",
+            //                                Credentials = new NetworkCredential("guest", "guest")
+            //                            };
+
+            var httpClient = new HttpClient(new HttpClientHandler
+                                            {
+                                                Credentials = new NetworkCredential("admin", "admin")
+                                            });
+            var response1 = await httpClient.DeleteAsync(new Uri("http://localhost:15672/api/queues/%2f/InfinniPlatform.Sdk.Dynamic.DynamicWrapper"));
+            var s1 = await response1.Content.ReadAsStringAsync();
         }
     }
 }
