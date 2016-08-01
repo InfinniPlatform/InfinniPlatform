@@ -5,66 +5,66 @@
       "list": {
         "0": {
           "id": 0,
-          "color": "#BF1B00",
-          "alias": "Exception",
+          "color": "#7EB26D",
+          "alias": "DocumentHttpService",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "_exists_:result.raw"
+          "query": "component:\"DocumentHttpService\""
         },
         "1": {
           "id": 1,
-          "color": "#B7DBAB",
-          "alias": "OWIN",
+          "color": "#EAB839",
+          "alias": "Nancy",
           "pin": false,
           "type": "lucene",
-          "enable": false,
-          "query": "component:OWIN"
+          "enable": true,
+          "query": "component:\"Nancy\""
         },
         "2": {
           "id": 2,
+          "color": "#6ED0E0",
+          "alias": "BlobStorage",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "component:\"BlobStorage\""
+        },
+        "3": {
+          "id": 3,
+          "color": "#EF843C",
+          "alias": "BlobHttpService",
+          "pin": false,
+          "type": "lucene",
+          "enable": true,
+          "query": "component:\"BlobHttpService\""
+        },
+        "4": {
+          "id": 4,
           "color": "#E24D42",
           "alias": "Redis",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:Redis"
-        },
-        "3": {
-          "id": 3,
-          "color": "#BA43A9",
-          "alias": "Nancy",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "component:Nancy"
-        },
-        "4": {
-          "id": 4,
-          "color": "#705DA0",
-          "alias": "BlobStorage",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "component:BlobStorage"
+          "query": "component:\"Redis\""
         },
         "5": {
           "id": 5,
-          "color": "#22C930",
-          "alias": "BlobHttpService",
+          "color": "#1F78C1",
+          "alias": "Exceptions",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:BlobHttpService"
+          "query": "level:\"ERROR\""
         },
         "6": {
           "id": 6,
           "color": "#508642",
-          "alias": "DocumentHttpService",
+          "alias": "OWIN",
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:DocumentHttpService"
+          "query": "component:\"OWIN\""
         }
       },
       "ids": [
@@ -73,8 +73,8 @@
         2,
         3,
         4,
-        5,
-        6
+        6,
+        5
       ]
     },
     "filter": {
@@ -82,7 +82,7 @@
         "0": {
           "type": "time",
           "field": "@timestamp",
-          "from": "now-2d",
+          "from": "now-24h",
           "to": "now",
           "mandate": "must",
           "active": true,
@@ -127,16 +127,16 @@
           "spyable": true,
           "queries": {
             "mode": "all",
-                  "ids": [
-                    0,
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6
-                  ]
-                },
+            "ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          },
           "tmode": "terms",
           "tstat": "total",
           "valuefield": "",
@@ -354,15 +354,13 @@
           "type": "stats",
           "loadingEditor": false,
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
               0,
               1,
               2,
               3,
-              4,
-              5,
-              6
+              4
             ]
           },
           "style": {
@@ -371,8 +369,8 @@
           "format": "number",
           "mode": "mean",
           "display_breakdown": "yes",
-          "sort_field": "",
-          "sort_reverse": false,
+          "sort_field": "label",
+          "sort_reverse": true,
           "label_name": "Query",
           "value_name": "Value",
           "spyable": true,
@@ -387,11 +385,12 @@
             "variance": false
           },
           "title": "Statistics",
-          "field": "duration"
+          "field": "duration",
+          "unit": "ms"
         },
         {
           "error": false,
-          "span": 3,
+          "span": 4,
           "editable": true,
           "type": "percentiles",
           "loadingEditor": false,
@@ -402,9 +401,7 @@
               1,
               2,
               3,
-              4,
-              5,
-              6
+              4
             ]
           },
           "style": {
@@ -426,11 +423,12 @@
             "50.0": false
           },
           "title": "Percentiles",
-          "field": "duration"
+          "field": "duration",
+          "unit": "ms"
         },
         {
           "error": false,
-          "span": 6,
+          "span": 8,
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
@@ -453,7 +451,7 @@
           "counter_pos": "above",
           "spyable": true,
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
               0,
               1,
@@ -498,7 +496,7 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              0
+              5
             ]
           },
           "annotate": {
@@ -511,7 +509,7 @@
               "desc"
             ]
           },
-          "auto_int": true,
+          "auto_int": false,
           "resolution": 100,
           "interval": "30m",
           "intervals": [
@@ -579,10 +577,15 @@
             "min": 0
           },
           "queries": {
-            "mode": "selected",
+            "mode": "all",
             "ids": [
+              0,
+              1,
               2,
-              3
+              3,
+              4,
+              5,
+              6
             ]
           },
           "annotate": {
@@ -595,7 +598,7 @@
               "desc"
             ]
           },
-          "auto_int": true,
+          "auto_int": false,
           "resolution": 100,
           "interval": "30m",
           "intervals": [
@@ -663,10 +666,15 @@
             "min": 0
           },
           "queries": {
-            "mode": "selected",
+            "mode": "all",
             "ids": [
+              0,
+              1,
               2,
-              3
+              3,
+              4,
+              5,
+              6
             ]
           },
           "annotate": {
@@ -681,7 +689,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "30m",
+          "interval": "10m",
           "intervals": [
             "auto",
             "1s",
@@ -748,10 +756,7 @@
           },
           "queries": {
             "mode": "selected",
-            "ids": [
-              2,
-              3
-            ]
+            "ids": []
           },
           "annotate": {
             "enable": false,
@@ -765,7 +770,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "30m",
+          "interval": "10m",
           "intervals": [
             "auto",
             "1s",
@@ -824,11 +829,32 @@
           "pages": 10,
           "offset": 0,
           "sort": [
-            "_score",
+            "logger",
             "desc"
           ],
           "overflow": "min-height",
-          "fields": [],
+          "fields": [
+            "@timestamp",
+            "@version",
+            "_id",
+            "_index",
+            "_type",
+            "ctx.documentType",
+            "host",
+            "layer",
+            "thread",
+            "source",
+            "sessionId",
+            "requestId",
+            "monitoring",
+            "msg",
+            "logger",
+            "level",
+            "action",
+            "component",
+            "duration",
+            "qualifiedAction"
+          ],
           "highlight": [],
           "sortable": true,
           "header": true,
@@ -867,65 +893,34 @@
           "pages": 10,
           "offset": 0,
           "sort": [
-            "timestamp",
-            "desc"
+            "thread",
+            "asc"
           ],
           "overflow": "min-height",
           "fields": [
             "component",
             "action",
-            "correlationId",
-            "timestamp"
+            "timestamp",
+            "_index",
+            "level",
+            "logger",
+            "monitoring",
+            "source",
+            "thread",
+            "sessionId",
+            "requestId",
+            "msg",
+            "host",
+            "layer",
+            "ctx.documentType",
+            "_type",
+            "_id",
+            "@version",
+            "@timestamp",
+            "duration",
+            "qualifiedAction"
           ],
           "highlight": [],
-          "sortable": true,
-          "header": true,
-          "paging": true,
-          "field_list": true,
-          "all_fields": false,
-          "trimFactor": 300,
-          "localTime": false,
-          "timeField": "@timestamp",
-          "spyable": true,
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6
-            ]
-          },
-          "style": {
-            "font-size": "9pt"
-          },
-          "normTimes": true,
-          "title": "Root Requests"
-        },
-        {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "type": "table",
-          "loadingEditor": false,
-          "size": 10,
-          "pages": 10,
-          "offset": 0,
-          "sort": [
-            "timestamp",
-            "desc"
-          ],
-          "overflow": "min-height",
-          "fields": [
-            "component",
-            "action",
-            "correlationId",
-            "timestamp"
-          ],
-          "highlight": [ ],
           "sortable": true,
           "header": true,
           "paging": true,
@@ -974,15 +969,7 @@
       "notice": false,
       "query": "*",
       "pinned": true,
-      "history": [
-        "component:DocumentHttpService",
-        "component:BlobStorage",
-        "component:Nancy",
-        "component:Redis",
-        "component:OWIN",
-        "component:FileSystemBlobStorage",
-        "_exists_:result.raw"
-      ],
+      "history": [],
       "remember": 10,
       "enable": true
     },
@@ -1001,8 +988,10 @@
       "status": "Stable",
       "time_options": [
         "5m",
-        "15m",
+        "10m",
+        "30m",
         "1h",
+        "2h",
         "6h",
         "12h",
         "24h",

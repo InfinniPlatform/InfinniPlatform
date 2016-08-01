@@ -67,14 +67,13 @@ namespace InfinniPlatform.Core.Logging
             return internalLog;
         }
 
-
         private static string GetInternalLoggerName(string prefix, Type type)
         {
             var loggerInfo = type.GetCustomAttribute<LoggerNameAttribute>();
 
-            return (loggerInfo != null && !string.IsNullOrWhiteSpace(loggerInfo.Name))
-                ? $"{prefix}.{loggerInfo.Name.Trim()}"
-                : $"{prefix}.{type.FullName}";
+            return !string.IsNullOrWhiteSpace(loggerInfo?.Name)
+                       ? $"{prefix}.{loggerInfo.Name.Trim()}"
+                       : $"{prefix}.{type.FullName}";
         }
     }
 }
