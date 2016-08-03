@@ -58,15 +58,23 @@ namespace InfinniPlatform.Core.Logging
         }
 
 
-        public void InitThreadLoggingContext(IIdentity user, IDictionary<string, object> context)
+        public void InitThreadLoggingContext(IDictionary<string, object> context)
         {
             log4net.ThreadContext.Properties.Clear();
 
+            SetContext(context);
+        }
+
+        public void SetContext(IDictionary<string, object> context)
+        {
             foreach (var pair in context)
             {
                 log4net.ThreadContext.Properties[pair.Key] = pair.Value;
             }
+        }
 
+        public void SetUserId(IIdentity user)
+        {
             if (user != null)
             {
                 log4net.ThreadContext.Properties["app.UserId"] = user.GetUserId();

@@ -5,6 +5,7 @@ using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.SignalR.Modules;
 
 using Microsoft.AspNet.SignalR.Client;
@@ -37,7 +38,7 @@ namespace InfinniPlatform.SignalR.Tests
         public void CheckCommunications()
         {
             var owinHostingContext = CreateTestOwinHostingContext(new SignalROwinHostingModule());
-            var owinHostingService = new OwinHostingService(owinHostingContext);
+            var owinHostingService = new OwinHostingService(owinHostingContext, new Mock<ILog>().Object);
 
             owinHostingService.Start();
 

@@ -33,14 +33,13 @@ namespace InfinniPlatform.Owin.Middleware
 
             try
             {
-                var requestUser = context.Request.User?.Identity;
                 var requestContext = context.Environment;
 
-                _log.InitThreadLoggingContext(requestUser, requestContext);
+                _log.InitThreadLoggingContext(requestContext);
 
                 return Next.Invoke(context).ContinueWith(task =>
                                                          {
-                                                             _log.InitThreadLoggingContext(requestUser, requestContext);
+                                                             _log.InitThreadLoggingContext(requestContext);
 
                                                              if (task.IsFaulted)
                                                              {

@@ -79,6 +79,10 @@ namespace InfinniPlatform.Sdk.Logging
         /// Инициализирует контекст логирования текущего потока информацией из словаря.
         /// </summary>
         /// <param name="context">Контекстные данные.</param>
-        void InitThreadLoggingContext(IIdentity user, IDictionary<string, object> context);
+        void InitThreadLoggingContext(IDictionary<string, object> context);
+
+        void SetContext(IDictionary<string, object> context);
+
+        void SetUserId(IIdentity user);
     }
 }

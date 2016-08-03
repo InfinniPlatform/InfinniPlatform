@@ -1,4 +1,6 @@
-﻿using Owin;
+﻿using InfinniPlatform.Sdk.Logging;
+
+using Owin;
 
 namespace InfinniPlatform.Owin.Modules
 {
@@ -17,6 +19,7 @@ namespace InfinniPlatform.Owin.Modules
         /// </summary>
         /// <param name="builder">Объект для регистрации обработчиков запросов OWIN.</param>
         /// <param name="context">Контекст подсистемы хостинга на базе OWIN.</param>
-        void Configure(IAppBuilder builder, IOwinHostingContext context);
+        /// <param name="log">Лог.</param>
+        void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log);
     }
 }
