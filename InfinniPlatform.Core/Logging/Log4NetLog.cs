@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
+
+using log4net;
+
+using ILog = InfinniPlatform.Sdk.Logging.ILog;
 
 namespace InfinniPlatform.Core.Logging
 {
     /// <summary>
-    /// Сервис <see cref="ILog" /> на базе log4net.
+    /// Сервис <see cref="Sdk.Logging.ILog" /> на базе log4net.
     /// </summary>
     internal sealed class Log4NetLog : ILog
     {
@@ -17,9 +20,7 @@ namespace InfinniPlatform.Core.Logging
             _internalLog = internalLog;
         }
 
-
         private readonly log4net.ILog _internalLog;
-
 
         public bool IsDebugEnabled => _internalLog.IsDebugEnabled;
 
@@ -30,7 +31,6 @@ namespace InfinniPlatform.Core.Logging
         public bool IsErrorEnabled => _internalLog.IsErrorEnabled;
 
         public bool IsFatalEnabled => _internalLog.IsFatalEnabled;
-
 
         public void Debug(object message, Dictionary<string, object> context = null, Exception exception = null)
         {
@@ -57,20 +57,17 @@ namespace InfinniPlatform.Core.Logging
             _internalLog.Fatal(new JsonEvent(message, context, exception));
         }
 
-
-        public void InitThreadLoggingContext(IIdentity user, IDictionary<string, object> context)
+        public void SetRequestId(object requestId)
         {
-            log4net.ThreadContext.Properties.Clear();
+            ThreadContext.Properties["app.RequestId"] = requestId;
+        }
 
-            foreach (var pair in context)
-            {
-                log4net.ThreadContext.Properties[pair.Key] = pair.Value;
-            }
-
+        public void SetUserId(IIdentity user)
+        {
             if (user != null)
             {
-                log4net.ThreadContext.Properties["app.UserId"] = user.GetUserId();
-                log4net.ThreadContext.Properties["app.UserName"] = user.Name;
+                ThreadContext.Properties["app.UserId"] = user.GetUserId();
+                ThreadContext.Properties["app.UserName"] = user.Name;
             }
         }
     }
