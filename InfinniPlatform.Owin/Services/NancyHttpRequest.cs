@@ -62,6 +62,8 @@ namespace InfinniPlatform.Owin.Services
 
         public CultureInfo Culture { get; }
 
+        public string UserHostAddress => _nancyRequest.UserHostAddress;
+
 
         private object ParseRequestForm()
         {

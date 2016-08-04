@@ -37,7 +37,7 @@ namespace InfinniPlatform.DocumentStorage.Hosting
         {
             _log.Info("Creating the document storage started.");
 
-            var documentTypes = _metadataApi.GetMetadataItemNames("Documents");
+            var documentTypes = _metadataApi.GetMetadataItemNames("Documents").ToArray();
 
             foreach (var documentType in documentTypes)
             {
@@ -54,7 +54,7 @@ namespace InfinniPlatform.DocumentStorage.Hosting
                 AsyncHelper.RunSync(() => CreateStorageAsync(documentMetadata));
             }
 
-            _log.Info("Creating the document storage successfully completed.");
+            _log.Info($"Creating the document storage for {documentTypes.Length} types successfully completed.");
         }
 
 
@@ -62,13 +62,13 @@ namespace InfinniPlatform.DocumentStorage.Hosting
         {
             var logContext = new Dictionary<string, object> { { "documentType", documentMetadata.Type } };
 
-            _log.Info("Creating storage for type started.", logContext);
+            _log.Debug("Creating storage for type started.", logContext);
 
             try
             {
                 await _documentStorageManager.CreateStorageAsync(documentMetadata);
 
-                _log.Info("Creating storage for type successfully completed.", logContext);
+                _log.Debug("Creating storage for type successfully completed.", logContext);
             }
             catch (Exception exception)
             {
