@@ -133,7 +133,7 @@ namespace InfinniPlatform.Caching.TwoLayer
             {
                 if (deleted)
                 {
-                    Task.Run(() => NotifyOnKeyChanged(key));
+                    NotifyOnKeyChanged(key);
                 }
             }
 
@@ -150,33 +150,32 @@ namespace InfinniPlatform.Caching.TwoLayer
 
         public Task ProcessMessage(Message<string> message)
         {
-            if (_sharedCache is NullSharedCacheImpl)
-            {
-                return Task.FromResult<object>(null);
-            }
+            return Task.Run(() =>
+                            {
+                                if (!(_sharedCache is NullSharedCacheImpl))
+                                {
+                                    try
+                                    {
+                                        if (message.AppId == _appEnvironment.Id)
+                                        {
+                                            //ignore own message
+                                        }
+                                        else
+                                        {
+                                            var key = (string)message.GetBody();
 
-            try
-            {
-                if (message.AppId == _appEnvironment.Id)
-                {
-                    //ignore own message
-                }
-                else
-                {
-                    var key = (string)message.GetBody();
-
-                    if (!string.IsNullOrEmpty(key))
-                    {
-                        _memoryCache.Remove(key);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                _log.Error(e);
-            }
-
-            return Task.FromResult<object>(null);
+                                            if (!string.IsNullOrEmpty(key))
+                                            {
+                                                _memoryCache.Remove(key);
+                                            }
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        _log.Error(e);
+                                    }
+                                }
+                            });
         }
     }
 }

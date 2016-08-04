@@ -154,28 +154,29 @@ namespace InfinniPlatform.Authentication.UserStorage
 
         public Task ProcessMessage(Message<string> message)
         {
-            try
-            {
-                if (message.AppId == _appEnvironment.Id)
-                {
-                    //ignore own message
-                }
-                else
-                {
-                    var userId = (string)message.GetBody();
+            return Task.Run(() =>
+                            {
+                                try
+                                {
+                                    if (message.AppId == _appEnvironment.Id)
+                                    {
+                                        //ignore own message
+                                    }
+                                    else
+                                    {
+                                        var userId = (string)message.GetBody();
 
-                    if (!string.IsNullOrEmpty(userId))
-                    {
-                        RemoveUser(userId);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                _log.Error(e);
-            }
-
-            return Task.FromResult<object>(null);
+                                        if (!string.IsNullOrEmpty(userId))
+                                        {
+                                            RemoveUser(userId);
+                                        }
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    _log.Error(e);
+                                }
+                            });
         }
 
         private void OnRemoveUserFromCache(CacheEntryRemovedArguments args)
