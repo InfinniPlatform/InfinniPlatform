@@ -251,7 +251,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             _cache.Set(key, value);
 
             // Then
-            _broadcastProducerMock.Verify(producer => producer.Publish(key, nameof(TwoLayerCacheImpl)), Times.Once);
+            _broadcastProducerMock.Verify(producer => producer.PublishAsync(key, nameof(TwoLayerCacheImpl)), Times.Once);
         }
 
 
@@ -308,7 +308,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             _cache.Remove(key);
 
             // Then
-            _broadcastProducerMock.Verify(producer => producer.Publish(key, nameof(TwoLayerCacheImpl)), Times.Exactly(2));
+            _broadcastProducerMock.Verify(producer => producer.PublishAsync(key, nameof(TwoLayerCacheImpl)), Times.Exactly(2));
         }
     }
 }
