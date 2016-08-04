@@ -24,8 +24,9 @@ namespace InfinniPlatform.Authentication.Modules
             // Прослойка для установки информации об идентификационных данных текущего пользователя
             builder.Use((owinContext, nextOwinMiddleware) =>
                         {
-                            UserIdentityProvider.SetRequestUser(owinContext.Request.User);
-                            log.SetUserId(owinContext.Request.User?.Identity);
+                            var requestUser = owinContext.Request.User;
+                            UserIdentityProvider.SetRequestUser(requestUser);
+                            log.SetUserId(requestUser?.Identity);
                             return nextOwinMiddleware.Invoke();
                         });
         }
