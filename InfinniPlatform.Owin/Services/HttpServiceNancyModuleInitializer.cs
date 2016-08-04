@@ -31,6 +31,7 @@ namespace InfinniPlatform.Owin.Services
         public HttpServiceNancyModuleInitializer(IMimeTypeResolver mimeTypeResolver,
                                                  IUserIdentityProvider userIdentityProvider,
                                                  IJsonObjectSerializer jsonObjectSerializer,
+                                                 IHttpServiceContextProvider httpServiceContextProvider,
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
                                                  IEnumerable<IHttpServiceSource> httpServiceSources,
@@ -39,6 +40,7 @@ namespace InfinniPlatform.Owin.Services
             _mimeTypeResolver = mimeTypeResolver;
             _userIdentityProvider = userIdentityProvider;
             _jsonObjectSerializer = jsonObjectSerializer;
+            _httpServiceContextProvider = httpServiceContextProvider;
             _httpRequestExcutorFactory = httpRequestExcutorFactory;
             _httpGlobalHandlers = httpGlobalHandlers;
             _httpServices = new Lazy<IEnumerable<IHttpService>>(() => httpServiceSources.SelectMany(i => i.GetServices()).ToArray());
@@ -51,6 +53,7 @@ namespace InfinniPlatform.Owin.Services
         private readonly IMimeTypeResolver _mimeTypeResolver;
         private readonly IUserIdentityProvider _userIdentityProvider;
         private readonly IJsonObjectSerializer _jsonObjectSerializer;
+        private readonly IHttpServiceContextProvider _httpServiceContextProvider;
         private readonly HttpRequestExcutorFactory _httpRequestExcutorFactory;
         private readonly IEnumerable<IHttpGlobalHandler> _httpGlobalHandlers;
         private readonly Lazy<IEnumerable<IHttpService>> _httpServices;
@@ -196,11 +199,18 @@ namespace InfinniPlatform.Owin.Services
                                                                         {
                                                                             var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
 
-                                                                            // Локализация ответа в зависимости от региональных параметров запроса.
+                                                                            // Локализация ответа в зависимости от региональных параметров запроса
                                                                             Thread.CurrentThread.CurrentCulture = httpRequest.Culture;
                                                                             Thread.CurrentThread.CurrentUICulture = httpRequest.Culture;
 
+                                                                            // Инициализация контекста выполнения запроса
+                                                                            var httpServiceContext = (HttpServiceContext)_httpServiceContextProvider.GetContext();
+                                                                            httpServiceContext.Request = httpRequest;
+
+                                                                            // Обработка запроса
                                                                             var result = await onHandleGlobal(httpRequest);
+
+                                                                            // Формирование ответа
                                                                             var nancyHttpResponse = CreateNancyHttpResponse(nancyModule, result);
 
                                                                             return nancyHttpResponse;
@@ -209,6 +219,7 @@ namespace InfinniPlatform.Owin.Services
                                                                         {
                                                                             error = exception;
 
+                                                                            // Формирование ответа с ошибкой
                                                                             var errorResult = DefaultHttpResultConverter.Instance.Convert(exception);
                                                                             var nancyErrorHttpResponse = CreateNancyHttpResponse(nancyModule, errorResult);
 
@@ -368,6 +379,6 @@ namespace InfinniPlatform.Owin.Services
 
     public class ViewRenderModule : NancyModule
     {
-        
+
     }
 }

@@ -53,6 +53,14 @@ namespace InfinniPlatform.Owin.IoC
                    .As<IHttpServiceSource>()
                    .SingleInstance();
 
+            builder.RegisterType<HttpServiceContext>()
+                   .As<IHttpServiceContext>()
+                   .InstancePerRequest();
+
+            builder.RegisterType<HttpServiceContextProvider>()
+                   .As<IHttpServiceContextProvider>()
+                   .SingleInstance();
+
             // Остальные модули
 
             builder.RegisterType<ErrorHandlingOwinHostingModule>()
