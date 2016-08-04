@@ -77,11 +77,13 @@ namespace InfinniPlatform.Sdk.Logging
         /// <summary>
         /// Устанавливает идентификатор запроса в контекст логирования текущего потока.
         /// </summary>
-        /// <param name="context">Контекстные данные.</param>
-        void InitThreadLoggingContext(IDictionary<string, object> context);
+        /// <param name="requestId">Идентификатор запроса.</param>
+        void SetRequestId(object requestId);
 
-        void SetContext(IDictionary<string, object> context);
-
+        /// <summary>
+        /// Устанавливает идентификатор пользователя в контекст логирования текущего потока.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
         void SetUserId(IIdentity user);
     }
 }

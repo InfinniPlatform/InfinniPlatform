@@ -25,7 +25,7 @@ namespace InfinniPlatform.Authentication.Modules
             builder.Use((owinContext, nextOwinMiddleware) =>
                         {
                             UserIdentityProvider.SetRequestUser(owinContext.Request.User);
-                            log.SetUserId(owinContext.Request.User.Identity);
+                            log.SetUserId(owinContext.Request.User?.Identity);
                             return nextOwinMiddleware.Invoke();
                         });
         }
