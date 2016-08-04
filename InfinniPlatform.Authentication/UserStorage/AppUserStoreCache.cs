@@ -124,14 +124,14 @@ namespace InfinniPlatform.Authentication.UserStorage
                     {
                         SetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin), user);
                     }
+
+                    Task.Run(async () => await NotifyOnUserChanged(user.Id));
                 }
             }
             finally
             {
                 _cacheLockSlim.ExitWriteLock();
             }
-
-            NotifyUserChanged(user.Id);
         }
 
         /// <summary>
@@ -152,31 +152,41 @@ namespace InfinniPlatform.Authentication.UserStorage
             }
         }
 
+
+        //IUserCacheSynchronizer
+
+
+        public async Task NotifyOnUserChanged(string userId)
+        {
+            // Оповещаем другие узлы об изменении сведений пользователя
+            await _broadcastProducer.PublishAsync(userId);
+        }
+
         public Task ProcessMessage(Message<string> message)
         {
             return Task.Run(() =>
-                            {
-                                try
-                                {
-                                    if (message.AppId == _appEnvironment.Id)
-                                    {
-                                        //ignore own message
-                                    }
-                                    else
-                                    {
-                                        var userId = (string)message.GetBody();
+            {
+                try
+                {
+                    if (message.AppId == _appEnvironment.Id)
+                    {
+                        //ignore own message
+                    }
+                    else
+                    {
+                        var userId = (string)message.GetBody();
 
-                                        if (!string.IsNullOrEmpty(userId))
-                                        {
-                                            RemoveUser(userId);
-                                        }
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    _log.Error(e);
-                                }
-                            });
+                        if (!string.IsNullOrEmpty(userId))
+                        {
+                            RemoveUser(userId);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    _log.Error(e);
+                }
+            });
         }
 
         private void OnRemoveUserFromCache(CacheEntryRemovedArguments args)
@@ -205,13 +215,6 @@ namespace InfinniPlatform.Authentication.UserStorage
             {
                 _cacheLockSlim.ExitWriteLock();
             }
-        }
-
-        public void NotifyUserChanged(string userId)
-        {
-            // Оповещаем другие узлы об изменении сведений пользователя
-
-            _broadcastProducer.Publish(userId);
         }
 
         private static string GetUserLoginKey(ApplicationUserLogin userLogin)

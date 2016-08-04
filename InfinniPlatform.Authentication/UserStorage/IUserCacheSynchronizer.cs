@@ -19,6 +19,6 @@ namespace InfinniPlatform.Authentication.UserStorage
         /// Оповестить получателей об изменении пользователя.
         /// </summary>
         /// <param name="userId">Идентификатор пользователя.</param>
-        void NotifyUserChanged(string userId);
+        Task NotifyOnUserChanged(string userId);
     }
 }

@@ -34,13 +34,17 @@ namespace InfinniPlatform.Caching.TwoLayer
             _appEnvironment = appEnvironment;
             _broadcastProducer = broadcastProducer;
             _log = log;
+
+            _isSharedCacheEnabled = !(_sharedCache is NullSharedCacheImpl);
         }
 
-        private readonly IMemoryCache _memoryCache;
-        private readonly ISharedCache _sharedCache;
         private readonly IAppEnvironment _appEnvironment;
         private readonly IBroadcastProducer _broadcastProducer;
         private readonly ILog _log;
+
+        private readonly IMemoryCache _memoryCache;
+        private readonly ISharedCache _sharedCache;
+        private readonly bool _isSharedCacheEnabled;
 
         public bool Contains(string key)
         {
@@ -106,7 +110,7 @@ namespace InfinniPlatform.Caching.TwoLayer
             _memoryCache.Set(key, value);
             _sharedCache.Set(key, value);
 
-            NotifyOnKeyChanged(key);
+            Task.Run(async () => await NotifyOnKeyChanged(key));
         }
 
         public bool Remove(string key)
@@ -133,18 +137,22 @@ namespace InfinniPlatform.Caching.TwoLayer
             {
                 if (deleted)
                 {
-                    NotifyOnKeyChanged(key);
+                    Task.Run(() => NotifyOnKeyChanged(key));
                 }
             }
 
             return deleted;
         }
 
-        public void NotifyOnKeyChanged(string key)
+
+        //ICacheSynchronizer
+
+
+        public async Task NotifyOnKeyChanged(string key)
         {
-            if (!(_sharedCache is NullSharedCacheImpl))
+            if (_isSharedCacheEnabled)
             {
-                _broadcastProducer.Publish(key, nameof(TwoLayerCacheImpl));
+                await _broadcastProducer.PublishAsync(key, nameof(TwoLayerCacheImpl));
             }
         }
 
@@ -152,7 +160,7 @@ namespace InfinniPlatform.Caching.TwoLayer
         {
             return Task.Run(() =>
                             {
-                                if (!(_sharedCache is NullSharedCacheImpl))
+                                if (_isSharedCacheEnabled)
                                 {
                                     try
                                     {
