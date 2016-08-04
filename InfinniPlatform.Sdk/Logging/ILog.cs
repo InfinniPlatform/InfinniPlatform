@@ -34,7 +34,6 @@ namespace InfinniPlatform.Sdk.Logging
         /// </summary>
         bool IsFatalEnabled { get; }
 
-
         /// <summary>
         /// Записывает в журнал событие с уровнем DEBUG.
         /// </summary>
@@ -76,13 +75,15 @@ namespace InfinniPlatform.Sdk.Logging
         void Fatal(object message, Dictionary<string, object> context = null, Exception exception = null);
 
         /// <summary>
-        /// Инициализирует контекст логирования текущего потока информацией из словаря.
+        /// Устанавливает идентификатор запроса в контекст логирования текущего потока.
         /// </summary>
-        /// <param name="context">Контекстные данные.</param>
-        void InitThreadLoggingContext(IDictionary<string, object> context);
+        /// <param name="requestId">Идентификатор запроса.</param>
+        void SetRequestId(object requestId);
 
-        void SetContext(IDictionary<string, object> context);
-
+        /// <summary>
+        /// Устанавливает идентификатор пользователя в контекст логирования текущего потока.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
         void SetUserId(IIdentity user);
     }
 }
