@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents.Transactions;
@@ -204,6 +207,76 @@ namespace InfinniPlatform.Sdk.Documents
             foreach (var document in documents)
             {
                 target.SaveOne(document);
+            }
+        }
+
+
+        /// <summary>
+        /// Объединяет два выражения фильтрации с использованием логического оператора ИЛИ.
+        /// </summary>
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        {
+            return Compose(first, second, Expression.OrElse);
+        }
+
+        /// <summary>
+        /// Объединяет два выражения фильтрации с использованием логического оператора И.
+        /// </summary>
+        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        {
+            return Compose(first, second, Expression.AndAlso);
+        }
+
+        /// <summary>
+        /// Объединяет два выражения с использованием указанной функции.
+        /// </summary>
+        public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> composeFunc)
+        {
+            if (first != null && second != null)
+            {
+                // Таблица соответствий параметров первого и второго выражений
+                var secondToFirstMap = first.Parameters.Select((f, i) => new { f, s = second.Parameters[i] }).ToDictionary(p => p.s, p => p.f);
+
+                // Переименование параметров второго выражения
+                var newSecondBody = new LambdaExpressionComposer(secondToFirstMap).Visit(second.Body);
+
+                // Объединение выражений заданной операцией
+                return Expression.Lambda<T>(composeFunc(first.Body, newSecondBody), first.Parameters);
+            }
+
+            if (first != null)
+            {
+                return first;
+            }
+
+            return second;
+        }
+
+
+        /// <summary>
+        /// Предоставляет интерфейс для объединения выражений.
+        /// </summary>
+        private class LambdaExpressionComposer : ExpressionVisitor
+        {
+            public LambdaExpressionComposer(Dictionary<ParameterExpression, ParameterExpression> secondToFirstParameterMap)
+            {
+                _secondToFirstParameterMap = secondToFirstParameterMap ?? new Dictionary<ParameterExpression, ParameterExpression>();
+            }
+
+
+            private readonly Dictionary<ParameterExpression, ParameterExpression> _secondToFirstParameterMap;
+
+
+            protected override Expression VisitParameter(ParameterExpression secondParameter)
+            {
+                ParameterExpression firstParameter;
+
+                if (_secondToFirstParameterMap.TryGetValue(secondParameter, out firstParameter))
+                {
+                    secondParameter = firstParameter;
+                }
+
+                return base.VisitParameter(secondParameter);
             }
         }
     }
