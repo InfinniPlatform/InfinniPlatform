@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -15,7 +16,11 @@ namespace InfinniPlatform.Sdk.Documents.Interceptors
         /// <param name="documents">Документы для вставки.</param>
         public DocumentInsertManyCommand(IEnumerable<DynamicWrapper> documents)
         {
-            Documents = documents;
+            // Производится материализация коллекции, чтобы избежать ситуаций, когда
+            // экземпляры документов создаются при каждом перечислении коллекции,
+            // например: InsertMany(sources.Select(i => new DynamicWrapper()))
+
+            Documents = documents.ToList();
         }
 
         /// <summary>
@@ -36,7 +41,11 @@ namespace InfinniPlatform.Sdk.Documents.Interceptors
         /// <param name="documents">Документы для вставки.</param>
         public DocumentInsertManyCommand(IEnumerable<TDocument> documents)
         {
-            Documents = documents;
+            // Производится материализация коллекции, чтобы избежать ситуаций, когда
+            // экземпляры документов создаются при каждом перечислении коллекции,
+            // например: InsertMany(sources.Select(i => new TDocument()))
+
+            Documents = documents.ToList();
         }
 
         /// <summary>
