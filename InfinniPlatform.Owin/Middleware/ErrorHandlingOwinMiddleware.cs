@@ -33,15 +33,13 @@ namespace InfinniPlatform.Owin.Middleware
 
             try
             {
-                var requestId = context.Environment?["owin.RequestId"];
+                var requestContext = context.Environment;
 
-                //Устанавливаем Id запроса для логирования ошибок текущего потока.
-                _log.SetRequestId(requestId);
+                _log.InitThreadLoggingContext(requestContext);
 
                 return Next.Invoke(context).ContinueWith(task =>
                                                          {
-                                                             //Повторно устанавливаем Id запроса для логирования ошибок текущего потока, т.к. поток другой.
-                                                             _log.SetRequestId(requestId);
+                                                             _log.InitThreadLoggingContext(requestContext);
 
                                                              if (task.IsFaulted)
                                                              {

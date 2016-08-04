@@ -57,9 +57,21 @@ namespace InfinniPlatform.Core.Logging
             _internalLog.Fatal(new JsonEvent(message, context, exception));
         }
 
-        public void SetRequestId(object requestId)
+
+        public void InitThreadLoggingContext(IDictionary<string, object> context)
         {
             ThreadContext.Properties["app.RequestId"] = requestId;
+        }
+
+            SetContext(context);
+        }
+
+        public void SetContext(IDictionary<string, object> context)
+        {
+            foreach (var pair in context)
+            {
+                log4net.ThreadContext.Properties[pair.Key] = pair.Value;
+            }
         }
 
         public void SetUserId(IIdentity user)

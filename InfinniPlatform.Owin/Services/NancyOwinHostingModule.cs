@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Logging;
 
 using Nancy.Bootstrapper;
 using Nancy.Owin;
@@ -21,7 +22,7 @@ namespace InfinniPlatform.Owin.Services
 
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.Application;
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
         {
             builder.UseNancy(new NancyOptions
             {

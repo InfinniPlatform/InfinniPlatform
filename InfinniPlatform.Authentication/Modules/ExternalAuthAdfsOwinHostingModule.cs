@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.Owin.Security;
@@ -29,7 +30,7 @@ namespace InfinniPlatform.Authentication.Modules
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
         {
             if (_settings.Enable)
             {
