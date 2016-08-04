@@ -80,14 +80,33 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         public IDocumentFindCursor<TDocument, TDocument> Find(Expression<Func<TDocument, bool>> filter = null)
         {
-            var result = _collection.Value.Find(_filterBuilder.CreateMongoFilter(filter));
+            var filterDefinition = _filterBuilder.CreateMongoFilter(filter);
+
+            var result = _collection.Value.Find(filterDefinition);
+
             return new MongoDocumentFindCursor<TDocument, TDocument>(result);
         }
 
         public IDocumentFindCursor<TDocument, TDocument> FindText(string search, string language = null, bool caseSensitive = false, bool diacriticSensitive = false, Expression<Func<TDocument, bool>> filter = null)
         {
-            var textFilter = _filterBuilder.CreateMongoFilter(f => f.Text(search, language, caseSensitive, diacriticSensitive));
-            var result = _collection.Value.Find((filter == null) ? textFilter : textFilter & _filterBuilder.CreateMongoFilter(filter));
+            FilterDefinition<TDocument> filterDefinition;
+
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                filterDefinition = _filterBuilder.CreateMongoFilter(filter);
+            }
+            else
+            {
+                filterDefinition = _filterBuilder.CreateMongoFilter(f => f.Text(search, language, caseSensitive, diacriticSensitive));
+
+                if (filter != null)
+                {
+                    filterDefinition = filterDefinition & _filterBuilder.CreateMongoFilter(filter);
+                }
+            }
+
+            var result = _collection.Value.Find(filterDefinition);
+
             return new MongoDocumentFindCursor<TDocument, TDocument>(result);
         }
 
