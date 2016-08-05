@@ -66,6 +66,7 @@
     <Compile Include="Session\SessionManager.cs" />
     <Compile Include="TwoLayer\ICacheSynchronizer.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheConsumer.cs" />
+    <Compile Include="TwoLayer\CachingMessageConsumerSource.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheImpl.cs" />
   </ItemGroup>
   <ItemGroup>

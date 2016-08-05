@@ -89,6 +89,7 @@
     <Compile Include="Hosting\IDocumentMetadataSource.cs" />
     <Compile Include="Queues\Consumers\BroadcastConsumerBase.cs" />
     <Compile Include="Queues\Consumers\IBroadcastConsumer.cs" />
+    <Compile Include="Queues\IMessageConsumerSource.cs" />
     <Compile Include="Queues\Producers\IBroadcastProducer.cs" />
     <Compile Include="Queues\IMessage.cs" />
     <Compile Include="Queues\IMessageGeneric.cs" />

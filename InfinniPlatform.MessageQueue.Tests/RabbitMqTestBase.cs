@@ -8,6 +8,7 @@ using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Settings;
 
@@ -57,6 +58,14 @@ namespace InfinniPlatform.MessageQueue.Tests
 
         public static void RegisterConsumers(IEnumerable<ITaskConsumer> taskConsumers, IEnumerable<IBroadcastConsumer> broadcastConsumers)
         {
+            var list = new List<IConsumer>();
+            list.AddRange(taskConsumers ?? Enumerable.Empty<ITaskConsumer>());
+            list.AddRange(broadcastConsumers ?? Enumerable.Empty<IBroadcastConsumer>());
+
+            var messageConsumerSourceMock = new Mock<IMessageConsumerSource>();
+            messageConsumerSourceMock.Setup(source => source.GetConsumers())
+                                     .Returns(list);
+
             var logMock = new Mock<ILog>();
             logMock.Setup(log => log.Debug(It.IsAny<object>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<Exception>()))
                    .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
@@ -69,7 +78,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 
             var perfLogMock = new Mock<IPerformanceLog>();
 
-            var messageConsumersManager = new MessageConsumersStartupInitializer(taskConsumers ?? Enumerable.Empty<ITaskConsumer>(), broadcastConsumers ?? Enumerable.Empty<IBroadcastConsumer>(), RabbitMqManager, new MessageSerializer(), logMock.Object, perfLogMock.Object);
+            var messageConsumersManager = new MessageConsumersStartupInitializer(new[] { messageConsumerSourceMock.Object }, RabbitMqManager, new MessageSerializer(), logMock.Object, perfLogMock.Object);
 
             messageConsumersManager.OnAfterStart();
         }

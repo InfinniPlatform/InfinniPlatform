@@ -62,6 +62,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RabbitMq\Hosting\MessageConsumerSource.cs" />
     <Compile Include="RabbitMq\Management\HttpAPI\Binding.cs" />
     <Compile Include="RabbitMq\Management\HttpAPI\Connection.cs" />
     <Compile Include="RabbitMq\Management\Defaults.cs" />

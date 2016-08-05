@@ -7,6 +7,7 @@ using InfinniPlatform.Core.Security;
 using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
@@ -76,7 +77,11 @@ namespace InfinniPlatform.Authentication.IoC
                    .SingleInstance();
 
             builder.RegisterType<AppUserStoreCacheConsumer>()
-                   .As<IBroadcastConsumer>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<AuthenticationMessageConsumerSource>()
+                   .As<IMessageConsumerSource>()
                    .SingleInstance();
 
             builder.RegisterType<AppUserStore>()

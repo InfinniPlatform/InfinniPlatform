@@ -21,33 +21,30 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <summary>
         /// Регистрирует потребителей сообщений.
         /// </summary>
-        /// <param name="taskConsumers">Потребители сообщений очереди задач.</param>
-        /// <param name="broadcastConsumers">Потребители сообщений широковещательной очереди.</param>
+        /// <param name="consumerSource">Источники потребителей сообщений.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="messageSerializer">Сериализатор сообщений.</param>
         /// <param name="log">Лог.</param>
         /// <param name="performanceLog">Лог производительности.</param>
-        public MessageConsumersStartupInitializer(IEnumerable<ITaskConsumer> taskConsumers,
-                                                  IEnumerable<IBroadcastConsumer> broadcastConsumers,
+        public MessageConsumersStartupInitializer(IEnumerable<IMessageConsumerSource> consumerSource,
                                                   RabbitMqManager manager,
                                                   IMessageSerializer messageSerializer,
                                                   ILog log,
                                                   IPerformanceLog performanceLog)
         {
-            _taskConsumers = taskConsumers;
-            _broadcastConsumers = broadcastConsumers;
+            _consumerSource = consumerSource;
             _manager = manager;
             _messageSerializer = messageSerializer;
             _log = log;
             _performanceLog = performanceLog;
         }
 
-        private readonly IEnumerable<IBroadcastConsumer> _broadcastConsumers;
+        private readonly IEnumerable<IMessageConsumerSource> _consumerSource;
+
         private readonly ILog _log;
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
         private readonly IPerformanceLog _performanceLog;
-        private readonly IEnumerable<ITaskConsumer> _taskConsumers;
 
         public override void OnAfterStart()
         {
@@ -55,8 +52,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             {
                 _log.Info("Starting consumer initialization.");
 
-                var taskConsumers = _taskConsumers.ToArray();
-                var broadcastConsumers = _broadcastConsumers.ToArray();
+                var selectMany = _consumerSource.SelectMany(source => source.GetConsumers()).ToArray();
+
+                var taskConsumers = selectMany.OfType<ITaskConsumer>().ToArray();
+                var broadcastConsumers = selectMany.OfType<IBroadcastConsumer>().ToArray();
 
                 InitializeTaskConsumers(taskConsumers);
                 _log.Info($"Initialization of {taskConsumers.Length} task consumers successfully completed.");

@@ -3,13 +3,13 @@
     /// <summary>
     /// Настройки кэширования.
     /// </summary>
-    internal sealed class CacheSettings
+    public sealed class CacheSettings
     {
         public const string SectionName = "cache";
 
         public const string MemoryCacheKey = "Memory";
 
-        public const string TwoLayerCacheKey = "Shared";
+        public const string SharedCacheKey = "Shared";
 
         public CacheSettings()
         {
