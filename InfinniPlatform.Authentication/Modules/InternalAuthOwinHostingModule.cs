@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Security;
 using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.AspNet.Identity;
 
@@ -15,7 +16,7 @@ namespace InfinniPlatform.Authentication.Modules
     {
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.InternalAuth;
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
         {
             // Регистрация метода для создания менеджера управления пользователями
             builder.CreatePerOwinContext(() => context.ContainerResolver.Resolve<UserManager<IdentityApplicationUser>>());
@@ -23,7 +24,9 @@ namespace InfinniPlatform.Authentication.Modules
             // Прослойка для установки информации об идентификационных данных текущего пользователя
             builder.Use((owinContext, nextOwinMiddleware) =>
                         {
-                            UserIdentityProvider.SetRequestUser(owinContext.Request.User);
+                            var requestUser = owinContext.Request.User;
+                            UserIdentityProvider.SetRequestUser(requestUser);
+                            log.SetUserId(requestUser?.Identity);
                             return nextOwinMiddleware.Invoke();
                         });
         }

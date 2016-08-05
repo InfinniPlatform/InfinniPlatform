@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Sdk.Queues;
 
-namespace InfinniPlatform.Sdk.Cache
+namespace InfinniPlatform.Caching.TwoLayer
 {
     /// <summary>
     /// Интерфейс синхронизации кэша через очередь сообщений.
@@ -19,6 +19,6 @@ namespace InfinniPlatform.Sdk.Cache
         /// Оповещает получателей об изменении значения по ключу.
         /// </summary>
         /// <param name="key">Ключ.</param>
-        void NotifyOnKeyChanged(string key);
+        Task NotifyOnKeyChanged(string key);
     }
 }

@@ -23,7 +23,7 @@ input {
 filter {
 	if [monitoring] == "Events" {
 		grok {
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level}\s+%{NOTSPACE:thread}\s+%{NOTSPACE:logger}\s+\[R:%{NOTSPACE:requestId}\s+S:%{NOTSPACE:sessionId}\] %{GREEDYDATA:body}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level}\s+%{NOTSPACE:thread}\s+%{NOTSPACE:logger}\s+\[R:%{NOTSPACE:requestId}\s+S:%{NOTSPACE:sessionId}\s+%{NOTSPACE:userId}\s+%{WORD:userName}\] %{GREEDYDATA:body}" ]
 		}
 
 #		if [level] =~ /(?i)trace/ { 
@@ -44,7 +44,7 @@ filter {
 	if [monitoring] == "Performance" {
 		grok {
 			patterns_dir => "./patterns"
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{NOTSPACE:correlationId} %{WORD:component} %{NOTSPACE:action} %{NONNEGINT:duration} %{GREEDYDATA:result}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{NOTSPACE:correlationId} %{WORD:component} %{NOTSPACE:userId} %{WORD:userName} %{NOTSPACE:action} %{NONNEGINT:duration} %{GREEDYDATA:result}" ]
 		}
 
 		if "_grokparsefailure" in [tags] { drop {} }
@@ -73,9 +73,5 @@ filter {
 }
 
 output {
-  elasticsearch {
-		host => "localhost"
-		port => 9200
-		protocol => "http"
-	}
+  elasticsearch { hosts => ["localhost:9200"] }
 }

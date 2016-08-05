@@ -6,6 +6,7 @@ using InfinniPlatform.Core.Factories;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Owin.Hosting
 {
@@ -14,10 +15,10 @@ namespace InfinniPlatform.Owin.Hosting
     /// </summary>
     public sealed class OwinHostingServiceFactory : IHostingServiceFactory
     {
-        public OwinHostingServiceFactory(IOwinHostingContext hostingContext)
+        public OwinHostingServiceFactory(IOwinHostingContext hostingContext, ILog log)
         {
             // Создание сервиса хостинга приложения на базе OWIN
-            var hostingService = new OwinHostingService(hostingContext);
+            var hostingService = new OwinHostingService(hostingContext, log);
 
             // Получение списка обработчиков событий приложения
             var appEventHandlers = hostingContext.ContainerResolver.Resolve<IEnumerable<IAppEventHandler>>();

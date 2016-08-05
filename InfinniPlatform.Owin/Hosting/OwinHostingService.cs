@@ -6,6 +6,7 @@ using System.Net;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Properties;
+using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.Owin.Hosting;
 
@@ -24,7 +25,7 @@ namespace InfinniPlatform.Owin.Hosting
         /// <param name="hostingContext">Контекст подсистемы хостинга на базе OWIN.</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public OwinHostingService(IOwinHostingContext hostingContext)
+        public OwinHostingService(IOwinHostingContext hostingContext, ILog log)
         {
             if (hostingContext == null)
             {
@@ -87,6 +88,7 @@ namespace InfinniPlatform.Owin.Hosting
 
 
             _hostingContext = hostingContext;
+            _log = log;
 
             _baseAddress = $"{scheme}://{server}:{port}/";
             _hostingModules = hostingContext.ContainerResolver.Resolve<IEnumerable<IOwinHostingModule>>().OrderBy(m => m.ModuleType);
@@ -94,6 +96,7 @@ namespace InfinniPlatform.Owin.Hosting
 
 
         private readonly IOwinHostingContext _hostingContext;
+        private readonly ILog _log;
 
         private readonly string _baseAddress;
         private readonly IEnumerable<IOwinHostingModule> _hostingModules;
@@ -211,7 +214,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             foreach (var module in _hostingModules)
             {
-                module.Configure(builder, _hostingContext);
+                module.Configure(builder, _hostingContext, _log);
             }
         }
     }
