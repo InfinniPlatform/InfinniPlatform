@@ -75,7 +75,7 @@ namespace InfinniPlatform.Authentication.IoC
                    .As<IUserCacheSynchronizer>()
                    .SingleInstance();
 
-            builder.RegisterType<AppUserStoreConsumer>()
+            builder.RegisterType<AppUserStoreCacheConsumer>()
                    .As<IBroadcastConsumer>()
                    .SingleInstance();
 

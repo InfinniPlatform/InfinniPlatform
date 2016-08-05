@@ -110,7 +110,7 @@ namespace InfinniPlatform.Caching.TwoLayer
             _memoryCache.Set(key, value);
             _sharedCache.Set(key, value);
 
-            Task.Run(async () => await NotifyOnKeyChanged(key));
+            NotifyOnKeyChangedAsync(key);
         }
 
         public bool Remove(string key)
@@ -137,7 +137,7 @@ namespace InfinniPlatform.Caching.TwoLayer
             {
                 if (deleted)
                 {
-                    Task.Run(() => NotifyOnKeyChanged(key));
+                    NotifyOnKeyChangedAsync(key);
                 }
             }
 
@@ -147,14 +147,6 @@ namespace InfinniPlatform.Caching.TwoLayer
 
         //ICacheSynchronizer
 
-
-        public async Task NotifyOnKeyChanged(string key)
-        {
-            if (_isSharedCacheEnabled)
-            {
-                await _broadcastProducer.PublishAsync(key, nameof(TwoLayerCacheImpl));
-            }
-        }
 
         public Task ProcessMessage(Message<string> message)
         {
@@ -184,6 +176,14 @@ namespace InfinniPlatform.Caching.TwoLayer
                                     }
                                 }
                             });
+        }
+
+        private async void NotifyOnKeyChangedAsync(string key)
+        {
+            if (_isSharedCacheEnabled)
+            {
+                await _broadcastProducer.PublishAsync(key, nameof(TwoLayerCacheImpl));
+            }
         }
     }
 }
