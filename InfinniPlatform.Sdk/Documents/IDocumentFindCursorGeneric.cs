@@ -10,6 +10,12 @@ namespace InfinniPlatform.Sdk.Documents
     public interface IDocumentFindCursor<TDocument, TProjection> : IDocumentCursor<TProjection>
     {
         /// <summary>
+        /// Добавляет условие фильтрации.
+        /// </summary>
+        /// <param name="filter">Фильтр для поиска документов.</param>
+        IDocumentFindCursor<TDocument, TProjection> Where(Expression<Func<TDocument, bool>> filter);
+
+        /// <summary>
         /// Создает проекцию для выборки документов.
         /// </summary>
         IDocumentFindCursor<TDocument, TNewProjection> Project<TNewProjection>(Expression<Func<TDocument, TNewProjection>> projection);

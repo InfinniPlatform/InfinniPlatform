@@ -80,6 +80,8 @@
     <Compile Include="Hosting\OwinHostingServiceFactory.cs" />
     <Compile Include="Security\IOwinContextProvider.cs" />
     <Compile Include="Security\OwinContextProvider.cs" />
+    <Compile Include="Services\HttpServiceContext.cs" />
+    <Compile Include="Services\HttpServiceContextProvider.cs" />
     <Compile Include="Services\HttpServiceNancyBootstrapper.cs" />
     <Compile Include="Services\HttpServiceNancyModule.cs" />
     <Compile Include="Services\HttpServiceSource.cs" />

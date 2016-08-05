@@ -14,15 +14,27 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// </summary>
     internal class MongoDocumentFindCursor<TDocument, TProjection> : MongoDocumentCursor<TProjection>, IDocumentFindSortedCursor<TDocument, TProjection>
     {
-        public MongoDocumentFindCursor(IFindFluent<TDocument, TProjection> fluentCursor, SortDefinition<TDocument> sortDefinitionDefinition = null, string textScoreProperty = null)
+        public static MongoDocumentFindCursor<TDocument, TDocument> Create(IMongoCollection<TDocument> collection, MongoDocumentFilterBuilder<TDocument> filterBuilder)
+        {
+            var emptyFilter = filterBuilder.EmptyMongoFilter();
+            var filterCursor = collection.Find(emptyFilter);
+
+            return new MongoDocumentFindCursor<TDocument, TDocument>(filterCursor, filterBuilder, null, null);
+        }
+
+
+        private MongoDocumentFindCursor(IFindFluent<TDocument, TProjection> fluentCursor, MongoDocumentFilterBuilder<TDocument> filterBuilder, SortDefinition<TDocument> sortDefinition, string textScoreProperty)
         {
             _fluentCursor = fluentCursor;
-            _sortDefinition = sortDefinitionDefinition;
+            _filterBuilder = filterBuilder;
+            _sortDefinition = sortDefinition;
             _textScoreProperty = textScoreProperty;
         }
 
 
         private readonly IFindFluent<TDocument, TProjection> _fluentCursor;
+        private readonly MongoDocumentFilterBuilder<TDocument> _filterBuilder;
+
         private SortDefinition<TDocument> _sortDefinition;
         private string _textScoreProperty;
 
@@ -30,10 +42,24 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         protected override IAsyncCursor<TProjection> Cursor => CreateCursor();
 
 
+        public IDocumentFindCursor<TDocument, TProjection> Where(Expression<Func<TDocument, bool>> filter)
+        {
+            var filterDefinition = _filterBuilder.CreateMongoFilter(filter);
+            _fluentCursor.Filter = _fluentCursor.Filter & filterDefinition;
+            return this;
+        }
+
+        public IDocumentFindCursor<TDocument, TProjection> Where(Func<IDocumentFilterBuilder, object> filter)
+        {
+            var filterDefinition = _filterBuilder.CreateMongoFilter(filter);
+            _fluentCursor.Filter = _fluentCursor.Filter & filterDefinition;
+            return this;
+        }
+
         public IDocumentFindCursor<TDocument, TNewProjection> Project<TNewProjection>(Expression<Func<TDocument, TNewProjection>> projection)
         {
-            var fluentCursor = _fluentCursor.Project(projection);
-            return new MongoDocumentFindCursor<TDocument, TNewProjection>(fluentCursor, _sortDefinition, _textScoreProperty);
+            var projectCursor = _fluentCursor.Project(projection);
+            return new MongoDocumentFindCursor<TDocument, TNewProjection>(projectCursor, _filterBuilder, _sortDefinition, _textScoreProperty);
         }
 
         public IDocumentFindSortedCursor<TDocument, TProjection> SortBy(Expression<Func<TDocument, object>> property)

@@ -22,7 +22,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         public object Empty()
         {
-            return InternalBuilder.Empty;
+            return EmptyMongoFilter();
         }
 
 
@@ -212,7 +212,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         public FilterDefinition<TDocument> CreateMongoFilter(Expression<Func<TDocument, bool>> filter)
         {
-            return filter ?? InternalBuilder.Empty;
+            return filter ?? EmptyMongoFilter();
+        }
+
+        public FilterDefinition<TDocument> EmptyMongoFilter()
+        {
+            return InternalBuilder.Empty;
         }
 
 

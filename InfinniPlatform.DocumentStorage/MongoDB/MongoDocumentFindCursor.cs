@@ -13,15 +13,17 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// </summary>
     internal sealed class MongoDocumentFindCursor : MongoDocumentCursor<DynamicWrapper>, IDocumentFindSortedCursor
     {
-        public MongoDocumentFindCursor(Lazy<IMongoCollection<DynamicWrapper>> collection, FilterDefinition<DynamicWrapper> filter)
+        public MongoDocumentFindCursor(Lazy<IMongoCollection<DynamicWrapper>> collection, MongoDocumentFilterBuilder<DynamicWrapper> filterBuilder)
         {
             _collection = collection;
-            _filter = filter;
+            _filterBuilder = filterBuilder;
         }
 
 
         private readonly Lazy<IMongoCollection<DynamicWrapper>> _collection;
-        private readonly FilterDefinition<DynamicWrapper> _filter;
+        private readonly MongoDocumentFilterBuilder<DynamicWrapper> _filterBuilder;
+
+        private FilterDefinition<DynamicWrapper> _filter;
         private ProjectionDefinition<DynamicWrapper> _projection;
         private SortDefinition<DynamicWrapper> _sort;
         private int? _skip;
@@ -30,6 +32,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         protected override IAsyncCursor<DynamicWrapper> Cursor => CreateCursor();
 
+
+        public IDocumentFindCursor Where(Func<IDocumentFilterBuilder, object> filter)
+        {
+            var filterDefinition = _filterBuilder.CreateMongoFilter(filter);
+            _filter = (_filter != null) ? _filter & filterDefinition : filterDefinition;
+            return this;
+        }
 
         public IDocumentFindCursor Project(Action<IDocumentProjectionBuilder> projection)
         {
@@ -113,7 +122,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                 findOptions.Sort = _sort;
             }
 
-            return _collection.Value.FindSync(_filter, findOptions);
+            return _collection.Value.FindSync(_filter ?? _filterBuilder.EmptyMongoFilter(), findOptions);
         }
     }
 }
