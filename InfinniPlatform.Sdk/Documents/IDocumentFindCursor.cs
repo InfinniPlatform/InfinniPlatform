@@ -11,6 +11,12 @@ namespace InfinniPlatform.Sdk.Documents
     public interface IDocumentFindCursor : IDocumentCursor<DynamicWrapper>
     {
         /// <summary>
+        /// Добавляет условие фильтрации.
+        /// </summary>
+        /// <param name="filter">Фильтр для поиска документов.</param>
+        IDocumentFindCursor Where(Func<IDocumentFilterBuilder, object> filter);
+
+        /// <summary>
         /// Создает проекцию для выборки документов.
         /// </summary>
         IDocumentFindCursor Project(Action<IDocumentProjectionBuilder> projection);

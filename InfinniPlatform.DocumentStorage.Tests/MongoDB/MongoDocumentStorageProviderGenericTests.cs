@@ -905,6 +905,44 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
+        public void ShouldFindByWhere()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider<SimpleEntity>(nameof(ShouldFindWithSort));
+
+            // When
+
+            storage.InsertMany(new[]
+                               {
+                                   new SimpleEntity { _id = 1, prop1 = "A", prop2 = 11 },
+                                   new SimpleEntity { _id = 2, prop1 = "A", prop2 = 11 },
+                                   new SimpleEntity { _id = 3, prop1 = "A", prop2 = 12 },
+                                   new SimpleEntity { _id = 4, prop1 = "B", prop2 = 11 },
+                                   new SimpleEntity { _id = 5, prop1 = "B", prop2 = 11 },
+                                   new SimpleEntity { _id = 6, prop1 = "B", prop2 = 12 }
+                               });
+
+            var resultA11 = storage.Find()
+                                   .Where(i => i.prop1 == "A")
+                                   .Where(i => i.prop2 == 11)
+                                   .ToList();
+
+            var resultA12 = storage.Find()
+                                   .Where(i => i.prop1 == "A")
+                                   .Where(i => i.prop2 == 12)
+                                   .ToList();
+
+            // Then
+
+            Assert.AreEqual(2, resultA11.Count);
+            Assert.AreEqual(1, resultA11[0]._id);
+            Assert.AreEqual(2, resultA11[1]._id);
+
+            Assert.AreEqual(1, resultA12.Count);
+            Assert.AreEqual(3, resultA12[0]._id);
+        }
+
+        [Test]
         public void ShouldFindWithSort()
         {
             // Given

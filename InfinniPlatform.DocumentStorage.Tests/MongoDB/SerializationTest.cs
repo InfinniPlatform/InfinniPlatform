@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.MongoDB.Conventions;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -74,8 +73,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         public void Insert()
         {
             var sourceMock = new Mock<IDocumentKnownTypeSource>();
-            sourceMock.Setup(source => source.KnownTypes)
-                      .Returns(new[] { typeof(C1), typeof(C2) });
+            sourceMock.Setup(source => source.KnownTypes).Returns(new[] { typeof(C1), typeof(C2) });
 
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(SerializationTest), source: sourceMock.Object);
             var storageGeneric = MongoTestHelpers.GetEmptyStorageProvider<Doc>(nameof(SerializationTest), source: sourceMock.Object);

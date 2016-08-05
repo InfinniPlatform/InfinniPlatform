@@ -981,6 +981,44 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
+        public void ShouldFindByWhere()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByWhere));
+
+            // When
+
+            storage.InsertMany(new[]
+                               {
+                                   new DynamicWrapper { { "_id", 1 }, { "prop1", "A" }, { "prop2", 11 } },
+                                   new DynamicWrapper { { "_id", 2 }, { "prop1", "A" }, { "prop2", 11 } },
+                                   new DynamicWrapper { { "_id", 3 }, { "prop1", "A" }, { "prop2", 12 } },
+                                   new DynamicWrapper { { "_id", 4 }, { "prop1", "B" }, { "prop2", 11 } },
+                                   new DynamicWrapper { { "_id", 5 }, { "prop1", "B" }, { "prop2", 11 } },
+                                   new DynamicWrapper { { "_id", 6 }, { "prop1", "B" }, { "prop2", 12 } }
+                               });
+
+            var resultA11 = storage.Find()
+                                   .Where(f => f.Eq("prop1", "A"))
+                                   .Where(f => f.Eq("prop2", 11))
+                                   .ToList();
+
+            var resultA12 = storage.Find()
+                                   .Where(f => f.Eq("prop1", "A"))
+                                   .Where(f => f.Eq("prop2", 12))
+                                   .ToList();
+
+            // Then
+
+            Assert.AreEqual(2, resultA11.Count);
+            Assert.AreEqual(1, ((dynamic)resultA11[0])._id);
+            Assert.AreEqual(2, ((dynamic)resultA11[1])._id);
+
+            Assert.AreEqual(1, resultA12.Count);
+            Assert.AreEqual(3, ((dynamic)resultA12[0])._id);
+        }
+
+        [Test]
         public void ShouldFindWithSort()
         {
             // Given
