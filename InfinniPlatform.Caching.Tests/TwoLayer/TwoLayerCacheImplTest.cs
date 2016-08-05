@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.Sdk.Logging;

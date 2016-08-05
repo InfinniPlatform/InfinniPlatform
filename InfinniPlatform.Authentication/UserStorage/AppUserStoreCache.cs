@@ -125,7 +125,7 @@ namespace InfinniPlatform.Authentication.UserStorage
                         SetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin), user);
                     }
 
-                    Task.Run(async () => await NotifyOnUserChanged(user.Id));
+                    NotifyOnUserChanged(user.Id);
                 }
             }
             finally
@@ -156,12 +156,6 @@ namespace InfinniPlatform.Authentication.UserStorage
         //IUserCacheSynchronizer
 
 
-        public async Task NotifyOnUserChanged(string userId)
-        {
-            // Оповещаем другие узлы об изменении сведений пользователя
-            await _broadcastProducer.PublishAsync(userId);
-        }
-
         public Task ProcessMessage(Message<string> message)
         {
             return Task.Run(() =>
@@ -187,6 +181,12 @@ namespace InfinniPlatform.Authentication.UserStorage
                     _log.Error(e);
                 }
             });
+        }
+
+        private async void NotifyOnUserChanged(string userId)
+        {
+            // Оповещаем другие узлы об изменении сведений пользователя
+            await _broadcastProducer.PublishAsync(userId);
         }
 
         private void OnRemoveUserFromCache(CacheEntryRemovedArguments args)

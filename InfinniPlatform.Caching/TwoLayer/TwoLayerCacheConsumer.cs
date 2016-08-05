@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 
@@ -19,10 +18,9 @@ namespace InfinniPlatform.Caching.TwoLayer
 
         private readonly ICacheSynchronizer _cache;
 
-        protected override Task Consume(Message<string> message)
+        protected override async Task Consume(Message<string> message)
         {
-            _cache.ProcessMessage(message);
-            return Task.FromResult<object>(null);
+            await _cache.ProcessMessage(message);
         }
     }
 }
