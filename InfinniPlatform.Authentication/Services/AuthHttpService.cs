@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Properties;
-using InfinniPlatform.Core.Security;
 using InfinniPlatform.Owin;
 using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Sdk.Logging;
@@ -256,12 +255,15 @@ namespace InfinniPlatform.Authentication.Services
             AuthenticationManager.SignOut();
 
             var owinResponse = OwinContext.Response;
-            var response = new HttpResponse(owinResponse.StatusCode, owinResponse.ContentType)
-            {
-                ReasonPhrase = owinResponse.ReasonPhrase,
-            };
 
-            return Task.FromResult<object>(CreateSuccesResponse(response));
+            var response = new JsonHttpResponse(new ServiceResult<object> { Success = true })
+                           {
+                               StatusCode = owinResponse.StatusCode,
+                               ContentType = owinResponse.ContentType,
+                               ReasonPhrase = owinResponse.ReasonPhrase
+                           };
+
+            return Task.FromResult<object>(response);
         }
 
         // EXTERNAL PROVIDERS

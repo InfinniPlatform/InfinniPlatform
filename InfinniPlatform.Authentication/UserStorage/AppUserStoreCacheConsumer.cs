@@ -10,7 +10,7 @@ namespace InfinniPlatform.Authentication.UserStorage
     /// Обработчик сообщений синхронизации кэша пользователей.
     /// </summary>
     [QueueName(nameof(AppUserStoreCache))]
-    internal class AppUserStoreCacheConsumer : BroadcastConsumerBase<string>
+    public class AppUserStoreCacheConsumer : BroadcastConsumerBase<string>
     {
         public AppUserStoreCacheConsumer(Lazy<IUserCacheSynchronizer> userCacheSynchronizer)
         {
