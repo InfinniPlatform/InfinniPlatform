@@ -5,6 +5,7 @@ using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Caching;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Producers;
@@ -18,7 +19,8 @@ namespace InfinniPlatform.Authentication.UserStorage
         public AppUserStoreCache(UserStorageSettings userStorageSettings,
                                  ILog log,
                                  IBroadcastProducer broadcastProducer,
-                                 IAppEnvironment appEnvironment)
+                                 IAppEnvironment appEnvironment,
+                                 CacheSettings cacheSettings)
         {
             var cacheTimeout = userStorageSettings.UserCacheTimeout <= 0
                                    ? UserStorageSettings.DefaultUserCacheTimeout
@@ -28,6 +30,7 @@ namespace InfinniPlatform.Authentication.UserStorage
             _log = log;
             _broadcastProducer = broadcastProducer;
             _appEnvironment = appEnvironment;
+            _cacheSettings = cacheSettings;
 
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
@@ -39,6 +42,7 @@ namespace InfinniPlatform.Authentication.UserStorage
         }
 
         private readonly IAppEnvironment _appEnvironment;
+        private readonly CacheSettings _cacheSettings;
         private readonly IBroadcastProducer _broadcastProducer;
 
         private readonly ReaderWriterLockSlim _cacheLockSlim;
@@ -125,7 +129,7 @@ namespace InfinniPlatform.Authentication.UserStorage
                         SetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin), user);
                     }
 
-                    Task.Run(async () => await NotifyOnUserChanged(user.Id));
+                    NotifyOnUserChanged(user.Id);
                 }
             }
             finally
@@ -156,12 +160,6 @@ namespace InfinniPlatform.Authentication.UserStorage
         //IUserCacheSynchronizer
 
 
-        public async Task NotifyOnUserChanged(string userId)
-        {
-            // Оповещаем другие узлы об изменении сведений пользователя
-            await _broadcastProducer.PublishAsync(userId);
-        }
-
         public Task ProcessMessage(Message<string> message)
         {
             return Task.Run(() =>
@@ -187,6 +185,15 @@ namespace InfinniPlatform.Authentication.UserStorage
                     _log.Error(e);
                 }
             });
+        }
+
+        private async void NotifyOnUserChanged(string userId)
+        {
+            // Оповещаем другие узлы об изменении сведений пользователя при работе с распределенным кэшем.
+            if (_cacheSettings.Type == CacheSettings.SharedCacheKey)
+            {
+                await _broadcastProducer.PublishAsync(userId);
+            }
         }
 
         private void OnRemoveUserFromCache(CacheEntryRemovedArguments args)

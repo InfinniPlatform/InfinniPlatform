@@ -14,11 +14,5 @@ namespace InfinniPlatform.Authentication.UserStorage
         /// </summary>
         /// <param name="message">Сообщение из очереди.</param>
         Task ProcessMessage(Message<string> message);
-
-        /// <summary>
-        /// Оповестить получателей об изменении пользователя.
-        /// </summary>
-        /// <param name="userId">Идентификатор пользователя.</param>
-        Task NotifyOnUserChanged(string userId);
     }
 }

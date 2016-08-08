@@ -73,8 +73,8 @@
         2,
         3,
         4,
-        6,
-        5
+        5,
+        6
       ]
     },
     "filter": {
@@ -82,7 +82,7 @@
         "0": {
           "type": "time",
           "field": "@timestamp",
-          "from": "now-24h",
+          "from": "now-2d",
           "to": "now",
           "mandate": "must",
           "active": true,
@@ -336,6 +336,45 @@
           "tstat": "total",
           "valuefield": "duration",
           "title": "Request"
+        },
+        {
+          "error": false,
+          "span": 6,
+          "editable": true,
+          "type": "terms",
+          "loadingEditor": false,
+          "field": "userName.raw",
+          "exclude": [],
+          "missing": false,
+          "other": false,
+          "size": 10,
+          "order": "total",
+          "style": {
+            "font-size": "12pt"
+          },
+          "donut": true,
+          "tilt": false,
+          "labels": true,
+          "arrangement": "horizontal",
+          "chart": "bar",
+          "counter_pos": "below",
+          "spyable": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
+          },
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "duration",
+          "title": "Users"
         }
       ],
       "notice": false
@@ -689,7 +728,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "10m",
+          "interval": "30m",
           "intervals": [
             "auto",
             "1s",
@@ -770,7 +809,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "10m",
+          "interval": "30m",
           "intervals": [
             "auto",
             "1s",
@@ -835,32 +874,21 @@
           "overflow": "min-height",
           "fields": [
             "@timestamp",
-            "@version",
-            "_id",
-            "_index",
-            "_type",
             "ctx.documentType",
-            "host",
-            "layer",
             "thread",
-            "source",
             "sessionId",
             "requestId",
-            "monitoring",
             "msg",
             "logger",
             "level",
-            "action",
-            "component",
-            "duration",
-            "qualifiedAction"
+            "userId"
           ],
           "highlight": [],
           "sortable": true,
           "header": true,
           "paging": true,
           "field_list": true,
-          "all_fields": false,
+          "all_fields": true,
           "trimFactor": 300,
           "localTime": false,
           "timeField": "@timestamp",
@@ -969,7 +997,16 @@
       "notice": false,
       "query": "*",
       "pinned": true,
-      "history": [],
+      "history": [
+        "component:\"OWIN\"",
+        "level:\"ERROR\"",
+        "component:\"Redis\"",
+        "component:\"BlobHttpService\"",
+        "component:\"BlobStorage\"",
+        "component:\"Nancy\"",
+        "component:\"DocumentHttpService\"",
+        "userId"
+      ],
       "remember": 10,
       "enable": true
     },

@@ -5,6 +5,7 @@ using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Queues.Producers;
 using InfinniPlatform.Sdk.Settings;
@@ -45,6 +46,10 @@ namespace InfinniPlatform.MessageQueue.IoC
 
             builder.RegisterType<MessageSerializer>()
                    .As<IMessageSerializer>()
+                   .SingleInstance();
+
+            builder.RegisterType<MessageConsumerSource>()
+                   .As<IMessageConsumerSource>()
                    .SingleInstance();
         }
 

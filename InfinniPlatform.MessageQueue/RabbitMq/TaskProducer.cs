@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
-using InfinniPlatform.Core;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
 
 using RabbitMQ.Client.Framing;
@@ -13,11 +14,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     internal sealed class TaskProducer : ITaskProducer
     {
         public TaskProducer(RabbitMqManager manager,
-                            IMessageSerializer messageSerializer)
+                            IMessageSerializer messageSerializer,
+                            ILog log)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
+            _log = log;
         }
+
+        private readonly ILog _log;
 
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
@@ -54,9 +59,16 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
             using (var channel = _manager.GetChannel())
             {
-                _manager.DeclareTaskQueue(routingKey);
+                try
+                {
+                    _manager.DeclareTaskQueue(routingKey);
 
-                channel.BasicPublish(string.Empty, routingKey, basicProperties, messageBodyToBytes);
+                    channel.BasicPublish(string.Empty, routingKey, basicProperties, messageBodyToBytes);
+                }
+                catch (Exception e)
+                {
+                    _log.Error(e);
+                }
             }
         }
     }

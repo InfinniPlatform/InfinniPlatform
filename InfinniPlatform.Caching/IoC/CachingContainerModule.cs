@@ -6,7 +6,7 @@ using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Queues.Consumers;
+using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 
@@ -48,7 +48,11 @@ namespace InfinniPlatform.Caching.IoC
                    .SingleInstance();
 
             builder.RegisterType<TwoLayerCacheConsumer>()
-                   .As<IBroadcastConsumer>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<CachingMessageConsumerSource>()
+                   .As<IMessageConsumerSource>()
                    .SingleInstance();
 
             builder.RegisterType<MemoryCacheImpl>()

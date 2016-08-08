@@ -14,11 +14,5 @@ namespace InfinniPlatform.Caching.TwoLayer
         /// </summary>
         /// <param name="message">Сообщение из очереди.</param>
         Task ProcessMessage(Message<string> message);
-
-        /// <summary>
-        /// Оповещает получателей об изменении значения по ключу.
-        /// </summary>
-        /// <param name="key">Ключ.</param>
-        Task NotifyOnKeyChanged(string key);
     }
 }
