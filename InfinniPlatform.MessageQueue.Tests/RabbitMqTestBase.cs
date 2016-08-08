@@ -35,7 +35,7 @@ namespace InfinniPlatform.MessageQueue.Tests
             logMock.Setup(log => log.Error(It.IsAny<object>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<Exception>()))
                    .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
 
-            RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object);
+            RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object, logMock.Object);
             RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqConnectionSettings.Default);
 
             var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();

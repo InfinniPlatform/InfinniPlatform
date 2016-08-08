@@ -1,9 +1,9 @@
 ﻿using System;
 
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
 
 using RabbitMQ.Client;
-using RabbitMQ.Client.Exceptions;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 {
@@ -13,8 +13,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
     internal sealed class RabbitMqManager
     {
         public RabbitMqManager(RabbitMqConnectionSettings connectionSettings,
-                               IAppEnvironment appEnvironment)
+                               IAppEnvironment appEnvironment,
+                               ILog log)
         {
+            _log = log;
             BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Fanout}";
             AppId = appEnvironment.Id;
 
@@ -39,8 +41,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         }
 
         private readonly Lazy<IConnection> _connection;
+        private readonly ILog _log;
 
         public string BroadcastExchangeName { get; }
+
         public string AppId { get; }
 
         /// <summary>
@@ -63,9 +67,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 
                 return channel;
             }
-            catch (AlreadyClosedException e)
+            catch (Exception e)
             {
-                throw new AggregateException(e);
+                _log.Error(new AggregateException(e));
+                return null;
             }
         }
 
