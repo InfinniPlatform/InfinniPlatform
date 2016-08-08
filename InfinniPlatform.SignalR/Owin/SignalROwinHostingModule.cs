@@ -5,13 +5,22 @@ using Microsoft.AspNet.SignalR;
 
 using Owin;
 
-namespace InfinniPlatform.SignalR.Modules
+namespace InfinniPlatform.PushNotification.Owin
 {
     /// <summary>
     /// Модуль хостинга обработчика запросов ASP.NET SignalR.
     /// </summary>
-    internal sealed class SignalROwinHostingModule : IOwinHostingModule
+    public class SignalROwinHostingModule : IOwinHostingModule
     {
+        public SignalROwinHostingModule(IDependencyResolver dependencyResolver)
+        {
+            _dependencyResolver = dependencyResolver;
+        }
+
+
+        private readonly IDependencyResolver _dependencyResolver;
+
+
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.AspNetSignalR;
 
 
@@ -20,7 +29,7 @@ namespace InfinniPlatform.SignalR.Modules
             var config = new HubConfiguration
             {
                 EnableDetailedErrors = true,
-                Resolver = SignalRGlobalHost.Resolver
+                Resolver = _dependencyResolver
             };
 
             builder.MapSignalR(config);

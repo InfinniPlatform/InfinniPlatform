@@ -1,10 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Globalization;
-using System.IO;
 using System.Threading;
 
-using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Settings;
 using InfinniPlatform.IoC.Owin;
@@ -16,57 +13,48 @@ using InfinniPlatform.Sdk.Hosting;
 namespace InfinniPlatform.NodeServiceHost
 {
     [Export("InfinniPlatformServiceHost")]
-    public sealed class InfinniPlatformServiceHost
+    public sealed class ServiceHost
     {
-        private volatile Status _status = Status.Stopped;
         private readonly object _statusSync = new object();
-        private readonly Lazy<IHostingService> _hostingService = new Lazy<IHostingService>(CreateHostingService, LazyThreadSafetyMode.ExecutionAndPublication);
+        private volatile ServiceHostStatus _serviceHostStatus = ServiceHostStatus.Stopped;
+        private readonly Lazy<ServiceHostInstance> _serviceHostInstance = new Lazy<ServiceHostInstance>(CreateHostingService, LazyThreadSafetyMode.ExecutionAndPublication);
 
 
-        public string GetStatus()
-        {
-            return _status.ToString();
-        }
+        public string Status => _serviceHostStatus.ToString();
+
+        public IOwinHostingContext HostingContext => _serviceHostInstance.Value.OwinHostingContext;
+
 
         public void Start(TimeSpan timeout)
         {
-            if (_status != Status.Running && _status != Status.StartPending)
+            if (_serviceHostStatus != ServiceHostStatus.Running && _serviceHostStatus != ServiceHostStatus.StartPending)
             {
                 lock (_statusSync)
                 {
-                    if (_status != Status.Running && _status != Status.StartPending)
+                    if (_serviceHostStatus != ServiceHostStatus.Running && _serviceHostStatus != ServiceHostStatus.StartPending)
                     {
-                        var prevStatus = _status;
+                        var prevStatus = _serviceHostStatus;
 
-                        _status = Status.StartPending;
+                        _serviceHostStatus = ServiceHostStatus.StartPending;
 
                         try
                         {
                             Logger.Log.Info(Resources.ServiceHostIsStarting);
 
-                            _hostingService.Value.Start();
+                            _serviceHostInstance.Value.HostingService.Start();
 
                             Logger.Log.Info(Resources.ServiceHostHasBeenSuccessfullyStarted);
                         }
                         catch (Exception error)
                         {
-                            if (error.GetType() == typeof(FileNotFoundException))
-                            {
-                                Logger.Log.Fatal($"Cannot find resources file for current culture ({CultureInfo.CurrentCulture.Name})", null, error);
-
-                                _status = prevStatus;
-
-                                throw;
-                            }
-
                             Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, null, error);
 
-                            _status = prevStatus;
+                            _serviceHostStatus = prevStatus;
 
                             throw;
                         }
 
-                        _status = Status.Running;
+                        _serviceHostStatus = ServiceHostStatus.Running;
                     }
                 }
             }
@@ -74,21 +62,21 @@ namespace InfinniPlatform.NodeServiceHost
 
         public void Stop(TimeSpan timeout)
         {
-            if (_status != Status.Stopped && _status != Status.StopPending)
+            if (_serviceHostStatus != ServiceHostStatus.Stopped && _serviceHostStatus != ServiceHostStatus.StopPending)
             {
                 lock (_statusSync)
                 {
-                    if (_status != Status.Stopped && _status != Status.StopPending)
+                    if (_serviceHostStatus != ServiceHostStatus.Stopped && _serviceHostStatus != ServiceHostStatus.StopPending)
                     {
-                        var prevStatus = _status;
+                        var prevStatus = _serviceHostStatus;
 
-                        _status = Status.StopPending;
+                        _serviceHostStatus = ServiceHostStatus.StopPending;
 
                         try
                         {
                             Logger.Log.Info(Resources.ServiceHostIsStopping);
 
-                            _hostingService.Value.Stop();
+                            _serviceHostInstance.Value.HostingService.Stop();
 
                             Logger.Log.Info(Resources.ServiceHostHasBeenSuccessfullyStopped);
                         }
@@ -96,29 +84,29 @@ namespace InfinniPlatform.NodeServiceHost
                         {
                             Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStopped, null, error);
 
-                            _status = prevStatus;
+                            _serviceHostStatus = prevStatus;
 
                             throw;
                         }
 
-                        _status = Status.Stopped;
+                        _serviceHostStatus = ServiceHostStatus.Stopped;
                     }
                 }
             }
         }
 
 
-        private static IHostingService CreateHostingService()
+        private static ServiceHostInstance CreateHostingService()
         {
             var owinHostingContext = GetOwinHostingContext();
             var owinHostingServiceFactory = new OwinHostingServiceFactory(owinHostingContext, Logger.Log);
             var owinHostingService = owinHostingServiceFactory.CreateHostingService();
 
-            return owinHostingService;
+            return new ServiceHostInstance(owinHostingService, owinHostingContext);
         }
 
 
-        public static IOwinHostingContext GetOwinHostingContext()
+        private static IOwinHostingContext GetOwinHostingContext()
         {
             // Поскольку в данном контексте IoC еще не доступен, настройки читаются напрямую
             var hostingConfig = AppConfiguration.Instance.GetSection<HostingConfig>(HostingConfig.SectionName);
@@ -127,15 +115,6 @@ namespace InfinniPlatform.NodeServiceHost
             var owinHostingContext = owinHostingContextFactory.CreateOwinHostingContext(hostingConfig);
 
             return owinHostingContext;
-        }
-
-
-        public enum Status
-        {
-            Stopped,
-            StartPending,
-            Running,
-            StopPending
         }
     }
 }

@@ -1,20 +1,46 @@
 ﻿using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.ClientNotification;
+using InfinniPlatform.PushNotification.Owin;
+using InfinniPlatform.PushNotification.SignalR;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.SignalR.Modules;
+using InfinniPlatform.Sdk.PushNotification;
 
-namespace InfinniPlatform.SignalR.IoC
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
+
+namespace InfinniPlatform.PushNotification.IoC
 {
-    internal sealed class SignalRContainerModule : IContainerModule
+    public class SignalRContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {
+            // Список всех точек обмена SignalR
+
+            builder.RegisterType<SignalRPushNotificationServiceHub>()
+                   .AsSelf()
+                   .As<IHub>()
+                   .InstancePerDependency()
+                   .ExternallyOwned();
+
+            // Внутренние зависимости SignalR
+
+            builder.RegisterType<SignalRDependencyResolver>()
+                   .As<IDependencyResolver>()
+                   .SingleInstance();
+
+            builder.RegisterType<SignalRHubDescriptorProvider>()
+                   .As<IHubDescriptorProvider>()
+                   .SingleInstance();
+
+            // Модуль OWIN для SignalR
+
             builder.RegisterType<SignalROwinHostingModule>()
                    .As<IOwinHostingModule>()
                    .SingleInstance();
 
-            builder.RegisterType<ClientNotificationService>()
-                   .As<IClientNotificationService>()
+            // Публичные контракты
+
+            builder.RegisterType<SignalRPushNotificationService>()
+                   .As<IPushNotificationService>()
                    .SingleInstance();
         }
     }

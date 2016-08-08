@@ -88,7 +88,7 @@ namespace InfinniPlatform.Core.Settings
                 return commonConfig;
             }
 
-            return commonConfig ?? extensionConfig;
+            return (commonConfig ?? extensionConfig) ?? new JObject();
         }
     }
 }

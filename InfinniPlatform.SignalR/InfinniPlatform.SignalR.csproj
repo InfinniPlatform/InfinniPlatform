@@ -7,8 +7,8 @@
     <ProjectGuid>{C78BFC13-E956-4229-A2FF-7D95AC9CA74F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InfinniPlatform.SignalR</RootNamespace>
-    <AssemblyName>InfinniPlatform.SignalR</AssemblyName>
+    <RootNamespace>InfinniPlatform.PushNotification</RootNamespace>
+    <AssemblyName>InfinniPlatform.PushNotification</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -73,8 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IoC\SignalRContainerModule.cs" />
-    <Compile Include="Modules\SignalRGlobalHost.cs" />
-    <Compile Include="Modules\ClientNotificationServiceHub.cs" />
+    <Compile Include="SignalR\SignalRDependencyResolver.cs" />
+    <Compile Include="SignalR\SignalRHubDescriptorProvider.cs" />
+    <Compile Include="SignalR\SignalRPushNotificationServiceHub.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
@@ -84,8 +85,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Modules\ClientNotificationService.cs" />
-    <Compile Include="Modules\SignalROwinHostingModule.cs" />
+    <Compile Include="SignalR\SignalRPushNotificationService.cs" />
+    <Compile Include="Owin\SignalROwinHostingModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
