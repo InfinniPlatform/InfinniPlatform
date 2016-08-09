@@ -256,12 +256,7 @@ namespace InfinniPlatform.Authentication.Services
 
             var owinResponse = OwinContext.Response;
 
-            var response = new JsonHttpResponse(new ServiceResult<object> { Success = true })
-                           {
-                               StatusCode = owinResponse.StatusCode,
-                               ContentType = owinResponse.ContentType,
-                               ReasonPhrase = owinResponse.ReasonPhrase
-                           };
+            var response = new JsonHttpResponse(new ServiceResult<object> { Success = true }) { StatusCode = owinResponse.StatusCode };
 
             return Task.FromResult<object>(response);
         }
