@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.Sdk.Logging;
 
 using Owin;
 
@@ -13,7 +12,7 @@ namespace InfinniPlatform.Owin.Modules
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.ErrorHandling;
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             builder.Use(context.OwinMiddlewareResolver.ResolveType<ErrorHandlingOwinMiddleware>());
         }

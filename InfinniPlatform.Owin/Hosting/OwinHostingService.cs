@@ -214,7 +214,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             foreach (var module in _hostingModules)
             {
-                module.Configure(builder, _hostingContext, _log);
+                module.Configure(builder, _hostingContext);
             }
         }
     }

@@ -81,7 +81,7 @@ namespace InfinniPlatform.Cors.Tests
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.Application;
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             builder.Use(typeof(FakeOwinHandler));
         }

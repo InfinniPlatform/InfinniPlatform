@@ -14,9 +14,19 @@ namespace InfinniPlatform.Authentication.Modules
     /// </summary>
     internal sealed class InternalAuthOwinHostingModule : IOwinHostingModule
     {
+        public InternalAuthOwinHostingModule(ILog log)
+        {
+            _log = log;
+        }
+
+
+        private readonly ILog _log;
+
+
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.InternalAuth;
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
+
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             // Регистрация метода для создания менеджера управления пользователями
             builder.CreatePerOwinContext(() => context.ContainerResolver.Resolve<UserManager<IdentityApplicationUser>>());
@@ -25,8 +35,11 @@ namespace InfinniPlatform.Authentication.Modules
             builder.Use((owinContext, nextOwinMiddleware) =>
                         {
                             var requestUser = owinContext.Request.User;
+
                             UserIdentityProvider.SetRequestUser(requestUser);
-                            log.SetUserId(requestUser?.Identity);
+
+                            _log.SetUserId(requestUser?.Identity);
+
                             return nextOwinMiddleware.Invoke();
                         });
         }

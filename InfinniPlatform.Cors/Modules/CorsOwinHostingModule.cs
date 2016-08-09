@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.Owin.Cors;
 
@@ -15,7 +14,7 @@ namespace InfinniPlatform.Cors.Modules
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.Cors;
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             // TODO: Добавить правила CORS проверки из конфигурации
 

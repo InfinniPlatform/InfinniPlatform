@@ -2,7 +2,6 @@
 
 using InfinniPlatform.Authentication.DataProtectors;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.Identity;
@@ -31,7 +30,7 @@ namespace InfinniPlatform.Authentication.Modules
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.CookieAuth;
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             // Домен для создания cookie
             var cookieDomain = _settings.CookieDomain;

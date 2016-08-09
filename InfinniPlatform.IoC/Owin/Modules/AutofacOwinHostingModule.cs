@@ -2,7 +2,6 @@
 
 using InfinniPlatform.IoC.Owin.Middleware;
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Logging;
 
 using Owin;
 
@@ -22,7 +21,7 @@ namespace InfinniPlatform.IoC.Owin.Modules
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.IoC;
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             builder.Use(typeof(AutofacRequestLifetimeScopeOwinMiddleware), _container);
         }

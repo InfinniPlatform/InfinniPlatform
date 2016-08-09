@@ -1,7 +1,6 @@
 ﻿using Duke.Owin.VkontakteMiddleware;
 
 using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
 
 using Owin;
@@ -25,7 +24,7 @@ namespace InfinniPlatform.Authentication.Modules
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             if (_settings.Enable)
             {

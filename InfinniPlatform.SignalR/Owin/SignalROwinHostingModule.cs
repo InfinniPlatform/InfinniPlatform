@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.AspNet.SignalR;
 
@@ -24,7 +23,7 @@ namespace InfinniPlatform.PushNotification.Owin
         public OwinHostingModuleType ModuleType => OwinHostingModuleType.AspNetSignalR;
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context, ILog log)
+        public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
             var config = new HubConfiguration
             {
