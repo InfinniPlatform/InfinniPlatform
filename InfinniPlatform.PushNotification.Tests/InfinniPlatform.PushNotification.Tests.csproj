@@ -91,7 +91,7 @@
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.SignalR\InfinniPlatform.PushNotification.csproj">
+    <ProjectReference Include="..\InfinniPlatform.PushNotification\InfinniPlatform.PushNotification.csproj">
       <Project>{c78bfc13-e956-4229-a2ff-7d95ac9ca74f}</Project>
       <Name>InfinniPlatform.PushNotification</Name>
     </ProjectReference>
