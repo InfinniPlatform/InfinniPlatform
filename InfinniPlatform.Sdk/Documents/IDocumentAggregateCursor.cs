@@ -20,8 +20,7 @@ namespace InfinniPlatform.Sdk.Documents
         IDocumentAggregateCursor Unwind(string arrayProperty);
 
         /// <summary>
-        /// Группирует исходные документы по указанному выражению и производит вычисление заданных функций агрегации для каждой
-        /// группы.
+        /// Группирует исходные документы по указанному выражению и производит вычисление заданных функций агрегации для каждой группы.
         /// </summary>
         /// <param name="group">Правило группировки и агрегации групп данных.</param>
         IDocumentAggregateCursor Group(DynamicWrapper group);

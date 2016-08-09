@@ -25,14 +25,18 @@ namespace InfinniPlatform.Authentication.Services
     /// </summary>
     internal class AuthHttpService : IHttpService
     {
-        public AuthHttpService(IOwinContextProvider owinContextProvider, IUserIdentityProvider userIdentityProvider)
+        public AuthHttpService(IOwinContextProvider owinContextProvider, IUserIdentityProvider userIdentityProvider, UserEventHandlerInvoker userEventHandlerInvoker)
         {
             _owinContextProvider = owinContextProvider;
             _userIdentityProvider = userIdentityProvider;
+            _userEventHandlerInvoker = userEventHandlerInvoker;
         }
+
 
         private readonly IOwinContextProvider _owinContextProvider;
         private readonly IUserIdentityProvider _userIdentityProvider;
+        private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
+
 
         private IIdentity Identity => _userIdentityProvider.GetUserIdentity();
 
@@ -41,6 +45,7 @@ namespace InfinniPlatform.Authentication.Services
         private IAuthenticationManager AuthenticationManager => OwinContext.Authentication;
 
         private UserManager<IdentityApplicationUser> ApplicationUserManager => OwinContext.GetUserManager<UserManager<IdentityApplicationUser>>();
+
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -62,6 +67,7 @@ namespace InfinniPlatform.Authentication.Services
             builder.Get["/LinkExternalLoginCallback"] = LinkExternalLoginCallback;
             builder.Post["/UnlinkExternalLogin"] = UnlinkExternalLogin;
         }
+
 
         // ACCOUNT
 
@@ -213,6 +219,9 @@ namespace InfinniPlatform.Authentication.Services
             // Вход в систему с новыми учетными данными
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = remember == true }, identity);
 
+            // Вызов обработчика события входа пользователя
+            _userEventHandlerInvoker.OnAfterSignIn(identity);
+
             var userInfo = BuildPublicUserInfo(user, identity);
 
             return userInfo;
@@ -231,12 +240,12 @@ namespace InfinniPlatform.Authentication.Services
             }
 
             var user = new IdentityApplicationUser
-                       {
-                           Id = Guid.NewGuid().ToString(),
-                           UserName = userName,
-                           Email = loginInfo.Email,
-                           EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
-                       };
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = userName,
+                Email = loginInfo.Email,
+                EmailConfirmed = !string.IsNullOrWhiteSpace(loginInfo.Email)
+            };
 
             if (loginInfo.ExternalIdentity?.Claims != null)
             {
@@ -251,17 +260,20 @@ namespace InfinniPlatform.Authentication.Services
         /// </summary>
         private Task<object> SignOut(IHttpRequest request)
         {
+            // Вызов обработчика события выхода пользователя
+            _userEventHandlerInvoker.OnBeforeSignOut(request.User);
+
             // Выход из системы
             AuthenticationManager.SignOut();
 
             var owinResponse = OwinContext.Response;
 
             var response = new JsonHttpResponse(new ServiceResult<object> { Success = true })
-                           {
-                               StatusCode = owinResponse.StatusCode,
-                               ContentType = owinResponse.ContentType,
-                               ReasonPhrase = owinResponse.ReasonPhrase
-                           };
+            {
+                StatusCode = owinResponse.StatusCode,
+                ContentType = owinResponse.ContentType,
+                ReasonPhrase = owinResponse.ReasonPhrase
+            };
 
             return Task.FromResult<object>(response);
         }
@@ -500,10 +512,10 @@ namespace InfinniPlatform.Authentication.Services
         private static ApplicationUserClaim CreateUserClaim(Claim claim)
         {
             return new ApplicationUserClaim
-                   {
-                       Type = new ForeignKey { Id = claim.Type },
-                       Value = claim.Value
-                   };
+            {
+                Type = new ForeignKey { Id = claim.Type },
+                Value = claim.Value
+            };
         }
 
         //RESPONSE

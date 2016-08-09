@@ -86,7 +86,7 @@
     <Compile Include="Documents\Services\DocumentGetQuery.cs" />
     <Compile Include="Documents\Services\DocumentPostQueryResult.cs" />
     <Compile Include="Documents\Services\DocumentQueryResult.cs" />
-    <Compile Include="Hosting\IDocumentMetadataSource.cs" />
+    <Compile Include="Metadata\Documents\IDocumentMetadataSource.cs" />
     <Compile Include="Queues\Consumers\BroadcastConsumerBase.cs" />
     <Compile Include="Queues\Consumers\IBroadcastConsumer.cs" />
     <Compile Include="Queues\IMessageConsumerSource.cs" />
@@ -169,7 +169,9 @@
     <Compile Include="Services\IHttpServiceSource.cs" />
     <Compile Include="Services\IMimeTypeProvider.cs" />
     <Compile Include="Services\ViewHttpResponce.cs" />
+    <Compile Include="Session\IUserEventHandler.cs" />
     <Compile Include="Session\ITenantProvider.cs" />
+    <Compile Include="Session\UserEventHandler.cs" />
     <Compile Include="Settings\IAppEnvironment.cs" />
     <Compile Include="Security\IUserIdentityProvider.cs" />
     <Compile Include="Serialization\SerializationExtensions.cs" />

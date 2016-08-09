@@ -1,13 +1,21 @@
-﻿namespace InfinniPlatform.Sdk.Session
+﻿using System.Security.Principal;
+
+namespace InfinniPlatform.Sdk.Session
 {
     /// <summary>
-    /// Предоставляет методы определения идентификатора организации пользователя системы по модели SaaS.
+    /// Предоставляет методы определения идентификатора организации пользователя системы.
     /// </summary>
     public interface ITenantProvider
     {
         /// <summary>
-        /// Возвращает идентификатор организации пользователя системы по модели SaaS.
+        /// Возвращает идентификатор организации для текущего пользователя системы.
         /// </summary>
         string GetTenantId();
+
+        /// <summary>
+        /// Возвращает идентификатор организации для указанного пользователя системы.
+        /// </summary>
+        /// <param name="identity">Идентификационные данные пользователя.</param>
+        string GetTenantId(IIdentity identity);
     }
 }

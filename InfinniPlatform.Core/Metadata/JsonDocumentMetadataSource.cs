@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Core.Extensions;
-using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.Sdk.Metadata.Documents;
 using InfinniPlatform.Sdk.Serialization;
 

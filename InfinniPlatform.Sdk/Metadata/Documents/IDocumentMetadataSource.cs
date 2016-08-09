@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Metadata.Documents;
-
-namespace InfinniPlatform.DocumentStorage.Hosting
+namespace InfinniPlatform.Sdk.Metadata.Documents
 {
     /// <summary>
-    /// Инициализирует коллекции.
+    /// Источник метаданных документов.
     /// </summary>
     public interface IDocumentMetadataSource
     {

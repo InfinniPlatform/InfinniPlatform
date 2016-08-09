@@ -28,11 +28,16 @@ namespace InfinniPlatform.DocumentStorage.Storage
 
         public string GetTenantId()
         {
-            string tenantId = null;
-
             var currentIdentity = GetCurrentIdentity();
 
-            if (currentIdentity != null)
+            return GetTenantId(currentIdentity);
+        }
+
+        public string GetTenantId(IIdentity identity)
+        {
+            string tenantId = null;
+
+            if (identity != null)
             {
                 var sessionManager = _sessionManager;
 
@@ -43,11 +48,11 @@ namespace InfinniPlatform.DocumentStorage.Storage
 
                 if (string.IsNullOrEmpty(tenantId))
                 {
-                    tenantId = currentIdentity.FindFirstClaim(DefaultTenantId);
+                    tenantId = identity.FindFirstClaim(DefaultTenantId);
 
                     if (string.IsNullOrEmpty(tenantId))
                     {
-                        tenantId = currentIdentity.FindFirstClaim(TenantId);
+                        tenantId = identity.FindFirstClaim(TenantId);
                     }
                 }
             }

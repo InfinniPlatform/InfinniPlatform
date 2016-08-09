@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.Sdk.Metadata.Documents;
 
 namespace InfinniPlatform.Authentication.Hosting

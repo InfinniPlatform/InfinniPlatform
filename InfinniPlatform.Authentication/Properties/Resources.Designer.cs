@@ -10,8 +10,8 @@
 
 namespace InfinniPlatform.Authentication.Properties {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace InfinniPlatform.Authentication.Properties {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,142 +59,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 resourceCulture = value;
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Пользователь с таким e-mail уже существует: &apos;{0}&apos;..
-        /// </summary>
-        internal static string DuplicateEmail {
-            get {
-                return ResourceManager.GetString("DuplicateEmail", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Пользователь с таким номером телефона уже существует: &apos;{0}&apos;..
-        /// </summary>
-        internal static string DuplicatePhoneNumber {
-            get {
-                return ResourceManager.GetString("DuplicatePhoneNumber", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Пользователь с таким именем уже существует: &apos;{0}&apos;..
-        /// </summary>
-        internal static string DuplicateUserName {
-            get {
-                return ResourceManager.GetString("DuplicateUserName", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Внешний провайдер не может быть пустым..
-        /// </summary>
-        internal static string ExternalProviderCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("ExternalProviderCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Ключ внешнего провайдера не может быть пустым..
-        /// </summary>
-        internal static string ExternalProviderKeyCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("ExternalProviderKeyCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Failure URL не может быть пустым..
-        /// </summary>
-        internal static string FailureUrlCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("FailureUrlCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Некорректный e-mail: &apos;{0}&apos;..
-        /// </summary>
-        internal static string InvalidEmail {
-            get {
-                return ResourceManager.GetString("InvalidEmail", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Некорректное имя пользователя: &apos;{0}&apos;..
-        /// </summary>
-        internal static string InvalidUserName {
-            get {
-                return ResourceManager.GetString("InvalidUserName", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Некорректное имя пользователя или пароль..
-        /// </summary>
-        internal static string InvalidUsernameOrPassword {
-            get {
-                return ResourceManager.GetString("InvalidUsernameOrPassword", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Новый пароль не может быть пустым..
-        /// </summary>
-        internal static string NewPasswordCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("NewPasswordCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Запрос не прошел проверку подлинности..
-        /// </summary>
-        internal static string RequestIsNotAuthenticated {
-            get {
-                return ResourceManager.GetString("RequestIsNotAuthenticated", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Success URL не может быть пустым..
-        /// </summary>
-        internal static string SuccessUrlCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("SuccessUrlCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Неудачный вход с внешним провайдером..
-        /// </summary>
-        internal static string UnsuccessfulSignInWithExternalProvider {
-            get {
-                return ResourceManager.GetString("UnsuccessfulSignInWithExternalProvider", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Имя пользователя не может быть мустым..
-        /// </summary>
-        internal static string UserNameCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("UserNameCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Пользователь не найден..
-        /// </summary>
-        internal static string UserNotFound {
-            get {
-                return ResourceManager.GetString("UserNotFound", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to ActionUnit completed with error..
         /// </summary>
@@ -203,7 +68,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("ActionUnitCompletedWithError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to ActionUnit is not registered..
         /// </summary>
@@ -212,7 +77,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("ActionUnitIsNotRegistered", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t add unsaved user to role..
         /// </summary>
@@ -221,7 +86,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("CantAddUnsavedUserToRole", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t remove unsaved user from role..
         /// </summary>
@@ -230,7 +95,115 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("CantRemoveUnsavedUserFromRole", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate e-mail: &apos;{0}&apos;..
+        /// </summary>
+        internal static string DuplicateEmail {
+            get {
+                return ResourceManager.GetString("DuplicateEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate phone number: &apos;{0}&apos;..
+        /// </summary>
+        internal static string DuplicatePhoneNumber {
+            get {
+                return ResourceManager.GetString("DuplicatePhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate username: &apos;{0}&apos;..
+        /// </summary>
+        internal static string DuplicateUserName {
+            get {
+                return ResourceManager.GetString("DuplicateUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External provider cannot be null or whitespace..
+        /// </summary>
+        internal static string ExternalProviderCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("ExternalProviderCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External provider key cannot be null or whitespace..
+        /// </summary>
+        internal static string ExternalProviderKeyCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("ExternalProviderKeyCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure URL cannot be null or whitespace..
+        /// </summary>
+        internal static string FailureUrlCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("FailureUrlCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Handling user event &apos;{0}&apos; completed with an exception..
+        /// </summary>
+        internal static string HandlingUserEventCompletedWithException {
+            get {
+                return ResourceManager.GetString("HandlingUserEventCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid e-mail: &apos;{0}&apos;..
+        /// </summary>
+        internal static string InvalidEmail {
+            get {
+                return ResourceManager.GetString("InvalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid username: &apos;{0}&apos;..
+        /// </summary>
+        internal static string InvalidUserName {
+            get {
+                return ResourceManager.GetString("InvalidUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid username or password..
+        /// </summary>
+        internal static string InvalidUsernameOrPassword {
+            get {
+                return ResourceManager.GetString("InvalidUsernameOrPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New password cannot be null or whitespace..
+        /// </summary>
+        internal static string NewPasswordCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("NewPasswordCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request is not authenticated..
+        /// </summary>
+        internal static string RequestIsNotAuthenticated {
+            get {
+                return ResourceManager.GetString("RequestIsNotAuthenticated", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Subscribing on UserStorage cache....
         /// </summary>
@@ -239,7 +212,7 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("SubscribingOnUserStorageCache", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Subscribing on UserStorage cache has successfuly completed..
         /// </summary>
@@ -248,13 +221,49 @@ namespace InfinniPlatform.Authentication.Properties {
                 return ResourceManager.GetString("SubscribingOnUserStorageCacheHasCompleted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Subscribing on UserStorage cache has completed with error..
         /// </summary>
         internal static string SubscribingOnUserStorageCacheHasCompletedWithError {
             get {
                 return ResourceManager.GetString("SubscribingOnUserStorageCacheHasCompletedWithError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success URL cannot be null or whitespace..
+        /// </summary>
+        internal static string SuccessUrlCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("SuccessUrlCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsuccessful signin with external provider..
+        /// </summary>
+        internal static string UnsuccessfulSignInWithExternalProvider {
+            get {
+                return ResourceManager.GetString("UnsuccessfulSignInWithExternalProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username cannot be null or whitespace..
+        /// </summary>
+        internal static string UserNameCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("UserNameCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found..
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
     }

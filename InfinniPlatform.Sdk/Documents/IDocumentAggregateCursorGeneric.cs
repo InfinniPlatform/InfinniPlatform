@@ -22,8 +22,7 @@ namespace InfinniPlatform.Sdk.Documents
         IDocumentAggregateCursor<TNewResult> Unwind<TNewResult>(Expression<Func<TResult, object>> arrayProperty);
 
         /// <summary>
-        /// Группирует исходные документы по указанному выражению и производит вычисление заданных функций агрегации для каждой
-        /// группы.
+        /// Группирует исходные документы по указанному выражению и производит вычисление заданных функций агрегации для каждой группы.
         /// </summary>
         /// <param name="groupKey">Функция выборки группы.</param>
         /// <param name="groupValue">Функция агрегации группы.</param>

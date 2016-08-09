@@ -147,6 +147,7 @@
     <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
     <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="Services\AuthHttpService.cs" />
+    <Compile Include="Services\UserEventHandlerInvoker.cs" />
     <Compile Include="UserStorage\AppUserStoreCache.cs" />
     <Compile Include="UserStorage\AppUserStore.cs" />
     <Compile Include="UserStorage\AppUserStoreCacheConsumer.cs" />

@@ -2,13 +2,13 @@
 using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Modules;
 using InfinniPlatform.Authentication.Security;
+using InfinniPlatform.Authentication.Services;
 using InfinniPlatform.Authentication.UserStorage;
 using InfinniPlatform.Core.Security;
-using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Metadata.Documents;
 using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
@@ -88,11 +88,17 @@ namespace InfinniPlatform.Authentication.IoC
                    .As<IAppUserStore>()
                    .SingleInstance();
 
-            // Сервисы аутентификации
+            // Зависимости сервиса аутентификации
 
-            builder.RegisterHttpServices(GetType().Assembly);
+            builder.RegisterType<UserEventHandlerInvoker>()
+                   .AsSelf()
+                   .SingleInstance();
 
-            // Документы
+            builder.RegisterType<AuthHttpService>()
+                   .As<IHttpService>()
+                   .SingleInstance();
+
+            // Документы для хранение данных пользователя
 
             builder.RegisterType<AuthenticationDocumentMetadataSource>()
                    .As<IDocumentMetadataSource>()
@@ -114,10 +120,10 @@ namespace InfinniPlatform.Authentication.IoC
             var identityPasswordHasher = new IdentityApplicationUserPasswordHasher(appPasswordHasher);
 
             var userManager = new UserManager<IdentityApplicationUser>(identityUserStore)
-                              {
-                                  UserValidator = identityUserValidator,
-                                  PasswordHasher = identityPasswordHasher
-                              };
+            {
+                UserValidator = identityUserValidator,
+                PasswordHasher = identityPasswordHasher
+            };
 
             return userManager;
         }
