@@ -363,6 +363,9 @@ namespace InfinniPlatform.Sdk.Types
 
         public static explicit operator Date(long value) { return new Date(value); }
         public static explicit operator long(Date value) { return value.UnixTime; }
+        
+        public static explicit operator Date(int value) { return new Date(value); }
+        public static explicit operator int(Date value) { return (int)value.UnixTime; }
 
         public static explicit operator Date(DateTime value) { return new Date(value.Year, value.Month, value.Day); }
         public static explicit operator DateTime(Date value) { return value.ToUtcDateTime(); }
@@ -377,12 +380,18 @@ namespace InfinniPlatform.Sdk.Types
         public static bool operator !=(Date left, long right) { return !(left == right); }
         public static bool operator ==(long left, Date right) { return Equals((Date)left, right); }
         public static bool operator !=(long left, Date right) { return !(left == right); }
+        public static bool operator ==(Date left, int right) { return Equals(left, (Date)right); }
+        public static bool operator !=(Date left, int right) { return !(left == right); }
+        public static bool operator ==(int left, Date right) { return Equals((Date)left, right); }
+        public static bool operator !=(int left, Date right) { return !(left == right); }
 
 
         public static bool operator <(Date left, Date right) { return left.UnixTime < right.UnixTime; }
         public static bool operator <=(Date left, Date right) { return left.UnixTime <= right.UnixTime; }
         public static bool operator >(Date left, Date right) { return left.UnixTime > right.UnixTime; }
         public static bool operator >=(Date left, Date right) { return left.UnixTime >= right.UnixTime; }
+
+
         public static bool operator <(Date left, long right) { return left.UnixTime < right; }
         public static bool operator <=(Date left, long right) { return left.UnixTime <= right; }
         public static bool operator >(Date left, long right) { return left.UnixTime > right; }
@@ -391,6 +400,16 @@ namespace InfinniPlatform.Sdk.Types
         public static bool operator <=(long left, Date right) { return left <= right.UnixTime; }
         public static bool operator >(long left, Date right) { return left > right.UnixTime; }
         public static bool operator >=(long left, Date right) { return left >= right.UnixTime; }
+
+
+        public static bool operator <(Date left, int right) { return left.UnixTime < right; }
+        public static bool operator <=(Date left, int right) { return left.UnixTime <= right; }
+        public static bool operator >(Date left, int right) { return left.UnixTime > right; }
+        public static bool operator >=(Date left, int right) { return left.UnixTime >= right; }
+        public static bool operator <(int left, Date right) { return left < right.UnixTime; }
+        public static bool operator <=(int left, Date right) { return left <= right.UnixTime; }
+        public static bool operator >(int left, Date right) { return left > right.UnixTime; }
+        public static bool operator >=(int left, Date right) { return left >= right.UnixTime; }
 
         public static Time operator -(Date left, Date right) { return new Time(left.UnixTime - right.UnixTime); }
     }
