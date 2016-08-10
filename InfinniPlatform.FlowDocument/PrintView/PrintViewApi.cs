@@ -39,7 +39,7 @@ namespace InfinniPlatform.FlowDocument.PrintView
 
             //Build view name
 
-            var printViewPath = Path.Combine(_metadataSettings.PrintViewsPath, documentType, printViewName, ".json").ToFileSystemPath();
+            var printViewPath = Path.Combine(_metadataSettings.PrintViewsPath, documentType, $"{printViewName}.json").ToFileSystemPath();
 
             var bytes = File.ReadAllBytes(printViewPath);
 
