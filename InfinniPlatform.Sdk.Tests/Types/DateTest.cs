@@ -304,6 +304,21 @@ namespace InfinniPlatform.Sdk.Tests.Types
         }
 
         [Test]
+        public void ShouldCastOperatorToInt()
+        {
+            // Given
+            const int unixTime = 342423432;
+
+            // When
+            var date1 = (Date)unixTime;
+            var date2 = (int)date1;
+
+            // Then
+            Assert.AreEqual(unixTime, date1.UnixTime);
+            Assert.AreEqual(unixTime, date2);
+        }
+
+        [Test]
         public void ShouldCastOperatorToDateTime()
         {
             // Given
@@ -404,6 +419,32 @@ namespace InfinniPlatform.Sdk.Tests.Types
         }
 
         [Test]
+        public void ShouldEqualOperatorsForInt()
+        {
+            // Given
+            var date1 = new Date(1980, 03, 30);
+            var date2 = (int)date1.UnixTime;
+            var date3 = (int)date1.UnixTime + 1;
+
+            // When & Then
+
+            Assert.IsTrue(date1 == date2);
+            Assert.IsFalse(date1 != date2);
+            Assert.IsFalse(date1 == date3);
+            Assert.IsTrue(date1 != date3);
+
+            Assert.IsTrue(date2 == date1);
+            Assert.IsFalse(date2 != date1);
+            Assert.IsFalse(date2 == date3);
+            Assert.IsTrue(date2 != date3);
+
+            Assert.IsFalse(date3 == date1);
+            Assert.IsTrue(date3 != date1);
+            Assert.IsFalse(date3 == date2);
+            Assert.IsTrue(date3 != date2);
+        }
+
+        [Test]
         public void ShouldCompareOperatorsForDate()
         {
             // Given
@@ -448,6 +489,44 @@ namespace InfinniPlatform.Sdk.Tests.Types
             var date1 = new Date(2016, 03, 30);
             var date2 = date1.UnixTime;
             var date3 = date1.UnixTime + 1;
+
+            // When & Then
+
+            Assert.IsFalse(date1 < date2);
+            Assert.IsTrue(date1 < date3);
+            Assert.IsTrue(date1 <= date2);
+            Assert.IsTrue(date1 <= date3);
+            Assert.IsFalse(date1 > date2);
+            Assert.IsFalse(date1 > date3);
+            Assert.IsTrue(date1 >= date2);
+            Assert.IsFalse(date1 >= date3);
+
+            Assert.IsFalse(date2 < date1);
+            Assert.IsTrue(date2 < date3);
+            Assert.IsTrue(date2 <= date1);
+            Assert.IsTrue(date2 <= date3);
+            Assert.IsFalse(date2 > date1);
+            Assert.IsFalse(date2 > date3);
+            Assert.IsTrue(date2 >= date1);
+            Assert.IsFalse(date2 >= date3);
+
+            Assert.IsFalse(date3 < date1);
+            Assert.IsFalse(date3 < date2);
+            Assert.IsFalse(date3 <= date1);
+            Assert.IsFalse(date3 <= date2);
+            Assert.IsTrue(date3 > date1);
+            Assert.IsTrue(date3 > date2);
+            Assert.IsTrue(date3 >= date1);
+            Assert.IsTrue(date3 >= date2);
+        }
+
+        [Test]
+        public void ShouldCompareOperatorsForInt()
+        {
+            // Given
+            var date1 = new Date(1980, 03, 30);
+            var date2 = (int)date1.UnixTime;
+            var date3 = (int)date1.UnixTime + 1;
 
             // When & Then
 
