@@ -1,6 +1,6 @@
 input {
 #	file {
-#    	path => ["C:\Program Files\Apache Software Foundation\apache-tomcat-7.0.30\bin\logs\server.log"]  
+#    	path => ["C:\Program Files\Apache Software Foundation\apache-tomcat-7.0.30\bin\logs\server.log"]
 #		start_position => "beginning"
 #		add_field => { "source" => "Monitoring.RestFacade" }
 #	}
@@ -17,18 +17,18 @@ input {
 		add_field => { "source" => "Events.InfinniPlatform" }
 		add_field => { "layer" => "InfinniPlatform" }
 		add_field => { "monitoring" => "Events" }
-	}	
+	}
 }
 
 filter {
 	if [monitoring] == "Events" {
 		grok {
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level}\s+%{NOTSPACE:thread}\s+%{NOTSPACE:logger}\s+\[R:%{NOTSPACE:requestId}\s+S:%{NOTSPACE:sessionId}\s+%{NOTSPACE:userId}\s+%{WORD:userName}\] %{GREEDYDATA:body}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level}\s+%{NOTSPACE:thread}\s+%{NOTSPACE:logger}\s+\[R:%{NOTSPACE:requestId}\s+S:%{NOTSPACE:sessionId}\s+%{NOTSPACE:userId}\s+%{NOTSPACE:userName}\] %{GREEDYDATA:body}" ]
 		}
 
-#		if [level] =~ /(?i)trace/ { 
-#			drop {} 
-#		} else if [level] =~ /(?i)debug/ { 
+#		if [level] =~ /(?i)trace/ {
+#			drop {}
+#		} else if [level] =~ /(?i)debug/ {
 #			drop {}
 #		} else {
 			json {
@@ -36,7 +36,7 @@ filter {
 			}
 
 			mutate {
-				remove_field => [ "message", "body" ]		
+				remove_field => [ "message", "body" ]
 			}
 #		}
 	}
@@ -44,7 +44,7 @@ filter {
 	if [monitoring] == "Performance" {
 		grok {
 			patterns_dir => "./patterns"
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{NOTSPACE:correlationId} %{WORD:component} %{NOTSPACE:userId} %{WORD:userName} %{NOTSPACE:action} %{NONNEGINT:duration} %{GREEDYDATA:result}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{NOTSPACE:correlationId} %{WORD:component} %{NOTSPACE:userId} %{NOTSPACE:userName} %{NOTSPACE:action} %{NONNEGINT:duration} %{GREEDYDATA:result}" ]
 		}
 
 		if "_grokparsefailure" in [tags] { drop {} }
@@ -59,13 +59,13 @@ filter {
 				remove_field => [ "result" ]
 			}
 		}
-		
+
 		if [correlationId] =~ "\<null\>" {
 			mutate {
 				remove_field => [ "correlationId" ]
 			}
 		}
-		
+
 		mutate {
 			remove_field => [ "message" ]
 		}
