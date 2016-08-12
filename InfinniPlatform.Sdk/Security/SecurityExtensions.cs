@@ -247,7 +247,7 @@ namespace InfinniPlatform.Sdk.Security
 
         private static string GetClaimValue(Claim claim)
         {
-            return (claim != null) ? claim.Value : null;
+            return claim?.Value;
         }
     }
 }

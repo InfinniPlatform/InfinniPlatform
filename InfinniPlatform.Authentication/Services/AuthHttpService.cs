@@ -132,6 +132,8 @@ namespace InfinniPlatform.Authentication.Services
         /// </summary>
         private async Task<object> SignInInternal(IHttpRequest request)
         {
+            var prevIdentity = request.User;
+
             dynamic signInForm = request.Form;
             string userName = signInForm.UserName;
             string password = signInForm.Password;
@@ -149,7 +151,7 @@ namespace InfinniPlatform.Authentication.Services
                 return CreateErrorResponse(Resources.InvalidUsernameOrPassword, 400);
             }
 
-            var userInfo = await SignIn(user, remember);
+            var userInfo = await SignIn(prevIdentity, user, remember);
 
             return CreateSuccesResponse(userInfo);
         }
@@ -169,6 +171,8 @@ namespace InfinniPlatform.Authentication.Services
         /// </summary>
         private Task<object> SignInExternalCallback(IHttpRequest request)
         {
+            var prevIdentity = request.User;
+
             return ChallengeExternalProviderCallback(request, async loginInfo =>
                                                                     {
                                                                         var user = await ApplicationUserManager.FindAsync(loginInfo.Login);
@@ -199,7 +203,7 @@ namespace InfinniPlatform.Authentication.Services
                                                                             }
                                                                         }
 
-                                                                        await SignIn(user, false);
+                                                                        await SignIn(prevIdentity, user, false);
 
                                                                         return null;
                                                                     });
@@ -208,8 +212,11 @@ namespace InfinniPlatform.Authentication.Services
         /// <summary>
         /// Осуществляет вход указанного пользователя в систему.
         /// </summary>
-        private async Task<PublicUserInfo> SignIn(IdentityApplicationUser user, bool? remember)
+        private async Task<PublicUserInfo> SignIn(IIdentity prevIdentity, IdentityApplicationUser user, bool? remember)
         {
+            // Вызов обработчика события выхода пользователя
+            _userEventHandlerInvoker.OnBeforeSignOut(prevIdentity);
+
             // Выход из системы
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
 

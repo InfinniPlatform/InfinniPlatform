@@ -127,7 +127,6 @@
     <Compile Include="Modules\ExternalAuthGoogleOwinHostingModule.cs" />
     <Compile Include="Modules\ExternalAuthGoogleOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthVkOwinHostingModule.cs" />
-    <Compile Include="InternalIdentity\IdentityApplicationRole.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUser.cs" />
     <Compile Include="InternalIdentity\IdentityAppUserManager.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserPasswordHasher.cs" />

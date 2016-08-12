@@ -59,5 +59,14 @@ namespace InfinniPlatform.PushNotification.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown user try to do &apos;{0}&apos; to the SignalR hub..
+        /// </summary>
+        internal static string UnknownUser {
+            get {
+                return ResourceManager.GetString("UnknownUser", resourceCulture);
+            }
+        }
     }
 }

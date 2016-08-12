@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.PushNotification.Properties;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Session;
 
@@ -11,6 +12,15 @@ namespace InfinniPlatform.PushNotification.SignalR
     /// <summary>
     /// Точка обмена ASP.NET SignalR для реализации <see cref="SignalRPushNotificationService"/>.
     /// </summary>
+    /// <remarks>
+    /// При создании нового подключения - при вызове метода <see cref="OnConnected"/> или <see cref="OnReconnected"/> -
+    /// осуществляется попытка идентифицировать текущего пользователя. Если пользователь известен, то происходит
+    /// определение идентификатора его организации. Идентификатор организации выступает именем группы, в которую
+    /// добавляется текущее подключение. Таким образом, все соединения группируются по организациям, к которым
+    /// они относятся, благодаря чему появляется возможность делать отправку сообщений пользователям определенной
+    /// организации. При удалении существующего подключения никаких действий не производится, поскольку подключение
+    /// будет удалено из групп средствами самого SignalR.
+    /// </remarks>
     [LoggerName("SignalR")]
     public class SignalRPushNotificationServiceHub : Hub
     {
@@ -29,13 +39,18 @@ namespace InfinniPlatform.PushNotification.SignalR
         private readonly ILog _log;
 
 
-        /// <summary>
-        /// Добавляет пользователю подписку на уведомления текущей организации.
-        /// </summary>
-        /// <remarks>
-        /// Должен вызываться Web-клиентом после входа пользователя в систему.
-        /// </remarks>
-        public async Task SubscribeTenant()
+        public override Task OnConnected()
+        {
+            return AddConnectionToTenant(nameof(OnConnected));
+        }
+
+        public override Task OnReconnected()
+        {
+            return AddConnectionToTenant(nameof(OnReconnected));
+        }
+
+
+        private async Task AddConnectionToTenant(string methodName)
         {
             var startTime = DateTime.Now;
 
@@ -43,11 +58,24 @@ namespace InfinniPlatform.PushNotification.SignalR
 
             try
             {
-                var tenantId = _tenantProvider.GetTenantId();
+                // Идентификационные данные текущего пользователя
+                var identity = Context.User?.Identity;
 
-                if (!string.IsNullOrEmpty(tenantId))
+                // Анонимные соединения будут проигнорированы
+                if (identity != null && identity.IsAuthenticated)
                 {
-                    await Groups.Add(Context.ConnectionId, tenantId);
+                    // Идентификатор организации текущего пользователя
+                    var tenantId = _tenantProvider.GetTenantId(identity);
+
+                    if (!string.IsNullOrEmpty(tenantId))
+                    {
+                        // Изменение связи соединения с группой организации пользователя
+                        await Groups.Add(Context.ConnectionId, tenantId);
+                    }
+                }
+                else
+                {
+                    _log.Warn(string.Format(Resources.UnknownUser, methodName));
                 }
             }
             catch (Exception exception)
@@ -60,7 +88,7 @@ namespace InfinniPlatform.PushNotification.SignalR
             }
             finally
             {
-                _performanceLog.Log(nameof(SubscribeTenant), startTime, error);
+                _performanceLog.Log(methodName, startTime, error);
             }
         }
     }

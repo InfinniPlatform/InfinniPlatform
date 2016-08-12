@@ -83,9 +83,6 @@
     <Compile Include="Reporting\ReportFileFormat.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
     <Compile Include="Schema\DataSchema.cs" />
-    <Compile Include="Security\ApplicationClaimType.cs" />
-    <Compile Include="Security\ApplicationClaimTypes.cs" />
-    <Compile Include="Security\ApplicationRole.cs" />
     <Compile Include="Security\DefaultAppUserPasswordHasher.cs" />
     <Compile Include="Security\IAppUserPasswordHasher.cs" />
     <Compile Include="Security\IAppUserStore.cs" />

@@ -1,19 +1,19 @@
 ﻿using System.Security.Principal;
 
+using InfinniPlatform.Sdk.Security;
+
 namespace InfinniPlatform.DocumentStorage.Storage
 {
     internal class SystemTenantProvider : ISystemTenantProvider
     {
-        private const string SystemTenant = "system";
-
         public string GetTenantId()
         {
-            return SystemTenant;
+            return SecurityConstants.SystemUserTenantId;
         }
 
         public string GetTenantId(IIdentity identity)
         {
-            return SystemTenant;
+            return SecurityConstants.SystemUserTenantId;
         }
     }
 }

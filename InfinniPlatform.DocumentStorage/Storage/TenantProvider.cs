@@ -10,19 +10,12 @@ namespace InfinniPlatform.DocumentStorage.Storage
     /// </summary>
     internal class TenantProvider : ITenantProvider
     {
-        private const string TenantId = "tenantid";
-        private const string AnonymousUser = "anonymous";
-        private const string DefaultTenantId = "defaulttenantid";
-
-
-        public TenantProvider(ISessionManager sessionManager, IUserIdentityProvider userIdentityProvider)
+        public TenantProvider(IUserIdentityProvider userIdentityProvider)
         {
-            _sessionManager = sessionManager;
             _userIdentityProvider = userIdentityProvider;
         }
 
 
-        private readonly ISessionManager _sessionManager;
         private readonly IUserIdentityProvider _userIdentityProvider;
 
 
@@ -35,31 +28,29 @@ namespace InfinniPlatform.DocumentStorage.Storage
 
         public string GetTenantId(IIdentity identity)
         {
-            string tenantId = null;
+            string tenantId;
 
-            if (identity != null)
+            if (identity != null && identity.IsAuthenticated)
             {
-                var sessionManager = _sessionManager;
-
-                if (sessionManager != null)
-                {
-                    tenantId = sessionManager.GetSessionData(TenantId);
-                }
+                // Идентификатор текущей организации
+                tenantId = identity.FindFirstClaim(ApplicationClaimTypes.TenantId);
 
                 if (string.IsNullOrEmpty(tenantId))
                 {
-                    tenantId = identity.FindFirstClaim(DefaultTenantId);
+                    // Идентификатор организации по умолчанию
+                    tenantId = identity.FindFirstClaim(ApplicationClaimTypes.DefaultTenantId);
 
                     if (string.IsNullOrEmpty(tenantId))
                     {
-                        tenantId = identity.FindFirstClaim(TenantId);
+                        // Организация не определена
+                        tenantId = SecurityConstants.UndefinedUserTenantId;
                     }
                 }
             }
-
-            if (string.IsNullOrEmpty(tenantId))
+            else
             {
-                tenantId = AnonymousUser;
+                // Анонимный пользователь
+                tenantId = SecurityConstants.AnonymousUserTenantId;
             }
 
             return tenantId;
