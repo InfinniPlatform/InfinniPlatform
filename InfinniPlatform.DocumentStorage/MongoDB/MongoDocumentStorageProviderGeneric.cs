@@ -111,14 +111,14 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         public IDocumentAggregateCursor<TDocument> Aggregate(Expression<Func<TDocument, bool>> filter = null)
         {
-            var fluentAggregateCursor = _collection.Value.Aggregate();
+            var aggregateCursor = _collection.Value.Aggregate();
 
             if (filter != null)
             {
-                fluentAggregateCursor = fluentAggregateCursor.Match(_filterBuilder.CreateMongoFilter(filter));
+                aggregateCursor = aggregateCursor.Match(_filterBuilder.CreateMongoFilter(filter));
             }
 
-            return new MongoDocumentAggregateCursor<TDocument>(_database, fluentAggregateCursor);
+            return new MongoDocumentAggregateCursor<TDocument>(_database, aggregateCursor);
         }
 
 

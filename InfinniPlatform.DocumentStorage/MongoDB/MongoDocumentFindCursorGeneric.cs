@@ -23,16 +23,16 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         }
 
 
-        private MongoDocumentFindCursor(IFindFluent<TDocument, TProjection> fluentCursor, MongoDocumentFilterBuilder<TDocument> filterBuilder, SortDefinition<TDocument> sortDefinition, string textScoreProperty)
+        private MongoDocumentFindCursor(IFindFluent<TDocument, TProjection> findCursor, MongoDocumentFilterBuilder<TDocument> filterBuilder, SortDefinition<TDocument> sortDefinition, string textScoreProperty)
         {
-            _fluentCursor = fluentCursor;
+            _findCursor = findCursor;
             _filterBuilder = filterBuilder;
             _sortDefinition = sortDefinition;
             _textScoreProperty = textScoreProperty;
         }
 
 
-        private readonly IFindFluent<TDocument, TProjection> _fluentCursor;
+        private readonly IFindFluent<TDocument, TProjection> _findCursor;
         private readonly MongoDocumentFilterBuilder<TDocument> _filterBuilder;
 
         private SortDefinition<TDocument> _sortDefinition;
@@ -45,20 +45,20 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         public IDocumentFindCursor<TDocument, TProjection> Where(Expression<Func<TDocument, bool>> filter)
         {
             var filterDefinition = _filterBuilder.CreateMongoFilter(filter);
-            _fluentCursor.Filter = _fluentCursor.Filter & filterDefinition;
+            _findCursor.Filter = _findCursor.Filter & filterDefinition;
             return this;
         }
 
         public IDocumentFindCursor<TDocument, TProjection> Where(Func<IDocumentFilterBuilder, object> filter)
         {
             var filterDefinition = _filterBuilder.CreateMongoFilter(filter);
-            _fluentCursor.Filter = _fluentCursor.Filter & filterDefinition;
+            _findCursor.Filter = _findCursor.Filter & filterDefinition;
             return this;
         }
 
         public IDocumentFindCursor<TDocument, TNewProjection> Project<TNewProjection>(Expression<Func<TDocument, TNewProjection>> projection)
         {
-            var projectCursor = _fluentCursor.Project(projection);
+            var projectCursor = _findCursor.Project(projection);
             return new MongoDocumentFindCursor<TDocument, TNewProjection>(projectCursor, _filterBuilder, _sortDefinition, _textScoreProperty);
         }
 
@@ -105,49 +105,49 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         public IDocumentFindCursor<TDocument, TProjection> Skip(int skip)
         {
-            _fluentCursor.Skip(skip);
+            _findCursor.Skip(skip);
             return this;
         }
 
         public IDocumentFindCursor<TDocument, TProjection> Limit(int limit)
         {
-            _fluentCursor.Limit(limit);
+            _findCursor.Limit(limit);
             return this;
         }
 
         public long Count()
         {
-            return _fluentCursor.Count();
+            return _findCursor.Count();
         }
 
         public Task<long> CountAsync()
         {
-            return _fluentCursor.CountAsync();
+            return _findCursor.CountAsync();
         }
 
 
         private IAsyncCursor<TProjection> CreateCursor()
         {
-            var fluentCursor = _fluentCursor;
+            var findCursor = _findCursor;
 
             if (!string.IsNullOrEmpty(_textScoreProperty))
             {
-                var projectionDefinition = fluentCursor.Options.Projection;
+                var projectionDefinition = findCursor.Options.Projection;
 
                 var textScoreProjection = new BsonDocument(_textScoreProperty, new BsonDocument("$meta", "textScore"));
                 var textScoreProjectionDefinition = new BsonDocumentProjectionDefinition<TDocument, TProjection>(textScoreProjection);
 
-                fluentCursor.Options.Projection = (projectionDefinition != null)
+                findCursor.Options.Projection = (projectionDefinition != null)
                     ? MongoHelpers.Combine(projectionDefinition, textScoreProjectionDefinition)
                     : textScoreProjectionDefinition;
             }
 
             if (_sortDefinition != null)
             {
-                fluentCursor = _fluentCursor.Sort(_sortDefinition);
+                findCursor = _findCursor.Sort(_sortDefinition);
             }
 
-            return fluentCursor.ToCursor();
+            return findCursor.ToCursor();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
@@ -14,13 +15,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// </summary>
     internal sealed class MongoDocumentAggregateCursor : MongoDocumentCursor<DynamicWrapper>, IDocumentAggregateSortedCursor
     {
-        public MongoDocumentAggregateCursor(IAggregateFluent<DynamicWrapper> fluentAggregateCursor)
+        public MongoDocumentAggregateCursor(IAggregateFluent<DynamicWrapper> aggregateCursor)
         {
-            _fluentAggregateCursor = fluentAggregateCursor;
+            _aggregateCursor = aggregateCursor;
         }
 
 
-        private readonly IAggregateFluent<DynamicWrapper> _fluentAggregateCursor;
+        private readonly IAggregateFluent<DynamicWrapper> _aggregateCursor;
 
         private readonly List<Func<IAggregateFluent<DynamicWrapper>, IAggregateFluent<DynamicWrapper>>> _stages
             = new List<Func<IAggregateFluent<DynamicWrapper>, IAggregateFluent<DynamicWrapper>>>();
@@ -102,19 +103,14 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         private IAsyncCursor<DynamicWrapper> CreateCursor()
         {
+            var aggregateCursor = _stages.Aggregate(_aggregateCursor, (current, stage) => stage(current));
+
             if (_sort != null)
             {
-                _stages.Add(f => f.Sort(_sort));
+                aggregateCursor = aggregateCursor.Sort(_sort);
             }
 
-            var fluentAggregateCursor = _fluentAggregateCursor;
-
-            foreach (var stage in _stages)
-            {
-                fluentAggregateCursor = stage(fluentAggregateCursor);
-            }
-
-            return fluentAggregateCursor.ToCursor();
+            return aggregateCursor.ToCursor();
         }
     }
 }

@@ -10,15 +10,15 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     internal sealed class MongoDocumentAggregateCursor<TResult> : MongoDocumentCursor<TResult>, IDocumentAggregateSortedCursor<TResult>
     {
-        public MongoDocumentAggregateCursor(Lazy<IMongoDatabase> database, IAggregateFluent<TResult> fluentAggregateCursor)
+        public MongoDocumentAggregateCursor(Lazy<IMongoDatabase> database, IAggregateFluent<TResult> aggregateCursor)
         {
             _database = database;
-            _fluentAggregateCursor = fluentAggregateCursor;
+            _aggregateCursor = aggregateCursor;
         }
 
 
         private readonly Lazy<IMongoDatabase> _database;
-        private readonly IAggregateFluent<TResult> _fluentAggregateCursor;
+        private readonly IAggregateFluent<TResult> _aggregateCursor;
 
 
         protected override IAsyncCursor<TResult> Cursor => CreateCursor();
@@ -32,68 +32,68 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         public IDocumentAggregateCursor<TNewResult> Project<TNewResult>(Expression<Func<TResult, TNewResult>> projection)
         {
-            var next = _fluentAggregateCursor.Project(projection);
+            var next = _aggregateCursor.Project(projection);
             return CreateNextStage(next);
         } 
 
         public IDocumentAggregateCursor<TNewResult> Unwind<TNewResult>(Expression<Func<TResult, object>> arrayProperty)
         {
-            var next = _fluentAggregateCursor.Unwind<TResult, TNewResult>(arrayProperty);
+            var next = _aggregateCursor.Unwind<TResult, TNewResult>(arrayProperty);
             return CreateNextStage(next);
         }
 
         public IDocumentAggregateCursor<TNewResult> Group<TKey, TNewResult>(Expression<Func<TResult, TKey>> groupKey, Expression<Func<IGrouping<TKey, TResult>, TNewResult>> groupValue)
         {
-            var next = _fluentAggregateCursor.Group(groupKey, groupValue);
+            var next = _aggregateCursor.Group(groupKey, groupValue);
             return CreateNextStage(next);
         }
 
         public IDocumentAggregateCursor<TNewResult> Lookup<TForeignDocument, TNewResult>(string foreignDocumentType, Expression<Func<TResult, object>> localKeyProperty, Expression<Func<TForeignDocument, object>> foreignKeyProperty, Expression<Func<TNewResult, object>> resultArrayProperty)
         {
-            var next = _fluentAggregateCursor.Lookup(_database.Value.GetCollection<TForeignDocument>(foreignDocumentType), localKeyProperty, foreignKeyProperty, resultArrayProperty);
+            var next = _aggregateCursor.Lookup(_database.Value.GetCollection<TForeignDocument>(foreignDocumentType), localKeyProperty, foreignKeyProperty, resultArrayProperty);
             return CreateNextStage(next);
         }
 
         public IDocumentAggregateSortedCursor<TResult> SortBy(Expression<Func<TResult, object>> property)
         {
-            var next = _fluentAggregateCursor.SortBy(property);
+            var next = _aggregateCursor.SortBy(property);
             return CreateNextStage(next);
         }
 
         public IDocumentAggregateSortedCursor<TResult> SortByDescending(Expression<Func<TResult, object>> property)
         {
-            var next = _fluentAggregateCursor.SortByDescending(property);
+            var next = _aggregateCursor.SortByDescending(property);
             return CreateNextStage(next);
         }
 
         public IDocumentAggregateSortedCursor<TResult> ThenBy(Expression<Func<TResult, object>> property)
         {
-            var next = ((AggregateFluentBase<TResult>)_fluentAggregateCursor).ThenBy(property);
+            var next = ((AggregateFluentBase<TResult>)_aggregateCursor).ThenBy(property);
             return CreateNextStage(next);
         }
 
         public IDocumentAggregateSortedCursor<TResult> ThenByDescending(Expression<Func<TResult, object>> property)
         {
-            var next = ((AggregateFluentBase<TResult>)_fluentAggregateCursor).ThenByDescending(property);
+            var next = ((AggregateFluentBase<TResult>)_aggregateCursor).ThenByDescending(property);
             return CreateNextStage(next);
         }
 
         public IDocumentAggregateCursor<TResult> Skip(int skip)
         {
-            var next = _fluentAggregateCursor.Skip(skip);
+            var next = _aggregateCursor.Skip(skip);
             return CreateNextStage(next);
         }
 
         public IDocumentAggregateCursor<TResult> Limit(int limit)
         {
-            var next = _fluentAggregateCursor.Skip(limit);
+            var next = _aggregateCursor.Skip(limit);
             return CreateNextStage(next);
         }
 
 
         private IAsyncCursor<TResult> CreateCursor()
         {
-            return _fluentAggregateCursor.ToCursor();
+            return _aggregateCursor.ToCursor();
         }
     }
 }
