@@ -26,25 +26,19 @@ filter {
 			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level}\s+%{NOTSPACE:thread}\s+%{NOTSPACE:logger}\s+\[R:%{NOTSPACE:requestId}\s+S:%{NOTSPACE:sessionId}\s+%{NOTSPACE:userId}\s+%{NOTSPACE:userName}\] %{GREEDYDATA:body}" ]
 		}
 
-#		if [level] =~ /(?i)trace/ {
-#			drop {}
-#		} else if [level] =~ /(?i)debug/ {
-#			drop {}
-#		} else {
-			json {
-				source => "body"
-			}
+		json {
+			source => "body"
+		}
 
-			mutate {
-				remove_field => [ "message", "body" ]
-			}
-#		}
+		mutate {
+			remove_field => [ "message", "body" ]
+		}
 	}
 
 	if [monitoring] == "Performance" {
 		grok {
 			patterns_dir => "./patterns"
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{NOTSPACE:correlationId} %{WORD:component} %{NOTSPACE:userId} %{NOTSPACE:userName} %{NOTSPACE:action} %{NONNEGINT:duration} %{GREEDYDATA:result}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{NOTSPACE:correlationId}\s+%{WORD:component} %{NOTSPACE:userId}\s+%{NOTSPACE:userName} %{NOTSPACE:action} %{NONNEGINT:duration} %{GREEDYDATA:result}" ]
 		}
 
 		if "_grokparsefailure" in [tags] { drop {} }
