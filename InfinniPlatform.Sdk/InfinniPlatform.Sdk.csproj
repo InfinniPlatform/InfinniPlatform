@@ -113,7 +113,9 @@
     <Compile Include="Security\ApplicationUserLogin.cs" />
     <Compile Include="Security\ForeignKey.cs" />
     <Compile Include="Security\SecurityConstants.cs" />
+    <Compile Include="Serialization\IgnoreSerializerErrorHandler.cs" />
     <Compile Include="Serialization\IMemberValueConverter.cs" />
+    <Compile Include="Serialization\ISerializerErrorHandler.cs" />
     <Compile Include="Serialization\JsonMemberValueConverter.cs" />
     <Compile Include="Serialization\JsonMemberValueConverterResolver.cs" />
     <Compile Include="Serialization\XmlDateMemberValueConverter.cs" />

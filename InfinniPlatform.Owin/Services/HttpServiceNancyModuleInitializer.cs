@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
@@ -35,7 +36,8 @@ namespace InfinniPlatform.Owin.Services
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
                                                  IEnumerable<IHttpServiceSource> httpServiceSources,
-                                                 IPerformanceLog performanceLog)
+                                                 IPerformanceLog performanceLog,
+                                                 ILog log)
         {
             _mimeTypeResolver = mimeTypeResolver;
             _userIdentityProvider = userIdentityProvider;
@@ -45,6 +47,7 @@ namespace InfinniPlatform.Owin.Services
             _httpGlobalHandlers = httpGlobalHandlers;
             _httpServices = new Lazy<IEnumerable<IHttpService>>(() => httpServiceSources.SelectMany(i => i.GetServices()).ToArray());
             _performanceLog = performanceLog;
+            _log = log;
 
             _nancyHttpServices = new Lazy<Dictionary<Type, NancyHttpService>>(CreateNancyHttpServices);
         }
@@ -58,6 +61,7 @@ namespace InfinniPlatform.Owin.Services
         private readonly IEnumerable<IHttpGlobalHandler> _httpGlobalHandlers;
         private readonly Lazy<IEnumerable<IHttpService>> _httpServices;
         private readonly IPerformanceLog _performanceLog;
+        private readonly ILog _log;
 
         private readonly Lazy<Dictionary<Type, NancyHttpService>> _nancyHttpServices;
 
@@ -269,7 +273,7 @@ namespace InfinniPlatform.Owin.Services
                 // Установка содержимого
                 if (httpResponse.Content != null)
                 {
-                    nancyResponse.Contents = httpResponse.Content;
+                    nancyResponse.Contents = WrapHttpResponseStream(httpResponse.Content);
                 }
 
                 // Установка типа содержимого
@@ -297,6 +301,29 @@ namespace InfinniPlatform.Owin.Services
             }
 
             return result;
+        }
+
+        private Action<Stream> WrapHttpResponseStream(Action<Stream> content)
+        {
+            return stream =>
+                   {
+                       try
+                       {
+                           // Запись ответа в выходной поток
+                           content(stream);
+                       }
+                       catch (Exception exception)
+                       {
+                           // Если произошло исключение, уже ничего нельзя изменить,
+                           // так как в выходной поток уже ушли данные, поэтому можно
+                           // зафиксировать лишь факт ошибки. Такая ситуация, например,
+                           // возможна в случае ошибок сериализации ответа.
+
+                           _log.Warn(exception.Message, null, exception);
+
+                           throw;
+                       }
+                   };
         }
 
         private void SetNancyStreamHttpResponse(NancyContext nancyContext, Response nancyResponse, StreamHttpResponse streamHttpResponse)

@@ -21,7 +21,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
             var date2 = DateTime.Today.AddDays(2);
             var date3 = DateTime.Today.AddDays(3);
 
-            var serializer = new JsonObjectSerializer(false, converters: new[] { new XmlDateMemberValueConverter() });
+            var serializer = new JsonObjectSerializer(false, valueConverters: new[] { new XmlDateMemberValueConverter() });
 
             var instance = new XmlDateClass
             {
@@ -58,7 +58,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
             var date2 = DateTime.Today.AddDays(2);
             var date3 = DateTime.Today.AddDays(3);
 
-            var serializer = new JsonObjectSerializer(false, converters: new[] { new XmlDateMemberValueConverter() });
+            var serializer = new JsonObjectSerializer(false, valueConverters: new[] { new XmlDateMemberValueConverter() });
 
             var instanceJson = @"{" +
                                "\"DateProperty\":" + ((Date)date1).UnixTime + "," +

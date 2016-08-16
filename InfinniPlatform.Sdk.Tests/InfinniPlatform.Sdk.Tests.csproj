@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="IoC\SdkTestsContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\IgnoreSerializerErrorHandlerTest.cs" />
     <Compile Include="Serialization\XmlDateMemberValueConverterTest.cs" />
     <Compile Include="Types\DateJsonConverterTest.cs" />
     <Compile Include="Types\DateTest.cs" />

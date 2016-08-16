@@ -31,22 +31,41 @@ namespace InfinniPlatform.Sdk.Serialization
         public static readonly JsonObjectSerializer Formated = new JsonObjectSerializer(true);
 
 
-        public JsonObjectSerializer(bool withFormatting = false, KnownTypesContainer knownTypes = null, IEnumerable<IMemberValueConverter> converters = null)
+        public JsonObjectSerializer(bool withFormatting = false,
+                                    KnownTypesContainer knownTypes = null,
+                                    IEnumerable<IMemberValueConverter> valueConverters = null,
+                                    IEnumerable<ISerializerErrorHandler> errorHandlers = null)
         {
             var serializer = new JsonSerializer
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                Formatting = withFormatting ? Formatting.Indented : Formatting.None
-            };
+                             {
+                                 NullValueHandling = NullValueHandling.Ignore,
+                                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                                 Formatting = withFormatting ? Formatting.Indented : Formatting.None
+                             };
 
             IContractResolver contractResolver = null;
 
-            var converterList = converters?.ToArray();
+            var valueConverterList = valueConverters?.ToList();
 
-            if (converterList?.Length > 0)
+            if (valueConverterList != null && valueConverterList.Count > 0)
             {
-                contractResolver = new JsonMemberValueConverterResolver(converterList);
+                contractResolver = new JsonMemberValueConverterResolver(valueConverterList);
+            }
+
+            var errorHandlerList = errorHandlers?.ToList();
+
+            if (errorHandlerList != null && errorHandlerList.Count > 0)
+            {
+                serializer.Error += (s, e) =>
+                                    {
+                                        var context = e.ErrorContext;
+
+                                        var target = context.OriginalObject;
+                                        var member = context.Member;
+                                        var error = context.Error;
+
+                                        context.Handled = errorHandlerList.Any(h => h.Handle(target, member, error));
+                                    };
             }
 
             serializer.ContractResolver = contractResolver ?? new DefaultContractResolver();
