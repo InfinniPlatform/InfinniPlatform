@@ -22,10 +22,8 @@ namespace InfinniPlatform.Owin.Middleware
             _performanceLog = performanceLog;
         }
 
-
         private readonly ILog _log;
         private readonly IPerformanceLog _performanceLog;
-
 
         public override Task Invoke(IOwinContext context)
         {
@@ -42,6 +40,7 @@ namespace InfinniPlatform.Owin.Middleware
                                                          {
                                                              //Повторно устанавливаем Id запроса для логирования ошибок текущего потока, т.к. поток другой.
                                                              _log.SetRequestId(requestId);
+                                                             _log.SetUserId(context.Request.User?.Identity);
 
                                                              if (task.IsFaulted)
                                                              {
@@ -61,7 +60,6 @@ namespace InfinniPlatform.Owin.Middleware
                 return EmptyTask;
             }
         }
-
 
         private void LogException(Exception exception)
         {
