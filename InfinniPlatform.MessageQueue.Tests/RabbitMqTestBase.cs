@@ -32,8 +32,7 @@ namespace InfinniPlatform.MessageQueue.Tests
             appEnvironmentMock.SetupGet(env => env.Id).Returns(TestConstants.ApplicationName);
 
             var logMock = new Mock<ILog>();
-            logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()))
-                   .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
+            logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
 
             RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object, logMock.Object);
             RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqConnectionSettings.Default);
@@ -66,14 +65,9 @@ namespace InfinniPlatform.MessageQueue.Tests
             messageConsumerSourceMock.Setup(source => source.GetConsumers()).Returns(list);
 
             var logMock = new Mock<ILog>();
-            logMock.Setup(log => log.Debug(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()))
-                   .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
-
-            logMock.Setup(log => log.Info(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()))
-                   .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
-
-            logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()))
-                   .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
+            logMock.Setup(log => log.Debug(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
+            logMock.Setup(log => log.Info(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
+            logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
 
             var perfLogMock = new Mock<IPerformanceLog>();
 
