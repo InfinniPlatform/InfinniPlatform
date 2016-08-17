@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
@@ -11,46 +10,41 @@ namespace InfinniPlatform.Core.Logging
     // ReSharper disable MemberCanBePrivate.Global
 
     /// <summary>
-    /// Представляет запись события журнала сообщений для <see cref="ILog"/>.
+    /// Представляет запись события журнала сообщений для <see cref="IPerformanceLog"/>.
     /// </summary>
     [Serializable]
-    internal sealed class LogEvent
+    internal sealed class LogEventPerformance
     {
-        public LogEvent(string message, Exception exception, Func<Dictionary<string, object>> context)
+        public LogEventPerformance(string method, double duration, Exception exception)
         {
-            _message = message;
+            _method = method;
+            _duration = duration;
             _exception = exception;
-            _context = context;
         }
 
 
         [NonSerialized]
-        private readonly string _message;
+        private readonly string _method;
+        [NonSerialized]
+        private readonly double _duration;
         [NonSerialized]
         private readonly Exception _exception;
-        [NonSerialized]
-        private readonly Func<Dictionary<string, object>> _context;
 
 
         /// <summary>
-        /// Сообщение события.
+        /// Метод компонента.
         /// </summary>
-        public string msg;
+        public string m;
 
         /// <summary>
-        /// Сообщение исключения.
+        /// Длительность выполнения метода.
+        /// </summary>
+        public double d;
+
+        /// <summary>
+        /// Сообщение исключения при выполнении метода.
         /// </summary>
         public string ex;
-
-        /// <summary>
-        /// Стек вызова исключения.
-        /// </summary>
-        public string stack;
-
-        /// <summary>
-        /// Контекст возникновения события.
-        /// </summary>
-        public Dictionary<string, object> ctx;
 
 
         /// <summary>
@@ -64,17 +58,12 @@ namespace InfinniPlatform.Core.Logging
         {
             if (_toString == null)
             {
-                msg = _message;
+                m = _method;
+                d = _duration;
 
                 if (_exception != null)
                 {
                     ex = ExecuteSilent(() => _exception.GetFullMessage());
-                    stack = ExecuteSilent(() => _exception.GetFullStackTrace());
-                }
-
-                if (_context != null)
-                {
-                    ctx = ExecuteSilent(() => _context());
                 }
 
                 _toString = ExecuteSilent(() => JsonObjectSerializer.Default.ConvertToString(this)) ?? string.Empty;
