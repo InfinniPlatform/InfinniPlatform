@@ -90,7 +90,7 @@ namespace InfinniPlatform.PushNotification.SignalR
             {
                 error = exception;
 
-                _log.Error(exception.Message, null, exception);
+                _log.Error(error);
 
                 throw;
             }

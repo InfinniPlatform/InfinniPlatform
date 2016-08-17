@@ -63,7 +63,7 @@
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Diagnostics\SystemStatusProvider.cs" />
-    <Compile Include="Logging\JsonEvent.cs" />
+    <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\JsonDocumentMetadataSource.cs" />
     <Compile Include="Metadata\MetadataSettings.cs" />

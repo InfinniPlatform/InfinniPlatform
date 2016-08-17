@@ -180,9 +180,9 @@ namespace InfinniPlatform.Authentication.UserStorage
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    _log.Error(e);
+                    _log.Error(exception);
                 }
             });
         }

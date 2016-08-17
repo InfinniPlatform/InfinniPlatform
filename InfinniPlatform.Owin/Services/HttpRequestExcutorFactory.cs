@@ -250,7 +250,7 @@ namespace InfinniPlatform.Owin.Services
                     else
                     {
                         // Вне зависимости от наличия прикладных обработчиков, фиксируем событие ошибки
-                        _log.Error(Resources.RequestProcessingCompletedWithUnexpectedException, null, error);
+                        _log.Error(Resources.RequestProcessingCompletedWithUnexpectedException, error);
 
                         throw new InvalidOperationException(Resources.RequestProcessingCompletedWithUnexpectedException, error);
                     }

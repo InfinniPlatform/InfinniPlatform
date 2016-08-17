@@ -31,7 +31,7 @@ namespace InfinniPlatform.Core.Logging
 
         public override void Fail(string message, string detailMessage)
         {
-            _log.Error(message + ' ' + message);
+            _log.Error(message + ' ' + detailMessage);
         }
 
 
@@ -191,41 +191,38 @@ namespace InfinniPlatform.Core.Logging
 
         private void InternalLog(TraceEventType eventType, Func<string> message)
         {
-            var logObject = new LazyLogObject(message);
-
             switch (eventType)
             {
                 case TraceEventType.Critical:
-                    _log.Fatal(logObject);
+                    if (_log.IsFatalEnabled)
+                    {
+                        _log.Fatal(message());
+                    }
                     break;
                 case TraceEventType.Error:
-                    _log.Error(logObject);
+                    if (_log.IsErrorEnabled)
+                    {
+                        _log.Error(message());
+                    }
                     break;
                 case TraceEventType.Warning:
-                    _log.Warn(logObject);
+                    if (_log.IsWarnEnabled)
+                    {
+                        _log.Warn(message());
+                    }
                     break;
                 case TraceEventType.Information:
-                    _log.Info(logObject);
+                    if (_log.IsInfoEnabled)
+                    {
+                        _log.Info(message());
+                    }
                     break;
                 default:
-                    _log.Debug(logObject);
+                    if (_log.IsDebugEnabled)
+                    {
+                        _log.Debug(message());
+                    }
                     break;
-            }
-        }
-
-
-        private sealed class LazyLogObject
-        {
-            public LazyLogObject(Func<string> toString)
-            {
-                _toString = toString;
-            }
-
-            private readonly Func<string> _toString;
-
-            public override string ToString()
-            {
-                return _toString();
             }
         }
     }

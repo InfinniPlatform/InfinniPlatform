@@ -131,13 +131,7 @@ namespace InfinniPlatform.Caching.Redis
             }
             catch (Exception exception)
             {
-                var errorContext = new Dictionary<string, object>
-                                   {
-                                       { "method", method },
-                                       { "key", key }
-                                   };
-
-                _log.Error(Resources.RedisCommandCompletedWithError, errorContext, exception);
+                _log.Error(Resources.RedisCommandCompletedWithError, exception, () => new Dictionary<string, object> { { "method", method }, { "key", key } });
 
                 _performanceLog.Log(method, startTime, exception);
 

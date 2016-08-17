@@ -191,7 +191,7 @@ namespace InfinniPlatform.DocumentStorage.Services
 
             if (error != null)
             {
-                _log.Error(Resources.RequestProcessedWithException, new Dictionary<string, object> { { "method", method } }, error);
+                _log.Error(Resources.RequestProcessedWithException, error, () => new Dictionary<string, object> { { "method", method } });
             }
 
             _performanceLog.Log(method, startTime, error);

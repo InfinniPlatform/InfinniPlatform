@@ -73,7 +73,7 @@ namespace InfinniPlatform.BlobStorage.Services
             {
                 exception = e;
 
-                _log.Error(Resources.RequestProcessedWithException, new Dictionary<string, object> { { "method", method } }, e);
+                _log.Error(Resources.RequestProcessedWithException, e, () => new Dictionary<string, object> { { "method", method } });
 
                 throw;
             }

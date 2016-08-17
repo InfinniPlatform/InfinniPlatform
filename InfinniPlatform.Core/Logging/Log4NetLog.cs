@@ -15,12 +15,19 @@ namespace InfinniPlatform.Core.Logging
     /// </summary>
     internal sealed class Log4NetLog : ILog
     {
+        private const string KeyRequestId = "app.RequestId";
+        private const string KeyUserId = "app.UserId";
+        private const string KeyUserName = "app.UserName";
+
+
         public Log4NetLog(log4net.ILog internalLog)
         {
             _internalLog = internalLog;
         }
 
+
         private readonly log4net.ILog _internalLog;
+
 
         public bool IsDebugEnabled => _internalLog.IsDebugEnabled;
 
@@ -32,47 +39,49 @@ namespace InfinniPlatform.Core.Logging
 
         public bool IsFatalEnabled => _internalLog.IsFatalEnabled;
 
-        public void Debug(object message, Dictionary<string, object> context = null, Exception exception = null)
+
+        public void Debug(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Debug(new JsonEvent(message, context, exception));
+            _internalLog.Debug(new LogEvent(message, exception, context));
         }
 
-        public void Info(object message, Dictionary<string, object> context = null, Exception exception = null)
+        public void Info(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Info(new JsonEvent(message, context, exception));
+            _internalLog.Info(new LogEvent(message, exception, context));
         }
 
-        public void Warn(object message, Dictionary<string, object> context = null, Exception exception = null)
+        public void Warn(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Warn(new JsonEvent(message, context, exception));
+            _internalLog.Warn(new LogEvent(message, exception, context));
         }
 
-        public void Error(object message, Dictionary<string, object> context = null, Exception exception = null)
+        public void Error(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Error(new JsonEvent(message, context, exception));
+            _internalLog.Error(new LogEvent(message, exception, context));
         }
 
-        public void Fatal(object message, Dictionary<string, object> context = null, Exception exception = null)
+        public void Fatal(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Fatal(new JsonEvent(message, context, exception));
+            _internalLog.Fatal(new LogEvent(message, exception, context));
         }
+
 
         public void SetRequestId(object requestId)
         {
-            LogicalThreadContext.Properties["app.RequestId"] = requestId;
+            LogicalThreadContext.Properties[KeyRequestId] = requestId;
         }
 
         public void SetUserId(IIdentity user)
         {
             if (user != null)
             {
-                LogicalThreadContext.Properties["app.UserId"] = user.GetUserId();
-                LogicalThreadContext.Properties["app.UserName"] = user.Name;
+                LogicalThreadContext.Properties[KeyUserId] = user.GetUserId();
+                LogicalThreadContext.Properties[KeyUserName] = user.Name;
             }
             else
             {
-                LogicalThreadContext.Properties["app.UserId"] = null;
-                LogicalThreadContext.Properties["app.UserName"] = null;
+                LogicalThreadContext.Properties[KeyUserId] = null;
+                LogicalThreadContext.Properties[KeyUserName] = null;
             }
         }
     }

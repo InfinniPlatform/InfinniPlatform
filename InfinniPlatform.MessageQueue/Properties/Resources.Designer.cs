@@ -61,7 +61,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Started ack of message {0} by {1}.&quot;.
+        ///   Looks up a localized string similar to Started ack of message..
         /// </summary>
         internal static string AckStart {
             get {
@@ -70,7 +70,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Succeeded ack of message {0} by {1}.&quot;.
+        ///   Looks up a localized string similar to Succeeded ack of message..
         /// </summary>
         internal static string AckSuccess {
             get {
@@ -79,7 +79,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Started consume of message {0} by {1}.&quot;.
+        ///   Looks up a localized string similar to Started consume of message..
         /// </summary>
         internal static string ConsumeStart {
             get {
@@ -88,7 +88,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Succeeded consume of message {0} by {1}.&quot;.
+        ///   Looks up a localized string similar to Succeeded consume of message..
         /// </summary>
         internal static string ConsumeSuccess {
             get {
@@ -97,7 +97,70 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Unable to create RabbitMQ channel.&quot;.
+        ///   Looks up a localized string similar to Initialization of broadcast consumers successfully completed..
+        /// </summary>
+        internal static string InitializationOfBroadcastConsumersSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("InitializationOfBroadcastConsumersSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialization of the broadcast consumer started..
+        /// </summary>
+        internal static string InitializationOfBroadcastConsumerStarted {
+            get {
+                return ResourceManager.GetString("InitializationOfBroadcastConsumerStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialization of the broadcast consumer successfully completed..
+        /// </summary>
+        internal static string InitializationOfBroadcastConsumerSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("InitializationOfBroadcastConsumerSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialization of consumers started..
+        /// </summary>
+        internal static string InitializationOfConsumersStarted {
+            get {
+                return ResourceManager.GetString("InitializationOfConsumersStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialization of task consumers successfully completed..
+        /// </summary>
+        internal static string InitializationOfTaskConsumersSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("InitializationOfTaskConsumersSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialization of the task consumer started..
+        /// </summary>
+        internal static string InitializationOfTaskConsumerStarted {
+            get {
+                return ResourceManager.GetString("InitializationOfTaskConsumerStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialization of the task consumer successfully completed..
+        /// </summary>
+        internal static string InitializationOfTaskConsumerSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("InitializationOfTaskConsumerSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to create RabbitMQ channel..
         /// </summary>
         internal static string UnableToCreateRabbitMQChannel {
             get {
@@ -106,7 +169,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Unable to get queue name.&quot;.
+        ///   Looks up a localized string similar to Unable to get queue name..
         /// </summary>
         internal static string UnableToGetQueueName {
             get {
@@ -115,7 +178,7 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Unable to initialize consumers.&quot;.
+        ///   Looks up a localized string similar to Unable to initialize consumers..
         /// </summary>
         internal static string UnableToInitializeConsumers {
             get {

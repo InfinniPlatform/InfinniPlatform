@@ -58,7 +58,7 @@ namespace InfinniPlatform.Core.Diagnostics
                     {
                         allOk = false;
 
-                        _log.Error(Resources.CouldNotGetStatusForTheSubsystem, new Dictionary<string, object> { { "subsystemName", subsystemName } }, exception);
+                        _log.Error(Resources.CouldNotGetStatusForTheSubsystem, exception, () => new Dictionary<string, object> { { "subsystemName", subsystemName } });
                     }
                 }
             }

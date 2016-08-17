@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
 using InfinniPlatform.Core.Extensions;
+using InfinniPlatform.Owin.Properties;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Services;
 
@@ -27,10 +29,11 @@ namespace InfinniPlatform.Owin.Services
             _log = log;
         }
 
-        private readonly INancyModuleCatalog _nancyModuleCatalog;
 
+        private readonly INancyModuleCatalog _nancyModuleCatalog;
         private readonly StaticContentSettings _staticContentSettings;
         private readonly ILog _log;
+
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
         {
@@ -80,8 +83,12 @@ namespace InfinniPlatform.Owin.Services
 
             foreach (var s in _staticContentSettings.StaticContentMapping)
             {
-                Conventions.StaticContentsConventions.AddDirectory(s.Key, s.Value.ToWebPath());
-                _log.Info($"Serving static content from '{s.Value.ToWebPath()}' as '{s.Key}'.");
+                var requestedPath = s.Key;
+                var contentPath = s.Value.ToWebPath();
+
+                Conventions.StaticContentsConventions.AddDirectory(requestedPath, contentPath);
+
+                _log.Info(Resources.ServingStaticContent, () => new Dictionary<string, object> { { "requestedPath", requestedPath }, { "contentPath", contentPath } });
             }
         }
 

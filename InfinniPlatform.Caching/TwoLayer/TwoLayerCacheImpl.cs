@@ -170,9 +170,9 @@ namespace InfinniPlatform.Caching.TwoLayer
                                             }
                                         }
                                     }
-                                    catch (Exception e)
+                                    catch (Exception exception)
                                     {
-                                        _log.Error(e);
+                                        _log.Error(exception);
                                     }
                                 }
                             });

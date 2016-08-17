@@ -42,7 +42,7 @@ namespace InfinniPlatform.Authentication.Services
                     {
                         // Исключения игнорируются, так как они не должны нарушить работоспособность основного механизма
 
-                        _log.Error(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnAfterSignIn)), null, exception);
+                        _log.Error(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnAfterSignIn)), exception);
                     }
                 }
             }
@@ -67,7 +67,7 @@ namespace InfinniPlatform.Authentication.Services
                     {
                         // Исключения игнорируются, так как они не должны нарушить работоспособность основного механизма
 
-                        _log.Error(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnBeforeSignOut)), null, exception);
+                        _log.Error(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnBeforeSignOut)), exception);
                     }
                 }
             }

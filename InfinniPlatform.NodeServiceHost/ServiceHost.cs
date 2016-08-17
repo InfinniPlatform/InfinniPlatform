@@ -47,7 +47,7 @@ namespace InfinniPlatform.NodeServiceHost
                         }
                         catch (Exception error)
                         {
-                            Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, null, error);
+                            Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, error);
 
                             _serviceHostStatus = prevStatus;
 
@@ -82,7 +82,7 @@ namespace InfinniPlatform.NodeServiceHost
                         }
                         catch (Exception error)
                         {
-                            Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStopped, null, error);
+                            Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStopped, error);
 
                             _serviceHostStatus = prevStatus;
 

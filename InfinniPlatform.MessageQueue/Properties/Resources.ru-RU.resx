@@ -118,24 +118,45 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="UnableToCreateRabbitMQChannel" xml:space="preserve">
-    <value>"Не удалось создать канал RabbitMQ."</value>
+    <value>Не удалось создать канал RabbitMQ.</value>
   </data>
   <data name="UnableToGetQueueName" xml:space="preserve">
-    <value>"Не удалось получить имя очереди."</value>
+    <value>Не удалось получить имя очереди.</value>
   </data>
   <data name="ConsumeStart" xml:space="preserve">
-    <value>"Начало обработки сообщения {0} - {1}."</value>
+    <value>Начало обработки сообщения.</value>
   </data>
   <data name="ConsumeSuccess" xml:space="preserve">
-    <value>"Сообщение {0} успешно обработано - {1}."</value>
+    <value>Сообщение успешно обработано.</value>
   </data>
   <data name="AckStart" xml:space="preserve">
-    <value>"Начало подтверждения получения сообщения {0} - {1}."</value>
+    <value>Начало подтверждения получения сообщения.</value>
   </data>
   <data name="AckSuccess" xml:space="preserve">
-    <value>"Получение сообщения {0} успешно подтверждено - {1}."</value>
+    <value>Получение сообщения успешно подтверждено.</value>
   </data>
   <data name="UnableToInitializeConsumers" xml:space="preserve">
-    <value>"Не удалось инициализировать получателей сообщений."</value>
+    <value>Не удалось инициализировать получателей сообщений.</value>
+  </data>
+  <data name="InitializationOfBroadcastConsumersSuccessfullyCompleted" xml:space="preserve">
+    <value>Инициализация потребителей сообщений широковещательной очереди успешно завершена.</value>
+  </data>
+  <data name="InitializationOfBroadcastConsumerStarted" xml:space="preserve">
+    <value>Инициализация потребителя сообщений широковещательной очереди начата.</value>
+  </data>
+  <data name="InitializationOfBroadcastConsumerSuccessfullyCompleted" xml:space="preserve">
+    <value>Инициализация потребителя сообщений широковещательной очереди успешно завершена.</value>
+  </data>
+  <data name="InitializationOfConsumersStarted" xml:space="preserve">
+    <value>Инициализация потребителей сообщений начата.</value>
+  </data>
+  <data name="InitializationOfTaskConsumersSuccessfullyCompleted" xml:space="preserve">
+    <value>Инициализация потребителей сообщений очереди задач успешно завершена.</value>
+  </data>
+  <data name="InitializationOfTaskConsumerStarted" xml:space="preserve">
+    <value>Инициализация потребителя сообщений очереди задач начата.</value>
+  </data>
+  <data name="InitializationOfTaskConsumerSuccessfullyCompleted" xml:space="preserve">
+    <value>Инициализация потребителя сообщений очереди задач успешно завершена.</value>
   </data>
 </root>

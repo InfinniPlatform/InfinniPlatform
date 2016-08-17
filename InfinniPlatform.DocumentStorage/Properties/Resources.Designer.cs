@@ -61,6 +61,51 @@ namespace InfinniPlatform.DocumentStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating the document storage for type completed with exception..
+        /// </summary>
+        internal static string CreatingDocumentStorageForTypeCompletedWithException {
+            get {
+                return ResourceManager.GetString("CreatingDocumentStorageForTypeCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating the document storage for type started..
+        /// </summary>
+        internal static string CreatingDocumentStorageForTypeStarted {
+            get {
+                return ResourceManager.GetString("CreatingDocumentStorageForTypeStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating the document storage for type successfully completed..
+        /// </summary>
+        internal static string CreatingDocumentStorageForTypeSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("CreatingDocumentStorageForTypeSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating the document storage started..
+        /// </summary>
+        internal static string CreatingDocumentStorageStarted {
+            get {
+                return ResourceManager.GetString("CreatingDocumentStorageStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating the document storage successfully completed..
+        /// </summary>
+        internal static string CreatingDocumentStorageSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("CreatingDocumentStorageSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Function {0}() is not supported..
         /// </summary>
         internal static string FunctionIsNotSupported {

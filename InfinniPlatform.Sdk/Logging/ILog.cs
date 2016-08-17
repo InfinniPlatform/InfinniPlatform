@@ -34,45 +34,47 @@ namespace InfinniPlatform.Sdk.Logging
         /// </summary>
         bool IsFatalEnabled { get; }
 
+
         /// <summary>
         /// Записывает в журнал событие с уровнем DEBUG.
         /// </summary>
         /// <param name="message">Сообщение.</param>
-        /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Debug(object message, Dictionary<string, object> context = null, Exception exception = null);
+        /// <param name="context">Контекстная информация.</param>
+        void Debug(string message, Exception exception = null, Func<Dictionary<string, object>> context = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем INFO.
         /// </summary>
         /// <param name="message">Сообщение.</param>
-        /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Info(object message, Dictionary<string, object> context = null, Exception exception = null);
+        /// <param name="context">Контекстная информация.</param>
+        void Info(string message, Exception exception = null, Func<Dictionary<string, object>> context = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем WARN.
         /// </summary>
         /// <param name="message">Сообщение.</param>
-        /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Warn(object message, Dictionary<string, object> context = null, Exception exception = null);
+        /// <param name="context">Контекстная информация.</param>
+        void Warn(string message, Exception exception = null, Func<Dictionary<string, object>> context = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем ERROR.
         /// </summary>
         /// <param name="message">Сообщение.</param>
-        /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Error(object message, Dictionary<string, object> context = null, Exception exception = null);
+        /// <param name="context">Контекстная информация.</param>
+        void Error(string message, Exception exception = null, Func<Dictionary<string, object>> context = null);
 
         /// <summary>
         /// Записывает в журнал событие с уровнем FATAL.
         /// </summary>
         /// <param name="message">Сообщение.</param>
-        /// <param name="context">Контекстная информация.</param>
         /// <param name="exception">Исключение.</param>
-        void Fatal(object message, Dictionary<string, object> context = null, Exception exception = null);
+        /// <param name="context">Контекстная информация.</param>
+        void Fatal(string message, Exception exception = null, Func<Dictionary<string, object>> context = null);
+
 
         /// <summary>
         /// Устанавливает идентификатор запроса в контекст логирования текущего потока.

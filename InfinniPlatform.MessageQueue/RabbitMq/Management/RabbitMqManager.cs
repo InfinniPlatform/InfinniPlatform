@@ -8,7 +8,7 @@ using RabbitMQ.Client;
 namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 {
     /// <summary>
-    /// Менеджер RabbitMQ, инкапсулирующий функции, доступные через RabbitMQ .NET-драйвер.
+    /// Менеджер RabbitMQ, предоставляющий функции, доступные через RabbitMQ .NET-драйвер.
     /// </summary>
     internal sealed class RabbitMqManager
     {
@@ -67,9 +67,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 
                 return channel;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                _log.Error(new AggregateException(e));
+                _log.Error(exception);
                 return null;
             }
         }

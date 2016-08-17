@@ -159,6 +159,9 @@
   <data name="ServerSchemeIsNotSupported" xml:space="preserve">
     <value>Server scheme '{0}' is not supported. Use 'http' or 'https'.</value>
   </data>
+  <data name="ServingStaticContent" xml:space="preserve">
+    <value>Serving static content.</value>
+  </data>
   <data name="UnhandledExceptionOwinMiddleware" xml:space="preserve">
     <value>Unhandled exception</value>
   </data>

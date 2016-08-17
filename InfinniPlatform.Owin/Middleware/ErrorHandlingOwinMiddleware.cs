@@ -33,24 +33,26 @@ namespace InfinniPlatform.Owin.Middleware
             {
                 var requestId = context.Environment?["owin.RequestId"];
 
-                //Устанавливаем Id запроса для логирования ошибок текущего потока.
+                // Установка контекста логирования ошибок текущего потока.
                 _log.SetRequestId(requestId);
 
-                return Next.Invoke(context).ContinueWith(task =>
-                                                         {
-                                                             //Повторно устанавливаем Id запроса для логирования ошибок текущего потока, т.к. поток другой.
-                                                             _log.SetRequestId(requestId);
-                                                             _log.SetUserId(context.Request.User?.Identity);
+                return Next.Invoke(context)
+                           .ContinueWith(task =>
+                                         {
+                                             // Повторная установка контекста логирования ошибок текущего потока,
+                                             // так как ContinueWith работает не в потоке обработки запроса.
+                                             _log.SetRequestId(requestId);
+                                             _log.SetUserId(context.Request.User?.Identity);
 
-                                                             if (task.IsFaulted)
-                                                             {
-                                                                 LogException(task.Exception);
-                                                             }
+                                             if (task.IsFaulted)
+                                             {
+                                                 LogException(task.Exception);
+                                             }
 
-                                                             LogPerformance($"{context.Request.Method}::{context.Request.Path}", start, task.Exception);
+                                             LogPerformance($"{context.Request.Method}::{context.Request.Path}", start, task.Exception);
 
-                                                             return EmptyTask;
-                                                         });
+                                             return EmptyTask;
+                                         });
             }
             catch (Exception exception)
             {
@@ -63,7 +65,7 @@ namespace InfinniPlatform.Owin.Middleware
 
         private void LogException(Exception exception)
         {
-            _log.Error(Resources.UnhandledExceptionOwinMiddleware, null, exception);
+            _log.Error(Resources.UnhandledExceptionOwinMiddleware, exception);
         }
 
         private void LogPerformance(string method, DateTime start, Exception exception)

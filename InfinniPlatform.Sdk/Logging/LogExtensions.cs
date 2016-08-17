@@ -1,10 +1,109 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace InfinniPlatform.Sdk.Logging
 {
     public static class LogExtensions
     {
+        /// <summary>
+        /// Записывает в журнал событие с уровнем DEBUG.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Debug(this ILog target, string message, Func<Dictionary<string, object>> context = null)
+        {
+            target.Debug(message, null, context);
+        }
+
+        /// <summary>
+        /// Записывает в журнал событие с уровнем DEBUG.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Debug(this ILog target, Exception exception, Func<Dictionary<string, object>> context = null)
+        {
+            target.Debug(exception?.Message, exception, context);
+        }
+
+        /// <summary>
+        /// Записывает в журнал событие с уровнем INFO.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Info(this ILog target, string message, Func<Dictionary<string, object>> context = null)
+        {
+            target.Info(message, null, context);
+        }
+        /// <summary>
+        /// Записывает в журнал событие с уровнем INFO.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Info(this ILog target, Exception exception, Func<Dictionary<string, object>> context = null)
+        {
+            target.Info(exception?.Message, exception, context);
+        }
+
+        /// <summary>
+        /// Записывает в журнал событие с уровнем WARN.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Warn(this ILog target, string message, Func<Dictionary<string, object>> context = null)
+        {
+            target.Warn(message, null, context);
+        }
+
+        /// <summary>
+        /// Записывает в журнал событие с уровнем WARN.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Warn(this ILog target, Exception exception, Func<Dictionary<string, object>> context = null)
+        {
+            target.Warn(exception?.Message, exception, context);
+        }
+
+        /// <summary>
+        /// Записывает в журнал событие с уровнем ERROR.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Error(this ILog target, string message, Func<Dictionary<string, object>> context = null)
+        {
+            target.Error(message, null, context);
+        }
+        /// <summary>
+        /// Записывает в журнал событие с уровнем ERROR.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Error(this ILog target, Exception exception, Func<Dictionary<string, object>> context = null)
+        {
+            target.Error(exception?.Message, exception, context);
+        }
+
+        /// <summary>
+        /// Записывает в журнал событие с уровнем FATAL.
+        /// </summary>
+        /// <param name="message">Сообщение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Fatal(this ILog target, string message, Func<Dictionary<string, object>> context = null)
+        {
+            target.Fatal(message, null, context);
+        }
+        /// <summary>
+        /// Записывает в журнал событие с уровнем FATAL.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <param name="context">Контекстная информация.</param>
+        public static void Fatal(this ILog target, Exception exception, Func<Dictionary<string, object>> context = null)
+        {
+            target.Fatal(exception?.Message, exception, context);
+        }
+
+
         /// <summary>
         /// Фиксирует в логе информацию о длительности вызова указанного метода.
         /// </summary>

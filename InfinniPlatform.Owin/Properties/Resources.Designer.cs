@@ -187,6 +187,15 @@ namespace InfinniPlatform.Owin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Serving static content..
+        /// </summary>
+        internal static string ServingStaticContent {
+            get {
+                return ResourceManager.GetString("ServingStaticContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unhandled exception.
         /// </summary>
         internal static string UnhandledExceptionOwinMiddleware {

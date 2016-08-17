@@ -64,9 +64,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                 {
                     channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, basicProperties, messageToBytes);
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    _log.Error(e);
+                    _log.Error(exception);
                 }
             }
         }

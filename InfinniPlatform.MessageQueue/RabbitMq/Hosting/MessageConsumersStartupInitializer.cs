@@ -24,47 +24,50 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <param name="consumerSource">Источники потребителей сообщений.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="messageSerializer">Сериализатор сообщений.</param>
-        /// <param name="log">Лог.</param>
         /// <param name="performanceLog">Лог производительности.</param>
+        /// <param name="log">Лог.</param>
         public MessageConsumersStartupInitializer(IEnumerable<IMessageConsumerSource> consumerSource,
                                                   RabbitMqManager manager,
                                                   IMessageSerializer messageSerializer,
-                                                  ILog log,
-                                                  IPerformanceLog performanceLog)
+                                                  IPerformanceLog performanceLog,
+                                                  ILog log)
         {
             _consumerSource = consumerSource;
             _manager = manager;
             _messageSerializer = messageSerializer;
-            _log = log;
             _performanceLog = performanceLog;
+            _log = log;
         }
 
-        private readonly IEnumerable<IMessageConsumerSource> _consumerSource;
 
-        private readonly ILog _log;
+        private readonly IEnumerable<IMessageConsumerSource> _consumerSource;
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
         private readonly IPerformanceLog _performanceLog;
+        private readonly ILog _log;
+
 
         public override void OnAfterStart()
         {
             try
             {
-                _log.Info("Starting consumer initialization.");
+                _log.Info(Resources.InitializationOfConsumersStarted);
 
-                var selectMany = _consumerSource.SelectMany(source => source.GetConsumers()).ToArray();
-
-                var taskConsumers = selectMany.OfType<ITaskConsumer>().ToArray();
-                var broadcastConsumers = selectMany.OfType<IBroadcastConsumer>().ToArray();
+                var consumers = _consumerSource.SelectMany(source => source.GetConsumers()).ToList();
+                var taskConsumers = consumers.OfType<ITaskConsumer>().ToList();
+                var broadcastConsumers = consumers.OfType<IBroadcastConsumer>().ToList();
 
                 InitializeTaskConsumers(taskConsumers);
-                _log.Info($"Initialization of {taskConsumers.Length} task consumers successfully completed.");
+
+                _log.Info(Resources.InitializationOfTaskConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "taskCounsumerCount", taskConsumers.Count } });
+
                 InitializeBroadcastConsumers(broadcastConsumers);
-                _log.Info($"Initialization of {broadcastConsumers.Length} broadcast consumers successfully completed.");
+
+                _log.Info(Resources.InitializationOfBroadcastConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "broadcastConsumerCount", broadcastConsumers.Count } });
             }
             catch (Exception e)
             {
-                _log.Error(Resources.UnableToInitializeConsumers, exception: e);
+                _log.Error(Resources.UnableToInitializeConsumers, e);
             }
         }
 
@@ -72,7 +75,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         {
             foreach (var consumer in consumers)
             {
-                _log.Debug($"Initialization of {consumer.GetType().Name} task consumer started.");
+                Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumer.GetType().Name);
+
+                _log.Debug(Resources.InitializationOfTaskConsumerStarted, logContext);
 
                 var channel = _manager.GetChannel();
                 var queueName = QueueNamingConventions.GetConsumerQueueName(consumer);
@@ -80,7 +85,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
                 InitializeConsumer(queueName, channel, consumer);
 
-                _log.Debug($"Initialization of {consumer.GetType().Name} task consumer successfully completed.");
+                _log.Debug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, logContext);
             }
         }
 
@@ -88,7 +93,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         {
             foreach (var consumer in consumers)
             {
-                _log.Debug($"Initialization of {consumer.GetType().Name} broadcast consumer started.");
+                Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumer.GetType().Name);
+
+                _log.Debug(Resources.InitializationOfBroadcastConsumerStarted, logContext);
 
                 var channel = _manager.GetChannel();
                 var routingKey = QueueNamingConventions.GetConsumerQueueName(consumer);
@@ -96,7 +103,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
                 InitializeConsumer(queueName, channel, consumer);
 
-                _log.Debug($"Initialization of {consumer.GetType().Name} broadcast consumer successfully completed.");
+                _log.Debug(Resources.InitializationOfBroadcastConsumerSuccessfullyCompleted, logContext);
             }
         }
 
@@ -107,21 +114,26 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                 throw new ArgumentException(Resources.UnableToGetQueueName);
             }
 
+            var consumerType = consumer.GetType().Name;
+
             var eventingConsumer = new EventingBasicConsumer(channel);
+
             eventingConsumer.Received += (o, args) =>
                                          {
                                              var startDate = DateTime.Now;
+
                                              IMessage message;
-                                             string typeName;
+
+                                             Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args.DeliveryTag);
 
                                              try
                                              {
                                                  message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
-                                                 typeName = consumer.GetType().Name;
                                              }
-                                             catch (Exception e)
+                                             catch (Exception exception)
                                              {
-                                                 _log.Error(e);
+                                                 _log.Error(exception, logContext);
+
                                                  return;
                                              }
 
@@ -129,32 +141,47 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                                             {
                                                                 startDate = DateTime.Now;
 
-                                                                _log.Debug(string.Format(Resources.ConsumeStart, args.DeliveryTag, typeName));
+                                                                _log.Debug(Resources.ConsumeStart, logContext);
 
                                                                 await consumer.Consume(message);
 
-                                                                _log.Debug(string.Format(Resources.ConsumeSuccess, args.DeliveryTag, typeName));
+                                                                _log.Debug(Resources.ConsumeSuccess, logContext);
                                                             })
                                                  .ContinueWith(task =>
                                                                {
-                                                                   if (task.IsFaulted)
+                                                                   try
                                                                    {
-                                                                       _log.Error(task.Exception);
-                                                                       _performanceLog.Log(typeName, startDate, task.Exception);
+                                                                       if (task.IsFaulted)
+                                                                       {
+                                                                           _log.Error(task.Exception, logContext);
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                           _log.Debug(Resources.AckStart, logContext);
+
+                                                                           channel.BasicAck(args.DeliveryTag, false);
+
+                                                                           _log.Debug(Resources.AckSuccess, logContext);
+                                                                       }
                                                                    }
-                                                                   else
+                                                                   finally
                                                                    {
-                                                                       _performanceLog.Log(typeName, startDate);
-                                                                       _log.Debug(string.Format(Resources.AckStart, args.DeliveryTag, typeName));
-
-                                                                       channel.BasicAck(args.DeliveryTag, false);
-
-                                                                       _log.Debug(string.Format(Resources.AckSuccess, args.DeliveryTag, typeName));
+                                                                       _performanceLog.Log(consumerType, startDate, task.Exception);
                                                                    }
                                                                });
                                          };
 
             channel.BasicConsume(queueName, false, eventingConsumer);
+        }
+
+
+        private static Dictionary<string, object> CreateLogContext(string consumerType, object deliveryTag = null)
+        {
+            return new Dictionary<string, object>
+                   {
+                       { "consumerType", consumerType },
+                       { "deliveryTag", deliveryTag }
+                   };
         }
     }
 }

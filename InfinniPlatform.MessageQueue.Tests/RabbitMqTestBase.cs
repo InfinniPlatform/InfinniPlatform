@@ -32,7 +32,7 @@ namespace InfinniPlatform.MessageQueue.Tests
             appEnvironmentMock.SetupGet(env => env.Id).Returns(TestConstants.ApplicationName);
 
             var logMock = new Mock<ILog>();
-            logMock.Setup(log => log.Error(It.IsAny<object>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<Exception>()))
+            logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()))
                    .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
 
             RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object, logMock.Object);
@@ -63,22 +63,21 @@ namespace InfinniPlatform.MessageQueue.Tests
             list.AddRange(broadcastConsumers ?? Enumerable.Empty<IBroadcastConsumer>());
 
             var messageConsumerSourceMock = new Mock<IMessageConsumerSource>();
-            messageConsumerSourceMock.Setup(source => source.GetConsumers())
-                                     .Returns(list);
+            messageConsumerSourceMock.Setup(source => source.GetConsumers()).Returns(list);
 
             var logMock = new Mock<ILog>();
-            logMock.Setup(log => log.Debug(It.IsAny<object>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<Exception>()))
+            logMock.Setup(log => log.Debug(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()))
                    .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
 
-            logMock.Setup(log => log.Info(It.IsAny<object>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<Exception>()))
+            logMock.Setup(log => log.Info(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()))
                    .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
 
-            logMock.Setup(log => log.Error(It.IsAny<object>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<Exception>()))
+            logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()))
                    .Callback((object message, Dictionary<string, object> context, Exception exception) => { Console.WriteLine(message); });
 
             var perfLogMock = new Mock<IPerformanceLog>();
 
-            var messageConsumersManager = new MessageConsumersStartupInitializer(new[] { messageConsumerSourceMock.Object }, RabbitMqManager, new MessageSerializer(), logMock.Object, perfLogMock.Object);
+            var messageConsumersManager = new MessageConsumersStartupInitializer(new[] { messageConsumerSourceMock.Object }, RabbitMqManager, new MessageSerializer(), perfLogMock.Object, logMock.Object);
 
             messageConsumersManager.OnAfterStart();
         }

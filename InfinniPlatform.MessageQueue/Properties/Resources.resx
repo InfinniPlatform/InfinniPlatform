@@ -118,24 +118,45 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="UnableToCreateRabbitMQChannel" xml:space="preserve">
-    <value>"Unable to create RabbitMQ channel."</value>
+    <value>Unable to create RabbitMQ channel.</value>
   </data>
   <data name="UnableToGetQueueName" xml:space="preserve">
-    <value>"Unable to get queue name."</value>
+    <value>Unable to get queue name.</value>
   </data>
   <data name="ConsumeStart" xml:space="preserve">
-    <value>"Started consume of message {0} by {1}."</value>
+    <value>Started consume of message.</value>
   </data>
   <data name="ConsumeSuccess" xml:space="preserve">
-    <value>"Succeeded consume of message {0} by {1}."</value>
+    <value>Succeeded consume of message.</value>
   </data>
   <data name="AckStart" xml:space="preserve">
-    <value>"Started ack of message {0} by {1}."</value>
+    <value>Started ack of message.</value>
   </data>
   <data name="AckSuccess" xml:space="preserve">
-    <value>"Succeeded ack of message {0} by {1}."</value>
+    <value>Succeeded ack of message.</value>
   </data>
   <data name="UnableToInitializeConsumers" xml:space="preserve">
-    <value>"Unable to initialize consumers."</value>
+    <value>Unable to initialize consumers.</value>
+  </data>
+  <data name="InitializationOfBroadcastConsumersSuccessfullyCompleted" xml:space="preserve">
+    <value>Initialization of broadcast consumers successfully completed.</value>
+  </data>
+  <data name="InitializationOfBroadcastConsumerStarted" xml:space="preserve">
+    <value>Initialization of the broadcast consumer started.</value>
+  </data>
+  <data name="InitializationOfBroadcastConsumerSuccessfullyCompleted" xml:space="preserve">
+    <value>Initialization of the broadcast consumer successfully completed.</value>
+  </data>
+  <data name="InitializationOfConsumersStarted" xml:space="preserve">
+    <value>Initialization of consumers started.</value>
+  </data>
+  <data name="InitializationOfTaskConsumersSuccessfullyCompleted" xml:space="preserve">
+    <value>Initialization of task consumers successfully completed.</value>
+  </data>
+  <data name="InitializationOfTaskConsumerStarted" xml:space="preserve">
+    <value>Initialization of the task consumer started.</value>
+  </data>
+  <data name="InitializationOfTaskConsumerSuccessfullyCompleted" xml:space="preserve">
+    <value>Initialization of the task consumer successfully completed.</value>
   </data>
 </root>
