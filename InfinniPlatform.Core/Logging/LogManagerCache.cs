@@ -9,6 +9,12 @@ namespace InfinniPlatform.Core.Logging
 {
     internal static class LogManagerCache
     {
+        static LogManagerCache()
+        {
+            log4net.Util.SystemInfo.NullText = "null";
+        }
+
+
         private static readonly ConcurrentDictionary<Type, ILog> Logs
             = new ConcurrentDictionary<Type, ILog>();
 
