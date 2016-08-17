@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Logging
 {
@@ -11,7 +12,7 @@ namespace InfinniPlatform.Core.Logging
         private static readonly ConcurrentDictionary<Type, ILog> Logs
             = new ConcurrentDictionary<Type, ILog>();
 
-        public static ILog GetLog(Type type)
+        public static ILog GetLog(Type type, IJsonObjectSerializer serializer)
         {
             ILog log;
 
@@ -19,7 +20,7 @@ namespace InfinniPlatform.Core.Logging
             {
                 var internalLog = GetInternalLog(nameof(ILog), type);
 
-                log = new Log4NetLog(internalLog);
+                log = new Log4NetLog(internalLog, serializer);
 
                 Logs.TryAdd(type, log);
             }
@@ -31,7 +32,7 @@ namespace InfinniPlatform.Core.Logging
         private static readonly ConcurrentDictionary<Type, IPerformanceLog> PerformanceLogs
             = new ConcurrentDictionary<Type, IPerformanceLog>();
 
-        public static IPerformanceLog GetPerformanceLog(Type type)
+        public static IPerformanceLog GetPerformanceLog(Type type, IJsonObjectSerializer serializer)
         {
             IPerformanceLog performanceLog;
 
@@ -39,7 +40,7 @@ namespace InfinniPlatform.Core.Logging
             {
                 var internalLog = GetInternalLog(nameof(IPerformanceLog), type);
 
-                performanceLog = new Log4NetPerformanceLog(internalLog);
+                performanceLog = new Log4NetPerformanceLog(internalLog, serializer);
 
                 PerformanceLogs.TryAdd(type, performanceLog);
             }

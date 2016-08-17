@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 
 using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Sdk.Serialization;
 
 using log4net;
 
@@ -20,13 +21,15 @@ namespace InfinniPlatform.Core.Logging
         private const string KeyUserName = "app.UserName";
 
 
-        public Log4NetLog(log4net.ILog internalLog)
+        public Log4NetLog(log4net.ILog internalLog, IJsonObjectSerializer serializer)
         {
             _internalLog = internalLog;
+            _serializer = serializer;
         }
 
 
         private readonly log4net.ILog _internalLog;
+        private readonly IJsonObjectSerializer _serializer;
 
 
         public bool IsDebugEnabled => _internalLog.IsDebugEnabled;
@@ -42,27 +45,27 @@ namespace InfinniPlatform.Core.Logging
 
         public void Debug(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Debug(new LogEvent(message, exception, context));
+            _internalLog.Debug(new LogEvent(message, exception, context, _serializer));
         }
 
         public void Info(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Info(new LogEvent(message, exception, context));
+            _internalLog.Info(new LogEvent(message, exception, context, _serializer));
         }
 
         public void Warn(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Warn(new LogEvent(message, exception, context));
+            _internalLog.Warn(new LogEvent(message, exception, context, _serializer));
         }
 
         public void Error(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Error(new LogEvent(message, exception, context));
+            _internalLog.Error(new LogEvent(message, exception, context, _serializer));
         }
 
         public void Fatal(string message, Exception exception = null, Func<Dictionary<string, object>> context = null)
         {
-            _internalLog.Fatal(new LogEvent(message, exception, context));
+            _internalLog.Fatal(new LogEvent(message, exception, context, _serializer));
         }
 
 

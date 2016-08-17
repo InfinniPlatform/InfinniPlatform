@@ -16,11 +16,12 @@ namespace InfinniPlatform.Core.Logging
     [Serializable]
     internal sealed class LogEvent
     {
-        public LogEvent(string message, Exception exception, Func<Dictionary<string, object>> context)
+        public LogEvent(string message, Exception exception, Func<Dictionary<string, object>> context, IJsonObjectSerializer serializer)
         {
             _message = message;
             _exception = exception;
             _context = context;
+            _serializer = serializer;
         }
 
 
@@ -30,6 +31,8 @@ namespace InfinniPlatform.Core.Logging
         private readonly Exception _exception;
         [NonSerialized]
         private readonly Func<Dictionary<string, object>> _context;
+        [NonSerialized]
+        private readonly IJsonObjectSerializer _serializer;
 
 
         /// <summary>
@@ -77,7 +80,7 @@ namespace InfinniPlatform.Core.Logging
                     ctx = ExecuteSilent(() => _context());
                 }
 
-                _toString = ExecuteSilent(() => JsonObjectSerializer.Default.ConvertToString(this)) ?? string.Empty;
+                _toString = ExecuteSilent(() => _serializer.ConvertToString(this)) ?? string.Empty;
             }
 
             return _toString;

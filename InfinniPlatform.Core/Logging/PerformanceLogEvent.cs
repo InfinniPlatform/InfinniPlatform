@@ -13,22 +13,25 @@ namespace InfinniPlatform.Core.Logging
     /// Представляет запись события журнала сообщений для <see cref="IPerformanceLog"/>.
     /// </summary>
     [Serializable]
-    internal sealed class LogEventPerformance
+    internal sealed class PerformanceLogEvent
     {
-        public LogEventPerformance(string method, double duration, Exception exception)
+        public PerformanceLogEvent(string method, long duration, Exception exception, IJsonObjectSerializer serializer)
         {
             _method = method;
             _duration = duration;
             _exception = exception;
+            _serializer = serializer;
         }
 
 
         [NonSerialized]
         private readonly string _method;
         [NonSerialized]
-        private readonly double _duration;
+        private readonly long _duration;
         [NonSerialized]
         private readonly Exception _exception;
+        [NonSerialized]
+        private readonly IJsonObjectSerializer _serializer;
 
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace InfinniPlatform.Core.Logging
         /// <summary>
         /// Длительность выполнения метода.
         /// </summary>
-        public double d;
+        public long d;
 
         /// <summary>
         /// Сообщение исключения при выполнении метода.
@@ -66,7 +69,7 @@ namespace InfinniPlatform.Core.Logging
                     ex = ExecuteSilent(() => _exception.GetFullMessage());
                 }
 
-                _toString = ExecuteSilent(() => JsonObjectSerializer.Default.ConvertToString(this)) ?? string.Empty;
+                _toString = ExecuteSilent(() => _serializer.ConvertToString(this)) ?? string.Empty;
             }
 
             return _toString;

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Logging
 {
@@ -11,10 +12,14 @@ namespace InfinniPlatform.Core.Logging
     {
         static Logger()
         {
-            Log = LogManagerCache.GetLog(typeof(Logger));
+            // Объект для сериализации событий вне контекста IoC
+            var serializer = JsonObjectSerializer.Default;
 
-            // Интеграция с System.Diagnostics.Trace
-            var traceLog = LogManagerCache.GetLog(typeof(LogTraceListener));
+            // Статический сервис регистрации событий вне контекста IoC
+            Log = LogManagerCache.GetLog(typeof(Logger), serializer);
+
+            // Реализация интеграции с System.Diagnostics.Trace
+            var traceLog = LogManagerCache.GetLog(typeof(LogTraceListener), serializer);
             Trace.Listeners.Add(new LogTraceListener(traceLog));
         }
 

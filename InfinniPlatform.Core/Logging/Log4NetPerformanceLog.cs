@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Logging
 {
@@ -9,16 +10,20 @@ namespace InfinniPlatform.Core.Logging
     /// </summary>
     internal sealed class Log4NetPerformanceLog : IPerformanceLog
     {
-        public Log4NetPerformanceLog(log4net.ILog internalLog)
+        public Log4NetPerformanceLog(log4net.ILog internalLog, IJsonObjectSerializer serializer)
         {
             _internalLog = internalLog;
+            _serializer = serializer;
         }
 
+
         private readonly log4net.ILog _internalLog;
+        private readonly IJsonObjectSerializer _serializer;
+
 
         public void Log(string method, TimeSpan duration, Exception exception = null)
         {
-            _internalLog.Info(new LogEventPerformance(method, duration.TotalMilliseconds, exception));
+            _internalLog.Info(new PerformanceLogEvent(method, (long)duration.TotalMilliseconds, exception, _serializer));
         }
 
         public void Log(string method, DateTime start, Exception exception = null)

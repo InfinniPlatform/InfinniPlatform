@@ -64,7 +64,7 @@
     <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Diagnostics\SystemStatusProvider.cs" />
     <Compile Include="Logging\LogEvent.cs" />
-    <Compile Include="Logging\LogEventPerformance.cs" />
+    <Compile Include="Logging\PerformanceLogEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\JsonDocumentMetadataSource.cs" />
     <Compile Include="Metadata\MetadataSettings.cs" />

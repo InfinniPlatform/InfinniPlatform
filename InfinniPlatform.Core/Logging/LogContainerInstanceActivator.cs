@@ -3,17 +3,18 @@ using System.Linq;
 using System.Reflection;
 
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Logging
 {
     internal sealed class LogContainerInstanceActivator<T> : IContainerInstanceActivator
     {
-        public LogContainerInstanceActivator(Func<Type, T> logFactory)
+        public LogContainerInstanceActivator(Func<Type, IJsonObjectSerializer, T> logFactory)
         {
             _logFactory = logFactory;
         }
 
-        private readonly Func<Type, T> _logFactory;
+        private readonly Func<Type, IJsonObjectSerializer, T> _logFactory;
 
         public void Activate(object instance, IContainerResolver resolver)
         {
@@ -25,7 +26,7 @@ namespace InfinniPlatform.Core.Logging
 
             foreach (var propToSet in properties)
             {
-                propToSet.SetValue(instance, _logFactory(instanceType), null);
+                propToSet.SetValue(instance, _logFactory(instanceType, resolver.Resolve<IJsonObjectSerializer>()), null);
             }
         }
     }
