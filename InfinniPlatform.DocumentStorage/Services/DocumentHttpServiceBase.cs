@@ -98,7 +98,8 @@ namespace InfinniPlatform.DocumentStorage.Services
             Func<IHttpRequest, TQuery> queryFunc,
             Func<TQuery, Task<TResult>> handlerFunc,
             Func<TQuery, Task<TResult>> onBefore,
-            Func<TQuery, TResult, Exception, Task> onAfter) where TResult : DocumentQueryResult
+            Func<TQuery, TResult, Exception, Task> onAfter,
+            Func<Exception, string> onError) where TResult : DocumentQueryResult
         {
             var startTime = DateTime.Now;
 
@@ -159,7 +160,7 @@ namespace InfinniPlatform.DocumentStorage.Services
                 {
                     Success = success,
                     Result = result,
-                    Error = error?.GetFullMessage()
+                    Error = BuildError(error, onError)
                 };
 
                 var statusCode = 200;
@@ -180,9 +181,9 @@ namespace InfinniPlatform.DocumentStorage.Services
                 }
 
                 response = new JsonHttpResponse(requestResult)
-                           {
-                               StatusCode = statusCode
-                           };
+                {
+                    StatusCode = statusCode
+                };
             }
 
             // Запись в журнал
@@ -253,6 +254,37 @@ namespace InfinniPlatform.DocumentStorage.Services
             }
 
             return error;
+        }
+
+        private string BuildError(Exception error, Func<Exception, string> onError)
+        {
+            if (error == null)
+            {
+                return null;
+            }
+
+            string errorMessage = null;
+
+            try
+            {
+                errorMessage = onError(error);
+            }
+            catch
+            {
+            }
+
+            if (string.IsNullOrEmpty(errorMessage))
+            {
+                try
+                {
+                    errorMessage = error.GetFullMessage();
+                }
+                catch
+                {
+                }
+            }
+
+            return errorMessage;
         }
     }
 }

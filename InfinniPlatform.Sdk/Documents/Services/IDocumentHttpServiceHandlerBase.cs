@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Services;
+﻿using System;
+
+using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Sdk.Documents.Services
 {
@@ -40,5 +42,13 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// </summary>
         /// <param name="builder">Регистратор обработчиков запросов.</param>
         void Load(IHttpServiceBuilder builder);
+
+
+        /// <summary>
+        /// Обрабатывает исключение.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <returns>Сообщение об ошибке.</returns>
+        string OnError(Exception exception);
     }
 }

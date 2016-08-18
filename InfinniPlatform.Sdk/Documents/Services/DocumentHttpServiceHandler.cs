@@ -121,6 +121,17 @@ namespace InfinniPlatform.Sdk.Documents.Services
         public virtual void Load(IHttpServiceBuilder builder)
         {
         }
+
+
+        /// <summary>
+        /// Обрабатывает исключение.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <returns>Сообщение об ошибке.</returns>
+        public string OnError(Exception exception)
+        {
+            return null;
+        }
     }
 
 
@@ -235,6 +246,17 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// <param name="builder">Регистратор обработчиков запросов.</param>
         public virtual void Load(IHttpServiceBuilder builder)
         {
+        }
+
+
+        /// <summary>
+        /// Обрабатывает исключение.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <returns>Сообщение об ошибке.</returns>
+        public string OnError(Exception exception)
+        {
+            return null;
         }
     }
 }

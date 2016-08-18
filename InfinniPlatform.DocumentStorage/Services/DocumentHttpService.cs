@@ -120,7 +120,8 @@ namespace InfinniPlatform.DocumentStorage.Services
                     return new DocumentGetQueryResult { Items = items, Count = count };
                 },
                 _serviceHandler.OnBeforeGet,
-                _serviceHandler.OnAfterGet);
+                _serviceHandler.OnAfterGet,
+                _serviceHandler.OnError);
         }
 
         protected override Task<object> Post(IHttpRequest request)
@@ -171,7 +172,8 @@ namespace InfinniPlatform.DocumentStorage.Services
                     };
                 },
                 _serviceHandler.OnBeforePost,
-                _serviceHandler.OnAfterPost);
+                _serviceHandler.OnAfterPost,
+                _serviceHandler.OnError);
         }
 
         protected override Task<object> Delete(IHttpRequest request)
@@ -200,7 +202,8 @@ namespace InfinniPlatform.DocumentStorage.Services
                     };
                 },
                 _serviceHandler.OnBeforeDelete,
-                _serviceHandler.OnAfterDelete);
+                _serviceHandler.OnAfterDelete,
+                _serviceHandler.OnError);
         }
     }
 }
