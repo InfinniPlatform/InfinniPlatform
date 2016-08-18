@@ -88,7 +88,8 @@
     <Compile Include="Storage\DocumentStorageTestHelpers.cs" />
     <Compile Include="MongoDB\SerializationTest.cs" />
     <Compile Include="Storage\SystemDocumentStorageIntegrationTest.cs" />
-    <Compile Include="MongoDB\TestClass.cs" />
+    <Compile Include="MongoDB\TestClasses.cs" />
+    <Compile Include="TestEntities\DocumentWithIgnore.cs" />
     <Compile Include="TestEntities\FakeDocument.cs" />
     <Compile Include="TestEntities\Article.cs" />
     <Compile Include="TestEntities\ArticleProjection.cs" />

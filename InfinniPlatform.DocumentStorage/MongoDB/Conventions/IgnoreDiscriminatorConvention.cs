@@ -3,10 +3,8 @@ using MongoDB.Bson.Serialization.Conventions;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB.Conventions
 {
-    internal sealed class IgnoreDiscriminatorConvention : IClassMapConvention
+    internal class IgnoreDiscriminatorConvention : ConventionBase, IClassMapConvention
     {
-        public string Name => nameof(IgnoreDiscriminatorConvention);
-
         public void Apply(BsonClassMap classMap)
         {
             classMap.SetDiscriminatorIsRequired(false);

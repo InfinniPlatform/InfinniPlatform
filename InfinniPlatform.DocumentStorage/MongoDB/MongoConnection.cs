@@ -26,8 +26,20 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         static MongoConnection()
         {
-            // Игнорирование null значений в свойствах документов, игнорирование свойств id в классах
-            var defaultConventions = new ConventionPack { new IgnoreIfNullConvention(true), new NoIdMemberConvention(), new IgnoreDiscriminatorConvention()};
+            // Установка соглашений
+
+            var defaultConventions = new ConventionPack
+                                     {
+                                         // Не сохраняет свойства со значением null
+                                         new IgnoreIfNullConvention(true),
+                                         // Игнорирует свойства с именем id
+                                         new NoIdMemberConvention(),
+                                         // Не устанавливает дискриминатор
+                                         new IgnoreDiscriminatorConvention(),
+                                         // Не сохраняет указанные свойства
+                                         new IgnorePropertyConvention()
+                                     };
+
             ConventionRegistry.Register("IgnoreRules", defaultConventions, t => true);
 
             // Установка правил сериализации и десериализации внутренних типов данных
@@ -67,7 +79,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                 {
                     bsonClassMap.MapProperty(property.Name);
                 }
-                
+
                 BsonClassMap.RegisterClassMap(bsonClassMap);
             }
         }

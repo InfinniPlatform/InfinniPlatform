@@ -2141,5 +2141,35 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             Assert.AreEqual(2, storageWithDefaultNameDocuments[1]._id);
             Assert.AreEqual(value2, storageWithDefaultNameDocuments[1].prop2);
         }
+
+        [Test]
+        public void ShouldApplyDocumentIgnorePropertyAttribute()
+        {
+            // Given
+            var document1 = new DocumentWithIgnore { _id = 1, Property1 = 11, Property2Ignore = 12, Property3 = 13, Property4Ignore = 14 };
+            var document2 = new DocumentWithIgnore { _id = 2, Property1 = 21, Property2Ignore = 22, Property3 = 23, Property4Ignore = 24 };
+            var storage = MongoTestHelpers.GetEmptyStorageProvider<DocumentWithIgnore>(nameof(ShouldApplyDocumentIgnorePropertyAttribute));
+
+            // When
+            storage.InsertMany(new[] { document1, document2 });
+            var actualDocument1 = storage.Find(i => i._id == document1._id).FirstOrDefault();
+            var actualDocument2 = storage.Find(i => i._id == document2._id).FirstOrDefault();
+
+            // Then
+
+            Assert.IsNotNull(actualDocument1);
+            Assert.AreEqual(document1._id, actualDocument1._id);
+            Assert.AreEqual(document1.Property1, actualDocument1.Property1);
+            Assert.AreEqual(default(int), actualDocument1.Property2Ignore);
+            Assert.AreEqual(document1.Property3, actualDocument1.Property3);
+            Assert.AreEqual(default(int), actualDocument1.Property4Ignore);
+
+            Assert.IsNotNull(actualDocument2);
+            Assert.AreEqual(document2._id, actualDocument2._id);
+            Assert.AreEqual(document2.Property1, actualDocument2.Property1);
+            Assert.AreEqual(default(int), actualDocument2.Property2Ignore);
+            Assert.AreEqual(document2.Property3, actualDocument2.Property3);
+            Assert.AreEqual(default(int), actualDocument2.Property4Ignore);
+        }
     }
 }

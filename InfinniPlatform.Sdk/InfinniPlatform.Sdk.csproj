@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="BlobStorage\BlobStorageExtensions.cs" />
     <Compile Include="Cache\ICache.cs" />
+    <Compile Include="Documents\Attributes\DocumentIgnoreAttribute.cs" />
     <Compile Include="PushNotification\IPushNotificationService.cs" />
     <Compile Include="Documents\Document.cs" />
     <Compile Include="Documents\DocumentHeader.cs" />
