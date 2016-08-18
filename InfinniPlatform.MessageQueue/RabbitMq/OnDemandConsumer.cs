@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
@@ -24,7 +25,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             {
                 if (queueName == null)
                 {
-                    queueName = QueueNamingConventions.GetBasicConsumerQueueName(typeof(T));
+                    queueName = QueueNamingConventions.GetQueueName(typeof(T));
                 }
 
                 _manager.DeclareTaskQueue(queueName);

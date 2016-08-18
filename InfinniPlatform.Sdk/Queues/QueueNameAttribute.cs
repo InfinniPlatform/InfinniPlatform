@@ -11,15 +11,15 @@ namespace InfinniPlatform.Sdk.Queues
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="value">Имя очереди сообщения.</param>
-        public QueueNameAttribute(string value)
+        /// <param name="name">Имя очереди сообщения.</param>
+        public QueueNameAttribute(string name)
         {
-            Value = value;
+            Name = name;
         }
 
         /// <summary>
         /// Имя очереди сообщения.
         /// </summary>
-        public string Value { get; }
+        public string Name { get; }
     }
 }

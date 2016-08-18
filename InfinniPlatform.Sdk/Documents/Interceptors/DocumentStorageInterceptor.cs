@@ -193,7 +193,8 @@ namespace InfinniPlatform.Sdk.Documents.Interceptors
     /// </summary>
     public abstract class DocumentStorageInterceptor<TDocument> : DocumentStorageInterceptor, IDocumentStorageInterceptor<TDocument>
     {
-        protected DocumentStorageInterceptor(string documentType) : base(documentType)
+        protected DocumentStorageInterceptor(string documentType = null)
+            : base(string.IsNullOrEmpty(documentType) ? DocumentStorageExtensions.GetDefaultDocumentTypeName<TDocument>() : documentType)
         {
         }
 

@@ -18,6 +18,19 @@ namespace InfinniPlatform.Sdk.Documents
 
 
         /// <summary>
+        /// Возвращает имя типа документа по умолчанию.
+        /// </summary>
+        /// <typeparam name="TDocument">Тип документа.</typeparam>
+        /// <returns>Имя типа документа.</returns>
+        public static string GetDefaultDocumentTypeName<TDocument>()
+        {
+            var type = typeof(TDocument);
+
+            return type.GetAttributeValue<DocumentTypeAttribute, string>(i => i.Name, type.NameOf());
+        }
+
+
+        /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
         /// <param name="document">Документ для сохранения.</param>

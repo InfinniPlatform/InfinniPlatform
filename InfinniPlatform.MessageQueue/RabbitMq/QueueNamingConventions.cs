@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Reflection;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 
@@ -15,9 +15,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                 return null;
             }
 
-            var messageType = message.GetType();
-            var queueNameAttribute = messageType.GetCustomAttribute<QueueNameAttribute>()?.Value;
-            return queueNameAttribute ?? messageType.FullName;
+            return GetQueueName(message.GetType());
         }
 
         public static string GetConsumerQueueName(IConsumer consumer)
@@ -27,24 +25,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                 return null;
             }
 
-            var queueNameAttribute = consumer.GetType().GetCustomAttribute<QueueNameAttribute>()?.Value;
-            return queueNameAttribute ?? consumer.MessageType.FullName;
+            return GetQueueName(consumer.MessageType, GetQueueName(consumer.GetType(), consumer.MessageType.FullName));
         }
 
-        public static string GetConsumerQueueName(Type type)
+        public static string GetQueueName(Type type, string defaultValue = null)
         {
-            if (type == null)
-            {
-                return null;
-            }
-
-            var queueNameAttribute = type.GetCustomAttribute<QueueNameAttribute>()?.Value;
-            return queueNameAttribute ?? type.FullName;
-        }
-
-        public static string GetBasicConsumerQueueName(Type type)
-        {
-            return type?.FullName;
+            return type.GetAttributeValue<QueueNameAttribute, string>(i => i.Name, defaultValue ?? type.FullName);
         }
     }
 }

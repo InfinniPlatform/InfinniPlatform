@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Interceptors;
 
@@ -20,7 +19,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
         {
             if (string.IsNullOrEmpty(documentType))
             {
-                documentType = MongoHelpers.GetDefaultDocumentType<TDocument>();
+                documentType = DocumentStorageExtensions.GetDefaultDocumentTypeName<TDocument>();
             }
 
             DocumentType = documentType;

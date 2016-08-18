@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Reflection;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 
@@ -76,11 +76,9 @@ namespace InfinniPlatform.Core.Logging
 
         private static string GetInternalLoggerName(string prefix, Type type)
         {
-            var loggerInfo = type.GetCustomAttribute<LoggerNameAttribute>();
+            var loggerName = type.GetAttributeValue<LoggerNameAttribute, string>(i => i.Name, type.FullName);
 
-            return !string.IsNullOrWhiteSpace(loggerInfo?.Name)
-                       ? $"{prefix}.{loggerInfo.Name.Trim()}"
-                       : $"{prefix}.{type.FullName}";
+            return $"{prefix}.{loggerName}";
         }
     }
 }

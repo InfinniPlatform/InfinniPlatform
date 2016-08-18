@@ -12,7 +12,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         // COMMON
 
         /// <summary>
-        /// Возвращает значение по умолачнию для заданного типа.
+        /// Возвращает значение по умолчанию для заданного типа.
         /// </summary>
         public static object GetDefaultValue(this Type target)
         {
@@ -27,14 +27,45 @@ namespace InfinniPlatform.Sdk.Dynamic
             return (target == null && !type.IsValueType) || type.IsInstanceOfType(target);
         }
 
+        /// <summary>
+        /// Возвращает имя типа.
+        /// </summary>
+        public static string NameOf(this Type target)
+        {
+            var lastIndexOfBacktick = target.Name.LastIndexOf('`');
+
+            return (lastIndexOfBacktick == -1) ? target.Name : target.Name.Substring(0, lastIndexOfBacktick);
+        }
+
+        // ATTRIBUTE
+
+        /// <summary>
+        /// Возвращает значение атрибута.
+        /// </summary>
+        /// <typeparam name="TAttribute">Тип атрибута.</typeparam>
+        /// <typeparam name="TResult">Тип значения.</typeparam>
+        /// <param name="target">Источник для поиска атрибута.</param>
+        /// <param name="valueSelector">Метод выборки значения атрибута.</param>
+        /// <param name="defaultValue">Значение атрибута по умолчанию.</param>
+        /// <returns>Значение атрибута.</returns>
+        public static TResult GetAttributeValue<TAttribute, TResult>(this ICustomAttributeProvider target, Func<TAttribute, TResult> valueSelector, TResult defaultValue = default(TResult)) where TAttribute : Attribute
+        {
+            var attributes = target.GetCustomAttributes(typeof(TAttribute), false);
+
+            if (attributes.Length > 0)
+            {
+                return valueSelector((TAttribute)attributes[0]);
+            }
+
+            return defaultValue;
+        }
+
         // MEMBER
 
         /// <summary>
         /// Осуществляет поиск члена с заданным именем.
         /// </summary>
-        public static MemberInfo FindMember(this Type target, string memberName,
-            Func<MemberInfo, bool> memberFilter = null,
-            BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public)
+        public static MemberInfo FindMember(this Type target, string memberName, Func<MemberInfo, bool> memberFilter = null, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public)
         {
             MemberInfo result = null;
 
@@ -165,8 +196,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// <summary>
         /// Интерпретирует значение статического члена с заданным именем как делегат и вызывает его.
         /// </summary>
-        public static bool InvokeMember(this Type target, string memberName, object[] invokeArguments,
-            out object invokeResult, Type[] genericParameters = null)
+        public static bool InvokeMember(this Type target, string memberName, object[] invokeArguments, out object invokeResult, Type[] genericParameters = null)
         {
             if (target != null)
             {
@@ -180,21 +210,18 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// <summary>
         /// Интерпретирует значение члена с заданным именем как делегат и вызывает его.
         /// </summary>
-        public static bool InvokeMember(this object target, string memberName, object[] invokeArguments,
-            out object invokeResult, Type[] genericParameters = null)
+        public static bool InvokeMember(this object target, string memberName, object[] invokeArguments, out object invokeResult, Type[] genericParameters = null)
         {
             if (target != null)
             {
-                return InvokeMember(target.GetType(), target, memberName, invokeArguments, out invokeResult,
-                    genericParameters);
+                return InvokeMember(target.GetType(), target, memberName, invokeArguments, out invokeResult, genericParameters);
             }
 
             invokeResult = null;
             return false;
         }
 
-        private static bool InvokeMember(Type type, object instance, string memberName, object[] invokeArguments,
-            out object invokeResult, Type[] genericParameters = null)
+        private static bool InvokeMember(Type type, object instance, string memberName, object[] invokeArguments, out object invokeResult, Type[] genericParameters = null)
         {
             invokeResult = null;
 
@@ -311,9 +338,11 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// <summary>
         /// Определяет, можно ли вызвать метод с заданными параметрами.
         /// </summary>
-        public static bool CanInvoke(this MethodInfo target, object[] arguments, out object[] resultArguments,
-            Type[] genericParameters = null)
+        public static bool CanInvoke(this MethodInfo target, object[] arguments, out object[] resultArguments, Type[] genericParameters = null)
         {
+            // ReSharper disable PossibleNullReferenceException
+            // ReSharper disable AssignNullToNotNullAttribute
+
             resultArguments = arguments;
 
             var genericCount = (genericParameters != null) ? genericParameters.Length : 0;
@@ -371,7 +400,7 @@ namespace InfinniPlatform.Sdk.Dynamic
 
             resultArguments = new object[parameterCount];
 
-            // Если последний параметр вариативен
+            // Если последний параметр может принимать набор значений
             var lastParameter = parameters[parameterCount - 1];
             var lastParameterIsArray = (lastParameter.GetCustomAttribute<ParamArrayAttribute>() != null);
 
@@ -470,6 +499,9 @@ namespace InfinniPlatform.Sdk.Dynamic
 
                 return true;
             }
+
+            // ReSharper restore AssignNullToNotNullAttribute
+            // ReSharper restore PossibleNullReferenceException
         }
 
         // EVENT
@@ -479,11 +511,9 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static Delegate GetEventDelegate(this object target, EventInfo memberInfo)
         {
-            var eventFieldInfo =
-                (FieldInfo)
-                    FindMember(target.GetType(), memberInfo.Name, null,
-                        BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.GetField);
-            return (eventFieldInfo != null) ? (Delegate)eventFieldInfo.GetValue(target) : null;
+            var eventFieldInfo = (FieldInfo)FindMember(target.GetType(), memberInfo.Name, null, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.GetField);
+
+            return (Delegate)eventFieldInfo?.GetValue(target);
         }
 
         /// <summary>
@@ -491,10 +521,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static bool SetEventDelegate(this object target, EventInfo memberInfo, object memberValue)
         {
-            var eventFieldInfo =
-                (FieldInfo)
-                    FindMember(target.GetType(), memberInfo.Name, null,
-                        BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.GetField);
+            var eventFieldInfo = (FieldInfo)FindMember(target.GetType(), memberInfo.Name, null, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.GetField);
 
             if (eventFieldInfo != null && eventFieldInfo.FieldType.IsInstanceOfType(memberValue))
             {
@@ -517,6 +544,7 @@ namespace InfinniPlatform.Sdk.Dynamic
                 // ReSharper disable CoVariantArrayConversion
                 FastDynamicInvokeAction(target, args ?? EmptyObjects);
                 // ReSharper restore CoVariantArrayConversion
+
                 return null;
             }
 

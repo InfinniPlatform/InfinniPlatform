@@ -18,7 +18,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         {
             if (string.IsNullOrEmpty(documentType))
             {
-                documentType = MongoHelpers.GetDefaultDocumentType<TDocument>();
+                documentType = DocumentStorageExtensions.GetDefaultDocumentTypeName<TDocument>();
             }
 
             DocumentType = documentType;

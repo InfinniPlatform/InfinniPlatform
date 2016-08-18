@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.IoC;
 
 using Microsoft.AspNet.SignalR.Hubs;
@@ -61,7 +62,7 @@ namespace InfinniPlatform.PushNotification.SignalR
                 .Select(type => new HubDescriptor
                 {
                     NameSpecified = false,
-                    Name = type.Name,
+                    Name = GetHubName(type),
                     HubType = type
                 });
 
@@ -89,6 +90,11 @@ namespace InfinniPlatform.PushNotification.SignalR
             {
                 return false;
             }
+        }
+
+        private static string GetHubName(Type type)
+        {
+            return type.GetAttributeValue<HubNameAttribute, string>(i => i.HubName, type.NameOf());
         }
     }
 }
