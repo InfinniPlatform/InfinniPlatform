@@ -494,6 +494,90 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
+        public void ShouldFindByStartsWith()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider<SimpleEntity>(nameof(ShouldFindByStartsWith));
+
+            // When
+
+            storage.InsertMany(new[]
+                               {
+                                   new SimpleEntity { _id = 1, prop1 = "It starts with some text." },
+                                   new SimpleEntity { _id=  2, prop1 = "it starts with some text." },
+                                   new SimpleEntity { _id=  3, prop1 = "Does it start with some text?" }
+                               });
+
+            var caseInsensitiveResult = storage.Find(i => Regex.IsMatch(i.prop1, "^It", RegexOptions.IgnoreCase)).ToList();
+            var caseSensitiveResult = storage.Find(i => Regex.IsMatch(i.prop1, "^It")).ToList();
+
+            // Then
+
+            Assert.AreEqual(2, caseInsensitiveResult.Count);
+            Assert.AreEqual(1, caseInsensitiveResult[0]._id);
+            Assert.AreEqual(2, caseInsensitiveResult[1]._id);
+
+            Assert.AreEqual(1, caseSensitiveResult.Count);
+            Assert.AreEqual(1, caseSensitiveResult[0]._id);
+        }
+
+        [Test]
+        public void ShouldFindByEndsWith()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider<SimpleEntity>(nameof(ShouldFindByEndsWith));
+
+            // When
+
+            storage.InsertMany(new[]
+                               {
+                                   new SimpleEntity { _id = 1, prop1 = "It ends with some Text." },
+                                   new SimpleEntity { _id = 2, prop1 = "It ends with some text." },
+                                   new SimpleEntity { _id = 3, prop1 = "Does it end with some text?" }
+                               });
+
+            var caseInsensitiveResult = storage.Find(i => Regex.IsMatch(i.prop1, @"Text\.", RegexOptions.IgnoreCase)).ToList();
+            var caseSensitiveResult = storage.Find(i => Regex.IsMatch(i.prop1, @"Text\.")).ToList();
+
+            // Then
+
+            Assert.AreEqual(2, caseInsensitiveResult.Count);
+            Assert.AreEqual(1, caseInsensitiveResult[0]._id);
+            Assert.AreEqual(2, caseInsensitiveResult[1]._id);
+
+            Assert.AreEqual(1, caseSensitiveResult.Count);
+            Assert.AreEqual(1, caseSensitiveResult[0]._id);
+        }
+
+        [Test]
+        public void ShouldFindByContains()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider<SimpleEntity>(nameof(ShouldFindByContains));
+
+            // When
+
+            storage.InsertMany(new[]
+                               {
+                                   new SimpleEntity { _id = 1, prop1 = "It Contains some text." },
+                                   new SimpleEntity { _id = 2, prop1 = "It contains some text." },
+                                   new SimpleEntity { _id = 3, prop1 = "Does it contain some text?" }
+                               });
+
+            var caseInsensitiveResult = storage.Find(i => Regex.IsMatch(i.prop1, @"Contains", RegexOptions.IgnoreCase)).ToList();
+            var caseSensitiveResult = storage.Find(i => Regex.IsMatch(i.prop1, @"Contains")).ToList();
+
+            // Then
+
+            Assert.AreEqual(2, caseInsensitiveResult.Count);
+            Assert.AreEqual(1, caseInsensitiveResult[0]._id);
+            Assert.AreEqual(2, caseInsensitiveResult[1]._id);
+
+            Assert.AreEqual(1, caseSensitiveResult.Count);
+            Assert.AreEqual(1, caseSensitiveResult[0]._id);
+        }
+
+        [Test]
         public void ShouldFindByMatch()
         {
             // Given

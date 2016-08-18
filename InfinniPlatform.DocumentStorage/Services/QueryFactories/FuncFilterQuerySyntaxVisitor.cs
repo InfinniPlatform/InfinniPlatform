@@ -32,6 +32,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
                 { QuerySyntaxHelper.LtMethodName, LtInvocation },
                 { QuerySyntaxHelper.LteMethodName, LteInvocation },
                 { QuerySyntaxHelper.RegexMethodName, RegexInvocation },
+                { QuerySyntaxHelper.StartsWithMethodName, StartsWithInvocation },
+                { QuerySyntaxHelper.EndsWithMethodName, EndsWithInvocation },
+                { QuerySyntaxHelper.ContainsMethodName, ContainsInvocation },
                 { QuerySyntaxHelper.MatchMethodName, MatchInvocation },
                 { QuerySyntaxHelper.AllMethodName, AllInvocation },
                 { QuerySyntaxHelper.AnyInMethodName, AnyInInvocation },
@@ -198,6 +201,33 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             var options = node.Arguments.Skip(2).Aggregate(RegexOptions.None, (r, n) => r | n.AsEnumIdentifier<RegexOptions>());
             var regex = new Regex(pattern, options);
             return f => f.Regex(property, regex);
+        }
+
+        private static Func<IDocumentFilterBuilder, object> StartsWithInvocation(FuncFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
+        {
+            // startsWith(property, value, ignoreCase) --> f.StartsWith("property", "value", ignoreCase)
+            var property = node.Arguments[0].AsIdentifierName();
+            var value = node.Arguments[1].AsStringLiteral();
+            var ignoreCase = (node.Arguments.Count <= 2 || node.Arguments[2].AsBooleanLiteral());
+            return f => f.StartsWith(property, value, ignoreCase);
+        }
+
+        private static Func<IDocumentFilterBuilder, object> EndsWithInvocation(FuncFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
+        {
+            // endsWith(property, value, ignoreCase) --> f.EndsWith("property", "value", ignoreCase)
+            var property = node.Arguments[0].AsIdentifierName();
+            var value = node.Arguments[1].AsStringLiteral();
+            var ignoreCase = (node.Arguments.Count <= 2 || node.Arguments[2].AsBooleanLiteral());
+            return f => f.EndsWith(property, value, ignoreCase);
+        }
+
+        private static Func<IDocumentFilterBuilder, object> ContainsInvocation(FuncFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
+        {
+            // contains(property, value, ignoreCase) --> f.Contains("property", "value", ignoreCase)
+            var property = node.Arguments[0].AsIdentifierName();
+            var value = node.Arguments[1].AsStringLiteral();
+            var ignoreCase = (node.Arguments.Count <= 2 || node.Arguments[2].AsBooleanLiteral());
+            return f => f.Contains(property, value, ignoreCase);
         }
 
         private static Func<IDocumentFilterBuilder, object> MatchInvocation(FuncFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)

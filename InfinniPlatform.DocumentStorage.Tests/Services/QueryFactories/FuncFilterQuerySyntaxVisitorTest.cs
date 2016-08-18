@@ -256,6 +256,87 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
         }
 
         [Test]
+        public void ShouldFilterByStartsWith()
+        {
+            // Given
+
+            const string caseInsensitiveFilter = "startsWith(prop1, 'It')";
+            const string caseSensitiveFilter = "startsWith(prop1, 'It', false)";
+
+            Func<IDocumentFilterBuilder, object> caseInsensitiveExpectedFilter = f => f.StartsWith("prop1", "It");
+            Func<IDocumentFilterBuilder, object> caseSensitiveExpectedFilter = f => f.StartsWith("prop1", "It", false);
+
+            var items = new[]
+                        {
+                            new DynamicWrapper { { "_id", 1 }, { "prop1", "It starts with some text." } },
+                            new DynamicWrapper { { "_id", 2 }, { "prop1", "it starts with some text." } },
+                            new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it start with some text?" } }
+                        };
+
+            // When
+            var caseInsensitiveActualFilter = ParseFilter(caseInsensitiveFilter);
+            var caseSensitiveActualFilter = ParseFilter(caseSensitiveFilter);
+
+            // Then
+            AssertFilter(nameof(ShouldFilterByStartsWith), items, caseInsensitiveExpectedFilter, caseInsensitiveActualFilter);
+            AssertFilter(nameof(ShouldFilterByStartsWith), items, caseSensitiveExpectedFilter, caseSensitiveActualFilter);
+        }
+
+        [Test]
+        public void ShouldFilterByStartsEndsWith()
+        {
+            // Given
+
+            const string caseInsensitiveFilter = "endsWith(prop1, 'Text.')";
+            const string caseSensitiveFilter = "endsWith(prop1, 'Text.', false)";
+
+            Func<IDocumentFilterBuilder, object> caseInsensitiveExpectedFilter = f => f.EndsWith("prop1", "Text.");
+            Func<IDocumentFilterBuilder, object> caseSensitiveExpectedFilter = f => f.EndsWith("prop1", "Text.", false);
+
+            var items = new[]
+                        {
+                            new DynamicWrapper { { "_id", 1 }, { "prop1", "It ends with some Text." } },
+                            new DynamicWrapper { { "_id", 2 }, { "prop1", "It ends with some text." } },
+                            new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it end with some text?" } }
+                        };
+
+            // When
+            var caseInsensitiveActualFilter = ParseFilter(caseInsensitiveFilter);
+            var caseSensitiveActualFilter = ParseFilter(caseSensitiveFilter);
+
+            // Then
+            AssertFilter(nameof(ShouldFilterByStartsEndsWith), items, caseInsensitiveExpectedFilter, caseInsensitiveActualFilter);
+            AssertFilter(nameof(ShouldFilterByStartsEndsWith), items, caseSensitiveExpectedFilter, caseSensitiveActualFilter);
+        }
+
+        [Test]
+        public void ShouldFilterByStartsContains()
+        {
+            // Given
+
+            const string caseInsensitiveFilter = "contains(prop1, 'Contains')";
+            const string caseSensitiveFilter = "contains(prop1, 'Contains', false)";
+
+            Func<IDocumentFilterBuilder, object> caseInsensitiveExpectedFilter = f => f.Contains("prop1", "Contains");
+            Func<IDocumentFilterBuilder, object> caseSensitiveExpectedFilter = f => f.Contains("prop1", "Contains", false);
+
+            var items = new[]
+                        {
+                            new DynamicWrapper { { "_id", 1 }, { "prop1", "It Contains some text." } },
+                            new DynamicWrapper { { "_id", 2 }, { "prop1", "It contains some text." } },
+                            new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it contain some text?" } }
+                        };
+
+            // When
+            var caseInsensitiveActualFilter = ParseFilter(caseInsensitiveFilter);
+            var caseSensitiveActualFilter = ParseFilter(caseSensitiveFilter);
+
+            // Then
+            AssertFilter(nameof(ShouldFilterByStartsContains), items, caseInsensitiveExpectedFilter, caseInsensitiveActualFilter);
+            AssertFilter(nameof(ShouldFilterByStartsContains), items, caseSensitiveExpectedFilter, caseSensitiveActualFilter);
+        }
+
+        [Test]
         public void ShouldFilterByMatch()
         {
             // Given

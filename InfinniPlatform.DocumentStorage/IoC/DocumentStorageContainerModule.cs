@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using InfinniPlatform.Core.Diagnostics;
+﻿using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.DocumentStorage.Diagnostics;
 using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB;
@@ -13,14 +11,9 @@ using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
-
-using ISystemDocumentStorageFilterProvider = InfinniPlatform.DocumentStorage.Storage.ISystemDocumentStorageFilterProvider;
-using SystemDocumentStorageFilterProvider = InfinniPlatform.DocumentStorage.Storage.SystemDocumentStorageFilterProvider;
-using SystemDocumentStorageImpl = InfinniPlatform.DocumentStorage.Storage.SystemDocumentStorageImpl;
 
 namespace InfinniPlatform.DocumentStorage.IoC
 {

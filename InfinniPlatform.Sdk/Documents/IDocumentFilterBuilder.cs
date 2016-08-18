@@ -98,6 +98,20 @@ namespace InfinniPlatform.Sdk.Documents
         /// </summary>
         object Regex(string property, Regex value);
 
+        /// <summary>
+        /// Создает фильтр, проверяющий, что значение свойства документа начинается указанной подстрокой.
+        /// </summary>
+        object StartsWith(string property, string value, bool ignoreCase = true);
+
+        /// <summary>
+        /// Создает фильтр, проверяющий, что значение свойства документа заканчивается указанной подстрокой.
+        /// </summary>
+        object EndsWith(string property, string value, bool ignoreCase = true);
+
+        /// <summary>
+        /// Создает фильтр, проверяющий, что значение свойства документа содержит указанную подстроку.
+        /// </summary>
+        object Contains(string property, string value, bool ignoreCase = true);
 
         /// <summary>
         /// Создает фильтр, проверяющий, что свойство является массивом, который содержит хотя бы один элемент, удовлетворяющий указанному фильтру.

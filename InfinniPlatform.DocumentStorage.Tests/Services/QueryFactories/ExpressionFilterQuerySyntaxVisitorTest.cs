@@ -193,6 +193,87 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QueryFactories
         }
 
         [Test]
+        public void ShouldFilterByStartsWith()
+        {
+            // Given
+
+            const string caseInsensitiveFilter = "startsWith(prop1, 'It')";
+            const string caseSensitiveFilter = "startsWith(prop1, 'It', false)";
+
+            Expression<Func<SimpleEntity, bool>> caseInsensitiveExpectedFilter = i => Regex.IsMatch(i.prop1, "^It", RegexOptions.IgnoreCase);
+            Expression<Func<SimpleEntity, bool>> caseSensitiveExpectedFilter = i => Regex.IsMatch(i.prop1, "^It", RegexOptions.None);
+
+            var items = new[]
+                        {
+                            new SimpleEntity { _id = 1, prop1 = "It starts with some text." },
+                            new SimpleEntity { _id = 2, prop1 = "it starts with some text." },
+                            new SimpleEntity { _id = 3, prop1 = "Does it start with some text?" }
+                        };
+
+            // When
+            var caseInsensitiveActualFilter = ParseFilter<SimpleEntity>(caseInsensitiveFilter);
+            var caseSensitiveActualFilter = ParseFilter<SimpleEntity>(caseSensitiveFilter);
+
+            // Then
+            AssertFilter(items, caseInsensitiveExpectedFilter, caseInsensitiveActualFilter);
+            AssertFilter(items, caseSensitiveExpectedFilter, caseSensitiveActualFilter);
+        }
+
+        [Test]
+        public void ShouldFilterByEndsWith()
+        {
+            // Given
+
+            const string caseInsensitiveFilter = "endsWith(prop1, 'Text.')";
+            const string caseSensitiveFilter = "endsWith(prop1, 'Text.', false)";
+
+            Expression<Func<SimpleEntity, bool>> caseInsensitiveExpectedFilter = i => Regex.IsMatch(i.prop1, @"Text\.$", RegexOptions.IgnoreCase);
+            Expression<Func<SimpleEntity, bool>> caseSensitiveExpectedFilter = i => Regex.IsMatch(i.prop1, @"Text.$", RegexOptions.None);
+
+            var items = new[]
+                        {
+                            new SimpleEntity { _id = 1, prop1 = "It ends with some Text." },
+                            new SimpleEntity { _id = 2, prop1 = "It ends with some text." },
+                            new SimpleEntity { _id = 3, prop1 = "Does it end with some text?" }
+                        };
+
+            // When
+            var caseInsensitiveActualFilter = ParseFilter<SimpleEntity>(caseInsensitiveFilter);
+            var caseSensitiveActualFilter = ParseFilter<SimpleEntity>(caseSensitiveFilter);
+
+            // Then
+            AssertFilter(items, caseInsensitiveExpectedFilter, caseInsensitiveActualFilter);
+            AssertFilter(items, caseSensitiveExpectedFilter, caseSensitiveActualFilter);
+        }
+
+        [Test]
+        public void ShouldFilterByContains()
+        {
+            // Given
+
+            const string caseInsensitiveFilter = "contains(prop1, 'Contains')";
+            const string caseSensitiveFilter = "contains(prop1, 'Contains', false)";
+
+            Expression<Func<SimpleEntity, bool>> caseInsensitiveExpectedFilter = i => Regex.IsMatch(i.prop1, "Contains", RegexOptions.IgnoreCase);
+            Expression<Func<SimpleEntity, bool>> caseSensitiveExpectedFilter = i => Regex.IsMatch(i.prop1, "Contains", RegexOptions.None);
+
+            var items = new[]
+                        {
+                            new SimpleEntity { _id = 1, prop1 = "It Contains some text." },
+                            new SimpleEntity { _id = 2, prop1 = "It contains some text." },
+                            new SimpleEntity { _id = 3, prop1 = "Does it contain some text?" }
+                        };
+
+            // When
+            var caseInsensitiveActualFilter = ParseFilter<SimpleEntity>(caseInsensitiveFilter);
+            var caseSensitiveActualFilter = ParseFilter<SimpleEntity>(caseSensitiveFilter);
+
+            // Then
+            AssertFilter(items, caseInsensitiveExpectedFilter, caseInsensitiveActualFilter);
+            AssertFilter(items, caseSensitiveExpectedFilter, caseSensitiveActualFilter);
+        }
+
+        [Test]
         public void ShouldFilterByMatch()
         {
             // Given

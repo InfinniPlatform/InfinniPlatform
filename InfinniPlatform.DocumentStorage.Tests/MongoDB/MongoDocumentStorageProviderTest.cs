@@ -563,6 +563,90 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
+        public void ShouldFindByStartsWith()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByStartsWith));
+
+            // When
+
+            storage.InsertMany(new[]
+                               {
+                                   new DynamicWrapper { { "_id", 1 }, { "prop1", "It starts with some text." } },
+                                   new DynamicWrapper { { "_id", 2 }, { "prop1", "it starts with some text." } },
+                                   new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it start with some text?" } }
+                               });
+
+            var caseInsensitiveResult= storage.Find(f => f.StartsWith("prop1", "It")).ToList();
+            var caseSensitiveResult = storage.Find(f => f.StartsWith("prop1", "It", false)).ToList();
+
+            // Then
+
+            Assert.AreEqual(2, caseInsensitiveResult.Count);
+            Assert.AreEqual(1, ((dynamic)caseInsensitiveResult[0])._id);
+            Assert.AreEqual(2, ((dynamic)caseInsensitiveResult[1])._id);
+
+            Assert.AreEqual(1, caseSensitiveResult.Count);
+            Assert.AreEqual(1, ((dynamic)caseSensitiveResult[0])._id);
+        }
+
+        [Test]
+        public void ShouldFindByEndsWith()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByEndsWith));
+
+            // When
+
+            storage.InsertMany(new[]
+                               {
+                                   new DynamicWrapper { { "_id", 1 }, { "prop1", "It ends with some Text." } },
+                                   new DynamicWrapper { { "_id", 2 }, { "prop1", "It ends with some text." } },
+                                   new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it end with some text?" } }
+                               });
+
+            var caseInsensitiveResult= storage.Find(f => f.EndsWith("prop1", "Text.")).ToList();
+            var caseSensitiveResult = storage.Find(f => f.EndsWith("prop1", "Text.", false)).ToList();
+
+            // Then
+
+            Assert.AreEqual(2, caseInsensitiveResult.Count);
+            Assert.AreEqual(1, ((dynamic)caseInsensitiveResult[0])._id);
+            Assert.AreEqual(2, ((dynamic)caseInsensitiveResult[1])._id);
+
+            Assert.AreEqual(1, caseSensitiveResult.Count);
+            Assert.AreEqual(1, ((dynamic)caseSensitiveResult[0])._id);
+        }
+
+        [Test]
+        public void ShouldFindByContains()
+        {
+            // Given
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldFindByContains));
+
+            // When
+
+            storage.InsertMany(new[]
+                               {
+                                   new DynamicWrapper { { "_id", 1 }, { "prop1", "It Contains some text." } },
+                                   new DynamicWrapper { { "_id", 2 }, { "prop1", "It contains some text." } },
+                                   new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it contain some text?" } }
+                               });
+
+            var caseInsensitiveResult= storage.Find(f => f.Contains("prop1", "Contains")).ToList();
+            var caseSensitiveResult = storage.Find(f => f.Contains("prop1", "Contains", false)).ToList();
+
+            // Then
+
+            Assert.AreEqual(2, caseInsensitiveResult.Count);
+            Assert.AreEqual(1, ((dynamic)caseInsensitiveResult[0])._id);
+            Assert.AreEqual(2, ((dynamic)caseInsensitiveResult[1])._id);
+
+            Assert.AreEqual(1, caseSensitiveResult.Count);
+            Assert.AreEqual(1, ((dynamic)caseSensitiveResult[0])._id);
+        }
+
+        [Test]
         public void ShouldFindByMatch()
         {
             // Given

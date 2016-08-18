@@ -30,6 +30,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
                 { QuerySyntaxHelper.LtMethodName, LtInvocation },
                 { QuerySyntaxHelper.LteMethodName, LteInvocation },
                 { QuerySyntaxHelper.RegexMethodName, RegexInvocation },
+                { QuerySyntaxHelper.StartsWithMethodName, StartsWithInvocation },
+                { QuerySyntaxHelper.EndsWithMethodName, EndsWithInvocation },
+                { QuerySyntaxHelper.ContainsMethodName, ContainsInvocation },
                 { QuerySyntaxHelper.MatchMethodName, MatchInvocation },
                 { QuerySyntaxHelper.AllMethodName, AllInvocation },
                 { QuerySyntaxHelper.AnyInMethodName, AnyInInvocation },
@@ -200,6 +203,33 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             var property = visitor.Visit(node.Arguments[0]);
             var pattern = visitor.Visit(node.Arguments[1]);
             var options = Expression.Constant(node.Arguments.Skip(2).Aggregate(RegexOptions.None, (r, n) => r | n.AsEnumIdentifier<RegexOptions>()));
+            return QuerySyntaxHelper.InvokeRegex(property, pattern, options);
+        }
+
+        private static Expression StartsWithInvocation(ExpressionFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
+        {
+            // startsWith(property, value, ignoreCase) --> Regex.IsMatch(i.property, $"^{Regex.Escape(value)}", ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None)
+            var property = visitor.Visit(node.Arguments[0]);
+            var pattern = Expression.Constant($"^{Regex.Escape(node.Arguments[1].AsStringLiteral())}");
+            var options = Expression.Constant((node.Arguments.Count <= 2 || node.Arguments[2].AsBooleanLiteral()) ? RegexOptions.IgnoreCase : RegexOptions.None);
+            return QuerySyntaxHelper.InvokeRegex(property, pattern, options);
+        }
+
+        private static Expression EndsWithInvocation(ExpressionFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
+        {
+            // endsWith(property, value, ignoreCase) --> Regex.IsMatch(i.property, $"{Regex.Escape(value)}$", ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None)
+            var property = visitor.Visit(node.Arguments[0]);
+            var pattern = Expression.Constant($"{Regex.Escape(node.Arguments[1].AsStringLiteral())}$");
+            var options = Expression.Constant((node.Arguments.Count <= 2 || node.Arguments[2].AsBooleanLiteral()) ? RegexOptions.IgnoreCase : RegexOptions.None);
+            return QuerySyntaxHelper.InvokeRegex(property, pattern, options);
+        }
+
+        private static Expression ContainsInvocation(ExpressionFilterQuerySyntaxVisitor visitor, InvocationQuerySyntaxNode node)
+        {
+            // contains(property, value, ignoreCase) --> Regex.IsMatch(i.property, Regex.Escape(value), ignoreCase ? RegexOptions.IgnoreCase : RegexOptions.None)
+            var property = visitor.Visit(node.Arguments[0]);
+            var pattern = Expression.Constant(Regex.Escape(node.Arguments[1].AsStringLiteral()));
+            var options = Expression.Constant((node.Arguments.Count <= 2 || node.Arguments[2].AsBooleanLiteral()) ? RegexOptions.IgnoreCase : RegexOptions.None);
             return QuerySyntaxHelper.InvokeRegex(property, pattern, options);
         }
 

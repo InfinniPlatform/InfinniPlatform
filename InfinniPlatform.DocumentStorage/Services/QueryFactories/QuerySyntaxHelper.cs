@@ -36,6 +36,9 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         public const string LtMethodName = "lt";
         public const string LteMethodName = "lte";
         public const string RegexMethodName = "regex";
+        public const string StartsWithMethodName = "startsWith";
+        public const string EndsWithMethodName = "endsWith";
+        public const string ContainsMethodName = "contains";
         public const string MatchMethodName = "match";
         public const string AllMethodName = "all";
         public const string AnyInMethodName = "anyIn";

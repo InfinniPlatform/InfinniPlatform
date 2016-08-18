@@ -10,6 +10,8 @@ using InfinniPlatform.Sdk.Metadata.Documents;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
+using RegexClass = System.Text.RegularExpressions.Regex;
+
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     /// <summary>
@@ -108,6 +110,21 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         public object Regex(string property, Regex value)
         {
             return InternalBuilder.Regex(property, value);
+        }
+
+        public object StartsWith(string property, string value, bool ignoreCase = true)
+        {
+            return InternalBuilder.Regex(property, new BsonRegularExpression($"^{RegexClass.Escape(value)}", ignoreCase ? "i" : null));
+        }
+
+        public object EndsWith(string property, string value, bool ignoreCase = true)
+        {
+            return InternalBuilder.Regex(property, new BsonRegularExpression($"{RegexClass.Escape(value)}$", ignoreCase ? "i" : null));
+        }
+
+        public object Contains(string property, string value, bool ignoreCase = true)
+        {
+            return InternalBuilder.Regex(property, new BsonRegularExpression(RegexClass.Escape(value), ignoreCase ? "i" : null));
         }
 
 
