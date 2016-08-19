@@ -70,6 +70,7 @@
     <Compile Include="Metadata\MetadataSettings.cs" />
     <Compile Include="Services\FileApiHttpService.cs" />
     <Compile Include="Services\SystemInfoHttpService.cs" />
+    <Compile Include="Settings\AppConfigurationPlaceholder.cs" />
     <Compile Include="Settings\AppEnvironment.cs" />
     <Compile Include="Contracts\ActionContext.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />

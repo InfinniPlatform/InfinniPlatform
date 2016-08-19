@@ -107,7 +107,7 @@
   /* Настройки хранения BLOB и файлов */
   "blobStorage": {
     /* Базовый каталог для хранения файлов системы (по умолчанию - 'BlobStorage') */
-    "BaseDirectory": "BlobStorage"
+    "BaseDirectory": "${INFINNI_BLOBSTORAGE=BlobStorage}"
   },
   /* Настройки хранения пользователей */
   "userStorage": {

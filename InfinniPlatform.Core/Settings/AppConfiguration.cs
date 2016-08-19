@@ -1,26 +1,29 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 
 using InfinniPlatform.Sdk.Settings;
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Core.Settings
 {
     public sealed class AppConfiguration : IAppConfiguration
     {
+        /// <summary>
+        /// Статический экземпляр.
+        /// </summary>
         public static readonly AppConfiguration Instance = new AppConfiguration();
 
 
         public AppConfiguration()
         {
             _appConfig = new Lazy<JObject>(ReadAppConfig);
+            _appConfigPlaceholder = new AppConfigurationPlaceholder();
         }
 
 
         private readonly Lazy<JObject> _appConfig;
+        private readonly AppConfigurationPlaceholder _appConfigPlaceholder;
 
 
         public dynamic GetSection(string sectionName)
@@ -30,7 +33,7 @@ namespace InfinniPlatform.Core.Settings
                 throw new ArgumentException(nameof(sectionName));
             }
 
-            var sectionValue = (JObject) _appConfig.Value.GetValue(sectionName, StringComparison.OrdinalIgnoreCase);
+            var sectionValue = (JObject)_appConfig.Value.GetValue(sectionName, StringComparison.OrdinalIgnoreCase);
 
             return sectionValue ?? new JObject();
         }
@@ -48,7 +51,7 @@ namespace InfinniPlatform.Core.Settings
         }
 
 
-        private static JObject ReadAppConfig()
+        private JObject ReadAppConfig()
         {
             var appCommonConfigPath = AppSettings.GetValue("AppCommonConfig", "AppCommon.json");
             var appExtensionConfigPath = AppSettings.GetValue("AppExtensionConfig", "AppExtension.json");
@@ -61,22 +64,28 @@ namespace InfinniPlatform.Core.Settings
             return appConfig;
         }
 
-        private static JObject TryReadConfig(string configPath)
+
+        /// <summary>
+        /// Производит чтение конфигурационного файла.
+        /// </summary>
+        private JObject TryReadConfig(string configPath)
         {
             if (File.Exists(configPath))
             {
-                using (var reader = new StreamReader(configPath, Encoding.UTF8))
-                {
-                    using (var jReader = new JsonTextReader(reader))
-                    {
-                        return JObject.Load(jReader);
-                    }
-                }
+                var config = File.ReadAllText(configPath);
+
+                config = _appConfigPlaceholder.ExpandEnvironmentVariables(config);
+
+                return JObject.Parse(config);
             }
 
             return null;
         }
 
+
+        /// <summary>
+        /// Производит слияние общей и дополнительной конфигурации.
+        /// </summary>
         private static JObject TryMergeConfig(JObject commonConfig, JObject extensionConfig)
         {
             if (commonConfig != null && extensionConfig != null)
