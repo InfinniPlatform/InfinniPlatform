@@ -1,11 +1,8 @@
-﻿using InfinniPlatform.Sdk.Logging;
-
-namespace InfinniPlatform.Caching.Redis
+﻿namespace InfinniPlatform.Caching.Redis
 {
     /// <summary>
-    /// Реализует интерфейс для управления распределенным кэшем на базе Redis.
+    /// Пустая реализация интерфейса для управления распределенным кэшем.
     /// </summary>
-    [LoggerName("Redis")]
     internal sealed class NullSharedCacheImpl : ISharedCache
     {
         public bool Contains(string key)
@@ -21,13 +18,11 @@ namespace InfinniPlatform.Caching.Redis
         public bool TryGet(string key, out string value)
         {
             value = null;
-
             return false;
         }
 
         public void Set(string key, string value)
         {
-            // empty
         }
 
         public bool Remove(string key)

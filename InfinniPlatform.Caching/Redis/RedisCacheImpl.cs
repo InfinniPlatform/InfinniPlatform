@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Caching.Properties;
-using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
 
@@ -119,23 +118,28 @@ namespace InfinniPlatform.Caching.Redis
         {
             var startTime = DateTime.Now;
 
+            Exception error = null;
+
             var wrappedKey = key.WrapCacheKey(_keyspace);
 
             try
             {
-                var result = action(_connectionFactory.GetClient(), wrappedKey);
-
-                _performanceLog.Log(method, startTime);
-
-                return result;
+                using (var client = _connectionFactory.GetClient())
+                {
+                    return action(client, wrappedKey);
+                }
             }
             catch (Exception exception)
             {
-                _log.Error(Resources.RedisCommandCompletedWithError, exception, () => new Dictionary<string, object> { { "method", method }, { "key", key } });
+                error = exception;
 
-                _performanceLog.Log(method, startTime, exception);
+                _log.Error(Resources.RedisCommandCompletedWithError, error, () => new Dictionary<string, object> { { "method", method }, { "key", key } });
 
                 throw;
+            }
+            finally
+            {
+                _performanceLog.Log(method, startTime, error);
             }
         }
     }

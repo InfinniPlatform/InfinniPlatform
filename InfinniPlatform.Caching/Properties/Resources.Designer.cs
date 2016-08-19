@@ -70,6 +70,15 @@ namespace InfinniPlatform.Caching.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The INFO command to Redis completed with timeout..
+        /// </summary>
+        internal static string RedisInfoCommandCompletedWithTimeout {
+            get {
+                return ResourceManager.GetString("RedisInfoCommandCompletedWithTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request is not authenticated..
         /// </summary>
         internal static string RequestIsNotAuthenticated {

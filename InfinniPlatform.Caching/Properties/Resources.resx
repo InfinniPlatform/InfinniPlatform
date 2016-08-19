@@ -120,6 +120,9 @@
   <data name="RedisCommandCompletedWithError" xml:space="preserve">
     <value>Redis command completed with error.</value>
   </data>
+  <data name="RedisInfoCommandCompletedWithTimeout" xml:space="preserve">
+    <value>The INFO command to Redis completed with timeout.</value>
+  </data>
   <data name="RequestIsNotAuthenticated" xml:space="preserve">
     <value>Request is not authenticated.</value>
   </data>

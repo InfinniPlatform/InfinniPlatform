@@ -7,18 +7,21 @@ using InfinniPlatform.Sdk.Dynamic;
 namespace InfinniPlatform.DocumentStorage.Diagnostics
 {
     /// <summary>
-    /// Предоставляет информацию о состоянии MongoDB.
+    /// Предоставляет информацию о состоянии подсистемы хранения документов.
     /// </summary>
-    internal sealed class MongoStatusProvider : ISubsystemStatusProvider
+    internal sealed class DocumentStorageStatusProvider : ISubsystemStatusProvider
     {
-        public MongoStatusProvider(MongoConnection connection)
+        public DocumentStorageStatusProvider(MongoConnection connection)
         {
             _connection = connection;
         }
 
+
         private readonly MongoConnection _connection;
 
+
         public string Name => "documentStorage";
+
 
         public async Task<object> GetStatus()
         {

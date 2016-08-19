@@ -165,7 +165,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             // Diagnostics
 
-            builder.RegisterType<MongoStatusProvider>()
+            builder.RegisterType<DocumentStorageStatusProvider>()
                    .As<ISubsystemStatusProvider>()
                    .SingleInstance();
         }

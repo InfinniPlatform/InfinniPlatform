@@ -46,6 +46,7 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Diagnostics\CachingStatusProvider.cs" />
     <Compile Include="IMemoryCache.cs" />
     <Compile Include="ISharedCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,6 +64,7 @@
     </Compile>
     <Compile Include="Redis\RedisCacheImpl.cs" />
     <Compile Include="Redis\RedisConnectionFactory.cs" />
+    <Compile Include="Redis\RedisExtensions.cs" />
     <Compile Include="Session\SessionManager.cs" />
     <Compile Include="TwoLayer\ICacheSynchronizer.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheConsumer.cs" />

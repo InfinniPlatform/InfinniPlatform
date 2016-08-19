@@ -51,7 +51,7 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Diagnostics\MongoStatusProvider.cs" />
+    <Compile Include="Diagnostics\DocumentStorageStatusProvider.cs" />
     <Compile Include="IoC\DocumentStorageContainerModule.cs" />
     <Compile Include="MongoDB\Conventions\IgnorePropertyConvention.cs" />
     <Compile Include="MongoDB\Conventions\IgnoreDiscriminatorConvention.cs" />

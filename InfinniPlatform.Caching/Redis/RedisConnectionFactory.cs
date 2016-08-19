@@ -88,10 +88,7 @@ namespace InfinniPlatform.Caching.Redis
         {
             var client = _clientsPool.Value.GetClient();
 
-            if (_clientInitializer != null)
-            {
-                _clientInitializer.Invoke(client);
-            }
+            _clientInitializer?.Invoke(client);
 
             return client;
         }

@@ -1,9 +1,11 @@
 ﻿using System;
 
+using InfinniPlatform.Caching.Diagnostics;
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
+using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Queues;
@@ -67,6 +69,12 @@ namespace InfinniPlatform.Caching.IoC
 
             builder.RegisterType<SessionManager>()
                    .As<ISessionManager>()
+                   .SingleInstance();
+
+            // ДИАГНОСТИКА
+
+            builder.RegisterType<CachingStatusProvider>()
+                   .As<ISubsystemStatusProvider>()
                    .SingleInstance();
         }
 
