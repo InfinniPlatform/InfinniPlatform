@@ -1,10 +1,4 @@
 input {
-#	file {
-#    	path => ["C:\Program Files\Apache Software Foundation\apache-tomcat-7.0.30\bin\logs\server.log"]
-#		start_position => "beginning"
-#		add_field => { "source" => "Monitoring.RestFacade" }
-#	}
-
 	udp {
 		port => 17651
 		add_field => { "source" => "Performance.InfinniPlatform" }
@@ -37,16 +31,10 @@ filter {
 
 	if [monitoring] == "Performance" {
 		grok {
-			patterns_dir => "./patterns"
 			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{NOTSPACE:correlationId}\|%{WORD:component}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:result}" ]
 		}
 
 		if "_grokparsefailure" in [tags] { drop {} }
-
-		mutate {
-			convert => [ "duration", "integer" ]
-			add_field => { "qualifiedAction" => "%{component}.%{action}" }
-		}
 
 		if [result] =~ "\<null\>" {
 			mutate {
