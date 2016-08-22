@@ -23,7 +23,7 @@ input {
 filter {
 	if [monitoring] == "Events" {
 		grok {
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level}\s+%{NOTSPACE:thread}\s+%{NOTSPACE:logger}\s+\[R:%{NOTSPACE:requestId}\s+S:%{NOTSPACE:sessionId}\s+%{NOTSPACE:userId}\s+%{NOTSPACE:userName}\] %{GREEDYDATA:body}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{LOGLEVEL:level}\|%{NOTSPACE:thread}\|%{NOTSPACE:logger}\|%{NOTSPACE:requestId}\|%{NOTSPACE:sessionId}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:body}" ]
 		}
 
 		json {
@@ -38,7 +38,7 @@ filter {
 	if [monitoring] == "Performance" {
 		grok {
 			patterns_dir => "./patterns"
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp} %{NOTSPACE:correlationId}\s+%{WORD:component} %{NOTSPACE:userId}\s+%{NOTSPACE:userName} %{NOTSPACE:action} %{NONNEGINT:duration} %{GREEDYDATA:result}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{NOTSPACE:correlationId}\|%{WORD:component}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:result}" ]
 		}
 
 		if "_grokparsefailure" in [tags] { drop {} }
