@@ -6,7 +6,6 @@ using System.Net;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Properties;
-using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.Owin.Hosting;
 
@@ -19,13 +18,7 @@ namespace InfinniPlatform.Owin.Hosting
     /// </summary>
     public sealed class OwinHostingService : IHostingService
     {
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="hostingContext">Контекст подсистемы хостинга на базе OWIN.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public OwinHostingService(IOwinHostingContext hostingContext, ILog log)
+        public OwinHostingService(IOwinHostingContext hostingContext)
         {
             if (hostingContext == null)
             {
@@ -63,7 +56,7 @@ namespace InfinniPlatform.Owin.Hosting
                 throw new ArgumentNullException(Resources.ServerNameCannotBeNullOrWhiteSpace);
             }
 
-            if (!server.IsLocalAddress(out server))
+            if (!HostAddressParser.Default.IsLocalAddress(server, out server))
             {
                 throw new ArgumentOutOfRangeException(string.Format(Resources.ServerNameIsNotLocal, server));
             }
@@ -88,7 +81,6 @@ namespace InfinniPlatform.Owin.Hosting
 
 
             _hostingContext = hostingContext;
-            _log = log;
 
             _baseAddress = $"{scheme}://{server}:{port}/";
             _hostingModules = hostingContext.ContainerResolver.Resolve<IEnumerable<IOwinHostingModule>>().OrderBy(m => m.ModuleType);
@@ -96,7 +88,6 @@ namespace InfinniPlatform.Owin.Hosting
 
 
         private readonly IOwinHostingContext _hostingContext;
-        private readonly ILog _log;
 
         private readonly string _baseAddress;
         private readonly IEnumerable<IOwinHostingModule> _hostingModules;

@@ -101,8 +101,7 @@
     <Compile Include="Modules\OwinHostingContext.cs" />
     <Compile Include="Modules\OwinHostingModuleType.cs" />
     <Compile Include="Modules\ErrorHandlingOwinHostingModule.cs" />
-    <Compile Include="NativeHttpApi.cs" />
-    <Compile Include="OwinExtensions.cs" />
+    <Compile Include="Hosting\HostAddressParser.cs" />
     <Compile Include="Hosting\OwinHostingService.cs" />
     <Compile Include="Modules\IOwinHostingModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">

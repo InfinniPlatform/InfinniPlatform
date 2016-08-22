@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.Core.Compression;
-using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Settings;
@@ -16,12 +15,6 @@ namespace InfinniPlatform.Core.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            // Diagnostics
-
-            builder.RegisterType<SystemStatusProvider>()
-                   .As<ISystemStatusProvider>()
-                   .SingleInstance();
-
             // Configuration
 
             builder.RegisterInstance(AppConfiguration.Instance)
@@ -56,13 +49,13 @@ namespace InfinniPlatform.Core.IoC
                    .As<MetadataSettings>()
                    .SingleInstance();
 
-            // Hosting
-
-            builder.RegisterHttpServices(GetType().Assembly);
-
             builder.RegisterType<JsonDocumentMetadataSource>()
                    .As<IDocumentMetadataSource>()
                    .SingleInstance();
+
+            // Hosting
+
+            builder.RegisterHttpServices(GetType().Assembly);
         }
     }
 }

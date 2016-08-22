@@ -10,7 +10,6 @@ using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Logging;
 
 using Microsoft.Owin;
 
@@ -44,7 +43,7 @@ namespace InfinniPlatform.Cors.Tests
         public void ServerReplyShouldContainsAccessControlAllowOrigin()
         {
             var owinHostingContext = CreateTestOwinHostingContext(new CorsOwinHostingModule(), new FakeOwinHostingModule());
-            var owinHostingService = new OwinHostingService(owinHostingContext, new Mock<ILog>().Object);
+            var owinHostingService = new OwinHostingService(owinHostingContext);
 
             owinHostingService.Start();
 

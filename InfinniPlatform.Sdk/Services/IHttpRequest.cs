@@ -16,6 +16,11 @@ namespace InfinniPlatform.Sdk.Services
         string Method { get; }
 
         /// <summary>
+        /// Базовый путь запроса.
+        /// </summary>
+        string BasePath { get; }
+
+        /// <summary>
         /// Путь запроса.
         /// </summary>
         string Path { get; }

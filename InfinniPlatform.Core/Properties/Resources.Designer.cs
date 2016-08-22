@@ -22,7 +22,7 @@ namespace InfinniPlatform.Core.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -61,65 +61,11 @@ namespace InfinniPlatform.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not get status for the subsystem..
+        ///   Looks up a localized string similar to Subsystem is not responding..
         /// </summary>
-        public static string CouldNotGetStatusForTheSubsystem {
+        public static string SubsystemIsNotResponding {
             get {
-                return ResourceManager.GetString("CouldNotGetStatusForTheSubsystem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Need confirm.
-        /// </summary>
-        public static string NeedConfirm {
-            get {
-                return ResourceManager.GetString("NeedConfirm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to JSON Schema does not contain &apos;id&apos; property: &apos;{0}&apos;..
-        /// </summary>
-        public static string SchemaDoesNotContainIdProperty {
-            get {
-                return ResourceManager.GetString("SchemaDoesNotContainIdProperty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to JSON Schema is incorrect or not declared: &apos;{0}&apos;..
-        /// </summary>
-        public static string SchemaIncorrectOrNotDeclared {
-            get {
-                return ResourceManager.GetString("SchemaIncorrectOrNotDeclared", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to JSON Schema &apos;{0}&apos; is already declared: &apos;{1}&apos;..
-        /// </summary>
-        public static string SchemaIsAlreadyDeclared {
-            get {
-                return ResourceManager.GetString("SchemaIsAlreadyDeclared", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  Path &apos;{0}&apos;..
-        /// </summary>
-        public static string SchemaPathInfo {
-            get {
-                return ResourceManager.GetString("SchemaPathInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Validator not found..
-        /// </summary>
-        public static string ValidatorNotFound {
-            get {
-                return ResourceManager.GetString("ValidatorNotFound", resourceCulture);
+                return ResourceManager.GetString("SubsystemIsNotResponding", resourceCulture);
             }
         }
     }

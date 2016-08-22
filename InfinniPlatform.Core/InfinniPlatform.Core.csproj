@@ -50,11 +50,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Web" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -62,14 +59,14 @@
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
-    <Compile Include="Diagnostics\SystemStatusProvider.cs" />
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\PerformanceLogEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\JsonDocumentMetadataSource.cs" />
     <Compile Include="Metadata\MetadataSettings.cs" />
     <Compile Include="Services\FileApiHttpService.cs" />
-    <Compile Include="Services\SystemInfoHttpService.cs" />
+    <Compile Include="Diagnostics\SystemInfoHttpService.cs" />
+    <Compile Include="Hosting\IHostAddressParser.cs" />
     <Compile Include="Settings\AppConfigurationPlaceholder.cs" />
     <Compile Include="Settings\AppEnvironment.cs" />
     <Compile Include="Contracts\ActionContext.cs" />
@@ -102,8 +99,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Hosting\WebRequestHelper.cs" />
-    <Compile Include="Diagnostics\ISystemStatusProvider.cs" />
     <Compile Include="Threading\AsyncHelper.cs" />
   </ItemGroup>
   <ItemGroup>

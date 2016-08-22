@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Owin.Middleware;
+﻿using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Owin.Hosting;
+using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Owin.Services;
@@ -15,7 +17,7 @@ namespace InfinniPlatform.Owin.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            // Модуль Nancy
+            // Nancy
 
             builder.RegisterType<NancyOwinHostingModule>()
                    .As<IOwinHostingModule>()
@@ -61,7 +63,7 @@ namespace InfinniPlatform.Owin.IoC
                    .As<IHttpServiceContextProvider>()
                    .SingleInstance();
 
-            // Остальные модули
+            // ErrorHandling
 
             builder.RegisterType<ErrorHandlingOwinHostingModule>()
                    .As<IOwinHostingModule>()
@@ -75,6 +77,12 @@ namespace InfinniPlatform.Owin.IoC
 
             builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<StaticContentSettings>(StaticContentSettings.SectionName))
                    .As<StaticContentSettings>()
+                   .SingleInstance();
+
+            // Hosting
+
+            builder.RegisterInstance(HostAddressParser.Default)
+                   .As<IHostAddressParser>()
                    .SingleInstance();
         }
     }

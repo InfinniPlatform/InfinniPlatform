@@ -99,7 +99,7 @@ namespace InfinniPlatform.NodeServiceHost
         private static ServiceHostInstance CreateHostingService()
         {
             var owinHostingContext = GetOwinHostingContext();
-            var owinHostingServiceFactory = new OwinHostingServiceFactory(owinHostingContext, Logger.Log);
+            var owinHostingServiceFactory = new OwinHostingServiceFactory(owinHostingContext);
             var owinHostingService = owinHostingServiceFactory.CreateHostingService();
 
             return new ServiceHostInstance(owinHostingService, owinHostingContext);

@@ -117,25 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CouldNotGetStatusForTheSubsystem" xml:space="preserve">
-    <value>Could not get status for the subsystem.</value>
-  </data>
-  <data name="NeedConfirm" xml:space="preserve">
-    <value>Need confirm</value>
-  </data>
-  <data name="SchemaDoesNotContainIdProperty" xml:space="preserve">
-    <value>JSON Schema does not contain 'id' property: '{0}'.</value>
-  </data>
-  <data name="SchemaIncorrectOrNotDeclared" xml:space="preserve">
-    <value>JSON Schema is incorrect or not declared: '{0}'.</value>
-  </data>
-  <data name="SchemaIsAlreadyDeclared" xml:space="preserve">
-    <value>JSON Schema '{0}' is already declared: '{1}'.</value>
-  </data>
-  <data name="SchemaPathInfo" xml:space="preserve">
-    <value> Path '{0}'.</value>
-  </data>
-  <data name="ValidatorNotFound" xml:space="preserve">
-    <value>Validator not found.</value>
+  <data name="SubsystemIsNotResponding" xml:space="preserve">
+    <value>Subsystem is not responding.</value>
   </data>
 </root>

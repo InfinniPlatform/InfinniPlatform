@@ -44,6 +44,8 @@ namespace InfinniPlatform.Owin.Services
 
         public string Method => _nancyRequest.Method;
 
+        public string BasePath => _nancyRequest.Url?.SiteBase;
+
         public string Path => _nancyRequest.Path;
 
         public IHttpRequestHeaders Headers => _headers.Value;
