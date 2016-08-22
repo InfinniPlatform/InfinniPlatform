@@ -31,10 +31,14 @@ filter {
 
 	if [monitoring] == "Performance" {
 		grok {
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{NOTSPACE:correlationId}\|%{WORD:component}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:result}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{NOTSPACE:correlationId}\|%{WORD:component}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:body}" ]
 		}
 
 		if "_grokparsefailure" in [tags] { drop {} }
+
+		json {
+			source => "body"
+		}
 
 		if [result] =~ "\<null\>" {
 			mutate {

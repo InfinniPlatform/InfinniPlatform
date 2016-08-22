@@ -1,4 +1,4 @@
-﻿{
+{
   "title": "Inf.Performance",
   "services": {
     "query": {
@@ -109,7 +109,7 @@
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "qualifiedAction.raw",
+          "field": "m.raw",
           "exclude": [],
           "missing": false,
           "other": false,
@@ -148,7 +148,7 @@
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "qualifiedAction.raw",
+          "field": "m.raw",
           "exclude": [],
           "missing": false,
           "other": false,
@@ -178,7 +178,7 @@
           },
           "tmode": "terms_stats",
           "tstat": "mean",
-          "valuefield": "duration",
+          "valuefield": "d",
           "title": "Avg duration"
         },
         {
@@ -187,7 +187,7 @@
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "qualifiedAction.raw",
+          "field": "m.raw",
           "exclude": [],
           "missing": false,
           "other": false,
@@ -217,7 +217,7 @@
           },
           "tmode": "terms_stats",
           "tstat": "total",
-          "valuefield": "duration",
+          "valuefield": "d",
           "title": "Tot Duration"
         },
         {
@@ -256,7 +256,7 @@
           },
           "tmode": "terms_stats",
           "tstat": "total",
-          "valuefield": "duration",
+          "valuefield": "d",
           "title": "Component"
         },
         {
@@ -295,7 +295,7 @@
           },
           "tmode": "terms_stats",
           "tstat": "total",
-          "valuefield": "duration",
+          "valuefield": "d",
           "title": "Host"
         },
         {
@@ -334,7 +334,7 @@
           },
           "tmode": "terms_stats",
           "tstat": "total",
-          "valuefield": "duration",
+          "valuefield": "d",
           "title": "Request"
         },
         {
@@ -424,7 +424,7 @@
             "variance": false
           },
           "title": "Statistics",
-          "field": "duration",
+          "field": "d",
           "unit": "ms"
         },
         {
@@ -464,47 +464,6 @@
           "title": "Percentiles",
           "field": "duration",
           "unit": "ms"
-        },
-        {
-          "error": false,
-          "span": 8,
-          "editable": true,
-          "type": "terms",
-          "loadingEditor": false,
-          "field": "result.raw",
-          "exclude": [
-            ""
-          ],
-          "missing": false,
-          "other": false,
-          "size": 6,
-          "order": "count",
-          "style": {
-            "font-size": "10pt"
-          },
-          "donut": false,
-          "tilt": false,
-          "labels": true,
-          "arrangement": "horizontal",
-          "chart": "table",
-          "counter_pos": "above",
-          "spyable": true,
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6
-            ]
-          },
-          "tmode": "terms",
-          "tstat": "total",
-          "valuefield": "",
-          "title": "Exception Stats"
         }
       ],
       "notice": false
@@ -515,81 +474,7 @@
       "editable": true,
       "collapse": false,
       "collapsable": true,
-      "panels": [
-        {
-          "span": 12,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "count",
-          "time_field": "timestamp",
-          "value_field": "duration",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "none",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              5
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": false,
-          "resolution": 100,
-          "interval": "30m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 3,
-          "linewidth": 3,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": true,
-          "options": true,
-          "legend": true,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": true,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "individual",
-            "query_as_alias": true
-          },
-          "title": "Exception Frequency"
-        }
-      ],
+      "panels": [],
       "notice": false
     },
     {
