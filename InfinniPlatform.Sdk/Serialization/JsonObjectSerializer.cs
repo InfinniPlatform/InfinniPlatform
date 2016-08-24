@@ -20,6 +20,12 @@ namespace InfinniPlatform.Sdk.Serialization
     {
         private const int BufferSize = 1024;
 
+
+        /// <summary>
+        /// Кодировка по умолчанию.
+        /// </summary>
+        public static readonly Encoding DefaultEncoding = new UTF8Encoding(false);
+
         /// <summary>
         /// Экземпляр с настройками по умолчанию.
         /// </summary>
@@ -32,15 +38,20 @@ namespace InfinniPlatform.Sdk.Serialization
 
 
         public JsonObjectSerializer(bool withFormatting = false,
+                                    Encoding encoding = null,
                                     KnownTypesContainer knownTypes = null,
                                     IEnumerable<IMemberValueConverter> valueConverters = null,
                                     IEnumerable<ISerializerErrorHandler> errorHandlers = null)
         {
+            Encoding = encoding ?? DefaultEncoding;
+
             var serializer = new JsonSerializer
                              {
                                  NullValueHandling = NullValueHandling.Ignore,
                                  ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                                 Formatting = withFormatting ? Formatting.Indented : Formatting.None
+                                 Formatting = withFormatting
+                                                  ? Formatting.Indented
+                                                  : Formatting.None
                              };
 
             IContractResolver contractResolver = null;
@@ -82,7 +93,10 @@ namespace InfinniPlatform.Sdk.Serialization
         private readonly JsonSerializer _serializer;
 
 
-        // IObjectSerializer
+        /// <summary>
+        /// Кодировка символов.
+        /// </summary>
+        public Encoding Encoding { get; }
 
 
         /// <summary>
@@ -171,7 +185,6 @@ namespace InfinniPlatform.Sdk.Serialization
 
 
         // Dynamic
-
 
         /// <summary>
         /// Десериализовать объект.
@@ -350,14 +363,14 @@ namespace InfinniPlatform.Sdk.Serialization
         // Helpers
 
 
-        private static StreamReader CreateReader(Stream stream, bool leaveOpen)
+        private StreamReader CreateReader(Stream stream, bool leaveOpen)
         {
-            return new StreamReader(stream, Encoding.UTF8, true, BufferSize, leaveOpen);
+            return new StreamReader(stream, Encoding, true, BufferSize, leaveOpen);
         }
 
-        private static StreamWriter CreateWriter(Stream stream, bool leaveOpen)
+        private StreamWriter CreateWriter(Stream stream, bool leaveOpen)
         {
-            return new StreamWriter(stream, Encoding.UTF8, BufferSize, leaveOpen);
+            return new StreamWriter(stream, Encoding, BufferSize, leaveOpen);
         }
     }
 }

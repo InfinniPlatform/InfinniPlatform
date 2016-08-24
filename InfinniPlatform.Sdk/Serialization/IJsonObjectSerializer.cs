@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace InfinniPlatform.Sdk.Serialization
 {
@@ -8,6 +9,11 @@ namespace InfinniPlatform.Sdk.Serialization
     /// </summary>
     public interface IJsonObjectSerializer : IObjectSerializer
     {
+        /// <summary>
+        /// Кодировка символов.
+        /// </summary>
+        Encoding Encoding { get; }
+
         /// <summary>
         /// Десериализовать объект.
         /// </summary>

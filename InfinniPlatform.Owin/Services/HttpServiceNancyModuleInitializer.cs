@@ -274,14 +274,19 @@ namespace InfinniPlatform.Owin.Services
 
                 // Установка типа содержимого
                 nancyResponse.ContentType = httpResponse.ContentType;
-
+                
                 // Установка сериализатора объектов (если применимо)
 
                 var jsonHttpResponse = result as JsonHttpResponse;
 
-                if (jsonHttpResponse != null && jsonHttpResponse.Serializer == null)
+                if (jsonHttpResponse != null)
                 {
-                    jsonHttpResponse.Serializer = _jsonObjectSerializer;
+                    if (jsonHttpResponse.Serializer == null)
+                    {
+                        jsonHttpResponse.Serializer = _jsonObjectSerializer;
+                    }
+
+                    nancyResponse.ContentType += "; charset=" + (jsonHttpResponse.Serializer.Encoding?.WebName ?? "utf-8");
                 }
 
                 // Установка заголовка для файлов (если применимо)

@@ -16,7 +16,7 @@ namespace InfinniPlatform.Core.Tests.Serialization
     {
         private static T SerializeAndDeserialize<T>(T value, KnownTypesContainer knownTypes = null)
         {
-            var serializer = new JsonObjectSerializer(false, knownTypes);
+            var serializer = new JsonObjectSerializer(false, knownTypes:knownTypes);
 
             byte[] data = serializer.Serialize(value);
 
