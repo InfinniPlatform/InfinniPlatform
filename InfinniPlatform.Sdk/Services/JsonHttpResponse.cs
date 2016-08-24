@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Serialization;
+﻿using System.Text;
+
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Sdk.Services
 {

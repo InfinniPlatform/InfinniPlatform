@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Core.Compression;
+﻿using System.Text;
+
+using InfinniPlatform.Core.Compression;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Settings;
@@ -37,6 +39,10 @@ namespace InfinniPlatform.Core.IoC
             builder.OnActivateInstance(new LogContainerInstanceActivator<IPerformanceLog>(LogManagerCache.GetPerformanceLog));
 
             // Serialization
+
+            builder.RegisterInstance(JsonObjectSerializer.DefaultEncoding)
+                   .As<Encoding>()
+                   .SingleInstance();
 
             builder.RegisterType<JsonObjectSerializer>()
                    .As<IObjectSerializer>()
