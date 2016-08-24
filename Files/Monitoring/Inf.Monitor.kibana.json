@@ -208,7 +208,7 @@
             "min": 0
           },
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
               0,
               1,
@@ -243,12 +243,12 @@
             "1w",
             "1y"
           ],
-          "lines": true,
+          "lines": false,
           "fill": 2,
           "linewidth": 2,
           "points": false,
           "pointradius": 5,
-          "bars": false,
+          "bars": true,
           "stack": true,
           "spyable": true,
           "zoomlinks": true,
@@ -333,7 +333,7 @@
   "pulldowns": [
     {
       "type": "query",
-      "collapse": true,
+      "collapse": false,
       "notice": false,
       "query": "*",
       "pinned": true,
@@ -389,7 +389,7 @@
         "1d"
       ],
       "timefield": "timestamp",
-      "now": true,
+      "now": false,
       "filter_id": 0,
       "enable": true
     }
