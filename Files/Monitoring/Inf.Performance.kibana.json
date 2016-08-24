@@ -462,7 +462,7 @@
             "50.0": false
           },
           "title": "Percentiles",
-          "field": "duration",
+          "field": "d",
           "unit": "ms"
         }
       ],
@@ -539,12 +539,12 @@
             "1w",
             "1y"
           ],
-          "lines": true,
+          "lines": false,
           "fill": 3,
           "linewidth": 3,
           "points": false,
           "pointradius": 5,
-          "bars": false,
+          "bars": true,
           "stack": false,
           "spyable": true,
           "zoomlinks": true,
@@ -580,7 +580,7 @@
           "loadingEditor": false,
           "mode": "mean",
           "time_field": "timestamp",
-          "value_field": "duration",
+          "value_field": "d",
           "x-axis": true,
           "y-axis": true,
           "scale": 1,
@@ -628,12 +628,12 @@
             "1w",
             "1y"
           ],
-          "lines": true,
+          "lines": false,
           "fill": 3,
           "linewidth": 3,
           "points": false,
           "pointradius": 5,
-          "bars": false,
+          "bars": true,
           "stack": false,
           "spyable": true,
           "zoomlinks": true,
@@ -669,7 +669,7 @@
           "loadingEditor": false,
           "mode": "total",
           "time_field": "timestamp",
-          "value_field": "duration",
+          "value_field": "d",
           "x-axis": true,
           "y-axis": true,
           "scale": 1,
@@ -679,8 +679,16 @@
             "min": 0
           },
           "queries": {
-            "mode": "selected",
-            "ids": []
+            "mode": "all",
+            "ids": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ]
           },
           "annotate": {
             "enable": false,
@@ -709,12 +717,12 @@
             "1w",
             "1y"
           ],
-          "lines": true,
+          "lines": false,
           "fill": 3,
           "linewidth": 3,
           "points": false,
           "pointradius": 5,
-          "bars": false,
+          "bars": true,
           "stack": false,
           "spyable": true,
           "zoomlinks": true,
