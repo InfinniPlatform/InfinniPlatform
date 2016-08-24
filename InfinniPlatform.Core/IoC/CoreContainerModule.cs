@@ -1,6 +1,7 @@
 ﻿using System.Text;
 
 using InfinniPlatform.Core.Compression;
+using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Settings;
