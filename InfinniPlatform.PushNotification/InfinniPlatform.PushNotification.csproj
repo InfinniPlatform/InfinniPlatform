@@ -72,7 +72,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IoC\SignalRContainerModule.cs" />
+    <Compile Include="IoC\PushNotificationContainerModule.cs" />
     <Compile Include="SignalR\SignalRDependencyResolver.cs" />
     <Compile Include="SignalR\SignalRHubDescriptorProvider.cs" />
     <Compile Include="SignalR\SignalRPushNotificationServiceHub.cs" />

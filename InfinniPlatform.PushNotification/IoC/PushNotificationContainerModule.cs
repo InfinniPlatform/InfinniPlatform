@@ -9,7 +9,10 @@ using Microsoft.AspNet.SignalR.Hubs;
 
 namespace InfinniPlatform.PushNotification.IoC
 {
-    public class SignalRContainerModule : IContainerModule
+    /// <summary>
+    /// Модуль регистрации зависимостей <see cref="InfinniPlatform.PushNotification"/>.
+    /// </summary>
+    public class PushNotificationContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {
