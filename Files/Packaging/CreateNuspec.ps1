@@ -206,6 +206,7 @@
 			"    </metadata>`r`n" + `
 			"    <files>`r`n" + `
 			"        <file target=""lib\$framework\InfinniPlatform.references"" src=""InfinniPlatform.references"" />`r`n" + `
+			"        <file target=""content\monitoring"" src=""monitoring\**"" />`r`n" + `
 			"    </files>`r`n" + `
 			"</package>"
 
