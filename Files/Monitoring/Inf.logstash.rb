@@ -40,9 +40,9 @@ filter {
 			source => "body"
 		}
 
-		if [result] =~ "\<null\>" {
+		if [body] =~ "\<null\>" {
 			mutate {
-				remove_field => [ "result" ]
+				remove_field => [ "body" ]
 			}
 		}
 
@@ -53,7 +53,7 @@ filter {
 		}
 
 		mutate {
-			remove_field => [ "message" ]
+			remove_field => [ "message", "body" ]
 		}
 	}
 }
