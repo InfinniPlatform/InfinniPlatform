@@ -31,7 +31,7 @@ filter {
 
 	if [monitoring] == "Performance" {
 		grok {
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{NOTSPACE:correlationId}\|%{WORD:component}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:body}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{NOTSPACE:correlationId}\|%{WORD:logger}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:body}" ]
 		}
 
 		if "_grokparsefailure" in [tags] { drop {} }
