@@ -59,5 +59,50 @@ namespace InfinniPlatform.Scheduler.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The array &apos;{0}&apos; cannot be null or empty..
+        /// </summary>
+        internal static string ArrayCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("ArrayCannotBeNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items of the array &apos;{0}&apos; must be within the range {1} to {2}..
+        /// </summary>
+        internal static string ArrayItemMustBeWithinTheRange {
+            get {
+                return ResourceManager.GetString("ArrayItemMustBeWithinTheRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Handler type &apos;{0}&apos; is not parsed..
+        /// </summary>
+        internal static string HandlerTypeIsNotParsed {
+            get {
+                return ResourceManager.GetString("HandlerTypeIsNotParsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Handler type &apos;{0}&apos; is not registered..
+        /// </summary>
+        internal static string HandlerTypeIsNotRegistered {
+            get {
+                return ResourceManager.GetString("HandlerTypeIsNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of the argument &apos;{0}&apos; must be within the range {1} to {2}..
+        /// </summary>
+        internal static string ValueMustBeWithinTheRange {
+            get {
+                return ResourceManager.GetString("ValueMustBeWithinTheRange", resourceCulture);
+            }
+        }
     }
 }

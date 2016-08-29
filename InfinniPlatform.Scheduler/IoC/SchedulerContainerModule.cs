@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.IoC;
+﻿using InfinniPlatform.Scheduler.Contract;
+using InfinniPlatform.Scheduler.Implementation;
+using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Scheduler.IoC
 {
@@ -9,6 +11,13 @@ namespace InfinniPlatform.Scheduler.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            builder.RegisterType<JobHandlerTypeSerializer>()
+                   .As<IJobHandlerTypeSerializer>()
+                   .SingleInstance();
+
+            builder.RegisterType<JobInfoFactory>()
+                   .As<IJobInfoFactory>()
+                   .SingleInstance();
         }
     }
 }
