@@ -10,7 +10,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:\"DocumentHttpService\""
+          "query": "logger:\"DocumentHttpService\""
         },
         "1": {
           "id": 1,
@@ -19,7 +19,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:\"Nancy\""
+          "query": "logger:\"Nancy\""
         },
         "2": {
           "id": 2,
@@ -28,7 +28,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:\"BlobStorage\""
+          "query": "logger:\"BlobStorage\""
         },
         "3": {
           "id": 3,
@@ -37,7 +37,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:\"BlobHttpService\""
+          "query": "logger:\"BlobHttpService\""
         },
         "4": {
           "id": 4,
@@ -46,7 +46,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:\"Redis\""
+          "query": "logger:\"Redis\""
         },
         "5": {
           "id": 5,
@@ -64,7 +64,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "component:\"OWIN\""
+          "query": "logger:\"OWIN\""
         }
       },
       "ids": [
@@ -226,7 +226,7 @@
           "editable": true,
           "type": "terms",
           "loadingEditor": false,
-          "field": "component.raw",
+          "field": "logger.raw",
           "exclude": [],
           "missing": false,
           "other": false,
@@ -819,7 +819,7 @@
           ],
           "overflow": "min-height",
           "fields": [
-            "component",
+            "logger",
             "action",
             "timestamp",
             "_index",
@@ -891,13 +891,13 @@
       "query": "*",
       "pinned": true,
       "history": [
-        "component:\"OWIN\"",
+        "logger:\"OWIN\"",
         "level:\"ERROR\"",
-        "component:\"Redis\"",
-        "component:\"BlobHttpService\"",
-        "component:\"BlobStorage\"",
-        "component:\"Nancy\"",
-        "component:\"DocumentHttpService\"",
+        "logger:\"Redis\"",
+        "logger:\"BlobHttpService\"",
+        "logger:\"BlobStorage\"",
+        "logger:\"Nancy\"",
+        "logger:\"DocumentHttpService\"",
         "userId"
       ],
       "remember": 10,

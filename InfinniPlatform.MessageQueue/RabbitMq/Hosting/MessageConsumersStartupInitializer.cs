@@ -16,6 +16,7 @@ using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 {
+    [LoggerName("MessageQueue")]
     internal sealed class MessageConsumersStartupInitializer : AppEventHandler
     {
         /// <summary>
@@ -166,7 +167,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                                                    }
                                                                    finally
                                                                    {
-                                                                       _performanceLog.Log(consumerType, startDate, task.Exception);
+                                                                       _performanceLog.Log($"Consume::{consumerType}", startDate, task.Exception);
                                                                    }
                                                                });
                                          };
