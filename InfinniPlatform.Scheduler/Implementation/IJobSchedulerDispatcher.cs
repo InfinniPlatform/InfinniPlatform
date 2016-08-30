@@ -1,25 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Scheduler.Contract
+using InfinniPlatform.Scheduler.Contract;
+
+namespace InfinniPlatform.Scheduler.Implementation
 {
     /// <summary>
-    /// Планировщик заданий.
+    /// Диспетчер планировщика заданий <see cref="IJobScheduler"/>.
     /// </summary>
-    public interface IJobScheduler
+    public interface IJobSchedulerDispatcher
     {
         /// <summary>
-        /// Возвращает список уникальных идентификаторов заданий.
-        /// </summary>
-        /// <param name="group">Регулярное выражение для поиска заданий по группе.</param>
-        Task<IEnumerable<string>> GetJobIds(Regex group = null);
-
-        /// <summary>
-        /// Возвращает информацию о задании.
+        /// Проверяет, запланировано ли задание.
         /// </summary>
         /// <param name="jobId">Уникальный идентификатор задания.</param>
-        Task<IJobInfo> GetJobInfo(string jobId);
+        bool IsJobExists(string jobId);
 
 
         /// <summary>
@@ -108,5 +103,16 @@ namespace InfinniPlatform.Scheduler.Contract
         /// </summary>
         /// <param name="data">Данные для выполнения заданий.</param>
         Task TriggerAllJob(object data = null);
+
+
+        /// <summary>
+        /// Запускает планирование заданий.
+        /// </summary>
+        Task Start();
+
+        /// <summary>
+        /// Останавливает планирование заданий.
+        /// </summary>
+        Task Stop();
     }
 }

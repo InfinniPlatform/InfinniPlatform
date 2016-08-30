@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddingJobSourceToSchedule" xml:space="preserve">
+    <value>Adding a job source to the schedule.</value>
+  </data>
+  <data name="AddingJobSourceToScheduleCompletedWithException" xml:space="preserve">
+    <value>Adding a job source to the schedule completed with an exception.</value>
+  </data>
+  <data name="AddingJobSourceToScheduleSuccessfullyCompleted" xml:space="preserve">
+    <value>Adding a job source to the schedule successfully completed.</value>
+  </data>
+  <data name="AddingJobToSchedule" xml:space="preserve">
+    <value>Adding a job to the schedule.</value>
+  </data>
+  <data name="AddingJobToScheduleCompletedWithException" xml:space="preserve">
+    <value>Adding a job to the schedule completed with an exception.</value>
+  </data>
+  <data name="AddingJobToScheduleSuccessfullyCompleted" xml:space="preserve">
+    <value>Adding a job to the schedule successfully completed.</value>
+  </data>
   <data name="ArrayCannotBeNullOrEmpty" xml:space="preserve">
     <value>The array '{0}' cannot be null or empty.</value>
   </data>
@@ -128,6 +146,24 @@
   </data>
   <data name="HandlerTypeIsNotRegistered" xml:space="preserve">
     <value>Handler type '{0}' is not registered.</value>
+  </data>
+  <data name="StartingJobScheduler" xml:space="preserve">
+    <value>Starting the job scheduler.</value>
+  </data>
+  <data name="StartingJobSchedulerCompletedWithException" xml:space="preserve">
+    <value>Starting the job scheduler completed with an exception.</value>
+  </data>
+  <data name="StartingJobSchedulerSuccessfullyCompleted" xml:space="preserve">
+    <value>Starting the job scheduler successfully completed.</value>
+  </data>
+  <data name="StoppingJobScheduler" xml:space="preserve">
+    <value>Stopping the job scheduler.</value>
+  </data>
+  <data name="StoppingJobSchedulerCompletedWithException" xml:space="preserve">
+    <value>Stopping the job scheduler completed with an exception.</value>
+  </data>
+  <data name="StoppingJobSchedulerSuccessfullyCompleted" xml:space="preserve">
+    <value>Stopping the job scheduler successfully completed.</value>
   </data>
   <data name="ValueMustBeWithinTheRange" xml:space="preserve">
     <value>Value of the argument '{0}' must be within the range {1} to {2}.</value>

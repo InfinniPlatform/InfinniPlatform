@@ -15,7 +15,7 @@ namespace InfinniPlatform.Scheduler.Implementation
         private readonly IJobHandlerTypeSerializer _handlerTypeSerializer;
 
 
-        public JobInfo CreateJobInfo<THandler>(string name, string group, Action<IJobInfoBuilder> jobInfoBuilder) where THandler : IJobHandler
+        public IJobInfo CreateJobInfo<THandler>(string name, string group, Action<IJobInfoBuilder> jobInfoBuilder) where THandler : IJobHandler
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -29,15 +29,20 @@ namespace InfinniPlatform.Scheduler.Implementation
 
             var handlerType = _handlerTypeSerializer.Serialize(typeof(THandler));
 
-            var jobInfo = new JobInfo(name, group, handlerType);
+            var jobInfo = new JobInfo
+            {
+                _id = $"{group}.{name}",
+
+                Name = name,
+                Group = group,
+                HandlerType = handlerType
+            };
 
             var builder = new JobInfoBuilder(jobInfo);
 
             jobInfoBuilder?.Invoke(builder);
 
             jobInfo = builder.Build();
-
-            jobInfo._id = $"{group}.{name}";
 
             return jobInfo;
         }

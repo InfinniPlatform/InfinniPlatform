@@ -60,19 +60,28 @@
     <Compile Include="Contract\ICronExpressionSecondBuilder.cs" />
     <Compile Include="Contract\ICronExpressionYearBuilder.cs" />
     <Compile Include="Contract\IJobHandlerTypeSerializer.cs" />
+    <Compile Include="Contract\IJobInfo.cs" />
     <Compile Include="Contract\IJobInfoFactory.cs" />
+    <Compile Include="Hosting\SchedulerInitializer.cs" />
+    <Compile Include="Implementation\IJobInfoRepository.cs" />
+    <Compile Include="Implementation\IJobSchedulerDispatcher.cs" />
     <Compile Include="Implementation\JobHandlerTypeSerializer.cs" />
     <Compile Include="Implementation\JobInfoBuilder.cs" />
     <Compile Include="Contract\JobInfoBuilderExtensions.cs" />
     <Compile Include="Contract\IJobHandler.cs" />
     <Compile Include="Contract\IJobHandlerContext.cs" />
-    <Compile Include="Contract\JobInfo.cs" />
+    <Compile Include="Implementation\JobInfo.cs" />
     <Compile Include="Contract\IJobInfoBuilder.cs" />
     <Compile Include="Implementation\JobInfoFactory.cs" />
     <Compile Include="Contract\JobInfoFactoryExtensions.cs" />
-    <Compile Include="Contract\JobKey.cs" />
     <Compile Include="Contract\IJobScheduler.cs" />
-    <Compile Include="Contract\IJobSource.cs" />
+    <Compile Include="Contract\IJobInfoSource.cs" />
+    <Compile Include="Storage\JobInfoRepository.cs" />
+    <Compile Include="Quartz\QuartzJob.cs" />
+    <Compile Include="Quartz\QuartzJobFactory.cs" />
+    <Compile Include="Quartz\QuartzJobSchedulerDispatcher.cs" />
+    <Compile Include="Storage\PersistentJobInfoSource.cs" />
+    <Compile Include="Metadata\SchedulerDocumentMetadataSource.cs" />
     <Compile Include="IoC\SchedulerContainerModule.cs" />
     <Compile Include="Contract\JobMisfirePolicy.cs" />
     <Compile Include="Contract\JobState.cs" />
@@ -83,6 +92,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Quartz\QuartzJobLogProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -99,9 +109,7 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Quartz\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

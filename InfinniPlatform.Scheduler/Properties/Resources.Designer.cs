@@ -61,6 +61,60 @@ namespace InfinniPlatform.Scheduler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding a job source to the schedule..
+        /// </summary>
+        internal static string AddingJobSourceToSchedule {
+            get {
+                return ResourceManager.GetString("AddingJobSourceToSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding a job source to the schedule completed with an exception..
+        /// </summary>
+        internal static string AddingJobSourceToScheduleCompletedWithException {
+            get {
+                return ResourceManager.GetString("AddingJobSourceToScheduleCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding a job source to the schedule successfully completed..
+        /// </summary>
+        internal static string AddingJobSourceToScheduleSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("AddingJobSourceToScheduleSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding a job to the schedule..
+        /// </summary>
+        internal static string AddingJobToSchedule {
+            get {
+                return ResourceManager.GetString("AddingJobToSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding a job to the schedule completed with an exception..
+        /// </summary>
+        internal static string AddingJobToScheduleCompletedWithException {
+            get {
+                return ResourceManager.GetString("AddingJobToScheduleCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding a job to the schedule successfully completed..
+        /// </summary>
+        internal static string AddingJobToScheduleSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("AddingJobToScheduleSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The array &apos;{0}&apos; cannot be null or empty..
         /// </summary>
         internal static string ArrayCannotBeNullOrEmpty {
@@ -93,6 +147,60 @@ namespace InfinniPlatform.Scheduler.Properties {
         internal static string HandlerTypeIsNotRegistered {
             get {
                 return ResourceManager.GetString("HandlerTypeIsNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting the job scheduler..
+        /// </summary>
+        internal static string StartingJobScheduler {
+            get {
+                return ResourceManager.GetString("StartingJobScheduler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting the job scheduler completed with an exception..
+        /// </summary>
+        internal static string StartingJobSchedulerCompletedWithException {
+            get {
+                return ResourceManager.GetString("StartingJobSchedulerCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting the job scheduler successfully completed..
+        /// </summary>
+        internal static string StartingJobSchedulerSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("StartingJobSchedulerSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping the job scheduler..
+        /// </summary>
+        internal static string StoppingJobScheduler {
+            get {
+                return ResourceManager.GetString("StoppingJobScheduler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping the job scheduler completed with an exception..
+        /// </summary>
+        internal static string StoppingJobSchedulerCompletedWithException {
+            get {
+                return ResourceManager.GetString("StoppingJobSchedulerCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping the job scheduler successfully completed..
+        /// </summary>
+        internal static string StoppingJobSchedulerSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("StoppingJobSchedulerSuccessfullyCompleted", resourceCulture);
             }
         }
         

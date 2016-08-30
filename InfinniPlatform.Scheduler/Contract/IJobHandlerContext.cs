@@ -10,7 +10,7 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Информация о задании.
         /// </summary>
-        JobInfo JobInfo { get; }
+        IJobInfo JobInfo { get; }
 
         /// <summary>
         /// Фактическое время срабатывания задания.

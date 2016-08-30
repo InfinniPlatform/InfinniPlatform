@@ -87,7 +87,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Hosting\MongoCollectionInitializer.cs" />
+    <Compile Include="Hosting\DocumentStorageInitializer.cs" />
     <Compile Include="Services\DocumentHttpServiceConstants.cs" />
     <Compile Include="Services\DocumentHttpServiceGeneric.cs" />
     <Compile Include="Services\DocumentHttpServiceBase.cs" />

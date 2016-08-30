@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Linq;
 
 namespace InfinniPlatform.Scheduler.Contract
@@ -16,7 +16,7 @@ namespace InfinniPlatform.Scheduler.Contract
 
         public ICronExpressionDayOfWeekBuilder Every()
         {
-            // Выражение '*'.
+            // Р’С‹СЂР°Р¶РµРЅРёРµ '*'.
             _expression = CronConstants.AllValues;
 
             return this;
@@ -24,7 +24,7 @@ namespace InfinniPlatform.Scheduler.Contract
 
         public ICronExpressionDayOfWeekBuilder Each(DayOfWeek dayOfWeek)
         {
-            // Добавляется выражение 'D'.
+            // Р”РѕР±Р°РІР»СЏРµС‚СЃСЏ РІС‹СЂР°Р¶РµРЅРёРµ 'D'.
             _expression = _expression.AppendCronValue(dayOfWeek.ToCronValue());
 
             return this;
@@ -34,7 +34,7 @@ namespace InfinniPlatform.Scheduler.Contract
         {
             CronConstants.EnsurePositive(nameof(interval), interval);
 
-            // Добавляется выражение 'D/I'.
+            // Р”РѕР±Р°РІР»СЏРµС‚СЃСЏ РІС‹СЂР°Р¶РµРЅРёРµ 'D/I'.
             _expression = _expression.AppendCronValue(dayOfWeek.ToCronValue() + CronConstants.ValueInterval + interval);
 
             return this;
@@ -42,7 +42,7 @@ namespace InfinniPlatform.Scheduler.Contract
 
         public ICronExpressionDayOfWeekBuilder EachOfSet(params DayOfWeek[] daysOfWeek)
         {
-            // Добавляется выражение 'D1,D2,D3,...,Dn'.
+            // Р”РѕР±Р°РІР»СЏРµС‚СЃСЏ РІС‹СЂР°Р¶РµРЅРёРµ 'D1,D2,D3,...,Dn'.
             _expression = _expression.AppendCronValue(string.Join(CronConstants.ValueDelimiter, daysOfWeek.Distinct().Select(i => i.ToCronValue())));
 
             return this;
@@ -52,7 +52,7 @@ namespace InfinniPlatform.Scheduler.Contract
         {
             CronConstants.EnsureRange(nameof(dayOfWeekTo), (int)dayOfWeekTo, (int)dayOfWeekFrom, (int)dayOfWeekTo);
 
-            // Добавляется выражение 'D1-D2'.
+            // Р”РѕР±Р°РІР»СЏРµС‚СЃСЏ РІС‹СЂР°Р¶РµРЅРёРµ 'D1-D2'.
             _expression = _expression.AppendCronValue(dayOfWeekFrom.ToCronValue() + CronConstants.ValueRange + dayOfWeekTo.ToCronValue());
 
             return this;
@@ -60,8 +60,8 @@ namespace InfinniPlatform.Scheduler.Contract
 
         public ICronExpressionDayOfWeekBuilder EachLast(DayOfWeek dayOfWeek)
         {
-            // Выражение 'DL'. При использовании литералов L и W возможно определение только
-            // единственной даты, то есть нельзя использовать список или диапазон дат.
+            // Р’С‹СЂР°Р¶РµРЅРёРµ 'DL'. РџСЂРё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРё Р»РёС‚РµСЂР°Р»РѕРІ L Рё W РІРѕР·РјРѕР¶РЅРѕ РѕРїСЂРµРґРµР»РµРЅРёРµ С‚РѕР»СЊРєРѕ
+            // РµРґРёРЅСЃС‚РІРµРЅРЅРѕР№ РґР°С‚С‹, С‚Рѕ РµСЃС‚СЊ РЅРµР»СЊР·СЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЃРїРёСЃРѕРє РёР»Рё РґРёР°РїР°Р·РѕРЅ РґР°С‚.
             _expression = _expression.AppendCronValue(dayOfWeek.ToCronValue() + CronConstants.LastDay);
 
             return this;
@@ -71,7 +71,7 @@ namespace InfinniPlatform.Scheduler.Contract
         {
             CronConstants.EnsureRange(nameof(orderNumber), orderNumber, 1, 5);
 
-            // Добавляется выражение 'D#n'.
+            // Р”РѕР±Р°РІР»СЏРµС‚СЃСЏ РІС‹СЂР°Р¶РµРЅРёРµ 'D#n'.
             _expression = _expression.AppendCronValue(dayOfWeek.ToCronValue() + CronConstants.OrderNumber + orderNumber);
 
             return this;

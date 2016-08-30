@@ -2,13 +2,20 @@
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Scheduler.Contract
+using InfinniPlatform.Scheduler.Contract;
+
+namespace InfinniPlatform.Scheduler.Implementation
 {
     /// <summary>
-    /// Планировщик заданий.
+    /// Хранилище планировщика заданий <see cref="IJobScheduler"/>.
     /// </summary>
-    public interface IJobScheduler
+    internal interface IJobInfoRepository
     {
+        /// <summary>
+        /// Возвращает список с информацией о запланированных заданиях.
+        /// </summary>
+        Task<IEnumerable<IJobInfo>> GetPlannedJobInfos();
+
         /// <summary>
         /// Возвращает список уникальных идентификаторов заданий.
         /// </summary>
@@ -87,26 +94,5 @@ namespace InfinniPlatform.Scheduler.Contract
         /// Возобновляет планирование всех заданий.
         /// </summary>
         Task ResumeAllJobs();
-
-
-        /// <summary>
-        /// Вызывает досрочное выполнение указанного задания.
-        /// </summary>
-        /// <param name="jobId">Уникальный идентификатор задания.</param>
-        /// <param name="data">Данные для выполнения задания.</param>
-        Task TriggerJob(string jobId, object data = null);
-
-        /// <summary>
-        /// Вызывает досрочное выполнение указанных заданий.
-        /// </summary>
-        /// <param name="jobIds">Список с уникальными идентификаторами заданий.</param>
-        /// <param name="data">Данные для выполнения заданий.</param>
-        Task TriggerJobs(IEnumerable<string> jobIds, object data = null);
-
-        /// <summary>
-        /// Вызывает досрочное выполнение всех заданий.
-        /// </summary>
-        /// <param name="data">Данные для выполнения заданий.</param>
-        Task TriggerAllJob(object data = null);
     }
 }

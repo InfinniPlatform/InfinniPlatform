@@ -1,88 +1,88 @@
-using System;
+п»їusing System;
 
 namespace InfinniPlatform.Scheduler.Contract
 {
     /// <summary>
-    /// Предоставляет набор методов для определения времени свершения событий в части дня недели.
+    /// РџСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ РЅР°Р±РѕСЂ РјРµС‚РѕРґРѕРІ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ РІСЂРµРјРµРЅРё СЃРІРµСЂС€РµРЅРёСЏ СЃРѕР±С‹С‚РёР№ РІ С‡Р°СЃС‚Рё РґРЅСЏ РЅРµРґРµР»Рё.
     /// </summary>
     public interface ICronExpressionDayOfWeekBuilder
     {
         /// <summary>
-        /// Каждый день недели.
+        /// РљР°Р¶РґС‹Р№ РґРµРЅСЊ РЅРµРґРµР»Рё.
         /// </summary>
         /// <remarks>
-        /// В CRON-выражении '*'.
+        /// Р’ CRON-РІС‹СЂР°Р¶РµРЅРёРё '*'.
         /// </remarks>
         ICronExpressionDayOfWeekBuilder Every();
 
         /// <summary>
-        /// Каждый указанный день недели.
+        /// РљР°Р¶РґС‹Р№ СѓРєР°Р·Р°РЅРЅС‹Р№ РґРµРЅСЊ РЅРµРґРµР»Рё.
         /// </summary>
-        /// <param name="dayOfWeek">День недели.</param>
+        /// <param name="dayOfWeek">Р”РµРЅСЊ РЅРµРґРµР»Рё.</param>
         /// <remarks>
-        /// В CRON-выражении 'D', где D - день недели <paramref name="dayOfWeek"/> от 1 (воскресенье) до 7 (суббота).
-        /// Если значение <paramref name="dayOfWeek"/> равно <see cref="DayOfWeek.Friday"/>, то событие должно происходить
-        /// каждую пятницу.
+        /// Р’ CRON-РІС‹СЂР°Р¶РµРЅРёРё 'D', РіРґРµ D - РґРµРЅСЊ РЅРµРґРµР»Рё <paramref name="dayOfWeek"/> РѕС‚ 1 (РІРѕСЃРєСЂРµСЃРµРЅСЊРµ) РґРѕ 7 (СЃСѓР±Р±РѕС‚Р°).
+        /// Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ <paramref name="dayOfWeek"/> СЂР°РІРЅРѕ <see cref="DayOfWeek.Friday"/>, С‚Рѕ СЃРѕР±С‹С‚РёРµ РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ
+        /// РєР°Р¶РґСѓСЋ РїСЏС‚РЅРёС†Сѓ.
         /// </remarks>
         ICronExpressionDayOfWeekBuilder Each(DayOfWeek dayOfWeek);
 
         /// <summary>
-        /// Каждый указанный день недели и через заданный интервал после него.
+        /// РљР°Р¶РґС‹Р№ СѓРєР°Р·Р°РЅРЅС‹Р№ РґРµРЅСЊ РЅРµРґРµР»Рё Рё С‡РµСЂРµР· Р·Р°РґР°РЅРЅС‹Р№ РёРЅС‚РµСЂРІР°Р» РїРѕСЃР»Рµ РЅРµРіРѕ.
         /// </summary>
-        /// <param name="dayOfWeek">День недели.</param>
-        /// <param name="interval">Интервал в днях.</param>
+        /// <param name="dayOfWeek">Р”РµРЅСЊ РЅРµРґРµР»Рё.</param>
+        /// <param name="interval">РРЅС‚РµСЂРІР°Р» РІ РґРЅСЏС….</param>
         /// <remarks>
-        /// В CRON-выражении 'D/I', где D - день недели <paramref name="dayOfWeek"/> от 1 (воскресенье) до 7 (суббота), I - интервал в днях
-        /// <paramref name="interval"/>. Если значение <paramref name="dayOfWeek"/> равно <see cref="DayOfWeek.Tuesday"/>, а значение
-        /// <paramref name="interval"/> равно 2, то событие должно происходить во вторник, четверг и субботу.
+        /// Р’ CRON-РІС‹СЂР°Р¶РµРЅРёРё 'D/I', РіРґРµ D - РґРµРЅСЊ РЅРµРґРµР»Рё <paramref name="dayOfWeek"/> РѕС‚ 1 (РІРѕСЃРєСЂРµСЃРµРЅСЊРµ) РґРѕ 7 (СЃСѓР±Р±РѕС‚Р°), I - РёРЅС‚РµСЂРІР°Р» РІ РґРЅСЏС…
+        /// <paramref name="interval"/>. Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ <paramref name="dayOfWeek"/> СЂР°РІРЅРѕ <see cref="DayOfWeek.Tuesday"/>, Р° Р·РЅР°С‡РµРЅРёРµ
+        /// <paramref name="interval"/> СЂР°РІРЅРѕ 2, С‚Рѕ СЃРѕР±С‹С‚РёРµ РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІРѕ РІС‚РѕСЂРЅРёРє, С‡РµС‚РІРµСЂРі Рё СЃСѓР±Р±РѕС‚Сѓ.
         /// </remarks>
         ICronExpressionDayOfWeekBuilder Each(DayOfWeek dayOfWeek, int interval);
 
         /// <summary>
-        /// Каждый день недели из указанного списка.
+        /// РљР°Р¶РґС‹Р№ РґРµРЅСЊ РЅРµРґРµР»Рё РёР· СѓРєР°Р·Р°РЅРЅРѕРіРѕ СЃРїРёСЃРєР°.
         /// </summary>
-        /// <param name="daysOfWeek">Список дней недели.</param>
+        /// <param name="daysOfWeek">РЎРїРёСЃРѕРє РґРЅРµР№ РЅРµРґРµР»Рё.</param>
         /// <remarks>
-        /// В CRON-выражении 'D1,D2,D3,...,Dn', где D1, D2, D3, ..., Dn - дни месяца списка <paramref name="daysOfWeek"/>. Если значение
-        /// <paramref name="daysOfWeek"/> представлено массивом <c>new[] { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday }</c>,
-        /// то событие должно происходить в понедельник, вторник и среду.
+        /// Р’ CRON-РІС‹СЂР°Р¶РµРЅРёРё 'D1,D2,D3,...,Dn', РіРґРµ D1, D2, D3, ..., Dn - РґРЅРё РјРµСЃСЏС†Р° СЃРїРёСЃРєР° <paramref name="daysOfWeek"/>. Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ
+        /// <paramref name="daysOfWeek"/> РїСЂРµРґСЃС‚Р°РІР»РµРЅРѕ РјР°СЃСЃРёРІРѕРј <c>new[] { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday }</c>,
+        /// С‚Рѕ СЃРѕР±С‹С‚РёРµ РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІ РїРѕРЅРµРґРµР»СЊРЅРёРє, РІС‚РѕСЂРЅРёРє Рё СЃСЂРµРґСѓ.
         /// </remarks>
         ICronExpressionDayOfWeekBuilder EachOfSet(params DayOfWeek[] daysOfWeek);
 
         /// <summary>
-        /// Каждый день недели из указанного диапазона.
+        /// РљР°Р¶РґС‹Р№ РґРµРЅСЊ РЅРµРґРµР»Рё РёР· СѓРєР°Р·Р°РЅРЅРѕРіРѕ РґРёР°РїР°Р·РѕРЅР°.
         /// </summary>
-        /// <param name="dayOfWeekFrom">Начало диапазона дней недели.</param>
-        /// <param name="dayOfWeekTo">Конец диапазона дней недели.</param>
+        /// <param name="dayOfWeekFrom">РќР°С‡Р°Р»Рѕ РґРёР°РїР°Р·РѕРЅР° РґРЅРµР№ РЅРµРґРµР»Рё.</param>
+        /// <param name="dayOfWeekTo">РљРѕРЅРµС† РґРёР°РїР°Р·РѕРЅР° РґРЅРµР№ РЅРµРґРµР»Рё.</param>
         /// <remarks>
-        /// В CRON-выражении 'D1-D2', где D1 и D2 - соответственно начало <paramref name="dayOfWeekFrom"/> и конец <paramref name="dayOfWeekTo"/>
-        /// диапазона дней недели. Если значение <paramref name="dayOfWeekFrom"/> равно <see cref="DayOfWeek.Monday"/>, а значение
-        /// <paramref name="dayOfWeekTo"/> равно <see cref="DayOfWeek.Wednesday"/>, то событие должно происходить в понедельник,
-        /// вторник и среду.
+        /// Р’ CRON-РІС‹СЂР°Р¶РµРЅРёРё 'D1-D2', РіРґРµ D1 Рё D2 - СЃРѕРѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕ РЅР°С‡Р°Р»Рѕ <paramref name="dayOfWeekFrom"/> Рё РєРѕРЅРµС† <paramref name="dayOfWeekTo"/>
+        /// РґРёР°РїР°Р·РѕРЅР° РґРЅРµР№ РЅРµРґРµР»Рё. Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ <paramref name="dayOfWeekFrom"/> СЂР°РІРЅРѕ <see cref="DayOfWeek.Monday"/>, Р° Р·РЅР°С‡РµРЅРёРµ
+        /// <paramref name="dayOfWeekTo"/> СЂР°РІРЅРѕ <see cref="DayOfWeek.Wednesday"/>, С‚Рѕ СЃРѕР±С‹С‚РёРµ РґРѕР»Р¶РЅРѕ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІ РїРѕРЅРµРґРµР»СЊРЅРёРє,
+        /// РІС‚РѕСЂРЅРёРє Рё СЃСЂРµРґСѓ.
         /// </remarks>
         ICronExpressionDayOfWeekBuilder EachOfRange(DayOfWeek dayOfWeekFrom, DayOfWeek dayOfWeekTo);
 
         /// <summary>
-        /// Каждый последний указанный день недели в месяце.
+        /// РљР°Р¶РґС‹Р№ РїРѕСЃР»РµРґРЅРёР№ СѓРєР°Р·Р°РЅРЅС‹Р№ РґРµРЅСЊ РЅРµРґРµР»Рё РІ РјРµСЃСЏС†Рµ.
         /// </summary>
-        /// <param name="dayOfWeek">День недели.</param>
+        /// <param name="dayOfWeek">Р”РµРЅСЊ РЅРµРґРµР»Рё.</param>
         /// <remarks>
-        /// В CRON-выражении 'DL', где D - день недели <paramref name="dayOfWeek"/> от 1 (воскресенье) до 7 (суббота).
-        /// Если значение <paramref name="dayOfWeek"/> равно <see cref="DayOfWeek.Friday"/>, то событие должно
-        /// происходить в последнюю пятницу месяца.
+        /// Р’ CRON-РІС‹СЂР°Р¶РµРЅРёРё 'DL', РіРґРµ D - РґРµРЅСЊ РЅРµРґРµР»Рё <paramref name="dayOfWeek"/> РѕС‚ 1 (РІРѕСЃРєСЂРµСЃРµРЅСЊРµ) РґРѕ 7 (СЃСѓР±Р±РѕС‚Р°).
+        /// Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ <paramref name="dayOfWeek"/> СЂР°РІРЅРѕ <see cref="DayOfWeek.Friday"/>, С‚Рѕ СЃРѕР±С‹С‚РёРµ РґРѕР»Р¶РЅРѕ
+        /// РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІ РїРѕСЃР»РµРґРЅСЋСЋ РїСЏС‚РЅРёС†Сѓ РјРµСЃСЏС†Р°.
         /// </remarks>
         ICronExpressionDayOfWeekBuilder EachLast(DayOfWeek dayOfWeek);
 
         /// <summary>
-        /// Каждый N-й указанный день недели в месяце.
+        /// РљР°Р¶РґС‹Р№ N-Р№ СѓРєР°Р·Р°РЅРЅС‹Р№ РґРµРЅСЊ РЅРµРґРµР»Рё РІ РјРµСЃСЏС†Рµ.
         /// </summary>
-        /// <param name="dayOfWeek">День недели.</param>
-        /// <param name="orderNumber">Порядковый номер дня недели в месяце (начиная с 1).</param>
+        /// <param name="dayOfWeek">Р”РµРЅСЊ РЅРµРґРµР»Рё.</param>
+        /// <param name="orderNumber">РџРѕСЂСЏРґРєРѕРІС‹Р№ РЅРѕРјРµСЂ РґРЅСЏ РЅРµРґРµР»Рё РІ РјРµСЃСЏС†Рµ (РЅР°С‡РёРЅР°СЏ СЃ 1).</param>
         /// <remarks>
-        /// В CRON-выражении 'D#n', где D - день недели <paramref name="dayOfWeek"/> от 1 (воскресенье) до 7 (суббота),
-        /// n - номер дня недели в месяце <paramref name="orderNumber"/>. Если значение <paramref name="dayOfWeek"/>
-        /// равно <see cref="DayOfWeek.Friday"/>, а значение <paramref name="orderNumber"/> равно 1, то событие должно
-        /// происходить в первую пятницу месяца.
+        /// Р’ CRON-РІС‹СЂР°Р¶РµРЅРёРё 'D#n', РіРґРµ D - РґРµРЅСЊ РЅРµРґРµР»Рё <paramref name="dayOfWeek"/> РѕС‚ 1 (РІРѕСЃРєСЂРµСЃРµРЅСЊРµ) РґРѕ 7 (СЃСѓР±Р±РѕС‚Р°),
+        /// n - РЅРѕРјРµСЂ РґРЅСЏ РЅРµРґРµР»Рё РІ РјРµСЃСЏС†Рµ <paramref name="orderNumber"/>. Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ <paramref name="dayOfWeek"/>
+        /// СЂР°РІРЅРѕ <see cref="DayOfWeek.Friday"/>, Р° Р·РЅР°С‡РµРЅРёРµ <paramref name="orderNumber"/> СЂР°РІРЅРѕ 1, С‚Рѕ СЃРѕР±С‹С‚РёРµ РґРѕР»Р¶РЅРѕ
+        /// РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РІ РїРµСЂРІСѓСЋ РїСЏС‚РЅРёС†Сѓ РјРµСЃСЏС†Р°.
         /// </remarks>
         ICronExpressionDayOfWeekBuilder EachNth(DayOfWeek dayOfWeek, int orderNumber);
     }
