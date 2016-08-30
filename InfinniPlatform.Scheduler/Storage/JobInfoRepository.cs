@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Scheduler.Implementation;
 using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Scheduler.Storage

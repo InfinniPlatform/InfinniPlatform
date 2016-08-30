@@ -8,19 +8,19 @@ namespace InfinniPlatform.Scheduler.Contract
     public interface IJobHandlerContext
     {
         /// <summary>
-        /// Информация о задании.
+        /// Уникальный идентификатор экземпляра задания.
         /// </summary>
-        IJobInfo JobInfo { get; }
+        string InstanceId { get; }
 
         /// <summary>
         /// Фактическое время срабатывания задания.
         /// </summary>
-        DateTimeOffset? FireTimeUtc { get; }
+        DateTimeOffset FireTimeUtc { get; }
 
         /// <summary>
         /// Запланированное время срабатывания задания.
         /// </summary>
-        DateTimeOffset? ScheduledFireTimeUtc { get; }
+        DateTimeOffset ScheduledFireTimeUtc { get; }
 
         /// <summary>
         /// Предыдущее время срабатывания задания.
@@ -31,5 +31,10 @@ namespace InfinniPlatform.Scheduler.Contract
         /// Следующее время срабатывания задания.
         /// </summary>
         DateTimeOffset? NextFireTimeUtc { get; }
+
+        /// <summary>
+        /// Данные для выполнения задания.
+        /// </summary>
+        object Data { get; }
     }
 }

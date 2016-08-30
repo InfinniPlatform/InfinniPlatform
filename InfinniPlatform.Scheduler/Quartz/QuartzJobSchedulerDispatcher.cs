@@ -5,8 +5,8 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Scheduler.Implementation;
 
 using Quartz;
 using Quartz.Impl;

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Scheduler.Implementation;
+using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Metadata.Documents;
 
-namespace InfinniPlatform.Scheduler.Metadata
+namespace InfinniPlatform.Scheduler.Storage
 {
     /// <summary>
     /// Предоставляет метаданные документов планировщика заданий.

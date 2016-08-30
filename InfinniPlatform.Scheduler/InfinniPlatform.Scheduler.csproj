@@ -63,25 +63,34 @@
     <Compile Include="Contract\IJobInfo.cs" />
     <Compile Include="Contract\IJobInfoFactory.cs" />
     <Compile Include="Hosting\SchedulerInitializer.cs" />
-    <Compile Include="Implementation\IJobInfoRepository.cs" />
-    <Compile Include="Implementation\IJobSchedulerDispatcher.cs" />
-    <Compile Include="Implementation\JobHandlerTypeSerializer.cs" />
-    <Compile Include="Implementation\JobInfoBuilder.cs" />
+    <Compile Include="Common\HandleJobMessage.cs" />
+    <Compile Include="Common\IJobInstanceFactory.cs" />
+    <Compile Include="Common\IJobInstanceManager.cs" />
+    <Compile Include="Common\IJobInfoRepository.cs" />
+    <Compile Include="Common\IJobSchedulerNotifier.cs" />
+    <Compile Include="Common\IJobSchedulerDispatcher.cs" />
+    <Compile Include="Common\JobHandlerContext.cs" />
+    <Compile Include="Common\JobHandlerTypeSerializer.cs" />
+    <Compile Include="Common\JobInfoBuilder.cs" />
     <Compile Include="Contract\JobInfoBuilderExtensions.cs" />
     <Compile Include="Contract\IJobHandler.cs" />
     <Compile Include="Contract\IJobHandlerContext.cs" />
-    <Compile Include="Implementation\JobInfo.cs" />
+    <Compile Include="Common\JobInfo.cs" />
     <Compile Include="Contract\IJobInfoBuilder.cs" />
-    <Compile Include="Implementation\JobInfoFactory.cs" />
+    <Compile Include="Common\JobInfoFactory.cs" />
     <Compile Include="Contract\JobInfoFactoryExtensions.cs" />
     <Compile Include="Contract\IJobScheduler.cs" />
     <Compile Include="Contract\IJobInfoSource.cs" />
+    <Compile Include="Common\JobInstanceFactory.cs" />
+    <Compile Include="Queues\JobSchedulerMessageQueue.cs" />
+    <Compile Include="Storage\JobInstance.cs" />
+    <Compile Include="Storage\JobInstanceManager.cs" />
     <Compile Include="Storage\JobInfoRepository.cs" />
     <Compile Include="Quartz\QuartzJob.cs" />
     <Compile Include="Quartz\QuartzJobFactory.cs" />
     <Compile Include="Quartz\QuartzJobSchedulerDispatcher.cs" />
     <Compile Include="Storage\PersistentJobInfoSource.cs" />
-    <Compile Include="Metadata\SchedulerDocumentMetadataSource.cs" />
+    <Compile Include="Storage\SchedulerDocumentMetadataSource.cs" />
     <Compile Include="IoC\SchedulerContainerModule.cs" />
     <Compile Include="Contract\JobMisfirePolicy.cs" />
     <Compile Include="Contract\JobState.cs" />
@@ -109,7 +118,9 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Metadata\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

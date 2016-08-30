@@ -7,7 +7,7 @@ using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Properties;
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.Scheduler.Implementation
+namespace InfinniPlatform.Scheduler.Common
 {
     internal class JobHandlerTypeSerializer : IJobHandlerTypeSerializer
     {

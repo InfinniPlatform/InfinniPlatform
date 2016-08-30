@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Scheduler.Contract;
 
-namespace InfinniPlatform.Scheduler.Implementation
+namespace InfinniPlatform.Scheduler.Common
 {
     internal class JobInfoFactory : IJobInfoFactory
     {

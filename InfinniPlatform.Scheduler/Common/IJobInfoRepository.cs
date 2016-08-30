@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Scheduler.Contract;
 
-namespace InfinniPlatform.Scheduler.Implementation
+namespace InfinniPlatform.Scheduler.Common
 {
     /// <summary>
     /// Хранилище планировщика заданий <see cref="IJobScheduler"/>.

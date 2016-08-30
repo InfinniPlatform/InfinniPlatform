@@ -4,7 +4,7 @@ using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Attributes;
 
-namespace InfinniPlatform.Scheduler.Implementation
+namespace InfinniPlatform.Scheduler.Common
 {
     [DocumentType("Scheduler.JobInfo")]
     internal class JobInfo : Document, IJobInfo

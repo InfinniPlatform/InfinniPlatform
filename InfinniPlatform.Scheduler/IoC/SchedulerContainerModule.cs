@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.Scheduler.Contract;
+﻿using InfinniPlatform.Scheduler.Common;
+using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Hosting;
-using InfinniPlatform.Scheduler.Implementation;
-using InfinniPlatform.Scheduler.Metadata;
 using InfinniPlatform.Scheduler.Quartz;
+using InfinniPlatform.Scheduler.Queues;
 using InfinniPlatform.Scheduler.Storage;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
@@ -21,6 +21,8 @@ namespace InfinniPlatform.Scheduler.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            // Common
+
             // Сериализатор типов обработчиков заданий
             builder.RegisterType<JobHandlerTypeSerializer>()
                    .As<IJobHandlerTypeSerializer>()
@@ -31,14 +33,38 @@ namespace InfinniPlatform.Scheduler.IoC
                    .As<IJobInfoFactory>()
                    .SingleInstance();
 
+            // 
+            builder.RegisterType<JobInstanceFactory>()
+                   .As<IJobInstanceFactory>()
+                   .SingleInstance();
+
+            // Storage
+
             // Документы планировщика заданий
             builder.RegisterType<SchedulerDocumentMetadataSource>()
                    .As<IDocumentMetadataSource>()
                    .SingleInstance();
 
+            // Список выполненных заданий
+            builder.RegisterType<JobInstanceManager>()
+                   .As<IJobInstanceManager>()
+                   .SingleInstance();
+
             // Хранилище планировщика заданий
             builder.RegisterType<JobInfoRepository>()
                    .As<IJobInfoRepository>()
+                   .SingleInstance();
+
+            // Источник сохраненных заданий
+            builder.RegisterType<PersistentJobInfoSource>()
+                   .As<IJobInfoSource>()
+                   .SingleInstance();
+
+            // Queues
+
+            // Шина сообщений планировщика заданий
+            builder.RegisterType<JobSchedulerMessageQueue>()
+                   .As<IJobSchedulerMessageQueue>()
                    .SingleInstance();
 
             // Quartz

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Scheduler.Contract;
 
-namespace InfinniPlatform.Scheduler.Implementation
+namespace InfinniPlatform.Scheduler.Common
 {
     /// <summary>
     /// Диспетчер планировщика заданий <see cref="IJobScheduler"/>.
