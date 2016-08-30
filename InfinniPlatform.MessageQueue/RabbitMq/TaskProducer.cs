@@ -63,7 +63,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                 {
                     _manager.DeclareTaskQueue(routingKey);
 
-                    channel.BasicPublish(string.Empty, routingKey, basicProperties, messageBodyToBytes);
+                    channel.BasicPublish(string.Empty, routingKey, true, basicProperties, messageBodyToBytes);
                 }
                 catch (Exception exception)
                 {

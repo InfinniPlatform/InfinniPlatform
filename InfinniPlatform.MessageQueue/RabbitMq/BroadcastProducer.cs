@@ -62,7 +62,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
                 try
                 {
-                    channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, basicProperties, messageToBytes);
+                    channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, true, basicProperties, messageToBytes);
                 }
                 catch (Exception exception)
                 {

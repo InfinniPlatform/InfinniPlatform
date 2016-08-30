@@ -41,7 +41,7 @@ namespace InfinniPlatform.MessageQueue.Tests
 
             foreach (var queue in queues)
             {
-                RabbitMqManager.GetChannel().QueueDelete(queue.Name);
+                RabbitMqManager.GetChannel().QueueDelete(queue.Name, false, false);
             }
         }
 
@@ -51,7 +51,7 @@ namespace InfinniPlatform.MessageQueue.Tests
             var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();
             foreach (var queue in queues)
             {
-                RabbitMqManager.GetChannel().QueueDelete(queue.Name);
+                RabbitMqManager.GetChannel().QueueDelete(queue.Name, false, false);
             }
         }
 
