@@ -75,9 +75,9 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             }
 
             const int timeout = 500;
-            Assert.IsTrue(queue1CountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
-            Assert.IsTrue(queue2CountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
-            Assert.IsTrue(queue3CountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+            Assert.IsTrue(queue1CountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(queue1TaskConsumer)}.");
+            Assert.IsTrue(queue2CountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(queue2TaskConsumer)}.");
+            Assert.IsTrue(queue3CountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(queue3TaskConsumer)}.");
 
             CollectionAssert.AreEquivalent(queue1AssertMessages, queue1Messages);
             CollectionAssert.AreEquivalent(queue2AssertMessages, queue2Messages);
@@ -122,8 +122,8 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             }
 
             const int timeout = 500;
-            Assert.IsTrue(namedQueueCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
-            Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+            Assert.IsTrue(namedQueueCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(namedQueueConsumer)}.");
+            Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(testMessageConsumer)}.");
 
             CollectionAssert.AreEquivalent(assertMessages, namedQueueMessages);
             CollectionAssert.AreEquivalent(assertMessages, testMessages);
@@ -172,9 +172,9 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             }
 
             const int timeout = 500;
-            Assert.IsTrue(dynamicWrapperCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
-            Assert.IsTrue(stringCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
-            Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+            Assert.IsTrue(dynamicWrapperCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(dynamicWrapperConsumer)}.");
+            Assert.IsTrue(stringCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(stringConsumer)}.");
+            Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(testMessageConsumer)}.");
 
             var actualMessages = new List<object>();
             actualMessages.AddRange(dynamicWrapperMessages);

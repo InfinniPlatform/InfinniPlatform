@@ -48,7 +48,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             ITaskConsumer[] taskConsumers =
             {
-                new DynamicWrapperTaskConsumer(actualMessagesLists[0], completeEvent1, 1000),
+                new DynamicWrapperTaskConsumer(actualMessagesLists[0], completeEvent1, 4000),
                 new DynamicWrapperTaskConsumer(actualMessagesLists[1], completeEvent2)
             };
 
@@ -61,8 +61,8 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             }
 
             const int timeout = 5000;
-            Assert.IsTrue(completeEvent1.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
-            Assert.IsTrue(completeEvent2.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+            Assert.IsTrue(completeEvent1.Wait(timeout), $"Failed finish {consumer1MessageCount} message consuming by slow consumer in {timeout} ms.");
+            Assert.IsTrue(completeEvent2.Wait(timeout), $"Failed finish {consumer2MessageCount} message consuming by fast consumer 1 in {timeout} ms.");
 
             var actualMessages = new List<DynamicWrapper>();
             foreach (var list in actualMessagesLists)
