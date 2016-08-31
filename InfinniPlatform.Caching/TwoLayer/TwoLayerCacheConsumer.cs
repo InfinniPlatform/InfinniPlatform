@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
@@ -23,7 +24,7 @@ namespace InfinniPlatform.Caching.TwoLayer
             await _cache.ProcessMessage(message);
         }
 
-        protected override Task<bool> OnError()
+        protected override Task<bool> OnError(Exception exception)
         {
             return Task.FromResult(false);
         }
