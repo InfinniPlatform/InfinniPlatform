@@ -16,7 +16,7 @@
             UserName = "guest";
             Password = "guest";
             ManagementApiPort = 15672;
-            PrefetchSize = 0;
+            PrefetchSize = 1;
         }
 
         /// <summary>

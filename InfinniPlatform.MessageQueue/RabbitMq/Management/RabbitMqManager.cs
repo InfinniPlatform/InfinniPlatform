@@ -81,6 +81,26 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         }
 
         /// <summary>
+        /// Создает канал.
+        /// </summary>
+        public IModel GetChannel(ushort prefetchCount)
+        {
+            try
+            {
+                var channel = _connection.Value.CreateModel();
+
+                channel.BasicQos(0, prefetchCount, false);
+
+                return channel;
+            }
+            catch (Exception exception)
+            {
+                _log.Error(exception);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Создает очередь для сообщений по ключу.
         /// </summary>
         /// <param name="queueKey">Ключ/имя очереди.</param>

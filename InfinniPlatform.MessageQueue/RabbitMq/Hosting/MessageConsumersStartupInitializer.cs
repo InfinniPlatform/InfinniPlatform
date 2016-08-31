@@ -73,20 +73,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         {
             foreach (var consumer in consumers)
             {
-                Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object>
-                                                                    {
-                                                                        { "consumerType", consumer.GetType().Name }
-                                                                    };
+                var consumerType = consumer.GetType().Name;
+                _log.Debug(Resources.InitializationOfTaskConsumerStarted, () => CreateLogContext(consumerType));
 
-                _log.Debug(Resources.InitializationOfTaskConsumerStarted, logContext);
-
-                var channel = _manager.GetChannel();
                 var queueName = QueueNamingConventions.GetConsumerQueueName(consumer);
                 _manager.DeclareTaskQueue(queueName);
 
-                InitializeConsumer(queueName, channel, consumer);
+                InitializeConsumer(queueName, consumer);
 
-                _log.Debug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, logContext);
+                _log.Debug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
         }
 
@@ -94,24 +89,19 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         {
             foreach (var consumer in consumers)
             {
-                Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object>
-                                                                    {
-                                                                        { "consumerType", consumer.GetType().Name }
-                                                                    };
+                var consumerType = consumer.GetType().Name;
+                _log.Debug(Resources.InitializationOfBroadcastConsumerStarted, () => CreateLogContext(consumerType));
 
-                _log.Debug(Resources.InitializationOfBroadcastConsumerStarted, logContext);
-
-                var channel = _manager.GetChannel();
                 var routingKey = QueueNamingConventions.GetConsumerQueueName(consumer);
                 var queueName = _manager.DeclareBroadcastQueue(routingKey);
 
-                InitializeConsumer(queueName, channel, consumer);
+                InitializeConsumer(queueName, consumer);
 
-                _log.Debug(Resources.InitializationOfBroadcastConsumerSuccessfullyCompleted, logContext);
+                _log.Debug(Resources.InitializationOfBroadcastConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
         }
 
-        private void InitializeConsumer(string queueName, IModel channel, IConsumer consumer)
+        private void InitializeConsumer(string queueName, IConsumer consumer)
         {
             if (queueName == null)
             {
@@ -119,7 +109,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             }
 
             var consumerType = consumer.GetType().Name;
-
+            var channel = _manager.GetChannel();
             var eventingConsumer = new EventingBasicConsumer(channel);
 
             eventingConsumer.Received += async (o, args) =>
@@ -138,7 +128,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                                    {
                                                        _log.Error(exception, logContext);
 
-                                                       await consumer.OnError(exception);
+                                                       if (await consumer.OnError(exception))
+                                                       {
+                                                           channel.BasicAck(args.DeliveryTag, true);
+                                                       }
 
                                                        return;
                                                    }
@@ -155,7 +148,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                                    {
                                                        if (await consumer.OnError(e))
                                                        {
-                                                           channel.BasicAck(args.DeliveryTag, false);
+                                                           channel.BasicAck(args.DeliveryTag, true);
                                                        }
 
                                                        _log.Error(e, logContext);
@@ -183,6 +176,14 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                        { "consumerType", consumerType },
                        { "deliveryTag", args?.DeliveryTag },
                        { "messageSize", args?.Body?.Length }
+                   };
+        }
+
+        private static Dictionary<string, object> CreateLogContext(string consumerType)
+        {
+            return new Dictionary<string, object>
+                   {
+                       { "consumerType", consumerType }
                    };
         }
     }
