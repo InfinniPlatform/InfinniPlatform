@@ -12,10 +12,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
     /// </summary>
     internal sealed class RabbitMqManager
     {
-        public RabbitMqManager(RabbitMqConnectionSettings connectionSettings,
+        public RabbitMqManager(RabbitMqConnectionSettings settings,
                                IAppEnvironment appEnvironment,
                                ILog log)
         {
+            _settings = settings;
             _log = log;
             BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Fanout}";
             AppId = appEnvironment.Id;
@@ -24,10 +25,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
                                                 {
                                                     var connectionFactory = new ConnectionFactory
                                                                             {
-                                                                                HostName = connectionSettings.HostName,
-                                                                                Port = connectionSettings.Port,
-                                                                                UserName = connectionSettings.UserName,
-                                                                                Password = connectionSettings.Password,
+                                                                                HostName = settings.HostName,
+                                                                                Port = settings.Port,
+                                                                                UserName = settings.UserName,
+                                                                                Password = settings.Password,
                                                                                 AutomaticRecoveryEnabled = Defaults.Connection.AutomaticRecoveryEnabled
                                                                             };
 
@@ -42,6 +43,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 
         private readonly Lazy<IConnection> _connection;
         private readonly ILog _log;
+        private readonly RabbitMqConnectionSettings _settings;
 
         public string BroadcastExchangeName { get; }
 
@@ -63,7 +65,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             try
             {
                 var channel = _connection.Value.CreateModel();
-                channel.BasicQos(0, 1, false);
+
+                if (_settings.PrefetchSize != 0)
+                {
+                    channel.BasicQos(0, _settings.PrefetchSize, false);
+                }
 
                 return channel;
             }

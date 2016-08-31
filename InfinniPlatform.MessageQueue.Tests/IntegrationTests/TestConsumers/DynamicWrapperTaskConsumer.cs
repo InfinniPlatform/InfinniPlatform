@@ -32,5 +32,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                                       await Task.Delay(_taskWorkTime);
                                   });
         }
+
+        protected override Task<bool> OnError()
+        {
+            return Task.FromResult(false);
+        }
     }
 }

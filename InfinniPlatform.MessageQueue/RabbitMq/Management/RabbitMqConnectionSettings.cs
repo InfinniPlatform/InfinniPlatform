@@ -16,6 +16,7 @@
             UserName = "guest";
             Password = "guest";
             ManagementApiPort = 15672;
+            PrefetchSize = 0;
         }
 
         /// <summary>
@@ -39,8 +40,13 @@
         public string Password { get; set; }
 
         /// <summary>
-        /// Пароль пользователя.
+        /// Порт .
         /// </summary>
         public int ManagementApiPort { get; set; }
+
+        /// <summary>
+        /// Количество сообщений, единовременно передаваемых потребителю.
+        /// </summary>
+        public ushort PrefetchSize { get; set; }
     }
 }

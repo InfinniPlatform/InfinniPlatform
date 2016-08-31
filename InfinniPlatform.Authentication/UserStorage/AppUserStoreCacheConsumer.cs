@@ -23,5 +23,10 @@ namespace InfinniPlatform.Authentication.UserStorage
         {
             await _userCacheSynchronizer.Value.ProcessMessage(message);
         }
+
+        protected override Task<bool> OnError()
+        {
+            return Task.FromResult(false);
+        }
     }
 }

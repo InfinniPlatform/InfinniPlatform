@@ -22,5 +22,10 @@ namespace InfinniPlatform.Caching.TwoLayer
         {
             await _cache.ProcessMessage(message);
         }
+
+        protected override Task<bool> OnError()
+        {
+            return Task.FromResult(false);
+        }
     }
 }

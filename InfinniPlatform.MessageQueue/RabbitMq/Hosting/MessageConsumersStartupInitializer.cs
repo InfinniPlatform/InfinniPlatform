@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
@@ -40,13 +39,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             _log = log;
         }
 
-
         private readonly IEnumerable<IMessageConsumerSource> _consumerSource;
+        private readonly ILog _log;
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
         private readonly IPerformanceLog _performanceLog;
-        private readonly ILog _log;
-
 
         public override void OnAfterStart()
         {
@@ -76,7 +73,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         {
             foreach (var consumer in consumers)
             {
-                Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumer.GetType().Name);
+                Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object>
+                                                                    {
+                                                                        { "consumerType", consumer.GetType().Name }
+                                                                    };
 
                 _log.Debug(Resources.InitializationOfTaskConsumerStarted, logContext);
 
@@ -94,7 +94,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         {
             foreach (var consumer in consumers)
             {
-                Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumer.GetType().Name);
+                Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object>
+                                                                    {
+                                                                        { "consumerType", consumer.GetType().Name }
+                                                                    };
 
                 _log.Debug(Resources.InitializationOfBroadcastConsumerStarted, logContext);
 
@@ -119,69 +122,67 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
             var eventingConsumer = new EventingBasicConsumer(channel);
 
-            eventingConsumer.Received += (o, args) =>
-                                         {
-                                             var startDate = DateTime.Now;
+            eventingConsumer.Received += async (o, args) =>
+                                               {
+                                                   var startDate = DateTime.Now;
 
-                                             IMessage message;
+                                                   IMessage message;
 
-                                             Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args.DeliveryTag);
+                                                   Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
 
-                                             try
-                                             {
-                                                 message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
-                                             }
-                                             catch (Exception exception)
-                                             {
-                                                 _log.Error(exception, logContext);
+                                                   try
+                                                   {
+                                                       message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
+                                                   }
+                                                   catch (Exception exception)
+                                                   {
+                                                       _log.Error(exception, logContext);
 
-                                                 return;
-                                             }
+                                                       await consumer.OnError(exception);
 
-                                             Task.Run(async () =>
-                                                            {
-                                                                startDate = DateTime.Now;
+                                                       return;
+                                                   }
 
-                                                                _log.Debug(Resources.ConsumeStart, logContext);
+                                                   try
+                                                   {
+                                                       _log.Debug(Resources.ConsumeStart, logContext);
 
-                                                                await consumer.Consume(message);
+                                                       await consumer.Consume(message);
 
-                                                                _log.Debug(Resources.ConsumeSuccess, logContext);
-                                                            })
-                                                 .ContinueWith(task =>
-                                                               {
-                                                                   try
-                                                                   {
-                                                                       if (task.IsFaulted)
-                                                                       {
-                                                                           _log.Error(task.Exception, logContext);
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           _log.Debug(Resources.AckStart, logContext);
+                                                       _log.Debug(Resources.ConsumeSuccess, logContext);
+                                                   }
+                                                   catch (Exception e)
+                                                   {
+                                                       if (await consumer.OnError(e))
+                                                       {
+                                                           channel.BasicAck(args.DeliveryTag, false);
+                                                       }
 
-                                                                           channel.BasicAck(args.DeliveryTag, false);
+                                                       _log.Error(e, logContext);
+                                                       _performanceLog.Log($"Consume::{consumerType}", startDate, e);
 
-                                                                           _log.Debug(Resources.AckSuccess, logContext);
-                                                                       }
-                                                                   }
-                                                                   finally
-                                                                   {
-                                                                       _performanceLog.Log($"Consume::{consumerType}", startDate, task.Exception);
-                                                                   }
-                                                               });
-                                         };
+                                                       return;
+                                                   }
+
+                                                   _log.Debug(Resources.AckStart, logContext);
+
+                                                   channel.BasicAck(args.DeliveryTag, false);
+
+                                                   _log.Debug(Resources.AckSuccess, logContext);
+
+                                                   _performanceLog.Log($"Consume::{consumerType}", startDate);
+                                               };
 
             channel.BasicConsume(queueName, false, eventingConsumer);
         }
 
-
-        private static Dictionary<string, object> CreateLogContext(string consumerType, object deliveryTag = null)
+        private static Dictionary<string, object> CreateLogContext(string consumerType, BasicDeliverEventArgs args)
         {
             return new Dictionary<string, object>
                    {
                        { "consumerType", consumerType },
-                       { "deliveryTag", deliveryTag }
+                       { "deliveryTag", args?.DeliveryTag },
+                       { "messageSize", args?.Body?.Length }
                    };
         }
     }

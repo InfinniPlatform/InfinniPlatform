@@ -28,5 +28,10 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                                 _completeEvent.Signal();
                             });
         }
+
+        protected override Task<bool> OnError()
+        {
+            return Task.FromResult(false);
+        }
     }
 }
