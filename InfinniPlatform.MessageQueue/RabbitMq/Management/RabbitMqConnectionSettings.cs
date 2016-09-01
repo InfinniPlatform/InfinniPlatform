@@ -16,7 +16,7 @@
             UserName = "guest";
             Password = "guest";
             ManagementApiPort = 15672;
-            PrefetchSize = 1;
+            PrefetchCount = 1;
         }
 
         /// <summary>
@@ -47,6 +47,6 @@
         /// <summary>
         /// Количество сообщений, единовременно передаваемых потребителю.
         /// </summary>
-        public ushort PrefetchSize { get; set; }
+        public ushort PrefetchCount { get; set; }
     }
 }

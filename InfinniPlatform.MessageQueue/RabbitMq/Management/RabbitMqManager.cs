@@ -66,9 +66,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             {
                 var channel = _connection.Value.CreateModel();
 
-                if (_settings.PrefetchSize != 0)
+                if (_settings.PrefetchCount != 0)
                 {
-                    channel.BasicQos(0, _settings.PrefetchSize, false);
+                    channel.BasicQos(0, _settings.PrefetchCount, false);
                 }
 
                 return channel;

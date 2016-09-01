@@ -32,6 +32,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
                                      {
                                          Credentials = new NetworkCredential(connectionSettings.UserName, connectionSettings.Password)
                                      };
+
             var httpClient = new HttpClient(httpMessageHandler)
                              {
                                  BaseAddress = new Uri($"http://{connectionSettings.HostName}:{connectionSettings.ManagementApiPort}")
