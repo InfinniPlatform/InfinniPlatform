@@ -20,6 +20,8 @@ filter {
 			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{LOGLEVEL:level}\|%{NOTSPACE:thread}\|%{NOTSPACE:logger}\|%{NOTSPACE:requestId}\|%{NOTSPACE:sessionId}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:body}" ]
 		}
 
+		if "_grokparsefailure" in [tags] { drop {} }
+
 		json {
 			source => "body"
 		}
@@ -54,6 +56,7 @@ filter {
 
 		mutate {
 			remove_field => [ "message", "body" ]
+			convert => { "d" => "integer" }
 		}
 	}
 }
