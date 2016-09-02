@@ -141,6 +141,9 @@
   <data name="ArrayItemMustBeWithinTheRange" xml:space="preserve">
     <value>Items of the array '{0}' must be within the range {1} to {2}.</value>
   </data>
+  <data name="HandlingOfJobCompletedWithException" xml:space="preserve">
+    <value>Handling of the job completed with an exception.</value>
+  </data>
   <data name="HandlerTypeIsNotParsed" xml:space="preserve">
     <value>Handler type '{0}' is not parsed.</value>
   </data>

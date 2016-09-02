@@ -2,11 +2,11 @@
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Hosting;
 using InfinniPlatform.Scheduler.Quartz;
-using InfinniPlatform.Scheduler.Queues;
 using InfinniPlatform.Scheduler.Storage;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Metadata.Documents;
+using InfinniPlatform.Sdk.Queues;
 
 using Quartz;
 using Quartz.Logging;
@@ -62,10 +62,8 @@ namespace InfinniPlatform.Scheduler.IoC
 
             // Queues
 
-            // Шина сообщений планировщика заданий
-            builder.RegisterType<JobSchedulerMessageQueue>()
-                   .As<IJobSchedulerMessageQueue>()
-                   .SingleInstance();
+            // Обработчики шины сообщений
+            builder.RegisterConsumers(GetType().Assembly);
 
             // Quartz
 

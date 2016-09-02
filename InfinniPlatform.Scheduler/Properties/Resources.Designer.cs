@@ -151,6 +151,15 @@ namespace InfinniPlatform.Scheduler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Handling of the job completed with an exception..
+        /// </summary>
+        internal static string HandlingOfJobCompletedWithException {
+            get {
+                return ResourceManager.GetString("HandlingOfJobCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting the job scheduler..
         /// </summary>
         internal static string StartingJobScheduler {

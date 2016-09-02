@@ -12,9 +12,9 @@ namespace InfinniPlatform.Scheduler.Common
     internal interface IJobInfoRepository
     {
         /// <summary>
-        /// Возвращает список с информацией о запланированных заданиях.
+        /// Возвращает список с информацией об актуальных заданиях.
         /// </summary>
-        Task<IEnumerable<IJobInfo>> GetPlannedJobInfos();
+        Task<IEnumerable<IJobInfo>> GetActualJobInfos();
 
         /// <summary>
         /// Возвращает список уникальных идентификаторов заданий.

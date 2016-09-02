@@ -1,8 +1,9 @@
-﻿using InfinniPlatform.Sdk.Documents;
+﻿using InfinniPlatform.Scheduler.Contract;
+using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Scheduler.Storage
 {
-    [DocumentType("Scheduler.JobInstance")]
+    [DocumentType(SchedulerConstants.ObjectNamePrefix + nameof(JobInstance))]
     internal class JobInstance : Document
     {
     }

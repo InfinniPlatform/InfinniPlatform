@@ -15,6 +15,6 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Десериализует тип обработчика заданий.
         /// </summary>
-        Type Deserialize(string value);
+        IJobHandler Deserialize(string value);
     }
 }

@@ -22,7 +22,7 @@ namespace InfinniPlatform.Scheduler.Storage
 
         public Task<IEnumerable<IJobInfo>> GetJobs(IJobInfoFactory factory)
         {
-            return _jobInfoRepository.GetPlannedJobInfos();
+            return _jobInfoRepository.GetActualJobInfos();
         }
     }
 }

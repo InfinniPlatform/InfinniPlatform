@@ -11,13 +11,6 @@ namespace InfinniPlatform.Scheduler.Common
     public interface IJobSchedulerDispatcher
     {
         /// <summary>
-        /// Проверяет, запланировано ли задание.
-        /// </summary>
-        /// <param name="jobId">Уникальный идентификатор задания.</param>
-        bool IsJobExists(string jobId);
-
-
-        /// <summary>
         /// Добавляет или обновляет задание.
         /// </summary>
         /// <param name="jobInfo">Информация о задании.</param>

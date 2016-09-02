@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Documents.Attributes;
 
 namespace InfinniPlatform.Scheduler.Common
 {
-    [DocumentType("Scheduler.JobInfo")]
+    [DocumentType(SchedulerConstants.ObjectNamePrefix + nameof(JobInfo))]
     internal class JobInfo : Document, IJobInfo
     {
         [DocumentIgnore]

@@ -44,7 +44,7 @@ namespace InfinniPlatform.Scheduler.Common
             return $"{typeName},{assemblyName}";
         }
 
-        public Type Deserialize(string value)
+        public IJobHandler Deserialize(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -55,7 +55,7 @@ namespace InfinniPlatform.Scheduler.Common
 
             if (_cache.TryGetValue(value, out type))
             {
-                return type;
+                return (IJobHandler)_resolver.Resolve(type);
             }
 
             var match = HandlerTypeRegex.Match(value);
@@ -82,7 +82,7 @@ namespace InfinniPlatform.Scheduler.Common
 
             type = _cache.GetOrAdd(value, type);
 
-            return type;
+            return (IJobHandler)_resolver.Resolve(type);
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using InfinniPlatform.Sdk.Queues;
+﻿using InfinniPlatform.Scheduler.Contract;
+using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.Scheduler.Common
 {
     /// <summary>
     /// Событие о необходимости обработать задание.
     /// </summary>
-    [QueueName("Scheduler.HandleJob")]
-    internal class HandleJobMessage
+    [QueueName(SchedulerConstants.ObjectNamePrefix + nameof(JobHandlerEvent))]
+    internal class JobHandlerEvent
     {
         public JobInfo JobInfo { get; set; }
 

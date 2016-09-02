@@ -21,9 +21,9 @@ namespace InfinniPlatform.Scheduler.Storage
         private readonly ISystemDocumentStorage<JobInfo> _jobInfoStorage;
 
 
-        public async Task<IEnumerable<IJobInfo>> GetPlannedJobInfos()
+        public async Task<IEnumerable<IJobInfo>> GetActualJobInfos()
         {
-            return await _jobInfoStorage.Find(i => i.State == JobState.Planned).ToListAsync();
+            return await _jobInfoStorage.Find().ToListAsync();
         }
 
         public async Task<IEnumerable<string>> GetJobIds(Regex group = null)

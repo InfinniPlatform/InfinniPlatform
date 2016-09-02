@@ -62,12 +62,12 @@
     <Compile Include="Contract\IJobHandlerTypeSerializer.cs" />
     <Compile Include="Contract\IJobInfo.cs" />
     <Compile Include="Contract\IJobInfoFactory.cs" />
+    <Compile Include="Contract\SchedulerConstants.cs" />
     <Compile Include="Hosting\SchedulerInitializer.cs" />
-    <Compile Include="Common\HandleJobMessage.cs" />
+    <Compile Include="Common\JobHandlerEvent.cs" />
     <Compile Include="Common\IJobInstanceFactory.cs" />
     <Compile Include="Common\IJobInstanceManager.cs" />
     <Compile Include="Common\IJobInfoRepository.cs" />
-    <Compile Include="Common\IJobSchedulerNotifier.cs" />
     <Compile Include="Common\IJobSchedulerDispatcher.cs" />
     <Compile Include="Common\JobHandlerContext.cs" />
     <Compile Include="Common\JobHandlerTypeSerializer.cs" />
@@ -82,7 +82,8 @@
     <Compile Include="Contract\IJobScheduler.cs" />
     <Compile Include="Contract\IJobInfoSource.cs" />
     <Compile Include="Common\JobInstanceFactory.cs" />
-    <Compile Include="Queues\JobSchedulerMessageQueue.cs" />
+    <Compile Include="Quartz\AsyncMonitor.cs" />
+    <Compile Include="Queues\JobHandlerConsumer.cs" />
     <Compile Include="Storage\JobInstance.cs" />
     <Compile Include="Storage\JobInstanceManager.cs" />
     <Compile Include="Storage\JobInfoRepository.cs" />

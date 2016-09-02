@@ -25,14 +25,16 @@ namespace InfinniPlatform.Scheduler.Quartz
             _jobFactory = jobFactory;
             _logProvider = logProvider;
             _scheduler = new Lazy<Task<IScheduler>>(() => Task.Run(CreateQuartzScheduler));
-            _jobKeys = new ConcurrentDictionary<string, JobKey>(StringComparer.Ordinal);
+            _jobs = new ConcurrentDictionary<string, JobItem>(StringComparer.Ordinal);
+            _monitor = new AsyncMonitor();
         }
 
 
         private readonly IJobFactory _jobFactory;
         private readonly ILogProvider _logProvider;
         private readonly Lazy<Task<IScheduler>> _scheduler;
-        private readonly ConcurrentDictionary<string, JobKey> _jobKeys;
+        private readonly ConcurrentDictionary<string, JobItem> _jobs;
+        private readonly AsyncMonitor _monitor;
 
 
         private async Task<IScheduler> CreateQuartzScheduler()
@@ -56,17 +58,6 @@ namespace InfinniPlatform.Scheduler.Quartz
         }
 
 
-        public bool IsJobExists(string jobId)
-        {
-            if (string.IsNullOrEmpty(jobId))
-            {
-                throw new ArgumentNullException(nameof(jobId));
-            }
-
-            return _jobKeys.ContainsKey(jobId);
-        }
-
-
         public async Task AddOrUpdateJob(IJobInfo jobInfo)
         {
             if (jobInfo == null)
@@ -74,17 +65,242 @@ namespace InfinniPlatform.Scheduler.Quartz
                 throw new ArgumentNullException(nameof(jobInfo));
             }
 
+            // Информация о состоянии задания
             var jobKey = new JobKey(jobInfo.Name, jobInfo.Group);
+            var jobItem = new JobItem(jobKey, jobInfo, jobInfo.State);
 
-            // Прекращение планирования предыдущего экземпляра задания
-            await SchedulerAction(s => s.DeleteJob(jobKey));
+            // Получение актуальной информации о состоянии задания
+            jobItem = _jobs.GetOrAdd(jobInfo.Id, jobItem);
 
-            // Невозможно добавить приостановленное задание
-            if (jobInfo.State == JobState.Paused)
+            // Блокировка экземпляра задания на время его изменения
+            using (await _monitor.LockAsync(jobItem))
             {
-                return;
+                // Обновление состояния задания
+                jobItem.Info = jobInfo;
+                jobItem.State = jobInfo.State;
+
+                // Прекращение планирования предыдущего экземпляра задания
+                await SchedulerAction(s => s.DeleteJob(jobKey));
+
+                // Если задание запланировано для выполнения
+                if (jobInfo.State == JobState.Planned)
+                {
+                        // Начало планирования нового экземпляра задания
+                    await ScheduleJob(jobKey, jobInfo);
+                }
+            }
+        }
+
+        public async Task AddOrUpdateJobs(IEnumerable<IJobInfo> jobInfos)
+        {
+            if (jobInfos == null)
+            {
+                throw new ArgumentNullException(nameof(jobInfos));
             }
 
+            foreach (var jobInfo in jobInfos)
+            {
+                await AddOrUpdateJob(jobInfo);
+            }
+        }
+
+
+        public async Task DeleteJob(string jobId)
+        {
+            var jobItem = GetJobItem(jobId);
+
+            if (jobItem != null)
+            {
+                JobItem deletedJob;
+
+                // Удаление ключа задания из списка
+                _jobs.TryRemove(jobId, out deletedJob);
+
+                // Блокировка экземпляра задания на время его изменения
+                using (await _monitor.LockAsync(jobItem))
+                {
+                    // Прекращение планирования существующего экземпляра задания
+                    await SchedulerAction(s => s.DeleteJob(jobItem.Key));
+                }
+            }
+        }
+
+        public async Task DeleteJobs(IEnumerable<string> jobIds)
+        {
+            if (jobIds == null)
+            {
+                throw new ArgumentNullException(nameof(jobIds));
+            }
+
+            foreach (var jobId in jobIds)
+            {
+                await DeleteJob(jobId);
+            }
+        }
+
+        public Task DeleteAllJobs()
+        {
+            var allJobIds = _jobs.Keys.ToList();
+
+            return DeleteJobs(allJobIds);
+        }
+
+
+        public async Task PauseJob(string jobId)
+        {
+            var jobItem = GetJobItem(jobId);
+
+            if (jobItem != null)
+            {
+                // Блокировка экземпляра задания на время его изменения
+                using (await _monitor.LockAsync(jobItem))
+                {
+                    // Обновление состояние задания
+                    jobItem.State = JobState.Paused;
+
+                    // Приостановка планирования существующего экземпляра задания
+                    await SchedulerAction(s => s.PauseJob(jobItem.Key));
+                }
+            }
+        }
+
+        public async Task PauseJobs(IEnumerable<string> jobIds)
+        {
+            if (jobIds == null)
+            {
+                throw new ArgumentNullException(nameof(jobIds));
+            }
+
+            foreach (var jobId in jobIds)
+            {
+                await PauseJob(jobId);
+            }
+        }
+
+        public Task PauseAllJobs()
+        {
+            var allJobIds = _jobs.Keys.ToList();
+
+            return PauseJobs(allJobIds);
+        }
+
+
+        public async Task ResumeJob(string jobId)
+        {
+            var jobItem = GetJobItem(jobId);
+
+            if (jobItem != null)
+            {
+                // Блокировка экземпляра задания на время его изменения
+                using (await _monitor.LockAsync(jobItem))
+                {
+                    // Обновление состояние задания
+                    jobItem.State = JobState.Paused;
+
+                    if (await SchedulerAction(s => s.CheckExists(jobItem.Key)))
+                    {
+                        // Возобновление планирования существующего экземпляра задания
+                        await SchedulerAction(s => s.ResumeJob(jobItem.Key));
+                    }
+                    else
+                    {
+                        // Начало планирования нового экземпляра задания
+                        await ScheduleJob(jobItem.Key, jobItem.Info);
+                    }
+                }
+            }
+        }
+
+        public async Task ResumeJobs(IEnumerable<string> jobIds)
+        {
+            if (jobIds == null)
+            {
+                throw new ArgumentNullException(nameof(jobIds));
+            }
+
+            foreach (var jobId in jobIds)
+            {
+                await ResumeJob(jobId);
+            }
+        }
+
+        public Task ResumeAllJobs()
+        {
+            var allJobIds = _jobs.Keys.ToList();
+
+            return ResumeJobs(allJobIds);
+        }
+
+
+        public async Task TriggerJob(string jobId, object data = null)
+        {
+            var jobItem = GetJobItem(jobId);
+
+            if (jobItem != null)
+            {
+                // Досрочное выполнение существующего экземпляра задания
+
+                if (data == null)
+                {
+                    await SchedulerAction(s => s.TriggerJob(jobItem.Key));
+                }
+                else
+                {
+                    var jobData = new JobDataMap { { QuartzJob.TriggerDataKey, data } };
+
+                    await SchedulerAction(s => s.TriggerJob(jobItem.Key, jobData));
+                }
+            }
+        }
+
+        public async Task TriggerJobs(IEnumerable<string> jobIds, object data = null)
+        {
+            if (jobIds == null)
+            {
+                throw new ArgumentNullException(nameof(jobIds));
+            }
+
+            foreach (var jobId in jobIds)
+            {
+                await TriggerJob(jobId, data);
+            }
+        }
+
+        public Task TriggerAllJob(object data = null)
+        {
+            var allJobIds = _jobs.Keys.ToList();
+
+            return TriggerJobs(allJobIds, data);
+        }
+
+
+        public Task Start()
+        {
+            return SchedulerAction(s => s.Start());
+        }
+
+        public Task Stop()
+        {
+            return SchedulerAction(s => s.Shutdown());
+        }
+
+
+        private JobItem GetJobItem(string jobId)
+        {
+            if (string.IsNullOrEmpty(jobId))
+            {
+                throw new ArgumentNullException(nameof(jobId));
+            }
+
+            JobItem jobItem;
+
+            _jobs.TryGetValue(jobId, out jobItem);
+
+            return jobItem;
+        }
+
+        private async Task ScheduleJob(JobKey jobKey, IJobInfo jobInfo)
+        {
             var jobData = new JobDataMap { { QuartzJob.JobInfoKey, jobInfo } };
 
             // Создание экземпляра задания
@@ -136,190 +352,6 @@ namespace InfinniPlatform.Scheduler.Quartz
 
             // Начало планирования нового экземпляра задания
             await SchedulerAction(s => s.ScheduleJob(jobDetail, jobTrigger));
-
-            // Добавление ключа задания в список
-            _jobKeys[jobInfo.Id] = jobKey;
-        }
-
-        public async Task AddOrUpdateJobs(IEnumerable<IJobInfo> jobInfos)
-        {
-            if (jobInfos == null)
-            {
-                throw new ArgumentNullException(nameof(jobInfos));
-            }
-
-            foreach (var jobInfo in jobInfos)
-            {
-                await AddOrUpdateJob(jobInfo);
-            }
-        }
-
-
-        public async Task DeleteJob(string jobId)
-        {
-            var jobKey = FindJobKey(jobId);
-
-            if (jobKey != null)
-            {
-                // Прекращение планирования существующего экземпляра задания
-                await SchedulerAction(s => s.DeleteJob(jobKey));
-
-                // Удаление ключа задания из списка
-                JobKey deletedJobKey;
-                _jobKeys.TryRemove(jobId, out deletedJobKey);
-            }
-        }
-
-        public async Task DeleteJobs(IEnumerable<string> jobIds)
-        {
-            if (jobIds == null)
-            {
-                throw new ArgumentNullException(nameof(jobIds));
-            }
-
-            foreach (var jobId in jobIds)
-            {
-                await DeleteJob(jobId);
-            }
-        }
-
-        public Task DeleteAllJobs()
-        {
-            var allJobIds = _jobKeys.Keys.ToList();
-
-            return DeleteJobs(allJobIds);
-        }
-
-
-        public async Task PauseJob(string jobId)
-        {
-            var jobKey = FindJobKey(jobId);
-
-            if (jobKey != null)
-            {
-                // Приостановка планирования существующего экземпляра задания
-                await SchedulerAction(s => s.PauseJob(jobKey));
-            }
-        }
-
-        public async Task PauseJobs(IEnumerable<string> jobIds)
-        {
-            if (jobIds == null)
-            {
-                throw new ArgumentNullException(nameof(jobIds));
-            }
-
-            foreach (var jobId in jobIds)
-            {
-                await PauseJob(jobId);
-            }
-        }
-
-        public Task PauseAllJobs()
-        {
-            var allJobIds = _jobKeys.Keys.ToList();
-
-            return PauseJobs(allJobIds);
-        }
-
-
-        public async Task ResumeJob(string jobId)
-        {
-            var jobKey = FindJobKey(jobId);
-
-            if (jobKey != null)
-            {
-                // Возобновление планирования существующего экземпляра задания
-                await SchedulerAction(s => s.ResumeJob(jobKey));
-            }
-        }
-
-        public async Task ResumeJobs(IEnumerable<string> jobIds)
-        {
-            if (jobIds == null)
-            {
-                throw new ArgumentNullException(nameof(jobIds));
-            }
-
-            foreach (var jobId in jobIds)
-            {
-                await ResumeJob(jobId);
-            }
-        }
-
-        public Task ResumeAllJobs()
-        {
-            var allJobIds = _jobKeys.Keys.ToList();
-
-            return ResumeJobs(allJobIds);
-        }
-
-
-        public async Task TriggerJob(string jobId, object data = null)
-        {
-            var jobKey = FindJobKey(jobId);
-
-            if (jobKey != null)
-            {
-                // Досрочное выполнение существующего экземпляра задания
-
-                if (data == null)
-                {
-                    await SchedulerAction(s => s.TriggerJob(jobKey));
-                }
-                else
-                {
-                    var jobData = new JobDataMap { { QuartzJob.TriggerDataKey, data } };
-
-                    await SchedulerAction(s => s.TriggerJob(jobKey, jobData));
-                }
-            }
-        }
-
-        public async Task TriggerJobs(IEnumerable<string> jobIds, object data = null)
-        {
-            if (jobIds == null)
-            {
-                throw new ArgumentNullException(nameof(jobIds));
-            }
-
-            foreach (var jobId in jobIds)
-            {
-                await TriggerJob(jobId, data);
-            }
-        }
-
-        public Task TriggerAllJob(object data = null)
-        {
-            var allJobIds = _jobKeys.Keys.ToList();
-
-            return TriggerJobs(allJobIds, data);
-        }
-
-
-        public Task Start()
-        {
-            return SchedulerAction(s => s.Start());
-        }
-
-        public Task Stop()
-        {
-            return SchedulerAction(s => s.Shutdown());
-        }
-
-
-        private JobKey FindJobKey(string jobId)
-        {
-            if (string.IsNullOrEmpty(jobId))
-            {
-                throw new ArgumentNullException(nameof(jobId));
-            }
-
-            JobKey jobKey;
-
-            _jobKeys.TryGetValue(jobId, out jobKey);
-
-            return jobKey;
         }
 
 
@@ -333,6 +365,35 @@ namespace InfinniPlatform.Scheduler.Quartz
         {
             var scheduler = await _scheduler.Value;
             return await action(scheduler);
+        }
+
+
+        /// <summary>
+        /// Информация о состоянии задания.
+        /// </summary>
+        private class JobItem
+        {
+            public JobItem(JobKey key, IJobInfo info, JobState state)
+            {
+                Key = key;
+                Info = info;
+                State = state;
+            }
+
+            /// <summary>
+            /// Уникальный ключ задания.
+            /// </summary>
+            public readonly JobKey Key;
+
+            /// <summary>
+            /// Информация о задании.
+            /// </summary>
+            public IJobInfo Info { get; set; }
+
+            /// <summary>
+            /// Состояние задания.
+            /// </summary>
+            public JobState State { get; set; }
         }
     }
 }

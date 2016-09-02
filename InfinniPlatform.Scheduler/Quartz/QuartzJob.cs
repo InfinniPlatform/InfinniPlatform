@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Scheduler.Common;
+using InfinniPlatform.Sdk.Queues.Producers;
 
 using Quartz;
 
@@ -24,17 +25,17 @@ namespace InfinniPlatform.Scheduler.Quartz
 
         public QuartzJob(IJobInstanceFactory jobInstanceFactory,
                          IJobInstanceManager jobInstanceManager,
-                         IJobSchedulerMessageQueue jobSchedulerMessageQueue)
+                         ITaskProducer taskProducer)
         {
             _jobInstanceFactory = jobInstanceFactory;
             _jobInstanceManager = jobInstanceManager;
-            _jobSchedulerMessageQueue = jobSchedulerMessageQueue;
+            _taskProducer = taskProducer;
         }
 
 
         private readonly IJobInstanceFactory _jobInstanceFactory;
         private readonly IJobInstanceManager _jobInstanceManager;
-        private readonly IJobSchedulerMessageQueue _jobSchedulerMessageQueue;
+        private readonly ITaskProducer _taskProducer;
 
 
         public async Task Execute(IJobExecutionContext context)
@@ -83,14 +84,14 @@ namespace InfinniPlatform.Scheduler.Quartz
                 Data = triggerData ?? jobInfo.Data
             };
 
-            var handleJobMessage = new HandleJobMessage
+            var handleJobMessage = new JobHandlerEvent
             {
                 JobInfo = jobInfo,
                 Context = jobHandlerContext
             };
 
             // Постановка задания в очередь на выполнение
-            await _jobSchedulerMessageQueue.PublishHandleJob(handleJobMessage);
+            await _taskProducer.PublishAsync(handleJobMessage);
         }
     }
 }
