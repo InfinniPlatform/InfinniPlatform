@@ -115,6 +115,15 @@ namespace InfinniPlatform.Scheduler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding jobs to the scheduler completed with an exception..
+        /// </summary>
+        internal static string AddOrUpdateJobsCompletedWithException {
+            get {
+                return ResourceManager.GetString("AddOrUpdateJobsCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The array &apos;{0}&apos; cannot be null or empty..
         /// </summary>
         internal static string ArrayCannotBeNullOrEmpty {
@@ -129,6 +138,15 @@ namespace InfinniPlatform.Scheduler.Properties {
         internal static string ArrayItemMustBeWithinTheRange {
             get {
                 return ResourceManager.GetString("ArrayItemMustBeWithinTheRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting jobs from the scheduler completed with an exception..
+        /// </summary>
+        internal static string DeleteJobsCompletedWithException {
+            get {
+                return ResourceManager.GetString("DeleteJobsCompletedWithException", resourceCulture);
             }
         }
         
@@ -165,6 +183,24 @@ namespace InfinniPlatform.Scheduler.Properties {
         internal static string JobSchedulerMethodCompletedWithException {
             get {
                 return ResourceManager.GetString("JobSchedulerMethodCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pausing jobs of the scheduler completed with an exception..
+        /// </summary>
+        internal static string PauseJobsCompletedWithException {
+            get {
+                return ResourceManager.GetString("PauseJobsCompletedWithException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resuming jobs of the scheduler completed with an exception..
+        /// </summary>
+        internal static string ResumingJobsCompletedWithException {
+            get {
+                return ResourceManager.GetString("ResumingJobsCompletedWithException", resourceCulture);
             }
         }
         

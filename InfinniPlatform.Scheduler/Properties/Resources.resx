@@ -174,4 +174,16 @@
   <data name="JobSchedulerMethodCompletedWithException" xml:space="preserve">
     <value>The job scheduler method '{0}' completed with an exception.</value>
   </data>
+  <data name="AddOrUpdateJobsCompletedWithException" xml:space="preserve">
+    <value>Adding jobs to the scheduler completed with an exception.</value>
+  </data>
+  <data name="DeleteJobsCompletedWithException" xml:space="preserve">
+    <value>Deleting jobs from the scheduler completed with an exception.</value>
+  </data>
+  <data name="PauseJobsCompletedWithException" xml:space="preserve">
+    <value>Pausing jobs of the scheduler completed with an exception.</value>
+  </data>
+  <data name="ResumingJobsCompletedWithException" xml:space="preserve">
+    <value>Resuming jobs of the scheduler completed with an exception.</value>
+  </data>
 </root>

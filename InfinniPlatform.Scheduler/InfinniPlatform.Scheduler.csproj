@@ -89,7 +89,11 @@
     <Compile Include="Contract\IJobInfoSource.cs" />
     <Compile Include="Common\JobInstanceFactory.cs" />
     <Compile Include="Quartz\AsyncMonitor.cs" />
+    <Compile Include="Queues\AddOrUpdateJobConsumer.cs" />
+    <Compile Include="Queues\DeleteJobConsumer.cs" />
     <Compile Include="Queues\JobHandlerConsumer.cs" />
+    <Compile Include="Queues\PauseJobConsumer.cs" />
+    <Compile Include="Queues\ResumeJobConsumer.cs" />
     <Compile Include="Storage\JobInstance.cs" />
     <Compile Include="Storage\JobInstanceManager.cs" />
     <Compile Include="Storage\JobInfoRepository.cs" />

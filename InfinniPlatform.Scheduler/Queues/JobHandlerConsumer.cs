@@ -16,17 +16,17 @@ namespace InfinniPlatform.Scheduler.Queues
     /// </summary>
     internal class JobHandlerConsumer : TaskConsumerBase<JobHandlerEvent>
     {
-        public JobHandlerConsumer(IJobHandlerTypeSerializer handlerTypeSerializer,
+        public JobHandlerConsumer(IJobHandlerTypeSerializer jobHandlerTypeSerializer,
                                   IPerformanceLog performanceLog,
                                   ILog log)
         {
-            _handlerTypeSerializer = handlerTypeSerializer;
+            _jobHandlerTypeSerializer = jobHandlerTypeSerializer;
             _performanceLog = performanceLog;
             _log = log;
         }
 
 
-        private readonly IJobHandlerTypeSerializer _handlerTypeSerializer;
+        private readonly IJobHandlerTypeSerializer _jobHandlerTypeSerializer;
         private readonly IPerformanceLog _performanceLog;
         private readonly ILog _log;
 
@@ -50,7 +50,7 @@ namespace InfinniPlatform.Scheduler.Queues
                 var jobHandlerType = jobInfo.HandlerType;
 
                 // Создание экземпляра обработчика задания
-                var handler = _handlerTypeSerializer.Deserialize(jobHandlerType);
+                var handler = _jobHandlerTypeSerializer.Deserialize(jobHandlerType);
 
                 if (handler != null)
                 {
