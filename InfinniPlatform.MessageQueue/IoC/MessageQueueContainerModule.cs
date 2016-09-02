@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.MessageQueue.RabbitMq;
+﻿using InfinniPlatform.Core.Diagnostics;
+using InfinniPlatform.MessageQueue.Diagnostics;
+using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
@@ -50,6 +52,12 @@ namespace InfinniPlatform.MessageQueue.IoC
 
             builder.RegisterType<MessageConsumerSource>()
                    .As<IMessageConsumerSource>()
+                   .SingleInstance();
+
+            // Diagnostics
+
+            builder.RegisterType<MessageQueueStatusProvider>()
+                   .As<ISubsystemStatusProvider>()
                    .SingleInstance();
         }
 
