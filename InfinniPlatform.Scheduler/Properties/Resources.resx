@@ -171,4 +171,7 @@
   <data name="ValueMustBeWithinTheRange" xml:space="preserve">
     <value>Value of the argument '{0}' must be within the range {1} to {2}.</value>
   </data>
+  <data name="JobSchedulerMethodCompletedWithException" xml:space="preserve">
+    <value>The job scheduler method '{0}' completed with an exception.</value>
+  </data>
 </root>

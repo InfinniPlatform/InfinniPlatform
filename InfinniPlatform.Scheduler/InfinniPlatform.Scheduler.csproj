@@ -42,6 +42,11 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Common\AddOrUpdateJobEvent.cs" />
+    <Compile Include="Common\CommonExtensions.cs" />
+    <Compile Include="Common\DeleteJobEvent.cs" />
+    <Compile Include="Common\PauseJobEvent.cs" />
+    <Compile Include="Common\ResumeJobEvent.cs" />
     <Compile Include="Contract\CronExpressionBuilder.cs" />
     <Compile Include="Contract\CronConstants.cs" />
     <Compile Include="Contract\CronExpressionDayOfMonthBuilder.cs" />
@@ -62,6 +67,7 @@
     <Compile Include="Contract\IJobHandlerTypeSerializer.cs" />
     <Compile Include="Contract\IJobInfo.cs" />
     <Compile Include="Contract\IJobInfoFactory.cs" />
+    <Compile Include="Common\JobScheduler.cs" />
     <Compile Include="Contract\SchedulerConstants.cs" />
     <Compile Include="Hosting\SchedulerInitializer.cs" />
     <Compile Include="Common\JobHandlerEvent.cs" />

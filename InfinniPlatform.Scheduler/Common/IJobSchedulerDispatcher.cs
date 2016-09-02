@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Scheduler.Contract;
@@ -10,6 +11,13 @@ namespace InfinniPlatform.Scheduler.Common
     /// </summary>
     public interface IJobSchedulerDispatcher
     {
+        /// <summary>
+        /// Возвращает список с информацией об указанных заданиях.
+        /// </summary>
+        /// <param name="condition">Условие для выборки заданий.</param>
+        Task<IEnumerable<IJobInfo>> GetJobs(Func<IJobInfo, bool> condition = null);
+
+
         /// <summary>
         /// Добавляет или обновляет задание.
         /// </summary>

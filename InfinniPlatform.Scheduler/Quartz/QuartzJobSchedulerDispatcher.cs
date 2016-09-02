@@ -58,6 +58,15 @@ namespace InfinniPlatform.Scheduler.Quartz
         }
 
 
+        public Task<IEnumerable<IJobInfo>> GetJobs(Func<IJobInfo, bool> condition = null)
+        {
+            IEnumerable<IJobInfo> result = (condition != null)
+                ? _jobs.Values.Select(i => i.Info).Where(condition).ToList()
+                : _jobs.Values.Select(i => i.Info).ToList();
+
+            return Task.FromResult(result);
+        }
+
         public async Task AddOrUpdateJob(IJobInfo jobInfo)
         {
             if (jobInfo == null)

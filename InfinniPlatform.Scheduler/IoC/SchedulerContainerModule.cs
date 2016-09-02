@@ -33,9 +33,14 @@ namespace InfinniPlatform.Scheduler.IoC
                    .As<IJobInfoFactory>()
                    .SingleInstance();
 
-            // 
+            // Фабрика для создания уникального идентификатора экземпляра задания
             builder.RegisterType<JobInstanceFactory>()
                    .As<IJobInstanceFactory>()
+                   .SingleInstance();
+
+            // Планировщик заданий
+            builder.RegisterType<JobScheduler>()
+                   .As<IJobScheduler>()
                    .SingleInstance();
 
             // Storage

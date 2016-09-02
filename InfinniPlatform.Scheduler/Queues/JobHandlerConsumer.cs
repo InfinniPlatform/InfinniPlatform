@@ -12,24 +12,31 @@ using InfinniPlatform.Sdk.Queues.Consumers;
 namespace InfinniPlatform.Scheduler.Queues
 {
     /// <summary>
-    /// Обработчик событий о необходимости обработать задание.
+    /// Обработчик события <see cref="JobHandlerEvent"/>.
     /// </summary>
     internal class JobHandlerConsumer : TaskConsumerBase<JobHandlerEvent>
     {
         public JobHandlerConsumer(IJobHandlerTypeSerializer handlerTypeSerializer,
-                                 ILog log)
+                                  IPerformanceLog performanceLog,
+                                  ILog log)
         {
             _handlerTypeSerializer = handlerTypeSerializer;
+            _performanceLog = performanceLog;
             _log = log;
         }
 
 
         private readonly IJobHandlerTypeSerializer _handlerTypeSerializer;
+        private readonly IPerformanceLog _performanceLog;
         private readonly ILog _log;
 
 
         protected override async Task Consume(Message<JobHandlerEvent> message)
         {
+            var startTime = DateTime.Now;
+
+            Exception error = null;
+
             IJobInfo jobInfo = null;
             IJobHandlerContext context = null;
 
@@ -53,6 +60,8 @@ namespace InfinniPlatform.Scheduler.Queues
             }
             catch (Exception exception)
             {
+                error = exception;
+
                 Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object>
                                                                     {
                                                                         { "jobId", jobInfo?.Id },
@@ -61,6 +70,10 @@ namespace InfinniPlatform.Scheduler.Queues
                                                                     };
 
                 _log.Error(Resources.HandlingOfJobCompletedWithException, exception, logContext);
+            }
+            finally
+            {
+                _performanceLog.Log(nameof(JobHandlerConsumer), startTime, error);
             }
         }
     }

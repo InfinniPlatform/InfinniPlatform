@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace InfinniPlatform.Scheduler.Contract
@@ -10,16 +10,10 @@ namespace InfinniPlatform.Scheduler.Contract
     public interface IJobScheduler
     {
         /// <summary>
-        /// Возвращает список уникальных идентификаторов заданий.
+        /// Возвращает список с информацией об указанных заданиях.
         /// </summary>
-        /// <param name="group">Регулярное выражение для поиска заданий по группе.</param>
-        Task<IEnumerable<string>> GetJobIds(Regex group = null);
-
-        /// <summary>
-        /// Возвращает информацию о задании.
-        /// </summary>
-        /// <param name="jobId">Уникальный идентификатор задания.</param>
-        Task<IJobInfo> GetJobInfo(string jobId);
+        /// <param name="condition">Условие для выборки заданий.</param>
+        Task<IEnumerable<IJobInfo>> GetJobs(Func<IJobInfo, bool> condition = null);
 
 
         /// <summary>
