@@ -8,6 +8,7 @@ using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Consumers;
+using InfinniPlatform.Sdk.Security;
 
 using Moq;
 
@@ -60,7 +61,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<IUserIdentityProvider>().Object, new Mock<ILog>().Object);
             foreach (var message in queue1AssertMessages)
             {
                 producerBase.PublishDynamic(message, "Queue1");
@@ -165,7 +166,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<IUserIdentityProvider>().Object, new Mock<ILog>().Object);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

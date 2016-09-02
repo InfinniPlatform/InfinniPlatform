@@ -4,6 +4,7 @@ using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Security;
 
 using Moq;
 
@@ -25,7 +26,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void TaskProducerThrowsExceptionIfDynamicWrapperSendViaPublishMethod()
         {
-            var taskProducer = new TaskProducer(RabbitMqManager, new MessageSerializer(), new Mock<ILog>().Object);
+            var taskProducer = new TaskProducer(RabbitMqManager, new MessageSerializer(), new Mock<IUserIdentityProvider>().Object, new Mock<ILog>().Object);
 
             Assert.Throws<ArgumentException>(() => taskProducer.Publish(new DynamicWrapper()));
             Assert.ThrowsAsync<ArgumentException>(() => taskProducer.PublishAsync(new DynamicWrapper()));

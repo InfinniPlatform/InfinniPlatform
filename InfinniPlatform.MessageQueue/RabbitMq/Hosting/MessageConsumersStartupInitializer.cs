@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
@@ -112,61 +113,62 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             var channel = _manager.GetChannel();
             var eventingConsumer = new EventingBasicConsumer(channel);
 
-            eventingConsumer.Received += async (o, args) =>
-                                               {
-                                                   var startDate = DateTime.Now;
-
-                                                   IMessage message;
-
-                                                   Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
-
-                                                   try
-                                                   {
-                                                       message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
-                                                   }
-                                                   catch (Exception exception)
-                                                   {
-                                                       _log.Error(exception, logContext);
-
-                                                       if (await consumer.OnError(exception))
-                                                       {
-                                                           channel.BasicAck(args.DeliveryTag, true);
-                                                       }
-
-                                                       return;
-                                                   }
-
-                                                   try
-                                                   {
-                                                       _log.Debug(Resources.ConsumeStart, logContext);
-
-                                                       await consumer.Consume(message);
-
-                                                       _log.Debug(Resources.ConsumeSuccess, logContext);
-                                                   }
-                                                   catch (Exception e)
-                                                   {
-                                                       if (await consumer.OnError(e))
-                                                       {
-                                                           channel.BasicAck(args.DeliveryTag, true);
-                                                       }
-
-                                                       _log.Error(e, logContext);
-                                                       _performanceLog.Log($"Consume::{consumerType}", startDate, e);
-
-                                                       return;
-                                                   }
-
-                                                   _log.Debug(Resources.AckStart, logContext);
-
-                                                   channel.BasicAck(args.DeliveryTag, false);
-
-                                                   _log.Debug(Resources.AckSuccess, logContext);
-
-                                                   _performanceLog.Log($"Consume::{consumerType}", startDate);
-                                               };
+            eventingConsumer.Received += async (o, args) => await Initialize(consumer, consumerType, args, channel);
 
             channel.BasicConsume(queueName, false, eventingConsumer);
+        }
+
+        private async Task Initialize(IConsumer consumer, string consumerType, BasicDeliverEventArgs args, IModel channel)
+        {
+            var startDate = DateTime.Now;
+            IMessage message;
+            Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
+
+            try
+            {
+                message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
+            }
+            catch (Exception e)
+            {
+                if (await consumer.OnError(e))
+                {
+                    channel.BasicAck(args.DeliveryTag, true);
+                }
+
+                _log.Error(e, logContext);
+                _performanceLog.Log($"Consume::{consumerType}", startDate, e);
+
+                return;
+            }
+
+            try
+            {
+                _log.Debug(Resources.ConsumeStart, logContext);
+
+                await consumer.Consume(message);
+
+                _log.Debug(Resources.ConsumeSuccess, logContext);
+            }
+            catch (Exception e)
+            {
+                if (await consumer.OnError(e))
+                {
+                    channel.BasicAck(args.DeliveryTag, true);
+                }
+
+                _log.Error(e, logContext);
+                _performanceLog.Log($"Consume::{consumerType}", startDate, e);
+
+                return;
+            }
+
+            _log.Debug(Resources.AckStart, logContext);
+
+            channel.BasicAck(args.DeliveryTag, false);
+
+            _log.Debug(Resources.AckSuccess, logContext);
+
+            _performanceLog.Log($"Consume::{consumerType}", startDate);
         }
 
         private static Dictionary<string, object> CreateLogContext(string consumerType, BasicDeliverEventArgs args)

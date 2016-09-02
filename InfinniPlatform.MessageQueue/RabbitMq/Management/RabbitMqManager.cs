@@ -33,9 +33,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
                                                                             };
 
                                                     var connection = connectionFactory.CreateConnection();
-                                                    var channel = connection.CreateModel();
-                                                    channel.ExchangeDeclare(BroadcastExchangeName, Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-                                                    channel.Close();
+
+                                                    using (var channel = connection.CreateModel())
+                                                    {
+                                                        channel.ExchangeDeclare(BroadcastExchangeName, Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    }
 
                                                     return connection;
                                                 });

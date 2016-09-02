@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
@@ -6,6 +6,7 @@ using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.Sdk.Security;
 
 using RabbitMQ.Client.Framing;
 
@@ -15,12 +16,16 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     {
         public TaskProducer(RabbitMqManager manager,
                             IMessageSerializer messageSerializer,
+                            IUserIdentityProvider identityProvider,
                             ILog log)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
+            _identityProvider = identityProvider;
             _log = log;
         }
+
+        private readonly IUserIdentityProvider _identityProvider;
 
         private readonly ILog _log;
 
@@ -55,20 +60,27 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
             var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
-            var basicProperties = new BasicProperties { AppId = _manager.AppId };
+
+
+            var userIdentity = _identityProvider.GetUserIdentity();
+            userIdentity.SetClaim(ApplicationClaimTypes.TenantId, "Жепь");
+            var basicProperties = new BasicProperties
+                                  {
+                                      AppId = _manager.AppId,
+                                      UserId = userIdentity.Name,
+                                      Headers = new Dictionary<string, object>
+                                                {
+                                                    { "UserName", userIdentity.Name },
+                                                    { "TenantId", userIdentity.FindFirstClaim(ApplicationClaimTypes.TenantId) },
+                                                    { "DefaultTenantId", userIdentity.FindFirstClaim(ApplicationClaimTypes.DefaultTenantId) }
+                                                }
+                                  };
+
+            _manager.DeclareTaskQueue(routingKey);
 
             using (var channel = _manager.GetChannel())
             {
-                try
-                {
-                    _manager.DeclareTaskQueue(routingKey);
-
-                    channel.BasicPublish(string.Empty, routingKey, true, basicProperties, messageBodyToBytes);
-                }
-                catch (Exception exception)
-                {
-                    _log.Error(exception);
-                }
+                channel.BasicPublish(string.Empty, routingKey, true, basicProperties, messageBodyToBytes);
             }
         }
     }
