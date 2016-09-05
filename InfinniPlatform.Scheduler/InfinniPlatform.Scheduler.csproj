@@ -69,6 +69,7 @@
     <Compile Include="Contract\IJobInfoFactory.cs" />
     <Compile Include="Common\JobScheduler.cs" />
     <Compile Include="Contract\SchedulerExtensions.cs" />
+    <Compile Include="Contract\SchedulerSettings.cs" />
     <Compile Include="Hosting\SchedulerInitializer.cs" />
     <Compile Include="Common\JobHandlerEvent.cs" />
     <Compile Include="Common\IJobInstanceFactory.cs" />

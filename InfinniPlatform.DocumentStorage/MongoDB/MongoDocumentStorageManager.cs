@@ -95,6 +95,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                             case DocumentIndexKeyType.Text:
                                 keysDefinitionList.Add(Builders<BsonDocument>.IndexKeys.Text(property.Key));
                                 break;
+                            case DocumentIndexKeyType.Ttl:
+                                keysDefinitionList.Add(Builders<BsonDocument>.IndexKeys.Ascending(property.Key));
+                                break;
                         }
                     }
 
@@ -102,12 +105,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
                     CreateIndexOptions indexOptions = null;
 
-                    if (createIndex.Unique || !string.IsNullOrEmpty(createIndex.Name))
+                    if (createIndex.Unique || !string.IsNullOrEmpty(createIndex.Name) || (createIndex.ExpireAfter != null))
                     {
                         indexOptions = new CreateIndexOptions
                         {
+                            Name = createIndex.Name,
                             Unique = createIndex.Unique,
-                            Name = createIndex.Name
+                            ExpireAfter = createIndex.ExpireAfter
                         };
                     }
 
@@ -170,8 +174,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                     // Не рассматриваются системные индексы
                     if (!string.Equals(indexName, "_id_", StringComparison.OrdinalIgnoreCase))
                     {
-                        var indexUnique = TryGetValue(index, "unique", v => v.AsBoolean);
                         var indexKey = TryGetValue(index, "key", v => v.AsBsonDocument);
+                        var indexUnique = TryGetValue(index, "unique", v => v.AsBoolean);
+                        var expireAfterSeconds = TryGetValue(index, "expireAfterSeconds", v => v.AsDouble);
 
                         var indexMetadata = new DocumentIndex
                         {
@@ -188,23 +193,30 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                             {
                                 var keyType = property.Value;
 
-                                if (keyType == 1)
+                                if (expireAfterSeconds <= 0)
                                 {
-                                    indexMetadata.Key[property.Name] = DocumentIndexKeyType.Asc;
-                                }
-                                else if (keyType == -1)
-                                {
-                                    indexMetadata.Key[property.Name] = DocumentIndexKeyType.Desc;
-                                }
-                                else if (keyType == "text")
-                                {
-                                    indexMetadata.Key[property.Name] = DocumentIndexKeyType.Text;
+                                    if (keyType == 1)
+                                    {
+                                        indexMetadata.Key[property.Name] = DocumentIndexKeyType.Asc;
+                                    }
+                                    else if (keyType == -1)
+                                    {
+                                        indexMetadata.Key[property.Name] = DocumentIndexKeyType.Desc;
+                                    }
+                                    else if (keyType == "text")
+                                    {
+                                        indexMetadata.Key[property.Name] = DocumentIndexKeyType.Text;
+                                    }
+                                    else
+                                    {
+                                        // Не рассматриваются индексы с неизвестным типом индексации
+                                        knowKeyType = false;
+                                        break;
+                                    }
                                 }
                                 else
                                 {
-                                    // Не рассматриваются индексы с неизвестным типом индексации
-                                    knowKeyType = false;
-                                    break;
+                                    indexMetadata.Key[property.Name] = DocumentIndexKeyType.Ttl;
                                 }
                             }
                         }

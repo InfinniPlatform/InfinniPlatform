@@ -19,6 +19,11 @@ namespace InfinniPlatform.Sdk.Metadata.Documents
         public bool Unique { get; set; }
 
         /// <summary>
+        /// Время существования документа.
+        /// </summary>
+        public TimeSpan? ExpireAfter { get; set; }
+
+        /// <summary>
         /// Ключ индекса документа.
         /// </summary>
         public IDictionary<string, DocumentIndexKeyType> Key { get; set; }
