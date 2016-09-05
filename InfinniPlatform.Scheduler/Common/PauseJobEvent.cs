@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Sdk.Queues;
@@ -6,18 +6,18 @@ using InfinniPlatform.Sdk.Queues;
 namespace InfinniPlatform.Scheduler.Common
 {
     /// <summary>
-    /// Событие приостановки планирования заданий.
+    /// РЎРѕР±С‹С‚РёРµ РїСЂРёРѕСЃС‚Р°РЅРѕРІРєРё РїР»Р°РЅРёСЂРѕРІР°РЅРёСЏ Р·Р°РґР°РЅРёР№.
     /// </summary>
-    [QueueName(SchedulerConstants.ObjectNamePrefix + nameof(PauseJobEvent))]
+    [QueueName(SchedulerExtensions.ObjectNamePrefix + nameof(PauseJobEvent))]
     internal class PauseJobEvent
     {
         /// <summary>
-        /// Признак необходимости приостановки планирования всех заданий.
+        /// РџСЂРёР·РЅР°Рє РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё РїСЂРёРѕСЃС‚Р°РЅРѕРІРєРё РїР»Р°РЅРёСЂРѕРІР°РЅРёСЏ РІСЃРµС… Р·Р°РґР°РЅРёР№.
         /// </summary>
         public bool All { get; set; }
 
         /// <summary>
-        /// Список с уникальными идентификаторами заданий, планирование которых необходимо остановить.
+        /// РЎРїРёСЃРѕРє СЃ СѓРЅРёРєР°Р»СЊРЅС‹РјРё РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР°РјРё Р·Р°РґР°РЅРёР№, РїР»Р°РЅРёСЂРѕРІР°РЅРёРµ РєРѕС‚РѕСЂС‹С… РЅРµРѕР±С…РѕРґРёРјРѕ РѕСЃС‚Р°РЅРѕРІРёС‚СЊ.
         /// </summary>
         public IEnumerable<string> JobIds { get; set; }
     }

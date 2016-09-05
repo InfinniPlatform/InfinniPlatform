@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Sdk.Queues;
@@ -6,13 +6,13 @@ using InfinniPlatform.Sdk.Queues;
 namespace InfinniPlatform.Scheduler.Common
 {
     /// <summary>
-    /// Событие добавления или обновления заданий.
+    /// РЎРѕР±С‹С‚РёРµ РґРѕР±Р°РІР»РµРЅРёСЏ РёР»Рё РѕР±РЅРѕРІР»РµРЅРёСЏ Р·Р°РґР°РЅРёР№.
     /// </summary>
-    [QueueName(SchedulerConstants.ObjectNamePrefix + nameof(AddOrUpdateJobEvent))]
+    [QueueName(SchedulerExtensions.ObjectNamePrefix + nameof(AddOrUpdateJobEvent))]
     internal class AddOrUpdateJobEvent
     {
         /// <summary>
-        /// Список с информацией о заданиях, которые необходимо добавить или удалить.
+        /// РЎРїРёСЃРѕРє СЃ РёРЅС„РѕСЂРјР°С†РёРµР№ Рѕ Р·Р°РґР°РЅРёСЏС…, РєРѕС‚РѕСЂС‹Рµ РЅРµРѕР±С…РѕРґРёРјРѕ РґРѕР±Р°РІРёС‚СЊ РёР»Рё СѓРґР°Р»РёС‚СЊ.
         /// </summary>
         public IEnumerable<JobInfo> JobInfos { get; set; }
     }

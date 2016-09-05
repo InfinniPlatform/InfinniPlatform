@@ -9,7 +9,7 @@ using InfinniPlatform.Sdk.Queues.Producers;
 
 namespace InfinniPlatform.Scheduler.Common
 {
-    [LoggerName(SchedulerConstants.ComponentName)]
+    [LoggerName(SchedulerExtensions.ComponentName)]
     internal class JobScheduler : IJobScheduler
     {
         public JobScheduler(IJobSchedulerDispatcher jobSchedulerDispatcher,

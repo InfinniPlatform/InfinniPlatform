@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Sdk.Queues;
@@ -6,18 +6,18 @@ using InfinniPlatform.Sdk.Queues;
 namespace InfinniPlatform.Scheduler.Common
 {
     /// <summary>
-    /// Событие удаления заданий.
+    /// РЎРѕР±С‹С‚РёРµ СѓРґР°Р»РµРЅРёСЏ Р·Р°РґР°РЅРёР№.
     /// </summary>
-    [QueueName(SchedulerConstants.ObjectNamePrefix + nameof(DeleteJobEvent))]
+    [QueueName(SchedulerExtensions.ObjectNamePrefix + nameof(DeleteJobEvent))]
     internal class DeleteJobEvent
     {
         /// <summary>
-        /// Признак необходимости удаления всех заданий.
+        /// РџСЂРёР·РЅР°Рє РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё СѓРґР°Р»РµРЅРёСЏ РІСЃРµС… Р·Р°РґР°РЅРёР№.
         /// </summary>
         public bool All { get; set; }
 
         /// <summary>
-        /// Список с уникальными идентификаторами заданий, которые необходимо удалить.
+        /// РЎРїРёСЃРѕРє СЃ СѓРЅРёРєР°Р»СЊРЅС‹РјРё РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР°РјРё Р·Р°РґР°РЅРёР№, РєРѕС‚РѕСЂС‹Рµ РЅРµРѕР±С…РѕРґРёРјРѕ СѓРґР°Р»РёС‚СЊ.
         /// </summary>
         public IEnumerable<string> JobIds { get; set; }
     }

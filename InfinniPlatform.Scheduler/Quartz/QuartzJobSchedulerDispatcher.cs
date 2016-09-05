@@ -359,8 +359,8 @@ namespace InfinniPlatform.Scheduler.Quartz
 
             var jobTrigger = jobTriggerBuilder.Build();
 
-            // Начало планирования нового экземпляра задания
-            await SchedulerAction(s => s.ScheduleJob(jobDetail, jobTrigger));
+             // Начало планирования нового экземпляра задания
+             await SchedulerAction(s => s.ScheduleJob(jobDetail, jobTrigger));
         }
 
 

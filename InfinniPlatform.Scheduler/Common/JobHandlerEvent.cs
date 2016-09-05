@@ -6,7 +6,7 @@ namespace InfinniPlatform.Scheduler.Common
     /// <summary>
     /// Событие необходимости обработки задания.
     /// </summary>
-    [QueueName(SchedulerConstants.ObjectNamePrefix + nameof(JobHandlerEvent))]
+    [QueueName(SchedulerExtensions.ObjectNamePrefix + nameof(JobHandlerEvent))]
     internal class JobHandlerEvent
     {
         /// <summary>

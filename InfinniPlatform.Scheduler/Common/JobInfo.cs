@@ -6,11 +6,15 @@ using InfinniPlatform.Sdk.Documents.Attributes;
 
 namespace InfinniPlatform.Scheduler.Common
 {
-    [DocumentType(SchedulerConstants.ObjectNamePrefix + nameof(JobInfo))]
+    [DocumentType(SchedulerExtensions.ObjectNamePrefix + nameof(JobInfo))]
     internal class JobInfo : Document, IJobInfo
     {
         [DocumentIgnore]
-        public string Id => (string)_id;
+        public string Id
+        {
+            get { return (string)_id; }
+            set { _id = value; }
+        }
 
         public string Name { get; set; }
 

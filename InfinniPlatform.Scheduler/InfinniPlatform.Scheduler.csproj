@@ -68,7 +68,7 @@
     <Compile Include="Contract\IJobInfo.cs" />
     <Compile Include="Contract\IJobInfoFactory.cs" />
     <Compile Include="Common\JobScheduler.cs" />
-    <Compile Include="Contract\SchedulerConstants.cs" />
+    <Compile Include="Contract\SchedulerExtensions.cs" />
     <Compile Include="Hosting\SchedulerInitializer.cs" />
     <Compile Include="Common\JobHandlerEvent.cs" />
     <Compile Include="Common\IJobInstanceFactory.cs" />
@@ -78,7 +78,7 @@
     <Compile Include="Common\JobHandlerContext.cs" />
     <Compile Include="Common\JobHandlerTypeSerializer.cs" />
     <Compile Include="Common\JobInfoBuilder.cs" />
-    <Compile Include="Contract\JobInfoBuilderExtensions.cs" />
+    <Compile Include="Contract\CronExpressionBuilderExtensions.cs" />
     <Compile Include="Contract\IJobHandler.cs" />
     <Compile Include="Contract\IJobHandlerContext.cs" />
     <Compile Include="Common\JobInfo.cs" />
@@ -129,9 +129,7 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Metadata\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
