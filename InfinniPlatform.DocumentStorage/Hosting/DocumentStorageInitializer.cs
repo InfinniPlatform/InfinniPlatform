@@ -17,7 +17,6 @@ namespace InfinniPlatform.DocumentStorage.Hosting
         public DocumentStorageInitializer(IDocumentStorageManager documentStorageManager,
                                           IEnumerable<IDocumentMetadataSource> documentMetadataSources,
                                           ILog log)
-            : base(1)
         {
             _documentStorageManager = documentStorageManager;
             _documentMetadataSources = documentMetadataSources;

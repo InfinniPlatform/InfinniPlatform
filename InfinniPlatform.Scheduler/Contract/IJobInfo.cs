@@ -1,5 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Sdk.Dynamic;
+
 namespace InfinniPlatform.Scheduler.Contract
 {
     /// <summary>
@@ -60,6 +62,6 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Данные для выполнения задания.
         /// </summary>
-        object Data { get; }
+        DynamicWrapper Data { get; }
     }
 }

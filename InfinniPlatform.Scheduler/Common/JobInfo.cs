@@ -3,6 +3,7 @@
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Attributes;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Scheduler.Common
 {
@@ -34,6 +35,6 @@ namespace InfinniPlatform.Scheduler.Common
 
         public JobMisfirePolicy? MisfirePolicy { get; set; }
 
-        public object Data { get; set; }
+        public DynamicWrapper Data { get; set; }
     }
 }

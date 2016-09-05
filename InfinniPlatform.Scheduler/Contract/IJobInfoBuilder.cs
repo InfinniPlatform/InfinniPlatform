@@ -1,5 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Sdk.Dynamic;
+
 namespace InfinniPlatform.Scheduler.Contract
 {
     /// <summary>
@@ -40,6 +42,6 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Устанавливает данные для выполнения задания.
         /// </summary>
-        IJobInfoBuilder Data(object data);
+        IJobInfoBuilder Data(DynamicWrapper data);
     }
 }

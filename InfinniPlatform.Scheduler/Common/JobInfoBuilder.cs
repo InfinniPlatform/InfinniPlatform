@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Scheduler.Contract;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Scheduler.Common
 {
@@ -51,7 +52,7 @@ namespace InfinniPlatform.Scheduler.Common
             return this;
         }
 
-        public IJobInfoBuilder Data(object data)
+        public IJobInfoBuilder Data(DynamicWrapper data)
         {
             _jobInfo.Data = data;
             return this;

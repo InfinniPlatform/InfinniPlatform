@@ -9,7 +9,7 @@ namespace InfinniPlatform.Scheduler.Quartz
     /// </summary>
     internal class QuartzJobLogProvider : ILogProvider
     {
-        private QuartzJobLogProvider(Sdk.Logging.ILog log)
+        public QuartzJobLogProvider(Sdk.Logging.ILog log)
         {
             _log = log;
         }
@@ -20,28 +20,31 @@ namespace InfinniPlatform.Scheduler.Quartz
 
         public Logger GetLogger(string name)
         {
-            return (level, func, exception, parameters) =>
+            return (logLevel, messageFunc, exception, formatParameters) =>
                    {
-                       var message = string.Format(func() ?? string.Empty, parameters);
-
-                       switch (level)
+                       if (messageFunc != null)
                        {
-                           case LogLevel.Trace:
-                           case LogLevel.Debug:
-                               _log.Debug(message, exception);
-                               break;
-                           case LogLevel.Info:
-                               _log.Info(message, exception);
-                               break;
-                           case LogLevel.Warn:
-                               _log.Warn(message, exception);
-                               break;
-                           case LogLevel.Error:
-                               _log.Error(message, exception);
-                               break;
-                           case LogLevel.Fatal:
-                               _log.Fatal(message, exception);
-                               break;
+                           var message = string.Format(messageFunc() ?? string.Empty, formatParameters);
+
+                           switch (logLevel)
+                           {
+                               case LogLevel.Trace:
+                               case LogLevel.Debug:
+                                   _log.Debug(message, exception);
+                                   break;
+                               case LogLevel.Info:
+                                   _log.Info(message, exception);
+                                   break;
+                               case LogLevel.Warn:
+                                   _log.Warn(message, exception);
+                                   break;
+                               case LogLevel.Error:
+                                   _log.Error(message, exception);
+                                   break;
+                               case LogLevel.Fatal:
+                                   _log.Fatal(message, exception);
+                                   break;
+                           }
                        }
 
                        return true;
