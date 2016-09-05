@@ -216,6 +216,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                 }
                                 else
                                 {
+                                    indexMetadata.ExpireAfter = TimeSpan.FromSeconds(expireAfterSeconds);
                                     indexMetadata.Key[property.Name] = DocumentIndexKeyType.Ttl;
                                 }
                             }

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Scheduler.Contract;
+using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Scheduler.Common
 {
@@ -16,6 +17,6 @@ namespace InfinniPlatform.Scheduler.Common
 
         public DateTimeOffset? NextFireTimeUtc { get; set; }
 
-        public object Data { get; set; }
+        public DynamicWrapper Data { get; set; }
     }
 }

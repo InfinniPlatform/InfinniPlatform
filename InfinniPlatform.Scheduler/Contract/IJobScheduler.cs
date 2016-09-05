@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Dynamic;
+
 namespace InfinniPlatform.Scheduler.Contract
 {
     /// <summary>
@@ -88,19 +90,19 @@ namespace InfinniPlatform.Scheduler.Contract
         /// </summary>
         /// <param name="jobId">Уникальный идентификатор задания.</param>
         /// <param name="data">Данные для выполнения задания.</param>
-        Task TriggerJob(string jobId, object data = null);
+        Task TriggerJob(string jobId, DynamicWrapper data = null);
 
         /// <summary>
         /// Вызывает досрочное выполнение указанных заданий.
         /// </summary>
         /// <param name="jobIds">Список с уникальными идентификаторами заданий.</param>
         /// <param name="data">Данные для выполнения заданий.</param>
-        Task TriggerJobs(IEnumerable<string> jobIds, object data = null);
+        Task TriggerJobs(IEnumerable<string> jobIds, DynamicWrapper data = null);
 
         /// <summary>
         /// Вызывает досрочное выполнение всех заданий.
         /// </summary>
         /// <param name="data">Данные для выполнения заданий.</param>
-        Task TriggerAllJob(object data = null);
+        Task TriggerAllJob(DynamicWrapper data = null);
     }
 }

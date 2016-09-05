@@ -53,6 +53,9 @@ namespace InfinniPlatform.Sdk.Metadata.Documents
                         case DocumentIndexKeyType.Text:
                             indexSuffix = "text";
                             break;
+                        case DocumentIndexKeyType.Ttl:
+                            indexSuffix = "1";
+                            break;
                     }
 
                     indexName += "_" + item.Key + "_" + indexSuffix;

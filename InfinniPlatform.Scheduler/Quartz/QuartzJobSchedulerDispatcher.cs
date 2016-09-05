@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
+using InfinniPlatform.Sdk.Dynamic;
 
 using Quartz;
 using Quartz.Impl;
@@ -241,7 +242,7 @@ namespace InfinniPlatform.Scheduler.Quartz
         }
 
 
-        public async Task TriggerJob(string jobId, object data = null)
+        public async Task TriggerJob(string jobId, DynamicWrapper data = null)
         {
             var jobItem = GetJobItem(jobId);
 
@@ -262,7 +263,7 @@ namespace InfinniPlatform.Scheduler.Quartz
             }
         }
 
-        public async Task TriggerJobs(IEnumerable<string> jobIds, object data = null)
+        public async Task TriggerJobs(IEnumerable<string> jobIds, DynamicWrapper data = null)
         {
             if (jobIds == null)
             {
@@ -275,7 +276,7 @@ namespace InfinniPlatform.Scheduler.Quartz
             }
         }
 
-        public Task TriggerAllJob(object data = null)
+        public Task TriggerAllJob(DynamicWrapper data = null)
         {
             var allJobIds = _jobs.Keys.ToList();
 

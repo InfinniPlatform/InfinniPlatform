@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Scheduler.Common;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues.Producers;
 
 using Quartz;
@@ -72,7 +73,7 @@ namespace InfinniPlatform.Scheduler.Quartz
 
             // Создание контекста выполнения задания
 
-            var triggerData = context.MergedJobDataMap.Get(TriggerDataKey);
+            var triggerData = context.MergedJobDataMap.Get(TriggerDataKey) as DynamicWrapper;
 
             var jobHandlerContext = new JobHandlerContext
             {

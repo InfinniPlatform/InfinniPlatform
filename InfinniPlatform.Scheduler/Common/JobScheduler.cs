@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Properties;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
 
@@ -203,7 +204,7 @@ namespace InfinniPlatform.Scheduler.Common
         }
 
 
-        public Task TriggerJob(string jobId, object data = null)
+        public Task TriggerJob(string jobId, DynamicWrapper data = null)
         {
             return ExecuteAction(async () =>
                                        {
@@ -214,7 +215,7 @@ namespace InfinniPlatform.Scheduler.Common
                                  nameof(TriggerJob));
         }
 
-        public Task TriggerJobs(IEnumerable<string> jobIds, object data = null)
+        public Task TriggerJobs(IEnumerable<string> jobIds, DynamicWrapper data = null)
         {
             return ExecuteAction(async () =>
                                        {
@@ -230,7 +231,7 @@ namespace InfinniPlatform.Scheduler.Common
                                  nameof(TriggerJobs));
         }
 
-        public Task TriggerAllJob(object data = null)
+        public Task TriggerAllJob(DynamicWrapper data = null)
         {
             return ExecuteAction(async () =>
                                        {
