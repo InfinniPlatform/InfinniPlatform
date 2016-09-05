@@ -1,8 +1,10 @@
 ﻿using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
+using InfinniPlatform.Scheduler.Diagnostics;
 using InfinniPlatform.Scheduler.Hosting;
 using InfinniPlatform.Scheduler.Quartz;
 using InfinniPlatform.Scheduler.Storage;
+using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Metadata.Documents;
@@ -47,6 +49,13 @@ namespace InfinniPlatform.Scheduler.IoC
             // Планировщик заданий
             builder.RegisterType<JobScheduler>()
                    .As<IJobScheduler>()
+                   .SingleInstance();
+
+            // Diagnostics
+
+            // Вывод статистики
+            builder.RegisterType<SchedulerStatusProvider>()
+                   .As<ISubsystemStatusProvider>()
                    .SingleInstance();
 
             // Storage

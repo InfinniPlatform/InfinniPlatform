@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Diagnostics
+namespace InfinniPlatform.Sdk.Diagnostics
 {
     /// <summary>
     /// Предоставляет информацию о состоянии подсистемы.

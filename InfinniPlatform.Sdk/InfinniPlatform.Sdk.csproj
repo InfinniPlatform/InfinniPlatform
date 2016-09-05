@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="BlobStorage\BlobStorageExtensions.cs" />
     <Compile Include="Cache\ICache.cs" />
+    <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Documents\Attributes\DocumentIgnoreAttribute.cs" />
     <Compile Include="PushNotification\IPushNotificationService.cs" />
     <Compile Include="Documents\Document.cs" />
@@ -213,7 +214,6 @@
     <Compile Include="BlobStorage\BlobData.cs" />
     <Compile Include="BlobStorage\BlobInfo.cs" />
     <Compile Include="BlobStorage\IBlobStorage.cs" />
-    <Compile Include="Contracts\IActionContext.cs" />
     <Compile Include="Dynamic\DynamicWrapper.cs" />
     <Compile Include="Dynamic\DynamicWrapperExtensions.cs" />
     <Compile Include="Dynamic\DynamicWrapperJsonConverter.cs" />
@@ -255,6 +255,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

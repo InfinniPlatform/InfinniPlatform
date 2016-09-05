@@ -12,6 +12,12 @@ namespace InfinniPlatform.Scheduler.Contract
     public interface IJobScheduler
     {
         /// <summary>
+        /// Возвращает статус планировщика заданий.
+        /// </summary>
+        Task<IJobSchedulerStatus> GetStatus();
+
+
+        /// <summary>
         /// Возвращает список с информацией об указанных заданиях.
         /// </summary>
         /// <param name="condition">Условие для выборки заданий.</param>

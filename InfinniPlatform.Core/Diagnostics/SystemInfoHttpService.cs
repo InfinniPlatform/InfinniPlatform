@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Services;

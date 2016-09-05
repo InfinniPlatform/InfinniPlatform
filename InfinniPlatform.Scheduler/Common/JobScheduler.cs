@@ -34,6 +34,12 @@ namespace InfinniPlatform.Scheduler.Common
         private readonly ILog _log;
 
 
+        public Task<IJobSchedulerStatus> GetStatus()
+        {
+            return ExecuteAction(() => _jobSchedulerDispatcher.GetStatus(), nameof(GetStatus));
+        }
+
+
         public Task<IEnumerable<IJobInfo>> GetJobs(Func<IJobInfo, bool> condition = null)
         {
             return ExecuteAction(() => _jobSchedulerDispatcher.GetJobs(condition), nameof(GetJobs));

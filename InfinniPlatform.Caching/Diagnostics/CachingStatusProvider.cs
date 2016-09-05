@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Core.Diagnostics;
+using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Caching.Diagnostics

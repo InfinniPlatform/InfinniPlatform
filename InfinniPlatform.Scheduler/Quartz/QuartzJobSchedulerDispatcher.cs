@@ -59,6 +59,22 @@ namespace InfinniPlatform.Scheduler.Quartz
         }
 
 
+        public async Task<IJobSchedulerStatus> GetStatus()
+        {
+            var isStarted = await SchedulerAction(s => Task.FromResult(s.IsStarted));
+
+            var status = new JobSchedulerStatus
+            {
+                IsStarted = isStarted,
+                Total = _jobs.Count,
+                Planned = _jobs.Values.Count(i => i.State == JobState.Planned),
+                Paused = _jobs.Values.Count(i => i.State == JobState.Paused)
+            };
+
+            return status;
+        }
+
+
         public Task<IEnumerable<IJobInfo>> GetJobs(Func<IJobInfo, bool> condition = null)
         {
             IEnumerable<IJobInfo> result = (condition != null)
@@ -95,7 +111,7 @@ namespace InfinniPlatform.Scheduler.Quartz
                 // Если задание запланировано для выполнения
                 if (jobInfo.State == JobState.Planned)
                 {
-                        // Начало планирования нового экземпляра задания
+                    // Начало планирования нового экземпляра задания
                     await ScheduleJob(jobKey, jobInfo);
                 }
             }
@@ -360,8 +376,8 @@ namespace InfinniPlatform.Scheduler.Quartz
 
             var jobTrigger = jobTriggerBuilder.Build();
 
-             // Начало планирования нового экземпляра задания
-             await SchedulerAction(s => s.ScheduleJob(jobDetail, jobTrigger));
+            // Начало планирования нового экземпляра задания
+            await SchedulerAction(s => s.ScheduleJob(jobDetail, jobTrigger));
         }
 
 

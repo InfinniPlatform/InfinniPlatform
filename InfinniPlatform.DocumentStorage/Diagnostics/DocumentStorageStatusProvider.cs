@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.DocumentStorage.MongoDB;
+using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Diagnostics
