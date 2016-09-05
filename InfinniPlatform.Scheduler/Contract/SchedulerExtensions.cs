@@ -25,10 +25,28 @@ namespace InfinniPlatform.Scheduler.Contract
 
 
         /// <summary>
+        /// Регистрирует все источники заданий <see cref="IJobInfoSource"/> текущей сборки со стратегией <see cref="IContainerRegistrationRule.SingleInstance"/>.
+        /// </summary>
+        /// <remarks>
+        /// Источники заданий <see cref="IJobInfoSource"/> будут зарегистрированы со стратегией <see cref="IContainerRegistrationRule.SingleInstance"/>.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// RegisterJobInfoSources(GetType().Assembly)
+        /// </code>
+        /// </example>
+        public static void RegisterJobInfoSources(this IContainerBuilder builder, Assembly assembly)
+        {
+            builder.RegisterAssemblyTypes(assembly,
+                                          t => typeof(IJobInfoSource).IsAssignableFrom(t),
+                                          r => r.As<IJobInfoSource>().AsSelf().SingleInstance());
+        }
+
+        /// <summary>
         /// Регистрирует все обработчики заданий <see cref="IJobHandler"/> текущей сборки со стратегией <see cref="IContainerRegistrationRule.SingleInstance"/>.
         /// </summary>
         /// <remarks>
-        /// Обработчики <see cref="IJobHandler"/> будут зарегистрированы со стратегией <see cref="IContainerRegistrationRule.SingleInstance"/>.
+        /// Обработчики заданий <see cref="IJobHandler"/> будут зарегистрированы со стратегией <see cref="IContainerRegistrationRule.SingleInstance"/>.
         /// </remarks>
         /// <example>
         /// <code>

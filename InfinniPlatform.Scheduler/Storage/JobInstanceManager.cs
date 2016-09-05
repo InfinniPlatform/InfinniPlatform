@@ -28,7 +28,7 @@ namespace InfinniPlatform.Scheduler.Storage
 
             var result = await _jobLockStorage.SaveOneAsync(jobLock);
 
-            return result.UpdateStatus == DocumentUpdateStatus.Inserted;
+            return (result.UpdateStatus != DocumentUpdateStatus.Inserted);
         }
     }
 }
