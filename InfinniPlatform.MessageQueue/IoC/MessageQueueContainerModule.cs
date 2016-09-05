@@ -10,6 +10,7 @@ using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.MessageQueue.IoC
@@ -58,6 +59,14 @@ namespace InfinniPlatform.MessageQueue.IoC
 
             builder.RegisterType<MessageQueueStatusProvider>()
                    .As<ISubsystemStatusProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<MessageConsumeHandler>()
+                   .As<IMessageConsumeHandler>()
+                   .SingleInstance();
+
+            builder.RegisterType<BasicPropertiesProvider>()
+                   .As<IBasicPropertiesProvider>()
                    .SingleInstance();
         }
 

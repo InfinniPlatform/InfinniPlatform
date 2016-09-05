@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Sdk.Queues
 {
@@ -12,10 +13,11 @@ namespace InfinniPlatform.Sdk.Queues
         /// </summary>
         /// <param name="body">Тело сообщения.</param>
         /// <param name="appId">Идентификатор отправителя сообщения.</param>
-        public Message(T body, string appId = null)
+        public Message(T body, string appId = null, IDictionary<string, object> headers = null)
         {
             Body = body;
             AppId = appId;
+            Headers = headers;
         }
 
         /// <summary>
@@ -39,6 +41,14 @@ namespace InfinniPlatform.Sdk.Queues
             return Body.GetType();
         }
 
+        /// <summary>
+        /// Идентификатор приложения-отправителя сообщения.
+        /// </summary>
         public string AppId { get; }
+
+        /// <summary>
+        /// Заголовки сообщения.
+        /// </summary>
+        public IDictionary<string, object> Headers { get; }
     }
 }

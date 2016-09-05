@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Consumers;
-using InfinniPlatform.Sdk.Security;
 
 using Moq;
 
@@ -23,8 +20,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void AllMessagesRoutedToCorrespondedNamedQueues()
         {
-            var messageSerializer = new MessageSerializer();
-
             var queue1Messages = new List<DynamicWrapper>();
             var queue1AssertMessages = new List<DynamicWrapper>
                                        {
@@ -61,7 +56,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<IUserIdentityProvider>().Object, new Mock<ILog>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
             foreach (var message in queue1AssertMessages)
             {
                 producerBase.PublishDynamic(message, "Queue1");
@@ -88,8 +83,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void AllTypedMessagesRoutedToCorrespondedBroadcastConsumers()
         {
-            var messageSerializer = new MessageSerializer();
-
             var namedQueueMessages = new List<TestMessage>();
             var namedQueueCountdownEvent = new CountdownEvent(6);
             var namedQueueConsumer = new NamedQueueTestMessageBroadcastConsumer(namedQueueMessages, namedQueueCountdownEvent);
@@ -116,7 +109,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(null, broadcastConsumers);
 
-            var producerBase = new BroadcastProducer(RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
+            var producerBase = new BroadcastProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);
@@ -133,8 +126,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void AllTypedMessagesRoutedToCorrespondedConsumers()
         {
-            var messageSerializer = new MessageSerializer();
-
             var dynamicWrapperMessages = new List<DynamicWrapper>();
             var dynamicWrapperCountdownEvent = new CountdownEvent(3);
             var dynamicWrapperConsumer = new DynamicWrapperTaskConsumer(dynamicWrapperMessages, dynamicWrapperCountdownEvent);
@@ -166,7 +157,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<IUserIdentityProvider>().Object, new Mock<ILog>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

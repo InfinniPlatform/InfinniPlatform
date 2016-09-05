@@ -2,11 +2,8 @@
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Consumers;
-using InfinniPlatform.Sdk.Security;
 
 using Moq;
 
@@ -21,8 +18,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void AllStringMessagesDelivered()
         {
-            var messageSerializer = new MessageSerializer();
-
             var actualMessages = new List<string>();
             string[] assertMessages =
             {
@@ -41,7 +36,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<IUserIdentityProvider>().Object, new Mock<ILog>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message, "StringConsumerWithAttributeTest");
@@ -55,8 +50,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void AllTestMessagesDelivered()
         {
-            var messageSerializer = new MessageSerializer();
-
             var actualMessages = new List<TestMessageWithAttribute>();
             TestMessageWithAttribute[] assertMessages =
             {
@@ -75,7 +68,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<IUserIdentityProvider>().Object, new Mock<ILog>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

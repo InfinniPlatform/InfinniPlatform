@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
-using InfinniPlatform.Sdk.Security;
 
 using RabbitMQ.Client.Framing;
 
@@ -16,21 +13,16 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     {
         public TaskProducer(RabbitMqManager manager,
                             IMessageSerializer messageSerializer,
-                            IUserIdentityProvider identityProvider,
-                            ILog log)
+                            IBasicPropertiesProvider basicPropertiesProvider)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
-            _identityProvider = identityProvider;
-            _log = log;
+            _basicPropertiesProvider = basicPropertiesProvider;
         }
-
-        private readonly IUserIdentityProvider _identityProvider;
-
-        private readonly ILog _log;
 
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
+        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
 
         public void Publish<T>(T messageBody, string queueName = null)
         {
@@ -61,26 +53,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
             var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
 
-
-            var userIdentity = _identityProvider.GetUserIdentity();
-            userIdentity.SetClaim(ApplicationClaimTypes.TenantId, "Жепь");
-            var basicProperties = new BasicProperties
-                                  {
-                                      AppId = _manager.AppId,
-                                      UserId = userIdentity.Name,
-                                      Headers = new Dictionary<string, object>
-                                                {
-                                                    { "UserName", userIdentity.Name },
-                                                    { "TenantId", userIdentity.FindFirstClaim(ApplicationClaimTypes.TenantId) },
-                                                    { "DefaultTenantId", userIdentity.FindFirstClaim(ApplicationClaimTypes.DefaultTenantId) }
-                                                }
-                                  };
-
             _manager.DeclareTaskQueue(routingKey);
 
             using (var channel = _manager.GetChannel())
             {
-                channel.BasicPublish(string.Empty, routingKey, true, basicProperties, messageBodyToBytes);
+                channel.BasicPublish(string.Empty, routingKey, true, _basicPropertiesProvider.Create(), messageBodyToBytes);
             }
         }
     }

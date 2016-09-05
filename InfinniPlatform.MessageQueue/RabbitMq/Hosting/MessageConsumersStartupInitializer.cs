@@ -23,17 +23,20 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// Регистрирует потребителей сообщений.
         /// </summary>
         /// <param name="consumerSource">Источники потребителей сообщений.</param>
+        /// <param name="messageConsumeHandler">Обработчик событий процесса обработки сообщения.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="messageSerializer">Сериализатор сообщений.</param>
         /// <param name="performanceLog">Лог производительности.</param>
         /// <param name="log">Лог.</param>
         public MessageConsumersStartupInitializer(IEnumerable<IMessageConsumerSource> consumerSource,
+                                                  IMessageConsumeHandler messageConsumeHandler,
                                                   RabbitMqManager manager,
                                                   IMessageSerializer messageSerializer,
                                                   IPerformanceLog performanceLog,
                                                   ILog log)
         {
             _consumerSource = consumerSource;
+            _messageConsumeHandler = messageConsumeHandler;
             _manager = manager;
             _messageSerializer = messageSerializer;
             _performanceLog = performanceLog;
@@ -43,6 +46,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         private readonly IEnumerable<IMessageConsumerSource> _consumerSource;
         private readonly ILog _log;
         private readonly RabbitMqManager _manager;
+        private readonly IMessageConsumeHandler _messageConsumeHandler;
         private readonly IMessageSerializer _messageSerializer;
         private readonly IPerformanceLog _performanceLog;
 
@@ -110,15 +114,17 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             }
 
             var consumerType = consumer.GetType().Name;
+
             var channel = _manager.GetChannel();
+
             var eventingConsumer = new EventingBasicConsumer(channel);
 
-            eventingConsumer.Received += async (o, args) => await Initialize(consumer, consumerType, args, channel);
+            eventingConsumer.Received += async (o, args) => await OnRecieved(consumer, consumerType, args, channel);
 
             channel.BasicConsume(queueName, false, eventingConsumer);
         }
 
-        private async Task Initialize(IConsumer consumer, string consumerType, BasicDeliverEventArgs args, IModel channel)
+        private async Task OnRecieved(IConsumer consumer, string consumerType, BasicDeliverEventArgs args, IModel channel)
         {
             var startDate = DateTime.Now;
             IMessage message;
@@ -145,15 +151,20 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             {
                 _log.Debug(Resources.ConsumeStart, logContext);
 
+                await _messageConsumeHandler.OnBefore(message);
+
                 await consumer.Consume(message);
 
                 _log.Debug(Resources.ConsumeSuccess, logContext);
             }
             catch (Exception e)
             {
-                if (await consumer.OnError(e))
+                if (await _messageConsumeHandler.OnError(message, e))
                 {
-                    channel.BasicAck(args.DeliveryTag, true);
+                    if (await consumer.OnError(e))
+                    {
+                        channel.BasicAck(args.DeliveryTag, true);
+                    }
                 }
 
                 _log.Error(e, logContext);
@@ -164,7 +175,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
             _log.Debug(Resources.AckStart, logContext);
 
-            channel.BasicAck(args.DeliveryTag, false);
+            channel.BasicAck(args.DeliveryTag, true);
 
             _log.Debug(Resources.AckSuccess, logContext);
 

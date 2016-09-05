@@ -2,12 +2,9 @@
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Consumers;
-using InfinniPlatform.Sdk.Security;
 
 using Moq;
 
@@ -22,8 +19,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void MessagesDispatchedInFairManner()
         {
-            var messageSerializer = new MessageSerializer();
-
             var actualMessagesLists = new List<List<DynamicWrapper>>
                                       {
                                           new List<DynamicWrapper>(),
@@ -55,7 +50,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<IUserIdentityProvider>().Object, new Mock<ILog>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
             foreach (var message in assertMessages)
             {
                 producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
-
-using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
@@ -15,14 +11,14 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     {
         public BroadcastProducer(RabbitMqManager manager,
                                  IMessageSerializer messageSerializer,
-                                 ILog log)
+                                 IBasicPropertiesProvider basicPropertiesProvider)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
-            _log = log;
+            _basicPropertiesProvider = basicPropertiesProvider;
         }
 
-        private readonly ILog _log;
+        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
 
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
@@ -54,20 +50,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private void BasicPublish<T>(T messageBody, string queueName)
         {
             var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
+            var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
 
             using (var channel = _manager.GetChannel())
             {
-                var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
-                var basicProperties = new BasicProperties { AppId = _manager.AppId };
-
-                try
-                {
-                    channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, true, basicProperties, messageToBytes);
-                }
-                catch (Exception exception)
-                {
-                    _log.Error(exception);
-                }
+                channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, true, _basicPropertiesProvider.Create(), messageToBytes);
             }
         }
     }

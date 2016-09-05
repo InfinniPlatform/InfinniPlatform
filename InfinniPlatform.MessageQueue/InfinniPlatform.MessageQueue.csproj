@@ -63,6 +63,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RabbitMq\Hosting\IMessageConsumeHandler.cs" />
+    <Compile Include="RabbitMq\IBasicPropertiesProvider.cs" />
+    <Compile Include="RabbitMq\MessageHeadersTypes.cs" />
+    <Compile Include="RabbitMq\BasicPropertiesProvider.cs" />
+    <Compile Include="RabbitMq\Hosting\MessageConsumeHandler.cs" />
     <Compile Include="RabbitMq\Hosting\MessageConsumerSource.cs" />
     <Compile Include="RabbitMq\Management\HttpAPI\Binding.cs" />
     <Compile Include="RabbitMq\Management\HttpAPI\Connection.cs" />

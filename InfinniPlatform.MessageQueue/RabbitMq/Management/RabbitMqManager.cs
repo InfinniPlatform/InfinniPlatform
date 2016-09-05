@@ -19,7 +19,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             _settings = settings;
             _log = log;
             BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Fanout}";
-            AppId = appEnvironment.Id;
 
             _connection = new Lazy<IConnection>(() =>
                                                 {
@@ -48,8 +47,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         private readonly RabbitMqConnectionSettings _settings;
 
         public string BroadcastExchangeName { get; }
-
-        public string AppId { get; }
 
         /// <summary>
         /// Возвращает абстракцию соединения с RabbitMq.

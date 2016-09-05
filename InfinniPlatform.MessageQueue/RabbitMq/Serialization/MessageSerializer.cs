@@ -8,9 +8,14 @@ using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Serialization
 {
-    public class MessageSerializer : IMessageSerializer
+    internal sealed class MessageSerializer : IMessageSerializer
     {
-        private readonly JsonObjectSerializer _serializer = new JsonObjectSerializer();
+        public MessageSerializer(IJsonObjectSerializer serializer)
+        {
+            _serializer = serializer;
+        }
+
+        private readonly IJsonObjectSerializer _serializer;
 
         public byte[] MessageToBytes(object message)
         {
@@ -21,7 +26,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Serialization
         {
             var body = _serializer.Deserialize(args.Body, type);
             var genericType = typeof(Message<>).MakeGenericType(type);
-            var message = Activator.CreateInstance(genericType, body, args.BasicProperties.AppId);
+            var message = Activator.CreateInstance(genericType, body, args.BasicProperties.AppId, args.BasicProperties.Headers);
 
             return (IMessage)message;
         }
@@ -29,7 +34,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Serialization
         public IMessage BytesToMessage<T>(BasicDeliverEventArgs args)
         {
             var body = _serializer.Deserialize<T>(args.Body);
-            var message = new Message<T>(body, args.BasicProperties.AppId);
+            var message = new Message<T>(body, args.BasicProperties.AppId, args.BasicProperties.Headers);
 
             return message;
         }
@@ -37,7 +42,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Serialization
         public IMessage BytesToMessage<T>(BasicGetResult args)
         {
             var body = _serializer.Deserialize<T>(args.Body);
-            var message = new Message<T>(body, args.BasicProperties.AppId);
+            var message = new Message<T>(body, args.BasicProperties.AppId, args.BasicProperties.Headers);
 
             return message;
         }
