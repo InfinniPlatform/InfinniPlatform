@@ -21,7 +21,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                                 var dictionary = _basicPropertiesProvider.GetHeaders(message);
 
                                 //TODO Добавить возможность установки tenantId в текущий контекст.
-                                var tenantId = dictionary[MessageHeadersTypes.TenantId].Invoke();
+                                if (dictionary.ContainsKey(MessageHeadersTypes.TenantId))
+                                {
+                                    var tenantId = dictionary[MessageHeadersTypes.TenantId].Invoke();
+                                }
                             });
         }
 
