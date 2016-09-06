@@ -13,16 +13,28 @@ namespace InfinniPlatform.Scheduler.Common
     public interface IJobSchedulerDispatcher
     {
         /// <summary>
-        /// Возвращает статус планировщика заданий.
+        /// Определяет, запущено ли планирование заданий.
         /// </summary>
-        Task<IJobSchedulerStatus> GetStatus();
+        Task<bool> IsStarted();
+
+        /// <summary>
+        /// Запускает планирование заданий.
+        /// </summary>
+        Task Start();
+
+        /// <summary>
+        /// Останавливает планирование заданий.
+        /// </summary>
+        Task Stop();
 
 
         /// <summary>
-        /// Возвращает список с информацией об указанных заданиях.
+        /// Позволяет сделать выборку для определения статуса заданий.
         /// </summary>
-        /// <param name="condition">Условие для выборки заданий.</param>
-        Task<IEnumerable<IJobInfo>> GetJobs(Func<IJobInfo, bool> condition = null);
+        /// <typeparam name="TResult">Тип результата.</typeparam>
+        /// <param name="selector">Функция для выборки результата.</param>
+        Task<TResult> GetStatus<TResult>(Func<IEnumerable<IJobStatus>, TResult> selector);
+
 
         /// <summary>
         /// Добавляет или обновляет задание.
@@ -110,16 +122,5 @@ namespace InfinniPlatform.Scheduler.Common
         /// </summary>
         /// <param name="data">Данные для выполнения заданий.</param>
         Task TriggerAllJob(DynamicWrapper data = null);
-
-
-        /// <summary>
-        /// Запускает планирование заданий.
-        /// </summary>
-        Task Start();
-
-        /// <summary>
-        /// Останавливает планирование заданий.
-        /// </summary>
-        Task Stop();
     }
 }

@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Quartz, Version=3.0.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.0.0-alpha2\lib\net45\Quartz.dll</HintPath>
       <Private>True</Private>
@@ -68,8 +69,7 @@
     <Compile Include="Contract\IJobInfo.cs" />
     <Compile Include="Contract\IJobInfoFactory.cs" />
     <Compile Include="Common\JobScheduler.cs" />
-    <Compile Include="Contract\IJobSchedulerStatus.cs" />
-    <Compile Include="Common\JobSchedulerStatus.cs" />
+    <Compile Include="Contract\IJobStatus.cs" />
     <Compile Include="Contract\SchedulerExtensions.cs" />
     <Compile Include="Contract\SchedulerSettings.cs" />
     <Compile Include="Diagnostics\SchedulerStatusProvider.cs" />

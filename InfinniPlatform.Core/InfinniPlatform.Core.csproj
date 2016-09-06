@@ -65,7 +65,6 @@
     <Compile Include="Metadata\MetadataSettings.cs" />
     <Compile Include="Services\FileApiHttpService.cs" />
     <Compile Include="Diagnostics\SystemInfoHttpService.cs" />
-    <Compile Include="Hosting\IHostAddressParser.cs" />
     <Compile Include="Settings\AppConfigurationPlaceholder.cs" />
     <Compile Include="Settings\AppEnvironment.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />

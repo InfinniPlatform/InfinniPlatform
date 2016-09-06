@@ -34,15 +34,15 @@ namespace InfinniPlatform.Scheduler.Common
         private readonly ILog _log;
 
 
-        public Task<IJobSchedulerStatus> GetStatus()
+        public Task<bool> IsStarted()
         {
-            return ExecuteAction(() => _jobSchedulerDispatcher.GetStatus(), nameof(GetStatus));
+            return ExecuteAction(() => _jobSchedulerDispatcher.IsStarted(), nameof(IsStarted));
         }
 
 
-        public Task<IEnumerable<IJobInfo>> GetJobs(Func<IJobInfo, bool> condition = null)
+        public Task<TResult> GetStatus<TResult>(Func<IEnumerable<IJobStatus>, TResult> selector)
         {
-            return ExecuteAction(() => _jobSchedulerDispatcher.GetJobs(condition), nameof(GetJobs));
+            return ExecuteAction(() => _jobSchedulerDispatcher.GetStatus(selector), nameof(GetStatus));
         }
 
 

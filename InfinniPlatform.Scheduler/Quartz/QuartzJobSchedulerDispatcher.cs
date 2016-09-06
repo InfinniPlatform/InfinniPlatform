@@ -26,7 +26,7 @@ namespace InfinniPlatform.Scheduler.Quartz
             _jobFactory = jobFactory;
             _logProvider = logProvider;
             _scheduler = new Lazy<Task<IScheduler>>(() => Task.Run(CreateQuartzScheduler));
-            _jobs = new ConcurrentDictionary<string, JobItem>(StringComparer.Ordinal);
+            _jobs = new ConcurrentDictionary<string, JobStatus>(StringComparer.Ordinal);
             _monitor = new AsyncMonitor();
         }
 
@@ -34,7 +34,7 @@ namespace InfinniPlatform.Scheduler.Quartz
         private readonly IJobFactory _jobFactory;
         private readonly ILogProvider _logProvider;
         private readonly Lazy<Task<IScheduler>> _scheduler;
-        private readonly ConcurrentDictionary<string, JobItem> _jobs;
+        private readonly ConcurrentDictionary<string, JobStatus> _jobs;
         private readonly AsyncMonitor _monitor;
 
 
@@ -59,30 +59,34 @@ namespace InfinniPlatform.Scheduler.Quartz
         }
 
 
-        public async Task<IJobSchedulerStatus> GetStatus()
+        public Task<bool> IsStarted()
         {
-            var isStarted = await SchedulerAction(s => Task.FromResult(s.IsStarted));
+            return SchedulerAction(s => Task.FromResult(s.IsStarted));
+        }
 
-            var status = new JobSchedulerStatus
-            {
-                IsStarted = isStarted,
-                Total = _jobs.Count,
-                Planned = _jobs.Values.Count(i => i.State == JobState.Planned),
-                Paused = _jobs.Values.Count(i => i.State == JobState.Paused)
-            };
+        public Task Start()
+        {
+            return SchedulerAction(s => s.Start());
+        }
 
-            return status;
+        public Task Stop()
+        {
+            return SchedulerAction(s => s.Shutdown());
         }
 
 
-        public Task<IEnumerable<IJobInfo>> GetJobs(Func<IJobInfo, bool> condition = null)
+        public Task<TResult> GetStatus<TResult>(Func<IEnumerable<IJobStatus>, TResult> selector)
         {
-            IEnumerable<IJobInfo> result = (condition != null)
-                ? _jobs.Values.Select(i => i.Info).Where(condition).ToList()
-                : _jobs.Values.Select(i => i.Info).ToList();
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            var result = selector(_jobs.Values);
 
             return Task.FromResult(result);
         }
+
 
         public async Task AddOrUpdateJob(IJobInfo jobInfo)
         {
@@ -93,17 +97,17 @@ namespace InfinniPlatform.Scheduler.Quartz
 
             // Информация о состоянии задания
             var jobKey = new JobKey(jobInfo.Name, jobInfo.Group);
-            var jobItem = new JobItem(jobKey, jobInfo, jobInfo.State);
+            var jobStatus = new JobStatus(jobKey, jobInfo, jobInfo.State);
 
             // Получение актуальной информации о состоянии задания
-            jobItem = _jobs.GetOrAdd(jobInfo.Id, jobItem);
+            jobStatus = _jobs.GetOrAdd(jobInfo.Id, jobStatus);
 
             // Блокировка экземпляра задания на время его изменения
-            using (await _monitor.LockAsync(jobItem))
+            using (await _monitor.LockAsync(jobStatus))
             {
                 // Обновление состояния задания
-                jobItem.Info = jobInfo;
-                jobItem.State = jobInfo.State;
+                jobStatus.Info = jobInfo;
+                jobStatus.State = jobInfo.State;
 
                 // Прекращение планирования предыдущего экземпляра задания
                 await SchedulerAction(s => s.DeleteJob(jobKey));
@@ -137,7 +141,7 @@ namespace InfinniPlatform.Scheduler.Quartz
 
             if (jobItem != null)
             {
-                JobItem deletedJob;
+                JobStatus deletedJob;
 
                 // Удаление ключа задания из списка
                 _jobs.TryRemove(jobId, out deletedJob);
@@ -300,29 +304,18 @@ namespace InfinniPlatform.Scheduler.Quartz
         }
 
 
-        public Task Start()
-        {
-            return SchedulerAction(s => s.Start());
-        }
-
-        public Task Stop()
-        {
-            return SchedulerAction(s => s.Shutdown());
-        }
-
-
-        private JobItem GetJobItem(string jobId)
+        private JobStatus GetJobItem(string jobId)
         {
             if (string.IsNullOrEmpty(jobId))
             {
                 throw new ArgumentNullException(nameof(jobId));
             }
 
-            JobItem jobItem;
+            JobStatus jobStatus;
 
-            _jobs.TryGetValue(jobId, out jobItem);
+            _jobs.TryGetValue(jobId, out jobStatus);
 
-            return jobItem;
+            return jobStatus;
         }
 
         private async Task ScheduleJob(JobKey jobKey, IJobInfo jobInfo)
@@ -394,31 +387,19 @@ namespace InfinniPlatform.Scheduler.Quartz
         }
 
 
-        /// <summary>
-        /// Информация о состоянии задания.
-        /// </summary>
-        private class JobItem
+        private class JobStatus : IJobStatus
         {
-            public JobItem(JobKey key, IJobInfo info, JobState state)
+            public JobStatus(JobKey key, IJobInfo info, JobState state)
             {
                 Key = key;
                 Info = info;
                 State = state;
             }
 
-            /// <summary>
-            /// Уникальный ключ задания.
-            /// </summary>
             public readonly JobKey Key;
 
-            /// <summary>
-            /// Информация о задании.
-            /// </summary>
             public IJobInfo Info { get; set; }
 
-            /// <summary>
-            /// Состояние задания.
-            /// </summary>
             public JobState State { get; set; }
         }
     }

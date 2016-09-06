@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Sdk.Hosting;
 
 namespace InfinniPlatform.Owin.Hosting
 {

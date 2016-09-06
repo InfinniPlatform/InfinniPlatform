@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Services;
+
 namespace InfinniPlatform.Sdk.Diagnostics
 {
     /// <summary>
@@ -15,6 +17,7 @@ namespace InfinniPlatform.Sdk.Diagnostics
         /// <summary>
         /// Состояние подсистемы.
         /// </summary>
-        Task<object> GetStatus();
+        /// <param name="request">Запрос.</param>
+        Task<object> GetStatus(IHttpRequest request);
     }
 }

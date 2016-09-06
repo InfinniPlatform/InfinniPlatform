@@ -9,6 +9,7 @@ using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Metadata.Documents;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 using Quartz;
@@ -53,9 +54,10 @@ namespace InfinniPlatform.Scheduler.IoC
 
             // Diagnostics
 
-            // Вывод статистики
+            // Информация о состоянии планировщика заданий
             builder.RegisterType<SchedulerStatusProvider>()
                    .As<ISubsystemStatusProvider>()
+                   .As<IHttpService>()
                    .SingleInstance();
 
             // Storage
@@ -114,6 +116,8 @@ namespace InfinniPlatform.Scheduler.IoC
             builder.RegisterType<SchedulerInitializer>()
                    .As<IAppEventHandler>()
                    .SingleInstance();
+
+            builder.RegisterJobHandlers(GetType().Assembly);
         }
 
 

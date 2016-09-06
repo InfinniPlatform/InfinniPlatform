@@ -62,6 +62,7 @@
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Documents\Attributes\DocumentIgnoreAttribute.cs" />
+    <Compile Include="Hosting\IHostAddressParser.cs" />
     <Compile Include="PushNotification\IPushNotificationService.cs" />
     <Compile Include="Documents\Document.cs" />
     <Compile Include="Documents\DocumentHeader.cs" />
