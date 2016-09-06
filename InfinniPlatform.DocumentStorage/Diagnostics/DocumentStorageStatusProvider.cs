@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.DocumentStorage.MongoDB;
+using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.DocumentStorage.Diagnostics
 {
@@ -23,7 +24,7 @@ namespace InfinniPlatform.DocumentStorage.Diagnostics
         public string Name => "documentStorage";
 
 
-        public async Task<object> GetStatus()
+        public async Task<object> GetStatus(IHttpRequest request)
         {
             var mongodb = await _connection.GetDatabaseStatusAsync();
 

@@ -4,9 +4,10 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Services;
 
@@ -47,12 +48,12 @@ namespace InfinniPlatform.Core.Diagnostics
                                };
 
             // Краткая информация о статусе системы
-            builder.Get["/"] = async r => await GetStatus(r.BasePath, false, ParseTimeout(r.Query.timeout));
-            builder.Post["/"] = async r => await GetStatus(r.BasePath, false, ParseTimeout(r.Query.timeout));
+            builder.Get["/"] = async r => await GetStatus(r, false, ParseTimeout(r.Query.timeout));
+            builder.Post["/"] = async r => await GetStatus(r, false, ParseTimeout(r.Query.timeout));
 
             // Подробная информация о статусе системы
-            builder.Get["/info"] = async r => await GetStatus(r.BasePath, true, ParseTimeout(r.Query.timeout));
-            builder.Post["/info"] = async r => await GetStatus(r.BasePath, true, ParseTimeout(r.Query.timeout));
+            builder.Get["/info"] = async r => await GetStatus(r, true, ParseTimeout(r.Query.timeout));
+            builder.Post["/info"] = async r => await GetStatus(r, true, ParseTimeout(r.Query.timeout));
 
             // Подробная информация о статусе подсистем
 
@@ -63,8 +64,8 @@ namespace InfinniPlatform.Core.Diagnostics
                     try
                     {
                         var subsystemName = subsystem.Name;
-                        builder.Get[$"/info/{subsystemName}"] = async r => (await GetSubsystemStatus(subsystem, ParseTimeout(r.Query.timeout)))?.Item1;
-                        builder.Post[$"/info/{subsystemName}"] = async r => (await GetSubsystemStatus(subsystem, ParseTimeout(r.Query.timeout)))?.Item1;
+                        builder.Get[$"/info/{subsystemName}"] = async r => (await GetSubsystemStatus(subsystem, r, ParseTimeout(r.Query.timeout)))?.Item1;
+                        builder.Post[$"/info/{subsystemName}"] = async r => (await GetSubsystemStatus(subsystem, r, ParseTimeout(r.Query.timeout)))?.Item1;
                     }
                     catch (Exception exception)
                     {
@@ -78,7 +79,7 @@ namespace InfinniPlatform.Core.Diagnostics
         /// <summary>
         /// Возвращает объект с описанием статуса системы.
         /// </summary>
-        private async Task<object> GetStatus(string basePath, bool expanded, int timeout)
+        private async Task<object> GetStatus(IHttpRequest request, bool expanded, int timeout)
         {
             var ok = true;
 
@@ -92,7 +93,6 @@ namespace InfinniPlatform.Core.Diagnostics
                              { "versionHash", version.Item2 }
                          };
 
-
             if (_subsystemStatusProviders != null)
             {
                 foreach (var subsystem in _subsystemStatusProviders)
@@ -104,14 +104,14 @@ namespace InfinniPlatform.Core.Diagnostics
                         if (expanded)
                         {
                             // Определение статуса подсистемы
-                            var subsystemStatus = await GetSubsystemStatus(subsystem, timeout);
+                            var subsystemStatus = await GetSubsystemStatus(subsystem, request, timeout);
                             status[subsystemName] = subsystemStatus.Item1;
                             ok &= subsystemStatus.Item2;
                         }
                         else
                         {
                             // Формирование ссылки на статусную страницу подсистемы
-                            status[subsystemName] = new DynamicWrapper { { "infoRef", $"{basePath}/info/{subsystemName}" } };
+                            status[subsystemName] = new DynamicWrapper { { "ref", $"{request.BasePath}/info/{subsystemName}" } };
                         }
                     }
                     catch (Exception exception)
@@ -132,7 +132,7 @@ namespace InfinniPlatform.Core.Diagnostics
         /// <summary>
         /// Возвращает объект с описанием статуса подсистемы и успешности его определения.
         /// </summary>
-        private async Task<Tuple<object, bool>> GetSubsystemStatus(ISubsystemStatusProvider subsystem, int timeout)
+        private async Task<Tuple<object, bool>> GetSubsystemStatus(ISubsystemStatusProvider subsystem, IHttpRequest request, int timeout)
         {
             var ok = false;
 
@@ -140,7 +140,7 @@ namespace InfinniPlatform.Core.Diagnostics
 
             try
             {
-                var statusTask = subsystem.GetStatus();
+                var statusTask = subsystem.GetStatus(request);
 
                 // Исключается возможность бесконечного ожидания ответа от подсистемы
                 if (await Task.WhenAny(statusTask, Task.Delay(timeout)) == statusTask)
@@ -176,7 +176,6 @@ namespace InfinniPlatform.Core.Diagnostics
             var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             return new Tuple<string, string>(versionInfo.FileVersion, versionInfo.ProductVersion);
         }
-
 
 
         private static int ParseTimeout(dynamic timeout)

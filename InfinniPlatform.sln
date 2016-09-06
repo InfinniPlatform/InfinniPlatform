@@ -90,6 +90,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentSto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentStorage.Tests", "InfinniPlatform.DocumentStorage.Tests\InfinniPlatform.DocumentStorage.Tests.csproj", "{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Scheduler", "InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj", "{8B4AB571-C7FB-48EB-8C43-F2F7F305963B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Scheduler.Tests", "InfinniPlatform.Scheduler.Tests\InfinniPlatform.Scheduler.Tests.csproj", "{38D5193A-44BA-49D2-A497-1A7E750B6640}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -212,6 +216,14 @@ Global
 		{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FFB8E79-04EF-4840-920F-1FCDFA8E84FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B4AB571-C7FB-48EB-8C43-F2F7F305963B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B4AB571-C7FB-48EB-8C43-F2F7F305963B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B4AB571-C7FB-48EB-8C43-F2F7F305963B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B4AB571-C7FB-48EB-8C43-F2F7F305963B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38D5193A-44BA-49D2-A497-1A7E750B6640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D5193A-44BA-49D2-A497-1A7E750B6640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D5193A-44BA-49D2-A497-1A7E750B6640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D5193A-44BA-49D2-A497-1A7E750B6640}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,12 +12,11 @@ using InfinniPlatform.Sdk.Metadata.Documents;
 
 namespace InfinniPlatform.DocumentStorage.Hosting
 {
-    internal class MongoCollectionInitializer : AppEventHandler
+    internal class DocumentStorageInitializer : AppEventHandler
     {
-        public MongoCollectionInitializer(IDocumentStorageManager documentStorageManager,
+        public DocumentStorageInitializer(IDocumentStorageManager documentStorageManager,
                                           IEnumerable<IDocumentMetadataSource> documentMetadataSources,
                                           ILog log)
-            : base(1)
         {
             _documentStorageManager = documentStorageManager;
             _documentMetadataSources = documentMetadataSources;

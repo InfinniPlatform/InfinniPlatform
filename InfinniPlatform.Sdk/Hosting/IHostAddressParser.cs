@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Hosting
+﻿namespace InfinniPlatform.Sdk.Hosting
 {
     /// <summary>
     /// Интерфейс для разбора адресов узлов.

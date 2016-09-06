@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Core.Diagnostics;
+using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Caching.Diagnostics
 {
@@ -25,7 +26,7 @@ namespace InfinniPlatform.Caching.Diagnostics
         public string Name => "caching";
 
 
-        public async Task<object> GetStatus()
+        public async Task<object> GetStatus(IHttpRequest request)
         {
             var status = new DynamicWrapper
                          {
