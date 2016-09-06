@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
+using InfinniPlatform.Sdk.Diagnostics;
+using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.MessageQueue.Diagnostics
 {
@@ -16,7 +17,7 @@ namespace InfinniPlatform.MessageQueue.Diagnostics
 
         public string Name => "messageQueue";
 
-        public async Task<object> GetStatus()
+        public async Task<object> GetStatus(IHttpRequest request)
         {
             return await _client.GetOverview();
         }
