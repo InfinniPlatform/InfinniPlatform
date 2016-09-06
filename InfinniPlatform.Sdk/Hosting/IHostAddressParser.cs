@@ -1,23 +1,23 @@
-namespace InfinniPlatform.Sdk.Hosting
+п»їnamespace InfinniPlatform.Sdk.Hosting
 {
     /// <summary>
-    /// Интерфейс для разбора адресов узлов.
+    /// РРЅС‚РµСЂС„РµР№СЃ РґР»СЏ СЂР°Р·Р±РѕСЂР° Р°РґСЂРµСЃРѕРІ СѓР·Р»РѕРІ.
     /// </summary>
     public interface IHostAddressParser
     {
         /// <summary>
-        /// Определяет, является ли адрес локальным.
+        /// РћРїСЂРµРґРµР»СЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё Р°РґСЂРµСЃ Р»РѕРєР°Р»СЊРЅС‹Рј.
         /// </summary>
-        /// <param name="hostNameOrAddress">Имя узла или его адрес.</param>
-        /// <returns>Возвращает <c>true</c>, если адрес является локальным; иначе возвращает <c>false</c>.</returns>
+        /// <param name="hostNameOrAddress">РРјСЏ СѓР·Р»Р° РёР»Рё РµРіРѕ Р°РґСЂРµСЃ.</param>
+        /// <returns>Р’РѕР·РІСЂР°С‰Р°РµС‚ <c>true</c>, РµСЃР»Рё Р°РґСЂРµСЃ СЏРІР»СЏРµС‚СЃСЏ Р»РѕРєР°Р»СЊРЅС‹Рј; РёРЅР°С‡Рµ РІРѕР·РІСЂР°С‰Р°РµС‚ <c>false</c>.</returns>
         bool IsLocalAddress(string hostNameOrAddress);
 
         /// <summary>
-        /// Определяет, является ли адрес локальным.
+        /// РћРїСЂРµРґРµР»СЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё Р°РґСЂРµСЃ Р»РѕРєР°Р»СЊРЅС‹Рј.
         /// </summary>
-        /// <param name="hostNameOrAddress">Имя узла или его адрес.</param>
-        /// <param name="normalizedAddress">Нормализованный адрес узла.</param>
-        /// <returns>Возвращает <c>true</c>, если адрес является локальным; иначе возвращает <c>false</c>.</returns>
+        /// <param name="hostNameOrAddress">РРјСЏ СѓР·Р»Р° РёР»Рё РµРіРѕ Р°РґСЂРµСЃ.</param>
+        /// <param name="normalizedAddress">РќРѕСЂРјР°Р»РёР·РѕРІР°РЅРЅС‹Р№ Р°РґСЂРµСЃ СѓР·Р»Р°.</param>
+        /// <returns>Р’РѕР·РІСЂР°С‰Р°РµС‚ <c>true</c>, РµСЃР»Рё Р°РґСЂРµСЃ СЏРІР»СЏРµС‚СЃСЏ Р»РѕРєР°Р»СЊРЅС‹Рј; РёРЅР°С‡Рµ РІРѕР·РІСЂР°С‰Р°РµС‚ <c>false</c>.</returns>
         bool IsLocalAddress(string hostNameOrAddress, out string normalizedAddress);
     }
 }
