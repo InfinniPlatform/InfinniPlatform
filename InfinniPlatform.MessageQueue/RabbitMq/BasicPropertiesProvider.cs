@@ -28,16 +28,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
         public BasicProperties Create()
         {
-            var userIdentity = _identityProvider.GetUserIdentity();
-
             return new BasicProperties
                    {
                        AppId = _appEnvironment.Id,
-                       Headers = new Dictionary<string, object>
-                                 {
-                                     { MessageHeadersTypes.UserName, _serializer.Serialize(userIdentity.Name) },
-                                     { MessageHeadersTypes.TenantId, _serializer.Serialize(userIdentity.FindFirstClaim(ApplicationClaimTypes.TenantId)) }
-                                 }
+                       Headers = BuildHeaders()
                    };
         }
 
@@ -56,6 +50,21 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             }
 
             return dictionary;
+        }
+
+        private Dictionary<string, object> BuildHeaders()
+        {
+            var headers = new Dictionary<string, object>();
+
+            var userIdentity = _identityProvider.GetUserIdentity();
+
+            if (userIdentity != null)
+            {
+                headers.Add(MessageHeadersTypes.UserName, _serializer.Serialize(userIdentity.Name));
+                headers.Add(MessageHeadersTypes.TenantId, _serializer.Serialize(userIdentity.FindFirstClaim(ApplicationClaimTypes.TenantId)));
+            }
+
+            return headers;
         }
     }
 }
