@@ -44,16 +44,16 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var eventingBasicConsumer = new EventingBasicConsumer(channel);
             eventingBasicConsumer.Received += (sender, args) => Assert.AreEqual(message, Encoding.UTF8.GetString(args.Body));
 
-            channel.BasicPublish(string.Empty, routingKey, null, message);
-            channel.BasicConsume(routingKey, true, eventingBasicConsumer);
+            channel.BasicPublish(string.Empty, routingKey, true, null, message);
+            channel.BasicConsume(routingKey, true, "", false, false, null, eventingBasicConsumer);
 
             WindowsServices.StopService(TestConstants.ServiceName, TestConstants.WaitTimeout);
 
-            Assert.Throws<AlreadyClosedException>(() => channel.BasicPublish(string.Empty, routingKey, null, message));
+            Assert.Throws<AlreadyClosedException>(() => channel.BasicPublish(string.Empty, routingKey, true, null, message));
 
             WindowsServices.StartService(TestConstants.ServiceName, TestConstants.WaitTimeout);
             Thread.Sleep(10000);
-            Assert.DoesNotThrow(() => channel.BasicPublish(string.Empty, routingKey, null, message));
+            Assert.DoesNotThrow(() => channel.BasicPublish(string.Empty, routingKey, true, null, message));
         }
     }
 }

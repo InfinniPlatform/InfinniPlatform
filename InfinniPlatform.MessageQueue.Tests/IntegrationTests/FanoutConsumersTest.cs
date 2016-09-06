@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Consumers;
 
 using Moq;
@@ -21,8 +19,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void EachFanoutConsumerRecieveAllMessages()
         {
-            var messageSerializer = new MessageSerializer();
-
             TestMessage[] assertMessages =
             {
                 new TestMessage("1", 1, new DateTime(1, 1, 1)),
@@ -48,7 +44,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(null, broadcastConsumers);
 
-            var producerBase = new BroadcastProducer(RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
+            var producerBase = new BroadcastProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

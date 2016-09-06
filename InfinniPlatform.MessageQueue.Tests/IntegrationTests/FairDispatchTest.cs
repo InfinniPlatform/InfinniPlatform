@@ -2,10 +2,8 @@
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Consumers;
 
 using Moq;
@@ -21,8 +19,6 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void MessagesDispatchedInFairManner()
         {
-            var messageSerializer = new MessageSerializer();
-
             var actualMessagesLists = new List<List<DynamicWrapper>>
                                       {
                                           new List<DynamicWrapper>(),
@@ -48,21 +44,21 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             ITaskConsumer[] taskConsumers =
             {
-                new DynamicWrapperTaskConsumer(actualMessagesLists[0], completeEvent1, 1000),
+                new DynamicWrapperTaskConsumer(actualMessagesLists[0], completeEvent1, 4000),
                 new DynamicWrapperTaskConsumer(actualMessagesLists[1], completeEvent2)
             };
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, messageSerializer, new Mock<ILog>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
             foreach (var message in assertMessages)
             {
                 producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);
             }
 
             const int timeout = 5000;
-            Assert.IsTrue(completeEvent1.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
-            Assert.IsTrue(completeEvent2.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
+            Assert.IsTrue(completeEvent1.Wait(timeout), $"Failed finish {consumer1MessageCount} message consuming by slow consumer in {timeout} ms.");
+            Assert.IsTrue(completeEvent2.Wait(timeout), $"Failed finish {consumer2MessageCount} message consuming by fast consumer 1 in {timeout} ms.");
 
             var actualMessages = new List<DynamicWrapper>();
             foreach (var list in actualMessagesLists)

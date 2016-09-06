@@ -102,7 +102,11 @@
     /* Для включения RabbitMQ Management HTTP API выполнить команду rabbitmq-plugins enable rabbitmq_management */
     /* по пути <путь до RabbitMQ Server>\sbin */
     /* Подробнее - https://www.rabbitmq.com/management.html */
-    "ManagementApiPort": 15672
+    "ManagementApiPort": 15672,
+    /* Количество сообщений, единовременно передаваемых потребителю. */
+    /* Возможные значения 0..65535 (по умолчанию 1). */
+    /* При значении 0 очередь будет передавать все сообщения потребителю. */
+    "PrefetchCount": 1
   },
   /* Настройки хранения BLOB и файлов */
   "blobStorage": {

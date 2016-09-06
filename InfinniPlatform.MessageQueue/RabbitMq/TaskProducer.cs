@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
 
 using RabbitMQ.Client.Framing;
@@ -15,17 +13,16 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
     {
         public TaskProducer(RabbitMqManager manager,
                             IMessageSerializer messageSerializer,
-                            ILog log)
+                            IBasicPropertiesProvider basicPropertiesProvider)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
-            _log = log;
+            _basicPropertiesProvider = basicPropertiesProvider;
         }
-
-        private readonly ILog _log;
 
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
+        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
 
         public void Publish<T>(T messageBody, string queueName = null)
         {
@@ -55,20 +52,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
             var routingKey = queueName ?? QueueNamingConventions.GetProducerQueueName(messageBody);
-            var basicProperties = new BasicProperties { AppId = _manager.AppId };
+
+            _manager.DeclareTaskQueue(routingKey);
 
             using (var channel = _manager.GetChannel())
             {
-                try
-                {
-                    _manager.DeclareTaskQueue(routingKey);
-
-                    channel.BasicPublish(string.Empty, routingKey, basicProperties, messageBodyToBytes);
-                }
-                catch (Exception exception)
-                {
-                    _log.Error(exception);
-                }
+                channel.BasicPublish(string.Empty, routingKey, true, _basicPropertiesProvider.Create(), messageBodyToBytes);
             }
         }
     }

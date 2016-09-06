@@ -12,29 +12,31 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
     /// </summary>
     internal sealed class RabbitMqManager
     {
-        public RabbitMqManager(RabbitMqConnectionSettings connectionSettings,
+        public RabbitMqManager(RabbitMqConnectionSettings settings,
                                IAppEnvironment appEnvironment,
                                ILog log)
         {
+            _settings = settings;
             _log = log;
             BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Fanout}";
-            AppId = appEnvironment.Id;
 
             _connection = new Lazy<IConnection>(() =>
                                                 {
                                                     var connectionFactory = new ConnectionFactory
                                                                             {
-                                                                                HostName = connectionSettings.HostName,
-                                                                                Port = connectionSettings.Port,
-                                                                                UserName = connectionSettings.UserName,
-                                                                                Password = connectionSettings.Password,
+                                                                                HostName = settings.HostName,
+                                                                                Port = settings.Port,
+                                                                                UserName = settings.UserName,
+                                                                                Password = settings.Password,
                                                                                 AutomaticRecoveryEnabled = Defaults.Connection.AutomaticRecoveryEnabled
                                                                             };
 
                                                     var connection = connectionFactory.CreateConnection();
-                                                    var channel = connection.CreateModel();
-                                                    channel.ExchangeDeclare(BroadcastExchangeName, Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
-                                                    channel.Close();
+
+                                                    using (var channel = connection.CreateModel())
+                                                    {
+                                                        channel.ExchangeDeclare(BroadcastExchangeName, Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                    }
 
                                                     return connection;
                                                 });
@@ -42,10 +44,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 
         private readonly Lazy<IConnection> _connection;
         private readonly ILog _log;
+        private readonly RabbitMqConnectionSettings _settings;
 
         public string BroadcastExchangeName { get; }
-
-        public string AppId { get; }
 
         /// <summary>
         /// Возвращает абстракцию соединения с RabbitMq.
@@ -63,7 +64,31 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             try
             {
                 var channel = _connection.Value.CreateModel();
-                channel.BasicQos(0, 1, false);
+
+                if (_settings.PrefetchCount != 0)
+                {
+                    channel.BasicQos(0, _settings.PrefetchCount, false);
+                }
+
+                return channel;
+            }
+            catch (Exception exception)
+            {
+                _log.Error(exception);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Создает канал.
+        /// </summary>
+        public IModel GetChannel(ushort prefetchCount)
+        {
+            try
+            {
+                var channel = _connection.Value.CreateModel();
+
+                channel.BasicQos(0, prefetchCount, false);
 
                 return channel;
             }

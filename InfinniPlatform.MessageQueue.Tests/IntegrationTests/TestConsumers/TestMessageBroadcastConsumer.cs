@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,6 +28,11 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                                 _completeEvent.Signal();
                             });
         }
+
+        protected override Task<bool> OnError(Exception exception)
+        {
+            return Task.FromResult(false);
+        }
     }
 
 
@@ -50,6 +56,11 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                                 _messages.Add(message.Body);
                                 _completeEvent.Signal();
                             });
+        }
+
+        protected override Task<bool> OnError(Exception exception)
+        {
+            return Task.FromResult(false);
         }
     }
 }

@@ -19,6 +19,13 @@ namespace InfinniPlatform.Sdk.Queues.Consumers
             await Consume((Message<T>)message);
         }
 
+        async Task<bool> IConsumer.OnError(Exception exception)
+        {
+            return await OnError(exception);
+        }
+
         protected abstract Task Consume(Message<T> message);
+
+        protected abstract Task<bool> OnError(Exception exception);
     }
 }

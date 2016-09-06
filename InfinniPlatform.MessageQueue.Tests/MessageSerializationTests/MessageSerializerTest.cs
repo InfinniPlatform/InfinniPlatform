@@ -2,6 +2,7 @@
 
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
+using InfinniPlatform.Sdk.Serialization;
 
 using NUnit.Framework;
 
@@ -17,7 +18,7 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
         [Test]
         public void IntMessageSerializeAndDeserializeWithoutErrors()
         {
-            var messageSerializer = new MessageSerializer();
+            var messageSerializer = new MessageSerializer(new JsonObjectSerializer());
             const int message = 42;
 
             var args = new BasicDeliverEventArgs
@@ -34,7 +35,7 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
         [Test]
         public void TestMessageSerializeAndDeserializeWithoutErrors()
         {
-            var messageSerializer = new MessageSerializer();
+            var messageSerializer = new MessageSerializer(new JsonObjectSerializer());
             var message = new TestMessage("1", 1, new DateTime(1, 1, 1));
 
             var args = new BasicDeliverEventArgs
@@ -50,7 +51,7 @@ namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
         [Test]
         public void TestMessageSerializeAndDeserializeWithoutErrorsWithGeneric()
         {
-            var messageSerializer = new MessageSerializer();
+            var messageSerializer = new MessageSerializer(new JsonObjectSerializer());
             var message = new TestMessage("1", 1, new DateTime(1, 1, 1));
 
             var args = new BasicDeliverEventArgs

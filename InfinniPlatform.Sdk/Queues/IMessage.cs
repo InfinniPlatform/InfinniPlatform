@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Sdk.Queues
 {
@@ -21,5 +22,10 @@ namespace InfinniPlatform.Sdk.Queues
         /// Идентификатор отправителя сообщения.
         /// </summary>
         string AppId { get; }
+
+        /// <summary>
+        /// Заголовки сообщения.
+        /// </summary>
+        IDictionary<string, object> Headers { get; }
     }
 }

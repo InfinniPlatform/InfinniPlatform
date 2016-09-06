@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
@@ -32,6 +33,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
                                      {
                                          Credentials = new NetworkCredential(connectionSettings.UserName, connectionSettings.Password)
                                      };
+
             var httpClient = new HttpClient(httpMessageHandler)
                              {
                                  BaseAddress = new Uri($"http://{connectionSettings.HostName}:{connectionSettings.ManagementApiPort}")
@@ -47,6 +49,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
             }
 
             return httpClient;
+        }
+
+        public async Task<DynamicWrapper> GetOverview()
+        {
+            return await Get("/api/overview");
         }
 
         /// <summary>
@@ -93,6 +100,13 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
         public async Task PurgeQueue(Queue queue)
         {
             await Delete($"/api/queues/{DefaultVhost}/{queue.Name}/contents");
+        }
+
+        private async Task<DynamicWrapper> Get(string relativeUrl)
+        {
+            var httpResponseMessage = await _httpClient.Value.GetAsync(new Uri(relativeUrl, UriKind.Relative));
+            var content = await httpResponseMessage.Content.ReadAsStringAsync();
+            return JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(content);
         }
 
         private async Task<IEnumerable<T>> Get<T>(string relativeUrl)

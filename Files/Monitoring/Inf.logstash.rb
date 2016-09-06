@@ -20,6 +20,8 @@ filter {
 			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{LOGLEVEL:level}\|%{NOTSPACE:thread}\|%{NOTSPACE:logger}\|%{NOTSPACE:requestId}\|%{NOTSPACE:sessionId}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:body}" ]
 		}
 
+		if "_grokparsefailure" in [tags] { drop {} }
+
 		json {
 			source => "body"
 		}
@@ -31,7 +33,7 @@ filter {
 
 	if [monitoring] == "Performance" {
 		grok {
-			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{NOTSPACE:correlationId}\|%{WORD:component}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:body}" ]
+			match => [ "message", "%{TIMESTAMP_ISO8601:timestamp}\|%{NOTSPACE:correlationId}\|%{WORD:logger}\|%{NOTSPACE:userId}\|%{NOTSPACE:userName}\|%{GREEDYDATA:body}" ]
 		}
 
 		if "_grokparsefailure" in [tags] { drop {} }
@@ -40,9 +42,9 @@ filter {
 			source => "body"
 		}
 
-		if [result] =~ "\<null\>" {
+		if [body] =~ "\<null\>" {
 			mutate {
-				remove_field => [ "result" ]
+				remove_field => [ "body" ]
 			}
 		}
 
@@ -53,7 +55,8 @@ filter {
 		}
 
 		mutate {
-			remove_field => [ "message" ]
+			remove_field => [ "message", "body" ]
+			convert => { "d" => "integer" }
 		}
 	}
 }
