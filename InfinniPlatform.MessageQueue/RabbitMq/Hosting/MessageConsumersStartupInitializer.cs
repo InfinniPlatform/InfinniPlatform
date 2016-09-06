@@ -138,7 +138,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             {
                 if (await consumer.OnError(e))
                 {
-                    channel.BasicAck(args.DeliveryTag, true);
+                    BasicAck(channel, args, logContext);
                 }
 
                 _log.Error(e, logContext);
@@ -163,7 +163,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                 {
                     if (await consumer.OnError(e))
                     {
-                        channel.BasicAck(args.DeliveryTag, true);
+                        BasicAck(channel, args, logContext);
                     }
                 }
 
@@ -173,13 +173,30 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                 return;
             }
 
-            _log.Debug(Resources.AckStart, logContext);
-
-            channel.BasicAck(args.DeliveryTag, true);
-
-            _log.Debug(Resources.AckSuccess, logContext);
+            BasicAck(channel, args, logContext);
 
             _performanceLog.Log($"Consume::{consumerType}", startDate);
+        }
+
+        /// <summary>
+        /// Обертка для подтверждения обработки сообщения.
+        /// </summary>
+        /// <param name="channel">Канал.</param>
+        /// <param name="args">Свойства сообщения.</param>
+        /// <param name="logContext">Контекст логирования.</param>
+        private void BasicAck(IModel channel, BasicDeliverEventArgs args, Func<Dictionary<string, object>> logContext)
+        {
+            try
+            {
+                _log.Debug(Resources.AckStart, logContext);
+                //TODO: При передаче параметра multiple = true, BasicAck бросает исключение "unknown delivery tag". Вероятно путаница с каналами.
+                channel.BasicAck(args.DeliveryTag, false);
+                _log.Debug(Resources.AckSuccess, logContext);
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
+            }
         }
 
         private static Dictionary<string, object> CreateLogContext(string consumerType, BasicDeliverEventArgs args)
