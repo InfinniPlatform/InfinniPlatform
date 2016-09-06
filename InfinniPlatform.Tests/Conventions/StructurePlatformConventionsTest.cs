@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Xml.Linq;
 
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace InfinniPlatform.Conventions
 {
@@ -15,7 +16,7 @@ namespace InfinniPlatform.Conventions
     {
         static StructurePlatformConventionsTest()
         {
-            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath));
+            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath)) ?? ".";
             PackagesDir = ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
 
             SolutionProjects = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*").ToArray();
@@ -29,6 +30,8 @@ namespace InfinniPlatform.Conventions
 
 
         private const string SolutionName = "InfinniPlatform";
+        private const string SolutionOutDir = "Assemblies";
+
         private static readonly string SolutionDir;
         private static readonly string PackagesDir;
         private static readonly string[] SolutionProjects;
@@ -85,15 +88,14 @@ namespace InfinniPlatform.Conventions
         public void ProjectShouldHaveCommonOutputPath(string project)
         {
             // Given
-            const string coreOutPath = @"..\Assemblies\";
-            const string designerOutPath = @"..\DesignerBin\";
+            var coreOutPath = $@"..\{SolutionOutDir}\";
 
             // When
             var result = LoadProject(project)
                 .Elements(ProjectNamespace + "PropertyGroup")
                 .Where(i => i.Attribute("Condition") != null)
-                .Select(i => ToNormPath(i.Element(ProjectNamespace + "OutputPath").Value))
-                .All(i => i == coreOutPath || i == designerOutPath);
+                .Select(i => ToNormPath(i.Element(ProjectNamespace + "OutputPath")?.Value))
+                .All(i => i == coreOutPath);
 
             // Then
             Assert.IsTrue(result, @"Проект ""{0}"" должен компилироваться в один каталог ""{1}"" (в Debug и Release)", project, coreOutPath);
@@ -173,37 +175,35 @@ namespace InfinniPlatform.Conventions
         [Description(@"Проект должен иметь файл ""packages.config"" только с используемыми пакетами")]
         public void PackageConfigShouldContainsOnlyUsedPackageReferences(string project)
         {
-            //TODO Новые пакеты Microsoft, используемые в InfinniPlatform.Expressions, не добавляют референсы в проект.
-            if (project .Contains("InfinniPlatform.Expressions"))
+            // TODO: Новые пакеты Microsoft, используемые в InfinniPlatform.Expressions, не добавляют references.
+            if (project.Contains("InfinniPlatform.Expressions"))
             {
-                Assert.IsTrue(true);
+                return;
             }
-            else
-            {
-                // Given
-                var packageReferences = LoadProject(project)
-                    .Elements(ProjectNamespace + "ItemGroup")
-                    .Elements(ProjectNamespace + "Reference")
-                    .Elements(ProjectNamespace + "HintPath")
-                    .Where(i => i != null
-                                && string.IsNullOrWhiteSpace(i.Value) == false
-                                && i.Value.StartsWith(ToNormPath(PackagesDir)))
-                    .Select(i => i.Value)
-                    .ToArray();
 
-                var packageConfig = LoadPackageConfig(project)
-                    .Elements("package")
-                    .Where(i => i.Attribute("id").Value.Contains("OwinSelfHost") == false)
-                    .Select(i => ToNormPath(string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value)))
-                    .ToArray();
+            // Given
+            var packageReferences = LoadProject(project)
+                .Elements(ProjectNamespace + "ItemGroup")
+                .Elements(ProjectNamespace + "Reference")
+                .Elements(ProjectNamespace + "HintPath")
+                .Where(i => i != null
+                            && string.IsNullOrWhiteSpace(i.Value) == false
+                            && i.Value.StartsWith(ToNormPath(PackagesDir)))
+                .Select(i => i.Value)
+                .ToArray();
 
-                // When
-                var result = packageConfig.All(pc => packageReferences.Any(pr => pr.StartsWith(pc)));
+            var packageConfig = LoadPackageConfig(project)
+                .Elements("package")
+                .Where(i => i.Attribute("id").Value.Contains("OwinSelfHost") == false)
+                .Select(i => ToNormPath(string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value)))
+                .ToArray();
 
-                // Then
-                Assert.IsTrue(result, @"Проект ""{0}"" должен иметь файл ""packages.config"" только с используемыми пакетами:{1}{2}", project, Environment.NewLine,
-                              string.Join(Environment.NewLine, packageConfig.Where(pc => !packageReferences.Any(pr => pr.StartsWith(pc)))));
-            }
+            // When
+            var result = packageConfig.All(pc => packageReferences.Any(pr => pr.StartsWith(pc)));
+
+            // Then
+            Assert.IsTrue(result, @"Проект ""{0}"" должен иметь файл ""packages.config"" только с используемыми пакетами:{1}{2}", project, Environment.NewLine,
+                          string.Join(Environment.NewLine, packageConfig.Where(pc => !packageReferences.Any(pr => pr.StartsWith(pc)))));
         }
 
         [Test]
@@ -256,17 +256,45 @@ namespace InfinniPlatform.Conventions
         public void AllTestsShouldHaveCategory()
         {
             // Given
-            var testAssemblies = Directory.GetFiles(".", "*.Tests.dll");
+            var testAssemblies = Directory.GetFiles(Path.Combine(SolutionDir, SolutionOutDir), "*.Tests.dll");
 
             // When
             var withoutCategory = testAssemblies
                 .SelectMany(a => Assembly.LoadFrom(a)
                                          .GetTypes()
-                                         .Where(t => t.IsClass
-                                                     && !t.IsAbstract
-                                                     && t.GetCustomAttributesData().Any(i => i.AttributeType == typeof(TestFixtureAttribute))
-                                                     && t.GetCustomAttributesData().All(i => i.AttributeType != typeof(IgnoreAttribute))
-                                                     && t.GetCustomAttributesData().All(i => i.AttributeType != typeof(CategoryAttribute)))
+                                         .Where(t =>
+                                                {
+                                                    if (t.IsClass && !t.IsAbstract)
+                                                    {
+                                                        var ignoreAttr = t.GetCustomAttribute<IgnoreAttribute>();
+
+                                                        if (ignoreAttr != null)
+                                                        {
+                                                            return false;
+                                                        }
+
+                                                        var testFixtureAttr = t.GetCustomAttribute<TestFixtureAttribute>();
+
+                                                        if (testFixtureAttr != null)
+                                                        {
+                                                            if (!string.IsNullOrEmpty(testFixtureAttr.Category))
+                                                            {
+                                                                return false;
+                                                            }
+
+                                                            var categoryAttr = t.GetCustomAttribute<CategoryAttribute>();
+
+                                                            if (!string.IsNullOrEmpty(categoryAttr?.Name))
+                                                            {
+                                                                return false;
+                                                            }
+
+                                                            return true;
+                                                        }
+                                                    }
+
+                                                    return false;
+                                                })
                                          .Select(t => t.FullName))
                 .ToArray();
 
@@ -375,7 +403,7 @@ namespace InfinniPlatform.Conventions
 
         private static string ToNormPath(string path)
         {
-            return (path != null) ? path.Replace('/', '\\') : null;
+            return path?.Replace('/', '\\');
         }
     }
 }
