@@ -1,9 +1,9 @@
-﻿using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Owin.Hosting;
+﻿using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Owin.Services;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;

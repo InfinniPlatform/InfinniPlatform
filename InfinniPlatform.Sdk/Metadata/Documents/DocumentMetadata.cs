@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Sdk.Metadata.Documents
 {
     /// <summary>
     /// Метаданные документа.
     /// </summary>
-    [DebuggerDisplay("Name: {Type}, Indexes count: {Indexes.Count}")]
     public sealed class DocumentMetadata
     {
         /// <summary>
@@ -15,7 +14,7 @@ namespace InfinniPlatform.Sdk.Metadata.Documents
         public string Type { get; set; }
 
         /// <summary>
-        /// Индексы документа.
+        /// Список индексов документа.
         /// </summary>
         public IList<DocumentIndex> Indexes { get; set; }
     }

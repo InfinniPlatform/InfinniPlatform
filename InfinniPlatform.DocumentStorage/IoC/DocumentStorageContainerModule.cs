@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Core.Diagnostics;
-using InfinniPlatform.DocumentStorage.Diagnostics;
+﻿using InfinniPlatform.DocumentStorage.Diagnostics;
 using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Services;
@@ -7,6 +6,7 @@ using InfinniPlatform.DocumentStorage.Services.QueryFactories;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Transactions;
+using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
@@ -159,7 +159,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             // Hosting
 
-            builder.RegisterType<MongoCollectionInitializer>()
+            builder.RegisterType<DocumentStorageInitializer>()
                    .As<IAppEventHandler>()
                    .SingleInstance();
 

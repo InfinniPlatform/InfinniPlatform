@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
-    <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\PerformanceLogEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
@@ -66,10 +65,8 @@
     <Compile Include="Metadata\MetadataSettings.cs" />
     <Compile Include="Services\FileApiHttpService.cs" />
     <Compile Include="Diagnostics\SystemInfoHttpService.cs" />
-    <Compile Include="Hosting\IHostAddressParser.cs" />
     <Compile Include="Settings\AppConfigurationPlaceholder.cs" />
     <Compile Include="Settings\AppEnvironment.cs" />
-    <Compile Include="Contracts\ActionContext.cs" />
     <Compile Include="Factories\IHostingServiceFactory.cs" />
     <Compile Include="Hosting\IHostingService.cs" />
     <Compile Include="IoC\CoreContainerModule.cs" />

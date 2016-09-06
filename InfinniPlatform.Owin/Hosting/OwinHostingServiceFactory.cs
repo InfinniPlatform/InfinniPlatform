@@ -20,7 +20,7 @@ namespace InfinniPlatform.Owin.Hosting
             var hostingService = new OwinHostingService(hostingContext);
 
             // Получение списка обработчиков событий приложения
-            var appEventHandlers = hostingContext.ContainerResolver.Resolve<IEnumerable<IAppEventHandler>>();
+            var appEventHandlers = hostingContext.ContainerResolver.Resolve<IEnumerable<IAppEventHandler>>()?.OrderBy(i => i.Order).ToList();
 
             if (appEventHandlers != null)
             {
