@@ -62,6 +62,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicPropertiesProviderTests.cs" />
     <Compile Include="IntegrationTests\ConnectionTest.cs" />
     <Compile Include="IntegrationTests\FairDispatchTest.cs" />
     <Compile Include="IntegrationTests\FanoutConsumersTest.cs" />
