@@ -96,7 +96,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Scheduler.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{90A10053-AB39-46B8-9F9D-0638E4D0BBAA}"
 	ProjectSection(SolutionItems) = preProject
-		Files\Tests\TestProject.nunit = Files\Tests\TestProject.nunit
+		Files\Tests\TestAssemblies.nunit = Files\Tests\TestAssemblies.nunit
 	EndProjectSection
 EndProject
 Global
