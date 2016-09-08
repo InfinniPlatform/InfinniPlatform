@@ -1,6 +1,6 @@
 ﻿<NUnitProject>
-    <Settings activeconfig="Release" />
-    <Config name="Release">
+    <Settings activeconfig="Windows" />
+    <Config name="Windows">
         <assembly path="InfinniPlatform.Core.Tests.dll" />
         <assembly path="InfinniPlatform.Sdk.Tests.dll" />
         <assembly path="InfinniPlatform.Cors.Tests.dll" />
@@ -11,5 +11,16 @@
         <assembly path="InfinniPlatform.DocumentStorage.Tests.dll" />
         <assembly path="InfinniPlatform.MessageQueue.Tests.dll" />
         <assembly path="InfinniPlatform.Scheduler.Tests.dll" />
+    </Config>
+    <Config name="Linux">
+        <assembly path="InfinniPlatform.Core.Tests.dll" />
+        <assembly path="InfinniPlatform.Sdk.Tests.dll" />
+        <assembly path="InfinniPlatform.Cors.Tests.dll" />
+        <!--<assembly path="InfinniPlatform.Expressions.Tests.dll" />-->
+        <assembly path="InfinniPlatform.FlowDocument.Tests.dll" />
+        <assembly path="InfinniPlatform.BlobStorage.Tests.dll" />
+        <assembly path="InfinniPlatform.Caching.Tests.dll" />
+        <assembly path="InfinniPlatform.DocumentStorage.Tests.dll" />
+        <assembly path="InfinniPlatform.MessageQueue.Tests.dll" />
     </Config>
 </NUnitProject>
