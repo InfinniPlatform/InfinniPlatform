@@ -10,6 +10,6 @@
         <assembly path="InfinniPlatform.Caching.Tests.dll" />
         <assembly path="InfinniPlatform.DocumentStorage.Tests.dll" />
         <assembly path="InfinniPlatform.MessageQueue.Tests.dll" />
-        <assembly path="InfinniPlatform.Scheduler.Tests" />
+        <assembly path="InfinniPlatform.Scheduler.Tests.dll" />
     </Config>
 </NUnitProject>
