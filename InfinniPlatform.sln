@@ -92,7 +92,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentSto
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{732BAC75-9E5D-48FC-BF68-0107D36A97B2}"
 	ProjectSection(SolutionItems) = preProject
-		Files\Tests\TestProject.nunit = Files\Tests\TestProject.nunit
+		Files\Tests\TestAssemblies.nunit = Files\Tests\TestAssemblies.nunit
 	EndProjectSection
 EndProject
 Global
