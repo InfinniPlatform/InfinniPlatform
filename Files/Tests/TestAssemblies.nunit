@@ -1,5 +1,5 @@
 ﻿<NUnitProject>
-    <Settings activeconfig="Release" appbase="../../Assemblies/" />
+    <Settings activeconfig="Release" />
     <Config name="Release">
         <assembly path="InfinniPlatform.Core.Tests.dll" />
         <assembly path="InfinniPlatform.Sdk.Tests.dll" />
