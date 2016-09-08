@@ -1,0 +1,14 @@
+﻿<NUnitProject>
+    <Settings activeconfig="Release" appbase="../../Assemblies/" />
+    <Config name="Release">
+        <assembly path="InfinniPlatform.Core.Tests.dll" />
+        <assembly path="InfinniPlatform.Sdk.Tests.dll" />
+        <assembly path="InfinniPlatform.Cors.Tests.dll" />
+        <assembly path="InfinniPlatform.Expressions.Tests.dll" />
+        <assembly path="InfinniPlatform.FlowDocument.Tests.dll" />
+        <assembly path="InfinniPlatform.BlobStorage.Tests.dll" />
+        <assembly path="InfinniPlatform.Caching.Tests.dll" />
+        <assembly path="InfinniPlatform.DocumentStorage.Tests.dll" />
+        <assembly path="InfinniPlatform.MessageQueue.Tests.dll" />
+    </Config>
+</NUnitProject>
