@@ -18,7 +18,6 @@ using Moq;
 
 using NUnit.Framework;
 
-using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue.Tests
@@ -26,8 +25,11 @@ namespace InfinniPlatform.MessageQueue.Tests
     public class RabbitMqTestBase
     {
         internal static RabbitMqManager RabbitMqManager { get; set; }
+
         internal static RabbitMqManagementHttpClient RabbitMqManagementHttpClient { get; set; }
+
         internal static MessageSerializer MessageSerializer { get; set; }
+
         internal static IBasicPropertiesProvider BasicPropertiesProviderMock { get; set; }
 
         [OneTimeSetUp]
@@ -51,7 +53,7 @@ namespace InfinniPlatform.MessageQueue.Tests
             BasicPropertiesProviderMock = basicPropertiesProviderMock.Object;
 
             var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();
-            
+
             foreach (var queue in queues)
             {
                 RabbitMqManager.GetChannel().QueueDelete(queue.Name, false, false);
@@ -70,6 +72,13 @@ namespace InfinniPlatform.MessageQueue.Tests
 
         public static void RegisterConsumers(IEnumerable<ITaskConsumer> taskConsumers, IEnumerable<IBroadcastConsumer> broadcastConsumers)
         {
+            var logMock = new Mock<ILog>();
+            logMock.Setup(log => log.Debug(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
+            logMock.Setup(log => log.Info(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
+            logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
+
+            var subscriptionManager = new MessageQueueSubscriptionManager(new Mock<IMessageConsumeEventHandler>().Object, MessageSerializer, RabbitMqManager, logMock.Object, new Mock<IPerformanceLog>().Object);
+
             var list = new List<IConsumer>();
             list.AddRange(taskConsumers ?? Enumerable.Empty<ITaskConsumer>());
             list.AddRange(broadcastConsumers ?? Enumerable.Empty<IBroadcastConsumer>());
@@ -77,16 +86,7 @@ namespace InfinniPlatform.MessageQueue.Tests
             var messageConsumerSourceMock = new Mock<IMessageConsumerSource>();
             messageConsumerSourceMock.Setup(source => source.GetConsumers()).Returns(list);
 
-            var messageConsumeHandlerMock = new Mock<IMessageConsumeHandler>();
-
-            var logMock = new Mock<ILog>();
-            logMock.Setup(log => log.Debug(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
-            logMock.Setup(log => log.Info(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
-            logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
-
-            var perfLogMock = new Mock<IPerformanceLog>();
-
-            var messageConsumersManager = new MessageConsumersStartupInitializer(new[] { messageConsumerSourceMock.Object }, messageConsumeHandlerMock.Object , RabbitMqManager, MessageSerializer, perfLogMock.Object, logMock.Object);
+            var messageConsumersManager = new MessageQueueInitializer(subscriptionManager, new[] { messageConsumerSourceMock.Object }, RabbitMqManager, logMock.Object);
 
             messageConsumersManager.OnAfterStart();
         }

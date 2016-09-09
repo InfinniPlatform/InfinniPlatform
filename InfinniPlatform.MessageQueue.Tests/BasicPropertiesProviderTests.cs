@@ -13,6 +13,7 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.Tests
 {
+    [Category(TestCategories.UnitTest)]
     public class BasicPropertiesProviderTests
     {
         [Test]

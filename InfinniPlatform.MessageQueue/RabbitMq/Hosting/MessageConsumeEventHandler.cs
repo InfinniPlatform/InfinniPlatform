@@ -5,9 +5,9 @@ using InfinniPlatform.Sdk.Queues;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 {
-    public class MessageConsumeHandler : IMessageConsumeHandler
+    public class MessageConsumeEventHandler : IMessageConsumeEventHandler
     {
-        public MessageConsumeHandler(IBasicPropertiesProvider basicPropertiesProvider)
+        public MessageConsumeEventHandler(IBasicPropertiesProvider basicPropertiesProvider)
         {
             _basicPropertiesProvider = basicPropertiesProvider;
         }

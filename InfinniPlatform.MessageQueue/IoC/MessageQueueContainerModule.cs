@@ -30,10 +30,6 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<MessageConsumersStartupInitializer>()
-                   .As<IAppEventHandler>()
-                   .SingleInstance();
-
             builder.RegisterType<OnDemandConsumer>()
                    .As<IOnDemandConsumer>()
                    .SingleInstance();
@@ -50,6 +46,24 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IMessageSerializer>()
                    .SingleInstance();
 
+            builder.RegisterType<MessageConsumeEventHandler>()
+                   .As<IMessageConsumeEventHandler>()
+                   .SingleInstance();
+
+            builder.RegisterType<BasicPropertiesProvider>()
+                   .As<IBasicPropertiesProvider>()
+                   .SingleInstance();
+
+            // Hosting
+
+            builder.RegisterType<MessageQueueInitializer>()
+                   .As<IAppEventHandler>()
+                   .SingleInstance();
+
+            builder.RegisterType<MessageQueueSubscriptionManager>()
+                   .As<IMessageQueueSubscriptionManager>()
+                   .SingleInstance();
+
             builder.RegisterType<MessageConsumerSource>()
                    .As<IMessageConsumerSource>()
                    .SingleInstance();
@@ -58,14 +72,6 @@ namespace InfinniPlatform.MessageQueue.IoC
 
             builder.RegisterType<MessageQueueStatusProvider>()
                    .As<ISubsystemStatusProvider>()
-                   .SingleInstance();
-
-            builder.RegisterType<MessageConsumeHandler>()
-                   .As<IMessageConsumeHandler>()
-                   .SingleInstance();
-
-            builder.RegisterType<BasicPropertiesProvider>()
-                   .As<IBasicPropertiesProvider>()
                    .SingleInstance();
         }
 

@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
-    [Category(TestCategories.UnitTest)]
+    [Category(TestCategories.IntegrationTest)]
     public class FanoutConsumersTest : RabbitMqTestBase
     {
         [Test]
