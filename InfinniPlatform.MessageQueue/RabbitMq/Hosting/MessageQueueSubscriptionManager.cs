@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.Properties;
@@ -22,23 +21,24 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
     internal sealed class MessageQueueSubscriptionManager : IMessageQueueSubscriptionManager
     {
         /// <param name="messageConsumeEventHandler">Обработчик событий процесса обработки сообщения.</param>
+        /// <param name="messageQueueThreadPool"></param>
         /// <param name="messageSerializer">Сериализатор сообщений.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="log">Лог.</param>
         /// <param name="performanceLog">Лог производительности.</param>
         public MessageQueueSubscriptionManager(IMessageConsumeEventHandler messageConsumeEventHandler,
+                                               IMessageQueueThreadPool messageQueueThreadPool,
                                                IMessageSerializer messageSerializer,
                                                RabbitMqManager manager,
                                                ILog log,
                                                IPerformanceLog performanceLog)
         {
             _messageConsumeEventHandler = messageConsumeEventHandler;
+            _messageQueueThreadPool = messageQueueThreadPool;
             _messageSerializer = messageSerializer;
             _manager = manager;
             _log = log;
             _performanceLog = performanceLog;
-
-            _semaphore = new SemaphoreSlim(200, 200);
         }
 
         private readonly ILog _log;
@@ -46,8 +46,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         private readonly IMessageConsumeEventHandler _messageConsumeEventHandler;
         private readonly IMessageSerializer _messageSerializer;
         private readonly IPerformanceLog _performanceLog;
-
-        private readonly SemaphoreSlim _semaphore;
+        private readonly IMessageQueueThreadPool _messageQueueThreadPool;
 
         /// <summary>
         /// Регистрирует обработчик.
@@ -79,46 +78,47 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         private async Task OnRecieved(IConsumer consumer, BasicDeliverEventArgs args, IModel channel)
         {
             var startDate = DateTime.Now;
+            Exception error = null;
 
-            await _semaphore.WaitAsync();
+            await _messageQueueThreadPool.Enqueue(async () =>
+                                             {
+                                                 IMessage message = null;
+                                                 var consumerType = consumer.GetType().Name;
+                                                 Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
 
-            IMessage message = null;
-            var consumerType = consumer.GetType().Name;
-            Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
+                                                 try
+                                                 {
+                                                     message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
 
-            try
-            {
-                message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
+                                                     _log.Debug(Resources.ConsumeStart, logContext);
 
-                _log.Debug(Resources.ConsumeStart, logContext);
+                                                     await _messageConsumeEventHandler.OnBefore(message);
 
-                await _messageConsumeEventHandler.OnBefore(message);
+                                                     await consumer.Consume(message);
 
-                await consumer.Consume(message);
+                                                     _log.Debug(Resources.ConsumeSuccess, logContext);
 
-                _log.Debug(Resources.ConsumeSuccess, logContext);
+                                                     BasicAck(channel, args, logContext);
+                                                 }
+                                                 catch (Exception e)
+                                                 {
+                                                     error = e;
 
-                BasicAck(channel, args, logContext);
+                                                     if (await _messageConsumeEventHandler.OnError(message, error))
+                                                     {
+                                                         if (await consumer.OnError(error))
+                                                         {
+                                                             BasicAck(channel, args, logContext);
+                                                         }
+                                                     }
 
-                _performanceLog.Log($"Consume::{consumerType}", startDate);
-            }
-            catch (Exception e)
-            {
-                if (await _messageConsumeEventHandler.OnError(message, e))
-                {
-                    if (await consumer.OnError(e))
-                    {
-                        BasicAck(channel, args, logContext);
-                    }
-                }
-
-                _log.Error(e, logContext);
-                _performanceLog.Log($"Consume::{consumerType}", startDate, e);
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
+                                                     _log.Error(error, logContext);
+                                                 }
+                                                 finally
+                                                 {
+                                                     _performanceLog.Log($"Consume::{consumerType}", startDate, error);
+                                                 }
+                                             });
         }
 
         /// <summary>

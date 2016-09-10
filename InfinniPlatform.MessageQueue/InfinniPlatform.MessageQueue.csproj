@@ -65,7 +65,9 @@
     </Compile>
     <Compile Include="RabbitMq\Hosting\IMessageConsumeEventHandler.cs" />
     <Compile Include="RabbitMq\Hosting\IMessageQueueSubscriptionManager.cs" />
+    <Compile Include="RabbitMq\Hosting\IMessageQueueThreadPool.cs" />
     <Compile Include="RabbitMq\Hosting\MessageQueueSubscriptionManager.cs" />
+    <Compile Include="RabbitMq\Hosting\SemaphorSlimProvider.cs" />
     <Compile Include="RabbitMq\IBasicPropertiesProvider.cs" />
     <Compile Include="RabbitMq\MessageHeadersTypes.cs" />
     <Compile Include="RabbitMq\BasicPropertiesProvider.cs" />

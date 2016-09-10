@@ -9,7 +9,7 @@ using NUnit.Framework;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Framing;
 
-namespace InfinniPlatform.MessageQueue.Tests.MessageSerializationTests
+namespace InfinniPlatform.MessageQueue.Tests.RabbitMq.Serialization
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
