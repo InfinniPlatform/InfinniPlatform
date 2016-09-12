@@ -63,11 +63,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RabbitMq\Hosting\IMessageConsumeHandler.cs" />
+    <Compile Include="RabbitMq\Hosting\IMessageConsumeEventHandler.cs" />
+    <Compile Include="RabbitMq\Hosting\IMessageQueueSubscriptionManager.cs" />
+    <Compile Include="RabbitMq\Hosting\IMessageQueueThreadPool.cs" />
+    <Compile Include="RabbitMq\Hosting\MessageQueueSubscriptionManager.cs" />
+    <Compile Include="RabbitMq\Hosting\SemaphorSlimProvider.cs" />
     <Compile Include="RabbitMq\IBasicPropertiesProvider.cs" />
     <Compile Include="RabbitMq\MessageHeadersTypes.cs" />
     <Compile Include="RabbitMq\BasicPropertiesProvider.cs" />
-    <Compile Include="RabbitMq\Hosting\MessageConsumeHandler.cs" />
+    <Compile Include="RabbitMq\Hosting\MessageConsumeEventHandler.cs" />
     <Compile Include="RabbitMq\Hosting\MessageConsumerSource.cs" />
     <Compile Include="RabbitMq\Management\HttpAPI\Binding.cs" />
     <Compile Include="RabbitMq\Management\HttpAPI\Connection.cs" />
@@ -79,7 +83,7 @@
     <Compile Include="RabbitMq\QueueNamingConventions.cs" />
     <Compile Include="RabbitMq\Helpers.cs" />
     <Compile Include="RabbitMq\Serialization\IMessageSerializer.cs" />
-    <Compile Include="RabbitMq\Hosting\MessageConsumersStartupInitializer.cs" />
+    <Compile Include="RabbitMq\Hosting\MessageQueueInitializer.cs" />
     <Compile Include="RabbitMq\OnDemandConsumer.cs" />
     <Compile Include="RabbitMq\Serialization\MessageSerializer.cs" />
     <Compile Include="RabbitMq\TaskProducer.cs" />

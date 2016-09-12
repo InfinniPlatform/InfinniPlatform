@@ -3,7 +3,7 @@
     /// <summary>
     /// Настройки подключения к MongoDB.
     /// </summary>
-    internal sealed class RabbitMqConnectionSettings
+    public sealed class RabbitMqConnectionSettings
     {
         public const string SectionName = "rabbitmq";
 
@@ -17,6 +17,7 @@
             Password = "guest";
             ManagementApiPort = 15672;
             PrefetchCount = 1;
+            MaxConcurrentThreads = 200;
         }
 
         /// <summary>
@@ -48,5 +49,10 @@
         /// Количество сообщений, единовременно передаваемых потребителю.
         /// </summary>
         public ushort PrefetchCount { get; set; }
+
+        /// <summary>
+        /// Максимальное количество одновременно обрабатываемых сообщений.
+        /// </summary>
+        public int MaxConcurrentThreads { get; set; }
     }
 }

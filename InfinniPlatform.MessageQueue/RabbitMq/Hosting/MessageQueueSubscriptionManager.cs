@@ -1,0 +1,155 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using InfinniPlatform.MessageQueue.Properties;
+using InfinniPlatform.MessageQueue.RabbitMq.Management;
+using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
+using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Queues.Consumers;
+
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+
+namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
+{
+    /// <summary>
+    /// Предоставляет метод регистрации получателей сообщений из очереди.
+    /// </summary>
+    [LoggerName("MessageQueue")]
+    internal sealed class MessageQueueSubscriptionManager : IMessageQueueSubscriptionManager
+    {
+        /// <param name="messageConsumeEventHandler">Обработчик событий процесса обработки сообщения.</param>
+        /// <param name="messageQueueThreadPool"></param>
+        /// <param name="messageSerializer">Сериализатор сообщений.</param>
+        /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
+        /// <param name="log">Лог.</param>
+        /// <param name="performanceLog">Лог производительности.</param>
+        public MessageQueueSubscriptionManager(IMessageConsumeEventHandler messageConsumeEventHandler,
+                                               IMessageQueueThreadPool messageQueueThreadPool,
+                                               IMessageSerializer messageSerializer,
+                                               RabbitMqManager manager,
+                                               ILog log,
+                                               IPerformanceLog performanceLog)
+        {
+            _messageConsumeEventHandler = messageConsumeEventHandler;
+            _messageQueueThreadPool = messageQueueThreadPool;
+            _messageSerializer = messageSerializer;
+            _manager = manager;
+            _log = log;
+            _performanceLog = performanceLog;
+        }
+
+        private readonly ILog _log;
+        private readonly RabbitMqManager _manager;
+        private readonly IMessageConsumeEventHandler _messageConsumeEventHandler;
+        private readonly IMessageSerializer _messageSerializer;
+        private readonly IPerformanceLog _performanceLog;
+        private readonly IMessageQueueThreadPool _messageQueueThreadPool;
+
+        /// <summary>
+        /// Регистрирует обработчик.
+        /// </summary>
+        /// <param name="queueName">Имя очереди.</param>
+        /// <param name="consumer">Экземпляр получателя.</param>
+        public void RegisterConsumer(string queueName, IConsumer consumer)
+        {
+            if (queueName == null)
+            {
+                throw new ArgumentException(Resources.UnableToGetQueueName);
+            }
+
+            var channel = _manager.GetChannel();
+
+            var eventingConsumer = new EventingBasicConsumer(channel);
+
+            eventingConsumer.Received += async (o, args) => await OnRecieved(consumer, args, channel);
+
+            channel.BasicConsume(queueName, false, eventingConsumer);
+        }
+
+        /// <summary>
+        /// Обработчик события получения сообщения из очереди.
+        /// </summary>
+        /// <param name="consumer">Экземпляр получателя.</param>
+        /// <param name="args">Свойства сообщения.</param>
+        /// <param name="channel">Канал RabbitMQ.</param>
+        private async Task OnRecieved(IConsumer consumer, BasicDeliverEventArgs args, IModel channel)
+        {
+            var startDate = DateTime.Now;
+            Exception error = null;
+
+            await _messageQueueThreadPool.Enqueue(async () =>
+                                             {
+                                                 IMessage message = null;
+                                                 var consumerType = consumer.GetType().Name;
+                                                 Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
+
+                                                 try
+                                                 {
+                                                     message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
+
+                                                     _log.Debug(Resources.ConsumeStart, logContext);
+
+                                                     await _messageConsumeEventHandler.OnBefore(message);
+
+                                                     await consumer.Consume(message);
+
+                                                     _log.Debug(Resources.ConsumeSuccess, logContext);
+
+                                                     BasicAck(channel, args, logContext);
+                                                 }
+                                                 catch (Exception e)
+                                                 {
+                                                     error = e;
+
+                                                     if (await _messageConsumeEventHandler.OnError(message, error))
+                                                     {
+                                                         if (await consumer.OnError(error))
+                                                         {
+                                                             BasicAck(channel, args, logContext);
+                                                         }
+                                                     }
+
+                                                     _log.Error(error, logContext);
+                                                 }
+                                                 finally
+                                                 {
+                                                     _performanceLog.Log($"Consume::{consumerType}", startDate, error);
+                                                 }
+                                             });
+        }
+
+        /// <summary>
+        /// Обертка для подтверждения обработки сообщения.
+        /// </summary>
+        /// <param name="channel">Канал.</param>
+        /// <param name="args">Свойства сообщения.</param>
+        /// <param name="logContext">Контекст логирования.</param>
+        private void BasicAck(IModel channel, BasicDeliverEventArgs args, Func<Dictionary<string, object>> logContext)
+        {
+            try
+            {
+                _log.Debug(Resources.AckStart, logContext);
+                //TODO: При передаче параметра multiple = true, BasicAck бросает исключение "unknown delivery tag". Вероятно путаница с каналами.
+                channel.BasicAck(args.DeliveryTag, false);
+                _log.Debug(Resources.AckSuccess, logContext);
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
+            }
+        }
+
+        private static Dictionary<string, object> CreateLogContext(string consumerType, BasicDeliverEventArgs args)
+        {
+            return new Dictionary<string, object>
+                   {
+                       { "consumerType", consumerType },
+                       { "deliveryTag", args?.DeliveryTag },
+                       { "messageSize", args?.Body?.Length }
+                   };
+        }
+    }
+}

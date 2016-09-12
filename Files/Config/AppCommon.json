@@ -11,48 +11,7 @@
     /* Номер порта (по умолчанию - 9900) */
     "Port": 9900
   },
-  /* Настройки аутентификации через Cookie */
-  "authCookie": {
-    /* Домен для создания cookie (значения по умолчанию нет, при развертывании в кластере - указать шаблон) */
-    /* Если равен ".mycluster.local", тогда "node1.mycluster.local" и "node2.mycluster.local" будут считаться допустимыми */
-    "CookieDomain": ""
-  },
-  /* Настройки аутентификации через ADFS */
-  "authAdfs": {
-    /* Разрешает аутентификацию через ADFS (допустимые значения - true или false, по умолчанию - false) */
-    "Enable": false,
-    /* Адрес сервера ADFS (например, 'myadfs.org:1234', значения по умолчанию нет) */
-    "Server": "Adfs-Server",
-    /* URI защищенного ресурса ADFS (например, 'https://InfinniPlatform', значения по умолчанию нет) */
-    "ResourceUri": ""
-  },
-  /* Настройки аутентификации через Google+ */
-  "authGoogle": {
-    /* Разрешает аутентификацию через Google+ (допустимые значения - true или false, по умолчанию - false) */
-    "Enable": false,
-    /* ClientId приложения в Goole+ (значения по умолчанию нет) */
-    "ClientId": "Google-Client-Id",
-    /* ClientSecret приложения в Goole+ (значения по умолчанию нет) */
-    "ClientSecret": "Google-Client-Secret"
-  },
-  /* Настройки аутентификации через Facebook */
-  "authFacebook": {
-    /* Разрешает аутентификацию через Facebook (допустимые значения - true или false, по умолчанию - false) */
-    "Enable": false,
-    /* ClientId приложения в Facebook (значения по умолчанию нет) */
-    "ClientId": "Facebook-Client-Id",
-    /* ClientSecret приложения в Facebook (значения по умолчанию нет) */
-    "ClientSecret": "Facebook-Client-Secret"
-  },
-  /* Настройки аутентификации через ВКонтакте */
-  "authVk": {
-    /* Разрешает аутентификацию через ВКонтакте (допустимые значения - true или false, по умолчанию - false) */
-    "Enable": false,
-    /* ClientId приложения в ВКонтакте (значения по умолчанию нет) */
-    "ClientId": "Vk-Client-Id",
-    /* ClientSecret приложения в ВКонтакте (значения по умолчанию нет) */
-    "ClientSecret": "Vk-Client-Secret"
-  },
+
   /* Настройки подключения к Redis */
   "redis": {
     /* Адрес или доменное имя (по умолчанию - 'localhost') */
@@ -106,7 +65,8 @@
     /* Количество сообщений, единовременно передаваемых потребителю. */
     /* Возможные значения 0..65535 (по умолчанию 1). */
     /* При значении 0 очередь будет передавать все сообщения потребителю. */
-    "PrefetchCount": 1
+    "PrefetchCount": 1,
+    "MaxConcurrentThreads": 200
   },
   /* Настройки хранения BLOB и файлов */
   "blobStorage": {
@@ -160,5 +120,47 @@
     },
     /* Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews) */
     "RazorViewsPath": "content/RazorViews"
+  },
+  /* Настройки аутентификации через Cookie */
+  "authCookie": {
+    /* Домен для создания cookie (значения по умолчанию нет, при развертывании в кластере - указать шаблон) */
+    /* Если равен ".mycluster.local", тогда "node1.mycluster.local" и "node2.mycluster.local" будут считаться допустимыми */
+    "CookieDomain": ""
+  },
+  /* Настройки аутентификации через ADFS */
+  "authAdfs": {
+    /* Разрешает аутентификацию через ADFS (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* Адрес сервера ADFS (например, 'myadfs.org:1234', значения по умолчанию нет) */
+    "Server": "Adfs-Server",
+    /* URI защищенного ресурса ADFS (например, 'https://InfinniPlatform', значения по умолчанию нет) */
+    "ResourceUri": ""
+  },
+  /* Настройки аутентификации через Google+ */
+  "authGoogle": {
+    /* Разрешает аутентификацию через Google+ (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* ClientId приложения в Goole+ (значения по умолчанию нет) */
+    "ClientId": "Google-Client-Id",
+    /* ClientSecret приложения в Goole+ (значения по умолчанию нет) */
+    "ClientSecret": "Google-Client-Secret"
+  },
+  /* Настройки аутентификации через Facebook */
+  "authFacebook": {
+    /* Разрешает аутентификацию через Facebook (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* ClientId приложения в Facebook (значения по умолчанию нет) */
+    "ClientId": "Facebook-Client-Id",
+    /* ClientSecret приложения в Facebook (значения по умолчанию нет) */
+    "ClientSecret": "Facebook-Client-Secret"
+  },
+  /* Настройки аутентификации через ВКонтакте */
+  "authVk": {
+    /* Разрешает аутентификацию через ВКонтакте (допустимые значения - true или false, по умолчанию - false) */
+    "Enable": false,
+    /* ClientId приложения в ВКонтакте (значения по умолчанию нет) */
+    "ClientId": "Vk-Client-Id",
+    /* ClientSecret приложения в ВКонтакте (значения по умолчанию нет) */
+    "ClientSecret": "Vk-Client-Secret"
   }
 }

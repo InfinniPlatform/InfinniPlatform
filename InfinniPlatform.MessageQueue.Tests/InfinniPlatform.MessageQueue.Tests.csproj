@@ -62,11 +62,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasicPropertiesProviderTests.cs" />
+    <Compile Include="IntegrationTests\TestConsumers\MessageQueueThreadPoolConsumer.cs" />
+    <Compile Include="RabbitMq\Hosting\BasicPropertiesProviderTests.cs" />
+    <Compile Include="IntegrationTests\MessageQueueThreadPoolTest.cs" />
     <Compile Include="IntegrationTests\ConnectionTest.cs" />
     <Compile Include="IntegrationTests\FairDispatchTest.cs" />
     <Compile Include="IntegrationTests\FanoutConsumersTest.cs" />
-    <Compile Include="IntegrationTests\MultipleConsumers.cs" />
+    <Compile Include="IntegrationTests\MultipleConsumersTest.cs" />
     <Compile Include="IntegrationTests\OnDemandConsumerTest.cs" />
     <Compile Include="IntegrationTests\QueueNameAttributeConsumersTest.cs" />
     <Compile Include="IntegrationTests\RoutingTest.cs" />
@@ -85,8 +87,8 @@
     <Compile Include="IntegrationTests\TestConsumers\StringTaskConsumer.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessage.cs" />
     <Compile Include="IntegrationTests\TestConsumers\TestMessageTaskConsumer.cs" />
-    <Compile Include="MessageSerializationTests\MessageSerializerTest.cs" />
-    <Compile Include="RabbitMqTestBase.cs" />
+    <Compile Include="RabbitMq\Serialization\MessageSerializerTest.cs" />
+    <Compile Include="IntegrationTests\RabbitMqTestBase.cs" />
     <Compile Include="TestConstants.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -111,7 +113,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="MessageSerializationTests\" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

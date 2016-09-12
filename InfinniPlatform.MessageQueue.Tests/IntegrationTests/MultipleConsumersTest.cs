@@ -6,15 +6,13 @@ using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues.Consumers;
 
-using Moq;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
-    public class MultipleConsumers : RabbitMqTestBase
+    public class MultipleConsumersTest : RabbitMqTestBase
     {
         [Test]
         public void MessageAreDividedWithinConsumers()
@@ -51,7 +49,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProviderMock);
             foreach (var message in assertMessages)
             {
                 producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);

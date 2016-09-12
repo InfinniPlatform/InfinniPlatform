@@ -30,7 +30,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                 return true;
             }
             return SomeString.Equals(other.SomeString) &&
-                   SomeInt == other.SomeInt &&
+                   (SomeInt == other.SomeInt) &&
                    SomeDateTime.Equals(other.SomeDateTime);
         }
 

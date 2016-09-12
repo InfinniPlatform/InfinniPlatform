@@ -8,7 +8,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
     /// <summary>
     /// Обработчик событий процесса обработки сообщений.
     /// </summary>
-    public interface IMessageConsumeHandler
+    public interface IMessageConsumeEventHandler
     {
         /// <summary>
         /// Вызывается перед обработкой сообщения.

@@ -11,8 +11,9 @@ using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.MessageQueue.Tests
+namespace InfinniPlatform.MessageQueue.Tests.RabbitMq.Hosting
 {
+    [Category(TestCategories.UnitTest)]
     public class BasicPropertiesProviderTests
     {
         [Test]

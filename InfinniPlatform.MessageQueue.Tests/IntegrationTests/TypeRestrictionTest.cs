@@ -9,6 +9,7 @@ using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
+    [Category(TestCategories.UnitTest)]
     public class TypeRestrictionTest : RabbitMqTestBase
     {
         [Test]

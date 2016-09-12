@@ -27,11 +27,11 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
         protected override Task Consume(Message<DynamicWrapper> message)
         {
             return Task.Run(async () =>
-                                  {
-                                      _messages.Add(message.Body);
-                                      _completeEvent.Signal();
-                                      await Task.Delay(_taskWorkTime);
-                                  });
+                            {
+                                _messages.Add(message.Body);
+                                _completeEvent.Signal();
+                                await Task.Delay(_taskWorkTime);
+                            });
         }
 
         protected override Task<bool> OnError(Exception exception)
