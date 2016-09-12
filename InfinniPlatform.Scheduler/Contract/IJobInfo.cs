@@ -57,7 +57,7 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Политика обработки пропущенных срабатываний задания.
         /// </summary>
-        JobMisfirePolicy? MisfirePolicy { get; }
+        JobMisfirePolicy MisfirePolicy { get; }
 
         /// <summary>
         /// Данные для выполнения задания.

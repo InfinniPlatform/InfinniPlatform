@@ -46,7 +46,7 @@ namespace InfinniPlatform.Scheduler.Common
             return this;
         }
 
-        public IJobInfoBuilder MisfirePolicy(JobMisfirePolicy? misfirePolicy)
+        public IJobInfoBuilder MisfirePolicy(JobMisfirePolicy misfirePolicy)
         {
             _jobInfo.MisfirePolicy = misfirePolicy;
             return this;

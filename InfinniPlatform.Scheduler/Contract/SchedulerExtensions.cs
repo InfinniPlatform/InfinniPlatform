@@ -10,12 +10,17 @@ namespace InfinniPlatform.Scheduler.Contract
     public static class SchedulerExtensions
     {
         /// <summary>
-        /// Имя компонента.
+        /// Имя группы заданий по умолчанию.
+        /// </summary>
+        public const string DefaultGroupName = "Default";
+
+        /// <summary>
+        /// Имя компонента для планировщика заданий.
         /// </summary>
         public const string ComponentName = "Scheduler";
 
         /// <summary>
-        /// Префикс для наименований объектов.
+        /// Префикс для наименований объектов планировщика заданий.
         /// </summary>
         /// <remarks>
         /// Используется в наименовании типов документов хранилища данных

@@ -186,4 +186,7 @@
   <data name="ResumingJobsCompletedWithException" xml:space="preserve">
     <value>Resuming jobs of the scheduler completed with an exception.</value>
   </data>
+  <data name="CannotSerializeJobHandlerType" xml:space="preserve">
+    <value>Type '{0}' does not implement '{1}' or is not registered in IoC.</value>
+  </data>
 </root>

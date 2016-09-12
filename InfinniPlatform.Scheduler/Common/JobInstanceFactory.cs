@@ -10,7 +10,7 @@ namespace InfinniPlatform.Scheduler.Common
             scheduledFireTimeUtc = TruncateToSecond(scheduledFireTimeUtc);
 
             // Идентификатор экземпляра включает идентификатор задания и время срабатывания
-            return $"{jobId}.{scheduledFireTimeUtc.ToString("O")}";
+            return $"{jobId}.{scheduledFireTimeUtc:O}";
         }
 
         private static DateTimeOffset TruncateToSecond(DateTimeOffset dateTime)

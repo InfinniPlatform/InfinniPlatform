@@ -759,7 +759,7 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
                                               string cronExpression = null,
                                               DateTimeOffset? startTimeUtc = null,
                                               DateTimeOffset? endTimeUtc = null,
-                                              JobMisfirePolicy? misfirePolicy = JobMisfirePolicy.DoNothing)
+                                              JobMisfirePolicy misfirePolicy = JobMisfirePolicy.DoNothing)
         {
             name = name ?? "Job1";
             description = description ?? "Description1";

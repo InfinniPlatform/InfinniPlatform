@@ -33,7 +33,7 @@ namespace InfinniPlatform.Scheduler.Common
 
         public DateTimeOffset? EndTimeUtc { get; set; }
 
-        public JobMisfirePolicy? MisfirePolicy { get; set; }
+        public JobMisfirePolicy MisfirePolicy { get; set; }
 
         public DynamicWrapper Data { get; set; }
     }

@@ -28,6 +28,20 @@ namespace InfinniPlatform.Scheduler.Common
         private readonly ConcurrentDictionary<string, Type> _cache;
 
 
+        public bool CanSerialize(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            return type.IsClass
+                   && !type.IsAbstract
+                   && !type.IsGenericType
+                   && typeof(IJobHandler).IsAssignableFrom(type)
+                   && _resolver.Services.Any(t => t == type);
+        }
+
         public string Serialize(Type type)
         {
             if (type == null)

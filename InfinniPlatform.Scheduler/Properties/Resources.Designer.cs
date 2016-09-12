@@ -142,6 +142,15 @@ namespace InfinniPlatform.Scheduler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type &apos;{0}&apos; does not implement &apos;{1}&apos; or is not registered in IoC..
+        /// </summary>
+        internal static string CannotSerializeJobHandlerType {
+            get {
+                return ResourceManager.GetString("CannotSerializeJobHandlerType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleting jobs from the scheduler completed with an exception..
         /// </summary>
         internal static string DeleteJobsCompletedWithException {

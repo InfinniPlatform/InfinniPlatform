@@ -20,6 +20,7 @@ namespace InfinniPlatform.Scheduler.Tests.Common
             // Given
 
             var handlerTypeSerializer = new Mock<IJobHandlerTypeSerializer>();
+            handlerTypeSerializer.Setup(i => i.CanSerialize(typeof(MyJobHandler))).Returns(true);
             handlerTypeSerializer.Setup(i => i.Serialize(typeof(MyJobHandler))).Returns(nameof(MyJobHandler));
 
             var target = new JobInfoFactory(handlerTypeSerializer.Object);

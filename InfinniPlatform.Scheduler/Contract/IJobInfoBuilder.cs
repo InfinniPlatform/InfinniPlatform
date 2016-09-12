@@ -37,7 +37,7 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Устанавливает политику обработки пропущенных срабатываний задания.
         /// </summary>
-        IJobInfoBuilder MisfirePolicy(JobMisfirePolicy? misfirePolicy);
+        IJobInfoBuilder MisfirePolicy(JobMisfirePolicy misfirePolicy);
 
         /// <summary>
         /// Устанавливает данные для выполнения задания.

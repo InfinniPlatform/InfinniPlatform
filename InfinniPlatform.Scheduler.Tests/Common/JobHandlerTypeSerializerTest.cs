@@ -18,6 +18,23 @@ namespace InfinniPlatform.Scheduler.Tests.Common
 
 
         [Test]
+        public void ShouldCheckIfCanSerialize()
+        {
+            // Given
+            var resolver = new Mock<IContainerResolver>();
+            resolver.Setup(i => i.Services).Returns(new[] { typeof(MyJobHandler) });
+            var target = new JobHandlerTypeSerializer(resolver.Object);
+
+            // When
+            var result1 = target.CanSerialize(typeof(MyJobHandler));
+            var result2 = target.CanSerialize(typeof(JobHandlerTypeSerializerTest));
+
+            // Then
+            Assert.IsTrue(result1);
+            Assert.IsFalse(result2);
+        }
+
+        [Test]
         public void ShouldSerialize()
         {
             // Given

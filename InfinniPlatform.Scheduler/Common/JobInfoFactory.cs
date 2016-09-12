@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Scheduler.Contract;
+using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler.Common
 {
@@ -15,26 +16,36 @@ namespace InfinniPlatform.Scheduler.Common
         private readonly IJobHandlerTypeSerializer _handlerTypeSerializer;
 
 
-        public IJobInfo CreateJobInfo<THandler>(string name, string group, Action<IJobInfoBuilder> jobInfoBuilder) where THandler : IJobHandler
+        public IJobInfo CreateJobInfo(Type jobHandler, string jobName, string jobGroup, Action<IJobInfoBuilder> jobInfoBuilder)
         {
-            if (string.IsNullOrEmpty(name))
+            if (jobHandler == null)
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentNullException(nameof(jobHandler));
             }
 
-            if (string.IsNullOrEmpty(group))
+            if (string.IsNullOrEmpty(jobName))
             {
-                throw new ArgumentNullException(nameof(group));
+                throw new ArgumentNullException(nameof(jobName));
             }
 
-            var handlerType = _handlerTypeSerializer.Serialize(typeof(THandler));
+            if (string.IsNullOrEmpty(jobGroup))
+            {
+                throw new ArgumentNullException(nameof(jobGroup));
+            }
+
+            if (!_handlerTypeSerializer.CanSerialize(jobHandler))
+            {
+                throw new ArgumentException(string.Format(Resources.CannotSerializeJobHandlerType, jobHandler.FullName, typeof(IJobHandler).FullName), nameof(jobHandler));
+            }
+
+            var handlerType = _handlerTypeSerializer.Serialize(jobHandler);
 
             var jobInfo = new JobInfo
             {
-                _id = $"{group}.{name}",
+                _id = $"{jobGroup}.{jobName}",
 
-                Name = name,
-                Group = group,
+                Name = jobName,
+                Group = jobGroup,
                 HandlerType = handlerType
             };
 
