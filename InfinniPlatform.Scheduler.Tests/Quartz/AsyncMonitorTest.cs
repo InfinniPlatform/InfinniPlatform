@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Scheduler.Quartz;
 
@@ -67,15 +66,12 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             // When
 
-            var stopwatch = Stopwatch.StartNew();
             await Task.WhenAll(task11, task12, task21, task22);
-            stopwatch.Stop();
 
             // Then
 
             Assert.IsTrue(result1 == "AABB" || result1 == "BBAA");
             Assert.IsTrue(result2 == "CCDD" || result2 == "DDCC");
-            Assert.GreaterOrEqual(stopwatch.Elapsed.TotalMilliseconds, 2 * taskDelay);
         }
     }
 }
