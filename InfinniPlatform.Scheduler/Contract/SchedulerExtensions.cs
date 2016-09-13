@@ -44,7 +44,7 @@ namespace InfinniPlatform.Scheduler.Contract
         {
             builder.RegisterAssemblyTypes(assembly,
                                           t => typeof(IJobInfoSource).IsAssignableFrom(t),
-                                          r => r.As<IJobInfoSource>().AsSelf().SingleInstance());
+                                          r => r.As<IJobInfoSource>().SingleInstance());
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание вызова обработчика задания
+                // Ожидание вызова обработчика заданий
                 await expectedContext.Task;
             }
             finally
@@ -83,7 +83,7 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
                 // Добавление задания
                 await dispatcher.AddOrUpdateJob(jobInfo);
 
-                // Ожидание вызова обработчика задания
+                // Ожидание вызова обработчика заданий
                 await expectedContext.Task;
             }
             finally
@@ -139,10 +139,10 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание вызова первой версии обработчика задания (не должен сработать)
+                // Ожидание вызова первой версии обработчика заданий (не должен сработать)
                 beforeUpdate.Task.Wait(DefaultWaitTimeout);
 
-                // Ожидание вызова второй версии обработчика задания (должен сработать)
+                // Ожидание вызова второй версии обработчика заданий (должен сработать)
                 await afterUpdate.Task;
             }
             finally
@@ -192,13 +192,13 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание вызова первой версии обработчика задания (должен сработать)
+                // Ожидание вызова первой версии обработчика заданий (должен сработать)
                 await beforeUpdate.Task;
 
                 // Обновление задания
                 await dispatcher.AddOrUpdateJob(jobInfo2);
 
-                // Ожидание вызова второй версии обработчика задания (должен сработать)
+                // Ожидание вызова второй версии обработчика заданий (должен сработать)
                 await afterUpdate.Task;
             }
             finally
@@ -376,14 +376,14 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание вызова обработчика задания до его удаления (должен сработать)
+                // Ожидание вызова обработчика заданий до его удаления (должен сработать)
                 await beforeDelete.Task;
 
                 // Удаление задания
                 await dispatcher.DeleteJob(jobInfo.Id);
                 isDeleted.Value = true;
 
-                // Ожидание вызова обработчика задания после его удаления (не должен сработать)
+                // Ожидание вызова обработчика заданий после его удаления (не должен сработать)
                 afterDelete.Task.Wait(DefaultWaitTimeout);
             }
             finally
@@ -470,14 +470,14 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание вызова обработчика задания до его приостановки (должен сработать)
+                // Ожидание вызова обработчика заданий до его приостановки (должен сработать)
                 await beforePause.Task;
 
                 // Приостановка задания
                 await dispatcher.PauseJob(jobInfo.Id);
                 isPaised.Value = true;
 
-                // Ожидание вызова обработчика задания после его приостановки (не должен сработать)
+                // Ожидание вызова обработчика заданий после его приостановки (не должен сработать)
                 afterPause.Task.Wait(DefaultWaitTimeout);
             }
             finally
@@ -564,14 +564,14 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание вызова обработчика задания до его возобновления (не должен сработать)
+                // Ожидание вызова обработчика заданий до его возобновления (не должен сработать)
                 beforeResume.Task.Wait(DefaultWaitTimeout);
 
                 // Возобновление задания
                 isResumed.Value = true;
                 await dispatcher.ResumeJob(jobInfo.Id);
 
-                // Ожидание вызова обработчика задания после его возобновления (должен сработать)
+                // Ожидание вызова обработчика заданий после его возобновления (должен сработать)
                 await afterResume.Task;
             }
             finally
@@ -612,7 +612,7 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание досрочного вызова обработчика задания (должен сработать)
+                // Ожидание досрочного вызова обработчика заданий (должен сработать)
                 await expectedContext.Task;
             }
             finally
@@ -663,14 +663,14 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание вызова обработчика задания до вызова досрочного выполнения (не должен сработать)
+                // Ожидание вызова обработчика заданий до вызова досрочного выполнения (не должен сработать)
                 beforeTrigger.Task.Wait(DefaultWaitTimeout);
 
                 // Вызов досрочного выполнения задания
                 isTriggered.Value = true;
                 await dispatcher.TriggerJob(jobInfo.Id, triggerData);
 
-                // Ожидание вызова обработчика задания после вызова досрочного выполнения (должен сработать)
+                // Ожидание вызова обработчика заданий после вызова досрочного выполнения (должен сработать)
                 await afterTrigger.Task;
             }
             finally
@@ -735,10 +735,10 @@ namespace InfinniPlatform.Scheduler.Tests.Quartz
 
             try
             {
-                // Ожидание вызова обработчика задания, которое игнорирует пропущенные задания (не должен сработать)
+                // Ожидание вызова обработчика заданий, которое игнорирует пропущенные задания (не должен сработать)
                 jobContext1.Task.Wait(DefaultWaitTimeout);
 
-                // Ожидание вызова обработчика задания, которое не игнорирует пропущенные задания (должен сработать)
+                // Ожидание вызова обработчика заданий, которое не игнорирует пропущенные задания (должен сработать)
                 await jobContext2.Task;
             }
             finally

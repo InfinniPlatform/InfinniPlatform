@@ -35,7 +35,7 @@ namespace InfinniPlatform.Scheduler.Contract
         string Description { get; }
 
         /// <summary>
-        /// Тип обработчика задания.
+        /// Тип обработчика заданий.
         /// </summary>
         string HandlerType { get; }
 
@@ -55,7 +55,7 @@ namespace InfinniPlatform.Scheduler.Contract
         DateTimeOffset? EndTimeUtc { get; }
 
         /// <summary>
-        /// Политика обработки пропущенных срабатываний задания.
+        /// Политика обработки пропущенных заданий.
         /// </summary>
         JobMisfirePolicy MisfirePolicy { get; }
 

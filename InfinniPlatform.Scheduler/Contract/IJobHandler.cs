@@ -3,7 +3,7 @@
 namespace InfinniPlatform.Scheduler.Contract
 {
     /// <summary>
-    /// Обработчик задания.
+    /// Обработчик заданий.
     /// </summary>
     public interface IJobHandler
     {

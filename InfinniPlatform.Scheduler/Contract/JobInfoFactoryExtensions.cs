@@ -10,7 +10,7 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Создает новый экземпляр информации о задании <see cref="IJobInfo"/>.
         /// </summary>
-        /// <typeparam name="THandler">Тип обработчика задания.</typeparam>
+        /// <typeparam name="THandler">Тип обработчика заданий.</typeparam>
         /// <param name="target">Фабрика для создания информации о задании <see cref="IJobInfo"/>.</param>
         /// <param name="jobName">Имя задания.</param>
         /// <param name="jobGroup">Группа задания.</param>
@@ -24,7 +24,7 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Создает новый экземпляр информации о задании <see cref="IJobInfo"/>.
         /// </summary>
-        /// <typeparam name="THandler">Тип обработчика задания.</typeparam>
+        /// <typeparam name="THandler">Тип обработчика заданий.</typeparam>
         /// <param name="target">Фабрика для создания информации о задании <see cref="IJobInfo"/>.</param>
         /// <param name="jobName">Имя задания.</param>
         /// <param name="jobInfoBuilder">Функция для определения информации о задании.</param>
@@ -38,7 +38,7 @@ namespace InfinniPlatform.Scheduler.Contract
         /// Создает новый экземпляр информации о задании <see cref="IJobInfo"/>.
         /// </summary>
         /// <param name="target">Фабрика для создания информации о задании <see cref="IJobInfo"/>.</param>
-        /// <param name="jobHandler">Тип обработчика задания.</param>
+        /// <param name="jobHandler">Тип обработчика заданий.</param>
         /// <param name="jobName">Имя задания.</param>
         /// <param name="jobInfoBuilder">Функция для определения информации о задании.</param>
         /// <returns>Информация о задании.</returns>

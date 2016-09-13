@@ -12,7 +12,7 @@ namespace InfinniPlatform.Scheduler.Common
     internal class JobHandlerTypeSerializer : IJobHandlerTypeSerializer
     {
         /// <summary>
-        /// Регулярное выражение для десериализации типа обработчика задания.
+        /// Регулярное выражение для десериализации типа обработчика заданий.
         /// </summary>
         private static readonly Regex HandlerTypeRegex = new Regex(@"^\s*(?<typeName>.+?)\s*,\s*(?<assemblyName>.+?)\s*$", RegexOptions.Compiled);
 

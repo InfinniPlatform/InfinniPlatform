@@ -46,10 +46,10 @@ namespace InfinniPlatform.Scheduler.Queues
                 jobInfo = message.Body.JobInfo;
                 context = message.Body.Context;
 
-                // Имя типа обработчика задания
+                // Имя типа обработчика заданий
                 var jobHandlerType = jobInfo.HandlerType;
 
-                // Создание экземпляра обработчика задания
+                // Создание экземпляра обработчика заданий
                 var handler = _jobHandlerTypeSerializer.Deserialize(jobHandlerType);
 
                 if (handler != null)

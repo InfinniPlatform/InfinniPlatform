@@ -15,22 +15,22 @@ namespace InfinniPlatform.Scheduler.Contract
         string InstanceId { get; }
 
         /// <summary>
-        /// Фактическое время срабатывания задания.
+        /// Фактическое время выполнения задания.
         /// </summary>
         DateTimeOffset FireTimeUtc { get; }
 
         /// <summary>
-        /// Запланированное время срабатывания задания.
+        /// Запланированное время выполнения задания.
         /// </summary>
         DateTimeOffset ScheduledFireTimeUtc { get; }
 
         /// <summary>
-        /// Предыдущее время срабатывания задания.
+        /// Время предыдущего запланированного выполнения задания.
         /// </summary>
         DateTimeOffset? PreviousFireTimeUtc { get; }
 
         /// <summary>
-        /// Следующее время срабатывания задания.
+        /// Время следующего запланированного выполнения задания.
         /// </summary>
         DateTimeOffset? NextFireTimeUtc { get; }
 

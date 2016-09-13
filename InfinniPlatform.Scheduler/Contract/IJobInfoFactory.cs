@@ -10,7 +10,7 @@ namespace InfinniPlatform.Scheduler.Contract
         /// <summary>
         /// Создает новый экземпляр информации о задании <see cref="IJobInfo"/>.
         /// </summary>
-        /// <param name="jobHandler">Тип обработчика задания.</param>
+        /// <param name="jobHandler">Тип обработчика заданий.</param>
         /// <param name="jobName">Имя задания.</param>
         /// <param name="jobGroup">Группа задания.</param>
         /// <param name="jobInfoBuilder">Функция для определения информации о задании.</param>
