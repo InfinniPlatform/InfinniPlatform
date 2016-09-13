@@ -60,12 +60,16 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IAppEventHandler>()
                    .SingleInstance();
 
+            builder.RegisterType<MessageConsumerSource>()
+                   .As<IMessageConsumerSource>()
+                   .SingleInstance();
+
             builder.RegisterType<MessageQueueSubscriptionManager>()
                    .As<IMessageQueueSubscriptionManager>()
                    .SingleInstance();
 
-            builder.RegisterType<MessageConsumerSource>()
-                   .As<IMessageConsumerSource>()
+            builder.RegisterType<MessageQueueThreadPool>()
+                   .As<IMessageQueueThreadPool>()
                    .SingleInstance();
 
             // Diagnostics
