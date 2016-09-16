@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
@@ -84,14 +85,14 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         public void AllTypedMessagesRoutedToCorrespondedBroadcastConsumers()
         {
             var namedQueueMessages = new List<TestMessage>();
-            var namedQueueCountdownEvent = new CountdownEvent(6);
+            var namedQueueCountdownEvent = new CountdownEvent(0);
             var namedQueueConsumer = new NamedQueueTestMessageBroadcastConsumer(namedQueueMessages, namedQueueCountdownEvent);
 
             var testMessages = new List<TestMessage>();
             var testMessageCountdownEvent = new CountdownEvent(6);
             var testMessageConsumer = new TestMessageBroadcastConsumer(testMessages, testMessageCountdownEvent);
 
-            object[] assertMessages =
+            TestMessage[] assertMessages =
             {
                 new TestMessage("1", 1, new DateTime(1, 1, 1)),
                 new TestMessage("2", 2, new DateTime(2, 2, 2)),
@@ -119,7 +120,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             Assert.IsTrue(namedQueueCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(namedQueueConsumer)}.");
             Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(testMessageConsumer)}.");
 
-            CollectionAssert.AreEquivalent(assertMessages, namedQueueMessages);
+            CollectionAssert.AreEquivalent(Enumerable.Empty<TestMessage>(), namedQueueMessages);
             CollectionAssert.AreEquivalent(assertMessages, testMessages);
         }
 
