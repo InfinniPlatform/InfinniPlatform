@@ -18,7 +18,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         {
             _settings = settings;
             _log = log;
-            BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Fanout}";
+            BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Direct}";
 
             _connection = new Lazy<IConnection>(() =>
                                                 {
@@ -35,7 +35,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 
                                                     using (var channel = connection.CreateModel())
                                                     {
-                                                        channel.ExchangeDeclare(BroadcastExchangeName, Defaults.Exchange.Type.Fanout, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                                                        channel.ExchangeDeclare(BroadcastExchangeName, Defaults.Exchange.Type.Direct, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
                                                     }
 
                                                     return connection;
