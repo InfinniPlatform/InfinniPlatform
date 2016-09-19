@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Threading;
+using System.Threading.Tasks;
 
 using InfinniPlatform.ServiceHost.Properties;
 
@@ -39,9 +40,19 @@ namespace InfinniPlatform.ServiceHost
 
                 // Запуск хостинга приложения
                 serviceHost.Start(Timeout.InfiniteTimeSpan);
-
                 Console.WriteLine(Resources.ServerStarted);
-                Console.ReadLine();
+
+                var stopEvent = new TaskCompletionSource<bool>();
+
+                Console.CancelKeyPress += (s, e) =>
+                                          {
+                                              // Остановка хостинга приложения
+                                              serviceHost.Stop(Timeout.InfiniteTimeSpan);
+                                              stopEvent.SetResult(true);
+                                          };
+
+                // Ожидание остановки приложения (Ctrl+C)
+                stopEvent.Task.Wait(Timeout.Infinite);
             }
             catch (Exception error)
             {

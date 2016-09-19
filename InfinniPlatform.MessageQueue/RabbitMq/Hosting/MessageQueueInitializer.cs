@@ -77,6 +77,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             }
         }
 
+        public override void OnAfterStop()
+        {
+            _manager.Dispose();
+        }
+
         private void InitializeBroadcastConsumers(IEnumerable<IConsumer> consumers)
         {
             foreach (var consumer in consumers)

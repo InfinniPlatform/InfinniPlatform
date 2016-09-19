@@ -14,7 +14,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
-    public class FanoutConsumersTest : RabbitMqTestBase
+    public class BroadcastConsumersTest : RabbitMqTestBase
     {
         [Test]
         public void EachFanoutConsumerRecieveAllMessages()
@@ -44,7 +44,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(null, broadcastConsumers);
 
-            var producerBase = new BroadcastProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
+            var producerBase = new BroadcastProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

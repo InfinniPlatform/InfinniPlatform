@@ -24,15 +24,15 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 {
     public class RabbitMqTestBase
     {
-        internal static RabbitMqManager RabbitMqManager { get; set; }
+        internal RabbitMqManager RabbitMqManager { get; set; }
 
-        internal static RabbitMqManagementHttpClient RabbitMqManagementHttpClient { get; set; }
+        internal RabbitMqManagementHttpClient RabbitMqManagementHttpClient { get; set; }
 
-        internal static MessageSerializer MessageSerializer { get; set; }
+        internal MessageSerializer MessageSerializer { get; set; }
 
-        internal static IBasicPropertiesProvider BasicPropertiesProviderMock { get; set; }
+        internal IBasicPropertiesProvider BasicPropertiesProvider { get; set; }
 
-        [OneTimeSetUp]
+        [SetUp]
         public async Task SetUp()
         {
             var appEnvironmentMock = new Mock<IAppEnvironment>();
@@ -50,27 +50,33 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var basicPropertiesProviderMock = new Mock<IBasicPropertiesProvider>();
             basicPropertiesProviderMock.Setup(provider => provider.Create())
                                        .Returns(new BasicProperties());
-            BasicPropertiesProviderMock = basicPropertiesProviderMock.Object;
+            BasicPropertiesProvider = basicPropertiesProviderMock.Object;
 
             var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();
-
-            foreach (var queue in queues)
+            using (var channel = RabbitMqManager.GetChannel())
             {
-                RabbitMqManager.GetChannel().QueueDelete(queue.Name, false, false);
+                foreach (var queue in queues)
+                {
+                    channel.QueueDelete(queue.Name, false, false);
+                }
             }
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         public async Task TearDown()
         {
             var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();
-            foreach (var queue in queues)
+            using (var channel = RabbitMqManager.GetChannel())
             {
-                RabbitMqManager.GetChannel().QueueDelete(queue.Name, false, false);
+                foreach (var queue in queues)
+                {
+                    channel.QueueDelete(queue.Name, false, false);
+                }
             }
+            RabbitMqManager.Dispose();
         }
 
-        public static void RegisterConsumers(IEnumerable<ITaskConsumer> taskConsumers, IEnumerable<IBroadcastConsumer> broadcastConsumers, RabbitMqConnectionSettings customSettings = null)
+        public void RegisterConsumers(IEnumerable<ITaskConsumer> taskConsumers, IEnumerable<IBroadcastConsumer> broadcastConsumers, RabbitMqConnectionSettings customSettings = null)
         {
             var logMock = new Mock<ILog>();
             logMock.Setup(log => log.Debug(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));

@@ -69,7 +69,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var actualMessages = new ConcurrentBag<string>();
             RegisterConsumers(new[] { new MessageQueueThreadPoolConsumer(actualMessages, countdownEvent, timeout) }, null, customSettings);
 
-            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProviderMock);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in messages)
                 await producerBase.PublishAsync(message, "MessageQueueThreadPoolTest");
 

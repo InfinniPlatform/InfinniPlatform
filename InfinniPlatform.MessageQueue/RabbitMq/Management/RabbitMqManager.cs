@@ -10,7 +10,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
     /// <summary>
     /// Менеджер RabbitMQ, предоставляющий функции, доступные через RabbitMQ .NET-драйвер.
     /// </summary>
-    internal sealed class RabbitMqManager
+    internal sealed class RabbitMqManager : IDisposable
     {
         public RabbitMqManager(RabbitMqConnectionSettings settings,
                                IAppEnvironment appEnvironment,
@@ -47,6 +47,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         private readonly RabbitMqConnectionSettings _settings;
 
         public string BroadcastExchangeName { get; }
+
+        public void Dispose()
+        {
+            _connection.Value.Dispose();
+        }
 
         /// <summary>
         /// Возвращает абстракцию соединения с RabbitMq.

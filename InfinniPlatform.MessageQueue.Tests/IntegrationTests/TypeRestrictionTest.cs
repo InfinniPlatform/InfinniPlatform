@@ -15,7 +15,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void BroadcastProducerThrowsExceptionIfDynamicWrapperSendViaPublishMethod()
         {
-            var broadcastProducer = new BroadcastProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
+            var broadcastProducer = new BroadcastProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
 
             Assert.Throws<ArgumentException>(() => broadcastProducer.Publish(new DynamicWrapper()));
             Assert.ThrowsAsync<ArgumentException>(() => broadcastProducer.PublishAsync(new DynamicWrapper()));
@@ -24,7 +24,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void TaskProducerThrowsExceptionIfDynamicWrapperSendViaPublishMethod()
         {
-            var taskProducer = new TaskProducer(RabbitMqManager, MessageSerializer, new Mock<IBasicPropertiesProvider>().Object);
+            var taskProducer = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
 
             Assert.Throws<ArgumentException>(() => taskProducer.Publish(new DynamicWrapper()));
             Assert.ThrowsAsync<ArgumentException>(() => taskProducer.PublishAsync(new DynamicWrapper()));
