@@ -40,9 +40,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Authenticat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Authentication.Tests", "InfinniPlatform.Authentication.Tests\InfinniPlatform.Authentication.Tests.csproj", "{01FDB3B6-D433-4D85-AEF6-E194742A708D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.FlowDocument", "InfinniPlatform.FlowDocument\InfinniPlatform.FlowDocument.csproj", "{E47F0C5B-F775-44B4-9E2E-E4C044864125}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.FlowDocument", "InfinniPlatform.PrintView\InfinniPlatform.FlowDocument.csproj", "{E47F0C5B-F775-44B4-9E2E-E4C044864125}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.FlowDocument.Tests", "InfinniPlatform.FlowDocument.Tests\InfinniPlatform.FlowDocument.Tests.csproj", "{C4D8DDAE-6A41-479D-8DC7-652FEA918741}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.FlowDocument.Tests", "InfinniPlatform.PrintView.Tests\InfinniPlatform.FlowDocument.Tests.csproj", "{C4D8DDAE-6A41-479D-8DC7-652FEA918741}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Expressions", "InfinniPlatform.Expressions\InfinniPlatform.Expressions.csproj", "{0CA27AD5-540A-4CC6-A9F4-18634716D096}"
 EndProject
