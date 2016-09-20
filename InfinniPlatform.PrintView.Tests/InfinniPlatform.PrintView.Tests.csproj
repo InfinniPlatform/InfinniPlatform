@@ -8,8 +8,8 @@
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InfinniPlatform.FlowDocument.Tests</RootNamespace>
-    <AssemblyName>InfinniPlatform.FlowDocument.Tests</AssemblyName>
+    <RootNamespace>InfinniPlatform.PrintView.Tests</RootNamespace>
+    <AssemblyName>InfinniPlatform.PrintView.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -108,9 +108,9 @@
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.FlowDocument.csproj">
+    <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj">
       <Project>{e47f0c5b-f775-44b4-9e2e-e4c044864125}</Project>
-      <Name>InfinniPlatform.FlowDocument</Name>
+      <Name>InfinniPlatform.PrintView</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>

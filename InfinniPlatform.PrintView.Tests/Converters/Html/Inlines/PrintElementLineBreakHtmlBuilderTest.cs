@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.FlowDocument.Model.Blocks;
 using InfinniPlatform.FlowDocument.Model.Inlines;
-using InfinniPlatform.FlowDocument.Tests.Properties;
+using InfinniPlatform.PrintView.Tests.Properties;
 using NUnit.Framework;
 
 namespace InfinniPlatform.FlowDocument.Tests.Converters.Html.Inlines

@@ -5,11 +5,20 @@
     /// </summary>
     public class SchedulerSettings
     {
+        /// <summary>
+        /// Имя секции в файле конфигурации.
+        /// </summary>
         public const string SectionName = "scheduler";
 
-        public static SchedulerSettings Default = new SchedulerSettings();
+        /// <summary>
+        /// Настройка планировщика заданий по умолчанию.
+        /// </summary>
+        public static readonly SchedulerSettings Default = new SchedulerSettings();
 
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
         public SchedulerSettings()
         {
         }

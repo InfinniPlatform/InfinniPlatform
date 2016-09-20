@@ -4,7 +4,7 @@ using System.IO;
 
 using InfinniPlatform.FlowDocument.Model;
 using InfinniPlatform.FlowDocument.PrintView;
-using InfinniPlatform.FlowDocument.Tests.Properties;
+using InfinniPlatform.PrintView.Tests.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.PrintView;
 

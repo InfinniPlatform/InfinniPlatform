@@ -1,6 +1,6 @@
 ﻿using System;
 using InfinniPlatform.FlowDocument.Model.Inlines;
-using InfinniPlatform.FlowDocument.Tests.Properties;
+using InfinniPlatform.PrintView.Tests.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 using NUnit.Framework;
 

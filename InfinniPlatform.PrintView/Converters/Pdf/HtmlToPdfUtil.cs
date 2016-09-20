@@ -6,7 +6,7 @@ using System.Threading;
 
 using InfinniPlatform.FlowDocument.Builders.Factories;
 using InfinniPlatform.FlowDocument.Model;
-using InfinniPlatform.FlowDocument.Properties;
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.FlowDocument.Converters.Pdf
 {

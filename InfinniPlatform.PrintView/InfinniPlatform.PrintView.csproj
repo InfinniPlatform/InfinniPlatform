@@ -7,8 +7,8 @@
     <ProjectGuid>{E47F0C5B-F775-44B4-9E2E-E4C044864125}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InfinniPlatform.FlowDocument</RootNamespace>
-    <AssemblyName>InfinniPlatform.FlowDocument</AssemblyName>
+    <RootNamespace>InfinniPlatform.PrintView</RootNamespace>
+    <AssemblyName>InfinniPlatform.PrintView</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
