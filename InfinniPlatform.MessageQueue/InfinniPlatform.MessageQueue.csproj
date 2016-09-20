@@ -67,7 +67,7 @@
     <Compile Include="RabbitMq\Hosting\IMessageQueueSubscriptionManager.cs" />
     <Compile Include="RabbitMq\Hosting\IMessageQueueThreadPool.cs" />
     <Compile Include="RabbitMq\Hosting\MessageQueueSubscriptionManager.cs" />
-    <Compile Include="RabbitMq\Hosting\SemaphorSlimProvider.cs" />
+    <Compile Include="RabbitMq\Hosting\MessageQueueThreadPool.cs" />
     <Compile Include="RabbitMq\IBasicPropertiesProvider.cs" />
     <Compile Include="RabbitMq\MessageHeadersTypes.cs" />
     <Compile Include="RabbitMq\BasicPropertiesProvider.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="RabbitMq\TaskProducer.cs" />
     <Compile Include="RabbitMq\Management\RabbitMqManager.cs" />
     <Compile Include="RabbitMq\Management\RabbitMqConnectionSettings.cs" />
+    <Compile Include="Recconnect.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

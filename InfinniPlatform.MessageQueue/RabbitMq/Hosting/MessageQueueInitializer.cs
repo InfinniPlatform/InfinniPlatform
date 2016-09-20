@@ -61,6 +61,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             }
         }
 
+        public override void OnAfterStop()
+        {
+            _manager.Dispose();
+        }
+
         private void InitializeTaskConsumers(IEnumerable<IConsumer> consumers)
         {
             foreach (var consumer in consumers)
@@ -75,11 +80,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
                 _log.Debug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
-        }
-
-        public override void OnAfterStop()
-        {
-            _manager.Dispose();
         }
 
         private void InitializeBroadcastConsumers(IEnumerable<IConsumer> consumers)

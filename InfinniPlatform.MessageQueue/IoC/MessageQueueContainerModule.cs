@@ -10,6 +10,7 @@ using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.MessageQueue.IoC
@@ -77,6 +78,9 @@ namespace InfinniPlatform.MessageQueue.IoC
             builder.RegisterType<MessageQueueStatusProvider>()
                    .As<ISubsystemStatusProvider>()
                    .SingleInstance();
+
+            builder.RegisterHttpServices(GetType().Assembly);
+            builder.RegisterConsumers(GetType().Assembly);
         }
 
         private static RabbitMqConnectionSettings GetRabbitMqConnectionSettings(IContainerResolver resolver)
