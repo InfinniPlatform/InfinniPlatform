@@ -65,8 +65,8 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IMessageConsumerSource>()
                    .SingleInstance();
 
-            builder.RegisterType<MessageQueueSubscriptionManager>()
-                   .As<IMessageQueueSubscriptionManager>()
+            builder.RegisterType<MessageQueueConsumersManager>()
+                   .As<IMessageQueueConsumersManager>()
                    .SingleInstance();
 
             builder.RegisterType<MessageQueueThreadPool>()

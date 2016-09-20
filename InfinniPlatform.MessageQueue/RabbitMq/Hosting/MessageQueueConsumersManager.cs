@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
@@ -18,7 +20,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
     /// Предоставляет метод регистрации получателей сообщений из очереди.
     /// </summary>
     [LoggerName("MessageQueue")]
-    internal sealed class MessageQueueSubscriptionManager : IMessageQueueSubscriptionManager
+    internal sealed class MessageQueueConsumersManager : IMessageQueueConsumersManager
     {
         /// <param name="messageConsumeEventHandler">Обработчик событий процесса обработки сообщения.</param>
         /// <param name="messageQueueThreadPool"></param>
@@ -26,12 +28,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="log">Лог.</param>
         /// <param name="performanceLog">Лог производительности.</param>
-        public MessageQueueSubscriptionManager(IMessageConsumeEventHandler messageConsumeEventHandler,
-                                               IMessageQueueThreadPool messageQueueThreadPool,
-                                               IMessageSerializer messageSerializer,
-                                               RabbitMqManager manager,
-                                               ILog log,
-                                               IPerformanceLog performanceLog)
+        public MessageQueueConsumersManager(IMessageConsumeEventHandler messageConsumeEventHandler,
+                                            IMessageQueueThreadPool messageQueueThreadPool,
+                                            IMessageSerializer messageSerializer,
+                                            RabbitMqManager manager,
+                                            ILog log,
+                                            IPerformanceLog performanceLog)
         {
             _messageConsumeEventHandler = messageConsumeEventHandler;
             _messageQueueThreadPool = messageQueueThreadPool;
@@ -78,6 +80,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <param name="channel">Канал RabbitMQ.</param>
         private async Task OnRecieved(IConsumer consumer, BasicDeliverEventArgs args, IModel channel)
         {
+            File.AppendAllText($"C:\\Projects\\{args.ConsumerTag}.log", $"Got {_messageSerializer.BytesToMessage(args, consumer.MessageType).GetBody()} by {args.ConsumerTag}.{Environment.NewLine}");
+
             var startDate = DateTime.Now;
             Exception error = null;
 

@@ -28,9 +28,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                     queueName = QueueNamingConventions.GetQueueName(typeof(T));
                 }
 
-                _manager.DeclareTaskQueue(queueName);
+                var declareQueueName = _manager.DeclareTaskQueue(queueName);
 
-                var result = channel.BasicGet(queueName, false);
+                var result = channel.BasicGet(declareQueueName, false);
 
                 if (result == null)
                 {

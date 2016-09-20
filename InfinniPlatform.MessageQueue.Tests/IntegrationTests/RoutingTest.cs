@@ -117,6 +117,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             }
 
             const int timeout = 500;
+
             Assert.IsTrue(namedQueueCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(namedQueueConsumer)}.");
             Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(testMessageConsumer)}.");
 
@@ -125,7 +126,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         }
 
         [Test]
-        public void AllTypedMessagesRoutedToCorrespondedConsumers()
+        public void AllTypedMessagesRoutedToCorrespondedTaskConsumers()
         {
             var dynamicWrapperMessages = new List<DynamicWrapper>();
             var dynamicWrapperCountdownEvent = new CountdownEvent(3);
@@ -165,6 +166,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             }
 
             const int timeout = 500;
+
             Assert.IsTrue(dynamicWrapperCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(dynamicWrapperConsumer)}.");
             Assert.IsTrue(stringCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(stringConsumer)}.");
             Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(testMessageConsumer)}.");

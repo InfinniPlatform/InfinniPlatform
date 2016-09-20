@@ -18,8 +18,10 @@ namespace InfinniPlatform.PushNotification.MessageBus
     /// <remarks>
     /// Ипользуется для распределения нагрузки на SignalR при работе в кластере.
     /// </remarks>
+    [QueueName(QueueName)]
     public class SignalRMessageBus : ScaleoutMessageBus, IBroadcastConsumer
     {
+        private const string QueueName = "SignalR.Scaleout";
         public const int DefaultStreamIndex = 0;
         private static long _payloadId;
 
@@ -60,7 +62,7 @@ namespace InfinniPlatform.PushNotification.MessageBus
                                              StreamIndex = DefaultStreamIndex
                                          };
 
-            await _producer.PublishAsync(scaleoutMessageWrapper);
+            await _producer.PublishAsync(scaleoutMessageWrapper, QueueName);
         }
 
         protected override async Task Send(int streamIndex, IList<Message> messages)
@@ -71,7 +73,7 @@ namespace InfinniPlatform.PushNotification.MessageBus
                                              StreamIndex = streamIndex
                                          };
 
-            await _producer.PublishAsync(scaleoutMessageWrapper);
+            await _producer.PublishAsync(scaleoutMessageWrapper, QueueName);
         }
 
         protected override void OnReceived(int streamIndex, ulong id, ScaleoutMessage message)

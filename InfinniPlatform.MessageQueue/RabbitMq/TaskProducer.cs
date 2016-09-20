@@ -5,8 +5,6 @@ using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Queues.Producers;
 
-using RabbitMQ.Client.Framing;
-
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
     internal sealed class TaskProducer : ITaskProducer
@@ -20,9 +18,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             _basicPropertiesProvider = basicPropertiesProvider;
         }
 
+        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
+
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
-        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
 
         public void Publish<T>(T messageBody, string queueName = null)
         {
@@ -57,7 +56,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
             using (var channel = _manager.GetChannel())
             {
-                channel.BasicPublish(string.Empty, routingKey, true, _basicPropertiesProvider.Create(), messageBodyToBytes);
+                var taskKey = _manager.GetTaskKey(routingKey);
+                var basicProperties = _basicPropertiesProvider.GetPersistent();
+                basicProperties.Persistent = true;
+
+                channel.BasicPublish(string.Empty, taskKey, true, basicProperties, messageBodyToBytes);
             }
         }
     }

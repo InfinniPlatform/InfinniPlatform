@@ -5,7 +5,6 @@ using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
 
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 {
@@ -20,11 +19,13 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         {
             BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Direct}";
 
+            _appEnvironment = appEnvironment;
             _connection = new Lazy<IConnection>(() => CreateConnection(rabbitMqConnectionSettings));
             _rabbitMqConnectionSettings = rabbitMqConnectionSettings;
             _log = log;
         }
 
+        private readonly IAppEnvironment _appEnvironment;
         private readonly Lazy<IConnection> _connection;
         private readonly ILog _log;
         private readonly RabbitMqConnectionSettings _rabbitMqConnectionSettings;
@@ -111,30 +112,46 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         }
 
         /// <summary>
-        /// Создает очередь для сообщений по ключу.
+        /// Создает очередь для сообщений по имени.
         /// </summary>
-        /// <param name="queueKey">Ключ/имя очереди.</param>
-        public void DeclareTaskQueue(string queueKey)
+        /// <param name="queueName">Имя очереди.</param>
+        public string DeclareTaskQueue(string queueName)
         {
             using (var channel = GetChannel())
             {
-                channel.QueueDeclare(queueKey, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete, null);
+                var declaredQueueName = GetTaskKey(queueName);
+
+                channel.QueueDeclare(declaredQueueName, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete);
+
+                return declaredQueueName;
             }
         }
 
         /// <summary>
-        /// Создает очередь для широковещательных сообщений.
+        /// Создает очередь для широковещательных сообщений по ключу.
         /// </summary>
+        /// <param name="routingKey">Ключ.</param>
         public string DeclareBroadcastQueue(string routingKey)
         {
             using (var channel = GetChannel())
             {
-                var queueName = channel.QueueDeclare().QueueName;
+                var declaredQueueName = GetBroadcastKey(routingKey);
 
-                channel.QueueBind(queueName, BroadcastExchangeName, routingKey);
+                channel.QueueDeclare(declaredQueueName, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete);
+                channel.QueueBind(declaredQueueName, BroadcastExchangeName, routingKey);
 
-                return queueName;
+                return declaredQueueName;
             }
+        }
+
+        public string GetTaskKey(string key)
+        {
+            return $"{_appEnvironment.Name}.{key}";
+        }
+
+        public string GetBroadcastKey(string key)
+        {
+            return $"{_appEnvironment.Name}.{key}.{_appEnvironment.InstanceId}";
         }
 
         private void OnConnectionShutdown(object sender, ShutdownEventArgs args)

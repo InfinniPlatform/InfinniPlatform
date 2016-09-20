@@ -18,11 +18,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <summary>
         /// Регистрирует потребителей сообщений.
         /// </summary>
-        /// <param name="subscriptionManager">Предоставляет метод регистрации получателей сообщений из очереди.</param>
+        /// <param name="consumersManager">Предоставляет метод регистрации получателей сообщений из очереди.</param>
         /// <param name="consumerSource">Источники потребителей сообщений.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="log">Лог.</param>
-        public MessageQueueInitializer(IMessageQueueSubscriptionManager subscriptionManager,
+        public MessageQueueInitializer(IMessageQueueConsumersManager consumersManager,
                                        IEnumerable<IMessageConsumerSource> consumerSource,
                                        RabbitMqManager manager,
                                        ILog log)
@@ -31,7 +31,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             _taskConsumers = consumers.OfType<ITaskConsumer>().ToList();
             _broadcastConsumers = consumers.OfType<IBroadcastConsumer>().ToList();
 
-            _subscriptionManager = subscriptionManager;
+            _consumersManager = consumersManager;
             _manager = manager;
             _log = log;
         }
@@ -40,25 +40,24 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
         private readonly ILog _log;
         private readonly RabbitMqManager _manager;
-        private readonly IMessageQueueSubscriptionManager _subscriptionManager;
+        private readonly IMessageQueueConsumersManager _consumersManager;
         private readonly List<ITaskConsumer> _taskConsumers;
 
         public override void OnAfterStart()
         {
-            RegisterOnReconnectEvent();
-
             try
             {
                 _log.Info(Resources.InitializationOfConsumersStarted);
 
                 InitializeTaskConsumers();
-
                 InitializeBroadcastConsumers();
             }
             catch (Exception e)
             {
                 _log.Error(Resources.UnableToInitializeConsumers, e);
             }
+
+            RegisterOnReconnectEvent();
         }
 
         public override void OnAfterStop()
@@ -72,7 +71,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             var recoverable = connection as IRecoverable;
             if (recoverable != null)
             {
-                recoverable.Recovery += (sender, args) => { InitializeBroadcastConsumers(); };
+                recoverable.Recovery += (sender, args) =>
+                                        {
+                                            //InitializeBroadcastConsumers();
+                                        };
             }
         }
 
@@ -83,10 +85,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                 var consumerType = consumer.GetType().Name;
                 _log.Debug(Resources.InitializationOfTaskConsumerStarted, () => CreateLogContext(consumerType));
 
-                var queueName = QueueNamingConventions.GetConsumerQueueName(consumer);
-                _manager.DeclareTaskQueue(queueName);
+                var key = QueueNamingConventions.GetConsumerQueueName(consumer);
+                var queueName = _manager.DeclareTaskQueue(key);
 
-                _subscriptionManager.RegisterConsumer(queueName, consumer);
+                _consumersManager.RegisterConsumer(queueName, consumer);
 
                 _log.Debug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
@@ -104,7 +106,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                 var routingKey = QueueNamingConventions.GetConsumerQueueName(consumer);
                 var queueName = _manager.DeclareBroadcastQueue(routingKey);
 
-                _subscriptionManager.RegisterConsumer(queueName, consumer);
+                _consumersManager.RegisterConsumer(queueName, consumer);
 
                 _log.Debug(Resources.InitializationOfBroadcastConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }

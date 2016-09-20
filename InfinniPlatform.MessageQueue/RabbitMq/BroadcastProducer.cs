@@ -18,10 +18,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             _basicPropertiesProvider = basicPropertiesProvider;
         }
 
-        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
-
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
+        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
 
         public void Publish<T>(T messageBody, string queueName = null)
         {
@@ -54,7 +53,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
             using (var channel = _manager.GetChannel())
             {
-                channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, true, _basicPropertiesProvider.Create(), messageToBytes);
+                var basicProperties = _basicPropertiesProvider.Get();
+
+                channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, true, basicProperties, messageToBytes);
             }
         }
     }

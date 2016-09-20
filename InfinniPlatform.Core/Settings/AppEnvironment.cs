@@ -11,11 +11,23 @@ namespace InfinniPlatform.Core.Settings
         public AppEnvironment()
         {
             Name = "InfinniPlatform";
-            InstanceId = Guid.NewGuid().ToString("N");
+            _instanceId = Guid.NewGuid().ToString("N");
         }
+
+        private string _instanceId;
 
         public string Name { get; set; }
 
-        public string InstanceId { get; set; }
+        public string InstanceId
+        {
+            get { return _instanceId; }
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _instanceId = value;
+                }
+            }
+        }
     }
 }

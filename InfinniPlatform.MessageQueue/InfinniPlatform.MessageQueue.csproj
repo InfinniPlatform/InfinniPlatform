@@ -64,9 +64,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RabbitMq\Hosting\IMessageConsumeEventHandler.cs" />
-    <Compile Include="RabbitMq\Hosting\IMessageQueueSubscriptionManager.cs" />
+    <Compile Include="RabbitMq\Hosting\IMessageQueueConsumersManager.cs" />
     <Compile Include="RabbitMq\Hosting\IMessageQueueThreadPool.cs" />
-    <Compile Include="RabbitMq\Hosting\MessageQueueSubscriptionManager.cs" />
+    <Compile Include="RabbitMq\Hosting\MessageQueueConsumersManager.cs" />
     <Compile Include="RabbitMq\Hosting\MessageQueueThreadPool.cs" />
     <Compile Include="RabbitMq\IBasicPropertiesProvider.cs" />
     <Compile Include="RabbitMq\MessageHeadersTypes.cs" />
