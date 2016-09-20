@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.FlowDocument.Model.Blocks
+namespace InfinniPlatform.PrintView.Model.Blocks
 {
-    public sealed class PrintElementList : PrintElementBlock
+    internal class PrintElementList : PrintElementBlock
     {
         public PrintElementList()
         {
@@ -10,8 +10,11 @@ namespace InfinniPlatform.FlowDocument.Model.Blocks
         }
 
         public int? StartIndex { get; set; }
+
         public PrintElementListMarkerStyle? MarkerStyle { get; set; }
+
         public double MarkerOffsetSize { get; set; }
+
         public List<PrintElementSection> Items { get; private set; }
     }
 }

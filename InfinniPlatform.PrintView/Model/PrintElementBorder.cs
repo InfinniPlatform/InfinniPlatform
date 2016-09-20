@@ -1,8 +1,9 @@
-﻿namespace InfinniPlatform.FlowDocument.Model
+﻿namespace InfinniPlatform.PrintView.Model
 {
-    public sealed class PrintElementBorder
+    internal class PrintElementBorder
     {
         public PrintElementThickness Thickness { get; set; }
+
         public string Color { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model
+﻿namespace InfinniPlatform.PrintView.Model
 {
-    public struct PrintElementThickness
+    internal struct PrintElementThickness
     {
         public PrintElementThickness(double all)
         {

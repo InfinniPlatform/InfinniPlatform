@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace InfinniPlatform.FlowDocument.Model.Inlines
+namespace InfinniPlatform.PrintView.Model.Inlines
 {
-    public sealed class PrintElementHyperlink : PrintElementSpan
+    internal class PrintElementHyperlink : PrintElementSpan
     {
         public Uri Reference { get; set; }
     }

@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Assemblies\InfinniPlatform.PrintView.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Assemblies\InfinniPlatform.PrintView.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
     <OutputPath>..\Assemblies\</OutputPath>
@@ -53,33 +55,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\Factories\Blocks\PrintElementTableFactory.cs" />
-    <Compile Include="Builders\Factories\Blocks\PrintElementListFactory.cs" />
-    <Compile Include="Builders\Factories\Blocks\PrintElementParagraphFactory.cs" />
-    <Compile Include="Builders\Factories\Blocks\PrintElementSectionFactory.cs" />
-    <Compile Include="Builders\Factories\Blocks\PrintElementPageBreakFactory.cs" />
-    <Compile Include="Builders\Factories\Blocks\PrintElementLineFactory.cs" />
-    <Compile Include="Converters\Html\HtmlBuilderContext.cs" />
-    <Compile Include="Converters\Html\HtmlBuilderHelper.cs" />
-    <Compile Include="Converters\Html\IHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\IHtmlBuilderBase.cs" />
-    <Compile Include="Converters\Html\Inlines\PrintElementBoldHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Inlines\PrintElementHyperlinkHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Inlines\PrintElementImageHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Inlines\PrintElementItalicHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Inlines\PrintElementLineBreakHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Blocks\PrintElementLineHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Blocks\PrintElementListHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Blocks\PrintElementPageBreakHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Blocks\PrintElementParagraphHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Inlines\PrintElementRunHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Blocks\PrintElementSectionHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Inlines\PrintElementSpanHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Blocks\PrintElementTableHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\Inlines\PrintElementUnderlineHtmlBuilder.cs" />
-    <Compile Include="Converters\Html\PrintViewDocumentHtmlBuilder.cs" />
-    <Compile Include="Converters\Pdf\HtmlToPdfUtil.cs" />
+    <Compile Include="Factories\Blocks\PrintElementTableFactory.cs" />
+    <Compile Include="Factories\Blocks\PrintElementListFactory.cs" />
+    <Compile Include="Factories\Blocks\PrintElementParagraphFactory.cs" />
+    <Compile Include="Factories\Blocks\PrintElementSectionFactory.cs" />
+    <Compile Include="Factories\Blocks\PrintElementPageBreakFactory.cs" />
+    <Compile Include="Factories\Blocks\PrintElementLineFactory.cs" />
+    <Compile Include="Contract\PrintViewFileFormat.cs" />
+    <Compile Include="Writers\Html\HtmlBuilderContext.cs" />
+    <Compile Include="Writers\Html\HtmlBuilderHelper.cs" />
+    <Compile Include="Writers\Html\IHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\IHtmlBuilderBase.cs" />
+    <Compile Include="Writers\Html\Inlines\PrintElementBoldHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Inlines\PrintElementHyperlinkHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Inlines\PrintElementImageHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Inlines\PrintElementItalicHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Inlines\PrintElementLineBreakHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Blocks\PrintElementLineHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Blocks\PrintElementListHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Blocks\PrintElementPageBreakHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Blocks\PrintElementParagraphHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Inlines\PrintElementRunHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Blocks\PrintElementSectionHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Inlines\PrintElementSpanHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Blocks\PrintElementTableHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\Inlines\PrintElementUnderlineHtmlBuilder.cs" />
+    <Compile Include="Writers\Html\PrintViewDocumentHtmlBuilder.cs" />
+    <Compile Include="Writers\Pdf\HtmlToPdfUtil.cs" />
     <Compile Include="IoC\PrintViewContainerModule.cs" />
+    <Compile Include="Contract\IPrintViewBuilder.cs" />
     <Compile Include="Model\Blocks\PrintElementLine.cs" />
     <Compile Include="Model\Blocks\PrintElementPageBreak.cs" />
     <Compile Include="Model\PrintElementBlock.cs" />
@@ -91,27 +95,27 @@
     <Compile Include="Model\Font\PrintElementFont.cs" />
     <Compile Include="Model\Font\PrintElementFontStretch.cs" />
     <Compile Include="Model\Font\PrintElementFontStyle.cs" />
-    <Compile Include="Builders\Factories\BuildHelper.cs" />
-    <Compile Include="Builders\ConvertHelper.cs" />
-    <Compile Include="Builders\Factories\DisplayFormats\ObjectFormatFactory.cs" />
-    <Compile Include="Builders\Factories\DisplayFormats\NumberFormatFactory.cs" />
-    <Compile Include="Builders\Factories\DisplayFormats\DateTimeFormatFactory.cs" />
-    <Compile Include="Builders\Factories\DisplayFormats\BooleanFormatFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementBarcodeBaseFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementBarcodeQrFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementBarcodeEan13Factory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementImageFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementRunFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementLineBreakFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementHyperlinkFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementSpanFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementUnderlineFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementItalicFactory.cs" />
-    <Compile Include="Builders\Factories\Inlines\PrintElementBoldFactory.cs" />
-    <Compile Include="Builders\Factories\Views\PrintViewFactory.cs" />
-    <Compile Include="Converters\Pdf\FlowDocumentPdfConverter.cs" />
-    <Compile Include="Converters\Html\FlowDocumentHtmlConverter.cs" />
-    <Compile Include="Converters\IFlowDocumentConverter.cs" />
+    <Compile Include="Factories\BuildHelper.cs" />
+    <Compile Include="Factories\ConvertHelper.cs" />
+    <Compile Include="Factories\DisplayFormats\ObjectFormatFactory.cs" />
+    <Compile Include="Factories\DisplayFormats\NumberFormatFactory.cs" />
+    <Compile Include="Factories\DisplayFormats\DateTimeFormatFactory.cs" />
+    <Compile Include="Factories\DisplayFormats\BooleanFormatFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementBarcodeBaseFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementBarcodeQrFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementBarcodeEan13Factory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementImageFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementRunFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementLineBreakFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementHyperlinkFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementSpanFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementUnderlineFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementItalicFactory.cs" />
+    <Compile Include="Factories\Inlines\PrintElementBoldFactory.cs" />
+    <Compile Include="Factories\Views\PrintViewElementFactory.cs" />
+    <Compile Include="Writers\Pdf\PdfPrintViewFormatWriter.cs" />
+    <Compile Include="Writers\Html\HtmlPrintViewFormatWriter.cs" />
+    <Compile Include="Writers\IPrintViewFormatWriter.cs" />
     <Compile Include="Model\Font\PrintElementFontVariant.cs" />
     <Compile Include="Model\Font\PrintElementFontWeight.cs" />
     <Compile Include="Model\PrintElementInline.cs" />
@@ -136,22 +140,21 @@
     <Compile Include="Model\PrintElementThickness.cs" />
     <Compile Include="Model\Views\PrintViewDocument.cs" />
     <Compile Include="Model\Views\PrintViewStyle.cs" />
-    <Compile Include="PrintElementMetadataMap.cs" />
-    <Compile Include="PrintViewSettings.cs" />
-    <Compile Include="PrintView\FlowDocumentPrintViewDesignerFactory.cs" />
-    <Compile Include="PrintView\FlowDocumentPrintViewConverter.cs" />
-    <Compile Include="PrintView\IFlowDocumentPrintViewConverter.cs" />
-    <Compile Include="PrintView\FlowDocumentPrintViewFactory.cs" />
-    <Compile Include="PrintView\IFlowDocumentPrintViewFactory.cs" />
-    <Compile Include="PrintView\FlowDocumentPrintViewBuilder.cs" />
-    <Compile Include="Builders\PrintElementBuilder.cs" />
-    <Compile Include="Builders\PrintElementBuildContext.cs" />
-    <Compile Include="Builders\IPrintElementFactory.cs" />
-    <Compile Include="Builders\Factories\SizeUnits.cs" />
+    <Compile Include="Factories\PrintElementMetadataMap.cs" />
+    <Compile Include="Contract\PrintViewSettings.cs" />
+    <Compile Include="Factories\PrintViewDesignerFactory.cs" />
+    <Compile Include="Writers\PrintViewWriter.cs" />
+    <Compile Include="Writers\IPrintViewWriter.cs" />
+    <Compile Include="Factories\PrintViewFactory.cs" />
+    <Compile Include="Factories\IPrintViewFactory.cs" />
+    <Compile Include="Contract\PrintViewBuilder.cs" />
+    <Compile Include="Factories\PrintElementBuilder.cs" />
+    <Compile Include="Factories\PrintElementBuildContext.cs" />
+    <Compile Include="Factories\IPrintElementFactory.cs" />
+    <Compile Include="Factories\SizeUnits.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="PrintView\PrintViewApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -169,10 +172,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
-      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
-      <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Expressions\InfinniPlatform.Expressions.csproj">
       <Project>{0ca27ad5-540a-4cc6-a9f4-18634716d096}</Project>
       <Name>InfinniPlatform.Expressions</Name>
@@ -183,7 +182,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="PrintView\" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

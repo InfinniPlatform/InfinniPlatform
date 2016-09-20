@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model.Font
+﻿namespace InfinniPlatform.PrintView.Model.Font
 {
-    public enum PrintElementFontStretch
+    internal enum PrintElementFontStretch
     {
         UltraCondensed,
         ExtraCondensed,

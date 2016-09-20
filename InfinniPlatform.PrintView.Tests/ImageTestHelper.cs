@@ -4,10 +4,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using InfinniPlatform.FlowDocument.Model.Inlines;
+
+using InfinniPlatform.PrintView.Model.Inlines;
+
 using NUnit.Framework;
 
-namespace InfinniPlatform.FlowDocument.Tests
+namespace InfinniPlatform.PrintView.Tests
 {
     internal static class ImageTestHelper
     {

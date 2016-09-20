@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model.Blocks
+﻿namespace InfinniPlatform.PrintView.Model.Blocks
 {
-    public sealed class PrintElementPageBreak : PrintElementBlock
+    internal class PrintElementPageBreak : PrintElementBlock
     {
     }
 }

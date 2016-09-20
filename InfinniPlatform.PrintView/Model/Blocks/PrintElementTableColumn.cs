@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model.Blocks
+﻿namespace InfinniPlatform.PrintView.Model.Blocks
 {
-    public sealed class PrintElementTableColumn
+    internal class PrintElementTableColumn
     {
         public double? Size { get; set; }
     }

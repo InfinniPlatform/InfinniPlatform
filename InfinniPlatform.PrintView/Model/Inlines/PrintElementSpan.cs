@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.FlowDocument.Model.Inlines
+namespace InfinniPlatform.PrintView.Model.Inlines
 {
-    public class PrintElementSpan : PrintElementInline
+    internal class PrintElementSpan : PrintElementInline
     {
         public PrintElementSpan()
         {

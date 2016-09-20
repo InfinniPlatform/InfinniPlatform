@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model
+﻿namespace InfinniPlatform.PrintView.Model
 {
-    public abstract class PrintElementInline : PrintElement
+    internal abstract class PrintElementInline : PrintElement
     {
         public PrintElementTextDecoration? TextDecoration { get; set; }
     }

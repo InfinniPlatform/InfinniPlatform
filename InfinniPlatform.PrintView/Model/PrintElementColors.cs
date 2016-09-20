@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model
+﻿namespace InfinniPlatform.PrintView.Model
 {
-    public static class PrintElementColors
+    internal static class PrintElementColors
     {
         public const string Black = "Black";
         public const string White = "White";

@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model
+﻿namespace InfinniPlatform.PrintView.Model
 {
-    public enum PrintElementTextDecoration
+    internal enum PrintElementTextDecoration
     {
         OverLine,
         Strikethrough,

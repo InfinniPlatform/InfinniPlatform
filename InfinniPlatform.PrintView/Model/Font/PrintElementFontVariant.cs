@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model.Font
+﻿namespace InfinniPlatform.PrintView.Model.Font
 {
-    public enum PrintElementFontVariant
+    internal enum PrintElementFontVariant
     {
         Normal,
         Subscript,

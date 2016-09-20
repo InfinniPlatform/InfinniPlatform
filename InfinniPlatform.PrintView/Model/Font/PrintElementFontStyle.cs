@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model.Font
+﻿namespace InfinniPlatform.PrintView.Model.Font
 {
-    public enum PrintElementFontStyle
+    internal enum PrintElementFontStyle
     {
         Normal,
         Italic,

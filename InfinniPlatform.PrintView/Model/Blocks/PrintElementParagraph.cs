@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.FlowDocument.Model.Blocks
+namespace InfinniPlatform.PrintView.Model.Blocks
 {
-    public sealed class PrintElementParagraph : PrintElementBlock
+    internal class PrintElementParagraph : PrintElementBlock
     {
         public PrintElementParagraph()
         {
@@ -10,6 +10,7 @@ namespace InfinniPlatform.FlowDocument.Model.Blocks
         }
 
         public double? IndentSize { get; set; }
+
         public List<PrintElementInline> Inlines { get; private set; }
     }
 }

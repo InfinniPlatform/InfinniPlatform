@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.FlowDocument.Model.Font;
 
-namespace InfinniPlatform.FlowDocument.Model.Blocks
+using InfinniPlatform.PrintView.Model.Font;
+
+namespace InfinniPlatform.PrintView.Model.Blocks
 {
-    public sealed class PrintElementTableRow
+    internal class PrintElementTableRow
     {
         public PrintElementTableRow()
         {
@@ -11,10 +12,15 @@ namespace InfinniPlatform.FlowDocument.Model.Blocks
         }
 
         public string Name { get; set; }
+
         public string Style { get; set; }
+
         public PrintElementFont Font { get; set; }
+
         public string Foreground { get; set; }
+
         public string Background { get; set; }
+
         public List<PrintElementTableCell> Cells { get; private set; }
     }
 }

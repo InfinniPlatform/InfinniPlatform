@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.FlowDocument.Model.Views
+namespace InfinniPlatform.PrintView.Model.Views
 {
-    public class PrintViewDocument : PrintElement
+    internal class PrintViewDocument : PrintElement
     {
         public PrintViewDocument()
         {
@@ -11,8 +11,11 @@ namespace InfinniPlatform.FlowDocument.Model.Views
         }
 
         public PrintElementSize PageSize { get; set; }
+
         public PrintElementThickness PagePadding { get; set; }
+
         public List<PrintViewStyle> Styles { get; private set; }
+
         public List<PrintElementBlock> Blocks { get; private set; }
     }
 }

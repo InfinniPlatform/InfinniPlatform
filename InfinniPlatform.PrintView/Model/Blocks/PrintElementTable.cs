@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.FlowDocument.Model.Blocks
+namespace InfinniPlatform.PrintView.Model.Blocks
 {
-    public sealed class PrintElementTable : PrintElementBlock
+    internal class PrintElementTable : PrintElementBlock
     {
         public PrintElementTable()
         {
@@ -11,6 +11,7 @@ namespace InfinniPlatform.FlowDocument.Model.Blocks
         }
 
         public List<PrintElementTableColumn> Columns { get; private set; }
+
         public List<PrintElementTableRow> Rows { get; private set; }
     }
 }

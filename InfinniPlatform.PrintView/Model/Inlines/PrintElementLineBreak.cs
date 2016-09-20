@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model.Inlines
+﻿namespace InfinniPlatform.PrintView.Model.Inlines
 {
-    public sealed class PrintElementLineBreak : PrintElementInline
+    internal class PrintElementLineBreak : PrintElementInline
     {
     }
 }

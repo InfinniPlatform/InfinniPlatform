@@ -1,8 +1,9 @@
-﻿namespace InfinniPlatform.FlowDocument.Model
+﻿namespace InfinniPlatform.PrintView.Model
 {
-    public sealed class PrintElementSize
+    internal sealed class PrintElementSize
     {
         public double? Width { get; set; }
+
         public double? Height { get; set; }
     }
 }

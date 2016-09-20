@@ -1,20 +1,16 @@
-﻿using InfinniPlatform.Core.PrintView;
-using InfinniPlatform.FlowDocument.PrintView;
+﻿using InfinniPlatform.PrintView.Contract;
+using InfinniPlatform.PrintView.Factories;
+using InfinniPlatform.PrintView.Writers;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.PrintView;
 using InfinniPlatform.Sdk.Settings;
 
-namespace InfinniPlatform.FlowDocument.IoC
+namespace InfinniPlatform.PrintView.IoC
 {
-    internal sealed class PrintViewContainerModule : IContainerModule
+    internal class PrintViewContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<PrintViewApi>()
-                   .As<IPrintViewApi>()
-                   .SingleInstance();
-
-            builder.RegisterType<FlowDocumentPrintViewBuilder>()
+            builder.RegisterType<PrintViewBuilder>()
                    .As<IPrintViewBuilder>()
                    .SingleInstance();
 
@@ -24,15 +20,15 @@ namespace InfinniPlatform.FlowDocument.IoC
                    .As<PrintViewSettings>()
                    .SingleInstance();
 
-            builder.RegisterType<FlowDocumentPrintViewConverter>()
-                   .As<IFlowDocumentPrintViewConverter>()
+            builder.RegisterType<PrintViewWriter>()
+                   .As<IPrintViewWriter>()
                    .SingleInstance();
 
-            builder.RegisterType<FlowDocumentPrintViewFactory>()
-                   .As<IFlowDocumentPrintViewFactory>()
+            builder.RegisterType<PrintViewFactory>()
+                   .As<IPrintViewFactory>()
                    .SingleInstance();
 
-            builder.RegisterType<FlowDocumentPrintViewBuilder>()
+            builder.RegisterType<PrintViewBuilder>()
                    .As<IPrintViewBuilder>()
                    .SingleInstance();
         }

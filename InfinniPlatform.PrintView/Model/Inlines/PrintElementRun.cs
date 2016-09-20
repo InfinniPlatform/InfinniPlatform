@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model.Inlines
+﻿namespace InfinniPlatform.PrintView.Model.Inlines
 {
-    public sealed class PrintElementRun : PrintElementInline
+    internal class PrintElementRun : PrintElementInline
     {
         public string Text { get; set; }
     }

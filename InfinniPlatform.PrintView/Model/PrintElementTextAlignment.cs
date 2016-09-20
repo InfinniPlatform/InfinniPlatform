@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.FlowDocument.Model
+﻿namespace InfinniPlatform.PrintView.Model
 {
-    public enum PrintElementTextAlignment
+    internal enum PrintElementTextAlignment
     {
         Left,
         Center,

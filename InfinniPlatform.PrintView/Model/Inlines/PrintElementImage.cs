@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 
-namespace InfinniPlatform.FlowDocument.Model.Inlines
+namespace InfinniPlatform.PrintView.Model.Inlines
 {
-    public sealed class PrintElementImage : PrintElementInline
+    internal class PrintElementImage : PrintElementInline
     {
         public PrintElementImage(Bitmap source)
         {
@@ -12,6 +12,7 @@ namespace InfinniPlatform.FlowDocument.Model.Inlines
         }
 
         public Bitmap Source { get; private set; }
+
         public Lazy<byte[]> SourceBytes { get; private set; }
 
         public PrintElementSize Size { get; set; }
