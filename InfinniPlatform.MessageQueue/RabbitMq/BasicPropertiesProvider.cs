@@ -30,7 +30,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         {
             return new BasicProperties
                    {
-                       AppId = _appEnvironment.Id,
+                       AppId = _appEnvironment.InstanceId,
                        Headers = BuildHeaders()
                    };
         }

@@ -10,12 +10,12 @@ namespace InfinniPlatform.Core.Settings
 
         public AppEnvironment()
         {
-            Id = Guid.NewGuid().ToString("N");
             Name = "InfinniPlatform";
+            InstanceId = Guid.NewGuid().ToString("N");
         }
 
-        public string Id { get; }
-
         public string Name { get; set; }
+
+        public string InstanceId { get; set; }
     }
 }

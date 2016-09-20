@@ -9,9 +9,9 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.MessageQueue
 {
-    public class Recconnect : IHttpService
+    public class Reconnect : IHttpService
     {
-        public Recconnect(ITaskProducer taskProducer)
+        public Reconnect(ITaskProducer taskProducer)
         {
             _taskProducer = taskProducer;
         }

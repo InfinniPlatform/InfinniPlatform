@@ -42,7 +42,7 @@ namespace InfinniPlatform.Scheduler.Queues
             try
             {
                 // События, посланные с одного и того же узла, не обрабатываются
-                if (string.Equals(_appEnvironment.Id, message.AppId, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(_appEnvironment.InstanceId, message.AppId, StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }

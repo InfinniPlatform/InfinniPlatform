@@ -24,7 +24,7 @@ namespace InfinniPlatform.MessageQueue.Tests.RabbitMq.Hosting
 
             var appId = Guid.NewGuid().ToString();
             var appEnvMock = new Mock<IAppEnvironment>();
-            appEnvMock.Setup(env => env.Id).Returns(appId);
+            appEnvMock.Setup(env => env.InstanceId).Returns(appId);
 
             var basicPropertiesProvider = new BasicPropertiesProvider(appEnvMock.Object, userIdentityPorviderMock.Object, jsonObjSerializerMock.Object);
 
