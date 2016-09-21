@@ -199,7 +199,6 @@
     <Compile Include="Services\DefaultHttpResultConverter.cs" />
     <Compile Include="Services\StreamHttpResponse.cs" />
     <Compile Include="Services\TextHttpResponse.cs" />
-    <Compile Include="PrintView\IPrintViewApi.cs" />
     <Compile Include="RestApi\BaseRestClient.cs" />
     <Compile Include="Hosting\HostingConfig.cs" />
     <Compile Include="RestApi\Auth\AuthApiClient.cs" />
@@ -222,7 +221,6 @@
     <Compile Include="Dynamic\DynamicWrapperPropertyDescriptor.cs" />
     <Compile Include="Dynamic\ObjectHelper.cs" />
     <Compile Include="Logging\ILog.cs" />
-    <Compile Include="PrintView\PrintViewFileFormat.cs" />
     <Compile Include="Dynamic\ReflectionCache.cs" />
     <Compile Include="Dynamic\ReflectionExtensions.cs" />
     <Compile Include="IoC\ContainerExtensions.cs" />

@@ -176,7 +176,7 @@ namespace InfinniPlatform.Conventions
         public void PackageConfigShouldContainsOnlyUsedPackageReferences(string project)
         {
             // TODO: Новые пакеты Microsoft, используемые в InfinniPlatform.Expressions, не добавляют references.
-            if (project.Contains("InfinniPlatform.Expressions"))
+            if (project.Contains("InfinniPlatform.PrintView"))
             {
                 return;
             }
