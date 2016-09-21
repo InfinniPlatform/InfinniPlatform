@@ -126,7 +126,16 @@
   <data name="CannotExecuteCommand" xml:space="preserve">
     <value>Can not execute command '{0}' with arguments '{1}'. Error: '{2}'.</value>
   </data>
+  <data name="CompilationError" xml:space="preserve">
+    <value>Compilation expression '{0}' completed with exception '{1}'.</value>
+  </data>
+  <data name="IllegalExpression" xml:space="preserve">
+    <value>Illegal expression: '{0}'.</value>
+  </data>
   <data name="PrintViewFileFormatIsNotSupported" xml:space="preserve">
     <value>File format '{0}' is not supported.</value>
+  </data>
+  <data name="UnknownType" xml:space="preserve">
+    <value>Unknown type '{0}'.</value>
   </data>
 </root>

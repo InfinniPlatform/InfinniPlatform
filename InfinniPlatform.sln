@@ -44,10 +44,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.PrintView",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.PrintView.Tests", "InfinniPlatform.PrintView.Tests\InfinniPlatform.PrintView.Tests.csproj", "{C4D8DDAE-6A41-479D-8DC7-652FEA918741}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Expressions", "InfinniPlatform.Expressions\InfinniPlatform.Expressions.csproj", "{0CA27AD5-540A-4CC6-A9F4-18634716D096}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Expressions.Tests", "InfinniPlatform.Expressions.Tests\InfinniPlatform.Expressions.Tests.csproj", "{93F9B582-2B31-45A1-B28B-96BEEF735B3C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sdk.Tests", "InfinniPlatform.Sdk.Tests\InfinniPlatform.Sdk.Tests.csproj", "{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sdk", "InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj", "{2322469D-7D54-4C76-97E2-EF40F15645F5}"
@@ -177,14 +173,6 @@ Global
 		{C4D8DDAE-6A41-479D-8DC7-652FEA918741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4D8DDAE-6A41-479D-8DC7-652FEA918741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4D8DDAE-6A41-479D-8DC7-652FEA918741}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0CA27AD5-540A-4CC6-A9F4-18634716D096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0CA27AD5-540A-4CC6-A9F4-18634716D096}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0CA27AD5-540A-4CC6-A9F4-18634716D096}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0CA27AD5-540A-4CC6-A9F4-18634716D096}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93F9B582-2B31-45A1-B28B-96BEEF735B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93F9B582-2B31-45A1-B28B-96BEEF735B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93F9B582-2B31-45A1-B28B-96BEEF735B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93F9B582-2B31-45A1-B28B-96BEEF735B3C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}.Release|Any CPU.ActiveCfg = Release|Any CPU

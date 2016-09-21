@@ -52,6 +52,8 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Expressions\ExpressionExecutorTest.cs" />
+    <Compile Include="Expressions\ObjectEqualityComparer.cs" />
     <Compile Include="Factories\Blocks\PrintElementTableFactoryTest.cs" />
     <Compile Include="Factories\Blocks\PrintElementListFactoryTest.cs" />
     <Compile Include="Factories\Blocks\PrintElementSectionFactoryTest.cs" />
@@ -104,10 +106,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
-      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
-      <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj">
       <Project>{e47f0c5b-f775-44b4-9e2e-e4c044864125}</Project>
       <Name>InfinniPlatform.PrintView</Name>
@@ -149,6 +147,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 
-using InfinniPlatform.Expressions.Parser;
+using InfinniPlatform.PrintView.Expressions.Parser;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 

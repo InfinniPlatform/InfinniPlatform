@@ -88,11 +88,38 @@ namespace InfinniPlatform.PrintView.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compilation expression &apos;{0}&apos; completed with exception &apos;{1}&apos;..
+        /// </summary>
+        internal static string CompilationError {
+            get {
+                return ResourceManager.GetString("CompilationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal expression: &apos;{0}&apos;..
+        /// </summary>
+        internal static string IllegalExpression {
+            get {
+                return ResourceManager.GetString("IllegalExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File format &apos;{0}&apos; is not supported..
         /// </summary>
         internal static string PrintViewFileFormatIsNotSupported {
             get {
                 return ResourceManager.GetString("PrintViewFileFormatIsNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown type &apos;{0}&apos;..
+        /// </summary>
+        internal static string UnknownType {
+            get {
+                return ResourceManager.GetString("UnknownType", resourceCulture);
             }
         }
     }
