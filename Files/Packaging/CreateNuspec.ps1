@@ -26,6 +26,7 @@
 
         [Parameter(HelpMessage = "Solution extensions.")]
         [Array] $extensions = @(
+            'InfinniPlatform.PrintView',
             'InfinniPlatform.Scheduler'
         )
     )

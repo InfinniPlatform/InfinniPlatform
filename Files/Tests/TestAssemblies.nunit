@@ -4,7 +4,6 @@
         <assembly path="InfinniPlatform.Core.Tests.dll" />
         <assembly path="InfinniPlatform.Sdk.Tests.dll" />
         <assembly path="InfinniPlatform.Cors.Tests.dll" />
-        <assembly path="InfinniPlatform.Expressions.Tests.dll" />
         <assembly path="InfinniPlatform.PrintView.Tests.dll" />
         <assembly path="InfinniPlatform.BlobStorage.Tests.dll" />
         <assembly path="InfinniPlatform.Caching.Tests.dll" />
@@ -16,7 +15,6 @@
         <assembly path="InfinniPlatform.Core.Tests.dll" />
         <assembly path="InfinniPlatform.Sdk.Tests.dll" />
         <assembly path="InfinniPlatform.Cors.Tests.dll" />
-        <!--<assembly path="InfinniPlatform.Expressions.Tests.dll" />-->
         <assembly path="InfinniPlatform.PrintView.Tests.dll" />
         <assembly path="InfinniPlatform.BlobStorage.Tests.dll" />
         <assembly path="InfinniPlatform.Caching.Tests.dll" />
