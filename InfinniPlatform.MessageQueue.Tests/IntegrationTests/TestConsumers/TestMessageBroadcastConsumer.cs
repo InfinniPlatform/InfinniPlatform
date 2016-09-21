@@ -57,10 +57,5 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
                                 _completeEvent.Signal();
                             });
         }
-
-        protected override Task<bool> OnError(Exception exception)
-        {
-            return Task.FromResult(false);
-        }
     }
 }
