@@ -15,7 +15,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         /// <summary>
         /// Заполняет базовые свойства сообщения служебной информацией.
         /// </summary>
-        BasicProperties Create();
+        BasicProperties Get();
+
+        /// <summary>
+        /// Заполняет базовые свойства сообщения служебной информацией.
+        /// </summary>
+        /// <remarks>
+        /// Сообщение сохраняется после перезапуска.
+        /// </remarks> 
+        BasicProperties GetPersistent();
 
         /// <summary>
         /// Возвращает с десериализованные заголовки сообщения.

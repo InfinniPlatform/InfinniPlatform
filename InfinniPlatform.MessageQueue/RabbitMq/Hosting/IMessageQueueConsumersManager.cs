@@ -5,7 +5,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
     /// <summary>
     /// Предоставляет метод регистрации получателей сообщений из очереди.
     /// </summary>
-    public interface IMessageQueueSubscriptionManager
+    public interface IMessageQueueConsumersManager
     {
         /// <summary>
         /// Регистрирует обработчик.

@@ -6,16 +6,16 @@
     public interface IAppEnvironment
     {
         /// <summary>
-        /// Идентификатор текущего экземпляра приложения.
-        /// </summary>
-        string Id { get; }
-
-        /// <summary>
         /// Уникальное имя приложения.
         /// </summary>
         /// <remarks>
         /// Используется для изоляции данных между приложениями.
         /// </remarks>
         string Name { get; }
+
+        /// <summary>
+        /// Идентификатор текущего экземпляра приложения.
+        /// </summary>
+        string InstanceId { get; }
     }
 }

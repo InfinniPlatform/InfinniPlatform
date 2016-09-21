@@ -24,11 +24,11 @@ namespace InfinniPlatform.MessageQueue.Tests.RabbitMq.Hosting
 
             var appId = Guid.NewGuid().ToString();
             var appEnvMock = new Mock<IAppEnvironment>();
-            appEnvMock.Setup(env => env.Id).Returns(appId);
+            appEnvMock.Setup(env => env.InstanceId).Returns(appId);
 
             var basicPropertiesProvider = new BasicPropertiesProvider(appEnvMock.Object, userIdentityPorviderMock.Object, jsonObjSerializerMock.Object);
 
-            var basicProperties = basicPropertiesProvider.Create();
+            var basicProperties = basicPropertiesProvider.Get();
 
             Assert.AreEqual(appId, basicProperties.AppId);
         }
@@ -56,7 +56,7 @@ namespace InfinniPlatform.MessageQueue.Tests.RabbitMq.Hosting
 
             var basicPropertiesProvider = new BasicPropertiesProvider(appEnvMock.Object, userIdentityPorviderMock.Object, jsonObjectSerializer);
 
-            var basicProperties = basicPropertiesProvider.Create();
+            var basicProperties = basicPropertiesProvider.Get();
 
             Assert.AreEqual(2, basicProperties.Headers.Count);
             Assert.AreEqual(username, jsonObjectSerializer.Deserialize<string>((byte[])basicProperties.Headers[MessageHeadersTypes.UserName]));
@@ -76,7 +76,7 @@ namespace InfinniPlatform.MessageQueue.Tests.RabbitMq.Hosting
 
             var basicPropertiesProvider = new BasicPropertiesProvider(appEnvMock.Object, userIdentityPorviderMock.Object, jsonObjectSerializer);
 
-            var basicProperties = basicPropertiesProvider.Create();
+            var basicProperties = basicPropertiesProvider.Get();
 
             Assert.AreEqual(0, basicProperties.Headers.Count);
         }

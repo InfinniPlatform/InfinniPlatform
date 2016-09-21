@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 
 using InfinniPlatform.Sdk.Settings;
 
@@ -10,12 +12,24 @@ namespace InfinniPlatform.Core.Settings
 
         public AppEnvironment()
         {
-            Id = Guid.NewGuid().ToString("N");
             Name = "InfinniPlatform";
+            _instanceId = $"{Environment.MachineName}_{Environment.CurrentDirectory.Split(Path.DirectorySeparatorChar).Last()}";
         }
 
-        public string Id { get; }
+        private string _instanceId;
 
         public string Name { get; set; }
+
+        public string InstanceId
+        {
+            get { return _instanceId; }
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _instanceId = value;
+                }
+            }
+        }
     }
 }

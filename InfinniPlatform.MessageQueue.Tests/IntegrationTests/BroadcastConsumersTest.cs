@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Queues.Consumers;
-
-using Moq;
 
 using NUnit.Framework;
 
@@ -17,29 +16,23 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
     public class BroadcastConsumersTest : RabbitMqTestBase
     {
         [Test]
-        public void EachFanoutConsumerRecieveAllMessages()
+        public async Task BroadcastConsumerRecieveAllMessages()
         {
-            TestMessage[] assertMessages =
+            const int messageCount = 5;
+
+            var assertMessages = new List<TestMessage>();
+
+            for (var i = 1; i <= messageCount; i++)
             {
-                new TestMessage("1", 1, new DateTime(1, 1, 1)),
-                new TestMessage("2", 2, new DateTime(2, 2, 2)),
-                new TestMessage("3", 3, new DateTime(3, 3, 3)),
-                new TestMessage("4", 4, new DateTime(4, 4, 4)),
-                new TestMessage("5", 5, new DateTime(5, 5, 5))
-            };
+                assertMessages.Add(new TestMessage(i.ToString(), i, new DateTime(i, i, i)));
+            }
 
-            var actualMessages1 = new List<TestMessage>();
-            var completeEvent1 = new CountdownEvent(assertMessages.Length);
-            var broadcastConsumer1 = new TestMessageBroadcastConsumer(actualMessages1, completeEvent1);
-
-            var actualMessages2 = new List<TestMessage>();
-            var completeEvent2 = new CountdownEvent(assertMessages.Length);
-            var broadcastConsumer2 = new TestMessageBroadcastConsumer(actualMessages2, completeEvent2);
+            var actualMessages = new List<TestMessage>();
+            var completeEvent = new CountdownEvent(messageCount);
 
             IBroadcastConsumer[] broadcastConsumers =
             {
-                broadcastConsumer1,
-                broadcastConsumer2
+                new TestMessageBroadcastConsumer(actualMessages, completeEvent)
             };
 
             RegisterConsumers(null, broadcastConsumers);
@@ -47,14 +40,13 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var producerBase = new BroadcastProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
-                producerBase.Publish(message);
+                await producerBase.PublishAsync(message);
             }
 
-            const int timeout = 500;
-            Assert.IsTrue(completeEvent1.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(broadcastConsumer1)}.");
-            Assert.IsTrue(completeEvent2.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(broadcastConsumer2)}.");
-            CollectionAssert.AreEquivalent(assertMessages, actualMessages1);
-            CollectionAssert.AreEquivalent(assertMessages, actualMessages2);
+            const int timeout = 5000;
+
+            Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms for {nameof(TestMessageBroadcastConsumer)}.");
+            CollectionAssert.AreEquivalent(assertMessages, actualMessages);
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
@@ -18,7 +20,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
     /// Предоставляет метод регистрации получателей сообщений из очереди.
     /// </summary>
     [LoggerName("MessageQueue")]
-    internal sealed class MessageQueueSubscriptionManager : IMessageQueueSubscriptionManager
+    internal sealed class MessageQueueConsumersManager : IMessageQueueConsumersManager
     {
         /// <param name="messageConsumeEventHandler">Обработчик событий процесса обработки сообщения.</param>
         /// <param name="messageQueueThreadPool"></param>
@@ -26,12 +28,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="log">Лог.</param>
         /// <param name="performanceLog">Лог производительности.</param>
-        public MessageQueueSubscriptionManager(IMessageConsumeEventHandler messageConsumeEventHandler,
-                                               IMessageQueueThreadPool messageQueueThreadPool,
-                                               IMessageSerializer messageSerializer,
-                                               RabbitMqManager manager,
-                                               ILog log,
-                                               IPerformanceLog performanceLog)
+        public MessageQueueConsumersManager(IMessageConsumeEventHandler messageConsumeEventHandler,
+                                            IMessageQueueThreadPool messageQueueThreadPool,
+                                            IMessageSerializer messageSerializer,
+                                            RabbitMqManager manager,
+                                            ILog log,
+                                            IPerformanceLog performanceLog)
         {
             _messageConsumeEventHandler = messageConsumeEventHandler;
             _messageQueueThreadPool = messageQueueThreadPool;
@@ -44,9 +46,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         private readonly ILog _log;
         private readonly RabbitMqManager _manager;
         private readonly IMessageConsumeEventHandler _messageConsumeEventHandler;
+        private readonly IMessageQueueThreadPool _messageQueueThreadPool;
         private readonly IMessageSerializer _messageSerializer;
         private readonly IPerformanceLog _performanceLog;
-        private readonly IMessageQueueThreadPool _messageQueueThreadPool;
 
         /// <summary>
         /// Регистрирует обработчик.
@@ -65,6 +67,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             var eventingConsumer = new EventingBasicConsumer(channel);
 
             eventingConsumer.Received += async (o, args) => await OnRecieved(consumer, args, channel);
+            eventingConsumer.Shutdown += (sender, args) => { _log.Error("Consumer shutdown.", () => CreateLogContext(consumer)); };
 
             channel.BasicConsume(queueName, false, eventingConsumer);
         }
@@ -81,44 +84,44 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             Exception error = null;
 
             await _messageQueueThreadPool.Enqueue(async () =>
-                                             {
-                                                 IMessage message = null;
-                                                 var consumerType = consumer.GetType().Name;
-                                                 Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
+                                                  {
+                                                      IMessage message = null;
+                                                      var consumerType = consumer.GetType().Name;
+                                                      Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
 
-                                                 try
-                                                 {
-                                                     message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
+                                                      try
+                                                      {
+                                                          message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
 
-                                                     _log.Debug(Resources.ConsumeStart, logContext);
+                                                          _log.Debug(Resources.ConsumeStart, logContext);
 
-                                                     await _messageConsumeEventHandler.OnBefore(message);
+                                                          await _messageConsumeEventHandler.OnBefore(message);
 
-                                                     await consumer.Consume(message);
+                                                          await consumer.Consume(message);
 
-                                                     _log.Debug(Resources.ConsumeSuccess, logContext);
+                                                          _log.Debug(Resources.ConsumeSuccess, logContext);
 
-                                                     BasicAck(channel, args, logContext);
-                                                 }
-                                                 catch (Exception e)
-                                                 {
-                                                     error = e;
+                                                          BasicAck(channel, args, logContext);
+                                                      }
+                                                      catch (Exception e)
+                                                      {
+                                                          error = e;
 
-                                                     if (await _messageConsumeEventHandler.OnError(message, error))
-                                                     {
-                                                         if (await consumer.OnError(error))
-                                                         {
-                                                             BasicAck(channel, args, logContext);
-                                                         }
-                                                     }
+                                                          if (await _messageConsumeEventHandler.OnError(message, error))
+                                                          {
+                                                              if (await consumer.OnError(error))
+                                                              {
+                                                                  BasicAck(channel, args, logContext);
+                                                              }
+                                                          }
 
-                                                     _log.Error(error, logContext);
-                                                 }
-                                                 finally
-                                                 {
-                                                     _performanceLog.Log($"Consume::{consumerType}", startDate, error);
-                                                 }
-                                             });
+                                                          _log.Error(error, logContext);
+                                                      }
+                                                      finally
+                                                      {
+                                                          _performanceLog.Log($"Consume::{consumerType}", startDate, error);
+                                                      }
+                                                  });
         }
 
         /// <summary>
@@ -140,6 +143,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             {
                 _log.Error(e);
             }
+        }
+
+        private static Dictionary<string, object> CreateLogContext(IConsumer consumer)
+        {
+            return new Dictionary<string, object> { { "ConsumerType", consumer.GetType().Name } };
         }
 
         private static Dictionary<string, object> CreateLogContext(string consumerType, BasicDeliverEventArgs args)

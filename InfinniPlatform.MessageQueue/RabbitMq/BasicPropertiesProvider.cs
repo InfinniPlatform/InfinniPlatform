@@ -26,12 +26,22 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         private readonly IUserIdentityProvider _identityProvider;
         private readonly IJsonObjectSerializer _serializer;
 
-        public BasicProperties Create()
+        public BasicProperties Get()
         {
             return new BasicProperties
                    {
-                       AppId = _appEnvironment.Id,
+                       AppId = _appEnvironment.InstanceId,
                        Headers = BuildHeaders()
+                   };
+        }
+
+        public BasicProperties GetPersistent()
+        {
+            return new BasicProperties
+                   {
+                       AppId = _appEnvironment.InstanceId,
+                       Headers = BuildHeaders(),
+                       Persistent = true
                    };
         }
 

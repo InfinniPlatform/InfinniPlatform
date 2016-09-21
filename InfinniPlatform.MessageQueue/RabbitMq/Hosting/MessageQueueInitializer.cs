@@ -9,6 +9,8 @@ using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 
+using RabbitMQ.Client;
+
 namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 {
     internal sealed class MessageQueueInitializer : AppEventHandler
@@ -16,26 +18,30 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <summary>
         /// Регистрирует потребителей сообщений.
         /// </summary>
-        /// <param name="subscriptionManager">Предоставляет метод регистрации получателей сообщений из очереди.</param>
+        /// <param name="consumersManager">Предоставляет метод регистрации получателей сообщений из очереди.</param>
         /// <param name="consumerSource">Источники потребителей сообщений.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="log">Лог.</param>
-        public MessageQueueInitializer(IMessageQueueSubscriptionManager subscriptionManager,
+        public MessageQueueInitializer(IMessageQueueConsumersManager consumersManager,
                                        IEnumerable<IMessageConsumerSource> consumerSource,
                                        RabbitMqManager manager,
                                        ILog log)
         {
-            _subscriptionManager = subscriptionManager;
-            _consumerSource = consumerSource;
+            var consumers = consumerSource.SelectMany(source => source.GetConsumers()).ToList();
+            _taskConsumers = consumers.OfType<ITaskConsumer>().ToList();
+            _broadcastConsumers = consumers.OfType<IBroadcastConsumer>().ToList();
+
+            _consumersManager = consumersManager;
             _manager = manager;
             _log = log;
         }
 
-        private readonly IEnumerable<IMessageConsumerSource> _consumerSource;
+        private readonly List<IBroadcastConsumer> _broadcastConsumers;
+
         private readonly ILog _log;
         private readonly RabbitMqManager _manager;
-
-        private readonly IMessageQueueSubscriptionManager _subscriptionManager;
+        private readonly IMessageQueueConsumersManager _consumersManager;
+        private readonly List<ITaskConsumer> _taskConsumers;
 
         public override void OnAfterStart()
         {
@@ -43,38 +49,15 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             {
                 _log.Info(Resources.InitializationOfConsumersStarted);
 
-                var consumers = _consumerSource.SelectMany(source => source.GetConsumers()).ToList();
-                var taskConsumers = consumers.OfType<ITaskConsumer>().ToList();
-                var broadcastConsumers = consumers.OfType<IBroadcastConsumer>().ToList();
-
-                InitializeTaskConsumers(taskConsumers);
-
-                _log.Info(Resources.InitializationOfTaskConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "taskCounsumerCount", taskConsumers.Count } });
-
-                InitializeBroadcastConsumers(broadcastConsumers);
-
-                _log.Info(Resources.InitializationOfBroadcastConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "broadcastConsumerCount", broadcastConsumers.Count } });
+                InitializeTaskConsumers();
+                InitializeBroadcastConsumers();
             }
             catch (Exception e)
             {
                 _log.Error(Resources.UnableToInitializeConsumers, e);
             }
-        }
 
-        private void InitializeTaskConsumers(IEnumerable<IConsumer> consumers)
-        {
-            foreach (var consumer in consumers)
-            {
-                var consumerType = consumer.GetType().Name;
-                _log.Debug(Resources.InitializationOfTaskConsumerStarted, () => CreateLogContext(consumerType));
-
-                var queueName = QueueNamingConventions.GetConsumerQueueName(consumer);
-                _manager.DeclareTaskQueue(queueName);
-
-                _subscriptionManager.RegisterConsumer(queueName, consumer);
-
-                _log.Debug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
-            }
+            RegisterOnReconnectEvent();
         }
 
         public override void OnAfterStop()
@@ -82,9 +65,40 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             _manager.Dispose();
         }
 
-        private void InitializeBroadcastConsumers(IEnumerable<IConsumer> consumers)
+        private void RegisterOnReconnectEvent()
         {
-            foreach (var consumer in consumers)
+            var connection = _manager.GetConnection();
+            var recoverable = connection as IRecoverable;
+            if (recoverable != null)
+            {
+                recoverable.Recovery += (sender, args) =>
+                                        {
+                                            //InitializeBroadcastConsumers();
+                                        };
+            }
+        }
+
+        private void InitializeTaskConsumers()
+        {
+            foreach (var consumer in _taskConsumers)
+            {
+                var consumerType = consumer.GetType().Name;
+                _log.Debug(Resources.InitializationOfTaskConsumerStarted, () => CreateLogContext(consumerType));
+
+                var key = QueueNamingConventions.GetConsumerQueueName(consumer);
+                var queueName = _manager.DeclareTaskQueue(key);
+
+                _consumersManager.RegisterConsumer(queueName, consumer);
+
+                _log.Debug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
+            }
+
+            _log.Info(Resources.InitializationOfTaskConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "taskCounsumerCount", _taskConsumers.Count } });
+        }
+
+        private void InitializeBroadcastConsumers()
+        {
+            foreach (var consumer in _broadcastConsumers)
             {
                 var consumerType = consumer.GetType().Name;
                 _log.Debug(Resources.InitializationOfBroadcastConsumerStarted, () => CreateLogContext(consumerType));
@@ -92,10 +106,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
                 var routingKey = QueueNamingConventions.GetConsumerQueueName(consumer);
                 var queueName = _manager.DeclareBroadcastQueue(routingKey);
 
-                _subscriptionManager.RegisterConsumer(queueName, consumer);
+                _consumersManager.RegisterConsumer(queueName, consumer);
 
                 _log.Debug(Resources.InitializationOfBroadcastConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
+
+            _log.Info(Resources.InitializationOfBroadcastConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "broadcastConsumerCount", _broadcastConsumers.Count } });
         }
 
         private static Dictionary<string, object> CreateLogContext(string consumerType)

@@ -156,7 +156,7 @@ namespace InfinniPlatform.Caching.TwoLayer
                                 {
                                     try
                                     {
-                                        if (message.AppId == _appEnvironment.Id)
+                                        if (message.AppId == _appEnvironment.InstanceId)
                                         {
                                             //ignore own message
                                         }

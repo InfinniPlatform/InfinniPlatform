@@ -36,8 +36,8 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         public async Task SetUp()
         {
             var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(env => env.Name).Returns(TestConstants.ApplicationName);
-            appEnvironmentMock.SetupGet(env => env.Id).Returns(TestConstants.ApplicationName);
+            appEnvironmentMock.SetupGet(env => env.Name).Returns(TestConstants.AppName);
+            appEnvironmentMock.SetupGet(env => env.InstanceId).Returns(TestConstants.AppInstanceId);
 
             var logMock = new Mock<ILog>();
             logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
@@ -48,7 +48,9 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             MessageSerializer = new MessageSerializer(new JsonObjectSerializer());
 
             var basicPropertiesProviderMock = new Mock<IBasicPropertiesProvider>();
-            basicPropertiesProviderMock.Setup(provider => provider.Create())
+            basicPropertiesProviderMock.Setup(provider => provider.Get())
+                                       .Returns(new BasicProperties());
+            basicPropertiesProviderMock.Setup(provider => provider.GetPersistent())
                                        .Returns(new BasicProperties());
             BasicPropertiesProvider = basicPropertiesProviderMock.Object;
 
@@ -83,7 +85,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             logMock.Setup(log => log.Info(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
             logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
 
-            var subscriptionManager = new MessageQueueSubscriptionManager(new Mock<IMessageConsumeEventHandler>().Object,
+            var subscriptionManager = new MessageQueueConsumersManager(new Mock<IMessageConsumeEventHandler>().Object,
                                                                           new MessageQueueThreadPool(customSettings ?? RabbitMqConnectionSettings.Default),
                                                                           MessageSerializer,
                                                                           RabbitMqManager,
