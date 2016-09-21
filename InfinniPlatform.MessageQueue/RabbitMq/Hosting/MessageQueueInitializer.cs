@@ -31,16 +31,17 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             _taskConsumers = consumers.OfType<ITaskConsumer>().ToList();
             _broadcastConsumers = consumers.OfType<IBroadcastConsumer>().ToList();
 
+            manager.OnReconnect += (sender, args) => { OnAfterStart(); };
+
             _consumersManager = consumersManager;
             _manager = manager;
             _log = log;
         }
 
-        private readonly List<IBroadcastConsumer> _broadcastConsumers;
-
         private readonly ILog _log;
         private readonly RabbitMqManager _manager;
         private readonly IMessageQueueConsumersManager _consumersManager;
+        private readonly List<IBroadcastConsumer> _broadcastConsumers;
         private readonly List<ITaskConsumer> _taskConsumers;
 
         public override void OnAfterStart()
@@ -56,8 +57,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             {
                 _log.Error(Resources.UnableToInitializeConsumers, e);
             }
-
-            RegisterOnReconnectEvent();
         }
 
         public override void OnAfterStop()
@@ -67,7 +66,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 
         private void RegisterOnReconnectEvent()
         {
-            var connection = _manager.GetConnection();
+            var connection = _manager.Connection;
             var recoverable = connection as IRecoverable;
             if (recoverable != null)
             {

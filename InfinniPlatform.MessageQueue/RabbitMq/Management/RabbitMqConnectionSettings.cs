@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.MessageQueue.RabbitMq.Management
+﻿using System;
+
+namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 {
     /// <summary>
     /// Настройки подключения к MongoDB.
@@ -18,6 +20,7 @@
             ManagementApiPort = 15672;
             PrefetchCount = 1;
             MaxConcurrentThreads = 200;
+            ReconnectTimeout = 5;
         }
 
         /// <summary>
@@ -54,5 +57,10 @@
         /// Максимальное количество одновременно обрабатываемых сообщений.
         /// </summary>
         public int MaxConcurrentThreads { get; set; }
+
+        /// <summary>
+        /// Время между попытками переподключения к серверу RabbitMQ в cекундах.
+        /// </summary>
+        public int ReconnectTimeout { get; set; }
     }
 }

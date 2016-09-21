@@ -89,7 +89,6 @@
     <Compile Include="RabbitMq\TaskProducer.cs" />
     <Compile Include="RabbitMq\Management\RabbitMqManager.cs" />
     <Compile Include="RabbitMq\Management\RabbitMqConnectionSettings.cs" />
-    <Compile Include="Reconnect.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

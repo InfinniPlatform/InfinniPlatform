@@ -10,7 +10,6 @@ using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Queues.Producers;
-using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.MessageQueue.IoC
@@ -19,6 +18,12 @@ namespace InfinniPlatform.MessageQueue.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            // Hosting
+
+            builder.RegisterType<MessageQueueInitializer>()
+                   .As<IAppEventHandler>()
+                   .SingleInstance();
+
             builder.RegisterFactory(GetRabbitMqConnectionSettings)
                    .As<RabbitMqConnectionSettings>()
                    .SingleInstance();
@@ -30,6 +35,24 @@ namespace InfinniPlatform.MessageQueue.IoC
             builder.RegisterType<RabbitMqManagementHttpClient>()
                    .AsSelf()
                    .SingleInstance();
+
+            builder.RegisterType<MessageQueueConsumersManager>()
+                   .As<IMessageQueueConsumersManager>()
+                   .SingleInstance();
+
+            builder.RegisterType<MessageQueueThreadPool>()
+                   .As<IMessageQueueThreadPool>()
+                   .SingleInstance();
+
+            builder.RegisterType<MessageConsumeEventHandler>()
+                   .As<IMessageConsumeEventHandler>()
+                   .SingleInstance();
+
+            builder.RegisterType<MessageConsumerSource>()
+                   .As<IMessageConsumerSource>()
+                   .SingleInstance();
+
+            // Producers
 
             builder.RegisterType<OnDemandConsumer>()
                    .As<IOnDemandConsumer>()
@@ -43,44 +66,21 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .As<IBroadcastProducer>()
                    .SingleInstance();
 
-            builder.RegisterType<MessageSerializer>()
-                   .As<IMessageSerializer>()
-                   .SingleInstance();
-
-            builder.RegisterType<MessageConsumeEventHandler>()
-                   .As<IMessageConsumeEventHandler>()
-                   .SingleInstance();
-
-            builder.RegisterType<BasicPropertiesProvider>()
-                   .As<IBasicPropertiesProvider>()
-                   .SingleInstance();
-
-            // Hosting
-
-            builder.RegisterType<MessageQueueInitializer>()
-                   .As<IAppEventHandler>()
-                   .SingleInstance();
-
-            builder.RegisterType<MessageConsumerSource>()
-                   .As<IMessageConsumerSource>()
-                   .SingleInstance();
-
-            builder.RegisterType<MessageQueueConsumersManager>()
-                   .As<IMessageQueueConsumersManager>()
-                   .SingleInstance();
-
-            builder.RegisterType<MessageQueueThreadPool>()
-                   .As<IMessageQueueThreadPool>()
-                   .SingleInstance();
-
             // Diagnostics
 
             builder.RegisterType<MessageQueueStatusProvider>()
                    .As<ISubsystemStatusProvider>()
                    .SingleInstance();
 
-            builder.RegisterHttpServices(GetType().Assembly);
-            builder.RegisterConsumers(GetType().Assembly);
+            // Other
+
+            builder.RegisterType<MessageSerializer>()
+                   .As<IMessageSerializer>()
+                   .SingleInstance();
+
+            builder.RegisterType<BasicPropertiesProvider>()
+                   .As<IBasicPropertiesProvider>()
+                   .SingleInstance();
         }
 
         private static RabbitMqConnectionSettings GetRabbitMqConnectionSettings(IContainerResolver resolver)
