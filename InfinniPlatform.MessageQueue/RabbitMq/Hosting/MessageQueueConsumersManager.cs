@@ -80,8 +80,6 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         /// <param name="channel">Канал RabbitMQ.</param>
         private async Task OnRecieved(IConsumer consumer, BasicDeliverEventArgs args, IModel channel)
         {
-            File.AppendAllText($"C:\\Projects\\{args.ConsumerTag}.log", $"Got {_messageSerializer.BytesToMessage(args, consumer.MessageType).GetBody()} by {args.ConsumerTag}.{Environment.NewLine}");
-
             var startDate = DateTime.Now;
             Exception error = null;
 
