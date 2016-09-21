@@ -1,30 +1,30 @@
-using System.IO;
+п»їusing System.IO;
 
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.PrintView.Contract
 {
     /// <summary>
-    /// Предоставляет методы для создания печатных представлений.
+    /// РџСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ РјРµС‚РѕРґС‹ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РїРµС‡Р°С‚РЅС‹С… РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№.
     /// </summary>
     public interface IPrintViewBuilder
     {
         /// <summary>
-        /// Создает файл печатного представления.
+        /// РЎРѕР·РґР°РµС‚ С„Р°Р№Р» РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.
         /// </summary>
-        /// <param name="printViewTemplate">Шаблон печатного представления.</param>
-        /// <param name="printViewSource">Данные печатного представления.</param>
-        /// <param name="printViewFormat">Формат печатного представления.</param>
-        /// <returns>Файл печатного представления.</returns>
+        /// <param name="printViewTemplate">РЁР°Р±Р»РѕРЅ РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.</param>
+        /// <param name="printViewSource">Р”Р°РЅРЅС‹Рµ РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.</param>
+        /// <param name="printViewFormat">Р¤РѕСЂРјР°С‚ РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.</param>
+        /// <returns>Р¤Р°Р№Р» РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.</returns>
         byte[] Build(Stream printViewTemplate, object printViewSource, PrintViewFileFormat printViewFormat = PrintViewFileFormat.Pdf);
 
         /// <summary>
-        /// Создает файл печатного представления.
+        /// РЎРѕР·РґР°РµС‚ С„Р°Р№Р» РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.
         /// </summary>
-        /// <param name="printViewTemplate">Шаблон печатного представления.</param>
-        /// <param name="printViewSource">Данные печатного представления.</param>
-        /// <param name="printViewFormat">Формат печатного представления.</param>
-        /// <returns>Файл печатного представления.</returns>
+        /// <param name="printViewTemplate">РЁР°Р±Р»РѕРЅ РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.</param>
+        /// <param name="printViewSource">Р”Р°РЅРЅС‹Рµ РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.</param>
+        /// <param name="printViewFormat">Р¤РѕСЂРјР°С‚ РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.</param>
+        /// <returns>Р¤Р°Р№Р» РїРµС‡Р°С‚РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.</returns>
         byte[] Build(DynamicWrapper printViewTemplate, object printViewSource, PrintViewFileFormat printViewFormat = PrintViewFileFormat.Pdf);
     }
 }
