@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 
 using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Owin.Properties;
@@ -29,11 +30,9 @@ namespace InfinniPlatform.Owin.Services
             _log = log;
         }
 
-
         private readonly INancyModuleCatalog _nancyModuleCatalog;
         private readonly StaticContentSettings _staticContentSettings;
         private readonly ILog _log;
-
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
         {
@@ -81,14 +80,21 @@ namespace InfinniPlatform.Owin.Services
             // Добавление сопоставления между виртуальными (запрашиваемый в браузере путь) и физическими директориями в файловой системе.
             Conventions.StaticContentsConventions.Clear();
 
-            foreach (var s in _staticContentSettings.StaticContentMapping)
+            foreach (var mapping in _staticContentSettings.StaticContentMapping)
             {
-                var requestedPath = s.Key;
-                var contentPath = s.Value.ToWebPath();
+                var requestedPath = mapping.Key;
+                var contentPath = mapping.Value.ToWebPath();
 
                 Conventions.StaticContentsConventions.AddDirectory(requestedPath, contentPath);
 
                 _log.Info(Resources.ServingStaticContent, () => new Dictionary<string, object> { { "requestedPath", requestedPath }, { "contentPath", contentPath } });
+            }
+
+            foreach (var mapping in _staticContentSettings.ResourceContentMapping)
+            {
+                var requestedPath = mapping.Key;
+                var assembly = Assembly.Load(mapping.Value);
+                Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
             }
         }
 

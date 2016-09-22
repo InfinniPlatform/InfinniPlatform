@@ -123,6 +123,11 @@
       "/metadata": "content/metadata",
       "/": "content/www"
     },
+    /* Соответствие виртуальных путей и сборок с файлами ресурсов */
+    "ResourceContentMapping": {
+      /* Виртуальный путь: имя сбороки с файлами ресурсов */
+      /* "/resources/Owin": "InfinniPlatform.Sdk" */
+    },
     /* Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews) */
     "RazorViewsPath": "content/RazorViews"
   },
