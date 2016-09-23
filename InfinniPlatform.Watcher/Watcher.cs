@@ -13,13 +13,10 @@ namespace InfinniPlatform.Watcher
     /// </summary>
     public class Watcher : AppEventHandler
     {
-        public Watcher(WatcherSettings settings, ILog log) : base(1)
+        public Watcher(WatcherSettings settings) : base(1)
         {
             _settings = settings;
-            _log = log;
         }
-
-        private readonly ILog _log;
 
         private readonly WatcherSettings _settings;
 
@@ -44,10 +41,10 @@ namespace InfinniPlatform.Watcher
 
                 watcher.EnableRaisingEvents = true;
 
-                _log.Info(string.Format(Resources.ChangesWillBeTransferred, Environment.NewLine, _settings.SourceDirectory, Environment.NewLine, Environment.NewLine, _settings.DestinationDirectory));
+                ConsoleLog.Info(string.Format(Resources.ChangesWillBeTransferred, Environment.NewLine, _settings.SourceDirectory, Environment.NewLine, Environment.NewLine, _settings.DestinationDirectory));
             }
 
-            Console.WriteLine(Resources.FailedStart);
+            ConsoleLog.Warning(Resources.FailedStart);
         }
 
         private void SyncDirectories()
@@ -57,7 +54,7 @@ namespace InfinniPlatform.Watcher
 
             if (destFiles.Length != sourceFiles.Length)
             {
-                _log.Info(string.Format(Resources.SyncingContentDirectories, _settings.SourceDirectory, _settings.DestinationDirectory));
+                ConsoleLog.Info(string.Format(Resources.SyncingContentDirectories, _settings.SourceDirectory, _settings.DestinationDirectory));
 
                 Directory.Delete(_settings.DestinationDirectory, true);
 
@@ -71,7 +68,7 @@ namespace InfinniPlatform.Watcher
                     File.Copy(newPath, newPath.Replace(_settings.SourceDirectory, _settings.DestinationDirectory), true);
                 }
 
-                _log.Info(Resources.SyncComplete);
+                ConsoleLog.Info(Resources.SyncComplete);
             }
         }
 
@@ -85,12 +82,12 @@ namespace InfinniPlatform.Watcher
                 {
                     var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                    _log.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
                     TryExecute(() =>
                                {
                                    File.Delete(Path.Combine(_settings.DestinationDirectory, part));
-                                   _log.Info(Resources.SyncComplete);
+                                   ConsoleLog.Info(Resources.SyncComplete);
                                });
                 }
             }
@@ -98,12 +95,12 @@ namespace InfinniPlatform.Watcher
             {
                 var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                _log.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
                 TryExecute(() =>
                            {
                                Directory.Delete(Path.Combine(_settings.DestinationDirectory, part), true);
-                               _log.Info(Resources.SyncComplete);
+                               ConsoleLog.Info(Resources.SyncComplete);
                            });
             }
         }
@@ -118,22 +115,22 @@ namespace InfinniPlatform.Watcher
                 {
                     var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                    _log.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
                     TryExecute(() => { File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true); });
 
-                    _log.Info(Resources.SyncComplete);
+                    ConsoleLog.Info(Resources.SyncComplete);
                 }
             }
             else
             {
                 var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                _log.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
                 TryExecute(() => { Directory.CreateDirectory(Path.Combine(_settings.DestinationDirectory, part)); });
 
-                _log.Info(Resources.SyncComplete);
+                ConsoleLog.Info(Resources.SyncComplete);
             }
         }
 
@@ -141,48 +138,31 @@ namespace InfinniPlatform.Watcher
         {
             var isCorrectSettings = true;
 
-            var n = Environment.NewLine;
-
             if (string.IsNullOrEmpty(settings.SourceDirectory))
             {
-                _log.Error(Resources.SourceDictionaryCannotBeEmpty);
+                ConsoleLog.Warning(Resources.SourceDictionaryCannotBeEmpty);
                 isCorrectSettings = false;
             }
-
-            if (!Directory.Exists(settings.SourceDirectory))
+            else if (!Directory.Exists(settings.SourceDirectory))
             {
-                _log.Error($"Directory {settings.SourceDirectory} does not exist.");
+                ConsoleLog.Warning($"Directory {settings.SourceDirectory} does not exist.");
                 isCorrectSettings = false;
             }
 
             if (string.IsNullOrEmpty(settings.DestinationDirectory))
             {
-                _log.Error(Resources.DestinationDirectoryCannotBeEmpty);
+                ConsoleLog.Warning(Resources.DestinationDirectoryCannotBeEmpty);
                 isCorrectSettings = false;
             }
-
-            if (!Directory.Exists(settings.DestinationDirectory))
+            else if (!Directory.Exists(settings.DestinationDirectory))
             {
-                _log.Error($"Directory {settings.DestinationDirectory} does not exist.");
+                ConsoleLog.Error($"Directory {settings.DestinationDirectory} does not exist.");
                 isCorrectSettings = false;
             }
 
             if (!isCorrectSettings)
             {
-                var helpMessage = $"{n}Add watcher setting to AppExtentions.json configuration file:" +
-                                  $"{n}  /* Настройки наблюдателя */" +
-                                  $"{n}  \"watcher\": {{" +
-                                  $"{n}      /* Директория источника метаданных */" +
-                                  $"{n}      \"SourceDirectory\": <path>," +
-                                  $"{n}      /* Директория для синхнонизации */" +
-                                  $"{n}      \"DestinationDirectory\": <path>," +
-                                  $"{n}      /* Расширения синхронизируемых файлов */" +
-                                  $"{n}      \"WatchingFileExtensions\": [" +
-                                  $"{n}          \".json\"" +
-                                  $"{n}      ]" +
-                                  $"{n}  }}";
-
-                _log.Info(helpMessage);
+                ConsoleLog.Info(Resources.SettingsExample);
             }
 
             return isCorrectSettings;
@@ -198,11 +178,11 @@ namespace InfinniPlatform.Watcher
                 {
                     var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                    _log.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
                     TryExecute(() => { File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true); });
 
-                    _log.Info(Resources.SyncComplete);
+                    ConsoleLog.Info(Resources.SyncComplete);
                 }
             }
         }
@@ -215,7 +195,7 @@ namespace InfinniPlatform.Watcher
             }
             catch (Exception e)
             {
-                _log.Error(e);
+                ConsoleLog.Error(e);
             }
         }
     }

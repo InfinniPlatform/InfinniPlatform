@@ -61,7 +61,7 @@ namespace InfinniPlatform.Watcher.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes within directory{0}{1}{2}will be transferred to directory{3}{4}..
+        ///   Looks up a localized string similar to Changes within directory{0}{1}{0}will be transferred to directory{0}{2}..
         /// </summary>
         internal static string ChangesWillBeTransferred {
             get {
@@ -79,16 +79,7 @@ namespace InfinniPlatform.Watcher.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error..
-        /// </summary>
-        internal static string Error {
-            get {
-                return ResourceManager.GetString("Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}{1}{2}File {3} was {4}..
+        ///   Looks up a localized string similar to {0}{1}{0}File {2} was {3}..
         /// </summary>
         internal static string EventLog {
             get {
@@ -102,6 +93,23 @@ namespace InfinniPlatform.Watcher.Properties {
         internal static string FailedStart {
             get {
                 return ResourceManager.GetString("FailedStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add watcher setting to AppExtentions.json configuration file:
+        ///&quot;watcher&quot;: {
+        ///    /* Matadata source directory */
+        ///    &quot;SourceDirectory&quot;: &lt; path &gt; ,
+        ///    /* Directory to synchronize */
+        ///    &quot;DestinationDirectory&quot;: &lt; path &gt; ,
+        ///    /* File extentions to synchronize */
+        ///    &quot;WatchingFileExtensions&quot;: [&quot;.json&quot;]
+        ///};.
+        /// </summary>
+        internal static string SettingsExample {
+            get {
+                return ResourceManager.GetString("SettingsExample", resourceCulture);
             }
         }
         

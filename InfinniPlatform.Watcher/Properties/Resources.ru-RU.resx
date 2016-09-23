@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,37 +118,37 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SourceDictionaryCannotBeEmpty" xml:space="preserve">
-    <value>SourceDictionary in watcher settings cannot be empty.</value>
+    <value>Поле SourceDictionary в настройках наблюдателя не заполнено.</value>
   </data>
   <data name="DestinationDirectoryCannotBeEmpty" xml:space="preserve">
-    <value>DestinationDirectory in watcher settings cannot be empty.</value>
+    <value>Поле DestinationDirectory в настройках наблюдателя не заполнено.</value>
   </data>
   <data name="SyncComplete" xml:space="preserve">
-    <value>Sync complete.</value>
+    <value>Синхронизация завершена.</value>
   </data>
   <data name="EventLog" xml:space="preserve">
-    <value>{0}{1}{0}File {2} was {3}.</value>
+    <value>{0}{1}{2}Файл {3} был {4}.</value>
   </data>
   <data name="SyncingContentDirectories" xml:space="preserve">
-    <value>Content of directories {0} and {1} are different. Syncing...</value>
+    <value>Синхронизация содержимого папок {0} и {1}...</value>
   </data>
   <data name="ChangesWillBeTransferred" xml:space="preserve">
-    <value>Changes within directory{0}{1}{0}will be transferred to directory{0}{2}.</value>
+    <value>Изменения в папке{0}{1}{0}будут перенесены в папку{0}{2}.</value>
   </data>
   <data name="SuccessStart" xml:space="preserve">
-    <value>InfinniPlatform.Watcher is active.</value>
+    <value>InfinniPlatform.Watcher запущен.</value>
   </data>
   <data name="FailedStart" xml:space="preserve">
-    <value>InfinniPlatform.Watcher failed to start.</value>
+    <value>InfinniPlatform.Watcher не удалось запустить.</value>
   </data>
   <data name="SettingsExample" xml:space="preserve">
-    <value>Add watcher setting to AppExtentions.json configuration file:
+    <value>Необходимо добавить настройки наблюдателя в файл конфигурации AppExtentions.json:
 "watcher": {
-    /* Matadata source directory */
+    /* Папка, содержащая метаданные */
     "SourceDirectory": &lt; path &gt; ,
-    /* Directory to synchronize */
+    /* Синхронизаруемая папка */
     "DestinationDirectory": &lt; path &gt; ,
-    /* File extentions to synchronize */
+    /* Список расширений синхронизируемых файлов */
     "WatchingFileExtensions": [".json"]
 };</value>
   </data>

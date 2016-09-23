@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -127,10 +127,10 @@
     <value>Sync complete.</value>
   </data>
   <data name="EventLog" xml:space="preserve">
-    <value>{0}{1}{0}File {2} was {3}.</value>
+    <value>{0}{1}{2}File {3} was {4}.</value>
   </data>
   <data name="SyncingContentDirectories" xml:space="preserve">
-    <value>Content of directories {0} and {1} are different. Syncing...</value>
+    <value>Syncing сontent of directories {0} and {1}...</value>
   </data>
   <data name="ChangesWillBeTransferred" xml:space="preserve">
     <value>Changes within directory{0}{1}{0}will be transferred to directory{0}{2}.</value>
