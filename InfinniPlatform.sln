@@ -95,6 +95,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{90A10053
 		Files\Tests\TestAssemblies.nunit = Files\Tests\TestAssemblies.nunit
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Watcher", "InfinniPlatform.Watcher\InfinniPlatform.Watcher.csproj", "{A60002BA-C68A-415C-A506-F929BE2526D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -217,6 +219,10 @@ Global
 		{38D5193A-44BA-49D2-A497-1A7E750B6640}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38D5193A-44BA-49D2-A497-1A7E750B6640}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38D5193A-44BA-49D2-A497-1A7E750B6640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A60002BA-C68A-415C-A506-F929BE2526D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A60002BA-C68A-415C-A506-F929BE2526D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A60002BA-C68A-415C-A506-F929BE2526D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A60002BA-C68A-415C-A506-F929BE2526D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
