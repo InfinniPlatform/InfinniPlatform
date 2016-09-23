@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Contract;
 using InfinniPlatform.PrintView.Model;
@@ -20,7 +21,7 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         private readonly HtmlToPdfUtil _htmlToPdfUtil;
 
 
-        public void Write(Stream stream, PrintViewDocument document)
+        public async Task Write(Stream stream, PrintViewDocument document)
         {
             var saveSize = document.PageSize;
             var savePadding = document.PagePadding;
@@ -32,11 +33,11 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
             {
                 using (var htmlStream = new MemoryStream())
                 {
-                    _htmlWriter.Write(htmlStream, document);
+                    await _htmlWriter.Write(htmlStream, document);
 
                     htmlStream.Position = 0;
 
-                    _htmlToPdfUtil.Convert(saveSize, savePadding, htmlStream, stream);
+                    await _htmlToPdfUtil.Convert(saveSize, savePadding, htmlStream, stream);
                 }
             }
             finally

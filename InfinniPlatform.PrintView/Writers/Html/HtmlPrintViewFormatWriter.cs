@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Model.Blocks;
 using InfinniPlatform.PrintView.Model.Inlines;
@@ -12,7 +13,7 @@ namespace InfinniPlatform.PrintView.Writers.Html
     internal class HtmlPrintViewFormatWriter : IPrintViewFormatWriter
     {
         private const int DefaultBufferSize = 1024;
-
+        private static readonly Task CompletedTask = Task.FromResult(true);
         private static readonly HtmlBuilderContext Builder = CreateHtmlBuilderContext();
 
 
@@ -46,12 +47,14 @@ namespace InfinniPlatform.PrintView.Writers.Html
         }
 
 
-        public void Write(Stream stream, PrintViewDocument document)
+        public Task Write(Stream stream, PrintViewDocument document)
         {
             using (var writer = new StreamWriter(stream, Encoding.UTF8, DefaultBufferSize, true))
             {
                 Builder.Build(document, writer);
             }
+
+            return CompletedTask;
         }
     }
 }

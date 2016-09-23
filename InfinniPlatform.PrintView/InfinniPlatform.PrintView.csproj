@@ -71,6 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\PrintViewHttpResponse.cs" />
     <Compile Include="Expressions\BuiltInTypes\ConditionFunctions.cs" />
     <Compile Include="Expressions\BuiltInTypes\DateTimeFunctions.cs" />
     <Compile Include="Expressions\BuiltInTypes\EnumerableFunctions.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Factories\PrintElementMetadataMap.cs" />
     <Compile Include="Contract\PrintViewSettings.cs" />
     <Compile Include="Factories\PrintViewDesignerFactory.cs" />
+    <Compile Include="Writers\Pdf\ProcessHelper.cs" />
     <Compile Include="Writers\PrintViewWriter.cs" />
     <Compile Include="Writers\IPrintViewWriter.cs" />
     <Compile Include="Factories\PrintViewFactory.cs" />

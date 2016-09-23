@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Contract;
 using InfinniPlatform.PrintView.Factories;
@@ -21,14 +22,15 @@ namespace InfinniPlatform.PrintView.Tests.Contract
         [Test]
         [TestCase(PrintViewFileFormat.Pdf)]
         [TestCase(PrintViewFileFormat.Html)]
-        public void ShouldBuildFile(PrintViewFileFormat printViewFileFormat)
+        public async Task ShouldBuildFile(PrintViewFileFormat fileFormat)
         {
             // Given
             var target = new PrintViewBuilder(new PrintViewFactory(), new PrintViewWriter(PrintViewSettings.Default), JsonObjectSerializer.Default);
-            var printView = CreateTestPrintView();
+            var template = CreateTestTemplate();
 
             // When
-            byte[] result = target.Build(printView, null, printViewFileFormat);
+            var result = new MemoryStream();
+            await target.Build(result, template, null, fileFormat);
 
             // Then
             Assert.IsNotNull(result);
@@ -36,32 +38,37 @@ namespace InfinniPlatform.PrintView.Tests.Contract
         }
 
         [Test]
-        [Ignore("Manual")]
+        //[Ignore("Manual")]
         [TestCase(PrintViewFileFormat.Pdf)]
         [TestCase(PrintViewFileFormat.Html)]
-        public void ShouldBuildFileAndThenOpenIt(PrintViewFileFormat printViewFileFormat)
+        public async Task ShouldBuildFileAndThenOpenIt(PrintViewFileFormat fileFormat)
         {
             // Given
             var target = new PrintViewBuilder(new PrintViewFactory(), new PrintViewWriter(PrintViewSettings.Default), JsonObjectSerializer.Default);
-            var printView = CreateTestPrintView();
+            var template = CreateTestTemplate();
 
             // When
-            byte[] result = target.Build(printView, null, printViewFileFormat);
+            var result = new MemoryStream();
+            await target.Build(result, template, null, fileFormat);
 
             // Then
             Assert.IsNotNull(result);
             Assert.Greater(result.Length, 0);
 
-            OpenResultFile(result, printViewFileFormat);
+            // Open PrintView
+
+            result.Position = 0;
+
+            await OpenPrintView(result, fileFormat);
         }
 
-        private static void OpenResultFile(byte[] file, PrintViewFileFormat printViewFileFormat)
+        private static async Task OpenPrintView(Stream printView, PrintViewFileFormat fileFormat)
         {
-            var fileName = "PrintView." + printViewFileFormat;
+            var fileName = "PrintView." + fileFormat;
 
             using (var writer = File.Create(fileName))
             {
-                writer.Write(file, 0, file.Length);
+                await printView.CopyToAsync(writer);
                 writer.Flush();
                 writer.Close();
             }
@@ -69,11 +76,12 @@ namespace InfinniPlatform.PrintView.Tests.Contract
             Process.Start(fileName);
         }
 
-        private static dynamic CreateTestPrintView()
+        private static DynamicWrapper CreateTestTemplate()
         {
             // Проверяются основные аспекты форматирования
 
             dynamic printView = new DynamicWrapper();
+
             printView.Blocks = new List<object>();
 
             printView.Blocks.Add(

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Model.Views;
 
@@ -9,6 +10,6 @@ namespace InfinniPlatform.PrintView.Writers
     /// </summary>
     internal interface IPrintViewFormatWriter
     {
-        void Write(Stream stream, PrintViewDocument document);
+        Task Write(Stream stream, PrintViewDocument document);
     }
 }

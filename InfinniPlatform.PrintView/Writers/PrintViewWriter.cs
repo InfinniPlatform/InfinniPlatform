@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Contract;
 using InfinniPlatform.PrintView.Model.Views;
@@ -25,17 +26,17 @@ namespace InfinniPlatform.PrintView.Writers
         private readonly Dictionary<PrintViewFileFormat, IPrintViewFormatWriter> _formatWriters;
 
 
-        public void Convert(PrintViewDocument printView, Stream printViewStream, PrintViewFileFormat printViewFileFormat)
+        public async Task Write(Stream stream, PrintViewDocument document, PrintViewFileFormat fileFormat)
         {
             IPrintViewFormatWriter documentConverter;
 
-            if (_formatWriters.TryGetValue(printViewFileFormat, out documentConverter))
+            if (_formatWriters.TryGetValue(fileFormat, out documentConverter))
             {
-                documentConverter.Write(printViewStream, printView);
+                await documentConverter.Write(stream, document);
             }
             else
             {
-                throw new NotSupportedException(string.Format(Resources.PrintViewFileFormatIsNotSupported, printViewFileFormat));
+                throw new NotSupportedException(string.Format(Resources.PrintViewFileFormatIsNotSupported, fileFormat));
             }
         }
     }

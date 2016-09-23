@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Model;
@@ -30,7 +28,7 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         {
             _htmlToPdfUtilCommand = string.IsNullOrWhiteSpace(htmlToPdfUtilCommand) ? GetDefaultHtmlToPdfUtilCommand() : htmlToPdfUtilCommand;
             _htmlToPdfUtilArguments = string.IsNullOrWhiteSpace(htmlToPdfUtilArguments) ? GetDefaultHtmlToPdfUtilArguments() : htmlToPdfUtilArguments;
-            _htmlToPdfTemp = string.IsNullOrWhiteSpace(htmlToPdfTemp) ? GetDefaultHtmlToPdfTemp() : htmlToPdfTemp;
+            _htmlToPdfTemp = string.IsNullOrWhiteSpace(htmlToPdfTemp) ? Path.GetTempPath() : htmlToPdfTemp;
         }
 
 
@@ -39,7 +37,7 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         private readonly string _htmlToPdfTemp;
 
 
-        public void Convert(PrintElementSize size, PrintElementThickness padding, Stream inHtmlStream, Stream outPdfStream)
+        public async Task Convert(PrintElementSize size, PrintElementThickness padding, Stream inHtmlStream, Stream outPdfStream)
         {
             var fileName = Guid.NewGuid().ToString("N");
             var fileHtmlPath = Path.Combine(_htmlToPdfTemp, fileName + ".html");
@@ -49,18 +47,18 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
             {
                 using (var htmlFileStream = File.Create(fileHtmlPath))
                 {
-                    inHtmlStream.CopyTo(htmlFileStream);
+                    await inHtmlStream.CopyToAsync(htmlFileStream);
                     htmlFileStream.Flush();
                 }
 
                 var htmlToPdfUtilArguments = BuildHtmlToPdfUtilArguments(size, padding, fileHtmlPath, filePdfPath);
-                var htmlToPdfConvertResult = ExecuteShellCommand(_htmlToPdfUtilCommand, htmlToPdfUtilArguments, UtilTimeout);
+                var htmlToPdfConvertResult = await ProcessHelper.ExecuteShellCommand(_htmlToPdfUtilCommand, htmlToPdfUtilArguments, UtilTimeout);
 
                 if (htmlToPdfConvertResult.Completed && htmlToPdfConvertResult.ExitCode == 0)
                 {
                     using (var fileStream = File.OpenRead(filePdfPath))
                     {
-                        fileStream.CopyTo(outPdfStream);
+                        await fileStream.CopyToAsync(outPdfStream);
                         outPdfStream.Flush();
                     }
                 }
@@ -87,7 +85,7 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
             string command;
 
             // Linux
-            if (RunningOnLinux())
+            if (IsRunningOnLinux())
             {
                 // В случае, если 'X server' на сервере не установлен, что более вероятно, то утилиту wkhtmltopdf придется
                 // запускать через какую-либо подсистему виртуализации, например, через xvfb. Предполагается, что в этом
@@ -142,7 +140,7 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         {
             string arguments;
 
-            if (RunningOnLinux())
+            if (IsRunningOnLinux())
             {
                 arguments = " ";
             }
@@ -151,35 +149,15 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
                 arguments = " --disable-smart-shrinking --dpi 96";
             }
 
-            return $"{arguments} -B {PaddingBottom} -L {PaddingLeft} -R {PaddingRight} -T {PaddingTop} --page-height {PageHeight} --page-width {PageWidth} {$"\"{HtmlInput}\""} {$"\"{PdfOutput}\""}";
+            return $"{arguments} -B {PaddingBottom} -L {PaddingLeft} -R {PaddingRight} -T {PaddingTop} --page-height {PageHeight} --page-width {PageWidth} \"{HtmlInput}\" \"{PdfOutput}\"";
         }
 
-        private static string GetDefaultHtmlToPdfTemp()
-        {
-            return Path.GetTempPath();
-        }
 
-        private static bool RunningOnLinux()
+        private static bool IsRunningOnLinux()
         {
             var p = (int)Environment.OSVersion.Platform;
 
             return ((p == 4) || (p == 128));
-        }
-
-
-        private static void DeleteFile(string path)
-        {
-            try
-            {
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-            }
-            catch
-            {
-                // ignored
-            }
         }
 
 
@@ -227,123 +205,18 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         }
 
 
-        private static ProcessResult ExecuteShellCommand(string command, string arguments, int timeout)
+        private static void DeleteFile(string path)
         {
-            var result = new ProcessResult();
-
-            using (var process = new Process())
+            try
             {
-                // При запуске на Linux bash-скриптов, возможен код ошибки 255.
-                // Решением является добавление заголовка #!/bin/bash в начало скрипта.
-
-                process.StartInfo.FileName = command;
-                process.StartInfo.Arguments = arguments;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardInput = true;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.CreateNoWindow = true;
-
-                var outputBuilder = new StringBuilder();
-                var errorBuilder = new StringBuilder();
-
-                using (var outputCloseEvent = new AutoResetEvent(false))
-                using (var errorCloseEvent = new AutoResetEvent(false))
+                if (File.Exists(path))
                 {
-                    // Подписка на события записи в выходные потоки процесса
-
-                    var copyOutputCloseEvent = outputCloseEvent;
-
-                    process.OutputDataReceived += (s, e) =>
-                                                  {
-                                                      // Поток output закрылся (процесс завершил работу)
-                                                      if (string.IsNullOrEmpty(e.Data))
-                                                      {
-                                                          copyOutputCloseEvent.Set();
-                                                      }
-                                                      else
-                                                      {
-                                                          outputBuilder.AppendLine(e.Data);
-                                                      }
-                                                  };
-
-                    var copyErrorCloseEvent = errorCloseEvent;
-
-                    process.ErrorDataReceived += (s, e) =>
-                                                 {
-                                                     // Поток error закрылся (процесс завершил работу)
-                                                     if (string.IsNullOrEmpty(e.Data))
-                                                     {
-                                                         copyErrorCloseEvent.Set();
-                                                     }
-                                                     else
-                                                     {
-                                                         errorBuilder.AppendLine(e.Data);
-                                                     }
-                                                 };
-
-                    bool isStarted;
-
-                    try
-                    {
-                        isStarted = process.Start();
-                    }
-                    catch (Exception error)
-                    {
-                        // Не удалось запустить процесс, скорей всего, файл не существует или не является исполняемым
-
-                        result.Completed = true;
-                        result.ExitCode = -1;
-                        result.Output = string.Format(Resources.CannotExecuteCommand, command, arguments, error.Message);
-
-                        isStarted = false;
-                    }
-
-                    if (isStarted)
-                    {
-                        // Начало чтения выходных потоков процесса в асинхронном режиме, чтобы не создать блокировку
-                        process.BeginOutputReadLine();
-                        process.BeginErrorReadLine();
-
-                        // Ожидание завершения процесса и закрытия выходных потоков
-                        if (process.WaitForExit(timeout)
-                            && outputCloseEvent.WaitOne(timeout)
-                            && errorCloseEvent.WaitOne(timeout))
-                        {
-                            result.Completed = true;
-                            result.ExitCode = process.ExitCode;
-
-                            // Вывод актуален только при наличии ошибки
-                            if (process.ExitCode != 0)
-                            {
-                                result.Output = $"{outputBuilder}{errorBuilder}";
-                            }
-                        }
-                        else
-                        {
-                            try
-                            {
-                                // Зависшие процессы завершаются принудительно
-                                process.Kill();
-                            }
-                            catch
-                            {
-                                // Любые ошибки в данном случае игнорируются
-                            }
-                        }
-                    }
+                    File.Delete(path);
                 }
             }
-
-            return result;
-        }
-
-
-        private struct ProcessResult
-        {
-            public bool Completed;
-            public int? ExitCode;
-            public string Output;
+            catch
+            {
+            }
         }
     }
 }

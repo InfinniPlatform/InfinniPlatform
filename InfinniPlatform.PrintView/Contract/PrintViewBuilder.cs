@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers;
@@ -26,42 +27,38 @@ namespace InfinniPlatform.PrintView.Contract
         private readonly IJsonObjectSerializer _jsonObjectSerializer;
 
 
-        public byte[] Build(Stream printViewTemplate, object printViewSource, PrintViewFileFormat printViewFormat = PrintViewFileFormat.Pdf)
+        public Task Build(Stream stream, Func<Stream> template, object dataSource = null, PrintViewFileFormat fileFormat = PrintViewFileFormat.Pdf)
         {
-            if (printViewTemplate == null)
+            if (template == null)
             {
-                throw new ArgumentNullException(nameof(printViewTemplate));
+                throw new ArgumentNullException(nameof(template));
             }
 
-            var dynamicTemplate = _jsonObjectSerializer.Deserialize<DynamicWrapper>(printViewTemplate);
+            DynamicWrapper dynamicTemplate;
 
-            return Build(dynamicTemplate, printViewSource, printViewFormat);
+            using (var templateStream = template())
+            {
+                dynamicTemplate = _jsonObjectSerializer.Deserialize<DynamicWrapper>(templateStream);
+            }
+
+            return Build(stream, dynamicTemplate, dataSource, fileFormat);
         }
 
-        public byte[] Build(DynamicWrapper printViewTemplate, object printViewSource, PrintViewFileFormat printViewFormat = PrintViewFileFormat.Pdf)
+        public async Task Build(Stream stream, DynamicWrapper template, object dataSource = null, PrintViewFileFormat fileFormat = PrintViewFileFormat.Pdf)
         {
-            if (printViewTemplate == null)
+            if (template == null)
             {
-                throw new ArgumentNullException(nameof(printViewTemplate));
+                throw new ArgumentNullException(nameof(template));
             }
 
             // Формирование документа печатного представления
-            var document = _printViewFactory.Create(printViewTemplate, printViewSource);
+            var document = _printViewFactory.Create(template, dataSource);
 
             if (document != null)
             {
                 // Сохранение документа печатного представления в указанном формате
-                using (var documentStream = new MemoryStream())
-                {
-                    _printViewWriter.Convert(document, documentStream, printViewFormat);
-
-                    documentStream.Flush();
-
-                    return documentStream.ToArray();
-                }
+                await _printViewWriter.Write(stream, document, fileFormat);
             }
-
-            return null;
         }
     }
 }

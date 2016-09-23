@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Contract;
 using InfinniPlatform.PrintView.Model.Views;
@@ -13,9 +14,9 @@ namespace InfinniPlatform.PrintView.Writers
         /// <summary>
         /// Осуществляет преобразование документа печатного представления в файл указанного формата.
         /// </summary>
-        /// <param name="printView">Документ печатного представления.</param>
-        /// <param name="printViewStream">Поток файла печатного представления.</param>
-        /// <param name="printViewFileFormat">Формат файла печатного представления.</param>
-        void Convert(PrintViewDocument printView, Stream printViewStream, PrintViewFileFormat printViewFileFormat);
+        /// <param name="stream">Поток файла печатного представления.</param>
+        /// <param name="document">Документ печатного представления.</param>
+        /// <param name="fileFormat">Формат файла печатного представления.</param>
+        Task Write(Stream stream, PrintViewDocument document, PrintViewFileFormat fileFormat);
     }
 }
