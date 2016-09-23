@@ -41,10 +41,12 @@ namespace InfinniPlatform.Watcher
 
                 watcher.EnableRaisingEvents = true;
 
-                ConsoleLog.Info(string.Format(Resources.ChangesWillBeTransferred, Environment.NewLine, _settings.SourceDirectory, Environment.NewLine, Environment.NewLine, _settings.DestinationDirectory));
+                ConsoleLog.Info(string.Format(Resources.ChangesWillBeTransferred, Environment.NewLine, _settings.SourceDirectory, _settings.DestinationDirectory));
             }
-
-            ConsoleLog.Warning(Resources.FailedStart);
+            else
+            {
+                ConsoleLog.Warning(Resources.FailedStart);
+            }
         }
 
         private void SyncDirectories()
