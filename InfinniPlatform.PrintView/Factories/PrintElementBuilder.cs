@@ -53,8 +53,7 @@ namespace InfinniPlatform.PrintView.Factories
             {
                 IPrintElementFactory elementFactory;
 
-                if (_factories.TryGetValue(elementType, out elementFactory) &&
-                    CanCreateElement(buildContext, elementMetadata))
+                if (_factories.TryGetValue(elementType, out elementFactory) && CanCreateElement(buildContext, elementMetadata))
                 {
                     var element = elementFactory.Create(buildContext, elementMetadata);
                     buildContext.MapElement(element, elementMetadata);
@@ -88,8 +87,7 @@ namespace InfinniPlatform.PrintView.Factories
             return null;
         }
 
-        public IEnumerable BuildElements(PrintElementBuildContext buildContext, IEnumerable elementMetadata,
-            string elementType)
+        public IEnumerable BuildElements(PrintElementBuildContext buildContext, IEnumerable elementMetadata, string elementType)
         {
             if (elementMetadata != null)
             {

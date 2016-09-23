@@ -13,6 +13,11 @@
         public const string PdfContentType = "application/pdf";
 
         /// <summary>
+        /// Тип содержимого 'text/html'.
+        /// </summary>
+        public const string HtmlContentType = "text/html";
+
+        /// <summary>
         /// Тип содержимого 'text/plain'.
         /// </summary>
         public const string TextContentType = "text/plain";
