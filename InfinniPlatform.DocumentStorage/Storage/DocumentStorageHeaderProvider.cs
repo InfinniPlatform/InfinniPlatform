@@ -23,11 +23,12 @@ namespace InfinniPlatform.DocumentStorage.Storage
         public void SetInsertHeader(DynamicWrapper document)
         {
             var userInfo = GetCurrentUserInfo();
+            var currentDate = DateTime.UtcNow;
 
             var header = new DynamicWrapper
             {
                 ["_tenant"] = _tenantProvider.GetTenantId(),
-                ["_created"] = DateTime.UtcNow,
+                ["_created"] = currentDate,
                 ["_createUser"] = userInfo.Item1,
                 ["_createUserId"] = userInfo.Item2
             };

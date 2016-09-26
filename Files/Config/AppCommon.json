@@ -119,20 +119,20 @@
   "staticContent": {
     /* Соответствие виртуальных и физических путей до статических файлов */
     "StaticFilesMapping": {
-      /* Виртуальный путь: физический путь, относительно рабочей папки */
+      /* Виртуальный путь каталога: Физический путь каталога */
       "/metadata": "content/metadata",
       "/": "content/www"
     },
     /* Соответствие виртуальных путей и сборок с файлами ресурсов */
     "EmbeddedResourceMapping": {
-      /* Виртуальный путь: имя сбороки с файлами ресурсов */
-      /* "/resources/Owin": "InfinniPlatform.Authentication" */
+      /* Виртуальный путь: Путь к ресурсам сборки */
+      /* "/resources/MyResources": "MyAssembly.ResourceFolder" */
     },
     /* Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews) */
-      "RazorViewsPath": "content/RazorViews",
-      /* Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews) */
-      "EmbeddedRazorViewsAssemblies": [ ]
-    },
+    "RazorViewsPath": "content/RazorViews",
+    /* Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews) */
+    "EmbeddedRazorViewsAssemblies": [ ]
+  },
   /* Настройки аутентификации через Cookie */
   "authCookie": {
     /* Домен для создания cookie (значения по умолчанию нет, при развертывании в кластере - указать шаблон) */
