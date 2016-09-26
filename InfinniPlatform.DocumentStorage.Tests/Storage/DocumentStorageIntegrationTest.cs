@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
 using NUnit.Framework;
@@ -99,6 +101,39 @@ namespace InfinniPlatform.DocumentStorage.Tests.Storage
 
             Assert.AreEqual(1, afterDelete.Count);
             Assert.AreEqual(2, afterDelete[0]["_id"]);
+        }
+
+        [Test]
+        public async Task ShouldNotChangeCreationDate()
+        {
+            // Given
+            var storage = DocumentStorageTestHelpers.GetEmptyStorage(nameof(ShouldNotChangeCreationDate));
+
+            // When
+
+            await storage.SaveOneAsync(new DynamicWrapper { { "_id", 1 } });
+            var version1 = await storage.Find(f => f.Eq("_id", 1)).FirstOrDefaultAsync();
+            var header1 = (DynamicWrapper)version1["_header"];
+            var created1 = (DateTime?)header1["_created"];
+            var updated1 = (DateTime?)header1["_updated"];
+
+            await Task.Delay(1000);
+
+            await storage.SaveOneAsync(version1);
+            var version2 = await storage.Find(f => f.Eq("_id", 1)).FirstOrDefaultAsync();
+            var header2 = (DynamicWrapper)version2["_header"];
+            var created2 = (DateTime?)header2["_created"];
+            var updated2 = (DateTime?)header2["_updated"];
+
+            // Then
+
+            Assert.IsNotNull(created1);
+            Assert.AreEqual(created1, updated1);
+
+            Assert.AreEqual(created1, created2);
+            Assert.AreNotEqual(created2, updated2);
+
+            Assert.Less(created2, updated2);
         }
     }
 }
