@@ -11,24 +11,29 @@ namespace InfinniPlatform.Owin.Services
 
         public StaticContentSettings()
         {
-            StaticContentMapping = new Dictionary<string, string>();
-            ResourceContentMapping = new Dictionary<string, string>();
+            StaticFilesMapping = new Dictionary<string, string>();
+            EmbeddedResourceMapping = new Dictionary<string, string>();
             RazorViewsPath = string.Empty;
         }
 
         /// <summary>
         /// Соответствие виртуальных и физических путей до статических файлов.
         /// </summary>
-        public Dictionary<string, string> StaticContentMapping { get; set; }
+        public Dictionary<string, string> StaticFilesMapping { get; set; }
 
         /// <summary>
         /// Соответствие виртуальных путей и сборок с файлами ресурсов.
         /// </summary>
-        public Dictionary<string, string> ResourceContentMapping { get; set; }
+        public Dictionary<string, string> EmbeddedResourceMapping { get; set; }
 
         /// <summary>
         /// Путь до файлов Razor-представлений (относительно рабочей папки).
         /// </summary>
         public string RazorViewsPath { get; set; }
+
+        /// <summary>
+        /// Путь до файлов Razor-представлений (относительно рабочей папки).
+        /// </summary>
+        public string[] EmbeddedRazorViewsAssemblies { get; set; }
     }
 }

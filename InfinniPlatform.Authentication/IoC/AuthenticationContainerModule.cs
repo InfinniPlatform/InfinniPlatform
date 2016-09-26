@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Authentication.Hosting;
 using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Modules;
+using InfinniPlatform.Authentication.RazorViews;
 using InfinniPlatform.Authentication.Security;
 using InfinniPlatform.Authentication.Services;
 using InfinniPlatform.Authentication.UserStorage;
@@ -102,6 +103,10 @@ namespace InfinniPlatform.Authentication.IoC
 
             builder.RegisterType<AuthenticationDocumentMetadataSource>()
                    .As<IDocumentMetadataSource>()
+                   .SingleInstance();
+
+            builder.RegisterType<RazorViewsHttpService>()
+                   .As<IHttpService>()
                    .SingleInstance();
         }
 

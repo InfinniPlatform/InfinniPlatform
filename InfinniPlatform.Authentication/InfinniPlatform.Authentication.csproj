@@ -153,6 +153,7 @@
     </Compile>
     <Compile Include="Modules\CookieAuthOwinHostingModule.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
+    <Compile Include="RazorViews\RazorViewsHttpService.cs" />
     <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="Services\AuthHttpService.cs" />
     <Compile Include="Services\UserEventHandlerInvoker.cs" />
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="RazorViews\AuthenticationView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj">

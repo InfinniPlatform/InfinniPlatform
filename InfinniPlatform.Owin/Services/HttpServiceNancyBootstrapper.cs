@@ -13,6 +13,7 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Conventions;
 using Nancy.TinyIoc;
+using Nancy.ViewEngines;
 
 namespace InfinniPlatform.Owin.Services
 {
@@ -21,6 +22,8 @@ namespace InfinniPlatform.Owin.Services
     /// </summary>
     internal sealed class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
+        private static readonly string RazorViewFileExtension = ".cshtml";
+
         public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
                                             StaticContentSettings staticContentSettings,
                                             ILog log)
@@ -30,9 +33,15 @@ namespace InfinniPlatform.Owin.Services
             _log = log;
         }
 
+        private readonly ILog _log;
+
         private readonly INancyModuleCatalog _nancyModuleCatalog;
         private readonly StaticContentSettings _staticContentSettings;
-        private readonly ILog _log;
+
+        protected override NancyInternalConfiguration InternalConfiguration
+        {
+            get { return NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = typeof(ResourceViewLocationProvider)); }
+        }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
         {
@@ -74,28 +83,13 @@ namespace InfinniPlatform.Owin.Services
 
             base.ApplicationStartup(container, pipelines);
 
-            // Регистрация директории, содержащей Razor-представления.
-            Conventions.ViewLocationConventions.Add((viewName, model, context) => $"{_staticContentSettings.RazorViewsPath.ToWebPath()}/{viewName}");
-
             // Добавление сопоставления между виртуальными (запрашиваемый в браузере путь) и физическими директориями в файловой системе.
             Conventions.StaticContentsConventions.Clear();
 
-            foreach (var mapping in _staticContentSettings.StaticContentMapping)
-            {
-                var requestedPath = mapping.Key;
-                var contentPath = mapping.Value.ToWebPath();
-
-                Conventions.StaticContentsConventions.AddDirectory(requestedPath, contentPath);
-
-                _log.Info(Resources.ServingStaticContent, () => new Dictionary<string, object> { { "requestedPath", requestedPath }, { "contentPath", contentPath } });
-            }
-
-            foreach (var mapping in _staticContentSettings.ResourceContentMapping)
-            {
-                var requestedPath = mapping.Key;
-                var assembly = Assembly.Load(mapping.Value);
-                Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
-            }
+            RegisterStaticFiles();
+            RegisterEmbeddedResource();
+            RegisterRazorViews();
+            RegisterEmbeddedRazorViews();
         }
 
         private static void CheckForIfModifiedSince(NancyContext context)
@@ -136,6 +130,59 @@ namespace InfinniPlatform.Owin.Services
             if (request.Headers.IfNoneMatch.Contains(responseETag))
             {
                 context.Response = HttpStatusCode.NotModified;
+            }
+        }
+
+        private void RegisterStaticFiles()
+        {
+            foreach (var mapping in _staticContentSettings.StaticFilesMapping)
+            {
+                var requestedPath = mapping.Key;
+                var contentPath = mapping.Value.ToWebPath();
+
+                Conventions.StaticContentsConventions.AddDirectory(requestedPath, contentPath);
+
+                _log.Info(Resources.ServingStaticContent, () => new Dictionary<string, object> { { "requestedPath", requestedPath }, { "contentPath", contentPath } });
+            }
+        }
+
+        private void RegisterEmbeddedResource()
+        {
+            foreach (var mapping in _staticContentSettings.EmbeddedResourceMapping)
+            {
+                var requestedPath = mapping.Key;
+                var assembly = Assembly.Load(mapping.Value);
+                Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
+            }
+        }
+
+        private void RegisterRazorViews()
+        {
+            Conventions.ViewLocationConventions.Add((viewName, model, context) => $"{_staticContentSettings.RazorViewsPath.ToWebPath()}/{viewName}");
+        }
+
+        private void RegisterEmbeddedRazorViews()
+        {
+            foreach (var mapping in _staticContentSettings.EmbeddedRazorViewsAssemblies)
+            {
+                var razorViews = Assembly.Load(mapping)
+                                         .GetManifestResourceNames()
+                                         .Where(s => s.EndsWith(RazorViewFileExtension));
+
+                var rootNamespaces = new List<string>();
+
+                foreach (var razorView in razorViews)
+                {
+                    var pathWithoutExtention = razorView.Replace(RazorViewFileExtension, string.Empty);
+                    // Assuming views names does not contains '.'
+                    var fileName = pathWithoutExtention.Split('.').Last();
+                    rootNamespaces.Add(pathWithoutExtention.Replace($".{fileName}", string.Empty));
+                }
+
+                foreach (var path in rootNamespaces)
+                {
+                    ResourceViewLocationProvider.RootNamespaces.Add(Assembly.Load(mapping), path);
+                }
             }
         }
     }
