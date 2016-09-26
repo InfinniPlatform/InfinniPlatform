@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Watcher.Properties;
 
 namespace InfinniPlatform.Watcher
@@ -26,7 +25,7 @@ namespace InfinniPlatform.Watcher
             {
                 Console.WriteLine(Resources.SuccessStart);
 
-                SyncDirectories();
+                TryExecute(SyncDirectories);
 
                 var watcher = new FileSystemWatcher
                               {
@@ -34,10 +33,10 @@ namespace InfinniPlatform.Watcher
                                   IncludeSubdirectories = true
                               };
 
-                watcher.Changed += (sender, eventArgs) => SyncFileSystemEntity(eventArgs);
-                watcher.Created += (sender, eventArgs) => CreateFileSystemEntity(eventArgs);
-                watcher.Deleted += (sender, eventArgs) => DeleteFileSystemEntity(eventArgs);
-                watcher.Renamed += (sender, eventArgs) => SyncFileSystemEntity(eventArgs);
+                watcher.Changed += (sender, eventArgs) => TryExecute(() => SyncFileSystemEntity(eventArgs));
+                watcher.Created += (sender, eventArgs) => TryExecute(() => CreateFileSystemEntity(eventArgs));
+                watcher.Deleted += (sender, eventArgs) => TryExecute(() => DeleteFileSystemEntity(eventArgs));
+                watcher.Renamed += (sender, eventArgs) => TryExecute(() => SyncFileSystemEntity(eventArgs));
 
                 watcher.EnableRaisingEvents = true;
 
@@ -86,11 +85,8 @@ namespace InfinniPlatform.Watcher
 
                     ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
-                    TryExecute(() =>
-                               {
-                                   File.Delete(Path.Combine(_settings.DestinationDirectory, part));
-                                   ConsoleLog.Info(Resources.SyncComplete);
-                               });
+                    File.Delete(Path.Combine(_settings.DestinationDirectory, part));
+                    ConsoleLog.Info(Resources.SyncComplete);
                 }
             }
             else
@@ -99,11 +95,8 @@ namespace InfinniPlatform.Watcher
 
                 ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
-                TryExecute(() =>
-                           {
-                               Directory.Delete(Path.Combine(_settings.DestinationDirectory, part), true);
-                               ConsoleLog.Info(Resources.SyncComplete);
-                           });
+                Directory.Delete(Path.Combine(_settings.DestinationDirectory, part), true);
+                ConsoleLog.Info(Resources.SyncComplete);
             }
         }
 
@@ -119,7 +112,7 @@ namespace InfinniPlatform.Watcher
 
                     ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
-                    TryExecute(() => { File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true); });
+                    File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true);
 
                     ConsoleLog.Info(Resources.SyncComplete);
                 }
@@ -130,7 +123,7 @@ namespace InfinniPlatform.Watcher
 
                 ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
-                TryExecute(() => { Directory.CreateDirectory(Path.Combine(_settings.DestinationDirectory, part)); });
+                Directory.CreateDirectory(Path.Combine(_settings.DestinationDirectory, part));
 
                 ConsoleLog.Info(Resources.SyncComplete);
             }
@@ -182,14 +175,14 @@ namespace InfinniPlatform.Watcher
 
                     ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
 
-                    TryExecute(() => { File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true); });
+                    File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true);
 
                     ConsoleLog.Info(Resources.SyncComplete);
                 }
             }
         }
 
-        private void TryExecute(Action action)
+        private static void TryExecute(Action action)
         {
             try
             {
