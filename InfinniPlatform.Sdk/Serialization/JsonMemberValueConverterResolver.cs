@@ -10,7 +10,7 @@ namespace InfinniPlatform.Sdk.Serialization
     /// <summary>
     /// Определяет правила преобразования объекта в JSON-представление и обратно на основе списка <see cref="IMemberValueConverter" />.
     /// </summary>
-    internal sealed class JsonMemberValueConverterResolver : DefaultContractResolver
+    internal sealed class JsonMemberValueConverterResolver : JsonDefaultContractResolver
     {
         public JsonMemberValueConverterResolver(IEnumerable<IMemberValueConverter> converters)
         {
