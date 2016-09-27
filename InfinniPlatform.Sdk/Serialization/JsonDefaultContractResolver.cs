@@ -17,7 +17,7 @@ namespace InfinniPlatform.Sdk.Serialization
         /// </summary>
         protected override List<MemberInfo> GetSerializableMembers(Type objectType)
         {
-            const BindingFlags membersSearchFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            const BindingFlags membersSearchFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
             var serializableMembers = base.GetSerializableMembers(objectType);
 
@@ -76,7 +76,7 @@ namespace InfinniPlatform.Sdk.Serialization
         /// </summary>
         private static bool IsSerializerVisible(MemberInfo member)
         {
-            return (member.GetCustomAttributes(typeof(SerializerVisibleAttribute), false).Length > 0);
+            return member.IsDefined(typeof(SerializerVisibleAttribute), false);
         }
     }
 }
