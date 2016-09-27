@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Sdk.Documents
+﻿using InfinniPlatform.Sdk.Serialization;
+
+namespace InfinniPlatform.Sdk.Documents
 {
     /// <summary>
     /// Базовый класс документов.
@@ -16,6 +18,7 @@
         /// <summary>
         /// Заголовок документа.
         /// </summary>
+        [SerializerVisible]
         public DocumentHeader _header { get; internal set; }
 
 

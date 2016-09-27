@@ -79,7 +79,7 @@ namespace InfinniPlatform.Sdk.Serialization
                                     };
             }
 
-            serializer.ContractResolver = contractResolver ?? new DefaultContractResolver();
+            serializer.ContractResolver = contractResolver ?? new JsonDefaultContractResolver();
 
             if (knownTypes != null)
             {
