@@ -25,6 +25,41 @@ namespace InfinniPlatform.NodeServiceHost
         public IOwinHostingContext HostingContext => _serviceHostInstance.Value.OwinHostingContext;
 
 
+        public void Init(TimeSpan timeout)
+        {
+            if ((_serviceHostStatus != ServiceHostStatus.Running) && (_serviceHostStatus != ServiceHostStatus.StartPending))
+            {
+                lock (_statusSync)
+                {
+                    if ((_serviceHostStatus != ServiceHostStatus.Running) && (_serviceHostStatus != ServiceHostStatus.StartPending))
+                    {
+                        var prevStatus = _serviceHostStatus;
+
+                        _serviceHostStatus = ServiceHostStatus.StartPending;
+
+                        try
+                        {
+                            Logger.Log.Info(Resources.ServiceHostIsStarting);
+
+                            _serviceHostInstance.Value.HostingService.Init();
+
+                            Logger.Log.Info(Resources.ServiceHostHasBeenSuccessfullyStarted);
+                        }
+                        catch (Exception error)
+                        {
+                            Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, error);
+
+                            _serviceHostStatus = prevStatus;
+
+                            throw;
+                        }
+
+                        _serviceHostStatus = ServiceHostStatus.Running;
+                    }
+                }
+            }
+        }
+
         public void Start(TimeSpan timeout)
         {
             if (_serviceHostStatus != ServiceHostStatus.Running && _serviceHostStatus != ServiceHostStatus.StartPending)

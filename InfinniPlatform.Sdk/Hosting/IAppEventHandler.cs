@@ -11,6 +11,16 @@
         int Order { get; }
 
         /// <summary>
+        /// Вызывается перед инициализацией приложения.
+        /// </summary>
+        void OnBeforeInit();
+
+        /// <summary>
+        /// Вызывается после инициализации приложения.
+        /// </summary>
+        void OnAfterInit();
+
+        /// <summary>
         /// Вызывается перед запуском приложения.
         /// </summary>
         void OnBeforeStart();

@@ -61,6 +61,15 @@ namespace InfinniPlatform.ServiceHost.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server initialized..
+        /// </summary>
+        internal static string ServerInitialized {
+            get {
+                return ResourceManager.GetString("ServerInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server started..
         /// </summary>
         internal static string ServerStarted {

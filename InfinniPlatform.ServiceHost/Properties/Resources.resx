@@ -120,4 +120,7 @@
   <data name="ServerStarted" xml:space="preserve">
     <value>Server started.</value>
   </data>
+  <data name="ServerInitialized" xml:space="preserve">
+    <value>Server initialized.</value>
+  </data>
 </root>

@@ -95,6 +95,42 @@ namespace InfinniPlatform.Owin.Hosting
         private readonly object _hostSync = new object();
         private volatile IDisposable _host;
 
+        public void Init()
+        {
+            if (_host == null)
+            {
+                lock (_hostSync)
+                {
+                    if (_host == null)
+                    {
+                        IDisposable host = null;
+
+                        try
+                        {
+                            OnBeforeInit?.Invoke(this, EventArgs.Empty);
+
+                            host = WebApp.Start(_baseAddress, Startup);
+
+                            OnAfterInit?.Invoke(this, EventArgs.Empty);
+                        }
+                        catch (Exception exception)
+                        {
+                            throw new AggregateException(Resources.CannotStartServiceCorrectly, exception);
+                        }
+                        finally
+                        {
+                            try
+                            {
+                                host?.Dispose();
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         public void Start()
         {
@@ -183,6 +219,10 @@ namespace InfinniPlatform.Owin.Hosting
             }
         }
 
+
+        public event EventHandler OnBeforeInit;
+
+        public event EventHandler OnAfterInit;
 
         public event EventHandler OnBeforeStart;
 
