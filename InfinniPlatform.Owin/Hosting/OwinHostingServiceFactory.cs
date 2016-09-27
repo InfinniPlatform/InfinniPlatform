@@ -24,8 +24,7 @@ namespace InfinniPlatform.Owin.Hosting
 
             if (appEventHandlers != null)
             {
-                hostingService.OnBeforeInit += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnBeforeInit());
-                hostingService.OnAfterInit += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnAfterInit());
+                hostingService.OnInit += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnInit());
                 hostingService.OnBeforeStart += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnBeforeStart());
                 hostingService.OnAfterStart += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnAfterStart());
                 hostingService.OnBeforeStop += (s, e) => InvokeAppHandlers(appEventHandlers, h => h.OnBeforeStop());

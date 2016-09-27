@@ -16,16 +16,9 @@
         public int Order { get; }
 
         /// <summary>
-        /// Вызывается перед инициализацией приложения.
+        /// Вызывается при инициализации приложения.
         /// </summary>
-        public virtual void OnBeforeInit()
-        {
-        }
-
-        /// <summary>
-        /// Вызывается после инициализации приложения.
-        /// </summary>
-        public virtual void OnAfterInit()
+        public virtual void OnInit()
         {
         }
 

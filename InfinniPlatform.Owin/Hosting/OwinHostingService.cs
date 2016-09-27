@@ -103,29 +103,13 @@ namespace InfinniPlatform.Owin.Hosting
                 {
                     if (_host == null)
                     {
-                        IDisposable host = null;
-
                         try
                         {
-                            OnBeforeInit?.Invoke(this, EventArgs.Empty);
-
-                            host = WebApp.Start(_baseAddress, Startup);
-
-                            OnAfterInit?.Invoke(this, EventArgs.Empty);
+                            OnInit?.Invoke(this, EventArgs.Empty);
                         }
                         catch (Exception exception)
                         {
-                            throw new AggregateException(Resources.CannotStartServiceCorrectly, exception);
-                        }
-                        finally
-                        {
-                            try
-                            {
-                                host?.Dispose();
-                            }
-                            catch
-                            {
-                            }
+                            throw new AggregateException("Cannot initialize service correctly.", exception);
                         }
                     }
                 }
@@ -220,9 +204,7 @@ namespace InfinniPlatform.Owin.Hosting
         }
 
 
-        public event EventHandler OnBeforeInit;
-
-        public event EventHandler OnAfterInit;
+        public event EventHandler OnInit;
 
         public event EventHandler OnBeforeStart;
 

@@ -30,7 +30,6 @@ namespace InfinniPlatform.ServiceHost
             DirectoryAssemblyLoadContext.InitializeDefaultContext(context);
         }
 
-
         private static void RunServiceHost(string[] args)
         {
             try
@@ -46,7 +45,8 @@ namespace InfinniPlatform.ServiceHost
                     Console.WriteLine(Resources.ServerInitialized);
                 }
 
-                if (args.Any(s => (s == "-s") || (s == "--start")))
+                if (!args.Any()
+                    || args.Any(s => (s == "-s") || (s == "--start")))
                 {
                     serviceHost.Start(Timeout.InfiniteTimeSpan);
                     Console.WriteLine(Resources.ServerStarted);

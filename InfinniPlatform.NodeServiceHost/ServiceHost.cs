@@ -27,34 +27,32 @@ namespace InfinniPlatform.NodeServiceHost
 
         public void Init(TimeSpan timeout)
         {
-            if ((_serviceHostStatus != ServiceHostStatus.Running) && (_serviceHostStatus != ServiceHostStatus.StartPending))
+            if ((_serviceHostStatus != ServiceHostStatus.Initializing) && (_serviceHostStatus != ServiceHostStatus.InitializationPending))
             {
                 lock (_statusSync)
                 {
-                    if ((_serviceHostStatus != ServiceHostStatus.Running) && (_serviceHostStatus != ServiceHostStatus.StartPending))
+                    if ((_serviceHostStatus != ServiceHostStatus.Initializing) && (_serviceHostStatus != ServiceHostStatus.InitializationPending))
                     {
                         var prevStatus = _serviceHostStatus;
 
-                        _serviceHostStatus = ServiceHostStatus.StartPending;
+                        _serviceHostStatus = ServiceHostStatus.InitializationPending;
 
                         try
                         {
-                            Logger.Log.Info(Resources.ServiceHostIsStarting);
+                            Logger.Log.Info("Initializing.");
 
                             _serviceHostInstance.Value.HostingService.Init();
 
-                            Logger.Log.Info(Resources.ServiceHostHasBeenSuccessfullyStarted);
+                            Logger.Log.Info("Successfully initialized.");
                         }
                         catch (Exception error)
                         {
-                            Logger.Log.Fatal(Resources.ServiceHostHasNotBeenStarted, error);
+                            Logger.Log.Fatal("Failed initialization.", error);
 
                             _serviceHostStatus = prevStatus;
 
                             throw;
                         }
-
-                        _serviceHostStatus = ServiceHostStatus.Running;
                     }
                 }
             }
@@ -88,8 +86,6 @@ namespace InfinniPlatform.NodeServiceHost
 
                             throw;
                         }
-
-                        _serviceHostStatus = ServiceHostStatus.Running;
                     }
                 }
             }
