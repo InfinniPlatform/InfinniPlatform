@@ -13,18 +13,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         public ProcessHelper(AgentSettings agentSettings)
         {
             _workingDirectory = agentSettings.NodeDirectory;
-
-            if (!Directory.Exists(_workingDirectory))
-            {
-                throw new ArgumentException($"Directory {_workingDirectory} does not exists. Check 'NodeDirectory' in settings.");
-            }
-
             _command = $"{agentSettings.NodeDirectory}{Path.DirectorySeparatorChar}Infinni.Node.exe";
-
-            if (!File.Exists(_command))
-            {
-                throw new ArgumentException("File \'Infinni.Node.exe\' does not exists. Check \'NodeDirectory\' in settings.");
-            }
         }
 
         private readonly string _command;
