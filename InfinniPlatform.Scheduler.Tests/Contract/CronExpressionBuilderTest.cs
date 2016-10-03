@@ -79,19 +79,19 @@ namespace InfinniPlatform.Scheduler.Tests.Contract
                   {
                       b => b.AtHourAndMinuteDaily(10, 15)
                             .DayOfMonth(i => i.Each(15)),
-                      "0 15 10 15 * *"
+                      "0 15 10 15 * ?"
                   },
                   // В последний день каждого месяца в 10:15
                   {
                       b => b.AtHourAndMinuteDaily(10, 15)
                             .DayOfMonth(i => i.EachLast()),
-                      "0 15 10 L * *"
+                      "0 15 10 L * ?"
                   },
                   // За 2 дня до последнего дня месяца в 10:15
                   {
                       b => b.AtHourAndMinuteDaily(10, 15)
                             .DayOfMonth(i => i.EachLast(2)),
-                      "0 15 10 L-2 * *"
+                      "0 15 10 L-2 * ?"
                   },
                   // Каждую последнюю пятницу месяца в 10:15
                   {
@@ -116,14 +116,14 @@ namespace InfinniPlatform.Scheduler.Tests.Contract
                   {
                       b => b.AtHourAndMinuteDaily(12, 0)
                             .DayOfMonth(i => i.Each(1, 5)),
-                      "0 0 12 1/5 * *"
+                      "0 0 12 1/5 * ?"
                   },
                   // 11 ноября в 11:11
                   {
                       b => b.AtHourAndMinuteDaily(11, 11)
                             .DayOfMonth(i => i.Each(11))
                             .Month(i => i.Each(Month.November)),
-                      "0 11 11 11 11 *"
+                      "0 11 11 11 11 ?"
                   },
                   // Ежедневно в 10:15
                   {
@@ -138,7 +138,7 @@ namespace InfinniPlatform.Scheduler.Tests.Contract
                   // 1, 10 и 15 числа в 10:15
                   {
                       b => b.AtHourAndMinuteMonthly(10, 15, 1, 10, 15),
-                      "0 15 10 1,10,15 * *"
+                      "0 15 10 1,10,15 * ?"
                   }
               };
 
