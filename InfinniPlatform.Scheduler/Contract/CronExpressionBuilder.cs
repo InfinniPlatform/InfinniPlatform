@@ -103,13 +103,31 @@ namespace InfinniPlatform.Scheduler.Contract
 
             // День: день месяца, месяц, день недели
 
-            var dayOfMonth = string.IsNullOrEmpty(_dayOfMonth) ? CronConstants.AllValues : _dayOfMonth;
-            var dayOfWeek = string.IsNullOrEmpty(_dayOfWeek) ? CronConstants.AllValues : _dayOfWeek;
+            string dayOfMonth;
+            string dayOfWeek;
 
-            if ((dayOfMonth == CronConstants.AllValues || dayOfMonth == CronConstants.NoSpecificValue) && dayOfMonth == dayOfWeek)
+            var anyDayOfMonth = string.IsNullOrEmpty(_dayOfMonth) || (_dayOfMonth == CronConstants.AllValues) || (_dayOfMonth == CronConstants.NoSpecificValue);
+            var anyDayOfWeek = string.IsNullOrEmpty(_dayOfWeek) || (_dayOfWeek == CronConstants.AllValues) || (_dayOfWeek == CronConstants.NoSpecificValue);
+
+            if (anyDayOfMonth && anyDayOfWeek)
             {
                 dayOfMonth = CronConstants.AllValues;
                 dayOfWeek = CronConstants.NoSpecificValue;
+            }
+            else if (anyDayOfMonth)
+            {
+                dayOfMonth = CronConstants.AllValues;
+                dayOfWeek = _dayOfWeek;
+            }
+            else if (anyDayOfWeek)
+            {
+                dayOfMonth = _dayOfMonth;
+                dayOfWeek = CronConstants.NoSpecificValue;
+            }
+            else
+            {
+                dayOfMonth = _dayOfMonth;
+                dayOfWeek = _dayOfWeek;
             }
 
             expression.AppendCronExpression(dayOfMonth).Append(CronConstants.PartDelimiter);
