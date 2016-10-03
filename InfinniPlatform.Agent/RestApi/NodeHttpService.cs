@@ -19,11 +19,12 @@ namespace InfinniPlatform.Agent.RestApi
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.ServicePath = "Node";
+            builder.ServicePath = "node";
             builder.Post["install"] = InstallApp;
             builder.Post["uninstall"] = UninstallApp;
             builder.Post["start"] = StartApp;
             builder.Post["stop"] = StopApp;
+            builder.Get["apps"] = GetInstalledApps;
         }
 
         private async Task<object> InstallApp(IHttpRequest httpRequest)
@@ -58,6 +59,13 @@ namespace InfinniPlatform.Agent.RestApi
             string appName = httpRequest.Form.AppName;
 
             var processResult = await _connector.StopApp(appName);
+
+            return processResult;
+        }
+
+        private async Task<object> GetInstalledApps(IHttpRequest httpRequest)
+        {
+            var processResult = await _connector.GetInstalledApps();
 
             return processResult;
         }

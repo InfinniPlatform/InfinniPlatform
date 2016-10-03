@@ -11,5 +11,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         Task<ProcessHelper.ProcessResult> UninstallApp(string appName);
         Task<ProcessHelper.ProcessResult> StartApp(string appName);
         Task<ProcessHelper.ProcessResult> StopApp(string appName);
+
+        Task<ProcessHelper.ProcessResult> GetInstalledApps();
     }
 }

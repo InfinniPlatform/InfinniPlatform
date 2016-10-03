@@ -43,5 +43,12 @@ namespace InfinniPlatform.Agent.InfinniNode
 
             return await _processHelper.ExecuteCommand(args, ProcessTimeout);
         }
+
+        public async Task<ProcessHelper.ProcessResult> GetInstalledApps()
+        {
+            const string args = "status";
+
+            return await _processHelper.ExecuteCommand(args, ProcessTimeout);
+        }
     }
 }
