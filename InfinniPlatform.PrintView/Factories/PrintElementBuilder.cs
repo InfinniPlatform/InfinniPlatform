@@ -1,62 +1,39 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 
 using InfinniPlatform.PrintView.Expressions.Parser;
+using InfinniPlatform.PrintView.Model;
+using InfinniPlatform.PrintView.Model.Defaults;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.PrintView.Factories
 {
     /// <summary>
-    /// Построитель элементов печатного представления.
+    /// Универсальная фабрика для создания элементов.
     /// </summary>
     internal class PrintElementBuilder
     {
-        private readonly Dictionary<string, IPrintElementFactory> _factories
-            = new Dictionary<string, IPrintElementFactory>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<Type, IPrintElementFactory> _factories
+            = new Dictionary<Type, IPrintElementFactory>();
 
 
-        public void Register(string elementType, IPrintElementFactory elementFactory)
+        public void Register<T>(PrintElementFactoryBase<T> factory)
         {
-            if (string.IsNullOrEmpty(elementType))
-            {
-                throw new ArgumentNullException(nameof(elementType));
-            }
-
-            if (elementFactory == null)
-            {
-                throw new ArgumentNullException(nameof(elementFactory));
-            }
-
-            _factories.Add(elementType, elementFactory);
+            _factories.Add(typeof(T), factory);
         }
 
 
-        public object BuildElement(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        public object BuildElement(PrintElementFactoryContext context, object template)
         {
-            if (elementMetadata is IDynamicMetaObjectProvider)
+            if (template != null)
             {
-                foreach (var property in elementMetadata)
+                IPrintElementFactory factory;
+
+                if (_factories.TryGetValue(template.GetType(), out factory) && CanCreateElement(context, template))
                 {
-                    return BuildElement(buildContext, property.Value, property.Key);
-                }
-            }
-
-            return null;
-        }
-
-        public object BuildElement(PrintElementBuildContext buildContext, dynamic elementMetadata, string elementType)
-        {
-            if (elementMetadata != null)
-            {
-                IPrintElementFactory elementFactory;
-
-                if (_factories.TryGetValue(elementType, out elementFactory) && CanCreateElement(buildContext, elementMetadata))
-                {
-                    var element = elementFactory.Create(buildContext, elementMetadata);
-                    buildContext.MapElement(element, elementMetadata);
+                    var element = factory.Create(context, template);
+                    context.MapElement(element, template);
                     return element;
                 }
             }
@@ -64,126 +41,103 @@ namespace InfinniPlatform.PrintView.Factories
             return null;
         }
 
-
-        public IEnumerable BuildElements(PrintElementBuildContext buildContext, IEnumerable elementMetadata)
+        public IEnumerable BuildElements(PrintElementFactoryContext context, IEnumerable templates)
         {
-            if (elementMetadata != null)
+            if (templates != null)
             {
-                var items = new List<object>();
+                var elements = new List<object>();
 
-                foreach (var itemMetadata in elementMetadata)
+                foreach (var template in templates)
                 {
-                    var item = BuildElement(buildContext.Clone(), JsonObjectSerializer.Default.ConvertFromDynamic<DynamicWrapper>(itemMetadata));
+                    var elementContext = context.Clone();
 
-                    if (item != null)
+                    var element = BuildElement(elementContext, template);
+
+                    if (element != null)
                     {
-                        items.Add(item);
+                        elements.Add(element);
                     }
                 }
 
-                return items;
-            }
-
-            return null;
-        }
-
-        public IEnumerable BuildElements(PrintElementBuildContext buildContext, IEnumerable elementMetadata, string elementType)
-        {
-            if (elementMetadata != null)
-            {
-                var items = new List<object>();
-
-                foreach (var itemMetadata in elementMetadata)
-                {
-                    var item = BuildElement(buildContext.Clone(), itemMetadata, elementType);
-
-                    if (item != null)
-                    {
-                        items.Add(item);
-                    }
-                }
-
-                return items;
+                return elements;
             }
 
             return null;
         }
 
 
-        private static bool CanCreateElement(PrintElementBuildContext buildContext, dynamic elementMetadata)
+        private static bool CanCreateElement(PrintElementFactoryContext context, object template)
         {
-            string visibility;
+            // Определение настроек видимости элемента
 
-            if (!ConvertHelper.TryToNormString(elementMetadata.Visibility, out visibility))
+            var elementTemplate = template as PrintElement;
+
+            if (elementTemplate == null)
             {
-                visibility = "source";
+                return true;
             }
 
-            if (visibility == "never")
+            var visibility = elementTemplate.Visibility ?? PrintViewDefaults.Element.Visibility;
+
+            if (visibility == PrintVisibility.Never)
             {
                 return false;
             }
 
-            string sourceProperty;
-            string sourceExpression = null;
+            var sourceProperty = elementTemplate.Source;
+            var sourceExpression = elementTemplate.Expression;
 
-            var hasDataSource = ConvertHelper.TryToString(elementMetadata.Source, out sourceProperty)
-                                || ConvertHelper.TryToString(elementMetadata.Expression, out sourceExpression);
+            var hasDataSource = !string.IsNullOrWhiteSpace(sourceProperty) || !string.IsNullOrWhiteSpace(sourceExpression);
 
             // Если у элемента указан источник данных
             if (hasDataSource)
             {
                 // Установка данных элемента по источнику
-                SetElementData(buildContext, sourceProperty, sourceExpression);
+                SetElementData(context, sourceProperty, sourceExpression);
 
                 // Если элемент печатается только при наличии данных
-                if (!buildContext.IsDesignMode && (visibility == "source") &&
-                    ConvertHelper.ObjectIsNullOrEmpty(buildContext.ElementSourceValue))
+                if (!context.IsDesignMode && (visibility == PrintVisibility.Source) &&
+                    ConvertHelper.ObjectIsNullOrEmpty(context.ElementSourceValue))
                 {
                     return false;
                 }
             }
 
             // Установка стиля элемента по имени
-            SetElementStyle(buildContext, elementMetadata.Style);
+            context.ElementStyle = context.FindStyle(elementTemplate.Style);
 
             return true;
         }
 
-        private static void SetElementData(PrintElementBuildContext buildContext, string sourceProperty, string sourceExpression)
+        private static void SetElementData(PrintElementFactoryContext context, string sourceProperty, string sourceExpression)
         {
-            buildContext.ElementSourceProperty = sourceProperty;
-            buildContext.ElementSourceExpression = sourceExpression;
+            context.ElementSourceProperty = sourceProperty;
+            context.ElementSourceExpression = sourceExpression;
 
-            var elementSourceValue = buildContext.ElementSourceValue;
+            var elementSourceValue = context.ElementSourceValue;
 
             // Если указано свойство данных
-            if (!string.IsNullOrEmpty(sourceProperty))
+            if (!string.IsNullOrWhiteSpace(sourceProperty))
             {
                 if (sourceProperty != "$")
                 {
                     elementSourceValue = sourceProperty.StartsWith("$.")
-                        ? buildContext.PrintViewSource.GetProperty(sourceProperty.Substring(2))
-                        : buildContext.ElementSourceValue.GetProperty(sourceProperty);
+                        ? context.Source.GetProperty(sourceProperty.Substring(2))
+                        : context.ElementSourceValue.GetProperty(sourceProperty);
                 }
                 else
                 {
-                    elementSourceValue = buildContext.PrintViewSource;
+                    elementSourceValue = context.Source;
                 }
             }
 
             // Если указано выражение над данными
-            if (!string.IsNullOrEmpty(sourceExpression))
+            if (!string.IsNullOrWhiteSpace(sourceExpression))
             {
                 elementSourceValue = ExpressionExecutor.Execute(sourceExpression, elementSourceValue);
             }
 
-            buildContext.ElementSourceValue = elementSourceValue;
-        }
-
-        private static void SetElementStyle(PrintElementBuildContext buildContext, object elementStyleName)
-        {
-            buildContext.ElementStyle = buildContext.FindStyle(elementStyleName);
+            context.ElementSourceValue = elementSourceValue;
         }
     }
 }

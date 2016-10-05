@@ -37,7 +37,7 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         private readonly string _htmlToPdfTemp;
 
 
-        public async Task Convert(PrintElementSize size, PrintElementThickness padding, Stream inHtmlStream, Stream outPdfStream)
+        public async Task Convert(PrintSize size, PrintThickness padding, Stream inHtmlStream, Stream outPdfStream)
         {
             var fileName = Guid.NewGuid().ToString("N");
             var fileHtmlPath = Path.Combine(_htmlToPdfTemp, fileName + ".html");
@@ -161,39 +161,34 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         }
 
 
-        private string BuildHtmlToPdfUtilArguments(PrintElementSize size, PrintElementThickness padding, string fileHtmlPath, string filePdfPath)
+        private string BuildHtmlToPdfUtilArguments(PrintSize size, PrintThickness padding, string fileHtmlPath, string filePdfPath)
         {
-            var mmPaddingBottom = (int)(padding.Bottom / SizeUnits.Mm);
-            var mmPaddingLeft = (int)(padding.Left / SizeUnits.Mm);
-            var mmPaddingRight = (int)(padding.Right / SizeUnits.Mm);
-            var mmPaddingTop = (int)(padding.Right / SizeUnits.Mm);
+            var paddingBottomMm = (int)PrintSizeUnitConverter.ToSpecifiedSize(padding.Bottom, padding.SizeUnit, PrintSizeUnit.Mm);
+            var paddingLeftMm = (int)PrintSizeUnitConverter.ToSpecifiedSize(padding.Left, padding.SizeUnit, PrintSizeUnit.Mm);
+            var paddingRightMm = (int)PrintSizeUnitConverter.ToSpecifiedSize(padding.Right, padding.SizeUnit, PrintSizeUnit.Mm);
+            var paddingTopMm = (int)PrintSizeUnitConverter.ToSpecifiedSize(padding.Top, padding.SizeUnit, PrintSizeUnit.Mm);
 
             var htmlToPdfUtil = _htmlToPdfUtilArguments
                 .Replace(HtmlInput, fileHtmlPath)
                 .Replace(PdfOutput, filePdfPath)
 
-                .Replace(PaddingBottom, mmPaddingBottom.ToString())
-                .Replace(PaddingLeft, mmPaddingLeft.ToString())
-                .Replace(PaddingRight, mmPaddingRight.ToString())
-                .Replace(PaddingTop, mmPaddingTop.ToString())
+                .Replace(PaddingBottom, paddingBottomMm.ToString())
+                .Replace(PaddingLeft, paddingLeftMm.ToString())
+                .Replace(PaddingRight, paddingRightMm.ToString())
+                .Replace(PaddingTop, paddingTopMm.ToString())
                 ;
 
             if (size != null)
             {
-                if (size.Height != null)
-                {
-                    var mmPageHeight = (int)(size.Height / SizeUnits.Mm);
-                    htmlToPdfUtil = htmlToPdfUtil.Replace(PageHeight, mmPageHeight.ToString());
-                }
+                var pageHeightMm = (int)PrintSizeUnitConverter.ToSpecifiedSize(size.Height, size.SizeUnit, PrintSizeUnit.Mm);
+                htmlToPdfUtil = htmlToPdfUtil.Replace(PageHeight, pageHeightMm.ToString());
 
-                if (size.Width != null)
-                {
-                    var mmPageWidth = (int)(size.Width / SizeUnits.Mm);
-                    htmlToPdfUtil = htmlToPdfUtil.Replace(PageWidth, mmPageWidth.ToString());
-                }
+                var pageWidthMm = (int)PrintSizeUnitConverter.ToSpecifiedSize(size.Width, size.SizeUnit, PrintSizeUnit.Mm);
+                htmlToPdfUtil = htmlToPdfUtil.Replace(PageWidth, pageWidthMm.ToString());
             }
             else
             {
+                // A4
                 const int defaultPageHeight = 297;
                 const int defaultPageWidth = 210;
 

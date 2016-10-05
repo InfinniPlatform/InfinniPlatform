@@ -1,17 +1,48 @@
-﻿using InfinniPlatform.PrintView.Model.Font;
-
-namespace InfinniPlatform.PrintView.Model
+﻿namespace InfinniPlatform.PrintView.Model
 {
-    internal abstract class PrintElement
+    /// <summary>
+    /// Базовый класс элемента.
+    /// </summary>
+    public abstract class PrintElement
     {
-        public string Name { get; set; }
-
+        /// <summary>
+        /// Наименование стиля.
+        /// </summary>
         public string Style { get; set; }
 
-        public PrintElementFont Font { get; set; }
+        /// <summary>
+        /// Настройки шрифта.
+        /// </summary>
+        public PrintFont Font { get; set; }
 
+        /// <summary>
+        /// Цвет содержимого.
+        /// </summary>
         public string Foreground { get; set; }
 
+        /// <summary>
+        /// Цвет фона содержимого.
+        /// </summary>
         public string Background { get; set; }
+
+        /// <summary>
+        /// Регистр символов текста.
+        /// </summary>
+        public PrintTextCase? TextCase { get; set; }
+
+        /// <summary>
+        /// Видимость элемента.
+        /// </summary>
+        public PrintVisibility? Visibility { get; set; }
+
+        /// <summary>
+        /// Источник данных.
+        /// </summary>
+        public string Source { get; set; }
+
+        /// <summary>
+        /// Выражение данных.
+        /// </summary>
+        public string Expression { get; set; }
     }
 }

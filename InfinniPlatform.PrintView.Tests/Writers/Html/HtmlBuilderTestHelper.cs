@@ -1,9 +1,6 @@
-﻿using InfinniPlatform.PrintView.Model.Blocks;
-using InfinniPlatform.PrintView.Model.Inlines;
-using InfinniPlatform.PrintView.Model.Views;
-using InfinniPlatform.PrintView.Writers.Html;
-using InfinniPlatform.PrintView.Writers.Html.Blocks;
-using InfinniPlatform.PrintView.Writers.Html.Inlines;
+﻿using InfinniPlatform.PrintView.Writers.Html;
+using InfinniPlatform.PrintView.Writers.Html.Block;
+using InfinniPlatform.PrintView.Writers.Html.Inline;
 
 namespace InfinniPlatform.PrintView.Tests.Writers.Html
 {
@@ -11,27 +8,29 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html
     {
         public static HtmlBuilderContext CreateHtmlBuilderContext()
         {
-            return new HtmlBuilderContext()
+            var context = new HtmlBuilderContext();
 
-                //Block
-                .Register<PrintElementLine, PrintElementLineHtmlBuilder>()
-                .Register<PrintElementList, PrintElementListHtmlBuilder>()
-                .Register<PrintElementPageBreak, PrintElementPageBreakHtmlBuilder>()
-                .Register<PrintElementParagraph, PrintElementParagraphHtmlBuilder>()
-                .Register<PrintElementSection, PrintElementSectionHtmlBuilder>()
-                .Register<PrintElementTable, PrintElementTableHtmlBuilder>()
+            context.Register(new PrintDocumentHtmlBuilder());
 
-                //Inline
-                .Register<PrintElementBold, PrintElementBoldHtmlBuilder>()
-                .Register<PrintElementHyperlink, PrintElementHyperlinkHtmlBuilder>()
-                .Register<PrintElementImage, PrintElementImageHtmlBuilder>()
-                .Register<PrintElementItalic, PrintElementItalicHtmlBuilder>()
-                .Register<PrintElementLineBreak, PrintElementLineBreakHtmlBuilder>()
-                .Register<PrintElementRun, PrintElementRunHtmlBuilder>()
-                .Register<PrintElementSpan, PrintElementSpanHtmlBuilder>()
-                .Register<PrintElementUnderline, PrintElementUnderlineHtmlBuilder>()
-                .Register<PrintViewDocument, PrintViewDocumentHtmlBuilder>()
-                ;
+            // Block
+            context.Register(new PrintLineHtmlBuilder());
+            context.Register(new PrintListHtmlBuilder());
+            context.Register(new PrintPageBreakHtmlBuilder());
+            context.Register(new PrintParagraphHtmlBuilder());
+            context.Register(new PrintSectionHtmlBuilder());
+            context.Register(new PrintTableHtmlBuilder());
+
+            // Inline
+            context.Register(new PrintBoldHtmlBuilder());
+            context.Register(new PrintHyperlinkHtmlBuilder());
+            context.Register(new PrintImageHtmlBuilder());
+            context.Register(new PrintItalicHtmlBuilder());
+            context.Register(new PrintLineBreakHtmlBuilder());
+            context.Register(new PrintRunHtmlBuilder());
+            context.Register(new PrintSpanHtmlBuilder());
+            context.Register(new PrintUnderlineHtmlBuilder());
+
+            return context;
         }
     }
 }

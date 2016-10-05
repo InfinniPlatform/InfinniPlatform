@@ -4,535 +4,151 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Blocks;
-using InfinniPlatform.PrintView.Model.Font;
-using InfinniPlatform.PrintView.Model.Inlines;
+using InfinniPlatform.PrintView.Model.Block;
 
 namespace InfinniPlatform.PrintView.Writers.Html
 {
     internal static class HtmlBuilderHelper
     {
-        public static string GetTextAligment(PrintElementTextAlignment align)
-        {
-            switch (align)
-            {
-                case PrintElementTextAlignment.Center:
-                    return "center";
-                case PrintElementTextAlignment.Justify:
-                    return "justify";
-                case PrintElementTextAlignment.Left:
-                    return "left";
-                case PrintElementTextAlignment.Right:
-                    return "right";
-            }
+        private static readonly HtmlEnumCache EnumCache;
 
-            return null;
+
+        static HtmlBuilderHelper()
+        {
+            EnumCache = new HtmlEnumCache();
+
+            EnumCache.AddValue(PrintSizeUnit.Pt, "pt")
+                     .AddValue(PrintSizeUnit.Px, "px")
+                     .AddValue(PrintSizeUnit.In, "in")
+                     .AddValue(PrintSizeUnit.Cm, "cm")
+                     .AddValue(PrintSizeUnit.Mm, "mm");
+
+            EnumCache.AddValue(PrintFontStyle.Normal, "normal")
+                     .AddValue(PrintFontStyle.Italic, "italic")
+                     .AddValue(PrintFontStyle.Oblique, "oblique");
+
+            EnumCache.AddValue(PrintFontStretch.Normal, "normal")
+                     .AddValue(PrintFontStretch.UltraCondensed, "ultra-condensed")
+                     .AddValue(PrintFontStretch.ExtraCondensed, "extra-condensed")
+                     .AddValue(PrintFontStretch.Condensed, "condensed")
+                     .AddValue(PrintFontStretch.SemiCondensed, "semi-condensed")
+                     .AddValue(PrintFontStretch.SemiExpanded, "semi-expanded")
+                     .AddValue(PrintFontStretch.Expanded, "expanded")
+                     .AddValue(PrintFontStretch.ExtraExpanded, "extra-expanded")
+                     .AddValue(PrintFontStretch.UltraExpanded, "ultra-expanded");
+
+            EnumCache.AddValue(PrintFontWeight.Normal, "400")
+                     .AddValue(PrintFontWeight.UltraLight, "100")
+                     .AddValue(PrintFontWeight.ExtraLight, "200")
+                     .AddValue(PrintFontWeight.Light, "300")
+                     .AddValue(PrintFontWeight.Medium, "500")
+                     .AddValue(PrintFontWeight.SemiBold, "600")
+                     .AddValue(PrintFontWeight.Bold, "700")
+                     .AddValue(PrintFontWeight.ExtraBold, "800")
+                     .AddValue(PrintFontWeight.UltraBold, "900");
+
+            EnumCache.AddValue(PrintTextAlignment.Left, "left")
+                     .AddValue(PrintTextAlignment.Center, "center")
+                     .AddValue(PrintTextAlignment.Right, "right")
+                     .AddValue(PrintTextAlignment.Justify, "justify");
+
+            EnumCache.AddValue(PrintListMarkerStyle.None, "none")
+                     .AddValue(PrintListMarkerStyle.Disc, "disk")
+                     .AddValue(PrintListMarkerStyle.Circle, "circle")
+                     .AddValue(PrintListMarkerStyle.Square, "square")
+                     .AddValue(PrintListMarkerStyle.Box, "box")
+                     .AddValue(PrintListMarkerStyle.LowerRoman, "lower-roman")
+                     .AddValue(PrintListMarkerStyle.UpperRoman, "upper-roman")
+                     .AddValue(PrintListMarkerStyle.LowerLatin, "lower-latin")
+                     .AddValue(PrintListMarkerStyle.UpperLatin, "upper-latin")
+                     .AddValue(PrintListMarkerStyle.Decimal, "decimal");
+
+            EnumCache.AddValue(PrintTextDecoration.Normal, null)
+                     .AddValue(PrintTextDecoration.OverLine, "overline")
+                     .AddValue(PrintTextDecoration.Strikethrough, "line-through")
+                     .AddValue(PrintTextDecoration.Underline, "underline");
         }
 
-        public static string GetFontStyle(PrintElementFontStyle style)
+
+        public static void WriteSizeAttribute(this TextWriter writer, string attribute, double? size, PrintSizeUnit? sizeUnit)
         {
-            switch (style)
+            if (size != null)
             {
-                case PrintElementFontStyle.Italic:
-                    return "italic";
-                case PrintElementFontStyle.Normal:
-                    return "normal";
-                case PrintElementFontStyle.Oblique:
-                    return "oblique";
-            }
-
-            return null;
-        }
-
-        public static string GetFontStretch(PrintElementFontStretch stretch)
-        {
-            switch (stretch)
-            {
-                case PrintElementFontStretch.Normal:
-                    return "normal";
-                case PrintElementFontStretch.Condensed:
-                    return "condensed";
-                case PrintElementFontStretch.Expanded:
-                    return "expanded";
-                case PrintElementFontStretch.ExtraCondensed:
-                    return "extra-condensed";
-                case PrintElementFontStretch.ExtraExpanded:
-                    return "extra-expanded";
-                case PrintElementFontStretch.SemiCondensed:
-                    return "semi-condensed";
-                case PrintElementFontStretch.SemiExpanded:
-                    return "semi-expanded";
-                case PrintElementFontStretch.UltraCondensed:
-                    return "ultra-condensed";
-                case PrintElementFontStretch.UltraExpanded:
-                    return "ultra-expanded";
-            }
-
-            return null;
-        }
-
-        public static string GetFontWeight(PrintElementFontWeight weight)
-        {
-            switch (weight)
-            {
-                case PrintElementFontWeight.UltraLight:
-                    return "100";
-                case PrintElementFontWeight.ExtraLight:
-                    return "200";
-                case PrintElementFontWeight.Light:
-                    return "300";
-                case PrintElementFontWeight.Normal:
-                    return "400";
-                case PrintElementFontWeight.Medium:
-                    return "500";
-                case PrintElementFontWeight.SemiBold:
-                    return "600";
-                case PrintElementFontWeight.Bold:
-                    return "700";
-                case PrintElementFontWeight.ExtraBold:
-                    return "800";
-                case PrintElementFontWeight.UltraBold:
-                    return "900";
-            }
-
-            return null;
-        }
-
-        public static string GetTextDecoration(PrintElementTextDecoration decoration)
-        {
-            switch (decoration)
-            {
-                case PrintElementTextDecoration.OverLine:
-                    return "overline";
-                case PrintElementTextDecoration.Strikethrough:
-                    return "line-through";
-                case PrintElementTextDecoration.Underline:
-                    return "underline";
-            }
-
-            return null;
-        }
-
-        public static string GetMarkerStyle(PrintElementListMarkerStyle style)
-        {
-            switch (style)
-            {
-                case PrintElementListMarkerStyle.Box:
-                    return "box";
-                case PrintElementListMarkerStyle.Circle:
-                    return "circle";
-                case PrintElementListMarkerStyle.Decimal:
-                    return "decimal";
-                case PrintElementListMarkerStyle.Disc:
-                    return "disk";
-                case PrintElementListMarkerStyle.LowerLatin:
-                    return "lower-latin";
-                case PrintElementListMarkerStyle.LowerRoman:
-                    return "lower-roman";
-                case PrintElementListMarkerStyle.None:
-                    return "none";
-                case PrintElementListMarkerStyle.Square:
-                    return "square";
-                case PrintElementListMarkerStyle.UpperLatin:
-                    return "upper-latin";
-                case PrintElementListMarkerStyle.UpperRoman:
-                    return "upper-roman";
-            }
-
-            return null;
-        }
-        public static void ApplyBaseStyles(this TextWriter result, PrintElement element)
-        {
-            if (element.Font != null)
-            {
-                if (!string.IsNullOrWhiteSpace(element.Font.Family))
-                {
-                    result.Write("font-family:");
-                    result.Write(element.Font.Family);
-                    result.Write(";");
-                }
-
-                if (element.Font.Size != null)
-                {
-                    result.Write("font-size:");
-                    result.WriteInvariant(element.Font.Size.Value);
-                    result.Write("px;");
-                }
-
-                if (element.Font.Style != null)
-                {
-                    result.Write("font-style:");
-                    result.Write(GetFontStyle(element.Font.Style.Value));
-                    result.Write(";");
-                }
-
-                if (element.Font.Stretch != null)
-                {
-                    result.Write("font-stretch:");
-                    result.Write(GetFontStretch(element.Font.Stretch.Value));
-                    result.Write(";");
-                }
-
-                if (element.Font.Weight != null)
-                {
-                    result.Write("font-weight:");
-                    result.Write(GetFontWeight(element.Font.Weight.Value));
-                    result.Write(";");
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(element.Background))
-            {
-                result.Write("background-color:");
-                result.Write(element.Background.TryToRgba());
-                result.Write(";");
-            }
-
-            if (!string.IsNullOrWhiteSpace(element.Foreground))
-            {
-                result.Write("color:");
-                result.Write(element.Foreground.TryToRgba());
-                result.Write(";");
+                writer.Write(" ");
+                writer.Write(attribute);
+                writer.Write("=\"");
+                writer.WriteInvariant(size);
+                writer.WriteEnumValue(sizeUnit);
+                writer.Write("\"");
             }
         }
 
-        public static void ApplyBlockStyles(this TextWriter result, PrintElementBlock element)
+        public static void WriteSizeProperty(this TextWriter writer, string property, double? size, PrintSizeUnit? sizeUnit)
         {
-            if (element.Border != null)
+            if (size != null)
             {
-                result.Write("border-top-width:");
-                result.WriteInvariant(element.Border.Thickness.Top);
-                result.Write("px;");
-
-                result.Write("border-right-width:");
-                result.WriteInvariant(element.Border.Thickness.Right);
-                result.Write("px;");
-
-                result.Write("border-bottom-width:");
-                result.WriteInvariant(element.Border.Thickness.Bottom);
-                result.Write("px;");
-
-                result.Write("border-left-width:");
-                result.WriteInvariant(element.Border.Thickness.Left);
-                result.Write("px;");
-
-                if (!string.IsNullOrWhiteSpace(element.Border.Color))
-                {
-                    result.Write("border-style:solid;");
-
-                    result.Write("border-color:");
-                    result.Write(element.Border.Color.TryToRgba());
-                    result.Write(";");
-                }
-
-            }
-
-            result.Write("margin-top:");
-            result.WriteInvariant(element.Margin.Top);
-            result.Write("px;");
-
-            result.Write("margin-right:");
-            result.WriteInvariant(element.Margin.Right);
-            result.Write("px;");
-
-            result.Write("margin-bottom:");
-            result.WriteInvariant(element.Margin.Bottom);
-            result.Write("px;");
-
-            result.Write("margin-left:");
-            result.WriteInvariant(element.Margin.Left);
-            result.Write("px;");
-
-            result.Write("padding-top:");
-            result.WriteInvariant(element.Padding.Top);
-            result.Write("px;");
-
-            result.Write("padding-right:");
-            result.WriteInvariant(element.Padding.Right);
-            result.Write("px;");
-
-            result.Write("padding-bottom:");
-            result.WriteInvariant(element.Padding.Bottom);
-            result.Write("px;");
-
-            result.Write("padding-left:");
-            result.WriteInvariant(element.Padding.Left);
-            result.Write("px;");
-
-            if (element.TextAlignment != null)
-            {
-                result.Write("text-align:");
-                result.Write(GetTextAligment(element.TextAlignment.Value));
-                result.Write(";");
-            }
-        }
-        public static void ApplyInlineStyles(this TextWriter result, PrintElementInline element)
-        {
-            if (element.TextDecoration != null)
-            {
-                result.Write("text-decoration:");
-                result.Write(GetTextDecoration(element.TextDecoration.Value));
-                result.Write(";");
+                writer.Write(property);
+                writer.Write(':');
+                writer.WriteInvariant(size);
+                writer.WriteEnumValue(sizeUnit);
+                writer.Write(';');
             }
         }
 
-        public static void ApplyParagraphStyles(this TextWriter result, PrintElementParagraph element)
+        public static void WriteEnumProperty<TEnum>(this TextWriter writer, string property, TEnum value)
         {
-            if (element.IndentSize != null)
+            if (value != null)
             {
-                result.Write("text-indent:");
-                result.WriteInvariant(element.IndentSize);
-                result.Write("px;");
+                writer.Write(property);
+                writer.Write(':');
+                writer.WriteEnumValue(value);
+                writer.Write(';');
             }
         }
 
-        public static void ApplyListStyles(this TextWriter result, PrintElementList element)
+        public static void WriteStringProperty(this TextWriter writer, string property, string value)
         {
-            if (element.MarkerStyle != null)
+            if (!string.IsNullOrWhiteSpace(value))
             {
-                result.Write("list-style-type:");
-                result.Write(GetMarkerStyle(element.MarkerStyle.Value));
-                result.Write(";");
+                writer.Write(property);
+                writer.Write(':');
+                writer.Write(value);
+                writer.Write(';');
             }
         }
 
-        public static void ApplySubOrSup(this TextWriter result, PrintElement element)
+        public static void WriteColorProperty(this TextWriter writer, string property, string value)
         {
-            if (element.Font != null && element.Font.Variant != null)
+            if (!string.IsNullOrWhiteSpace(value))
             {
-                switch (element.Font.Variant)
+                var colorMatch = Regex.Match(value, @"#(?<a>[0-9a-fA-F]{2}){0,1}(?<r>[0-9a-fA-F]{2}){1}(?<g>[0-9a-fA-F]{2}){1}(?<b>[0-9a-fA-F]{2}){1}", RegexOptions.Compiled);
+
+                if (colorMatch.Success && colorMatch.Groups["a"].Success)
                 {
-                    case PrintElementFontVariant.Subscript:
-                        result.Write("<sub>");
-                        break;
-                    case PrintElementFontVariant.Superscript:
-                        result.Write("<sup>");
-                        break;
+                    byte a, r, g, b;
+
+                    if (byte.TryParse(colorMatch.Groups["a"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out a)
+                        && byte.TryParse(colorMatch.Groups["r"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out r)
+                        && byte.TryParse(colorMatch.Groups["g"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out g)
+                        && byte.TryParse(colorMatch.Groups["b"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out b))
+                    {
+                        value = string.Format(CultureInfo.InvariantCulture, "rgba({0},{1},{2},{3})", r, g, b, a / 255.0);
+                    }
                 }
+
+                writer.WriteStringProperty(property, value);
             }
         }
 
-        public static void ApplySubOrSupSlash(this TextWriter result, PrintElement element)
+        private static void WriteEnumValue<TEnum>(this TextWriter writer, TEnum value)
         {
-            if (element.Font != null && element.Font.Variant != null)
+            if (value != null)
             {
-                switch (element.Font.Variant)
+                var valueString = EnumCache.GetValue(value);
+
+                if (valueString != null)
                 {
-                    case PrintElementFontVariant.Subscript:
-                        result.Write("</sub>");
-                        break;
-                    case PrintElementFontVariant.Superscript:
-                        result.Write("</sup>");
-                        break;
-                }
-            }
-        }
-
-        public static void ApplyRowStyles(this TextWriter result, PrintElementTableRow element)
-        {
-            if (element.Font != null)
-            {
-                if (!string.IsNullOrWhiteSpace(element.Font.Family))
-                {
-                    result.Write("font-family:");
-                    result.Write(element.Font.Family);
-                    result.Write(";");
-                }
-
-                if (element.Font.Size != null)
-                {
-                    result.Write("font-size:");
-                    result.WriteInvariant(element.Font.Size);
-                    result.Write("px;");
-                }
-
-                if (element.Font.Style != null)
-                {
-                    result.Write("font-style:");
-                    result.Write(GetFontStyle(element.Font.Style.Value));
-                    result.Write(";");
-                }
-
-                if (element.Font.Stretch != null)
-                {
-                    result.Write("font-stretch:");
-                    result.Write(GetFontStretch(element.Font.Stretch.Value));
-                    result.Write(";");
-                }
-
-                if (element.Font.Weight != null)
-                {
-                    result.Write("font-weight:");
-                    result.Write(GetFontWeight(element.Font.Weight.Value));
-                    result.Write(";");
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(element.Background))
-            {
-                result.Write("background-color:");
-                result.Write(element.Background.TryToRgba());
-                result.Write(";");
-            }
-
-            if (!string.IsNullOrWhiteSpace(element.Foreground))
-            {
-                result.Write("color:");
-                result.Write(element.Foreground.TryToRgba());
-                result.Write(";");
-            }
-        }
-
-        public static void ApplyCellStyles(this TextWriter result, PrintElementTableCell element)
-        {
-            if (element == null)
-            {
-                return;
-            }
-
-            if (element.Font != null)
-            {
-                if (!string.IsNullOrWhiteSpace(element.Font.Family))
-                {
-                    result.Write("font-family:");
-                    result.Write(element.Font.Family);
-                    result.Write(";");
-                }
-
-                if (element.Font.Size != null)
-                {
-                    result.Write("font-size:");
-                    result.WriteInvariant(element.Font.Size);
-                    result.Write("px;");
-                }
-
-                if (element.Font.Style != null)
-                {
-                    result.Write("font-style:");
-                    result.Write(GetFontStyle(element.Font.Style.Value));
-                    result.Write(";");
-                }
-
-                if (element.Font.Stretch != null)
-                {
-                    result.Write("font-stretch:");
-                    result.Write(GetFontStretch(element.Font.Stretch.Value));
-                    result.Write(";");
-                }
-
-                if (element.Font.Weight != null)
-                {
-                    result.Write("font-weight:");
-                    result.Write(GetFontWeight(element.Font.Weight.Value));
-                    result.Write(";");
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(element.Background))
-            {
-                result.Write("background-color:");
-                result.Write(element.Background.TryToRgba());
-                result.Write(";");
-            }
-
-            if (!string.IsNullOrWhiteSpace(element.Foreground))
-            {
-                result.Write("color:");
-                result.Write(element.Foreground.TryToRgba());
-                result.Write(";");
-            }
-
-            if (element.Border != null)
-            {
-                result.Write("border-top-width:");
-                result.WriteInvariant(element.Border.Thickness.Top);
-                result.Write("px;");
-
-                result.Write("border-right-width:");
-                result.WriteInvariant(element.Border.Thickness.Right);
-                result.Write("px;");
-
-                result.Write("border-bottom-width:");
-                result.WriteInvariant(element.Border.Thickness.Bottom);
-                result.Write("px;");
-
-                result.Write("border-left-width:");
-                result.WriteInvariant(element.Border.Thickness.Left);
-                result.Write("px;");
-
-                if (!string.IsNullOrWhiteSpace(element.Border.Color))
-                {
-                    result.Write("border-style:solid;");
-
-                    result.Write("border-color:");
-                    result.Write(element.Border.Color.TryToRgba());
-                    result.Write(";");
-                }
-
-            }
-
-            result.Write("padding-top:");
-            result.WriteInvariant(element.Padding.Top);
-            result.Write("px;");
-
-            result.Write("padding-right:");
-            result.WriteInvariant(element.Padding.Right);
-            result.Write("px;");
-
-            result.Write("padding-bottom:");
-            result.WriteInvariant(element.Padding.Bottom);
-            result.Write("px;");
-
-            result.Write("padding-left:");
-            result.WriteInvariant(element.Padding.Left);
-            result.Write("px;");
-
-            if (element.TextAlignment != null)
-            {
-                result.Write("text-align:");
-                result.Write(GetTextAligment(element.TextAlignment.Value));
-                result.Write(";");
-            }
-        }
-
-        public static void ApplyCellProperties(this TextWriter result, PrintElementTableCell element)
-        {
-            if (element == null)
-            {
-                return;
-            }
-
-            if (element.ColumnSpan != null)
-            {
-                result.Write("colspan=\"");
-                result.Write(element.ColumnSpan);
-                result.Write("\" ");
-            }
-
-            if (element.RowSpan != null)
-            {
-                result.Write("rowspan=\"");
-                result.Write(element.RowSpan);
-                result.Write("\" ");
-            }
-        }
-
-        public static void ApplyImageStyles(this TextWriter result, PrintElementImage element)
-        {
-            if (element.Size != null)
-            {
-                if (element.Size.Width != null)
-                {
-                    result.Write("width:");
-                    result.WriteInvariant(element.Size.Width);
-                    result.Write("px;");
-                }
-
-                if (element.Size.Height != null)
-                {
-                    result.Write("height:");
-                    result.WriteInvariant(element.Size.Height);
-                    result.Write("px;");
+                    writer.Write(valueString);
                 }
             }
         }
@@ -545,27 +161,138 @@ namespace InfinniPlatform.PrintView.Writers.Html
             }
         }
 
-        public static string TryToRgba(this string color)
+
+        public static void ApplyElementStyles(this TextWriter writer, PrintElement element)
         {
-            if (!string.IsNullOrWhiteSpace(color))
+            writer.WriteFont(element.Font);
+            writer.WriteForeground(element.Foreground);
+            writer.WriteBackground(element.Background);
+        }
+
+        public static void ApplyBlockStyles(this TextWriter writer, PrintBlock element)
+        {
+            writer.WriteBorder(element.Border);
+            writer.WriteMargin(element.Margin);
+            writer.WritePadding(element.Padding);
+            writer.WriteTextAlignment(element.TextAlignment);
+        }
+
+        public static void ApplyInlineStyles(this TextWriter result, PrintInline element)
+        {
+            result.WriteEnumProperty("text-decoration", element.TextDecoration);
+        }
+
+
+        public static void ApplySubOrSup(this TextWriter writer, PrintElement element)
+        {
+            if (element.Font?.Variant != null)
             {
-                var colorMatch = Regex.Match(color, @"#(?<a>[0-9a-fA-F]{2}){0,1}(?<r>[0-9a-fA-F]{2}){1}(?<g>[0-9a-fA-F]{2}){1}(?<b>[0-9a-fA-F]{2}){1}", RegexOptions.Compiled);
-
-                if (colorMatch.Success && colorMatch.Groups["a"].Success)
+                switch (element.Font.Variant.Value)
                 {
-                    byte a, r, g, b;
-
-                    if (byte.TryParse(colorMatch.Groups["a"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out a)
-                        && byte.TryParse(colorMatch.Groups["r"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out r)
-                        && byte.TryParse(colorMatch.Groups["g"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out g)
-                        && byte.TryParse(colorMatch.Groups["b"].Value, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out b))
-                    {
-                        return string.Format(CultureInfo.InvariantCulture, "rgba({0},{1},{2},{3})", r, g, b, a / 255.0);
-                    }
+                    case PrintFontVariant.Subscript:
+                        writer.Write("<sub>");
+                        break;
+                    case PrintFontVariant.Superscript:
+                        writer.Write("<sup>");
+                        break;
                 }
             }
+        }
 
-            return color;
+        public static void ApplySubOrSupSlash(this TextWriter writer, PrintElement element)
+        {
+            if (element.Font?.Variant != null)
+            {
+                switch (element.Font.Variant.Value)
+                {
+                    case PrintFontVariant.Subscript:
+                        writer.Write("</sub>");
+                        break;
+                    case PrintFontVariant.Superscript:
+                        writer.Write("</sup>");
+                        break;
+                }
+            }
+        }
+
+
+        public static void WriteFont(this TextWriter writer, PrintFont font)
+        {
+            if (font != null)
+            {
+                writer.WriteStringProperty("font-family", font.Family);
+                writer.WriteSizeProperty("font-size", font.Size, font.SizeUnit);
+                writer.WriteEnumProperty("font-style", font.Style);
+                writer.WriteEnumProperty("font-stretch", font.Stretch);
+                writer.WriteEnumProperty("font-weight", font.Weight);
+            }
+        }
+
+        public static void WriteForeground(this TextWriter writer, string foreground)
+        {
+            writer.WriteColorProperty("color", foreground);
+        }
+
+        public static void WriteBackground(this TextWriter writer, string background)
+        {
+            writer.WriteColorProperty("background-color", background);
+        }
+
+        public static void WriteBorder(this TextWriter writer, PrintBorder border)
+        {
+            if (border != null)
+            {
+                var borderThickness = border.Thickness;
+
+                if (borderThickness != null)
+                {
+                    var borderSizeUnit = borderThickness.SizeUnit;
+
+                    writer.WriteSizeProperty("border-left-width", borderThickness.Left, borderSizeUnit);
+                    writer.WriteSizeProperty("border-top-width", borderThickness.Top, borderSizeUnit);
+                    writer.WriteSizeProperty("border-right-width", borderThickness.Right, borderSizeUnit);
+                    writer.WriteSizeProperty("border-bottom-width", borderThickness.Bottom, borderSizeUnit);
+                }
+
+                var borderColor = border.Color;
+
+                if (!string.IsNullOrWhiteSpace(borderColor))
+                {
+                    writer.Write("border-style:solid;");
+                    writer.WriteColorProperty("border-color", borderColor);
+                }
+            }
+        }
+
+        public static void WriteMargin(this TextWriter writer, PrintThickness margin)
+        {
+            if (margin != null)
+            {
+                var marginSizeUnit = margin.SizeUnit;
+
+                writer.WriteSizeProperty("margin-left", margin.Left, marginSizeUnit);
+                writer.WriteSizeProperty("margin-top", margin.Top, marginSizeUnit);
+                writer.WriteSizeProperty("margin-right", margin.Right, marginSizeUnit);
+                writer.WriteSizeProperty("margin-bottom", margin.Bottom, marginSizeUnit);
+            }
+        }
+
+        public static void WritePadding(this TextWriter writer, PrintThickness padding)
+        {
+            if (padding != null)
+            {
+                var paddingSizeUnit = padding.SizeUnit;
+
+                writer.WriteSizeProperty("padding-left", padding.Left, paddingSizeUnit);
+                writer.WriteSizeProperty("padding-top", padding.Top, paddingSizeUnit);
+                writer.WriteSizeProperty("padding-right", padding.Right, paddingSizeUnit);
+                writer.WriteSizeProperty("padding-bottom", padding.Bottom, paddingSizeUnit);
+            }
+        }
+
+        public static void WriteTextAlignment(this TextWriter writer, PrintTextAlignment? textAlignment)
+        {
+            writer.WriteEnumProperty("text-align", textAlignment);
         }
     }
 }
