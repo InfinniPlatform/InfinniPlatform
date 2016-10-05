@@ -7,6 +7,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Inline
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
+    [Ignore("Because ImageFormat.Png is not independent")]
     public sealed class PrintImageHtmlBuilderTest
     {
         [Test]
