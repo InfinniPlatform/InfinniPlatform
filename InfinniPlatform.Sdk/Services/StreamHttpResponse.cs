@@ -25,10 +25,6 @@ namespace InfinniPlatform.Sdk.Services
 
             if (fileInfo.Exists)
             {
-                StatusCode = 404;
-            }
-            else
-            {
                 var fileLength = fileInfo.Length;
 
                 FileName = fileInfo.Name;
@@ -41,6 +37,10 @@ namespace InfinniPlatform.Sdk.Services
                 {
                     Content = stream => CopyStream(File.OpenRead(filePath), stream, fileLength);
                 }
+            }
+            else
+            {
+                StatusCode = 404;
             }
         }
 

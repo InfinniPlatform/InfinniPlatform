@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace InfinniPlatform.ServiceHost
 {
     public class Program
     {
-        public static void Main()
+        public static void Main(string[] args)
         {
             /* Вся логика метода Main() находится в отдельных методах, чтобы JIT-компиляция Main()
              * прошла без загрузки дополнительных сборок, поскольку до этого момента нужно успеть
@@ -20,9 +21,8 @@ namespace InfinniPlatform.ServiceHost
             InitializeAssemblyLoadContext();
 
             // Запускает хостинг приложения
-            RunServiceHost();
+            RunServiceHost(args);
         }
-
 
         private static void InitializeAssemblyLoadContext()
         {
@@ -30,8 +30,7 @@ namespace InfinniPlatform.ServiceHost
             DirectoryAssemblyLoadContext.InitializeDefaultContext(context);
         }
 
-
-        private static void RunServiceHost()
+        private static void RunServiceHost(string[] args)
         {
             try
             {
@@ -39,8 +38,19 @@ namespace InfinniPlatform.ServiceHost
                 var serviceHost = CreateComponent<dynamic>("InfinniPlatformServiceHost");
 
                 // Запуск хостинга приложения
-                serviceHost.Start(Timeout.InfiniteTimeSpan);
-                Console.WriteLine(Resources.ServerStarted);
+
+                if (args.Any(s => (s == "-i") || (s == "--init")))
+                {
+                    serviceHost.Init(Timeout.InfiniteTimeSpan);
+                    Console.WriteLine(Resources.ServerInitialized);
+                }
+
+                if (!args.Any()
+                    || args.Any(s => (s == "-s") || (s == "--start")))
+                {
+                    serviceHost.Start(Timeout.InfiniteTimeSpan);
+                    Console.WriteLine(Resources.ServerStarted);
+                }
 
                 var stopEvent = new TaskCompletionSource<bool>();
 

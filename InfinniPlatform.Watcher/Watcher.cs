@@ -151,8 +151,8 @@ namespace InfinniPlatform.Watcher
             }
             else if (!Directory.Exists(settings.DestinationDirectory))
             {
-                ConsoleLog.Error($"Directory {settings.DestinationDirectory} does not exist.");
-                isCorrectSettings = false;
+                ConsoleLog.Warning($"Directory {settings.DestinationDirectory} does not exist, so it was created.");
+                Directory.CreateDirectory(settings.DestinationDirectory);
             }
 
             if (!isCorrectSettings)

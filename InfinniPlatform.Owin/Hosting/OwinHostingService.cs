@@ -95,6 +95,26 @@ namespace InfinniPlatform.Owin.Hosting
         private readonly object _hostSync = new object();
         private volatile IDisposable _host;
 
+        public void Init()
+        {
+            if (_host == null)
+            {
+                lock (_hostSync)
+                {
+                    if (_host == null)
+                    {
+                        try
+                        {
+                            OnInit?.Invoke(this, EventArgs.Empty);
+                        }
+                        catch (Exception exception)
+                        {
+                            throw new AggregateException("Cannot initialize service correctly.", exception);
+                        }
+                    }
+                }
+            }
+        }
 
         public void Start()
         {
@@ -183,6 +203,8 @@ namespace InfinniPlatform.Owin.Hosting
             }
         }
 
+
+        public event EventHandler OnInit;
 
         public event EventHandler OnBeforeStart;
 

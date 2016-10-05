@@ -8,6 +8,11 @@ namespace InfinniPlatform.Core.Hosting
     public interface IHostingService
     {
         /// <summary>
+        /// Запускает инициализацию приложения.
+        /// </summary>
+        void Init();
+
+        /// <summary>
         /// Запускает хостинг приложения.
         /// </summary>
         void Start();

@@ -25,6 +25,39 @@ namespace InfinniPlatform.NodeServiceHost
         public IOwinHostingContext HostingContext => _serviceHostInstance.Value.OwinHostingContext;
 
 
+        public void Init(TimeSpan timeout)
+        {
+            if ((_serviceHostStatus != ServiceHostStatus.Initializing) && (_serviceHostStatus != ServiceHostStatus.InitializationPending))
+            {
+                lock (_statusSync)
+                {
+                    if ((_serviceHostStatus != ServiceHostStatus.Initializing) && (_serviceHostStatus != ServiceHostStatus.InitializationPending))
+                    {
+                        var prevStatus = _serviceHostStatus;
+
+                        _serviceHostStatus = ServiceHostStatus.InitializationPending;
+
+                        try
+                        {
+                            Logger.Log.Info("Initializing.");
+
+                            _serviceHostInstance.Value.HostingService.Init();
+
+                            Logger.Log.Info("Successfully initialized.");
+                        }
+                        catch (Exception error)
+                        {
+                            Logger.Log.Fatal("Failed initialization.", error);
+
+                            _serviceHostStatus = prevStatus;
+
+                            throw;
+                        }
+                    }
+                }
+            }
+        }
+
         public void Start(TimeSpan timeout)
         {
             if (_serviceHostStatus != ServiceHostStatus.Running && _serviceHostStatus != ServiceHostStatus.StartPending)
@@ -53,8 +86,6 @@ namespace InfinniPlatform.NodeServiceHost
 
                             throw;
                         }
-
-                        _serviceHostStatus = ServiceHostStatus.Running;
                     }
                 }
             }
