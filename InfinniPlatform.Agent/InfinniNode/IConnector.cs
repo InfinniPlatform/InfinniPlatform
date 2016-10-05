@@ -7,11 +7,33 @@ namespace InfinniPlatform.Agent.InfinniNode
     /// </summary>
     public interface IConnector
     {
-        Task<ProcessHelper.ProcessResult> InstallApp(string appName);
-        Task<ProcessHelper.ProcessResult> UninstallApp(string appName);
-        Task<ProcessHelper.ProcessResult> StartApp(string appName);
-        Task<ProcessHelper.ProcessResult> StopApp(string appName);
+        /// <summary>
+        /// Вызывает команду установки приложения.
+        /// </summary>
+        /// <param name="appName">Имя приложения.</param>
+        Task<object> InstallApp(string appName);
 
-        Task<ProcessHelper.ProcessResult> GetInstalledApps();
+        /// <summary>
+        /// Вызывает команду удаления приложения.
+        /// </summary>
+        /// <param name="appName">Имя приложения.</param>
+        Task<object> UninstallApp(string appName);
+
+        /// <summary>
+        /// Вызывает команду запуска приложения.
+        /// </summary>
+        /// <param name="appName">Имя приложения.</param>
+        Task<object> StartApp(string appName);
+
+        /// <summary>
+        /// Вызывает команду остановки приложения.
+        /// </summary>
+        /// <param name="appName">Имя приложения.</param>
+        Task<object> StopApp(string appName);
+
+        /// <summary>
+        /// Возвращает информацию о приложениях успановленных на машине.
+        /// </summary>
+        Task<object[]> GetInstalledAppsInfo();
     }
 }

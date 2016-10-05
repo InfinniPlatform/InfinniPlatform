@@ -10,6 +10,9 @@ namespace InfinniPlatform.Agent.InfinniNode
 {
     public class ProcessHelper
     {
+        /// <summary>
+        /// Запускает процесс и перехватывает его вывод.
+        /// </summary>
         public ProcessHelper(AgentSettings agentSettings)
         {
             _workingDirectory = agentSettings.NodeDirectory;
@@ -105,12 +108,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                     {
                         result.Completed = true;
                         result.ExitCode = process.ExitCode;
-
-                        // Adds process output if it was completed with error
-                        if (process.ExitCode != 0)
-                        {
-                            result.Output = $"{outputBuilder}{errorBuilder}";
-                        }
+                        result.Output = $"{outputBuilder}{errorBuilder}";
                     }
                     else
                     {
@@ -121,6 +119,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                         }
                         catch
                         {
+                            //ignored
                         }
                     }
                 }

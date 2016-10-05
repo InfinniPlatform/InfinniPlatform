@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Services;
 namespace InfinniPlatform.Agent.RestApi
 {
     /// <summary>
-    /// REST-сервис для
+    /// REST-сервис для взаимодействия с утилитой Infinni.Node.
     /// </summary>
     public class NodeHttpService : IHttpService
     {
@@ -17,6 +17,7 @@ namespace InfinniPlatform.Agent.RestApi
 
         private readonly IConnector _connector;
 
+
         public void Load(IHttpServiceBuilder builder)
         {
             builder.ServicePath = "node";
@@ -24,7 +25,7 @@ namespace InfinniPlatform.Agent.RestApi
             builder.Post["uninstall"] = UninstallApp;
             builder.Post["start"] = StartApp;
             builder.Post["stop"] = StopApp;
-            builder.Get["apps"] = GetInstalledApps;
+            builder.Get["apps"] = GetInstalledAppsInfo;
         }
 
         private async Task<object> InstallApp(IHttpRequest httpRequest)
@@ -63,11 +64,9 @@ namespace InfinniPlatform.Agent.RestApi
             return processResult;
         }
 
-        private async Task<object> GetInstalledApps(IHttpRequest httpRequest)
+        private async Task<object> GetInstalledAppsInfo(IHttpRequest httpRequest)
         {
-            var processResult = await _connector.GetInstalledApps();
-
-            return processResult;
+            return await _connector.GetInstalledAppsInfo();
         }
     }
 }
