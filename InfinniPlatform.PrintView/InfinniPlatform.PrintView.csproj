@@ -244,7 +244,7 @@
     <Compile Include="Factories\PrintElementBuilder.cs" />
     <Compile Include="Factories\PrintElementFactoryContext.cs" />
     <Compile Include="Factories\IPrintElementFactory.cs" />
-    <Compile Include="Factories\PrintSizeUnitConverter.cs" />
+    <Compile Include="Model\PrintSizeUnitConverter.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>

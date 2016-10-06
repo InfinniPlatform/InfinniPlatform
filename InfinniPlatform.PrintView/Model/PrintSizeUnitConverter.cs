@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.PrintView.Model;
-
-namespace InfinniPlatform.PrintView.Factories
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Предоставляет метод для преобразования размеров из разных единиц измерения в унифицированный формат.
     /// </summary>
-    internal static class PrintSizeUnitConverter
+    public static class PrintSizeUnitConverter
     {
         /// <summary>
         /// Количество пунктов в пикселе.
@@ -65,9 +63,6 @@ namespace InfinniPlatform.PrintView.Factories
         /// Унифицированная единица измерения размера.
         /// </summary>
         public const PrintSizeUnit UnifiedSizeUnit = PrintSizeUnit.Px;
-
-
-
 
 
         /// <summary>
