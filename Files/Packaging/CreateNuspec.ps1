@@ -28,6 +28,7 @@
         [Array] $extensions = @(
             'InfinniPlatform.Agent',
             'InfinniPlatform.PrintView',
+            'InfinniPlatform.Server',
             'InfinniPlatform.Scheduler',
             'InfinniPlatform.Watcher'
         )

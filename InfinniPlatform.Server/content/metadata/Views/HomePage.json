@@ -1,0 +1,18 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+  "Items": [
+    {
+      "StackPanel": {
+        "Items": [
+          {
+            "Label": {
+              "Name": "Label",
+              "Text": "Welcome!"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "OnLoaded": "{Subscribe(context, args);}"
+}

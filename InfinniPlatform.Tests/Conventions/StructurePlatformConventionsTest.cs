@@ -53,6 +53,7 @@ namespace InfinniPlatform.Conventions
                          || project.EndsWith("InfinniPlatform.NodeServiceHost")
                          || project.EndsWith("InfinniPlatform.Watcher")
                          || project.EndsWith("InfinniPlatform.Agent")
+                         || project.EndsWith("InfinniPlatform.Server")
                          || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
 
             // Then

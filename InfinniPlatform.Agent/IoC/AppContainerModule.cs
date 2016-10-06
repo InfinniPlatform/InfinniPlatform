@@ -13,7 +13,6 @@ namespace InfinniPlatform.Agent.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            // Получение информации о текущей сборке
             var assembly = typeof(AppContainerModule).Assembly;
 
             builder.RegisterType<Connector>()

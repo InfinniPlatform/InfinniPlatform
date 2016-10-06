@@ -1,0 +1,12 @@
+﻿{
+  "serverSettings": {
+    /* Информация об экземплярах приложения InfinniPlatform.Agent */
+    "AgentsInfo": [
+      {
+        "Address": "localhost",
+        "Port": 9900,
+        "Token": "cc670bc2b2124011a3f92056487f2cf3"
+      }
+    ]
+  }
+}
