@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.PrintView.Contract
@@ -39,7 +39,7 @@ namespace InfinniPlatform.PrintView.Contract
         /// <param name="dataSource">Данные печатного представления.</param>
         /// <param name="fileFormat">Формат файла печатного представления.</param>
         public PrintViewHttpResponse(IPrintViewBuilder builder,
-                                     DynamicWrapper template,
+                                     PrintDocument template,
                                      object dataSource = null,
                                      PrintViewFileFormat fileFormat = PrintViewFileFormat.Pdf)
         {

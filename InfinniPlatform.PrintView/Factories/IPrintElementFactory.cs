@@ -1,10 +1,15 @@
 ﻿namespace InfinniPlatform.PrintView.Factories
 {
     /// <summary>
-    /// Фабрика для создания элемента печатного представления на основе метаданных.
+    /// Фабрика для создания элементов на основе шаблона.
     /// </summary>
     internal interface IPrintElementFactory
     {
-        object Create(PrintElementBuildContext buildContext, dynamic elementMetadata);
+        /// <summary>
+        /// Создает элемент.
+        /// </summary>
+        /// <param name="context">Контекст элемента.</param>
+        /// <param name="template">Шаблон элемента.</param>
+        object Create(PrintElementFactoryContext context, object template);
     }
 }

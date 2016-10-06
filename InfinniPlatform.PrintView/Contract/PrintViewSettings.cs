@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.PrintView.Contract
 {
     /// <summary>
-    /// Настройка печатных представлений.
+    /// Настройки печатных представлений.
     /// </summary>
     public class PrintViewSettings
     {

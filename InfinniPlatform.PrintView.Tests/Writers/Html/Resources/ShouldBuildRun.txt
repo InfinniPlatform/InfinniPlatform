@@ -1,0 +1,1 @@
+<span style="font-family:Tahoma;font-size:30px;">Здесь много текста</span>

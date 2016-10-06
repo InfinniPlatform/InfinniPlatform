@@ -11,13 +11,9 @@ namespace InfinniPlatform.PrintView.Writers.Html
         private readonly Dictionary<Type, IHtmlBuilder> _builders
             = new Dictionary<Type, IHtmlBuilder>();
 
-        public HtmlBuilderContext Register<TElement, TBuilder>()
-            where TElement : PrintElement
-            where TBuilder : IHtmlBuilderBase<TElement>, new()
+        public void Register<TElement>(HtmlBuilderBase<TElement> builder) where TElement : PrintElement
         {
-            _builders[typeof(TElement)] = new TBuilder();
-
-            return this;
+            _builders[typeof(TElement)] = builder;
         }
 
         public void Build(PrintElement element, TextWriter result)

@@ -2,12 +2,12 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.PrintView.Model;
 
 namespace InfinniPlatform.PrintView.Contract
 {
     /// <summary>
-    /// Предоставляет методы для создания печатных представлений.
+    /// Предоставляет методы для создания файла печатного представления на основе шаблона и данных.
     /// </summary>
     public interface IPrintViewBuilder
     {
@@ -27,6 +27,6 @@ namespace InfinniPlatform.PrintView.Contract
         /// <param name="template">Шаблон печатного представления.</param>
         /// <param name="dataSource">Данные печатного представления.</param>
         /// <param name="fileFormat">Формат файла печатного представления.</param>
-        Task Build(Stream stream, DynamicWrapper template, object dataSource = null, PrintViewFileFormat fileFormat = PrintViewFileFormat.Pdf);
+        Task Build(Stream stream, PrintDocument template, object dataSource = null, PrintViewFileFormat fileFormat = PrintViewFileFormat.Pdf);
     }
 }

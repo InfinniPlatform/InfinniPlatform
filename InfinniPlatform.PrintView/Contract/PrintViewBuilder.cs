@@ -2,31 +2,44 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Factories;
-using InfinniPlatform.PrintView.Writers;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.PrintView.Model;
 
 namespace InfinniPlatform.PrintView.Contract
 {
     /// <summary>
     /// Построитель печатного представления.
     /// </summary>
-    internal class PrintViewBuilder : IPrintViewBuilder
+    /// <remarks>
+    /// Предполагается, что в явном виде этот класс будет создаваться только в редакторе
+    /// печатных представлений. В иных случаях будет использоваться IoC контейнер.
+    /// </remarks>
+    public class PrintViewBuilder : IPrintViewBuilder
     {
-        public PrintViewBuilder(IPrintViewFactory printViewFactory, IPrintViewWriter printViewWriter, IJsonObjectSerializer jsonObjectSerializer)
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        public PrintViewBuilder(IPrintViewSerializer printViewSerializer,
+                                IPrintDocumentBuilder printDocumentBuilder,
+                                IPrintViewWriter printViewWriter)
         {
-            _printViewFactory = printViewFactory;
+            _printViewSerializer = printViewSerializer;
+            _printDocumentBuilder = printDocumentBuilder;
             _printViewWriter = printViewWriter;
-            _jsonObjectSerializer = jsonObjectSerializer;
         }
 
 
-        private readonly IPrintViewFactory _printViewFactory;
+        private readonly IPrintViewSerializer _printViewSerializer;
+        private readonly IPrintDocumentBuilder _printDocumentBuilder;
         private readonly IPrintViewWriter _printViewWriter;
-        private readonly IJsonObjectSerializer _jsonObjectSerializer;
 
 
+        /// <summary>
+        /// Создает файл печатного представления.
+        /// </summary>
+        /// <param name="stream">Поток для записи печатного представления.</param>
+        /// <param name="template">Шаблон печатного представления.</param>
+        /// <param name="dataSource">Данные печатного представления.</param>
+        /// <param name="fileFormat">Формат файла печатного представления.</param>
         public Task Build(Stream stream, Func<Stream> template, object dataSource = null, PrintViewFileFormat fileFormat = PrintViewFileFormat.Pdf)
         {
             if (template == null)
@@ -34,17 +47,24 @@ namespace InfinniPlatform.PrintView.Contract
                 throw new ArgumentNullException(nameof(template));
             }
 
-            DynamicWrapper dynamicTemplate;
+            PrintDocument dynamicTemplate;
 
             using (var templateStream = template())
             {
-                dynamicTemplate = _jsonObjectSerializer.Deserialize<DynamicWrapper>(templateStream);
+                dynamicTemplate = _printViewSerializer.Deserialize(templateStream);
             }
 
             return Build(stream, dynamicTemplate, dataSource, fileFormat);
         }
 
-        public async Task Build(Stream stream, DynamicWrapper template, object dataSource = null, PrintViewFileFormat fileFormat = PrintViewFileFormat.Pdf)
+        /// <summary>
+        /// Создает файл печатного представления.
+        /// </summary>
+        /// <param name="stream">Поток для записи печатного представления.</param>
+        /// <param name="template">Шаблон печатного представления.</param>
+        /// <param name="dataSource">Данные печатного представления.</param>
+        /// <param name="fileFormat">Формат файла печатного представления.</param>
+        public async Task Build(Stream stream, PrintDocument template, object dataSource = null, PrintViewFileFormat fileFormat = PrintViewFileFormat.Pdf)
         {
             if (template == null)
             {
@@ -52,7 +72,7 @@ namespace InfinniPlatform.PrintView.Contract
             }
 
             // Формирование документа печатного представления
-            var document = _printViewFactory.Create(template, dataSource);
+            var document = _printDocumentBuilder.Build(template, dataSource);
 
             if (document != null)
             {
