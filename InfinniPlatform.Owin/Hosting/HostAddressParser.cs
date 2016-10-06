@@ -19,6 +19,12 @@ namespace InfinniPlatform.Owin.Hosting
         {
             var result = false;
 
+            if (hostNameOrAddress == "localhost")
+            {
+                normalizedAddress = "+";
+                return true;
+            }
+
             normalizedAddress = hostNameOrAddress;
 
             if (!string.IsNullOrWhiteSpace(hostNameOrAddress))
