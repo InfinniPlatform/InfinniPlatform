@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.Server.Agent;
 using InfinniPlatform.Server.Settings;
 
 namespace InfinniPlatform.Server.IoC
@@ -16,6 +17,10 @@ namespace InfinniPlatform.Server.IoC
 
             builder.RegisterFactory(GetServerSettings)
                    .As<ServerSettings>()
+                   .SingleInstance();
+            
+            builder.RegisterType<AgentConnector>()
+                   .As<IAgentConnector>()
                    .SingleInstance();
 
             builder.RegisterHttpServices(assembly);

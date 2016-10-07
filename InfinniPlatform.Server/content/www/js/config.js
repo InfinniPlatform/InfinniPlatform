@@ -4,7 +4,7 @@ window.InfinniUI.config = window.InfinniUI.config || {};
 // перекрываем дефолтные конфиги, лежащие в InfinniUI/app/config.js
 
 window.InfinniUI.config.serverUrl = 'http://localhost:9900';
-window.InfinniUI.config.configName = 'test';
+window.InfinniUI.config.configName = 'IP.Server';
 
 window.InfinniUI.config.homePage = '/metadata/Views/HomePage.json';
 window.InfinniUI.config.signalRHubName = "SignalRPushNotificationServiceHub";

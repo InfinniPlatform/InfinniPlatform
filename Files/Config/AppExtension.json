@@ -6,5 +6,28 @@
     "ServerAddress": "",
     /* Уникальный token для аутентификации при обмене данными между агентом и сервером */
     "Token": ""
+  },
+  "serverSettings": {
+    /* Информация об экземплярах приложения InfinniPlatform.Agent */
+    "AgentsInfo": [
+      {
+        "Address": "localhost",
+        "Port": 9900,
+        "Token": "cc670bc2b2124011a3f92056487f2cf3"
+      },
+      {
+        "Address": "10.0.0.43",
+        "Port": 9900,
+        "Token": "7a890006872f4d90b251c1b6fad1fb0d"
+      }
+    ]
+  },
+  "watcher": {
+    /* Matadata source directory */
+    "SourceDirectory": "..\\InfinniPlatform.Server\\content",
+    /* Directory to synchronize */
+    "DestinationDirectory": "content",
+    /* File extentions to synchronize */
+    "WatchingFileExtensions": [ ".json", ".js", ".css" ]
   }
 }

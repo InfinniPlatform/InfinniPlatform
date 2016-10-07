@@ -1,18 +1,62 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
-  "Items": [
-    {
-      "StackPanel": {
-        "Items": [
-          {
-            "Label": {
-              "Name": "Label",
-              "Text": "Welcome!"
-            }
-          }
-        ]
-      }
+  "DataSources": [{
+    "RestDataSource": {
+      "Name": "AgentsDataSource",
+      "GettingParams": {
+        "Method": "get",
+        "Path": "/Server/Agents",
+        "Data": {}
+      },
+      "IsLazy": false,
+      "ResolvePriority": 0
     }
-  ],
-  "OnLoaded": "{Subscribe(context, args);}"
+  }],
+  "Items": [{
+    "Label": {
+      "Value": "Список агентов:"
+    }
+  }, {
+    "StackPanel": {
+      "Items": [
+        {
+        "ListBox": {
+          "Name": "Agents",
+          "ItemTemplate": {
+            "StackPanel": {
+              "ViewMode": "FormGroup",
+              "Orientation": "Horizontal",
+              "Items": [{
+                "Label": {
+                  "Value": {
+                    "Source": "AgentsDataSource",
+                    "Property": "#.Address"
+                  }
+                }
+              }, {
+                "Label": {
+                  "Value": {
+                    "Source": "AgentsDataSource",
+                    "Property": "#.Port"
+                  }
+                }
+              }, {
+                "Label": {
+                  "Value": {
+                    "Source": "AgentsDataSource",
+                    "Property": "#.Token"
+                  }
+                }
+              }]
+            }
+          },
+          "Items": {
+            "Source": "AgentsDataSource",
+            "Property": ""
+          }
+        }
+      }]
+    }
+  }],
+  "OnLoaded": "{ ShowInfo(context, args); }"
 }
