@@ -145,11 +145,11 @@
     <value>Add watcher setting to AppExtentions.json configuration file:
 "watcher": {
     /* Matadata source directory */
-    "SourceDirectory": &lt; path &gt; ,
+    "SourceDirectory": "&lt;path&gt;",
     /* Directory to synchronize */
-    "DestinationDirectory": &lt; path &gt; ,
+    "DestinationDirectory": "&lt;path&gt;",
     /* File extentions to synchronize */
-    "WatchingFileExtensions": [".json"]
-};</value>
+    "WatchingFileExtensions": ["json", "js", "css", "html"]
+}</value>
   </data>
 </root>

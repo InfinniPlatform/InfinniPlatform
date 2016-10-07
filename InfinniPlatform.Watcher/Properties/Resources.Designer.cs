@@ -100,12 +100,12 @@ namespace InfinniPlatform.Watcher.Properties {
         ///   Looks up a localized string similar to Add watcher setting to AppExtentions.json configuration file:
         ///&quot;watcher&quot;: {
         ///    /* Matadata source directory */
-        ///    &quot;SourceDirectory&quot;: &lt; path &gt; ,
+        ///    &quot;SourceDirectory&quot;: &quot;&lt;path&gt;&quot;,
         ///    /* Directory to synchronize */
-        ///    &quot;DestinationDirectory&quot;: &lt; path &gt; ,
+        ///    &quot;DestinationDirectory&quot;: &quot;&lt;path&gt;&quot;,
         ///    /* File extentions to synchronize */
-        ///    &quot;WatchingFileExtensions&quot;: [&quot;.json&quot;]
-        ///};.
+        ///    &quot;WatchingFileExtensions&quot;: [&quot;json&quot;, &quot;js&quot;, &quot;css&quot;, &quot;html&quot;]
+        ///}.
         /// </summary>
         internal static string SettingsExample {
             get {

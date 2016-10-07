@@ -145,11 +145,11 @@
     <value>Необходимо добавить настройки наблюдателя в файл конфигурации AppExtentions.json:
 "watcher": {
     /* Папка, содержащая метаданные */
-    "SourceDirectory": &lt; path &gt; ,
+    SourceDirectory": "&lt;path&gt;",
     /* Синхронизаруемая папка */
-    "DestinationDirectory": &lt; path &gt; ,
+    "DestinationDirectory": "&lt;path&gt;",
     /* Список расширений синхронизируемых файлов */
-    "WatchingFileExtensions": [".json"]
-};</value>
+    "WatchingFileExtensions": ["json", "js", "css", "html"]
+}</value>
   </data>
 </root>
