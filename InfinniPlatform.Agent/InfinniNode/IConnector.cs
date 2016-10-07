@@ -11,29 +11,42 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// Вызывает команду установки приложения.
         /// </summary>
         /// <param name="appName">Имя приложения.</param>
-        Task<object> InstallApp(string appName);
+        /// <param name="version">Версия приложения.</param>
+        /// <param name="instance">Имя экземпляра приложения.</param>
+        /// <param name="source">Список источников приложений.</param>
+        /// <param name="allowPrerelease">Разрешает установку предрелизных версий приложений.</param>
+        Task<object> InstallApp(string appName, string version = null, string instance = null, string source = null, bool? allowPrerelease = null);
 
         /// <summary>
         /// Вызывает команду удаления приложения.
         /// </summary>
         /// <param name="appName">Имя приложения.</param>
-        Task<object> UninstallApp(string appName);
+        /// <param name="version">Версия приложения.</param>
+        /// <param name="instance">Имя экземпляра приложения.</param>
+        Task<object> UninstallApp(string appName, string version = null, string instance = null);
 
         /// <summary>
         /// Вызывает команду запуска приложения.
         /// </summary>
         /// <param name="appName">Имя приложения.</param>
-        Task<object> StartApp(string appName);
+        /// <param name="version">Версия приложения.</param>
+        /// <param name="instance">Имя экземпляра приложения.</param>
+        /// <param name="timeout">Таймаут выполнения команды.</param>
+        Task<object> StartApp(string appName, string version = null, string instance = null, string timeout = null);
 
         /// <summary>
         /// Вызывает команду остановки приложения.
         /// </summary>
         /// <param name="appName">Имя приложения.</param>
-        Task<object> StopApp(string appName);
+        /// <param name="version">Версия приложения.</param>
+        /// <param name="instance">Имя экземпляра приложения.</param>
+        /// <param name="timeout">Таймаут выполнения команды.</param>
+        Task<object> StopApp(string appName, string version = null, string instance = null, string timeout = null);
 
         /// <summary>
-        /// Возвращает информацию о приложениях успановленных на машине.
+        /// Возвращает информацию об установленных приложениях.
         /// </summary>
+        /// <returns></returns>
         Task<object[]> GetInstalledAppsInfo();
     }
 }

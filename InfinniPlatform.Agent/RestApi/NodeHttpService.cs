@@ -31,8 +31,12 @@ namespace InfinniPlatform.Agent.RestApi
         private async Task<object> InstallApp(IHttpRequest httpRequest)
         {
             string appName = httpRequest.Form.AppName;
+            string version = httpRequest.Form.Version;
+            string instance = httpRequest.Form.Instance;
+            string source = httpRequest.Form.Source;
+            bool? allowPrerelease = httpRequest.Form.AllowPrerelease;
 
-            var processResult = await _connector.InstallApp(appName);
+            var processResult = await _connector.InstallApp(appName, version, instance, source, allowPrerelease);
 
             return processResult;
         }
