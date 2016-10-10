@@ -23,7 +23,16 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// <param name="appName">Имя приложения.</param>
         /// <param name="version">Версия приложения.</param>
         /// <param name="instance">Имя экземпляра приложения.</param>
-        Task<object> UninstallApp(string appName, string version = null, string instance = null);
+        Task<object> UninstallApp(string appName = null, string version = null, string instance = null);
+
+        /// <summary>
+        /// Вызывает команду инициализации приложения.
+        /// </summary>
+        /// <param name="appName">Имя приложения.</param>
+        /// <param name="version">Версия приложения.</param>
+        /// <param name="instance">Имя экземпляра приложения.</param>
+        /// <param name="timeout">Таймаут выполнения команды.</param>
+        Task<object> InitApp(string appName = null, string version = null, string instance = null, string timeout = null);
 
         /// <summary>
         /// Вызывает команду запуска приложения.
@@ -32,7 +41,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// <param name="version">Версия приложения.</param>
         /// <param name="instance">Имя экземпляра приложения.</param>
         /// <param name="timeout">Таймаут выполнения команды.</param>
-        Task<object> StartApp(string appName, string version = null, string instance = null, string timeout = null);
+        Task<object> StartApp(string appName = null, string version = null, string instance = null, string timeout = null);
 
         /// <summary>
         /// Вызывает команду остановки приложения.
@@ -41,7 +50,16 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// <param name="version">Версия приложения.</param>
         /// <param name="instance">Имя экземпляра приложения.</param>
         /// <param name="timeout">Таймаут выполнения команды.</param>
-        Task<object> StopApp(string appName, string version = null, string instance = null, string timeout = null);
+        Task<object> StopApp(string appName = null, string version = null, string instance = null, string timeout = null);
+
+        /// <summary>
+        /// Вызывает команду перезапуска приложения.
+        /// </summary>
+        /// <param name="appName">Имя приложения.</param>
+        /// <param name="version">Версия приложения.</param>
+        /// <param name="instance">Имя экземпляра приложения.</param>
+        /// <param name="timeout">Таймаут выполнения команды.</param>
+        Task<object> RestartApp(string appName = null, string version = null, string instance = null, string timeout = null);
 
         /// <summary>
         /// Возвращает информацию об установленных приложениях.
