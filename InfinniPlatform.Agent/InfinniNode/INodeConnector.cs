@@ -5,7 +5,7 @@ namespace InfinniPlatform.Agent.InfinniNode
     /// <summary>
     /// Интерфейс взаимодействия с утилитой Infinni.Node.
     /// </summary>
-    public interface IConnector
+    public interface INodeConnector
     {
         /// <summary>
         /// Вызывает команду установки приложения.
@@ -32,7 +32,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// <param name="version">Версия приложения.</param>
         /// <param name="instance">Имя экземпляра приложения.</param>
         /// <param name="timeout">Таймаут выполнения команды.</param>
-        Task<object> InitApp(string appName = null, string version = null, string instance = null, string timeout = null);
+        Task<object> InitApp(string appName = null, string version = null, string instance = null, int? timeout = null);
 
         /// <summary>
         /// Вызывает команду запуска приложения.
@@ -41,7 +41,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// <param name="version">Версия приложения.</param>
         /// <param name="instance">Имя экземпляра приложения.</param>
         /// <param name="timeout">Таймаут выполнения команды.</param>
-        Task<object> StartApp(string appName = null, string version = null, string instance = null, string timeout = null);
+        Task<object> StartApp(string appName = null, string version = null, string instance = null, int? timeout = null);
 
         /// <summary>
         /// Вызывает команду остановки приложения.
@@ -50,7 +50,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// <param name="version">Версия приложения.</param>
         /// <param name="instance">Имя экземпляра приложения.</param>
         /// <param name="timeout">Таймаут выполнения команды.</param>
-        Task<object> StopApp(string appName = null, string version = null, string instance = null, string timeout = null);
+        Task<object> StopApp(string appName = null, string version = null, string instance = null, int? timeout = null);
 
         /// <summary>
         /// Вызывает команду перезапуска приложения.
@@ -59,7 +59,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// <param name="version">Версия приложения.</param>
         /// <param name="instance">Имя экземпляра приложения.</param>
         /// <param name="timeout">Таймаут выполнения команды.</param>
-        Task<object> RestartApp(string appName = null, string version = null, string instance = null, string timeout = null);
+        Task<object> RestartApp(string appName = null, string version = null, string instance = null, int? timeout = null);
 
         /// <summary>
         /// Возвращает информацию об установленных приложениях.

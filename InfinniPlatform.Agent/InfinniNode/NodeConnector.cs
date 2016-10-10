@@ -11,13 +11,13 @@ namespace InfinniPlatform.Agent.InfinniNode
     /// <summary>
     /// Интерфейс взаимодействия с утилитой Infinni.Node.
     /// </summary>
-    public class Connector : IConnector
+    public class NodeConnector : INodeConnector
     {
         private const int ProcessTimeout = 5 * 60 * 1000;
         private const string OutputRegex = "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2},\\d{3}\\s\\[PID\\s\\d{1,10}\\]\\sINFO\\s{1,4}-\\s";
 
-        public Connector(ProcessHelper processHelper,
-                         IJsonObjectSerializer serializer)
+        public NodeConnector(ProcessHelper processHelper,
+                             IJsonObjectSerializer serializer)
         {
             _processHelper = processHelper;
             _serializer = serializer;
@@ -50,7 +50,19 @@ namespace InfinniPlatform.Agent.InfinniNode
             return await _processHelper.ExecuteCommand(command, ProcessTimeout);
         }
 
-        public async Task<object> StartApp(string appName, string version = null, string instance = null, string timeout = null)
+        public async Task<object> InitApp(string appName, string version = null, string instance = null, int? timeout = null)
+        {
+            var command = "init";
+
+            command = command.AppendArg("i", appName)
+                             .AppendArg("v", version)
+                             .AppendArg("n", instance)
+                             .AppendArg("t", timeout);
+
+            return await _processHelper.ExecuteCommand(command, ProcessTimeout);
+        }
+
+        public async Task<object> StartApp(string appName, string version = null, string instance = null, int? timeout = null)
         {
             var command = "start";
 
@@ -62,9 +74,21 @@ namespace InfinniPlatform.Agent.InfinniNode
             return await _processHelper.ExecuteCommand(command, ProcessTimeout);
         }
 
-        public async Task<object> StopApp(string appName, string version = null, string instance = null, string timeout = null)
+        public async Task<object> StopApp(string appName, string version = null, string instance = null, int? timeout = null)
         {
             var command = "stop";
+
+            command = command.AppendArg("i", appName)
+                             .AppendArg("v", version)
+                             .AppendArg("n", instance)
+                             .AppendArg("t", timeout);
+
+            return await _processHelper.ExecuteCommand(command, ProcessTimeout);
+        }
+
+        public async Task<object> RestartApp(string appName, string version = null, string instance = null, int? timeout = null)
+        {
+            var command = "restart";
 
             command = command.AppendArg("i", appName)
                              .AppendArg("v", version)
@@ -87,31 +111,6 @@ namespace InfinniPlatform.Agent.InfinniNode
             var appsInfo = _serializer.Deserialize<object[]>(jsonString);
 
             return appsInfo;
-        }
-
-
-        public async Task<object> InitApp(string appName, string version = null, string instance = null, string timeout = null)
-        {
-            var command = "init";
-
-            command = command.AppendArg("i", appName)
-                             .AppendArg("v", version)
-                             .AppendArg("n", instance)
-                             .AppendArg("t", timeout);
-
-            return await _processHelper.ExecuteCommand(command, ProcessTimeout);
-        }
-
-        public async Task<object> RestartApp(string appName, string version = null, string instance = null, string timeout = null)
-        {
-            var command = "restart";
-
-            command = command.AppendArg("i", appName)
-                             .AppendArg("v", version)
-                             .AppendArg("n", instance)
-                             .AppendArg("t", timeout);
-
-            return await _processHelper.ExecuteCommand(command, ProcessTimeout);
         }
     }
 }

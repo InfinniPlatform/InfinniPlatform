@@ -15,8 +15,8 @@ namespace InfinniPlatform.Agent.IoC
         {
             var assembly = typeof(AppContainerModule).Assembly;
 
-            builder.RegisterType<Connector>()
-                   .As<IConnector>()
+            builder.RegisterType<NodeConnector>()
+                   .As<INodeConnector>()
                    .SingleInstance();
 
             builder.RegisterFactory(GetAgentSettings)

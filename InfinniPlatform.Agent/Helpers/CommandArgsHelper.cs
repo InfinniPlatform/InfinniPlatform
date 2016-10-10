@@ -8,7 +8,6 @@
         /// <param name="args">Строка запуска команды.</param>
         /// <param name="key">Ключ для аргумента.</param>
         /// <param name="value">Значение аргумента.</param>
-        /// <returns></returns>
         public static string AppendArg(this string args, string key, string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -25,10 +24,25 @@
         /// <param name="args">Строка запуска команды.</param>
         /// <param name="key">Ключ для аргумента.</param>
         /// <param name="value">Значение аргумента.</param>
-        /// <returns></returns>
+        public static string AppendArg(this string args, string key, int? value)
+        {
+            if (value != null)
+            {
+                args += $" -{key} {value}";
+            }
+
+            return args;
+        }
+
+        /// <summary>
+        /// Добавляет к строке запуска команды аргумент, если он не пустой.
+        /// </summary>
+        /// <param name="args">Строка запуска команды.</param>
+        /// <param name="key">Ключ для аргумента.</param>
+        /// <param name="value">Значение аргумента.</param>
         public static string AppendArg(this string args, string key, bool? value)
         {
-            if (value != null && value.Value)
+            if ((value != null) && value.Value)
             {
                 args += $" -{key}";
             }
