@@ -1,8 +1,8 @@
-﻿using System.Net;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.InfinniNode;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Agent.RestApi
@@ -12,13 +12,18 @@ namespace InfinniPlatform.Agent.RestApi
     /// </summary>
     public class NodeHttpService : IHttpService
     {
-        public NodeHttpService(INodeConnector nodeConnector)
+        public NodeHttpService(INodeConnector nodeConnector,
+                               IConfigurationFileProvider configProvider,
+                               IEnvironmentVariableProvider variableProvider)
         {
             _nodeConnector = nodeConnector;
+            _configProvider = configProvider;
+            _variableProvider = variableProvider;
         }
 
+        private readonly IConfigurationFileProvider _configProvider;
         private readonly INodeConnector _nodeConnector;
-
+        private readonly IEnvironmentVariableProvider _variableProvider;
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -26,13 +31,20 @@ namespace InfinniPlatform.Agent.RestApi
 
             builder.Post["install"] = InstallApp;
             builder.Post["uninstall"] = UninstallApp;
+
             builder.Post["init"] = InitApp;
             builder.Post["start"] = StartApp;
             builder.Post["stop"] = StopApp;
             builder.Post["restart"] = RestartApp;
-            builder.Post["apps"] = GetInstalledAppsInfo;
 
-            builder.Get["apps"] = GetInstalledAppsInfo;
+            builder.Post["appsInfo"] = GetInstalledAppsInfo;
+            builder.Get["appsInfo"] = GetInstalledAppsInfo;
+
+            builder.Get["config"] = GetConfigurationFile;
+            builder.Post["config"] = SetConfigurationFile;
+
+            builder.Get["variables"] = GetEnvironmentVariables;
+            builder.Get["variable"] = GetEnvironmentVariable;
         }
 
         private async Task<object> InstallApp(IHttpRequest httpRequest)
@@ -101,6 +113,45 @@ namespace InfinniPlatform.Agent.RestApi
         private async Task<object> GetInstalledAppsInfo(IHttpRequest httpRequest)
         {
             return await _nodeConnector.GetInstalledAppsInfo();
+        }
+
+        private Task<object> GetConfigurationFile(IHttpRequest httpRequest)
+        {
+            string appFullName = httpRequest.Query.AppFullName;
+            string fileName = httpRequest.Query.FileName;
+
+            var configStreamResponse = _configProvider.Get(appFullName, fileName);
+
+            return Task.FromResult<object>(configStreamResponse);
+        }
+
+        private Task<object> SetConfigurationFile(IHttpRequest httpRequest)
+        {
+            string appFullName = httpRequest.Query.AppFullName;
+            string fileName = httpRequest.Query.FileName;
+
+            var configStreamResponse = _configProvider.Get(appFullName, fileName);
+
+            return Task.FromResult<object>(configStreamResponse);
+        }
+
+        private Task<object> GetEnvironmentVariables(IHttpRequest httpRequest)
+        {
+            var variables = _variableProvider.GetAll();
+
+            return Task.FromResult<object>(new JsonHttpResponse(variables, JsonObjectSerializer.Formated));
+        }
+
+        private Task<object> GetEnvironmentVariable(IHttpRequest httpRequest)
+        {
+            string name = httpRequest.Query.Name;
+
+            var variable = _variableProvider.Get(name);
+
+            return Task.FromResult<object>(new JsonHttpResponse(new DynamicWrapper
+                                                                {
+                                                                    { name, variable }
+                                                                }, JsonObjectSerializer.Formated));
         }
     }
 }

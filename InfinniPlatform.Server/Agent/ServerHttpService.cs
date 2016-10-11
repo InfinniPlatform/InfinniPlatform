@@ -24,6 +24,16 @@ namespace InfinniPlatform.Server.Agent
             builder.Post["/startApp"] = StartApp;
             builder.Post["/stopApp"] = StopApp;
             builder.Post["/restartApp"] = RestartApp;
+            builder.Post["/appsInfo"] = GetAppsInfo;
+        }
+
+        private async Task<object> GetAppsInfo(IHttpRequest arg)
+        {
+            string address = arg.Form.Address;
+            int port = arg.Form.Port;
+
+
+            return await _agentConnector.GetAppsInfo(address, port);
         }
 
         private async Task<object> InstallApp(IHttpRequest arg)

@@ -54,6 +54,14 @@ namespace InfinniPlatform.Server.Agent
             return await ExecutePostRequest("restart", agentAddress, agentPort, formContent);
         }
 
+        public async Task<object> GetAppsInfo(string agentAddress, int agentPort)
+        {
+            var uriString = $"http://{agentAddress}:{agentPort}/node/appsInfo";
+            var response = await _httpClient.GetAsync(uriString);
+            var content = await response.Content.ReadAsStringAsync();
+            return content;
+        }
+
         private async Task<object> ExecutePostRequest(string command, string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent)
         {
             var uriString = $"http://{agentAddress}:{agentPort}/node/{command}";
@@ -61,23 +69,5 @@ namespace InfinniPlatform.Server.Agent
             var content = await response.Content.ReadAsStringAsync();
             return content;
         }
-    }
-
-
-    public interface IAgentConnector
-    {
-        Task<object> GetAgentsStatus();
-
-        Task<object> InstallApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent);
-
-        Task<object> UninstallApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent);
-
-        Task<object> InitApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent);
-
-        Task<object> StartApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent);
-
-        Task<object> StopApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent);
-
-        Task<object> RestartApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent);
     }
 }

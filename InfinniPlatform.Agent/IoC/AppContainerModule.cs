@@ -15,16 +15,28 @@ namespace InfinniPlatform.Agent.IoC
         {
             var assembly = typeof(AppContainerModule).Assembly;
 
-            builder.RegisterType<NodeConnector>()
-                   .As<INodeConnector>()
-                   .SingleInstance();
+            // Hosting
 
             builder.RegisterFactory(GetAgentSettings)
                    .As<AgentSettings>()
                    .SingleInstance();
 
+            // Infinni.Node
+
+            builder.RegisterType<NodeConnector>()
+                   .As<INodeConnector>()
+                   .SingleInstance();
+
             builder.RegisterType<ProcessHelper>()
                    .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ConfigurationFileProvider>()
+                   .As<IConfigurationFileProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<EnvironmentVariableProvider>()
+                   .As<IEnvironmentVariableProvider>()
                    .SingleInstance();
 
             builder.RegisterHttpServices(assembly);
