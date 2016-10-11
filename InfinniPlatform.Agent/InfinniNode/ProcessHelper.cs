@@ -20,7 +20,6 @@ namespace InfinniPlatform.Agent.InfinniNode
         }
 
         private readonly string _command;
-
         private readonly string _workingDirectory;
 
         public async Task<ProcessResult> ExecuteCommand(string arguments, int timeout)

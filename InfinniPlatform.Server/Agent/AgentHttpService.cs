@@ -5,9 +5,12 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Server.Agent
 {
-    public class ServerHttpService : IHttpService
+    /// <summary>
+    /// Сервис взаимодействия с утилитой Infinni.Node.
+    /// </summary>
+    public class AgentHttpService : IHttpService
     {
-        public ServerHttpService(IAgentConnector agentConnector)
+        public AgentHttpService(IAgentConnector agentConnector)
         {
             _agentConnector = agentConnector;
         }
@@ -134,7 +137,7 @@ namespace InfinniPlatform.Server.Agent
 
         private async Task<object> GetAgentsStatus(IHttpRequest httpRequest)
         {
-            return await _agentConnector.GetAgentsStatus();
+            return await _agentConnector.GetAgentsInfo();
         }
     }
 }

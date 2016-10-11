@@ -8,7 +8,7 @@ using InfinniPlatform.Sdk.Services;
 namespace InfinniPlatform.Agent.RestApi
 {
     /// <summary>
-    /// REST-сервис для взаимодействия с утилитой Infinni.Node.
+    /// Сервис взаимодействия с утилитой Infinni.Node.
     /// </summary>
     public class NodeHttpService : IHttpService
     {

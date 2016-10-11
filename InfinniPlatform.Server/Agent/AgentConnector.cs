@@ -9,54 +9,66 @@ namespace InfinniPlatform.Server.Agent
 {
     public class AgentConnector : IAgentConnector
     {
+        private const string InstallVerb = "install";
+        private const string UninstallVerb = "uninstall";
+        private const string InitVerb = "init";
+        private const string StartVerb = "start";
+        private const string StopVerb = "stop";
+        private const string RestartVerb = "restart";
+        private const string AppsInfoVerb = "appsInfo";
+
         public AgentConnector(ServerSettings serverSettings)
         {
-            _serverSettings = serverSettings;
             _httpClient = new HttpClient();
+            _serverSettings = serverSettings;
         }
 
         private readonly HttpClient _httpClient;
-
         private readonly ServerSettings _serverSettings;
 
-        public Task<object> GetAgentsStatus()
+        public Task<object> GetAgentsInfo()
         {
             return Task.FromResult<object>(_serverSettings.AgentsInfo);
         }
 
-        public async Task<object> InstallApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent)
+        public async Task<object> InstallApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
         {
-            return await ExecutePostRequest("install", agentAddress, agentPort, formContent);
+            return await ExecutePostRequest(InstallVerb, agentAddress, agentPort, arguments);
         }
 
-        public async Task<object> UninstallApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent)
+        public async Task<object> UninstallApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
         {
-            return await ExecutePostRequest("uninstall", agentAddress, agentPort, formContent);
+            return await ExecutePostRequest(UninstallVerb, agentAddress, agentPort, arguments);
         }
 
-        public async Task<object> InitApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent)
+        public async Task<object> InitApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
         {
-            return await ExecutePostRequest("init", agentAddress, agentPort, formContent);
+            return await ExecutePostRequest(InitVerb, agentAddress, agentPort, arguments);
         }
 
-        public async Task<object> StartApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent)
+        public async Task<object> StartApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
         {
-            return await ExecutePostRequest("start", agentAddress, agentPort, formContent);
+            return await ExecutePostRequest(StartVerb, agentAddress, agentPort, arguments);
         }
 
-        public async Task<object> StopApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent)
+        public async Task<object> StopApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
         {
-            return await ExecutePostRequest("stop", agentAddress, agentPort, formContent);
+            return await ExecutePostRequest(StopVerb, agentAddress, agentPort, arguments);
         }
 
-        public async Task<object> RestartApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent)
+        public async Task<object> RestartApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
         {
-            return await ExecutePostRequest("restart", agentAddress, agentPort, formContent);
+            return await ExecutePostRequest(RestartVerb, agentAddress, agentPort, arguments);
         }
 
         public async Task<object> GetAppsInfo(string agentAddress, int agentPort)
         {
-            var uriString = $"http://{agentAddress}:{agentPort}/node/appsInfo";
+            return await ExecuteGetRequest(AppsInfoVerb, agentAddress, agentPort);
+        }
+
+        private async Task<object> ExecuteGetRequest(string command, string agentAddress, int agentPort)
+        {
+            var uriString = $"http://{agentAddress}:{agentPort}/node/{command}";
             var response = await _httpClient.GetAsync(uriString);
             var content = await response.Content.ReadAsStringAsync();
             return content;

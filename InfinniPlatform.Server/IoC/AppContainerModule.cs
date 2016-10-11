@@ -15,10 +15,14 @@ namespace InfinniPlatform.Server.IoC
         {
             var assembly = typeof(AppContainerModule).Assembly;
 
+            // Hosting
+
             builder.RegisterFactory(GetServerSettings)
                    .As<ServerSettings>()
                    .SingleInstance();
-            
+
+            // Agents
+
             builder.RegisterType<AgentConnector>()
                    .As<IAgentConnector>()
                    .SingleInstance();
