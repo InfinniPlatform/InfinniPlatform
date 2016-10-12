@@ -37,7 +37,6 @@ namespace InfinniPlatform.Agent.RestApi
             builder.Post["stop"] = StopApp;
             builder.Post["restart"] = RestartApp;
 
-            builder.Post["appsInfo"] = GetInstalledAppsInfo;
             builder.Get["appsInfo"] = GetInstalledAppsInfo;
 
             builder.Get["config"] = GetConfigurationFile;
@@ -76,7 +75,7 @@ namespace InfinniPlatform.Agent.RestApi
             string appName = httpRequest.Form.AppName;
             string version = httpRequest.Form.Version;
             string instance = httpRequest.Form.Instance;
-            int timeout = httpRequest.Form.Instance;
+            int? timeout = httpRequest.Form.Timeout;
 
             var processResult = await _nodeConnector.InitApp(appName, version, instance, timeout);
 
@@ -86,8 +85,11 @@ namespace InfinniPlatform.Agent.RestApi
         private async Task<object> StartApp(IHttpRequest httpRequest)
         {
             string appName = httpRequest.Form.AppName;
+            string version = httpRequest.Form.Version;
+            string instance = httpRequest.Form.Instance;
+            int? timeout = httpRequest.Form.Timeout;
 
-            var processResult = await _nodeConnector.StartApp(appName);
+            var processResult = await _nodeConnector.StartApp(appName, version, instance, timeout);
 
             return processResult;
         }
@@ -95,8 +97,11 @@ namespace InfinniPlatform.Agent.RestApi
         private async Task<object> StopApp(IHttpRequest httpRequest)
         {
             string appName = httpRequest.Form.AppName;
+            string version = httpRequest.Form.Version;
+            string instance = httpRequest.Form.Instance;
+            int? timeout = httpRequest.Form.Timeout;
 
-            var processResult = await _nodeConnector.StopApp(appName);
+            var processResult = await _nodeConnector.StopApp(appName, version, instance, timeout);
 
             return processResult;
         }
@@ -104,8 +109,11 @@ namespace InfinniPlatform.Agent.RestApi
         private async Task<object> RestartApp(IHttpRequest httpRequest)
         {
             string appName = httpRequest.Form.AppName;
+            string version = httpRequest.Form.Version;
+            string instance = httpRequest.Form.Instance;
+            int? timeout = httpRequest.Form.Timeout;
 
-            var processResult = await _nodeConnector.RestartApp(appName);
+            var processResult = await _nodeConnector.RestartApp(appName, version, instance, timeout);
 
             return processResult;
         }
@@ -129,10 +137,11 @@ namespace InfinniPlatform.Agent.RestApi
         {
             string appFullName = httpRequest.Query.AppFullName;
             string fileName = httpRequest.Query.FileName;
+            string content = httpRequest.Form.Content;
 
-            var configStreamResponse = _configProvider.Get(appFullName, fileName);
+            _configProvider.Set(appFullName, fileName, content);
 
-            return Task.FromResult<object>(configStreamResponse);
+            return Task.FromResult<object>("Ok.");
         }
 
         private Task<object> GetEnvironmentVariables(IHttpRequest httpRequest)
