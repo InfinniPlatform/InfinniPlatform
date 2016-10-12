@@ -148,7 +148,7 @@ namespace InfinniPlatform.Agent.RestApi
         {
             var variables = _variableProvider.GetAll();
 
-            return Task.FromResult<object>(new JsonHttpResponse(variables, JsonObjectSerializer.Formated));
+            return Task.FromResult<object>(variables);
         }
 
         private Task<object> GetEnvironmentVariable(IHttpRequest httpRequest)
@@ -157,10 +157,7 @@ namespace InfinniPlatform.Agent.RestApi
 
             var variable = _variableProvider.Get(name);
 
-            return Task.FromResult<object>(new JsonHttpResponse(new DynamicWrapper
-                                                                {
-                                                                    { name, variable }
-                                                                }, JsonObjectSerializer.Formated));
+            return Task.FromResult<object>(variable);
         }
     }
 }
