@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Server.Settings;
 
 namespace InfinniPlatform.Server.Agent
@@ -21,13 +22,15 @@ namespace InfinniPlatform.Server.Agent
         private const string VariablesPath = "variables";
         private const string VariablePath = "variable";
 
-        public AgentConnector(ServerSettings serverSettings)
+        public AgentConnector(ServerSettings serverSettings, IJsonObjectSerializer serializer)
         {
             _httpClient = new HttpClient();
             _serverSettings = serverSettings;
+            _serializer = serializer;
         }
 
         private readonly HttpClient _httpClient;
+        private readonly IJsonObjectSerializer _serializer;
         private readonly ServerSettings _serverSettings;
 
         public AgentInfo[] GetAgentsInfo()
@@ -35,54 +38,9 @@ namespace InfinniPlatform.Server.Agent
             return _serverSettings.AgentsInfo;
         }
 
-        public async Task<object> InstallApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecutePostRequest(InstallPath, agentAddress, agentPort, arguments);
-        }
-
-        public async Task<object> UninstallApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecutePostRequest(UninstallPath, agentAddress, agentPort, arguments);
-        }
-
-        public async Task<object> InitApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecutePostRequest(InitPath, agentAddress, agentPort, arguments);
-        }
-
-        public async Task<object> StartApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecutePostRequest(StartPath, agentAddress, agentPort, arguments);
-        }
-
-        public async Task<object> StopApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecutePostRequest(StopPath, agentAddress, agentPort, arguments);
-        }
-
-        public async Task<object> RestartApp(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecutePostRequest(RestartPath, agentAddress, agentPort, arguments);
-        }
-
         public async Task<object> GetAppsInfo(string agentAddress, int agentPort)
         {
             return await ExecuteGetRequest(AppsInfoPath, agentAddress, agentPort);
-        }
-
-        public async Task<object> GetAppsInfo(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecuteGetRequest(AppsInfoPath, agentAddress, agentPort);
-        }
-
-        public async Task<object> GetConfigurationFile(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecuteGetRequest(ConfigPath, agentAddress, agentPort);
-        }
-
-        public async Task<object> SetConfigurationFile(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
-        {
-            return await ExecutePostRequest(ConfigPath, agentAddress, agentPort, arguments);
         }
 
         public async Task<object> GetVariables(string agentAddress, int agentPort)
@@ -90,31 +48,79 @@ namespace InfinniPlatform.Server.Agent
             return await ExecuteGetRequest(VariablesPath, agentAddress, agentPort);
         }
 
-        public async Task<object> GetVariable(string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> arguments)
+        public async Task<object> InstallApp(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecutePostRequest(InstallPath, agentAddress, agentPort, arguments);
+        }
+
+        public async Task<object> UninstallApp(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecutePostRequest(UninstallPath, agentAddress, agentPort, arguments);
+        }
+
+        public async Task<object> InitApp(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecutePostRequest(InitPath, agentAddress, agentPort, arguments);
+        }
+
+        public async Task<object> StartApp(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecutePostRequest(StartPath, agentAddress, agentPort, arguments);
+        }
+
+        public async Task<object> StopApp(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecutePostRequest(StopPath, agentAddress, agentPort, arguments);
+        }
+
+        public async Task<object> RestartApp(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecutePostRequest(RestartPath, agentAddress, agentPort, arguments);
+        }
+
+        public async Task<object> GetAppsInfo(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecuteGetRequest(AppsInfoPath, agentAddress, agentPort);
+        }
+
+        public async Task<object> GetConfigurationFile(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecuteGetRequest(ConfigPath, agentAddress, agentPort);
+        }
+
+        public async Task<object> SetConfigurationFile(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            return await ExecutePostRequest(ConfigPath, agentAddress, agentPort, arguments);
+        }
+
+        public async Task<object> GetVariable(string agentAddress, int agentPort, DynamicWrapper arguments)
         {
             return await ExecuteGetRequest(VariablePath, agentAddress, agentPort);
         }
 
-        private async Task<object> ExecuteGetRequest(string path, string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> query = null)
+        private async Task<object> ExecuteGetRequest(string path, string agentAddress, int agentPort, DynamicWrapper queryContent = null)
         {
-            var uriString = $"http://{agentAddress}:{agentPort}/node/{path}{ToQuery(query)}";
+            var uriString = $"http://{agentAddress}:{agentPort}/agent/{path}{ToQuery(queryContent)}";
             var response = await _httpClient.GetAsync(uriString);
             var content = await response.Content.ReadAsStringAsync();
 
-            //var executeGetRequest = JsonObjectSerializer.Formated.Deserialize(content, typeof(object[]));
-
             return content;
         }
 
-        private async Task<object> ExecutePostRequest(string path, string agentAddress, int agentPort, IEnumerable<KeyValuePair<string, string>> formContent)
+        private async Task<object> ExecutePostRequest(string path, string agentAddress, int agentPort, DynamicWrapper formContent)
         {
-            var uriString = $"http://{agentAddress}:{agentPort}/node/{path}";
-            var response = await _httpClient.PostAsync(new Uri(uriString), new FormUrlEncodedContent(formContent));
+            var uriString = $"http://{agentAddress}:{agentPort}/agent/{path}";
+
+            var convertToString = _serializer.ConvertToString(formContent);
+
+            var requestContent = new StringContent(convertToString, _serializer.Encoding, HttpConstants.JsonContentType);
+
+            var response = await _httpClient.PostAsync(new Uri(uriString), requestContent);
             var content = await response.Content.ReadAsStringAsync();
             return content;
         }
 
-        private static string ToQuery(IEnumerable<KeyValuePair<string, string>> queryContent)
+        private static string ToQuery(DynamicWrapper queryContent)
         {
             if (queryContent == null)
             {
@@ -123,7 +129,7 @@ namespace InfinniPlatform.Server.Agent
 
             var query = "?";
 
-            foreach (var pair in queryContent)
+            foreach (var pair in queryContent.ToDictionary())
             {
                 query += $"{pair.Key}={pair.Value}&";
             }

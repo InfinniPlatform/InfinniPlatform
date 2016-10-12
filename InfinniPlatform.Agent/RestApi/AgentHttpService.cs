@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.InfinniNode;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Agent.RestApi
@@ -10,11 +8,11 @@ namespace InfinniPlatform.Agent.RestApi
     /// <summary>
     /// Сервис взаимодействия с утилитой Infinni.Node.
     /// </summary>
-    public class NodeHttpService : IHttpService
+    public class AgentHttpService : IHttpService
     {
-        public NodeHttpService(INodeConnector nodeConnector,
-                               IConfigurationFileProvider configProvider,
-                               IEnvironmentVariableProvider variableProvider)
+        public AgentHttpService(INodeConnector nodeConnector,
+                                IConfigurationFileProvider configProvider,
+                                IEnvironmentVariableProvider variableProvider)
         {
             _nodeConnector = nodeConnector;
             _configProvider = configProvider;
@@ -27,7 +25,7 @@ namespace InfinniPlatform.Agent.RestApi
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.ServicePath = "node";
+            builder.ServicePath = "agent";
 
             builder.Post["install"] = InstallApp;
             builder.Post["uninstall"] = UninstallApp;
@@ -158,6 +156,20 @@ namespace InfinniPlatform.Agent.RestApi
             var variable = _variableProvider.Get(name);
 
             return Task.FromResult<object>(variable);
+        }
+
+        private static int? ToInt(dynamic value)
+        {
+            return string.IsNullOrEmpty(value)
+                       ? null
+                       : int.Parse(value);
+        }
+
+        private static bool? ToBool(dynamic value)
+        {
+            return string.IsNullOrEmpty(value)
+                       ? null
+                       : bool.Parse(value);
         }
     }
 }

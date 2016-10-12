@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
@@ -9,9 +10,9 @@ namespace InfinniPlatform.Server.Agent
     /// <summary>
     /// Сервис взаимодействия с утилитой Infinni.Node.
     /// </summary>
-    public class AgentHttpService : IHttpService
+    public class ServerHttpService : IHttpService
     {
-        public AgentHttpService(IAgentConnector agentConnector)
+        public ServerHttpService(IAgentConnector agentConnector)
         {
             _agentConnector = agentConnector;
         }
@@ -22,12 +23,12 @@ namespace InfinniPlatform.Server.Agent
         {
             builder.ServicePath = "server";
             builder.Post["/agents"] = GetAgentsStatus;
-            builder.Post["/installApp"] = InstallApp;
-            builder.Post["/uninstallApp"] = UninstallApp;
-            builder.Post["/initApp"] = InitApp;
-            builder.Post["/startApp"] = StartApp;
-            builder.Post["/stopApp"] = StopApp;
-            builder.Post["/restartApp"] = RestartApp;
+            builder.Post["/install"] = InstallApp;
+            builder.Post["/uninstall"] = UninstallApp;
+            builder.Post["/init"] = InitApp;
+            builder.Post["/start"] = StartApp;
+            builder.Post["/stop"] = StopApp;
+            builder.Post["/restart"] = RestartApp;
             builder.Post["/appsInfo"] = GetAppsInfo;
             builder.Post["/config"] = GetConfigurationFile;
             builder.Post["/config"] = SetConfigurationFile;
@@ -46,16 +47,16 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
-                             {
-                                 { "AppName", (string)request.Form.AppName },
-                                 { "Version", (string)request.Form.Version },
-                                 { "Instance", (string)request.Form.Instance },
-                                 { "Source", (string)request.Form.Source },
-                                 { "AllowPrerelease", (string)request.Form.AllowPrerelease }
-                             };
+            var wrapper = new DynamicWrapper
+                           {
+                               { "AppName", (string)request.Form.AppName },
+                               { "Version", (string)request.Form.Version },
+                               { "Instance", (string)request.Form.Instance },
+                               { "Source", (string)request.Form.Source },
+                               { "AllowPrerelease", (bool?)request.Form.AllowPrerelease }
+                           };
 
-            return await _agentConnector.InstallApp(address, port, dictionary);
+            return await _agentConnector.InstallApp(address, port, wrapper);
         }
 
         private async Task<object> UninstallApp(IHttpRequest request)
@@ -63,7 +64,7 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
+            var dictionary = new DynamicWrapper
                              {
                                  { "AppName", (string)request.Form.AppName },
                                  { "Version", (string)request.Form.Version },
@@ -78,12 +79,12 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
+            var dictionary = new DynamicWrapper
                              {
                                  { "AppName", (string)request.Form.AppName },
                                  { "Version", (string)request.Form.Version },
                                  { "Instance", (string)request.Form.Instance },
-                                 { "Timeout", (string)request.Form.Timeout }
+                                 { "Timeout", (int?)request.Form.Timeout }
                              };
 
             return await _agentConnector.InitApp(address, port, dictionary);
@@ -94,12 +95,12 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
+            var dictionary = new DynamicWrapper
                              {
                                  { "AppName", (string)request.Form.AppName },
                                  { "Version", (string)request.Form.Version },
                                  { "Instance", (string)request.Form.Instance },
-                                 { "Timeout", (string)request.Form.Timeout }
+                                 { "Timeout", (int?)request.Form.Timeout }
                              };
 
             return await _agentConnector.StartApp(address, port, dictionary);
@@ -110,12 +111,12 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
+            var dictionary = new DynamicWrapper
                              {
                                  { "AppName", (string)request.Form.AppName },
                                  { "Version", (string)request.Form.Version },
                                  { "Instance", (string)request.Form.Instance },
-                                 { "Timeout", (string)request.Form.Timeout }
+                                 { "Timeout", (int?)request.Form.Timeout }
                              };
 
             return await _agentConnector.StopApp(address, port, dictionary);
@@ -126,12 +127,12 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
+            var dictionary = new DynamicWrapper
                              {
                                  { "AppName", (string)request.Form.AppName },
                                  { "Version", (string)request.Form.Version },
                                  { "Instance", (string)request.Form.Instance },
-                                 { "Timeout", (string)request.Form.Timeout }
+                                 { "Timeout", (int?)request.Form.Timeout }
                              };
 
             return await _agentConnector.RestartApp(address, port, dictionary);
@@ -144,7 +145,7 @@ namespace InfinniPlatform.Server.Agent
 
             var content = await _agentConnector.GetAppsInfo(address, port);
 
-            return new JsonHttpResponse(content,JsonObjectSerializer.Formated);
+            return new JsonHttpResponse(content, JsonObjectSerializer.Formated);
         }
 
         private async Task<object> GetConfigurationFile(IHttpRequest request)
@@ -152,7 +153,7 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
+            var dictionary = new DynamicWrapper
                              {
                                  { "AppFullName", (string)request.Form.AppFullName },
                                  { "FileName", (string)request.Form.FileName }
@@ -166,7 +167,7 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
+            var dictionary = new DynamicWrapper
                              {
                                  { "Config", (string)request.Form.Config }
                              };
@@ -187,7 +188,7 @@ namespace InfinniPlatform.Server.Agent
             string address = request.Form.Address;
             int port = request.Form.Port;
 
-            var dictionary = new Dictionary<string, string>
+            var dictionary = new DynamicWrapper
                              {
                                  { "Name", (string)request.Form.Name }
                              };
