@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.PrintView.Properties;
+
 namespace InfinniPlatform.PrintView.Model.Block
 {
     /// <summary>
     /// Элемент для создания строки таблицы.
     /// </summary>
-    public class PrintTableRow
+    public class PrintTableRow : PrintNamedItem
     {
         /// <summary>
         /// Конструктор.
@@ -45,5 +47,14 @@ namespace InfinniPlatform.PrintView.Model.Block
         /// Список ячеек строки.
         /// </summary>
         public List<PrintTableCell> Cells { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintTableRow;
+        }
     }
 }

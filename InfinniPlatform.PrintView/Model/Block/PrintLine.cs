@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model.Block
+﻿using InfinniPlatform.PrintView.Properties;
+
+namespace InfinniPlatform.PrintView.Model.Block
 {
     /// <summary>
     /// Элемент для создания горизонтальной линии.
@@ -9,5 +11,14 @@
         /// Имя типа для сериализации.
         /// </summary>
         public const string TypeName = "Line";
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintLine;
+        }
     }
 }

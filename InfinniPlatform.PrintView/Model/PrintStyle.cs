@@ -1,15 +1,12 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using InfinniPlatform.PrintView.Properties;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Стиль печатного представления.
     /// </summary>
-    public class PrintStyle
+    public class PrintStyle : PrintNamedItem
     {
-        /// <summary>
-        /// Наименование стиля.
-        /// </summary>
-        public string Name { get; set; }
-
         /// <summary>
         /// Настройки шрифта элемента.
         /// </summary>
@@ -54,5 +51,14 @@
         /// Оформление текста элемента.
         /// </summary>
         public PrintTextDecoration? TextDecoration { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintStyle;
+        }
     }
 }

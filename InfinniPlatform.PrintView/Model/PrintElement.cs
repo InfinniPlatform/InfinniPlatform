@@ -3,7 +3,7 @@
     /// <summary>
     /// Базовый класс элемента.
     /// </summary>
-    public abstract class PrintElement
+    public abstract class PrintElement : PrintNamedItem
     {
         /// <summary>
         /// Наименование стиля.
@@ -44,5 +44,21 @@
         /// Выражение данных.
         /// </summary>
         public string Expression { get; set; }
+
+
+        /// <summary>
+        /// Возвращает строковое представление элемента.
+        /// </summary>
+        public override string GetDisplayName()
+        { 
+            var result = base.GetDisplayName();
+
+            if (!string.IsNullOrEmpty(Source))
+            {
+                result += ", " + Source;
+            }
+
+            return result;
+        }
     }
 }

@@ -1,9 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Block
+﻿using InfinniPlatform.PrintView.Properties;
+
+namespace InfinniPlatform.PrintView.Model.Block
 {
     /// <summary>
     /// Элемент для создания столбца таблицы.
     /// </summary>
-    public class PrintTableColumn
+    public class PrintTableColumn : PrintNamedItem
     {
         /// <summary>
         /// Ширина столбца.
@@ -24,5 +26,14 @@
         /// Шаблон ячеек столбца.
         /// </summary>
         public PrintTableCell CellTemplate { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintTableColumn;
+        }
     }
 }

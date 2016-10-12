@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.PrintView.Model.Format;
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Inline
 {
@@ -22,5 +23,14 @@ namespace InfinniPlatform.PrintView.Model.Inline
         /// Формат отображения значения источника данных.
         /// </summary>
         public ValueFormat SourceFormat { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintHyperlink;
+        }
     }
 }
