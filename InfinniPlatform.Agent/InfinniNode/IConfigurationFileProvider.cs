@@ -2,6 +2,9 @@
 
 namespace InfinniPlatform.Agent.InfinniNode
 {
+    /// <summary>
+    /// Предоставляет доступ к конфигурационным файлам.
+    /// </summary>
     public interface IConfigurationFileProvider
     {
         /// <summary>

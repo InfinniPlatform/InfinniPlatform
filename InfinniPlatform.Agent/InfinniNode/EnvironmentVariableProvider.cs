@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace InfinniPlatform.Agent.InfinniNode
 {
@@ -10,9 +11,12 @@ namespace InfinniPlatform.Agent.InfinniNode
             return Environment.GetEnvironmentVariables();
         }
 
-        public string Get(string name)
+        public IDictionary Get(string name)
         {
-            return Environment.GetEnvironmentVariable(name);
+            return new Dictionary<string, string>
+                   {
+                       { name, Environment.GetEnvironmentVariable(name) }
+                   };
         }
     }
 }

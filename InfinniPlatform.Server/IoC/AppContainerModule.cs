@@ -23,8 +23,8 @@ namespace InfinniPlatform.Server.IoC
 
             // Agents
 
-            builder.RegisterType<AgentConnector>()
-                   .As<IAgentConnector>()
+            builder.RegisterType<AgentCommandExecutor>()
+                   .As<IAgentCommandExecutor>()
                    .SingleInstance();
 
             builder.RegisterHttpServices(assembly);

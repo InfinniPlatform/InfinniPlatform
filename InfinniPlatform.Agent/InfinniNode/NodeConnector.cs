@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Sdk.Serialization;
@@ -14,7 +11,6 @@ namespace InfinniPlatform.Agent.InfinniNode
     public class NodeConnector : INodeConnector
     {
         private const int ProcessTimeout = 5 * 60 * 1000;
-        private const string OutputRegex = "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2},\\d{3}\\s\\[PID\\s\\d{1,10}\\]\\sINFO\\s{1,4}-\\s";
 
         public NodeConnector(ProcessHelper processHelper,
                              IJsonObjectSerializer serializer)
@@ -117,16 +113,6 @@ namespace InfinniPlatform.Agent.InfinniNode
             var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout);
 
             return processResult;
-        }
-
-        private object[] ParseProcessResult(ProcessHelper.ProcessResult installedAppsInfo)
-        {
-            var jsonString = Regex.Replace(installedAppsInfo.Output, OutputRegex, string.Empty, RegexOptions.Multiline, TimeSpan.FromMinutes(1))
-                                  .Split(new[] { Environment.NewLine }, StringSplitOptions.None)
-                                  .FirstOrDefault(s => s.StartsWith("[{"));
-
-            var appsInfo = _serializer.Deserialize<object[]>(jsonString);
-            return appsInfo;
         }
     }
 }

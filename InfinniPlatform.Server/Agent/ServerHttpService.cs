@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Server.Agent
@@ -12,188 +10,196 @@ namespace InfinniPlatform.Server.Agent
     /// </summary>
     public class ServerHttpService : IHttpService
     {
-        public ServerHttpService(IAgentConnector agentConnector)
+        public ServerHttpService(IAgentCommandExecutor agentCommandExecutor)
         {
-            _agentConnector = agentConnector;
+            _agentCommandExecutor = agentCommandExecutor;
         }
 
-        private readonly IAgentConnector _agentConnector;
+        private readonly IAgentCommandExecutor _agentCommandExecutor;
 
         public void Load(IHttpServiceBuilder builder)
         {
             builder.ServicePath = "server";
-            builder.Post["/agents"] = GetAgentsStatus;
+
+            builder.Get["/agents"] = GetAgentsStatus;
+
             builder.Post["/install"] = InstallApp;
             builder.Post["/uninstall"] = UninstallApp;
+
             builder.Post["/init"] = InitApp;
             builder.Post["/start"] = StartApp;
             builder.Post["/stop"] = StopApp;
             builder.Post["/restart"] = RestartApp;
-            builder.Post["/appsInfo"] = GetAppsInfo;
-            builder.Post["/config"] = GetConfigurationFile;
+
+            builder.Get["/appsInfo"] = GetAppsInfo;
+
+            builder.Get["/config"] = GetConfigurationFile;
             builder.Post["/config"] = SetConfigurationFile;
-            builder.Post["/variables"] = GetEnvironmentVariables;
-            builder.Post["/variable"] = GetEnvironmentVariable;
+
+            builder.Get["/variables"] = GetEnvironmentVariables;
+            builder.Get["/variable"] = GetEnvironmentVariable;
         }
 
         private Task<object> GetAgentsStatus(IHttpRequest httpRequest)
         {
             // TODO return status for agents.
-            return Task.FromResult<object>(new JsonHttpResponse(_agentConnector.GetAgentsInfo()));
+            return Task.FromResult(_agentCommandExecutor.GetAgentsInfo());
         }
 
         private async Task<object> InstallApp(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
             var wrapper = new DynamicWrapper
-                           {
-                               { "AppName", (string)request.Form.AppName },
-                               { "Version", (string)request.Form.Version },
-                               { "Instance", (string)request.Form.Instance },
-                               { "Source", (string)request.Form.Source },
-                               { "AllowPrerelease", (bool?)request.Form.AllowPrerelease }
-                           };
+                          {
+                              { "AppName", (string)request.Form.AppName },
+                              { "Version", (string)request.Form.Version },
+                              { "Instance", (string)request.Form.Instance },
+                              { "Source", (string)request.Form.Source },
+                              { "AllowPrerelease", (bool?)request.Form.AllowPrerelease }
+                          };
 
-            return await _agentConnector.InstallApp(address, port, wrapper);
+            return await _agentCommandExecutor.InstallApp(address, port, wrapper);
         }
 
         private async Task<object> UninstallApp(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var dictionary = new DynamicWrapper
-                             {
-                                 { "AppName", (string)request.Form.AppName },
-                                 { "Version", (string)request.Form.Version },
-                                 { "Instance", (string)request.Form.Instance }
-                             };
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppName", (string)request.Form.AppName },
+                              { "Version", (string)request.Form.Version },
+                              { "Instance", (string)request.Form.Instance }
+                          };
 
-            return await _agentConnector.UninstallApp(address, port, dictionary);
+            return await _agentCommandExecutor.UninstallApp(address, port, wrapper);
         }
 
         private async Task<object> InitApp(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var dictionary = new DynamicWrapper
-                             {
-                                 { "AppName", (string)request.Form.AppName },
-                                 { "Version", (string)request.Form.Version },
-                                 { "Instance", (string)request.Form.Instance },
-                                 { "Timeout", (int?)request.Form.Timeout }
-                             };
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppName", (string)request.Form.AppName },
+                              { "Version", (string)request.Form.Version },
+                              { "Instance", (string)request.Form.Instance },
+                              { "Timeout", (int?)request.Form.Timeout }
+                          };
 
-            return await _agentConnector.InitApp(address, port, dictionary);
+            return await _agentCommandExecutor.InitApp(address, port, wrapper);
         }
 
         private async Task<object> StartApp(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var dictionary = new DynamicWrapper
-                             {
-                                 { "AppName", (string)request.Form.AppName },
-                                 { "Version", (string)request.Form.Version },
-                                 { "Instance", (string)request.Form.Instance },
-                                 { "Timeout", (int?)request.Form.Timeout }
-                             };
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppName", (string)request.Form.AppName },
+                              { "Version", (string)request.Form.Version },
+                              { "Instance", (string)request.Form.Instance },
+                              { "Timeout", (int?)request.Form.Timeout }
+                          };
 
-            return await _agentConnector.StartApp(address, port, dictionary);
+            return await _agentCommandExecutor.StartApp(address, port, wrapper);
         }
 
         private async Task<object> StopApp(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var dictionary = new DynamicWrapper
-                             {
-                                 { "AppName", (string)request.Form.AppName },
-                                 { "Version", (string)request.Form.Version },
-                                 { "Instance", (string)request.Form.Instance },
-                                 { "Timeout", (int?)request.Form.Timeout }
-                             };
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppName", (string)request.Form.AppName },
+                              { "Version", (string)request.Form.Version },
+                              { "Instance", (string)request.Form.Instance },
+                              { "Timeout", (int?)request.Form.Timeout }
+                          };
 
-            return await _agentConnector.StopApp(address, port, dictionary);
+            return await _agentCommandExecutor.StopApp(address, port, wrapper);
         }
 
         private async Task<object> RestartApp(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var dictionary = new DynamicWrapper
-                             {
-                                 { "AppName", (string)request.Form.AppName },
-                                 { "Version", (string)request.Form.Version },
-                                 { "Instance", (string)request.Form.Instance },
-                                 { "Timeout", (int?)request.Form.Timeout }
-                             };
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppName", (string)request.Form.AppName },
+                              { "Version", (string)request.Form.Version },
+                              { "Instance", (string)request.Form.Instance },
+                              { "Timeout", (int?)request.Form.Timeout }
+                          };
 
-            return await _agentConnector.RestartApp(address, port, dictionary);
+            return await _agentCommandExecutor.RestartApp(address, port, wrapper);
         }
 
         private async Task<object> GetAppsInfo(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var content = await _agentConnector.GetAppsInfo(address, port);
+            var serviceResult = await _agentCommandExecutor.GetAppsInfo(address, port);
 
-            return new JsonHttpResponse(content, JsonObjectSerializer.Formated);
+            return serviceResult;
         }
 
         private async Task<object> GetConfigurationFile(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var dictionary = new DynamicWrapper
-                             {
-                                 { "AppFullName", (string)request.Form.AppFullName },
-                                 { "FileName", (string)request.Form.FileName }
-                             };
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppFullName", (string)request.Query.AppFullName },
+                              { "FileName", (string)request.Query.FileName }
+                          };
 
-            return await _agentConnector.GetConfigurationFile(address, port, dictionary);
+            return await _agentCommandExecutor.GetConfigurationFile(address, port, wrapper);
         }
 
         private async Task<object> SetConfigurationFile(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var dictionary = new DynamicWrapper
-                             {
-                                 { "Config", (string)request.Form.Config }
-                             };
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppFullName", (string)request.Query.AppFullName },
+                              { "FileName", (string)request.Query.FileName },
+                              { "Config", (string)request.Form.Config }
+                          };
 
-            return await _agentConnector.SetConfigurationFile(address, port, dictionary);
+            return await _agentCommandExecutor.SetConfigurationFile(address, port, wrapper);
         }
 
         private async Task<object> GetEnvironmentVariables(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            return await _agentConnector.GetVariables(address, port);
+            return await _agentCommandExecutor.GetVariables(address, port);
         }
 
         private async Task<object> GetEnvironmentVariable(IHttpRequest request)
         {
-            string address = request.Form.Address;
-            int port = request.Form.Port;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            var dictionary = new DynamicWrapper
-                             {
-                                 { "Name", (string)request.Form.Name }
-                             };
+            var wrapper = new DynamicWrapper
+                          {
+                              { "Name", (string)request.Query.Name }
+                          };
 
-            return await _agentConnector.GetVariable(address, port, dictionary);
+            return await _agentCommandExecutor.GetVariable(address, port, wrapper);
         }
     }
 }

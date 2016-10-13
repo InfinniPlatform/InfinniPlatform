@@ -157,19 +157,5 @@ namespace InfinniPlatform.Agent.RestApi
 
             return Task.FromResult<object>(variable);
         }
-
-        private static int? ToInt(dynamic value)
-        {
-            return string.IsNullOrEmpty(value)
-                       ? null
-                       : int.Parse(value);
-        }
-
-        private static bool? ToBool(dynamic value)
-        {
-            return string.IsNullOrEmpty(value)
-                       ? null
-                       : bool.Parse(value);
-        }
     }
 }

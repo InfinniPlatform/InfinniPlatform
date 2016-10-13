@@ -16,6 +16,6 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// Возвращает переменную окружения по имени.
         /// </summary>
         /// <param name="name">Имя переменной окружения.</param>
-        string Get(string name);
+        IDictionary Get(string name);
     }
 }
