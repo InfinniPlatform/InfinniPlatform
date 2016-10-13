@@ -8,12 +8,12 @@ namespace InfinniPlatform.Agent.InfinniNode
     /// <summary>
     /// Интерфейс взаимодействия с утилитой Infinni.Node.
     /// </summary>
-    public class NodeConnector : INodeConnector
+    public class NodeCommandExecutor : INodeCommandExecutor
     {
         private const int ProcessTimeout = 5 * 60 * 1000;
 
-        public NodeConnector(ProcessHelper processHelper,
-                             IJsonObjectSerializer serializer)
+        public NodeCommandExecutor(ProcessHelper processHelper,
+                                   IJsonObjectSerializer serializer)
         {
             _processHelper = processHelper;
             _serializer = serializer;

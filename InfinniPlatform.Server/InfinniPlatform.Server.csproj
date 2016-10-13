@@ -64,19 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppExtension.json" />
-    <None Include="content\metadata\Views\HomePage.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="content\www\css\main.css" />
-    <Content Include="content\www\css\vendor.css" />
-    <Content Include="content\www\img\favicon.ico" />
-    <Content Include="content\www\Index.html" />
-    <Content Include="content\www\js\config.js" />
-    <Content Include="content\www\js\HomePage\subscribe.js" />
-    <Content Include="content\www\js\main.js" />
-    <Content Include="content\www\js\platform.js" />
-    <Content Include="content\www\js\templates.js" />
-    <Content Include="content\www\js\vendor.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -95,7 +82,20 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="content\metadata\Views\HomePage.json" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="content\www\css\main.css" />
+    <Content Include="content\www\css\vendor.css" />
+    <Content Include="content\www\img\favicon.ico" />
+    <Content Include="content\www\Index.html" />
+    <Content Include="content\www\js\config.js" />
+    <Content Include="content\www\js\HomePage\subscribe.js" />
+    <Content Include="content\www\js\main.js" />
+    <Content Include="content\www\js\platform.js" />
+    <Content Include="content\www\js\templates.js" />
+    <Content Include="content\www\js\vendor.js" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

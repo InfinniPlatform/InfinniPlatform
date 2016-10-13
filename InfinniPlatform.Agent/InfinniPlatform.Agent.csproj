@@ -50,13 +50,12 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Helpers\CommandArgsHelper.cs" />
-    <Compile Include="Helpers\HttpRequestParametersHelper.cs" />
     <Compile Include="InfinniNode\ConfigurationFileProvider.cs" />
     <Compile Include="InfinniNode\EnvironmentVariableProvider.cs" />
     <Compile Include="InfinniNode\IConfigurationFileProvider.cs" />
     <Compile Include="InfinniNode\IEnvironmentVariableProvider.cs" />
-    <Compile Include="InfinniNode\INodeConnector.cs" />
-    <Compile Include="InfinniNode\NodeConnector.cs" />
+    <Compile Include="InfinniNode\INodeCommandExecutor.cs" />
+    <Compile Include="InfinniNode\NodeCommandExecutor.cs" />
     <Compile Include="InfinniNode\ProcessHelper.cs" />
     <Compile Include="IoC\AppContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -23,8 +23,8 @@ namespace InfinniPlatform.Agent.IoC
 
             // Infinni.Node
 
-            builder.RegisterType<NodeConnector>()
-                   .As<INodeConnector>()
+            builder.RegisterType<NodeCommandExecutor>()
+                   .As<INodeCommandExecutor>()
                    .SingleInstance();
 
             builder.RegisterType<ProcessHelper>()

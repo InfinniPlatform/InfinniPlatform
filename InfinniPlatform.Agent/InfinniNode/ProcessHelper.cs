@@ -10,9 +10,6 @@ namespace InfinniPlatform.Agent.InfinniNode
 {
     public class ProcessHelper
     {
-        /// <summary>
-        /// Запускает процесс и перехватывает его вывод.
-        /// </summary>
         public ProcessHelper(AgentSettings agentSettings)
         {
             _workingDirectory = agentSettings.NodeDirectory;
@@ -22,6 +19,11 @@ namespace InfinniPlatform.Agent.InfinniNode
         private readonly string _command;
         private readonly string _workingDirectory;
 
+        /// <summary>
+        /// Запускает процесс и перехватывает его вывод.
+        /// </summary>
+        /// <param name="arguments">Аргументы запуска процесса.</param>
+        /// <param name="timeout">Таймаут выполнения процесса.</param>
         public async Task<ProcessResult> ExecuteCommand(string arguments, int timeout)
         {
             var result = new ProcessResult();

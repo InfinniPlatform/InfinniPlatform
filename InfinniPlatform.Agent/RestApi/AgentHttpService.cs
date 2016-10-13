@@ -10,17 +10,17 @@ namespace InfinniPlatform.Agent.RestApi
     /// </summary>
     public class AgentHttpService : IHttpService
     {
-        public AgentHttpService(INodeConnector nodeConnector,
+        public AgentHttpService(INodeCommandExecutor nodeCommandExecutor,
                                 IConfigurationFileProvider configProvider,
                                 IEnvironmentVariableProvider variableProvider)
         {
-            _nodeConnector = nodeConnector;
+            _nodeCommandExecutor = nodeCommandExecutor;
             _configProvider = configProvider;
             _variableProvider = variableProvider;
         }
 
         private readonly IConfigurationFileProvider _configProvider;
-        private readonly INodeConnector _nodeConnector;
+        private readonly INodeCommandExecutor _nodeCommandExecutor;
         private readonly IEnvironmentVariableProvider _variableProvider;
 
         public void Load(IHttpServiceBuilder builder)
@@ -52,7 +52,7 @@ namespace InfinniPlatform.Agent.RestApi
             string source = httpRequest.Form.Source;
             bool? allowPrerelease = httpRequest.Form.AllowPrerelease;
 
-            var processResult = await _nodeConnector.InstallApp(appName, version, instance, source, allowPrerelease);
+            var processResult = await _nodeCommandExecutor.InstallApp(appName, version, instance, source, allowPrerelease);
 
             return processResult;
         }
@@ -63,7 +63,7 @@ namespace InfinniPlatform.Agent.RestApi
             string version = httpRequest.Form.Version;
             string instance = httpRequest.Form.Instance;
 
-            var processResult = await _nodeConnector.UninstallApp(appName, version, instance);
+            var processResult = await _nodeCommandExecutor.UninstallApp(appName, version, instance);
 
             return processResult;
         }
@@ -75,7 +75,7 @@ namespace InfinniPlatform.Agent.RestApi
             string instance = httpRequest.Form.Instance;
             int? timeout = httpRequest.Form.Timeout;
 
-            var processResult = await _nodeConnector.InitApp(appName, version, instance, timeout);
+            var processResult = await _nodeCommandExecutor.InitApp(appName, version, instance, timeout);
 
             return processResult;
         }
@@ -87,7 +87,7 @@ namespace InfinniPlatform.Agent.RestApi
             string instance = httpRequest.Form.Instance;
             int? timeout = httpRequest.Form.Timeout;
 
-            var processResult = await _nodeConnector.StartApp(appName, version, instance, timeout);
+            var processResult = await _nodeCommandExecutor.StartApp(appName, version, instance, timeout);
 
             return processResult;
         }
@@ -99,7 +99,7 @@ namespace InfinniPlatform.Agent.RestApi
             string instance = httpRequest.Form.Instance;
             int? timeout = httpRequest.Form.Timeout;
 
-            var processResult = await _nodeConnector.StopApp(appName, version, instance, timeout);
+            var processResult = await _nodeCommandExecutor.StopApp(appName, version, instance, timeout);
 
             return processResult;
         }
@@ -111,14 +111,14 @@ namespace InfinniPlatform.Agent.RestApi
             string instance = httpRequest.Form.Instance;
             int? timeout = httpRequest.Form.Timeout;
 
-            var processResult = await _nodeConnector.RestartApp(appName, version, instance, timeout);
+            var processResult = await _nodeCommandExecutor.RestartApp(appName, version, instance, timeout);
 
             return processResult;
         }
 
         private async Task<object> GetInstalledAppsInfo(IHttpRequest httpRequest)
         {
-            return await _nodeConnector.GetInstalledAppsInfo();
+            return await _nodeCommandExecutor.GetInstalledAppsInfo();
         }
 
         private Task<object> GetConfigurationFile(IHttpRequest httpRequest)

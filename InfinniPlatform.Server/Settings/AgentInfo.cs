@@ -1,5 +1,8 @@
 ﻿namespace InfinniPlatform.Server.Settings
 {
+    /// <summary>
+    /// Информация об агенте.
+    /// </summary>
     public class AgentInfo
     {
         /// <summary>

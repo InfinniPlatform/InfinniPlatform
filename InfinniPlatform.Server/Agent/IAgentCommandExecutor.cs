@@ -15,37 +15,37 @@ namespace InfinniPlatform.Server.Agent
         object GetAgentsInfo();
 
         /// <summary>
-        /// Отправляет команду установки приложения.
+        /// Выполняет установку приложения.
         /// </summary>
         Task<object> InstallApp(string agentAddress, int agentPort, DynamicWrapper arguments);
 
         /// <summary>
-        /// Отправляет команду удаления приложения.
+        /// Выполняет удаление приложения.
         /// </summary>
         Task<object> UninstallApp(string agentAddress, int agentPort, DynamicWrapper arguments);
 
         /// <summary>
-        /// Отправляет команду инициализации приложения.
+        /// Выполняет инициализацию приложения.
         /// </summary>
         Task<object> InitApp(string agentAddress, int agentPort, DynamicWrapper arguments);
 
         /// <summary>
-        /// Отправляет команду запуска приложения.
+        /// Выполняет запуск приложения.
         /// </summary>
         Task<object> StartApp(string agentAddress, int agentPort, DynamicWrapper arguments);
 
         /// <summary>
-        /// Отправляет команду остановки приложения.
+        /// Выполняет остановку приложения.
         /// </summary>
         Task<object> StopApp(string agentAddress, int agentPort, DynamicWrapper arguments);
 
         /// <summary>
-        /// 
+        /// Выполняет перезапуск приложения.
         /// </summary>
         Task<object> RestartApp(string agentAddress, int agentPort, DynamicWrapper arguments);
 
         /// <summary>
-        /// Отправляет команду установки приложения.
+        /// Возвращает информацию о приложениях.
         /// </summary>
         Task<object> GetAppsInfo(string agentAddress, int agentPort);
 

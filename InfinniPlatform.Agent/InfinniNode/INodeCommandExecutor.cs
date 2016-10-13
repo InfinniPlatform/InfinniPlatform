@@ -5,7 +5,7 @@ namespace InfinniPlatform.Agent.InfinniNode
     /// <summary>
     /// Интерфейс взаимодействия с утилитой Infinni.Node.
     /// </summary>
-    public interface INodeConnector
+    public interface INodeCommandExecutor
     {
         /// <summary>
         /// Вызывает команду установки приложения.
