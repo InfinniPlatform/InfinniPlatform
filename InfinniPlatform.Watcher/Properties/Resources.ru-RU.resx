@@ -127,7 +127,7 @@
     <value>Синхронизация завершена.</value>
   </data>
   <data name="EventLog" xml:space="preserve">
-    <value>{0}{1}{2}Файл {3} был {4}.</value>
+    <value>{0}{1}{0}Файл {2} был {3}.</value>
   </data>
   <data name="SyncingContentDirectories" xml:space="preserve">
     <value>Синхронизация содержимого папок {0} и {1}...</value>
@@ -151,5 +151,11 @@
     /* Список расширений синхронизируемых файлов */
     "WatchingFileExtensions": [".json"]
 };</value>
+  </data>
+  <data name="CantCopyFile" xml:space="preserve">
+    <value>Невозможно скопировать файл.</value>
+  </data>
+  <data name="BusyFileCopyAttempt" xml:space="preserve">
+    <value>Файл занят другим процессом. Повторная попытка ({0}/{1}).</value>
   </data>
 </root>

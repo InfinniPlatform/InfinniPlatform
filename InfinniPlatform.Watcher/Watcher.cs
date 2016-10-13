@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Watcher.Properties;
@@ -18,6 +19,7 @@ namespace InfinniPlatform.Watcher
         }
 
         private readonly WatcherSettings _settings;
+        private readonly int MaxCopyAttempts = 10;
 
         public override void OnAfterStart()
         {
@@ -83,7 +85,7 @@ namespace InfinniPlatform.Watcher
                 {
                     var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), part, eventArgs.ChangeType));
 
                     File.Delete(Path.Combine(_settings.DestinationDirectory, part));
                     ConsoleLog.Info(Resources.SyncComplete);
@@ -93,7 +95,7 @@ namespace InfinniPlatform.Watcher
             {
                 var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), part, eventArgs.ChangeType));
 
                 Directory.Delete(Path.Combine(_settings.DestinationDirectory, part), true);
                 ConsoleLog.Info(Resources.SyncComplete);
@@ -110,7 +112,7 @@ namespace InfinniPlatform.Watcher
                 {
                     var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), part, eventArgs.ChangeType));
 
                     File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true);
 
@@ -121,7 +123,7 @@ namespace InfinniPlatform.Watcher
             {
                 var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), part, eventArgs.ChangeType));
 
                 Directory.CreateDirectory(Path.Combine(_settings.DestinationDirectory, part));
 
@@ -173,11 +175,30 @@ namespace InfinniPlatform.Watcher
                 {
                     var part = eventArgs.FullPath.ToPartPath(_settings.SourceDirectory);
 
-                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), Environment.NewLine, part, eventArgs.ChangeType));
+                    ConsoleLog.Info(string.Format(Resources.EventLog, Environment.NewLine, DateTime.Now.ToString("G"), part, eventArgs.ChangeType));
 
-                    File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true);
+                    for (var i = 1; i <= MaxCopyAttempts; i++)
+                    {
+                        try
+                        {
+                            File.Copy(eventArgs.FullPath, Path.Combine(_settings.DestinationDirectory, part), true);
 
-                    ConsoleLog.Info(Resources.SyncComplete);
+                            ConsoleLog.Info(Resources.SyncComplete);
+
+                            break;
+                        }
+                        catch (IOException)
+                        {
+                            Thread.Sleep(500);
+
+                            ConsoleLog.Warning(string.Format(Resources.BusyFileCopyAttempt, i, MaxCopyAttempts));
+
+                            if (i == MaxCopyAttempts)
+                            {
+                                ConsoleLog.Error(Resources.CantCopyFile);
+                            }
+                        }
+                    }
                 }
             }
         }

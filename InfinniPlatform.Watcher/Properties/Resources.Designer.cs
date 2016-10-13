@@ -61,6 +61,24 @@ namespace InfinniPlatform.Watcher.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File is busy by another process. Trying again ({0}/{1})..
+        /// </summary>
+        internal static string BusyFileCopyAttempt {
+            get {
+                return ResourceManager.GetString("BusyFileCopyAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cant&apos;t copy file..
+        /// </summary>
+        internal static string CantCopyFile {
+            get {
+                return ResourceManager.GetString("CantCopyFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changes within directory{0}{1}{0}will be transferred to directory{0}{2}..
         /// </summary>
         internal static string ChangesWillBeTransferred {
