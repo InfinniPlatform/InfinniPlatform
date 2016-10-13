@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model.Inline
+﻿using InfinniPlatform.PrintView.Properties;
+
+namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для создания штрих-кода в формате QR.
@@ -15,5 +17,14 @@
         /// Уровень защиты от ошибок.
         /// </summary>
         public PrintBarcodeQrErrorCorrection? ErrorCorrection { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintBarcodeQr;
+        }
     }
 }

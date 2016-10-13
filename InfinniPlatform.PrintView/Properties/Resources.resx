@@ -132,6 +132,69 @@
   <data name="IllegalExpression" xml:space="preserve">
     <value>Illegal expression: '{0}'.</value>
   </data>
+  <data name="PrintBarcodeEan13" xml:space="preserve">
+    <value>EAN13</value>
+  </data>
+  <data name="PrintBarcodeQr" xml:space="preserve">
+    <value>QR</value>
+  </data>
+  <data name="PrintBold" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="PrintDocument" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="PrintHyperlink" xml:space="preserve">
+    <value>Hyperlink</value>
+  </data>
+  <data name="PrintImage" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="PrintItalic" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="PrintLine" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="PrintLineBreak" xml:space="preserve">
+    <value>LineBreak</value>
+  </data>
+  <data name="PrintList" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="PrintPageBreak" xml:space="preserve">
+    <value>PageBreak</value>
+  </data>
+  <data name="PrintParagraph" xml:space="preserve">
+    <value>Paragraph</value>
+  </data>
+  <data name="PrintRun" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="PrintSection" xml:space="preserve">
+    <value>Section</value>
+  </data>
+  <data name="PrintSpan" xml:space="preserve">
+    <value>Span</value>
+  </data>
+  <data name="PrintStyle" xml:space="preserve">
+    <value>Style</value>
+  </data>
+  <data name="PrintTable" xml:space="preserve">
+    <value>Table</value>
+  </data>
+  <data name="PrintTableCell" xml:space="preserve">
+    <value>Cell</value>
+  </data>
+  <data name="PrintTableColumn" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="PrintTableRow" xml:space="preserve">
+    <value>Row</value>
+  </data>
+  <data name="PrintUnderline" xml:space="preserve">
+    <value>Underline</value>
+  </data>
   <data name="PrintViewFileFormatIsNotSupported" xml:space="preserve">
     <value>File format '{0}' is not supported.</value>
   </data>

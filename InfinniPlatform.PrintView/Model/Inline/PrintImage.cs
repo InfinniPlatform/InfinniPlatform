@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model.Inline
+﻿using InfinniPlatform.PrintView.Properties;
+
+namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для отображения изображения.
@@ -30,5 +32,14 @@
         /// Растягивание изображения.
         /// </summary>
         public PrintImageStretch? Stretch { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintImage;
+        }
     }
 }

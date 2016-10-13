@@ -151,6 +151,7 @@
     <Compile Include="Model\Inline\PrintBarcodeQr.cs" />
     <Compile Include="Model\Inline\PrintBarcodeQrErrorCorrection.cs" />
     <Compile Include="Model\Inline\PrintImageRotation.cs" />
+    <Compile Include="Model\PrintNamedItem.cs" />
     <Compile Include="Model\PrintTextCase.cs" />
     <Compile Include="Model\PrintVisibility.cs" />
     <Compile Include="Model\Defaults\PrintViewDefaults.cs" />

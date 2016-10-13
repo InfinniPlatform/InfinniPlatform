@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model.Inline
+﻿using InfinniPlatform.PrintView.Properties;
+
+namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для создания штрих-код в формате EAN13.
@@ -20,5 +22,14 @@
         /// Относительная ширина штрихов в штрих-коде.
         /// </summary>
         public double? WideBarRatio { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintBarcodeEan13;
+        }
     }
 }

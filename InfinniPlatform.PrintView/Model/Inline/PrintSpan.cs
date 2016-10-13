@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.PrintView.Properties;
+
 namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
@@ -26,5 +28,14 @@ namespace InfinniPlatform.PrintView.Model.Inline
         /// Список элементов.
         /// </summary>
         public List<PrintInline> Inlines { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintSpan;
+        }
     }
 }

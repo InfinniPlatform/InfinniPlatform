@@ -1,9 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Block
+﻿using InfinniPlatform.PrintView.Properties;
+
+namespace InfinniPlatform.PrintView.Model.Block
 {
     /// <summary>
     /// Элемент для создания ячейки таблицы.
     /// </summary>
-    public class PrintTableCell
+    public class PrintTableCell : PrintNamedItem
     {
         /// <summary>
         /// Наименование стиля.
@@ -59,5 +61,14 @@
         /// Содержимое ячейки.
         /// </summary>
         public PrintBlock Block { get; set; }
+
+
+        /// <summary>
+        /// Возвращает отображаемое имя типа элемента.
+        /// </summary>
+        public override string GetDisplayTypeName()
+        {
+            return Resources.PrintTableCell;
+        }
     }
 }
