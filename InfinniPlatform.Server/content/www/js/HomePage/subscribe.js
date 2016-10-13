@@ -13,7 +13,6 @@ function Subscribe(context, args) {
 
 function ShowInfo(context, args) {
     
-    debugger;
-    var agents = context.dataSources.AgentsDataSource.getItems();
+    //var agents = context.dataSources.AgentsDataSource.getItems();
     
 }

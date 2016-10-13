@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -23,8 +24,7 @@ namespace InfinniPlatform.Server.Agent
         private const string ConfigPath = "config";
         private const string VariablesPath = "variables";
         private const string VariablePath = "variable";
-        private const string OutputInfoRegex = @"\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2},\d{3}\s\[PID\s\d{1,10}\]\sINFO\s+-\s+";
-        private const string OutputErrorRegex = @"\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2},\d{3}\s\[PID\s\d{1,10}\]\sERROR\s+-\s+";
+        private const string OutputInfoRegex = @"\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2},\d{3}\s\[PID\s\d+\]\sINFO\s+-\s+";
 
         public AgentCommandExecutor(ServerSettings serverSettings, IJsonObjectSerializer serializer)
         {
@@ -55,6 +55,7 @@ namespace InfinniPlatform.Server.Agent
         public async Task<object> UninstallApp(string agentAddress, int agentPort, DynamicWrapper arguments)
         {
             var processResult = await ExecutePostRequest<ProcessResult>(UninstallPath, agentAddress, agentPort, arguments);
+
             return processResult;
         }
 
@@ -88,7 +89,7 @@ namespace InfinniPlatform.Server.Agent
 
             var processResult = serviceResult.Result;
 
-            var appsInfoJson = Regex.Replace(processResult.Output, OutputInfoRegex, string.Empty, RegexOptions.Multiline, TimeSpan.FromMinutes(1))
+            var appsInfoJson = Regex.Replace(processResult.Output, OutputInfoRegex, string.Empty, RegexOptions.Multiline, Regex.InfiniteMatchTimeout)
                                     .Split(new[] { Environment.NewLine }, StringSplitOptions.None)
                                     .FirstOrDefault(s => s.StartsWith("[{"));
 
@@ -151,7 +152,7 @@ namespace InfinniPlatform.Server.Agent
 
             var response = await _httpClient.PostAsync(new Uri(uriString), requestContent);
 
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStreamAsync();
             var processResult = _serializer.Deserialize<T>(content);
 
             var serviceResult = new ServiceResult<T>
@@ -178,15 +179,6 @@ namespace InfinniPlatform.Server.Agent
             }
 
             return query.TrimEnd('&');
-        }
-
-
-        public struct ProcessResult
-        {
-            public bool Completed;
-            public int? ExitCode;
-            public object FormatedOutput;
-            public string Output;
         }
     }
 }

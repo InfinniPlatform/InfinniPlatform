@@ -2,8 +2,9 @@
 
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Server.Agent;
 
-namespace InfinniPlatform.Server.Agent
+namespace InfinniPlatform.Server.RestApi
 {
     /// <summary>
     /// Сервис взаимодействия с утилитой Infinni.Node.
