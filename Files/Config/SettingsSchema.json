@@ -1,0 +1,419 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title":"AppCommon",
+    "description": "InfinniPlatform common application settings",
+    "type": "object",
+    "properties": {
+        "app": {
+            "description": "Настройки приложения",
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "description": "Уникальное имя приложения, используется для изоляции данных между приложениями (по умолчанию - 'InfinniPlatform')",
+                    "type": "string"
+                },
+                "InstanceId": {
+                    "description": "Идентификатор текущего экземпляра приложения (по умолчанию - NetBIOS имя машины + имя рабочей директории)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Name",
+                "InstanceId"
+            ]
+        },
+        "host": {
+            "description": "Настройки хостинга приложения",
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "description": "Адрес или доменное имя (по умолчанию - 'localhost')",
+                    "type": "string"
+                },
+                "Port": {
+                    "description": "Номер порта (по умолчанию - 9900)",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "Name",
+                "Port"
+            ]
+        },
+        "redis": {
+            "description": "Настройки подключения к Redis",
+            "type": "object",
+            "properties": {
+                "Host": {
+                    "description": "Адрес или доменное имя (по умолчанию - 'localhost')",
+                    "type": "string"
+                },
+                "Port": {
+                    "description": "Номер порта (по умолчанию - 6379)",
+                    "type": "integer"
+                },
+                "Database": {
+                    "description": "Номер базы данных (по умолчанию - 0)",
+                    "type": "integer"
+                },
+                "Password": {
+                    "description": "Пароль подключения (значения по умолчанию нет)",
+                    "type": "string"
+                },
+                "ReadBufferSize": {
+                    "description": "Размер буфера чтения (по умолчанию - 512)",
+                    "type": "integer"
+                },
+                "WriteBufferSize": {
+                    "description": "Размер буфера записи (по умолчанию - 512)",
+                    "type": "integer"
+                },
+                "ConnectionTimeout": {
+                    "description": "Таймаут подключения в миллисекундах (по умолчанию - 0, отсутствие таймаута)",
+                    "type": "integer"
+                },
+                "MaxReconnectRetries": {
+                    "description": "Количество попыток подключения (по умолчанию - 10)",
+                    "type": "integer"
+                },
+                "PoolSize": {
+                    "description": "Размер пула подключений (по умолчанию - 0, то есть неограничен)",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "Host",
+                "Port",
+                "Database",
+                "Password",
+                "ReadBufferSize",
+                "WriteBufferSize",
+                "ConnectionTimeout",
+                "MaxReconnectRetries",
+                "PoolSize"
+            ]
+        },
+        "mongodb": {
+            "description":"Настройки подключения к MongoDB",
+            "type": "object",
+            "properties": {
+                "Nodes": {
+                    "description":"Список узлов кластера (по умолчанию - 'localhost:27017'). Каждый узел должен быть представлен в формате 'host:port'",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "UserName": {
+                    "description":"Имя пользователя в механизме аутентификации по умолчанию (значения по умолчанию нет). Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR)",
+                    "type": "string"
+                },
+                "Password": {
+                    "description":"Пароль пользователя в механизме аутентификации по умолчанию (значения по умолчанию нет). Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Nodes",
+                "UserName",
+                "Password"
+            ]
+        },
+        "rabbitmq": {
+            "description":"Настройки подключения к RabbitMQ",
+            "type": "object",
+            "properties": {
+                "HostName": {
+                    "description":"Адрес или доменное имя (по умолчанию - 'localhost')",
+                    "type": "string"
+                },
+                "Port": {
+                    "description":"Номер порта (по умолчанию - 5672)",
+                    "type": "integer"
+                },
+                "UserName": {
+                    "description":"Имя пользователя (по умолчанию - guest)",
+                    "type": "string"
+                },
+                "Password": {
+                    "description":"Пароль пользователя (по умолчанию - guest)",
+                    "type": "string"
+                },
+                "ManagementApiPort": {
+                    "description":"Номер порта для RabbitMQ Management HTTP API (по умолчанию - 15672).",
+                    "type": "integer"
+                },
+                "PrefetchCount": {
+                    "description":"Количество сообщений, единовременно передаваемых потребителю.",
+                    "type": "integer"
+                },
+                "MaxConcurrentThreads": {
+                    "description":"Максимальное количество одновременно обрабатываемых сообщений.",
+                    "type": "integer"
+                },
+                "ReconnectTimeout": {
+                    "description":"Время между попытками переподключения к серверу RabbitMQ в cекундах (по умолчанию - 5 с).",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "HostName",
+                "Port",
+                "UserName",
+                "Password",
+                "ManagementApiPort",
+                "PrefetchCount",
+                "MaxConcurrentThreads",
+                "ReconnectTimeout"
+            ]
+        },
+        "blobStorage": {
+            "description":"Настройки хранения BLOB и файлов",
+            "type": "object",
+            "properties": {
+                "BaseDirectory": {
+                    "description":"Базовый каталог для хранения файлов системы (по умолчанию - 'BlobStorage')",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "BaseDirectory"
+            ]
+        },
+        "userStorage": {
+            "description":"Настройки хранения пользователей",
+            "type": "object",
+            "properties": {
+                "UserCacheTimeout": {
+                    "description":"Таймаут сброса кэша пользователей в минутах (минимум - 1, по умолчанию - 30)",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "UserCacheTimeout"
+            ]
+        },
+        "cache": {
+            "description":"Настройки кэширования данных",
+            "type": "object",
+            "properties": {
+                "Type": {
+                    "description":"Тип кэша для приложения (возможные варианты: 'Memory', 'Shared', по умолчанию - 'Memory')",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Type"
+            ]
+        },
+        "printView": {
+            "description":"Настройки печатных представлений",
+            "type": "object",
+            "properties": {
+                "HtmlToPdfUtilCommand": {
+                    "description":"Местоположение утилиты wkhtmltopdf",
+                    "type": "string"
+                },
+                "HtmlToPdfUtilArguments": {
+                    "description":"Формат аргументов утилиты wkhtmltopdf",
+                    "type": "string"
+                },
+                "HtmlToPdfTemp": {
+                    "description":"Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "HtmlToPdfUtilCommand",
+                "HtmlToPdfUtilArguments",
+                "HtmlToPdfTemp"
+            ]
+        },
+        "metadata": {
+            "description": "Настройки хранения метаданных",
+            "type": "object",
+            "properties": {
+                "DocumentsPath": {
+                    "description":"Путь до подкаталога  с файлами метаданных документов (по умолчанию - 'content/metadata/Documents')",
+                    "type": "string"
+                },
+                "PrintViewsPath": {
+                    "description":"Путь до подкаталога  с файлами метаданных печатных представлений (по умолчанию - 'content/metadata/PrintViews')",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "DocumentsPath",
+                "PrintViewsPath"
+            ]
+        },
+        "scheduler": {
+            "description": "Планировщик заданий",
+            "type": "object",
+            "properties": {
+                "ExpireHistoryAfter": {
+                    "description":"Время хранения информации о вызове обработчиков заданий (в секундах, по умолчанию - время хранения не ограничено)",
+                    "type": "null"
+                }
+            },
+            "required": [
+                "ExpireHistoryAfter"
+            ]
+        },
+        "staticContent": {
+            "description": "Настройки хостинга статических файлов",
+            "type": "object",
+            "properties": {
+                "StaticFilesMapping": {
+                    "description":"Соответствие виртуальных и физических путей до статических файлов",
+                    "type": "object",
+                    "properties": {}
+                },
+                "EmbeddedResourceMapping": {
+                    "description":"Соответствие виртуальных путей и сборок с файлами ресурсов",
+                    "type": "object",
+                    "properties": {}
+                },
+                "RazorViewsPath": {
+                    "description":"Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews)",
+                    "type": "string"
+                },
+                "EmbeddedRazorViewsAssemblies": {
+                    "description":"Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews)",
+                    "type": "array",
+                    "items": {}
+                }
+            },
+            "required": [
+                "StaticFilesMapping",
+                "EmbeddedResourceMapping",
+                "RazorViewsPath",
+                "EmbeddedRazorViewsAssemblies"
+            ]
+        },
+        "authCookie": {
+            "description":"Настройки аутентификации через Cookie",
+            "type": "object",
+            "properties": {                
+                "CookieDomain": {
+                    "description": "Домен для создания cookie (значения по умолчанию нет, при развертывании в кластере - указать шаблон). Если равен '.mycluster.local', тогда 'node1.mycluster.local' и 'node2.mycluster.local' будут считаться допустимыми.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "CookieDomain"
+            ]
+        },
+        "authAdfs": {
+            "description":"Настройки аутентификации через ADFS",
+            "type": "object",
+            "properties": {
+                "Enable": {
+                    "description":"Разрешает аутентификацию через ADFS (допустимые значения - true или false, по умолчанию - false)",
+                    "type": "boolean"
+                },
+                "Server": {
+                    "description":"Адрес сервера ADFS (например, 'myadfs.org:1234', значения по умолчанию нет)",
+                    "type": "string"
+                },
+                "ResourceUri": {
+                    "description":"URI защищенного ресурса ADFS (например, 'https://InfinniPlatform', значения по умолчанию нет)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Enable",
+                "Server",
+                "ResourceUri"
+            ]
+        },
+        "authGoogle": {
+            "description":"Настройки аутентификации через Google+",
+            "type": "object",
+            "properties": {
+                "Enable": {
+                    "description":"Разрешает аутентификацию через Google+ (допустимые значения - true или false, по умолчанию - false)",
+                    "type": "boolean"
+                },
+                "ClientId": {
+                    "description":"ClientId приложения в Goole+ (значения по умолчанию нет)",
+                    "type": "string"
+                },
+                "ClientSecret": {
+                    "description":"ClientSecret приложения в Goole+ (значения по умолчанию нет)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Enable",
+                "ClientId",
+                "ClientSecret"
+            ]
+        },
+        "authFacebook": {
+            "description":"Настройки аутентификации через Facebook",
+            "type": "object",
+            "properties": {
+                "Enable": {
+                    "description":"Разрешает аутентификацию через Facebook (допустимые значения - true или false, по умолчанию - false)",
+                    "type": "boolean"
+                },
+                "ClientId": {
+                    "description":"ClientId приложения в Facebook (значения по умолчанию нет)",
+                    "type": "string"
+                },
+                "ClientSecret": {
+                    "description":"ClientSecret приложения в Facebook (значения по умолчанию нет)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Enable",
+                "ClientId",
+                "ClientSecret"
+            ]
+        },
+        "authVk": {
+            "description":"Настройки аутентификации через ВКонтакте",
+            "type": "object",
+            "properties": {
+                "Enable": {
+                    "description":"Разрешает аутентификацию через ВКонтакте (допустимые значения - true или false, по умолчанию - false)",
+                    "type": "boolean"
+                },
+                "ClientId": {
+                    "description":"ClientId приложения в ВКонтакте (значения по умолчанию нет)",
+                    "type": "string"
+                },
+                "ClientSecret": {
+                    "description":"ClientSecret приложения в ВКонтакте (значения по умолчанию нет)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Enable",
+                "ClientId",
+                "ClientSecret"
+            ]
+        }
+    },
+    "required": [
+        "app",
+        "host",
+        "redis",
+        "mongodb",
+        "rabbitmq",
+        "blobStorage",
+        "userStorage",
+        "cache",
+        "printView",
+        "metadata",
+        "scheduler",
+        "staticContent",
+        "authCookie",
+        "authAdfs",
+        "authGoogle",
+        "authFacebook",
+        "authVk"
+    ]
+}
