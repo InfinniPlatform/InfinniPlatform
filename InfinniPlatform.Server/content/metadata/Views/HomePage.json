@@ -1,63 +1,281 @@
 ﻿{
-  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
-  "DataSources": [{
-    "RestDataSource": {
-      "Name": "AgentsDataSource",
-      "GettingParams": {
-        "Method": "get",
-        "Path": "/server/agents",
-        "Data": {}
-      },
-      "IsLazy": false,
-      "ResolvePriority": 0,
-      "UpdatingItemsConverter": "{ return args.value.Result.Agents; }"
-    }
-  }],
-  "Items": [{
-    "Label": {
-      "Value": "Список агентов:"
-    }
-  }, {
-    "StackPanel": {
-      "Items": [
+  "DataSources": [
         {
-        "ListBox": {
-          "Name": "Agents",
-          "ItemTemplate": {
-            "StackPanel": {
-              "ViewMode": "FormGroup",
-              "Orientation": "Vertical",
-              "Items": [{
-                "Label": {
-                  "Value": {
-                    "Source": "AgentsDataSource",
-                    "Property": "#.Address"
-                  }
-                }
-              }, {
-                "Label": {
-                  "Value": {
-                    "Source": "AgentsDataSource",
-                    "Property": "#.Port"
-                  }
-                }
-              }, {
-                "Label": {
-                  "Value": {
-                    "Source": "AgentsDataSource",
-                    "Property": "#.Token"
-                  }
-                }
-              }]
+            "RestDataSource": {
+                "Name": "AgentsDataSource",
+                "GettingParams": {
+                    "Method": "GET",
+                    "Path": "/server/agents",
+                    "Data": {}
+                },
+                "IsLazy": false,
+                "ResolvePriority": 0,
+                "UpdatingItemsConverter": "{ return args.value.Result.Agents; }"
             }
-          },
-          "Items": {
-            "Source": "AgentsDataSource",
-            "Property": ""
-          }
+        },
+        {
+            "RestDataSource": {
+                "Name": "AppsDataSource",
+                "GettingParams": {
+                    "Method": "POST",
+                    "Path": "/server/appsInfo",
+                    "Data": {
+                        "Address": "localhost",
+                        "Port": 9901
+                    }
+                },
+                "IsLazy": false,
+                "ResolvePriority": 0,
+                "UpdatingItemsConverter": "{ return args.value.Result.FormatedOutput; }"
+            }
         }
-      }]
-    }
-  }],
-  "OnLoaded": "{ ShowInfo(context, args); }"
+    ],
+    "Items": [
+        {
+            "Label": {
+                "Value": "Список агентов:"
+            }
+        },
+        {
+            "DataGrid": {
+                "Name": "AgentsGrid",
+                "Columns": [
+                    {
+                        "Header": "Address",
+                        "CellProperty": "Address"
+                    },
+                    {
+                        "Header": "Port",
+                        "CellProperty": "Port"
+                    },
+                    {
+                        "Header": "Token",
+                        "CellProperty": "Token"
+                    }
+                ],
+                "Items": {
+                    "Source": "AgentsDataSource"
+                },
+                "ShowSelectors": false
+            }
+        },
+        {
+            "Label": {
+              "Visible": false,
+                "Value": "Список приложений:"
+            }
+        },
+        {
+          "DataGrid": {
+            "Visible": false,
+            "Name": "AppsGrid",
+            "Columns": [
+              {
+                "Header": "Id",
+                "CellProperty": "Id"
+              },
+              {
+                "Header": "Version",
+                "CellProperty": "Version"
+              },
+              {
+                "Header": "Instance",
+                "CellProperty": "Instance"
+              },
+              {
+                "Header": "ProcessInfo",
+                "CellProperty": "ProcessInfo.State"
+              }
+            ],
+            "Items": {
+              "Source": "AppsDataSource"
+            },
+            "ShowSelectors": false
+          }
+        },
+        {
+            "StackPanel": {
+                "ViewMode": "FormGroup",
+                "Orientation": "Horizontal",
+                "Items": [
+                    {
+                        "Button": {
+                            "Name": "install",
+                            "Text": "Install new app",
+                            "Action": {
+                                "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                    "Path": "/server/install?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                    "Method": "POST",
+                                    "Data": {
+                                        "AppName": "InfinniPlatform.Northwind",
+                                        "Version": null,
+                                        "Instance": null,
+                                        "Source": null,
+                                        "AllowPrerelease": true
+                                    },
+                                    "Params": {
+                                        "serverAddress": "localhost",
+                                        "serverPort": "9901",
+                                        "agentAddress": "localhost",
+                                        "agentPort": "9901"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "Button": {
+                            "Name": "uninstall",
+                            "Text": "Uninstall",
+                            "Action": {
+                                "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                    "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                    "Method": "POST",
+                                    "Data": {
+                                        "AppName": "InfinniPlatform.Northwind",
+                                        "Version": null,
+                                        "Instance": null
+                                    },
+                                    "Params": {
+                                        "serverAddress": "localhost",
+                                        "serverPort": "9901",
+                                        "agentAddress": "localhost",
+                                        "agentPort": "9901"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "Button": {
+                            "Name": "init",
+                            "Text": "RunInit",
+                            "Action": {
+                                "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                    "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                    "Method": "POST",
+                                    "Data": {
+                                        "AppName": "InfinniPlatform.Northwind",
+                                        "Version": null,
+                                        "Instance": null,
+                                        "Timeout": null
+                                    },
+                                    "Params": {
+                                        "serverAddress": "localhost",
+                                        "serverPort": "9901",
+                                        "agentAddress": "localhost",
+                                        "agentPort": "9901"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "Button": {
+                            "Name": "start",
+                            "Text": "Start",
+                            "Action": {
+                                "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                    "Path": "/server/start?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                    "Method": "POST",
+                                    "Data": {
+                                        "AppName": "InfinniPlatform.Northwind",
+                                        "Version": null,
+                                        "Instance": null,
+                                        "Timeout": null
+                                    },
+                                    "Params": {
+                                        "serverAddress": "localhost",
+                                        "serverPort": "9901",
+                                        "agentAddress": "localhost",
+                                        "agentPort": "9901"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "Button": {
+                            "Name": "stop",
+                            "Text": "Stop",
+                            "Action": {
+                                "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                    "Path": "/server/stop?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                    "Method": "POST",
+                                    "Data": {
+                                        "AppName": "InfinniPlatform.Northwind",
+                                        "Version": null,
+                                        "Instance": null,
+                                        "Timeout": null
+                                    },
+                                    "Params": {
+                                        "serverAddress": "localhost",
+                                        "serverPort": "9901",
+                                        "agentAddress": "localhost",
+                                        "agentPort": "9901"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "Button": {
+                            "Name": "config",
+                            "Text": "Edit config",
+                            "Action": {
+                                "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                    "Path": "/server/config?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                    "Method": "POST",
+                                    "Data": {
+                                        "AppName": "InfinniPlatform.Northwind",
+                                        "Version": null,
+                                        "Instance": null,
+                                        "Timeout": null
+                                    },
+                                    "Params": {
+                                        "serverAddress": "localhost",
+                                        "serverPort": "9901",
+                                        "agentAddress": "localhost",
+                                        "agentPort": "9901"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "Button": {
+                            "Name": "restart",
+                            "Text": "Restart",
+                            "Action": {
+                                "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                    "Path": "/server/restart?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                    "Method": "POST",
+                                    "Data": {
+                                        "AppName": "InfinniPlatform.Northwind",
+                                        "Version": null,
+                                        "Instance": null,
+                                        "Timeout": null
+                                    },
+                                    "Params": {
+                                        "serverAddress": "localhost",
+                                        "serverPort": "9901",
+                                        "agentAddress": "localhost",
+                                        "agentPort": "9901"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "OnLoaded": "{ debugger;ShowInfo(context, args); }"
 }

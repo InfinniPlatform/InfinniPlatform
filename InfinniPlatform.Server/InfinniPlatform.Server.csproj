@@ -98,6 +98,11 @@
     <Content Include="content\www\js\templates.js" />
     <Content Include="content\www\js\vendor.js" />
   </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties content_4metadata_4Views_4HomePage_1json__JSONSchema="https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
