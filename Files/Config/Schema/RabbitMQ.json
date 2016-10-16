@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "RabbitMQ",
+    "description": "Настройки подключения к RabbitMQ.",
+    "type": "object",
+    "properties": {
+        "HostName": {
+            "description": "Адрес или доменное имя.",
+            "type": "string",
+            "default": "localhost"
+        },
+        "Port": {
+            "description": "Номер порта.",
+            "type": "integer",
+            "default": 5672
+        },
+        "UserName": {
+            "description": "Имя пользователя.",
+            "type": "string",
+            "default": "guest"
+        },
+        "Password": {
+            "description": "Пароль пользователя.",
+            "type": "string",
+            "default": "guest"
+        },
+        "ManagementApiPort": {
+            "description": "Номер порта для RabbitMQ Management HTTP API.",
+            "type": "integer",
+            "default": 15672
+        },
+        "PrefetchCount": {
+            "description": "Количество сообщений, единовременно передаваемых потребителю.",
+            "type": "integer",
+            "default": 1000
+        },
+        "MaxConcurrentThreads": {
+            "description": "Максимальное количество одновременно обрабатываемых сообщений.",
+            "type": "integer",
+            "default": 200
+        },
+        "ReconnectTimeout": {
+            "description": "Время между попытками переподключения к серверу RabbitMQ в cекундах.",
+            "type": "integer",
+            "default": 5
+        }
+    },
+    "required": [
+        "HostName",
+        "Port",
+        "UserName",
+        "Password",
+        "ManagementApiPort",
+        "PrefetchCount",
+        "MaxConcurrentThreads",
+        "ReconnectTimeout"
+    ]
+}

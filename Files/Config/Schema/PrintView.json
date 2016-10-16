@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "PrintView",
+    "description": "Настройки печатных представлений.",
+    "type": "object",
+    "properties": {
+        "HtmlToPdfUtilCommand": {
+            "description": "Местоположение утилиты wkhtmltopdf.",
+            "type": "string"
+        },
+        "HtmlToPdfUtilArguments": {
+            "description": "Формат аргументов утилиты wkhtmltopdf.",
+            "type": "string"
+        },
+        "HtmlToPdfTemp": {
+            "description": "Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя).",
+            "type": "string"
+        }
+    },
+    "required": [
+        "HtmlToPdfUtilCommand",
+        "HtmlToPdfUtilArguments",
+        "HtmlToPdfTemp"
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Metadata",
+    "description": "Настройки хранения метаданных.",
+    "type": "object",
+    "properties": {
+        "DocumentsPath": {
+            "description": "Путь до подкаталога  с файлами метаданных документов.",
+            "type": "string",
+            "default": "content/metadata/Documents"
+        },
+        "PrintViewsPath": {
+            "description": "Путь до подкаталога  с файлами метаданных печатных представлений.",
+            "type": "string",
+            "default": "content/metadata/PrintViews"
+        }
+    },
+    "required": [
+        "DocumentsPath",
+        "PrintViewsPath"
+    ]
+}

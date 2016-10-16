@@ -1,0 +1,95 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "AppCommon",
+    "description": "InfinniPlatform common application settings.",
+    "type": "object",
+    "properties": {
+        "app": {
+            "description": "Настройки приложения.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/App.json"
+        },
+        "host": {
+            "description": "Настройки хостинга приложения",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Host.json"
+        },
+        "redis": {
+            "description": "Настройки подключения к Redis.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Redis.json"
+        },
+        "mongodb": {
+            "description": "Настройки подключения к MongoDB.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/MongoDB.json"
+        },
+        "rabbitmq": {
+            "description": "Настройки подключения к RabbitMQ.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/RabbitMQ.json"
+        },
+        "blobStorage": {
+            "description": "Настройки хранения BLOB и файлов.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/BlobStorage.json"
+        },
+        "userStorage": {
+            "description": "Настройки хранения пользователей.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/UserStorage.json"
+        },
+        "cache": {
+            "description": "Настройки кэширования данных.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Cache.json"
+        },
+        "printView": {
+            "description": "Настройки печатных представлений.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/PrintView.json"
+        },
+        "metadata": {
+            "description": "Настройки хранения метаданных.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Metadata.json"
+        },
+        "scheduler": {
+            "description": "Планировщик заданий.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Scheduler.json"
+        },
+        "staticContent": {
+            "description": "Настройки хостинга статических файлов.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/StaticContent.json"
+        },
+        "authCookie": {
+            "description": "Настройки аутентификации через Cookie.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthCookie.json"
+        },
+        "authAdfs": {
+            "description": "Настройки аутентификации через ADFS.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthAdfs.json"
+        },
+        "authGoogle": {
+            "description": "Настройки аутентификации через Google+.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthGoogle.json"
+        },
+        "authFacebook": {
+            "description": "Настройки аутентификации через Facebook.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthFacebook.json"
+        },
+        "authVk": {
+            "description": "Настройки аутентификации через ВКонтакте.",
+            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthVk.json"
+        }
+    },
+    "required": [
+        "app",
+        "host",
+        "redis",
+        "mongodb",
+        "rabbitmq",
+        "blobStorage",
+        "userStorage",
+        "cache",
+        "printView",
+        "metadata",
+        "scheduler",
+        "staticContent",
+        "authCookie",
+        "authAdfs",
+        "authGoogle",
+        "authFacebook",
+        "authVk"
+    ]
+}

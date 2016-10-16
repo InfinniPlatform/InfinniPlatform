@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Cache",
+    "type": "object",
+    "properties": {
+        "Type": {
+            "description": "Тип кэша для приложения.",
+            "type": "string",
+            "enum": [
+                "Memory",
+                "Shared"
+            ],
+            "default": "Memory"
+        }
+    },
+    "required": [
+        "Type"
+    ]
+}
