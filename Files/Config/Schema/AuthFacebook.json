@@ -1,4 +1,5 @@
 {
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthFacebook.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "AuthFacebook",
     "description": "Настройки аутентификации через Facebook.",

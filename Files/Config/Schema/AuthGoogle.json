@@ -1,4 +1,5 @@
 {
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthGoogle.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "AuthGoogle",
     "description": "Настройки аутентификации через Google+.",

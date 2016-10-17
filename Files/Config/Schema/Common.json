@@ -1,4 +1,5 @@
 {
+    "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "AppCommon",
     "description": "InfinniPlatform common application settings.",
@@ -6,71 +7,71 @@
     "properties": {
         "app": {
             "description": "Настройки приложения.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/App.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/App.json"
         },
         "host": {
             "description": "Настройки хостинга приложения",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Host.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Host.json"
         },
         "redis": {
             "description": "Настройки подключения к Redis.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Redis.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Redis.json"
         },
         "mongodb": {
             "description": "Настройки подключения к MongoDB.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/MongoDB.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/MongoDB.json"
         },
         "rabbitmq": {
             "description": "Настройки подключения к RabbitMQ.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/RabbitMQ.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/RabbitMQ.json"
         },
         "blobStorage": {
             "description": "Настройки хранения BLOB и файлов.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/BlobStorage.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/BlobStorage.json"
         },
         "userStorage": {
             "description": "Настройки хранения пользователей.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/UserStorage.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/UserStorage.json"
         },
         "cache": {
             "description": "Настройки кэширования данных.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Cache.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Cache.json"
         },
         "printView": {
             "description": "Настройки печатных представлений.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/PrintView.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/PrintView.json"
         },
         "metadata": {
             "description": "Настройки хранения метаданных.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Metadata.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Metadata.json"
         },
         "scheduler": {
             "description": "Планировщик заданий.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/Scheduler.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Scheduler.json"
         },
         "staticContent": {
             "description": "Настройки хостинга статических файлов.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/StaticContent.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/StaticContent.json"
         },
         "authCookie": {
             "description": "Настройки аутентификации через Cookie.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthCookie.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthCookie.json"
         },
         "authAdfs": {
             "description": "Настройки аутентификации через ADFS.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthAdfs.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthAdfs.json"
         },
         "authGoogle": {
             "description": "Настройки аутентификации через Google+.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthGoogle.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthGoogle.json"
         },
         "authFacebook": {
             "description": "Настройки аутентификации через Facebook.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthFacebook.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthFacebook.json"
         },
         "authVk": {
             "description": "Настройки аутентификации через ВКонтакте.",
-            "$ref": "file:///C:/Projects/InfinniPlatform/Files/Config/Schema/AuthVk.json"
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthVk.json"
         }
     },
     "required": [

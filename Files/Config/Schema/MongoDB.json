@@ -1,4 +1,5 @@
 {
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/MongoDB.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "MongoDB",
     "description": "Настройки подключения к MongoDB.",
