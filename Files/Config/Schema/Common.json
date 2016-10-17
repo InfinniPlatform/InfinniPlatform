@@ -72,25 +72,18 @@
         "authVk": {
             "description": "Настройки аутентификации через ВКонтакте.",
             "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthVk.json"
+        },
+        "watcher": {
+            "description": "Настройки аутентификации через ВКонтакте.",
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Watcher.json"
+        },
+        "agentSettings": {
+            "description": "Настройки аутентификации через ВКонтакте.",
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AgentSettings.json"
+        },
+        "serverSettings": {
+            "description": "Настройки аутентификации через ВКонтакте.",
+            "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/ServerSettings.json"
         }
-    },
-    "required": [
-        "app",
-        "host",
-        "redis",
-        "mongodb",
-        "rabbitmq",
-        "blobStorage",
-        "userStorage",
-        "cache",
-        "printView",
-        "metadata",
-        "scheduler",
-        "staticContent",
-        "authCookie",
-        "authAdfs",
-        "authGoogle",
-        "authFacebook",
-        "authVk"
-    ]
+    }
 }

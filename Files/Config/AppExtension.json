@@ -1,4 +1,5 @@
 ﻿{
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
   "agentSettings": {
     /* Путь к локально установленной утилите Infinni.Node */
     "NodeDirectory": "C:\\Projects\\Infinni.Node\\Assemblies",

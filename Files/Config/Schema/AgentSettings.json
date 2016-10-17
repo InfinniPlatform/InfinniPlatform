@@ -1,0 +1,29 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AgentSettings.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "AgentSettings",
+    "description": "Настройки приложения InfinniPlatform.Agent.",
+    "type": "object",
+    "properties": {
+        "NodeDirectory": {
+            "description": "Путь к утилите Infinni.Node.",
+            "type": "boolean",
+            "default": false
+        },
+        "ServerAddress": {
+            "description": "Адрес сервера InfinniPlatform.Server.",
+            "type": "string",
+            "default": null
+        },
+        "Token": {
+            "description": "Уникальный token для аутентификации при обмене данными между агентом и сервером.",
+            "type": "string",
+            "default": null
+        }
+    },
+    "required": [
+        "NodeDirectory",
+        "ServerAddress",
+        "Token"
+    ]
+}

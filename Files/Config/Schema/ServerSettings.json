@@ -1,0 +1,16 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/ServerSettings.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ServerSettings",
+    "description": "Настройки приложения InfinniPlatform.Server.",
+    "type": "object",
+    "properties": {
+        "AgentsInfo": {
+            "description": "Информация об экземплярах приложения InfinniPlatform.Agent.",
+            "type": "array"
+        }
+    },
+    "required": [
+        "AgentsInfo"
+    ]
+}

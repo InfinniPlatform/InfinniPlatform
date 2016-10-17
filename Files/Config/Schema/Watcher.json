@@ -1,0 +1,33 @@
+{
+    "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Watcher.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Watcher",
+    "description": "Настройки наблюдателя.",
+    "type": "object",
+    "properties": {
+        "SourceDirectory": {
+            "description": "Наблюдаемая папка.",
+            "type": "string",
+            "default": "..\\content"
+        },
+        "DestinationDirectory": {
+            "description": "Синхронизируемая папка.",
+            "type": "string",
+            "default": "content"
+        },
+        "WatchingFileExtensions": {
+            "description": "Расширения синхронизируемых файлов.",
+            "type": "array",
+            "default": [
+                ".json",
+                ".js",
+                ".css"
+            ]
+        }
+    },
+    "required": [
+        "SourceDirectory",
+        "DestinationDirectory",
+        "WatchingFileExtensions"
+    ]
+}
