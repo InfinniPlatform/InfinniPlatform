@@ -101,6 +101,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Agent", "In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Server", "InfinniPlatform.Server\InfinniPlatform.Server.csproj", "{6F2272BD-FCB7-4C1A-87AF-815FE0BCD95E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Heartbeat", "InfinniPlatform.Heartbeat\InfinniPlatform.Heartbeat.csproj", "{A769A09B-C751-4039-8972-6DE5DF3CFB30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -235,6 +237,10 @@ Global
 		{6F2272BD-FCB7-4C1A-87AF-815FE0BCD95E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F2272BD-FCB7-4C1A-87AF-815FE0BCD95E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F2272BD-FCB7-4C1A-87AF-815FE0BCD95E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

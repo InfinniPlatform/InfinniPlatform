@@ -54,6 +54,7 @@ namespace InfinniPlatform.Conventions
                          || project.EndsWith("InfinniPlatform.Watcher")
                          || project.EndsWith("InfinniPlatform.Agent")
                          || project.EndsWith("InfinniPlatform.Server")
+                         || project.EndsWith("InfinniPlatform.Heartbeat")
                          || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
 
             // Then
