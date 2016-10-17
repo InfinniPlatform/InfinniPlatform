@@ -1,5 +1,5 @@
 ﻿{
-  "DataSources": [
+    "DataSources": [
         {
             "RestDataSource": {
                 "Name": "AgentsDataSource",
@@ -20,8 +20,18 @@
                     "Method": "POST",
                     "Path": "/server/appsInfo",
                     "Data": {
-                        "Address": "localhost",
-                        "Port": 9901
+                        "Address": "<%Address%>",
+                        "Port": "<%Port%>"
+                    },
+                    "Params": {
+                        "Address": {
+                            "Source": "AgentsDataSource",
+                            "Property": "$.Address"
+                        },
+                        "Port": {
+                            "Source": "AgentsDataSource",
+                            "Property": "$.Port"
+                        }
                     }
                 },
                 "IsLazy": false,
@@ -56,42 +66,48 @@
                 "Items": {
                     "Source": "AgentsDataSource"
                 },
-                "ShowSelectors": false
+                "ShowSelectors": false,
+                "OnSelectedItemChanged": "{ ShowAppsPanel(context); }"
             }
         },
         {
-            "Label": {
-              "Visible": false,
-                "Value": "Список приложений:"
+            "StackPanel": {
+                "Name": "AppsPanel",
+                "Visible": false,
+                "Items": [
+                    {
+                        "Label": {
+                            "Value": "Список приложений:"
+                        }
+                    },
+                    {
+                        "DataGrid": {
+                            "Columns": [
+                                {
+                                    "Header": "Id",
+                                    "CellProperty": "Id"
+                                },
+                                {
+                                    "Header": "Version",
+                                    "CellProperty": "Version"
+                                },
+                                {
+                                    "Header": "Instance",
+                                    "CellProperty": "Instance"
+                                },
+                                {
+                                    "Header": "ProcessInfo",
+                                    "CellProperty": "ProcessInfo.State"
+                                }
+                            ],
+                            "Items": {
+                                "Source": "AppsDataSource"
+                            },
+                            "ShowSelectors": false
+                        }
+                    }
+                ]
             }
-        },
-        {
-          "DataGrid": {
-            "Visible": false,
-            "Name": "AppsGrid",
-            "Columns": [
-              {
-                "Header": "Id",
-                "CellProperty": "Id"
-              },
-              {
-                "Header": "Version",
-                "CellProperty": "Version"
-              },
-              {
-                "Header": "Instance",
-                "CellProperty": "Instance"
-              },
-              {
-                "Header": "ProcessInfo",
-                "CellProperty": "ProcessInfo.State"
-              }
-            ],
-            "Items": {
-              "Source": "AppsDataSource"
-            },
-            "ShowSelectors": false
-          }
         },
         {
             "StackPanel": {
@@ -117,8 +133,14 @@
                                     "Params": {
                                         "serverAddress": "localhost",
                                         "serverPort": "9901",
-                                        "agentAddress": "localhost",
-                                        "agentPort": "9901"
+                                        "agentAddress": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Address"
+                                        },
+                                        "agentPort": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Port"
+                                        }
                                     }
                                 }
                             }
@@ -141,8 +163,14 @@
                                     "Params": {
                                         "serverAddress": "localhost",
                                         "serverPort": "9901",
-                                        "agentAddress": "localhost",
-                                        "agentPort": "9901"
+                                        "agentAddress": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Address"
+                                        },
+                                        "agentPort": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Port"
+                                        }
                                     }
                                 }
                             }
@@ -166,8 +194,14 @@
                                     "Params": {
                                         "serverAddress": "localhost",
                                         "serverPort": "9901",
-                                        "agentAddress": "localhost",
-                                        "agentPort": "9901"
+                                        "agentAddress": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Address"
+                                        },
+                                        "agentPort": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Port"
+                                        }
                                     }
                                 }
                             }
@@ -191,8 +225,14 @@
                                     "Params": {
                                         "serverAddress": "localhost",
                                         "serverPort": "9901",
-                                        "agentAddress": "localhost",
-                                        "agentPort": "9901"
+                                        "agentAddress": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Address"
+                                        },
+                                        "agentPort": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Port"
+                                        }
                                     }
                                 }
                             }
@@ -216,8 +256,14 @@
                                     "Params": {
                                         "serverAddress": "localhost",
                                         "serverPort": "9901",
-                                        "agentAddress": "localhost",
-                                        "agentPort": "9901"
+                                        "agentAddress": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Address"
+                                        },
+                                        "agentPort": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Port"
+                                        }
                                     }
                                 }
                             }
@@ -241,8 +287,14 @@
                                     "Params": {
                                         "serverAddress": "localhost",
                                         "serverPort": "9901",
-                                        "agentAddress": "localhost",
-                                        "agentPort": "9901"
+                                        "agentAddress": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Address"
+                                        },
+                                        "agentPort": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Port"
+                                        }
                                     }
                                 }
                             }
@@ -266,8 +318,14 @@
                                     "Params": {
                                         "serverAddress": "localhost",
                                         "serverPort": "9901",
-                                        "agentAddress": "localhost",
-                                        "agentPort": "9901"
+                                        "agentAddress": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Address"
+                                        },
+                                        "agentPort": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Port"
+                                        }
                                     }
                                 }
                             }
@@ -276,6 +334,5 @@
                 ]
             }
         }
-    ],
-    "OnLoaded": "{ debugger;ShowInfo(context, args); }"
+    ]
 }

@@ -13,13 +13,8 @@
     "AgentsInfo": [
       {
         "Address": "localhost",
-        "Port": 9900,
+        "Port": 9901,
         "Token": "cc670bc2b2124011a3f92056487f2cf3"
-      },
-      {
-        "Address": "10.0.0.43",
-        "Port": 9900,
-        "Token": "7a890006872f4d90b251c1b6fad1fb0d"
       }
     ]
   },
@@ -29,6 +24,11 @@
     /* Directory to synchronize */
     "DestinationDirectory": "content",
     /* File extentions to synchronize */
-    "WatchingFileExtensions": [ ".json", ".js", ".css" ]
+    "WatchingFileExtensions": [
+      ".json",
+      ".js",
+      ".css",
+      ".html"
+    ]
   }
 }

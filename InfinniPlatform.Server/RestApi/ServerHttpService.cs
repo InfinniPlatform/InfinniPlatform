@@ -89,7 +89,7 @@ namespace InfinniPlatform.Server.RestApi
                               { "AppName", (string)request.Form.AppName },
                               { "Version", (string)request.Form.Version },
                               { "Instance", (string)request.Form.Instance },
-                              { "Timeout", (int?)request.Form.Timeout }
+                              { "Timeout", ParseTimeout(request) }
                           };
 
             return await _agentCommandExecutor.InitApp(address, port, wrapper);
@@ -105,10 +105,17 @@ namespace InfinniPlatform.Server.RestApi
                               { "AppName", (string)request.Form.AppName },
                               { "Version", (string)request.Form.Version },
                               { "Instance", (string)request.Form.Instance },
-                              { "Timeout", (int?)request.Form.Timeout }
+                              { "Timeout", ParseTimeout(request) }
                           };
 
             return await _agentCommandExecutor.StartApp(address, port, wrapper);
+        }
+
+        private static dynamic ParseTimeout(IHttpRequest request)
+        {
+            return string.IsNullOrEmpty(request.Form.Timeout)
+                       ? null
+                       : int.Parse(request.Form.Timeout);
         }
 
         private async Task<object> StopApp(IHttpRequest request)
@@ -121,7 +128,7 @@ namespace InfinniPlatform.Server.RestApi
                               { "AppName", (string)request.Form.AppName },
                               { "Version", (string)request.Form.Version },
                               { "Instance", (string)request.Form.Instance },
-                              { "Timeout", (int?)request.Form.Timeout }
+                              { "Timeout", ParseTimeout(request) }
                           };
 
             return await _agentCommandExecutor.StopApp(address, port, wrapper);
@@ -137,7 +144,7 @@ namespace InfinniPlatform.Server.RestApi
                               { "AppName", (string)request.Form.AppName },
                               { "Version", (string)request.Form.Version },
                               { "Instance", (string)request.Form.Instance },
-                              { "Timeout", (int?)request.Form.Timeout }
+                              { "Timeout", ParseTimeout(request) }
                           };
 
             return await _agentCommandExecutor.RestartApp(address, port, wrapper);

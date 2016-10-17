@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -87,6 +86,11 @@ namespace InfinniPlatform.Server.Agent
         {
             var serviceResult = await ExecuteGetRequest<ProcessResult>(AppsInfoPath, agentAddress, agentPort);
 
+            if (serviceResult == null)
+            {
+                return new DynamicWrapper();
+            }
+
             var processResult = serviceResult.Result;
 
             var appsInfoJson = Regex.Replace(processResult.Output, OutputInfoRegex, string.Empty, RegexOptions.Multiline, Regex.InfiniteMatchTimeout)
@@ -128,19 +132,27 @@ namespace InfinniPlatform.Server.Agent
         {
             var uriString = $"http://{agentAddress}:{agentPort}/agent/{path}{ToQuery(queryContent)}";
 
-            var response = await _httpClient.GetAsync(uriString);
+            try
+            {
+                var response = await _httpClient.GetAsync(uriString);
 
-            var content = await response.Content.ReadAsStreamAsync();
+                var content = await response.Content.ReadAsStreamAsync();
 
-            var processResult = _serializer.Deserialize<T>(content);
+                var processResult = _serializer.Deserialize<T>(content);
 
-            var serviceResult = new ServiceResult<T>
-                                {
-                                    Success = true,
-                                    Result = processResult
-                                };
+                var serviceResult = new ServiceResult<T>
+                {
+                    Success = true,
+                    Result = processResult
+                };
 
-            return serviceResult;
+                return serviceResult;
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+
         }
 
         private async Task<ServiceResult<T>> ExecutePostRequest<T>(string path, string agentAddress, int agentPort, DynamicWrapper formContent)

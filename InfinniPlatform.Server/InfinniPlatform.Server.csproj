@@ -92,7 +92,7 @@
     <Content Include="content\www\img\favicon.ico" />
     <Content Include="content\www\Index.html" />
     <Content Include="content\www\js\config.js" />
-    <Content Include="content\www\js\HomePage\subscribe.js" />
+    <Content Include="content\www\js\homePage.js" />
     <Content Include="content\www\js\main.js" />
     <Content Include="content\www\js\platform.js" />
     <Content Include="content\www\js\templates.js" />
