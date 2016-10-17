@@ -7,8 +7,8 @@
     "properties": {
         "NodeDirectory": {
             "description": "Путь к утилите Infinni.Node.",
-            "type": "boolean",
-            "default": false
+            "type": "string",
+            "default": null
         },
         "ServerAddress": {
             "description": "Адрес сервера InfinniPlatform.Server.",

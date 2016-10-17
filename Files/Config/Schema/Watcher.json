@@ -2,7 +2,7 @@
     "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Watcher.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Watcher",
-    "description": "Настройки наблюдателя.",
+    "description": "Настройки приложения InfinniPlatform.Watcher.",
     "type": "object",
     "properties": {
         "SourceDirectory": {
