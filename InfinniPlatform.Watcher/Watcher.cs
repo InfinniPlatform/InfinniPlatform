@@ -27,7 +27,7 @@ namespace InfinniPlatform.Watcher
             {
                 Console.WriteLine(Resources.SuccessStart);
 
-                TryExecute(SyncDirectories);
+                TryExecute(CheckDirectoriesSync);
 
                 var watcher = new FileSystemWatcher
                               {
@@ -50,28 +50,14 @@ namespace InfinniPlatform.Watcher
             }
         }
 
-        private void SyncDirectories()
+        private void CheckDirectoriesSync()
         {
             var sourceFiles = Directory.GetFiles(_settings.SourceDirectory, "*.*", SearchOption.AllDirectories);
             var destFiles = Directory.GetFiles(_settings.DestinationDirectory, "*.*", SearchOption.AllDirectories);
 
             if (destFiles.Length != sourceFiles.Length)
             {
-                ConsoleLog.Info(string.Format(Resources.SyncingContentDirectories, _settings.SourceDirectory, _settings.DestinationDirectory));
-
-                Directory.Delete(_settings.DestinationDirectory, true);
-
-                foreach (var dirPath in Directory.GetDirectories(_settings.SourceDirectory, "*", SearchOption.AllDirectories))
-                {
-                    Directory.CreateDirectory(dirPath.Replace(_settings.SourceDirectory, _settings.DestinationDirectory));
-                }
-
-                foreach (var newPath in Directory.GetFiles(_settings.SourceDirectory, "*.*", SearchOption.AllDirectories))
-                {
-                    File.Copy(newPath, newPath.Replace(_settings.SourceDirectory, _settings.DestinationDirectory), true);
-                }
-
-                ConsoleLog.Info(Resources.SyncComplete);
+                ConsoleLog.Warning(string.Format(Resources.SyncingContentDirectories, _settings.SourceDirectory, _settings.DestinationDirectory, Environment.NewLine));
             }
         }
 

@@ -130,7 +130,7 @@
     <value>{0}{1}{0}File {2} was {3}.</value>
   </data>
   <data name="SyncingContentDirectories" xml:space="preserve">
-    <value>Content of directories {0} and {1} are different. Syncing...</value>
+    <value>Content of directories{2}{0}{2}and{2}{1}{2}are different.</value>
   </data>
   <data name="ChangesWillBeTransferred" xml:space="preserve">
     <value>Changes within directory{0}{1}{0}will be transferred to directory{0}{2}.</value>

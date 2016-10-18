@@ -159,7 +159,7 @@ namespace InfinniPlatform.Watcher.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Content of directories {0} and {1} are different. Syncing....
+        ///   Looks up a localized string similar to Content of directories{2}{0}{2}and{2}{1}{2}are different..
         /// </summary>
         internal static string SyncingContentDirectories {
             get {
