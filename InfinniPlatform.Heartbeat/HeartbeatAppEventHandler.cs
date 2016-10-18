@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Heartbeat.Settings;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
@@ -13,21 +15,29 @@ namespace InfinniPlatform.Heartbeat
 {
     public class HeartbeatAppEventHandler : AppEventHandler
     {
+        private const string ServerHeartbeatPath = "/server/heartbeat";
+
         public HeartbeatAppEventHandler(HeartbeatSettings settings,
                                         IJsonObjectSerializer serializer,
-                                        IAppEnvironment environment)
+                                        IAppEnvironment environment,
+                                        ILog log)
         {
             _settings = settings;
             _serializer = serializer;
             _environment = environment;
+            _log = log;
+
+            var uri = new Uri(new Uri(settings.ServerAddress), ServerHeartbeatPath);
+
             _httpClient = new HttpClient
                           {
-                              BaseAddress = new Uri(settings.ServerAddress)
+                              BaseAddress = uri
                           };
         }
 
         private readonly IAppEnvironment _environment;
         private readonly HttpClient _httpClient;
+        private readonly ILog _log;
         private readonly IJsonObjectSerializer _serializer;
         private readonly HeartbeatSettings _settings;
 
@@ -39,7 +49,7 @@ namespace InfinniPlatform.Heartbeat
         private async Task SendBeats()
         {
             var period = _settings.Period;
-            var requestUri = new Uri("/server/beat", UriKind.Relative);
+
 
             var beatMessage = new DynamicWrapper
                               {
@@ -50,7 +60,7 @@ namespace InfinniPlatform.Heartbeat
 
             var requestContent = new StringContent(_serializer.ConvertToString(beatMessage), _serializer.Encoding, HttpConstants.JsonContentType);
 
-            var startedMessage = await _httpClient.PostAsync(requestUri, requestContent);
+            var startedMessage = await _httpClient.PostAsync(string.Empty, requestContent);
 
             if (startedMessage.IsSuccessStatusCode)
             {
@@ -67,14 +77,19 @@ namespace InfinniPlatform.Heartbeat
 
                     requestContent = new StringContent(_serializer.ConvertToString(beatMessage), _serializer.Encoding, HttpConstants.JsonContentType);
 
-                    var workingMessage = await _httpClient.PostAsync(requestUri, requestContent);
+                    var workingMessage = await _httpClient.PostAsync(string.Empty, requestContent);
 
                     if (!workingMessage.IsSuccessStatusCode)
                     {
+                        var workResponce = await startedMessage.Content.ReadAsStringAsync();
+                        _log.Error("Unable to send message.", () => new Dictionary<string, object> { { "Content", workResponce } });
                     }
                 }
                 // ReSharper disable once FunctionNeverReturns
             }
+
+            var startResponce = await startedMessage.Content.ReadAsStringAsync();
+            _log.Error("Unable to send message.", () => new Dictionary<string, object> { { "Content", startResponce } });
         }
 
         public override void OnBeforeStop()
