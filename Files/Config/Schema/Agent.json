@@ -1,7 +1,7 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AgentSettings.json",
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Agent.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "AgentSettings",
+    "title": "Agent",
     "description": "Настройки приложения InfinniPlatform.Agent.",
     "type": "object",
     "properties": {

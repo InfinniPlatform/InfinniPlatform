@@ -103,6 +103,32 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Server", "I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Heartbeat", "InfinniPlatform.Heartbeat\InfinniPlatform.Heartbeat.csproj", "{A769A09B-C751-4039-8972-6DE5DF3CFB30}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{CB33EBA2-A6F1-452B-975B-46608C8419C2}"
+	ProjectSection(SolutionItems) = preProject
+		Files\Config\Schema\Agent.json = Files\Config\Schema\Agent.json
+		Files\Config\Schema\App.json = Files\Config\Schema\App.json
+		Files\Config\Schema\AuthAdfs.json = Files\Config\Schema\AuthAdfs.json
+		Files\Config\Schema\AuthCookie.json = Files\Config\Schema\AuthCookie.json
+		Files\Config\Schema\AuthFacebook.json = Files\Config\Schema\AuthFacebook.json
+		Files\Config\Schema\AuthGoogle.json = Files\Config\Schema\AuthGoogle.json
+		Files\Config\Schema\AuthVk.json = Files\Config\Schema\AuthVk.json
+		Files\Config\Schema\BlobStorage.json = Files\Config\Schema\BlobStorage.json
+		Files\Config\Schema\Cache.json = Files\Config\Schema\Cache.json
+		Files\Config\Schema\Common.json = Files\Config\Schema\Common.json
+		Files\Config\Schema\Heartbeat.json = Files\Config\Schema\Heartbeat.json
+		Files\Config\Schema\Host.json = Files\Config\Schema\Host.json
+		Files\Config\Schema\Metadata.json = Files\Config\Schema\Metadata.json
+		Files\Config\Schema\MongoDB.json = Files\Config\Schema\MongoDB.json
+		Files\Config\Schema\PrintView.json = Files\Config\Schema\PrintView.json
+		Files\Config\Schema\RabbitMQ.json = Files\Config\Schema\RabbitMQ.json
+		Files\Config\Schema\Redis.json = Files\Config\Schema\Redis.json
+		Files\Config\Schema\Scheduler.json = Files\Config\Schema\Scheduler.json
+		Files\Config\Schema\Server.json = Files\Config\Schema\Server.json
+		Files\Config\Schema\StaticContent.json = Files\Config\Schema\StaticContent.json
+		Files\Config\Schema\UserStorage.json = Files\Config\Schema\UserStorage.json
+		Files\Config\Schema\Watcher.json = Files\Config\Schema\Watcher.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -250,5 +276,6 @@ Global
 		{C71676EF-83E3-4549-B43E-F3CEAE4FABC7} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{FA93727B-56AC-452A-8F91-F09C6620134F} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{90A10053-AB39-46B8-9F9D-0638E4D0BBAA} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
+		{CB33EBA2-A6F1-452B-975B-46608C8419C2} = {FA93727B-56AC-452A-8F91-F09C6620134F}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,29 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Heartbeat.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Heartbeat",
+  "description": "Настройки приложения InfinniPlatform.Heartbeat.",
+  "type": "object",
+  "properties": {
+    "Period": {
+      "description": "Периодичность оповещения сервера (в секундах).",
+      "type": "integer",
+      "default": 5
+    },
+    "ServerAddress": {
+      "description": "Адрес сервера InfinniPlatform.Server.",
+      "type": "string",
+      "default": "localhost:9901"
+    },
+    "Token": {
+      "description": "Уникальный token для аутентификации при обмене данными между агентом и сервером.",
+      "type": "string",
+      "default": null
+    }
+  },
+  "required": [
+    "Period",
+    "ServerAddress",
+    "Token"
+  ]
+}

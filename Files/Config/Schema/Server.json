@@ -1,7 +1,7 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/ServerSettings.json",
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Server.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "ServerSettings",
+    "title": "Server",
     "description": "Настройки приложения InfinniPlatform.Server.",
     "type": "object",
     "properties": {

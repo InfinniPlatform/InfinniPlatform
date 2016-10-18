@@ -2,7 +2,7 @@
 {
     public class HeartbeatSettings
     {
-        public const string SectionName = "heartbeatSettings";
+        public const string SectionName = "heartbeat";
 
         public HeartbeatSettings()
         {

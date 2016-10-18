@@ -2,7 +2,7 @@
 {
     public class ServerSettings
     {
-        public const string SectionName = "serverSettings";
+        public const string SectionName = "server";
 
         public ServerSettings()
         {

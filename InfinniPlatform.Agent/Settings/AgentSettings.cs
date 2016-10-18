@@ -2,7 +2,7 @@
 {
     public class AgentSettings
     {
-        public const string SectionName = "agentSettings";
+        public const string SectionName = "agent";
 
         public AgentSettings()
         {

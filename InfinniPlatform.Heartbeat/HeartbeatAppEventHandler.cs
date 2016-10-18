@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Heartbeat.Settings;
 using InfinniPlatform.Sdk.Hosting;
@@ -10,22 +12,39 @@ namespace InfinniPlatform.Heartbeat
         public HeartbeatAppEventHandler(HeartbeatSettings settings)
         {
             _settings = settings;
+            _httpClient = new HttpClient
+                          {
+                              BaseAddress = new Uri(settings.ServerAddress)
+                          };
         }
 
+        private readonly HttpClient _httpClient;
         private readonly HeartbeatSettings _settings;
 
         public override void OnAfterStart()
         {
-            //send to server
-            var period = _settings.Period;
-
             Task.Run(async () =>
                      {
-                         while (true)
+                         var period = _settings.Period;
+                         var requestUri = new Uri("/beat");
+                         var startedMessage = await _httpClient.PostAsync(requestUri, new StringContent("Started."));
+
+                         if (startedMessage.IsSuccessStatusCode)
                          {
-                             await Task.Delay(period);
+                             while (true)
+                             {
+                                 await Task.Delay(period);
+                                 var workingMessage = await _httpClient.PostAsync(requestUri, new StringContent("Working."));
+
+                                 if (!workingMessage.IsSuccessStatusCode)
+                                 {
+                                     
+                                 }
+                             }
+                             // ReSharper disable once FunctionNeverReturns
                          }
-                         // ReSharper disable once FunctionNeverReturns
+
+
                      });
         }
 
