@@ -68,12 +68,16 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ContentFiles Include="content\**\*.*">
+    <WebFiles Include="content\www\**\*.*">
       <Visible>false</Visible>
-    </ContentFiles>
+    </WebFiles>
+    <MetadataFiles Include="content\metadata\**\*.*">
+      <Visible>false</Visible>
+    </MetadataFiles>
   </ItemGroup>
   <Target Name="AfterBuild">
-    <Copy SourceFiles="@(ContentFiles)" DestinationFolder="$(OutDir)content\%(RecursiveDir)" />
+    <Copy SourceFiles="@(WebFiles)" DestinationFolder="$(OutDir)content\www\%(RecursiveDir)" />
+    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\metadata\%(RecursiveDir)" />
   </Target>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -98,11 +102,6 @@
     <Content Include="content\www\js\templates.js" />
     <Content Include="content\www\js\vendor.js" />
   </ItemGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties content_4metadata_4Views_4HomePage_1json__JSONSchema="https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json" />
-    </VisualStudio>
-  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

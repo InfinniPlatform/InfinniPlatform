@@ -1,22 +1,27 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.RestApi
 {
     /// <summary>
-    /// Сервис взаимодействия с утилитой Infinni.Node.
+    /// Сервис взаимодействия с приложением Infinni.Agent.
     /// </summary>
     public class ServerHttpService : IHttpService
     {
-        public ServerHttpService(IAgentCommandExecutor agentCommandExecutor)
+        public ServerHttpService(IAgentCommandExecutor agentCommandExecutor,
+                                 ILog log)
         {
             _agentCommandExecutor = agentCommandExecutor;
+            _log = log;
         }
 
         private readonly IAgentCommandExecutor _agentCommandExecutor;
+        private readonly ILog _log;
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -39,6 +44,8 @@ namespace InfinniPlatform.Server.RestApi
 
             builder.Get["/variables"] = GetEnvironmentVariables;
             builder.Get["/variable"] = GetEnvironmentVariable;
+
+            builder.Post["/heartbeat"] = LogBeat;
         }
 
         private Task<object> GetAgentsStatus(IHttpRequest httpRequest)
@@ -208,6 +215,22 @@ namespace InfinniPlatform.Server.RestApi
                           };
 
             return await _agentCommandExecutor.GetVariable(address, port, wrapper);
+        }
+
+        private Task<object> LogBeat(IHttpRequest request)
+        {
+            string s = request.Form.Message;
+
+            _log.Info(s, () => new Dictionary<string, object>
+                               {
+                                   { "Name", (string)request.Form.Name },
+                                   { "InstanceId", (string)request.Form.InstanceId }
+                               });
+
+            return Task.FromResult<object>(new ServiceResult<object>
+                                           {
+                                               Success = true
+                                           });
         }
     }
 }
