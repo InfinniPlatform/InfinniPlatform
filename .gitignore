@@ -164,8 +164,8 @@ ClientBin/
 *.dbmdl
 *.dbproj.schemaview
 *.publishsettings
-node_modules/
-bower_components/
+**/node_modules/
+**/bower_components/
 
 # RIA/Silverlight projects
 Generated_Code/
