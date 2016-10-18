@@ -1,15 +1,11 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
-  "agentSettings": {
-    /* Путь к локально установленной утилите Infinni.Node */
+  "agent": {
     "NodeDirectory": "C:\\Projects\\Infinni.Node\\Assemblies",
-    /* Адрес сервера InfinniPlatform.Server */
     "ServerAddress": "",
-    /* Уникальный token для аутентификации при обмене данными между агентом и сервером */
-    "Token": ""
+    "Token": "cc670bc2b2124011a3f92056487f2cf3"
   },
-  "serverSettings": {
-    /* Информация об экземплярах приложения InfinniPlatform.Agent */
+  "server": {
     "AgentsInfo": [
       {
         "Address": "localhost",
@@ -19,16 +15,18 @@
     ]
   },
   "watcher": {
-    /* Matadata source directory */
     "SourceDirectory": "..\\InfinniPlatform.Server\\content",
-    /* Directory to synchronize */
     "DestinationDirectory": "content",
-    /* File extentions to synchronize */
     "WatchingFileExtensions": [
       ".json",
       ".js",
       ".css",
       ".html"
     ]
+  },
+  "heartbeat": {
+    "Period": 5,
+    "ServerAddress": "localhost:9901",
+    "Token": "cc670bc2b2124011a3f92056487f2cf3"
   }
 }
