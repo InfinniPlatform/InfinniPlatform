@@ -27,8 +27,6 @@
         }
     },
     "required": [
-        "Nodes",
-        "UserName",
-        "Password"
+        "Nodes"
     ]
 }

@@ -27,7 +27,6 @@
     },
     "required": [
         "SourceDirectory",
-        "DestinationDirectory",
-        "WatchingFileExtensions"
+        "DestinationDirectory"
     ]
 }

@@ -31,9 +31,6 @@
         }
     },
     "required": [
-        "StaticFilesMapping",
-        "EmbeddedResourceMapping",
-        "RazorViewsPath",
-        "EmbeddedRazorViewsAssemblies"
+        "StaticFilesMapping"        
     ]
 }

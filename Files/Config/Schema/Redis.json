@@ -53,13 +53,6 @@
     },
     "required": [
         "Host",
-        "Port",
-        "Database",
-        "Password",
-        "ReadBufferSize",
-        "WriteBufferSize",
-        "ConnectionTimeout",
-        "MaxReconnectRetries",
-        "PoolSize"
+        "Port"
     ]
 }

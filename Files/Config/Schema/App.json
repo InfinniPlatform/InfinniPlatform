@@ -16,7 +16,6 @@
         }
     },
     "required": [
-        "Name",
-        "InstanceId"
+        "Name"
     ]
 }

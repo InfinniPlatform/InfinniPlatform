@@ -49,11 +49,6 @@
     "required": [
         "HostName",
         "Port",
-        "UserName",
-        "Password",
-        "ManagementApiPort",
-        "PrefetchCount",
-        "MaxConcurrentThreads",
-        "ReconnectTimeout"
+        "ManagementApiPort"        
     ]
 }

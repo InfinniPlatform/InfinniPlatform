@@ -6,11 +6,11 @@
     "type": "object",
     "properties": {
         "HtmlToPdfUtilCommand": {
-            "description": "Местоположение утилиты wkhtmltopdf.",
+            "description": "Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).",
             "type": "string"
         },
         "HtmlToPdfUtilArguments": {
-            "description": "Формат аргументов утилиты wkhtmltopdf.",
+            "description": "Формат аргументов утилиты wkhtmltopdf  - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).",
             "type": "string"
         },
         "HtmlToPdfTemp": {
