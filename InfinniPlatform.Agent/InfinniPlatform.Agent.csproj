@@ -55,6 +55,7 @@
     <Compile Include="InfinniNode\IConfigurationFileProvider.cs" />
     <Compile Include="InfinniNode\IEnvironmentVariableProvider.cs" />
     <Compile Include="InfinniNode\INodeCommandExecutor.cs" />
+    <Compile Include="InfinniNode\LogFilePovider.cs" />
     <Compile Include="InfinniNode\NodeCommandExecutor.cs" />
     <Compile Include="InfinniNode\ProcessHelper.cs" />
     <Compile Include="IoC\AppContainerModule.cs" />

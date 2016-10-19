@@ -39,6 +39,10 @@ namespace InfinniPlatform.Agent.IoC
                    .As<IEnvironmentVariableProvider>()
                    .SingleInstance();
 
+            builder.RegisterType<LogFilePovider>()
+                   .As<ILogFilePovider>()
+                   .SingleInstance();
+
             builder.RegisterHttpServices(assembly);
         }
 
