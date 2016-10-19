@@ -43,12 +43,12 @@ namespace InfinniPlatform.Agent.RestApi
             builder.Get["config"] = GetConfigurationFile;
             builder.Post["config"] = SetConfigurationFile;
 
+            builder.Get["variables"] = GetEnvironmentVariables;
+            builder.Get["variable"] = GetEnvironmentVariable;
+
             builder.Get["appLog"] = GetAppLogFile;
             builder.Get["perfLog"] = GetPerfLogFile;
             builder.Get["nodeLog"] = GetNodeLogFile;
-
-            builder.Get["variables"] = GetEnvironmentVariables;
-            builder.Get["variable"] = GetEnvironmentVariable;
         }
 
         private async Task<object> InstallApp(IHttpRequest request)
@@ -167,18 +167,18 @@ namespace InfinniPlatform.Agent.RestApi
 
         private Task<object> GetAppLogFile(IHttpRequest request)
         {
-            string fullAppName = request.Query.FullAppName;
+            string appFullName = request.Query.AppFullName;
 
-            var streamHttpResponse = new StreamHttpResponse(() => _logFilePovider.GetAppLog(fullAppName), "application/text");
+            var streamHttpResponse = new StreamHttpResponse(() => _logFilePovider.GetAppLog(appFullName), "application/text");
 
             return Task.FromResult<object>(streamHttpResponse);
         }
 
         private Task<object> GetPerfLogFile(IHttpRequest request)
         {
-            string fullAppName = request.Query.FullAppName;
+            string appFullName = request.Query.AppFullName;
 
-            var streamHttpResponse = new StreamHttpResponse(() => _logFilePovider.GetPerformanceLog(fullAppName), "application/text");
+            var streamHttpResponse = new StreamHttpResponse(() => _logFilePovider.GetPerformanceLog(appFullName), "application/text");
 
             return Task.FromResult<object>(streamHttpResponse);
         }

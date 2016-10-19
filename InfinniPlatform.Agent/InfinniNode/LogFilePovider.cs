@@ -6,9 +6,9 @@ namespace InfinniPlatform.Agent.InfinniNode
 {
     public interface ILogFilePovider
     {
-        Stream GetAppLog(string fullAppName);
+        Stream GetAppLog(string appFullName);
 
-        Stream GetPerformanceLog(string fullAppName);
+        Stream GetPerformanceLog(string appFullName);
 
         Stream GetNodeLog();
     }
@@ -29,16 +29,16 @@ namespace InfinniPlatform.Agent.InfinniNode
 
         private readonly AgentSettings _settings;
 
-        public Stream GetAppLog(string fullAppName)
+        public Stream GetAppLog(string appFullName)
         {
-            var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, fullAppName, LogsDirectoryName, AppLogFilename);
+            var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, LogsDirectoryName, AppLogFilename);
 
             return new FileStream(filePath, FileMode.Open, FileAccess.Read);
         }
 
-        public Stream GetPerformanceLog(string fullAppName)
+        public Stream GetPerformanceLog(string appFullName)
         {
-            var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, fullAppName, LogsDirectoryName, PerformanceLogFilename);
+            var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, LogsDirectoryName, PerformanceLogFilename);
 
             return new FileStream(filePath, FileMode.Open, FileAccess.Read);
         }

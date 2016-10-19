@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -23,6 +24,9 @@ namespace InfinniPlatform.Server.Agent
         private const string ConfigPath = "config";
         private const string VariablesPath = "variables";
         private const string VariablePath = "variable";
+        private const string AppLogFilePath = "appLog";
+        private const string PerfLogFilePath = "appLog";
+        private const string NodeLogFilePath = "appLog";
         private const string OutputInfoRegex = @"\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2},\d{3}\s\[PID\s\d+\]\sINFO\s+-\s+";
 
         public AgentCommandExecutor(ServerSettings serverSettings, IJsonObjectSerializer serializer)
@@ -128,6 +132,24 @@ namespace InfinniPlatform.Server.Agent
             return processResult;
         }
 
+        public async Task<object> GetAppLogFile(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            var processResult = await ExecuteStreamRequest(AppLogFilePath, agentAddress, agentPort, arguments);
+            return processResult;
+        }
+
+        public async Task<object> GetPerfLogFile(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            var processResult = await ExecuteStreamRequest(PerfLogFilePath, agentAddress, agentPort, arguments);
+            return processResult;
+        }
+
+        public async Task<object> GetNodeLogFile(string agentAddress, int agentPort, DynamicWrapper arguments)
+        {
+            var processResult = await ExecuteStreamRequest(NodeLogFilePath, agentAddress, agentPort, arguments);
+            return processResult;
+        }
+
         private async Task<ServiceResult<T>> ExecuteGetRequest<T>(string path, string agentAddress, int agentPort, DynamicWrapper queryContent = null)
         {
             var uriString = $"http://{agentAddress}:{agentPort}/agent/{path}{ToQuery(queryContent)}";
@@ -141,10 +163,10 @@ namespace InfinniPlatform.Server.Agent
                 var processResult = _serializer.Deserialize<T>(content);
 
                 var serviceResult = new ServiceResult<T>
-                {
-                    Success = true,
-                    Result = processResult
-                };
+                                    {
+                                        Success = true,
+                                        Result = processResult
+                                    };
 
                 return serviceResult;
             }
@@ -152,7 +174,6 @@ namespace InfinniPlatform.Server.Agent
             {
                 return null;
             }
-
         }
 
         private async Task<ServiceResult<T>> ExecutePostRequest<T>(string path, string agentAddress, int agentPort, DynamicWrapper formContent)
@@ -174,6 +195,17 @@ namespace InfinniPlatform.Server.Agent
                                 };
 
             return serviceResult;
+        }
+
+        private async Task<Stream> ExecuteStreamRequest(string path, string agentAddress, int agentPort, DynamicWrapper queryContent = null)
+        {
+            var uriString = $"http://{agentAddress}:{agentPort}/agent/{path}{ToQuery(queryContent)}";
+            
+            var response = await _httpClient.GetAsync(uriString);
+
+            var content = await response.Content.ReadAsStreamAsync();
+
+            return content;
         }
 
         private static string ToQuery(DynamicWrapper queryContent)

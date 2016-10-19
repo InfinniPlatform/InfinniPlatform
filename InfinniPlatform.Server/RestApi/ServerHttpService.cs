@@ -45,6 +45,10 @@ namespace InfinniPlatform.Server.RestApi
             builder.Get["/variables"] = GetEnvironmentVariables;
             builder.Get["/variable"] = GetEnvironmentVariable;
 
+            builder.Get["/appLog"] = GetAppLogFile;
+            builder.Get["/perfLog"] = GetPerfLogFile;
+            builder.Get["/nodeLog"] = GetNodeLogFile;
+
             builder.Post["/heartbeat"] = LogBeat;
         }
 
@@ -215,6 +219,45 @@ namespace InfinniPlatform.Server.RestApi
                           };
 
             return await _agentCommandExecutor.GetVariable(address, port, wrapper);
+        }
+
+        private async Task<object> GetAppLogFile(IHttpRequest request)
+        {
+            string address = request.Query.Address;
+            int port = request.Query.Port;
+
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppFullName", (string)request.Query.AppFullName }
+                          };
+
+            return await _agentCommandExecutor.GetAppLogFile(address, port, wrapper);
+        }
+
+        private async Task<object> GetPerfLogFile(IHttpRequest request)
+        {
+            string address = request.Query.Address;
+            int port = request.Query.Port;
+
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppFullName", (string)request.Query.AppFullName }
+                          };
+
+            return await _agentCommandExecutor.GetPerfLogFile(address, port, wrapper);
+        }
+
+        private async Task<object> GetNodeLogFile(IHttpRequest request)
+        {
+            string address = request.Query.Address;
+            int port = request.Query.Port;
+
+            var wrapper = new DynamicWrapper
+                          {
+                              { "AppFullName", (string)request.Query.AppFullName }
+                          };
+
+            return await _agentCommandExecutor.GetNodeLogFile(address, port, wrapper);
         }
 
         private Task<object> LogBeat(IHttpRequest request)

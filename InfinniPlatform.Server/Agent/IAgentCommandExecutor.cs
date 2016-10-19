@@ -68,5 +68,11 @@ namespace InfinniPlatform.Server.Agent
         /// Возвращает переменную окружения по имени.
         /// </summary>
         Task<object> GetVariable(string agentAddress, int agentPort, DynamicWrapper arguments);
+
+        Task<object> GetAppLogFile(string agentAddress, int agentPort, DynamicWrapper arguments);
+
+        Task<object> GetPerfLogFile(string agentAddress, int agentPort, DynamicWrapper arguments);
+
+        Task<object> GetNodeLogFile(string agentAddress, int agentPort, DynamicWrapper arguments);
     }
 }
