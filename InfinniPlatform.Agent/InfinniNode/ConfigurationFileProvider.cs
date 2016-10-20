@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 
+using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Agent.Settings;
 
 namespace InfinniPlatform.Agent.InfinniNode
@@ -18,16 +19,16 @@ namespace InfinniPlatform.Agent.InfinniNode
 
         public Func<Stream> Get(string appFullName, string fileName)
         {
-            var configFilePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, fileName);
+            var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, fileName);
 
-            return () => new FileStream(configFilePath, FileMode.Open, FileAccess.Read);
+            return StreamHelper.TryGetStream(filePath);
         }
 
         public void Set(string appFullName, string fileName, string content)
         {
-            var configFilePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, fileName);
+            var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, fileName);
 
-            File.WriteAllText(configFilePath, content);
+            File.WriteAllText(filePath, content);
         }
     }
 }
