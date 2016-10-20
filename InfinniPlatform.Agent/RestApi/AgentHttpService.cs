@@ -139,7 +139,7 @@ namespace InfinniPlatform.Agent.RestApi
 
             var configStream = _configProvider.Get(appFullName, fileName);
 
-            return Task.FromResult(TryExecute(() => new StreamHttpResponse(configStream, "application/json")));
+            return Task.FromResult<object>(new StreamHttpResponse(configStream, "application/json"));
         }
 
         private Task<object> SetConfigurationFile(IHttpRequest request)
@@ -173,35 +173,19 @@ namespace InfinniPlatform.Agent.RestApi
         {
             string appFullName = request.Query.AppFullName;
 
-            return Task.FromResult(TryExecute(() => new StreamHttpResponse(_logFilePovider.GetAppLog(appFullName), "application/text")));
+            return Task.FromResult<object>(new StreamHttpResponse(_logFilePovider.GetAppLog(appFullName), "application/text"));
         }
 
         private Task<object> GetPerfLogFile(IHttpRequest request)
         {
             string appFullName = request.Query.AppFullName;
 
-            return Task.FromResult(TryExecute(() => new StreamHttpResponse(_logFilePovider.GetPerformanceLog(appFullName), "application/text")));
+            return Task.FromResult<object>(new StreamHttpResponse(_logFilePovider.GetPerformanceLog(appFullName), "application/text"));
         }
 
         private Task<object> GetNodeLogFile(IHttpRequest request)
         {
-            return Task.FromResult(TryExecute(() => new StreamHttpResponse(_logFilePovider.GetNodeLog(), "application/text")));
-        }
-
-        private static object TryExecute(Func<object> action)
-        {
-            try
-            {
-                return action.Invoke();
-            }
-            catch (Exception e)
-            {
-                return new ServiceResult<object>
-                       {
-                           Success = false,
-                           Error = e.Message
-                       };
-            }
+            return Task.FromResult<object>(new StreamHttpResponse(_logFilePovider.GetNodeLog(), "application/text"));
         }
     }
 }
