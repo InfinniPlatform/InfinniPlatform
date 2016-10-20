@@ -12,7 +12,7 @@
         }
 
         /// <summary>
-        /// Директория, содержащая утилиту Infinni.Node.
+        /// Путь к приложению Infinni.Node.
         /// </summary>
         public string NodeDirectory { get; set; }
 

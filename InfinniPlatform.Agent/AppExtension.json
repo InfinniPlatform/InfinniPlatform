@@ -1,6 +1,6 @@
 ﻿{
   "agentSettings": {
-    /* Путь к локально установленной утилите Infinni.Node */
+    /* Путь к приложению Infinni.Node */
     "NodeDirectory": "C:\\Projects\\Infinni.Node\\Assemblies",
     /* Адрес сервера InfinniPlatform.Server */
     "ServerAddress": "",

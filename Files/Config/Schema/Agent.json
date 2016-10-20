@@ -6,7 +6,7 @@
     "type": "object",
     "properties": {
         "NodeDirectory": {
-            "description": "Путь к утилите Infinni.Node.",
+            "description": "Путь к приложению Infinni.Node.",
             "type": "string",
             "default": null
         },

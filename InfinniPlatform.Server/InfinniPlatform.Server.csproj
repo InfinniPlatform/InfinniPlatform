@@ -43,9 +43,11 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Agent\AgentCommandExecutor.cs" />
+    <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentCommandExecutor.cs" />
+    <Compile Include="Agent\IAgentHttpClient.cs" />
     <Compile Include="Agent\ProcessResult.cs" />
+    <Compile Include="RestApi\NodeOutputParser.cs" />
     <Compile Include="RestApi\ServerHttpService.cs" />
     <Compile Include="IoC\AppContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

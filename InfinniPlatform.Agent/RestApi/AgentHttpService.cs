@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.InfinniNode;
 using InfinniPlatform.Sdk.Services;
@@ -6,7 +7,7 @@ using InfinniPlatform.Sdk.Services;
 namespace InfinniPlatform.Agent.RestApi
 {
     /// <summary>
-    /// Сервис взаимодействия с утилитой Infinni.Node.
+    /// Сервис взаимодействия с приложением Infinni.Node.
     /// </summary>
     public class AgentHttpService : IHttpService
     {
@@ -61,7 +62,7 @@ namespace InfinniPlatform.Agent.RestApi
 
             var processResult = await _nodeCommandExecutor.InstallApp(appName, version, instance, source, allowPrerelease);
 
-            return processResult;
+            return new ServiceResult<ProcessHelper.ProcessResult> { Success = true, Result = processResult };
         }
 
         private async Task<object> UninstallApp(IHttpRequest request)
@@ -72,7 +73,7 @@ namespace InfinniPlatform.Agent.RestApi
 
             var processResult = await _nodeCommandExecutor.UninstallApp(appName, version, instance);
 
-            return processResult;
+            return new ServiceResult<ProcessHelper.ProcessResult> { Success = true, Result = processResult };
         }
 
         private async Task<object> InitApp(IHttpRequest request)
@@ -84,7 +85,7 @@ namespace InfinniPlatform.Agent.RestApi
 
             var processResult = await _nodeCommandExecutor.InitApp(appName, version, instance, timeout);
 
-            return processResult;
+            return new ServiceResult<ProcessHelper.ProcessResult> { Success = true, Result = processResult };
         }
 
         private async Task<object> StartApp(IHttpRequest request)
@@ -96,7 +97,7 @@ namespace InfinniPlatform.Agent.RestApi
 
             var processResult = await _nodeCommandExecutor.StartApp(appName, version, instance, timeout);
 
-            return processResult;
+            return new ServiceResult<ProcessHelper.ProcessResult> { Success = true, Result = processResult };
         }
 
         private async Task<object> StopApp(IHttpRequest request)
@@ -108,7 +109,7 @@ namespace InfinniPlatform.Agent.RestApi
 
             var processResult = await _nodeCommandExecutor.StopApp(appName, version, instance, timeout);
 
-            return processResult;
+            return new ServiceResult<ProcessHelper.ProcessResult> { Success = true, Result = processResult };
         }
 
         private async Task<object> RestartApp(IHttpRequest request)
@@ -120,12 +121,14 @@ namespace InfinniPlatform.Agent.RestApi
 
             var processResult = await _nodeCommandExecutor.RestartApp(appName, version, instance, timeout);
 
-            return processResult;
+            return new ServiceResult<ProcessHelper.ProcessResult> { Success = true, Result = processResult };
         }
 
         private async Task<object> GetInstalledAppsInfo(IHttpRequest request)
         {
-            return await _nodeCommandExecutor.GetInstalledAppsInfo();
+            var processResult = await _nodeCommandExecutor.GetInstalledAppsInfo();
+
+            return new ServiceResult<ProcessHelper.ProcessResult> { Success = true, Result = processResult };
         }
 
         private Task<object> GetConfigurationFile(IHttpRequest request)
@@ -133,9 +136,9 @@ namespace InfinniPlatform.Agent.RestApi
             string appFullName = request.Query.AppFullName;
             string fileName = request.Query.FileName;
 
-            var configStreamResponse = _configProvider.Get(appFullName, fileName);
+            var configStream = _configProvider.Get(appFullName, fileName);
 
-            return Task.FromResult<object>(configStreamResponse);
+            return Task.FromResult<object>(new StreamHttpResponse(configStream, "application/json"));
         }
 
         private Task<object> SetConfigurationFile(IHttpRequest request)
@@ -146,14 +149,14 @@ namespace InfinniPlatform.Agent.RestApi
 
             _configProvider.Set(appFullName, fileName, content);
 
-            return Task.FromResult<object>("Ok.");
+            return Task.FromResult<object>(new ServiceResult<object> { Success = true });
         }
 
         private Task<object> GetEnvironmentVariables(IHttpRequest request)
         {
             var variables = _variableProvider.GetAll();
 
-            return Task.FromResult<object>(variables);
+            return Task.FromResult<object>(new ServiceResult<IDictionary> { Success = true, Result = variables });
         }
 
         private Task<object> GetEnvironmentVariable(IHttpRequest request)
@@ -162,32 +165,26 @@ namespace InfinniPlatform.Agent.RestApi
 
             var variable = _variableProvider.Get(name);
 
-            return Task.FromResult<object>(variable);
+            return Task.FromResult<object>(new ServiceResult<IDictionary> { Success = true, Result = variable });
         }
 
         private Task<object> GetAppLogFile(IHttpRequest request)
         {
             string appFullName = request.Query.AppFullName;
 
-            var streamHttpResponse = new StreamHttpResponse(() => _logFilePovider.GetAppLog(appFullName), "application/text");
-
-            return Task.FromResult<object>(streamHttpResponse);
+            return Task.FromResult<object>(new StreamHttpResponse(_logFilePovider.GetAppLog(appFullName), "application/text"));
         }
 
         private Task<object> GetPerfLogFile(IHttpRequest request)
         {
             string appFullName = request.Query.AppFullName;
 
-            var streamHttpResponse = new StreamHttpResponse(() => _logFilePovider.GetPerformanceLog(appFullName), "application/text");
-
-            return Task.FromResult<object>(streamHttpResponse);
+            return Task.FromResult<object>(new StreamHttpResponse(_logFilePovider.GetPerformanceLog(appFullName), "application/text"));
         }
 
         private Task<object> GetNodeLogFile(IHttpRequest request)
         {
-            var streamHttpResponse = new StreamHttpResponse(() => _logFilePovider.GetNodeLog(), "application/text");
-
-            return Task.FromResult<object>(streamHttpResponse);
+            return Task.FromResult<object>(new StreamHttpResponse(_logFilePovider.GetNodeLog(), "application/text"));
         }
     }
 }

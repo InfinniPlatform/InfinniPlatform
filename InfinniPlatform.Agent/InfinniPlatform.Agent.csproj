@@ -54,6 +54,7 @@
     <Compile Include="InfinniNode\EnvironmentVariableProvider.cs" />
     <Compile Include="InfinniNode\IConfigurationFileProvider.cs" />
     <Compile Include="InfinniNode\IEnvironmentVariableProvider.cs" />
+    <Compile Include="InfinniNode\ILogFilePovider.cs" />
     <Compile Include="InfinniNode\INodeCommandExecutor.cs" />
     <Compile Include="InfinniNode\LogFilePovider.cs" />
     <Compile Include="InfinniNode\NodeCommandExecutor.cs" />

@@ -1,19 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 using InfinniPlatform.Agent.Settings;
 
 namespace InfinniPlatform.Agent.InfinniNode
 {
-    public interface ILogFilePovider
-    {
-        Stream GetAppLog(string appFullName);
-
-        Stream GetPerformanceLog(string appFullName);
-
-        Stream GetNodeLog();
-    }
-
-
     public class LogFilePovider : ILogFilePovider
     {
         private const string AppsDirectoryName = "install";
@@ -29,25 +20,25 @@ namespace InfinniPlatform.Agent.InfinniNode
 
         private readonly AgentSettings _settings;
 
-        public Stream GetAppLog(string appFullName)
+        public Func<Stream> GetAppLog(string appFullName)
         {
             var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, LogsDirectoryName, AppLogFilename);
 
-            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return () => new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
 
-        public Stream GetPerformanceLog(string appFullName)
+        public Func<Stream> GetPerformanceLog(string appFullName)
         {
             var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, LogsDirectoryName, PerformanceLogFilename);
 
-            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return () => new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
 
-        public Stream GetNodeLog()
+        public Func<Stream> GetNodeLog()
         {
             var filePath = Path.Combine(_settings.NodeDirectory, NodeLogFilename);
 
-            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return () => new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
     }
 }

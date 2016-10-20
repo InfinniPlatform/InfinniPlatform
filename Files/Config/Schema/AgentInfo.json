@@ -23,6 +23,6 @@
     "required": [
         "Address",
         "Port",
-        "Token",
+        "Token"
     ]
 }

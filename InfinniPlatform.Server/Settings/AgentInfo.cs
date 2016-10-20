@@ -6,7 +6,7 @@
     public class AgentInfo
     {
         /// <summary>
-        /// Адресс сервера агента.
+        /// Адрес сервера агента.
         /// </summary>
         public string Address { get; set; }
 

@@ -3,7 +3,7 @@
 namespace InfinniPlatform.Agent.InfinniNode
 {
     /// <summary>
-    /// Интерфейс взаимодействия с утилитой Infinni.Node.
+    /// Интерфейс взаимодействия с приложением Infinni.Node.
     /// </summary>
     public interface INodeCommandExecutor
     {

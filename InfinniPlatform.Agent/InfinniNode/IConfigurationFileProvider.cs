@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Sdk.Services;
+﻿using System;
+using System.IO;
 
 namespace InfinniPlatform.Agent.InfinniNode
 {
@@ -12,7 +13,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         /// </summary>
         /// <param name="appFullName">Полное наименование приложения (содержит имя, версию, имя экземпляра).</param>
         /// <param name="fileName">Имя файла конфигурации.</param>
-        StreamHttpResponse Get(string appFullName, string fileName);
+        Func<Stream> Get(string appFullName, string fileName);
 
         /// <summary>
         /// </summary>
