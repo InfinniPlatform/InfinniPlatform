@@ -2,6 +2,7 @@
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.Server.Agent;
+using InfinniPlatform.Server.RestApi;
 using InfinniPlatform.Server.Settings;
 
 namespace InfinniPlatform.Server.IoC
@@ -25,6 +26,10 @@ namespace InfinniPlatform.Server.IoC
 
             builder.RegisterType<AgentHttpClient>()
                    .As<IAgentHttpClient>()
+                   .SingleInstance();
+
+            builder.RegisterType<NodeOutputParser>()
+                   .As<INodeOutputParser>()
                    .SingleInstance();
 
             builder.RegisterHttpServices(assembly);

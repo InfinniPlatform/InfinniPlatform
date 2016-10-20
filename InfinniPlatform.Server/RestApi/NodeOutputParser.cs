@@ -34,17 +34,4 @@ namespace InfinniPlatform.Server.RestApi
             return serviceResult;
         }
     }
-
-
-    /// <summary>
-    /// Обработчик консольного вывода приложения Infinni.Node.
-    /// </summary>
-    public interface INodeOutputParser
-    {
-        /// <summary>
-        /// Преобразует вывод команды status и добавляет к ответу сервиса.
-        /// </summary>
-        /// <param name="serviceResult">Ответ сервиса.</param>
-        ServiceResult<ProcessResult> FormatAppsStatusOutput(ServiceResult<ProcessResult> serviceResult);
-    }
 }
