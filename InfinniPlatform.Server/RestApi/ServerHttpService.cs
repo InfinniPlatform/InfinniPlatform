@@ -186,7 +186,7 @@ namespace InfinniPlatform.Server.RestApi
                                 { "FileName", (string)request.Query.FileName }
                             };
 
-            return await _agentHttpClient.Get<ServiceResult<object>>("config", address, port, arguments);
+            return await _agentHttpClient.GetStream("config", address, port, arguments);
         }
 
         private async Task<object> SetConfigurationFile(IHttpRequest request)
@@ -280,7 +280,7 @@ namespace InfinniPlatform.Server.RestApi
                                            });
         }
 
-        private static int ParseTimeout(IHttpRequest request)
+        private static int? ParseTimeout(IHttpRequest request)
         {
             return string.IsNullOrEmpty(request.Form.Timeout)
                        ? null
