@@ -28,7 +28,8 @@ gulp.task('fullWatch', function() {
 });
 
 gulp.task('example', gulp.series(
-	'build'
+	'build',
+	gulp.parallel('fullWatch', 'server:example')
 ));
 
 gulp.task('default', function(cb) {

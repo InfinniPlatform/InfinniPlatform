@@ -4,7 +4,6 @@
     "Infinnity Solutions"
   ],
   "dependencies": {
-    "infinni-ui-v2": "latest",
-    "infinni-ui-tests": "latest"
+    "infinni-ui": "latest"
   }
 }

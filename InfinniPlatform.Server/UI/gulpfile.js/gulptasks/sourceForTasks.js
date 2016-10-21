@@ -2,15 +2,15 @@
 // Необходимо указать путь до платфомы в bower_components
 var infinniUIpath = './bower_components/infinni-ui/';
 
-// Путь из infinniUIpath к прикладным стилям 
+// Путь из infinniUIpath к прикладным стилям
 var fromInfinniToNewStylesPath = '/../../styles/';
 
 // Путь до папки-результата
-var projectRootFolder = '../content/www/';
+var projectRootFolder = './www/';
 // куда собирать платформу?
-var projectFolderForPlatform = '../content/www/js/';
+var projectFolderForPlatform = './www/compiled/platform/';
 // куда собирать прикладную часть?
-var projectFolderForExtensions = '../content/www/js/';
+var projectFolderForExtensions = './www/compiled/js/';
 
 
 // Платформенные перменные (не рекомендуется менять)

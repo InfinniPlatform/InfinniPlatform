@@ -61,7 +61,9 @@ namespace InfinniPlatform.Server.RestApi
 
         private Task<object> GetAgentsStatus(IHttpRequest httpRequest)
         {
-            return Task.FromResult<object>(new DynamicWrapper { { "Agents", _serverSettings.AgentsInfo } });
+            var agents = new DynamicWrapper { { "Agents", _serverSettings.AgentsInfo } };
+
+            return Task.FromResult<object>(new ServiceResult<DynamicWrapper> { Success = true, Result = agents });
         }
 
         private async Task<object> InstallApp(IHttpRequest request)
