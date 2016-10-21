@@ -6,11 +6,11 @@ var infinniUIpath = './bower_components/infinni-ui/';
 var fromInfinniToNewStylesPath = '/../../styles/';
 
 // Путь до папки-результата
-var projectRootFolder = './www/';
+var projectRootFolder = '../content/www/';
 // куда собирать платформу?
-var projectFolderForPlatform = './www/js/';
+var projectFolderForPlatform = '../content/www/js/';
 // куда собирать прикладную часть?
-var projectFolderForExtensions = './www/js/';
+var projectFolderForExtensions = '../content/www/js/';
 
 
 // Платформенные перменные (не рекомендуется менять)
