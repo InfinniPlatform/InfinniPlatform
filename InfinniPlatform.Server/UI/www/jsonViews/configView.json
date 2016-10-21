@@ -1,0 +1,88 @@
+{
+    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+    "Parameters": [
+        {
+            "Name": "AgentAddress"
+        },
+        {
+            "Name": "AgentPort"
+        },
+        {
+            "Name": "AppFullName"
+        },
+        {
+            "Name": "FileName"
+        }
+    ],
+    "DataSources": [
+        {
+            "RestDataSource": {
+                "Name": "AppsDataSource",
+                "GettingParams": {
+                    "Method": "GET",
+                    "Path": "/server/config",
+                    "Data": {
+                        "Address": "<%Address%>",
+                        "Port": "<%Port%>",
+                        "AppFullName": "<%AppFullName%>",
+                        "FileName": "AppCommon.json"
+                    },
+                    "Params": {
+                        "Address": {
+                            "Source": "AgentAddress"
+                        },
+                        "Port": {
+                            "Source": "AgentPort"
+                        },
+                        "AppFullName": {
+                            "Source": "AppFullName"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "Items": [
+        {
+            "TextBox": {
+                "Multiline": true,
+                "LineCount": 40,
+                "Value": {
+                    "Source": "AppsDataSource"
+                }
+            }
+        },
+        {
+            "Button": {
+                "Text": "Save",
+                "Action": {
+                    "ServerAction": {
+                        "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                        "Path": "/server/config?Address=<%agentAddress%>&Port=<%agentPort%>&AppFullName=<%appFullName%>&FileName=AppCommon.json",
+                        "Method": "POST",
+                        "Data": {
+                            "Config": "<%config%>"
+                        },
+                        "Params": {
+                            "serverAddress": "localhost",
+                            "serverPort": "9901",
+                            "agentAddress": {
+                                "Source": "AgentAddress"
+                            },
+                            "agentPort": {
+                                "Source": "AgentPort"
+                            },
+                            "appFullName": {
+                                "Source": "AppFullName"
+                            },
+                            "config": {
+                                "Source": "AppsDataSource",
+                                "Property": "$"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

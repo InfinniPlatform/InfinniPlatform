@@ -15,8 +15,8 @@
     ]
   },
   "watcher": {
-    "SourceDirectory": "..\\InfinniPlatform.Server\\content",
-    "DestinationDirectory": "content",
+    "SourceDirectory": "..\\InfinniPlatform.Server\\UI\\www",
+    "DestinationDirectory": "content\\www",
     "WatchingFileExtensions": [
       ".json",
       ".js",

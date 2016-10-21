@@ -1,4 +1,5 @@
 ﻿{
+    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
     "DataSources": [
         {
             "RestDataSource": {
@@ -96,6 +97,10 @@
                                     "CellProperty": "Instance"
                                 },
                                 {
+                                    "Header": "AppFullName",
+                                    "CellProperty": "AppFullName"
+                                },
+                                {
                                     "Header": "ProcessInfo",
                                     "CellProperty": "ProcessInfo.State"
                                 }
@@ -186,7 +191,7 @@
                                     "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
-                                        "AppName": "InfinniPlatform.Northwind",
+                                        "AppName": "<%appName%>",
                                         "Version": null,
                                         "Instance": null,
                                         "Timeout": null
@@ -201,6 +206,10 @@
                                         "agentPort": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Port"
+                                        },
+                                        "appName": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Id"
                                         }
                                     }
                                 }
@@ -217,7 +226,7 @@
                                     "Path": "/server/start?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
-                                        "AppName": "InfinniPlatform.Northwind",
+                                        "AppName": "<%appName%>",
                                         "Version": null,
                                         "Instance": null,
                                         "Timeout": null
@@ -232,6 +241,10 @@
                                         "agentPort": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Port"
+                                        },
+                                        "appName": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Id"
                                         }
                                     }
                                 }
@@ -248,7 +261,7 @@
                                     "Path": "/server/stop?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
-                                        "AppName": "InfinniPlatform.Northwind",
+                                        "AppName": "<%appName%>",
                                         "Version": null,
                                         "Instance": null,
                                         "Timeout": null
@@ -263,6 +276,10 @@
                                         "agentPort": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Port"
+                                        },
+                                        "appName": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Id"
                                         }
                                     }
                                 }
@@ -274,26 +291,41 @@
                             "Name": "config",
                             "Text": "Edit config",
                             "Action": {
-                                "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                    "Path": "/server/config?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                    "Method": "POST",
-                                    "Data": {
-                                        "AppName": "InfinniPlatform.Northwind",
-                                        "Version": null,
-                                        "Instance": null,
-                                        "Timeout": null
-                                    },
-                                    "Params": {
-                                        "serverAddress": "localhost",
-                                        "serverPort": "9901",
-                                        "agentAddress": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Address"
-                                        },
-                                        "agentPort": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Port"
+                                "OpenAction": {
+                                    "LinkView": {
+                                        "AutoView": {
+                                            "OpenMode": "Dialog",
+                                            "Path": "jsonViews/configView.json",
+                                            "Parameters": [
+                                                {
+                                                    "Name": "AgentAddress",
+                                                    "Value": {
+                                                        "Source": "AgentsDataSource",
+                                                        "Property": "$.Address"
+                                                    }
+                                                },
+                                                {
+                                                    "Name": "AgentPort",
+                                                    "Value": {
+                                                        "Source": "AgentsDataSource",
+                                                        "Property": "$.Port"
+                                                    }
+                                                },
+                                                {
+                                                    "Name": "AppFullName",
+                                                    "Value": {
+                                                        "Source": "AppsDataSource",
+                                                        "Property": "$.AppFullName"
+                                                    }
+                                                },
+                                                {
+                                                    "Name": "FileName",
+                                                    "Value": {
+                                                        "Source": "AgentsDataSource",
+                                                        "Property": "$.FileName"
+                                                    }
+                                                }
+                                            ]
                                         }
                                     }
                                 }
@@ -310,7 +342,7 @@
                                     "Path": "/server/restart?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
-                                        "AppName": "InfinniPlatform.Northwind",
+                                        "AppName": "<%appName%>",
                                         "Version": null,
                                         "Instance": null,
                                         "Timeout": null
@@ -325,6 +357,10 @@
                                         "agentPort": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Port"
+                                        },
+                                        "appName": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Id"
                                         }
                                     }
                                 }

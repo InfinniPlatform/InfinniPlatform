@@ -65,21 +65,14 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="AppExtension.json" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <WebFiles Include="content\www\**\*.*">
+    <WebFiles Include="UI\www\**\*.*">
       <Visible>false</Visible>
     </WebFiles>
-    <MetadataFiles Include="content\metadata\**\*.*">
-      <Visible>false</Visible>
-    </MetadataFiles>
   </ItemGroup>
   <Target Name="AfterBuild">
     <Copy SourceFiles="@(WebFiles)" DestinationFolder="$(OutDir)content\www\%(RecursiveDir)" />
-    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(OutDir)content\metadata\%(RecursiveDir)" />
   </Target>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -89,20 +82,57 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\metadata\Views\HomePage.json" />
     <None Include="packages.config" />
+    <None Include="UI\bower.json" />
+    <None Include="UI\build.bat" />
+    <None Include="UI\package.json" />
+    <None Include="UI\rebuild.bat" />
+    <None Include="UI\styles\bootstrap-theme.less" />
+    <None Include="UI\styles\bootstrap-variables.less" />
+    <None Include="UI\styles\extensions.less" />
+    <None Include="UI\styles\platform-variables.less" />
+    <None Include="UI\www\compiled\platform\fonts\fontawesome-webfont.eot" />
+    <None Include="UI\www\compiled\platform\fonts\fontawesome-webfont.ttf" />
+    <None Include="UI\www\compiled\platform\fonts\fontawesome-webfont.woff" />
+    <None Include="UI\www\compiled\platform\fonts\fontawesome-webfont.woff2" />
+    <None Include="UI\www\compiled\platform\fonts\FontAwesome.otf" />
+    <None Include="UI\www\jsonViews\homePage.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\www\css\main.css" />
-    <Content Include="content\www\css\vendor.css" />
-    <Content Include="content\www\img\favicon.ico" />
-    <Content Include="content\www\Index.html" />
-    <Content Include="content\www\js\config.js" />
-    <Content Include="content\www\js\homePage.js" />
-    <Content Include="content\www\js\main.js" />
-    <Content Include="content\www\js\platform.js" />
-    <Content Include="content\www\js\templates.js" />
-    <Content Include="content\www\js\vendor.js" />
+    <Content Include="UI\gulpfile.js\gulptasks\cleanFolder.js" />
+    <Content Include="UI\gulpfile.js\gulptasks\concatJs.js" />
+    <Content Include="UI\gulpfile.js\gulptasks\concatTemplates.js" />
+    <Content Include="UI\gulpfile.js\gulptasks\copyFiles.js" />
+    <Content Include="UI\gulpfile.js\gulptasks\overrideLess.js" />
+    <Content Include="UI\gulpfile.js\gulptasks\sourceForTasks.js" />
+    <Content Include="UI\gulpfile.js\index.js" />
+    <Content Include="UI\js\elements\testElement\template\testElement.tpl.html" />
+    <Content Include="UI\js\elements\testElement\testControl.js" />
+    <Content Include="UI\js\elements\testElement\testElement.js" />
+    <Content Include="UI\js\elements\testElement\testElementBuilder.js" />
+    <Content Include="UI\js\elements\testElement\testModel.js" />
+    <Content Include="UI\js\elements\testElement\testView.js" />
+    <Content Include="UI\js\extentionPanels\testExtention.js" />
+    <Content Include="UI\js\routerCallbacks.js" />
+    <Content Include="UI\www\compiled\js\app.js" />
+    <Content Include="UI\www\compiled\js\templates.js" />
+    <Content Include="UI\www\compiled\platform\css\main.css" />
+    <Content Include="UI\www\compiled\platform\css\vendor.css" />
+    <Content Include="UI\www\compiled\platform\fonts\fontawesome-webfont.svg" />
+    <Content Include="UI\www\compiled\platform\jsonEditor\css\img\jsoneditor-icons.svg" />
+    <Content Include="UI\www\compiled\platform\jsonEditor\css\jsoneditor.min.css" />
+    <Content Include="UI\www\compiled\platform\jsonEditor\editor.js" />
+    <Content Include="UI\www\compiled\platform\jsonEditor\index.html" />
+    <Content Include="UI\www\compiled\platform\jsonEditor\jsoneditor.min.js" />
+    <Content Include="UI\www\compiled\platform\platform.js" />
+    <Content Include="UI\www\compiled\platform\platform.min.js" />
+    <Content Include="UI\www\compiled\platform\templates.js" />
+    <Content Include="UI\www\compiled\platform\vendor.js" />
+    <Content Include="UI\www\config.js" />
+    <Content Include="UI\www\img\favicon.ico" />
+    <Content Include="UI\www\index.html" />
+    <Content Include="UI\www\js\homePage.js" />
+    <Content Include="UI\www\js\main.js" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

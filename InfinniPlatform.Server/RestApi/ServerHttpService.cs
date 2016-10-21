@@ -188,7 +188,7 @@ namespace InfinniPlatform.Server.RestApi
                                 { "FileName", (string)request.Query.FileName }
                             };
 
-            return await _agentHttpClient.GetStream("config", address, port, arguments);
+            return new StreamHttpResponse(() => _agentHttpClient.GetStream("config", address, port, arguments).Result, "application/text");
         }
 
         private async Task<object> SetConfigurationFile(IHttpRequest request)
