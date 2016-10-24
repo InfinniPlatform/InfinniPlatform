@@ -9,15 +9,12 @@
         },
         {
             "Name": "AppFullName"
-        },
-        {
-            "Name": "FileName"
         }
     ],
     "DataSources": [
         {
             "RestDataSource": {
-                "Name": "ConfigDataSource",
+                "Name": "AppCommonSource",
                 "GettingParams": {
                     "Method": "GET",
                     "Path": "/server/config",
@@ -37,27 +34,86 @@
                         "AppFullName": {
                             "Source": "AppFullName"
                         }
-                    }                    
+                    }
+                },
+                "UpdatingItemsConverter": "{ return new Array(args.value); }"
+            }
+        },
+        {
+            "RestDataSource": {
+                "Name": "AppExtensionSource",
+                "GettingParams": {
+                    "Method": "GET",
+                    "Path": "/server/config",
+                    "Data": {
+                        "Address": "<%Address%>",
+                        "Port": "<%Port%>",
+                        "AppFullName": "<%AppFullName%>",
+                        "FileName": "AppExtension.json"
+                    },
+                    "Params": {
+                        "Address": {
+                            "Source": "AgentAddress"
+                        },
+                        "Port": {
+                            "Source": "AgentPort"
+                        },
+                        "AppFullName": {
+                            "Source": "AppFullName"
+                        }
+                    }
                 },
                 "UpdatingItemsConverter": "{ return new Array(args.value); }"
             }
         }
     ],
+    "Text": "Конфигурационные файлы",
     "Items": [
         {
-            "TextBox": {
-                "Multiline": true,
-                "LineCount": 40,
-                "Value": {
-                    "Source": "ConfigDataSource",
-                    "Property":"$"
-                }
-            }
-        },
-        {
-            "Button": {
-                "Text": "Save",
-                "OnClick":"{ PostConfigFile(context); }"
+            "TabPanel": {
+                "HeaderLocation": "Top",
+                "Items": [
+                    {
+                        "TabPage": {
+                            "Text": "AppExtension.json",
+                            "Items": [
+                                {
+                                    "TextBox": {
+                                        "Multiline": true,
+                                        "LineCount": 30,
+                                        "Value": {
+                                            "Source": "AppExtensionSource",
+                                            "Property": "$"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Button": {
+                                        "Text": "Save",
+                                        "OnClick": "{ PostAppExtensionConfig(context); }"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "TabPage": {
+                            "Text": "AppCommon.json",
+                            "Items": [
+                                {
+                                    "TextBox": {
+                                        "Multiline": true,
+                                        "LineCount": 30,
+                                        "Value": {
+                                            "Source": "AppCommonSource",
+                                            "Property": "$"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
             }
         }
     ]

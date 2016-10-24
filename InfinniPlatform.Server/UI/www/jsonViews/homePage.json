@@ -82,7 +82,7 @@
                         }
                     },
                     {
-                        "DataGrid": {
+                        "DataGrid": {                                                     
                             "Columns": [
                                 {
                                     "Header": "Id",
@@ -316,13 +316,6 @@
                                                     "Value": {
                                                         "Source": "AppsDataSource",
                                                         "Property": "$.AppFullName"
-                                                    }
-                                                },
-                                                {
-                                                    "Name": "FileName",
-                                                    "Value": {
-                                                        "Source": "AgentsDataSource",
-                                                        "Property": "$.FileName"
                                                     }
                                                 }
                                             ]
