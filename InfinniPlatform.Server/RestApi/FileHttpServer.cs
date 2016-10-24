@@ -55,7 +55,7 @@ namespace InfinniPlatform.Server.RestApi
                             {
                                 { "AppFullName", (string)request.Query.AppFullName },
                                 { "FileName", (string)request.Query.FileName },
-                                { "Config", (string)request.Form.Config }
+                                { "Config", (string)request.Form.Config.ToString() }
                             };
 
             return await _agentHttpClient.Post<ServiceResult<object>>("config", address, port, arguments);

@@ -29,9 +29,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         {
             var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, fileName);
 
-            var formatedString = JsonObjectSerializer.Formated.Deserialize(content).ToString();
-
-            File.WriteAllText(filePath, formatedString);
+            File.WriteAllText(filePath, content);
         }
     }
 }
