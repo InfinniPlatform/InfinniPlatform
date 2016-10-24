@@ -3,6 +3,7 @@ using System.IO;
 
 using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Agent.Settings;
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Agent.InfinniNode
 {
@@ -28,7 +29,9 @@ namespace InfinniPlatform.Agent.InfinniNode
         {
             var filePath = Path.Combine(_settings.NodeDirectory, AppsDirectoryName, appFullName, fileName);
 
-            File.WriteAllText(filePath, content);
+            var formatedString = JsonObjectSerializer.Formated.Deserialize(content).ToString();
+
+            File.WriteAllText(filePath, formatedString);
         }
     }
 }

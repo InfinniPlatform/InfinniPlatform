@@ -144,11 +144,11 @@ namespace InfinniPlatform.Agent.RestApi
 
         private Task<object> SetConfigurationFile(IHttpRequest request)
         {
-            string appFullName = request.Query.AppFullName;
-            string fileName = request.Query.FileName;
-            string content = request.Form.Content;
+            string appFullName = request.Form.AppFullName;
+            string fileName = request.Form.FileName;
+            string config = request.Form.Config;
 
-            _configProvider.Set(appFullName, fileName, content);
+            _configProvider.Set(appFullName, fileName, config);
 
             return Task.FromResult<object>(new ServiceResult<object> { Success = true });
         }
