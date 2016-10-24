@@ -46,15 +46,8 @@ namespace InfinniPlatform.Server.RestApi
 
             builder.Get["/appsInfo"] = GetAppsInfo;
 
-            builder.Get["/config"] = GetConfigurationFile;
-            builder.Post["/config"] = SetConfigurationFile;
-
             builder.Get["/variables"] = GetEnvironmentVariables;
             builder.Get["/variable"] = GetEnvironmentVariable;
-
-            builder.Get["/appLog"] = GetAppLogFile;
-            builder.Get["/perfLog"] = GetPerfLogFile;
-            builder.Get["/nodeLog"] = GetNodeLogFile;
 
             builder.Post["/heartbeat"] = LogBeat;
         }
@@ -177,35 +170,6 @@ namespace InfinniPlatform.Server.RestApi
             return _nodeOutputParser.FormatAppsStatusOutput(serviceResult);
         }
 
-        private async Task<object> GetConfigurationFile(IHttpRequest request)
-        {
-            string address = request.Query.Address;
-            int port = request.Query.Port;
-
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppFullName", (string)request.Query.AppFullName },
-                                { "FileName", (string)request.Query.FileName }
-                            };
-
-            return new StreamHttpResponse(() => _agentHttpClient.GetStream("config", address, port, arguments).Result, "application/text");
-        }
-
-        private async Task<object> SetConfigurationFile(IHttpRequest request)
-        {
-            string address = request.Query.Address;
-            int port = request.Query.Port;
-
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppFullName", (string)request.Query.AppFullName },
-                                { "FileName", (string)request.Query.FileName },
-                                { "Config", (string)request.Form.Config }
-                            };
-
-            return await _agentHttpClient.Post<ServiceResult<object>>("config", address, port, arguments);
-        }
-
         private async Task<object> GetEnvironmentVariables(IHttpRequest request)
         {
             string address = request.Query.Address;
@@ -225,45 +189,6 @@ namespace InfinniPlatform.Server.RestApi
                             };
 
             return await _agentHttpClient.Get<ServiceResult<object>>("variable", address, port, arguments);
-        }
-
-        private async Task<object> GetAppLogFile(IHttpRequest request)
-        {
-            string address = request.Query.Address;
-            int port = request.Query.Port;
-
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppFullName", (string)request.Query.AppFullName }
-                            };
-
-            return await _agentHttpClient.GetStream("appLog", address, port, arguments);
-        }
-
-        private async Task<object> GetPerfLogFile(IHttpRequest request)
-        {
-            string address = request.Query.Address;
-            int port = request.Query.Port;
-
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppFullName", (string)request.Query.AppFullName }
-                            };
-
-            return await _agentHttpClient.GetStream("perfLog", address, port, arguments);
-        }
-
-        private async Task<object> GetNodeLogFile(IHttpRequest request)
-        {
-            string address = request.Query.Address;
-            int port = request.Query.Port;
-
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppFullName", (string)request.Query.AppFullName }
-                            };
-
-            return await _agentHttpClient.GetStream("nodeLog", address, port, arguments);
         }
 
         private Task<object> LogBeat(IHttpRequest request)

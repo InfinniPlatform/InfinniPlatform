@@ -46,6 +46,8 @@
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
     <Compile Include="Agent\ProcessResult.cs" />
+    <Compile Include="RestApi\AsyncHelper.cs" />
+    <Compile Include="RestApi\FileHttpServer.cs" />
     <Compile Include="RestApi\INodeOutputParser.cs" />
     <Compile Include="RestApi\NodeOutputParser.cs" />
     <Compile Include="RestApi\ServerHttpService.cs" />
