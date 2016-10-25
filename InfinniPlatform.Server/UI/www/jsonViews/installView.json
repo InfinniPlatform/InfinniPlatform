@@ -1,0 +1,92 @@
+{
+    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+    "Parameters": [
+        {
+            "Name": "AgentAddress"
+        },
+        {
+            "Name": "AgentPort"
+        }
+    ],
+    "DataSources": [],
+    "Text": "Install new app",
+    "Items": [
+        {
+            "TextBox": {
+                "Name": "nameTextBox",
+                "LabelText": "App name"
+            }
+        },
+        {
+            "TextBox": {
+                "Name": "versionTextBox",
+                "LabelText": "App version"
+            }
+        },
+        {
+            "TextBox": {
+                "Name": "instanceNameTextBox",
+                "LabelText": "Instance name"
+            }
+        },
+        {
+            "TextBox": {
+                "Name": "sourcesTextBox",
+                "LabelText": "Sources"
+            }
+        },
+        {
+            "CheckBox": {
+                "Name": "prereleaseCheckBox",
+                "Text": "Allow prerelease"
+            }
+        },
+        {
+            "Button": {
+                "Text": "Go-go, Infinni.Node!",
+                "Action": {
+                    "ServerAction": {
+                        "Origin": "http://localhost:9901",
+                        "Path": "/server/install?Address=<%agentAddress%>&Port=<%agentPort%>",                        
+                        "Method": "POST",
+                        "Data": {
+                            "AppName": "<%name%>",
+                            "Version": "<%version%>",
+                            "Instance": "<%instanceName%>",
+                            "Source": "<%source%>",
+                            "AllowPrerelease": "<%allowPrerelease%>"
+                        },
+                        "Params": {
+                            "agentAddress": {
+                                "Source": "AgentAddress"
+                            },
+                            "agentPort": {
+                                "Source": "AgentPort"
+                            },
+                            "name": {
+                                "Source": "nameTextBox",
+                                "Property": "value"
+                            },
+                            "version": {
+                                "Source": "versionTextBox",
+                                "Property": "value"
+                            },
+                            "instanceName": {
+                                "Source": "instanceNameTextBox",
+                                "Property": "value"
+                            },
+                            "source": {
+                                "Source": "sourcesTextBox",
+                                "Property": "value"
+                            },
+                            "allowPrerelease": {
+                                "Source": "prereleaseCheckBox",
+                                "Property": "value"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

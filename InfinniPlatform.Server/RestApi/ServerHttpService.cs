@@ -66,10 +66,10 @@ namespace InfinniPlatform.Server.RestApi
 
             var arguments = new DynamicWrapper
                             {
-                                { "AppName", (string)request.Form.AppName },
-                                { "Version", (string)request.Form.Version },
-                                { "Instance", (string)request.Form.Instance },
-                                { "Source", (string)request.Form.Source },
+                                { "AppName", ParseString(request.Form.AppName) },
+                                { "Version", ParseString(request.Form.Version) },
+                                { "Instance", ParseString(request.Form.Instance) },
+                                { "Source", ParseString(request.Form.Source) },
                                 { "AllowPrerelease", (bool?)request.Form.AllowPrerelease }
                             };
 
@@ -101,7 +101,7 @@ namespace InfinniPlatform.Server.RestApi
                                 { "AppName", (string)request.Form.AppName },
                                 { "Version", (string)request.Form.Version },
                                 { "Instance", (string)request.Form.Instance },
-                                { "Timeout", ParseTimeout(request) }
+                                { "Timeout", ParseInt(request.Form.Timeout) }
                             };
 
             return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("init", address, port, arguments);
@@ -117,7 +117,7 @@ namespace InfinniPlatform.Server.RestApi
                                 { "AppName", (string)request.Form.AppName },
                                 { "Version", (string)request.Form.Version },
                                 { "Instance", (string)request.Form.Instance },
-                                { "Timeout", ParseTimeout(request) }
+                                { "Timeout", ParseInt(request.Form.Timeout) }
                             };
 
             return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("start", address, port, arguments);
@@ -133,7 +133,7 @@ namespace InfinniPlatform.Server.RestApi
                                 { "AppName", (string)request.Form.AppName },
                                 { "Version", (string)request.Form.Version },
                                 { "Instance", (string)request.Form.Instance },
-                                { "Timeout", ParseTimeout(request) }
+                                { "Timeout", ParseInt(request.Form.Timeout) }
                             };
 
             return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("stop", address, port, arguments);
@@ -146,10 +146,10 @@ namespace InfinniPlatform.Server.RestApi
 
             var arguments = new DynamicWrapper
                             {
-                                { "AppName", (string)request.Form.AppName },
-                                { "Version", (string)request.Form.Version },
-                                { "Instance", (string)request.Form.Instance },
-                                { "Timeout", ParseTimeout(request) }
+                                { "AppName", ParseString(request.Form.AppName) },
+                                { "Version", ParseString(request.Form.Version) },
+                                { "Instance", ParseString(request.Form.Instance) },
+                                { "Timeout", ParseInt(request.Form.Timeout) }
                             };
 
             return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("restart", address, port, arguments);
@@ -207,11 +207,25 @@ namespace InfinniPlatform.Server.RestApi
                                            });
         }
 
-        private static int? ParseTimeout(IHttpRequest request)
+        private static int? ParseInt(dynamic value)
+        {
+            return string.IsNullOrEmpty(value)
+                       ? null
+                       : int.Parse(value);
+        }
+
+        private static int? ParseString(IHttpRequest request)
         {
             return string.IsNullOrEmpty(request.Form.Timeout)
                        ? null
                        : int.Parse(request.Form.Timeout);
+        }
+
+        private static string ParseString(dynamic value)
+        {
+            return string.IsNullOrEmpty(value) || (value == "null")
+                       ? null
+                       : (string)value;
         }
     }
 }

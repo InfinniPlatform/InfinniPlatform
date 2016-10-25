@@ -67,7 +67,7 @@
             }
         }
     ],
-    "Text": "Конфигурационные файлы",
+    "Text": "Config files",
     "Items": [
         {
             "TabPanel": {

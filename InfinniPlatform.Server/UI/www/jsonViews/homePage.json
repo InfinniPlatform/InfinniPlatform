@@ -9,8 +9,6 @@
                     "Path": "/server/agents",
                     "Data": {}
                 },
-                "IsLazy": false,
-                "ResolvePriority": 0,
                 "UpdatingItemsConverter": "{ return args.value.Result.Agents; }"
             }
         },
@@ -35,8 +33,6 @@
                         }
                     }
                 },
-                "IsLazy": false,
-                "ResolvePriority": 0,
                 "UpdatingItemsConverter": "{ return args.value.Result.FormatedOutput; }"
             }
         }
@@ -44,7 +40,7 @@
     "Items": [
         {
             "Label": {
-                "Value": "Список агентов:"
+                "Value": "Agents list"
             }
         },
         {
@@ -78,11 +74,11 @@
                 "Items": [
                     {
                         "Label": {
-                            "Value": "Список приложений:"
+                            "Value": "Installed apps list"
                         }
                     },
                     {
-                        "DataGrid": {                                                     
+                        "DataGrid": {
                             "Columns": [
                                 {
                                     "Header": "Id",
@@ -124,27 +120,27 @@
                             "Name": "install",
                             "Text": "Install new app",
                             "Action": {
-                                "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                    "Path": "/server/install?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                    "Method": "POST",
-                                    "Data": {
-                                        "AppName": "InfinniPlatform.Northwind",
-                                        "Version": null,
-                                        "Instance": null,
-                                        "Source": null,
-                                        "AllowPrerelease": true
-                                    },
-                                    "Params": {
-                                        "serverAddress": "localhost",
-                                        "serverPort": "9901",
-                                        "agentAddress": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Address"
-                                        },
-                                        "agentPort": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Port"
+                                "OpenAction": {
+                                    "LinkView": {
+                                        "AutoView": {
+                                            "OpenMode": "Dialog",
+                                            "Path": "jsonViews/installView.json",
+                                            "Parameters": [
+                                                {
+                                                    "Name": "AgentAddress",
+                                                    "Value": {
+                                                        "Source": "AgentsDataSource",
+                                                        "Property": "$.Address"
+                                                    }
+                                                },
+                                                {
+                                                    "Name": "AgentPort",
+                                                    "Value": {
+                                                        "Source": "AgentsDataSource",
+                                                        "Property": "$.Port"
+                                                    }
+                                                }
+                                            ]
                                         }
                                     }
                                 }
@@ -157,7 +153,6 @@
                             "Text": "Uninstall",
                             "Action": {
                                 "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
@@ -187,7 +182,6 @@
                             "Text": "RunInit",
                             "Action": {
                                 "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
@@ -222,7 +216,6 @@
                             "Text": "Start",
                             "Action": {
                                 "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/start?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
@@ -257,7 +250,6 @@
                             "Text": "Stop",
                             "Action": {
                                 "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/stop?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
@@ -331,7 +323,6 @@
                             "Text": "Restart",
                             "Action": {
                                 "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/restart?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
