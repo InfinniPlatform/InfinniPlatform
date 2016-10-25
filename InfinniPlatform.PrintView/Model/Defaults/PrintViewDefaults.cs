@@ -12,8 +12,13 @@ namespace InfinniPlatform.PrintView.Model.Defaults
     public static class PrintViewDefaults
     {
         // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-        // ReSharper disable MemberCanBePrivate.Global
         // ReSharper disable UnusedMember.Global
+
+
+        /// <summary>
+        /// Обозначение корневого объекта источника данных.
+        /// </summary>
+        public const string RootSource = "$";
 
 
         /// <summary>
@@ -100,63 +105,42 @@ namespace InfinniPlatform.PrintView.Model.Defaults
         /// <summary>
         /// Настройки по умолчанию для <see cref="PrintFont"/>.
         /// </summary>
-        public static class FontSettings
+        public static class Text
         {
             /// <summary>
             /// Семейство шрифта.
             /// </summary>
-            public static string Family { get; set; } = "Arial";
+            public static string FontFamily { get; set; } = "Arial";
 
             /// <summary>
             /// Размер шрифта.
             /// </summary>
-            public static double Size { get; set; } = 12;
+            public static double FontSize { get; set; } = 12;
 
             /// <summary>
             /// Единица измерения размера шрифта.
             /// </summary>
-            public static PrintSizeUnit SizeUnit { get; set; } = PrintSizeUnit.Pt;
+            public static PrintSizeUnit FontSizeUnit { get; set; } = PrintSizeUnit.Pt;
 
             /// <summary>
             /// Стиль шрифта.
             /// </summary>
-            public static PrintFontStyle Style { get; set; } = PrintFontStyle.Normal;
+            public static PrintFontStyle FontStyle { get; set; } = PrintFontStyle.Normal;
 
             /// <summary>
             /// Степень растягивания шрифта по горизонтали.
             /// </summary>
-            public static PrintFontStretch Stretch { get; set; } = PrintFontStretch.Normal;
+            public static PrintFontStretch FontStretch { get; set; } = PrintFontStretch.Normal;
 
             /// <summary>
             /// Насыщенность шрифта.
             /// </summary>
-            public static PrintFontWeight Weight { get; set; } = PrintFontWeight.Normal;
+            public static PrintFontWeight FontWeight { get; set; } = PrintFontWeight.Normal;
 
             /// <summary>
             /// Вертикальное выравнивание шрифта.
             /// </summary>
-            public static PrintFontVariant Variant { get; set; } = PrintFontVariant.Normal;
-        }
-
-
-        /// <summary>
-        /// Настройки по умолчанию для <see cref="PrintElement"/>.
-        /// </summary>
-        public static class Element
-        {
-            /// <summary>
-            /// Настройки шрифта.
-            /// </summary>
-            public static PrintFont Font { get; set; } = new PrintFont
-            {
-                Family = FontSettings.Family,
-                Size = FontSettings.Size,
-                SizeUnit = FontSettings.SizeUnit,
-                Style = FontSettings.Style,
-                Stretch = FontSettings.Stretch,
-                Weight = FontSettings.Weight,
-                Variant = FontSettings.Variant
-            };
+            public static PrintFontVariant FontVariant { get; set; } = PrintFontVariant.Normal;
 
             /// <summary>
             /// Цвет содержимого.
@@ -172,50 +156,6 @@ namespace InfinniPlatform.PrintView.Model.Defaults
             /// Регистр символов текста.
             /// </summary>
             public static PrintTextCase TextCase { get; set; } = PrintTextCase.Normal;
-
-            /// <summary>
-            /// Видимость элемента.
-            /// </summary>
-            public static PrintVisibility Visibility { get; set; } = PrintVisibility.Source;
-        }
-
-
-        /// <summary>
-        /// Настройки по умолчанию для <see cref="PrintBlock"/>.
-        /// </summary>
-        public static class Block
-        {
-            /// <summary>
-            /// Границы элемента.
-            /// </summary>
-            public static PrintBorder Border { get; set; } = null;
-
-            /// <summary>
-            /// Отступ от края элемента до родительского элемента.
-            /// </summary>
-            public static PrintThickness Margin { get; set; } = PrintThickness.Zero;
-
-            /// <summary>
-            /// Отступ от края элемента до содержимого элемента.
-            /// </summary>
-            public static PrintThickness Padding { get; set; } = PrintThickness.Zero;
-
-            /// <summary>
-            /// Горизонтальное выравнивание текста элемента.
-            /// </summary>
-            public static PrintTextAlignment TextAlignment { get; set; } = PrintTextAlignment.Left;
-        }
-
-
-        /// <summary>
-        /// Настройки по умолчанию для <see cref="PrintInline"/>.
-        /// </summary>
-        public static class Inline
-        {
-            /// <summary>
-            /// Оформление текста.
-            /// </summary>
-            public static PrintTextDecoration TextDecoration { get; set; } = PrintTextDecoration.Normal;
         }
 
 
@@ -229,8 +169,8 @@ namespace InfinniPlatform.PrintView.Model.Defaults
             /// </summary>
             public static PrintBorder Border { get; set; } = new PrintBorder
             {
-                Color = Element.Foreground,
-                Thickness = new PrintThickness(0, 0, 0, 1, FontSettings.SizeUnit)
+                Color = Text.Foreground,
+                Thickness = new PrintThickness(0, 0, 0, 1, Text.FontSizeUnit)
             };
         }
 
@@ -258,7 +198,7 @@ namespace InfinniPlatform.PrintView.Model.Defaults
             /// <summary>
             /// Единица измерения отступа содержимого элемента от края маркера.
             /// </summary>
-            public static PrintSizeUnit MarkerOffsetSizeUnit { get; set; } = FontSettings.SizeUnit;
+            public static PrintSizeUnit MarkerOffsetSizeUnit { get; set; } = Text.FontSizeUnit;
         }
 
 
@@ -277,53 +217,9 @@ namespace InfinniPlatform.PrintView.Model.Defaults
             /// </summary>
             public static PrintBorder Border { get; set; } = new PrintBorder
             {
-                Color = Element.Foreground,
-                Thickness = new PrintThickness(1, 1, 0, 0, FontSettings.SizeUnit)
+                Color = Text.Foreground,
+                Thickness = new PrintThickness(1, 1, 0, 0, Text.FontSizeUnit)
             };
-        }
-
-
-        /// <summary>
-        /// Настройки по умолчанию для <see cref="PrintTableColumn"/>.
-        /// </summary>
-        public static class TableColumn
-        {
-            /// <summary>
-            /// Ширина столбца.
-            /// </summary>
-            public static double? Size { get; set; } = null;
-
-            /// <summary>
-            /// Единица измерения ширины столбца.
-            /// </summary>
-            public static PrintSizeUnit SizeUnit { get; set; } = FontSettings.SizeUnit;
-        }
-
-
-        /// <summary>
-        /// Настройки по умолчанию для <see cref="PrintTableRow"/>.
-        /// </summary>
-        public static class TableRow
-        {
-            /// <summary>
-            /// Настройки шрифта.
-            /// </summary>
-            public static PrintFont Font { get; set; } = Element.Font;
-
-            /// <summary>
-            /// Цвет содержимого.
-            /// </summary>
-            public static string Foreground { get; set; } = Element.Foreground;
-
-            /// <summary>
-            /// Цвет фона содержимого.
-            /// </summary>
-            public static string Background { get; set; } = Element.Background;
-
-            /// <summary>
-            /// Регистр символов текста.
-            /// </summary>
-            public static PrintTextCase TextCase { get; set; } = Element.TextCase;
         }
 
 
@@ -333,43 +229,13 @@ namespace InfinniPlatform.PrintView.Model.Defaults
         public static class TableCell
         {
             /// <summary>
-            /// Настройки шрифта.
-            /// </summary>
-            public static PrintFont Font { get; set; } = Element.Font;
-
-            /// <summary>
-            /// Цвет содержимого.
-            /// </summary>
-            public static string Foreground { get; set; } = Element.Foreground;
-
-            /// <summary>
-            /// Цвет фона содержимого.
-            /// </summary>
-            public static string Background { get; set; } = Element.Background;
-
-            /// <summary>
-            /// Регистр символов текста.
-            /// </summary>
-            public static PrintTextCase TextCase { get; set; } = Element.TextCase;
-
-            /// <summary>
             /// Границы элемента.
             /// </summary>
             public static PrintBorder Border { get; set; } = new PrintBorder
             {
-                Color = Element.Foreground,
-                Thickness = new PrintThickness(0, 0, 1, 1, FontSettings.SizeUnit)
+                Color = Text.Foreground,
+                Thickness = new PrintThickness(0, 0, 1, 1, Text.FontSizeUnit)
             };
-
-            /// <summary>
-            /// Отступ от края элемента до содержимого элемента.
-            /// </summary>
-            public static PrintThickness Padding { get; set; } = Block.Padding;
-
-            /// <summary>
-            /// Горизонтальное выравнивание текста элемента.
-            /// </summary>
-            public static PrintTextAlignment TextAlignment { get; set; } = Block.TextAlignment;
         }
 
 
@@ -398,7 +264,7 @@ namespace InfinniPlatform.PrintView.Model.Defaults
             /// <summary>
             /// Текст в случае отсутствия значения.
             /// </summary>
-            public static string NullText { get; set; } = "0";
+            public static string NullText { get; set; } = "000000000000";
 
             /// <summary>
             /// Показывать ли текст в штрих-коде.
@@ -477,7 +343,6 @@ namespace InfinniPlatform.PrintView.Model.Defaults
 
 
         // ReSharper restore UnusedMember.Global
-        // ReSharper restore MemberCanBePrivate.Global
         // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
     }
 }

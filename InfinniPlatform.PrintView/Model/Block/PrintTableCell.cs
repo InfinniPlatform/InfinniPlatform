@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Properties;
+﻿using System;
+
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Block
 {
     /// <summary>
     /// Элемент для создания ячейки таблицы.
     /// </summary>
+    [Serializable]
     public class PrintTableCell : PrintNamedItem
     {
         /// <summary>

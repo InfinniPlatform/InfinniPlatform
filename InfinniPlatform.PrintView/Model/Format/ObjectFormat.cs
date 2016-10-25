@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Format
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model.Format
 {
     /// <summary>
     /// Формат отображения объекта.
     /// </summary>
+    [Serializable]
     public class ObjectFormat : ValueFormat
     {
         /// <summary>

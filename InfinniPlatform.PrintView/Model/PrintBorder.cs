@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Границы элемента.
     /// </summary>
+    [Serializable]
     public class PrintBorder
     {
         /// <summary>

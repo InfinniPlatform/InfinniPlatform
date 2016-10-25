@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Properties;
+﻿using System;
+
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для отображения изображения.
     /// </summary>
+    [Serializable]
     public class PrintImage : PrintInline
     {
         /// <summary>

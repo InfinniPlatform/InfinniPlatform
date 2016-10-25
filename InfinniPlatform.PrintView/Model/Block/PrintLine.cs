@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Properties;
+﻿using System;
+
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Block
 {
     /// <summary>
     /// Элемент для создания горизонтальной линии.
     /// </summary>
+    [Serializable]
     public class PrintLine : PrintBlock
     {
         /// <summary>

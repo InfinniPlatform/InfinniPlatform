@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Properties;
+﻿using System;
+
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Стиль печатного представления.
     /// </summary>
+    [Serializable]
     public class PrintStyle : PrintNamedItem
     {
         /// <summary>

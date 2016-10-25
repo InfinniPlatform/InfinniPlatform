@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Properties;
+﻿using System;
+
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для создания штрих-код в формате EAN13.
     /// </summary>
+    [Serializable]
     public class PrintBarcodeEan13 : PrintBarcode
     {
         /// <summary>

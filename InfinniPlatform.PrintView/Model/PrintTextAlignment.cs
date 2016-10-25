@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Горизонтальное выравнивание текста элемента.
     /// </summary>
+    [Serializable]
     public enum PrintTextAlignment
     {
         /// <summary>

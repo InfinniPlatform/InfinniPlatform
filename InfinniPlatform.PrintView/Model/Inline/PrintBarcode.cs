@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Model.Format;
+﻿using System;
+
+using InfinniPlatform.PrintView.Model.Format;
 
 namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для создания штрих-кода.
     /// </summary>
+    [Serializable]
     public abstract class PrintBarcode : PrintInline
     {
         /// <summary>

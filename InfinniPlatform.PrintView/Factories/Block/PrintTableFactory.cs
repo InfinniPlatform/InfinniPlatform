@@ -84,8 +84,8 @@ namespace InfinniPlatform.PrintView.Factories.Block
             // Создание столбцов
             foreach (var columnTemplate in columnTemplates)
             {
-                var columnSize = columnTemplate.Size ?? PrintViewDefaults.TableColumn.Size;
-                var columnSizeUnit = columnTemplate.SizeUnit ?? PrintViewDefaults.TableColumn.SizeUnit;
+                var columnSize = columnTemplate.Size;
+                var columnSizeUnit = columnTemplate.SizeUnit ?? PrintViewDefaults.Text.FontSizeUnit;
 
                 var column = new PrintTableColumn
                 {
@@ -145,13 +145,7 @@ namespace InfinniPlatform.PrintView.Factories.Block
         {
             // Создание строки заголовка на основе настроек по умолчанию
 
-            var headerRow = new PrintTableRow
-            {
-                Font = PrintViewDefaults.TableRow.Font,
-                Foreground = PrintViewDefaults.TableRow.Foreground,
-                Background = PrintViewDefaults.TableRow.Background,
-                TextCase = PrintViewDefaults.TableRow.TextCase
-            };
+            var headerRow = new PrintTableRow();
 
             if (columnTemplates != null)
             {
@@ -191,10 +185,10 @@ namespace InfinniPlatform.PrintView.Factories.Block
                 var staticRow = new PrintTableRow
                 {
                     Style = rowTemplate.Style,
-                    Font = rowTemplate.Font ?? rowStyle?.Font ?? PrintViewDefaults.TableRow.Font,
-                    Foreground = rowTemplate.Foreground ?? rowStyle?.Foreground ?? PrintViewDefaults.TableRow.Foreground,
-                    Background = rowTemplate.Background ?? rowStyle?.Background ?? PrintViewDefaults.TableRow.Background,
-                    TextCase = rowTemplate.TextCase ?? rowStyle?.TextCase ?? PrintViewDefaults.TableRow.TextCase
+                    Font = rowTemplate.Font ?? rowStyle?.Font,
+                    Foreground = rowTemplate.Foreground ?? rowStyle?.Foreground,
+                    Background = rowTemplate.Background ?? rowStyle?.Background,
+                    TextCase = rowTemplate.TextCase ?? rowStyle?.TextCase
                 };
 
                 for (var columnIndex = 0; columnIndex < columnCount; ++columnIndex)
@@ -227,13 +221,7 @@ namespace InfinniPlatform.PrintView.Factories.Block
         {
             // Создание строки на основе настроек по умолчанию
 
-            var dynamicRow = new PrintTableRow
-            {
-                Font = PrintViewDefaults.TableRow.Font,
-                Foreground = PrintViewDefaults.TableRow.Foreground,
-                Background = PrintViewDefaults.TableRow.Background,
-                TextCase = PrintViewDefaults.TableRow.TextCase
-            };
+            var dynamicRow = new PrintTableRow();
 
             if (columnTemplates != null)
             {
@@ -276,13 +264,13 @@ namespace InfinniPlatform.PrintView.Factories.Block
             var cell = new PrintTableCell
             {
                 Style = cellTemplate.Style,
-                Font = cellTemplate.Font ?? cellStyle?.Font ?? PrintViewDefaults.TableCell.Font,
-                Foreground = cellTemplate.Foreground ?? cellStyle?.Foreground ?? PrintViewDefaults.TableCell.Foreground,
-                Background = cellTemplate.Background ?? cellStyle?.Background ?? PrintViewDefaults.TableCell.Background,
-                TextCase = cellTemplate.TextCase ?? cellStyle?.TextCase ?? PrintViewDefaults.TableCell.TextCase,
+                Font = cellTemplate.Font ?? cellStyle?.Font,
+                Foreground = cellTemplate.Foreground ?? cellStyle?.Foreground,
+                Background = cellTemplate.Background ?? cellStyle?.Background,
+                TextCase = cellTemplate.TextCase ?? cellStyle?.TextCase,
                 Border = cellTemplate.Border ?? cellStyle?.Border ?? PrintViewDefaults.TableCell.Border,
-                Padding = cellTemplate.Padding ?? cellStyle?.Padding ?? PrintViewDefaults.TableCell.Padding,
-                TextAlignment = cellTemplate.TextAlignment ?? cellStyle?.TextAlignment ?? PrintViewDefaults.TableCell.TextAlignment,
+                Padding = cellTemplate.Padding ?? cellStyle?.Padding,
+                TextAlignment = cellTemplate.TextAlignment ?? cellStyle?.TextAlignment,
                 ColumnSpan = cellTemplate.ColumnSpan ?? 1,
                 RowSpan = cellTemplate.RowSpan ?? 1
             };

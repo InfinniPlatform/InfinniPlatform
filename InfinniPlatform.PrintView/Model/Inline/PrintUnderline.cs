@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Properties;
+﻿using System;
+
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для отображения содержимого с эффектом подчеркивания.
     /// </summary>
+    [Serializable]
     public class PrintUnderline : PrintSpan
     {
         /// <summary>

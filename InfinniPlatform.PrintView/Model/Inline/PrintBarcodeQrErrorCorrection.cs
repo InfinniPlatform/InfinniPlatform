@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Inline
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Уровень защиты от ошибок штрих-кода в формате QR.
     /// </summary>
+    [Serializable]
     public enum PrintBarcodeQrErrorCorrection
     {
         /// <summary>

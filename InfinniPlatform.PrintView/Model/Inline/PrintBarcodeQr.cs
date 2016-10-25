@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Properties;
+﻿using System;
+
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для создания штрих-кода в формате QR.
     /// </summary>
+    [Serializable]
     public class PrintBarcodeQr : PrintBarcode
     {
         /// <summary>
