@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Server.Agent;
 
@@ -31,8 +32,10 @@ namespace InfinniPlatform.Server.RestApi
             builder.Get["/nodeLog"] = GetNodeLogFile;
         }
 
-        private Task<object> GetConfigurationFile(IHttpRequest request)
+        private async Task<object> GetConfigurationFile(IHttpRequest request)
         {
+            var serviceResult = new ServiceResult<string>();
+
             string address = request.Query.Address;
             int port = request.Query.Port;
 
@@ -42,8 +45,12 @@ namespace InfinniPlatform.Server.RestApi
                                 { "FileName", (string)request.Query.FileName }
                             };
 
+            using (var stream = await _agentHttpClient.GetStream("config", address, port, arguments))
+            {
+                serviceResult.Result = CleanUpJsonConfig(stream);
+            }
 
-            return WrapStreamResponse(_agentHttpClient.GetStream("config", address, port, arguments));
+            return serviceResult;
         }
 
         private async Task<object> SetConfigurationFile(IHttpRequest request)
@@ -84,7 +91,6 @@ namespace InfinniPlatform.Server.RestApi
                                 { "AppFullName", (string)request.Query.AppFullName }
                             };
 
-
             return WrapStreamResponse(_agentHttpClient.GetStream("perfLog", address, port, arguments));
         }
 
@@ -104,6 +110,14 @@ namespace InfinniPlatform.Server.RestApi
         private static Task<object> WrapStreamResponse(Task<Stream> stream)
         {
             return Task.FromResult<object>(new StreamHttpResponse(() => AsyncHelper.RunSync(() => stream)));
+        }
+
+        private static string CleanUpJsonConfig(Stream stream)
+        {
+            var configObject = JsonObjectSerializer.Formated.Deserialize(stream);
+            var cleanConfigString = JsonObjectSerializer.Formated.ConvertToString(configObject);
+
+            return cleanConfigString;
         }
     }
 }

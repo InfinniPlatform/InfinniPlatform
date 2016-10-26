@@ -1,5 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",    
     "Parameters": [
         {
             "Name": "AgentAddress"
@@ -36,7 +36,7 @@
                         }
                     }
                 },
-                "UpdatingItemsConverter": "{ return new Array(args.value); }"
+                "UpdatingItemsConverter": "{ return new Array(args.value.Result); }"
             }
         },
         {
@@ -63,7 +63,7 @@
                         }
                     }
                 },
-                "UpdatingItemsConverter": "{ return new Array(args.value); }"
+                "UpdatingItemsConverter": "{ return new Array(args.value.Result); }"
             }
         }
     ],
@@ -107,6 +107,14 @@
                                         "Value": {
                                             "Source": "AppCommonSource",
                                             "Property": "$"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Button": {
+                                        "Text": "OK",
+                                        "Action": {
+                                            "CancelAction": {}
                                         }
                                     }
                                 }

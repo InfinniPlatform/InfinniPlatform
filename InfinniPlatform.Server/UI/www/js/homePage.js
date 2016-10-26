@@ -3,8 +3,8 @@ function ShowAppsPanel(context) {
 }
 
 function PostAppExtensionConfig(context) {
-    var item = context.dataSources.AppExtensionSource.getSelectedItem();
-    var data = JSON.stringify({ "Config": JSON.parse(item) });
+    var config = context.dataSources.AppExtensionSource.getSelectedItem();
+    var data = JSON.stringify({ "Config": JSON.parse(config) });
 
     var args = [window.InfinniUI.config.serverUrl,
     context.parameters.AgentAddress.getValue(),
@@ -22,4 +22,9 @@ function PostAppExtensionConfig(context) {
         data: data,
         contentType: "application/json;charset=UTF-8"
     });
+}
+
+function ConvertConfigItems(config) {
+    var configClean = JSON.stringify(config).replace(/\/\*[^\*]+\*\//g, "").replace(/(\\r\\n\s+)+/g, "\\r\\n ");
+    return new Array(JSON.parse(configClean));
 }

@@ -104,6 +104,7 @@
                             "Items": {
                                 "Source": "AppsDataSource"
                             },
+                            "OnRowClick":"{console.log(context.dataSources.AppsDataSource.getSelectedItem());}",
                             "ShowSelectors": false
                         }
                     }
@@ -153,10 +154,11 @@
                             "Text": "Uninstall",
                             "Action": {
                                 "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
-                                        "AppName": "InfinniPlatform.Northwind",
+                                        "AppName": "<%appName%>",
                                         "Version": null,
                                         "Instance": null
                                     },
@@ -170,6 +172,10 @@
                                         "agentPort": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Port"
+                                        },
+                                        "appName": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Id"
                                         }
                                     }
                                 }
@@ -182,6 +188,7 @@
                             "Text": "RunInit",
                             "Action": {
                                 "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
@@ -216,12 +223,13 @@
                             "Text": "Start",
                             "Action": {
                                 "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/start?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
                                         "AppName": "<%appName%>",
-                                        "Version": null,
-                                        "Instance": null,
+                                        "Version": "<%version%>",
+                                        "Instance": "<%instance%>",
                                         "Timeout": null
                                     },
                                     "Params": {
@@ -238,6 +246,14 @@
                                         "appName": {
                                             "Source": "AppsDataSource",
                                             "Property": "$.Id"
+                                        },
+                                        "version": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Version"
+                                        },
+                                        "instance": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Instance"
                                         }
                                     }
                                 }
@@ -250,12 +266,13 @@
                             "Text": "Stop",
                             "Action": {
                                 "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/stop?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
                                         "AppName": "<%appName%>",
-                                        "Version": null,
-                                        "Instance": null,
+                                        "Version": "<%version%>",
+                                        "Instance": "<%instance%>",
                                         "Timeout": null
                                     },
                                     "Params": {
@@ -272,6 +289,14 @@
                                         "appName": {
                                             "Source": "AppsDataSource",
                                             "Property": "$.Id"
+                                        },
+                                        "version": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Version"
+                                        },
+                                        "instance": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Instance"
                                         }
                                     }
                                 }
@@ -323,12 +348,13 @@
                             "Text": "Restart",
                             "Action": {
                                 "ServerAction": {
+                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/restart?Address=<%agentAddress%>&Port=<%agentPort%>",
                                     "Method": "POST",
                                     "Data": {
                                         "AppName": "<%appName%>",
-                                        "Version": null,
-                                        "Instance": null,
+                                        "Version": "<%version%>",
+                                        "Instance": "<%instance%>",
                                         "Timeout": null
                                     },
                                     "Params": {
@@ -345,6 +371,14 @@
                                         "appName": {
                                             "Source": "AppsDataSource",
                                             "Property": "$.Id"
+                                        },
+                                        "version": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Version"
+                                        },
+                                        "instance": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Instance"
                                         }
                                     }
                                 }
