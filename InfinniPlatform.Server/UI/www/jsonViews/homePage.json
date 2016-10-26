@@ -159,8 +159,8 @@
                                     "Method": "POST",
                                     "Data": {
                                         "AppName": "<%appName%>",
-                                        "Version": null,
-                                        "Instance": null
+                                        "Version": "<%version%>",
+                                        "Instance": "<%instance%>"
                                     },
                                     "Params": {
                                         "serverAddress": "localhost",
@@ -176,6 +176,14 @@
                                         "appName": {
                                             "Source": "AppsDataSource",
                                             "Property": "$.Id"
+                                        },
+                                        "version": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Version"
+                                        },
+                                        "instance": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Instance"
                                         }
                                     }
                                 }
@@ -193,8 +201,8 @@
                                     "Method": "POST",
                                     "Data": {
                                         "AppName": "<%appName%>",
-                                        "Version": null,
-                                        "Instance": null,
+                                        "Version": "<%version%>",
+                                        "Instance": "<%instance%>",
                                         "Timeout": null
                                     },
                                     "Params": {
@@ -211,6 +219,14 @@
                                         "appName": {
                                             "Source": "AppsDataSource",
                                             "Property": "$.Id"
+                                        },
+                                        "version": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Version"
+                                        },
+                                        "instance": {
+                                            "Source": "AppsDataSource",
+                                            "Property": "$.Instance"
                                         }
                                     }
                                 }

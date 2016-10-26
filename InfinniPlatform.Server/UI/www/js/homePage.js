@@ -23,8 +23,3 @@ function PostAppExtensionConfig(context) {
         contentType: "application/json;charset=UTF-8"
     });
 }
-
-function ConvertConfigItems(config) {
-    var configClean = JSON.stringify(config).replace(/\/\*[^\*]+\*\//g, "").replace(/(\\r\\n\s+)+/g, "\\r\\n ");
-    return new Array(JSON.parse(configClean));
-}
