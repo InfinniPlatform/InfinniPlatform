@@ -1,408 +1,377 @@
 ﻿{
     "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
-    "DataSources": [
-        {
-            "RestDataSource": {
-                "Name": "AgentsDataSource",
-                "GettingParams": {
-                    "Method": "GET",
-                    "Path": "/server/agents",
-                    "Data": {}
-                },
-                "UpdatingItemsConverter": "{ return args.value.Result.Agents; }"
-            }
-        },
-        {
-            "RestDataSource": {
-                "Name": "AppsDataSource",
-                "GettingParams": {
-                    "Method": "POST",
-                    "Path": "/server/appsInfo",
-                    "Data": {
-                        "Address": "<%Address%>",
-                        "Port": "<%Port%>"
-                    },
-                    "Params": {
-                        "Address": {
-                            "Source": "AgentsDataSource",
-                            "Property": "$.Address"
-                        },
-                        "Port": {
-                            "Source": "AgentsDataSource",
-                            "Property": "$.Port"
-                        }
-                    }
-                },
-                "UpdatingItemsConverter": "{ return args.value.Result.FormatedOutput; }"
-            }
+    "DataSources": [{
+        "RestDataSource": {
+            "Name": "AgentsDataSource",
+            "GettingParams": {
+                "Method": "GET",
+                "Path": "/server/agents",
+                "Data": {}
+            },
+            "UpdatingItemsConverter": "{ return args.value.Result.Agents; }"
         }
-    ],
-    "Items": [
-        {
-            "Label": {
-                "Value": "Agents list"
-            }
-        },
-        {
-            "DataGrid": {
-                "Name": "AgentsGrid",
-                "Columns": [
-                    {
-                        "Header": "Address",
-                        "CellProperty": "Address"
-                    },
-                    {
-                        "Header": "Port",
-                        "CellProperty": "Port"
-                    },
-                    {
-                        "Header": "Token",
-                        "CellProperty": "Token"
-                    }
-                ],
-                "Items": {
-                    "Source": "AgentsDataSource"
+    }, {
+        "RestDataSource": {
+            "Name": "AppsDataSource",
+            "GettingParams": {
+                "Method": "POST",
+                "Path": "/server/appsInfo",
+                "Data": {
+                    "Address": "<%Address%>",
+                    "Port": "<%Port%>"
                 },
-                "ShowSelectors": false,
-                "OnSelectedItemChanged": "{ ShowAppsPanel(context); }"
-            }
-        },
-        {
-            "StackPanel": {
-                "Name": "AppsPanel",
-                "Visible": false,
-                "Items": [
-                    {
-                        "Label": {
-                            "Value": "Installed apps list"
-                        }
+                "Params": {
+                    "Address": {
+                        "Source": "AgentsDataSource",
+                        "Property": "$.Address"
                     },
-                    {
-                        "DataGrid": {
-                            "Columns": [
-                                {
-                                    "Header": "Id",
-                                    "CellProperty": "Id"
-                                },
-                                {
-                                    "Header": "Version",
-                                    "CellProperty": "Version"
-                                },
-                                {
-                                    "Header": "Instance",
-                                    "CellProperty": "Instance"
-                                },
-                                {
-                                    "Header": "AppFullName",
-                                    "CellProperty": "AppFullName"
-                                },
-                                {
-                                    "Header": "ProcessInfo",
-                                    "CellProperty": "ProcessInfo.State"
+                    "Port": {
+                        "Source": "AgentsDataSource",
+                        "Property": "$.Port"
+                    }
+                }
+            },
+            "UpdatingItemsConverter": "{ return args.value.Result.FormatedOutput; }"
+        }
+    }],
+    "Items": [{
+        "Label": {
+            "Value": "Agents list"
+        }
+    }, {
+        "DataGrid": {
+            "Name": "AgentsGrid",
+            "Columns": [{
+                "Header": "Address",
+                "CellProperty": "Address"
+            }, {
+                "Header": "Port",
+                "CellProperty": "Port"
+            }, {
+                "Header": "Token",
+                "CellProperty": "Token"
+            }],
+            "Items": {
+                "Source": "AgentsDataSource"
+            },
+            "ShowSelectors": false,
+            "OnSelectedItemChanged": "{ ShowAppsPanel(context); }"
+        }
+    }, {
+        "StackPanel": {
+            "Name": "AppsPanel",
+            "Visible": false,
+            "Items": [{
+                "Label": {
+                    "Value": "Installed apps list"
+                }
+            }, {
+                "DataGrid": {
+                    "Columns": [{
+                        "Header": "Id",
+                        "CellProperty": "Id"
+                    }, {
+                        "Header": "Version",
+                        "CellProperty": "Version"
+                    }, {
+                        "Header": "Instance",
+                        "CellProperty": "Instance"
+                    }, {
+                        "Header": "AppFullName",
+                        "CellProperty": "AppFullName"
+                    }, {
+                        "Header": "ProcessInfo",
+                        "CellProperty": "ProcessInfo.State"
+                    }],
+                    "Items": {
+                        "Source": "AppsDataSource"
+                    },
+                    "OnRowClick": "{console.log(context.dataSources.AppsDataSource.getSelectedItem());}",
+                    "ShowSelectors": false
+                }
+            }]
+        }
+    }, {
+        "StackPanel": {
+            "ViewMode": "FormGroup",
+            "Orientation": "Horizontal",
+            "Items": [{
+                "Button": {
+                    "Name": "install",
+                    "Text": "Install new app",
+                    "Action": {
+                        "OpenAction": {
+                            "LinkView": {
+                                "AutoView": {
+                                    "OpenMode": "Dialog",
+                                    "Path": "jsonViews/installView.json",
+                                    "Parameters": [{
+                                        "Name": "AgentAddress",
+                                        "Value": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Address"
+                                        }
+                                    }, {
+                                        "Name": "AgentPort",
+                                        "Value": {
+                                            "Source": "AgentsDataSource",
+                                            "Property": "$.Port"
+                                        }
+                                    }]
                                 }
-                            ],
-                            "Items": {
-                                "Source": "AppsDataSource"
+                            }
+                        }
+                    }
+                }
+            }, {
+                "Button": {
+                    "Name": "uninstall",
+                    "Text": "Uninstall",
+                    "Action": {
+                        "ServerAction": {
+                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                            "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
+                            "Method": "POST",
+                            "Data": {
+                                "AppName": "<%appName%>",
+                                "Version": "<%version%>",
+                                "Instance": "<%instance%>"
                             },
-                            "OnRowClick":"{console.log(context.dataSources.AppsDataSource.getSelectedItem());}",
-                            "ShowSelectors": false
+                            "Params": {
+                                "serverAddress": "localhost",
+                                "serverPort": "9901",
+                                "agentAddress": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Address"
+                                },
+                                "agentPort": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Port"
+                                },
+                                "appName": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Id"
+                                },
+                                "version": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Version"
+                                },
+                                "instance": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Instance"
+                                }
+                            },
+                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
                         }
                     }
-                ]
-            }
-        },
-        {
-            "StackPanel": {
-                "ViewMode": "FormGroup",
-                "Orientation": "Horizontal",
-                "Items": [
-                    {
-                        "Button": {
-                            "Name": "install",
-                            "Text": "Install new app",
-                            "Action": {
-                                "OpenAction": {
-                                    "LinkView": {
-                                        "AutoView": {
-                                            "OpenMode": "Dialog",
-                                            "Path": "jsonViews/installView.json",
-                                            "Parameters": [
-                                                {
-                                                    "Name": "AgentAddress",
-                                                    "Value": {
-                                                        "Source": "AgentsDataSource",
-                                                        "Property": "$.Address"
-                                                    }
-                                                },
-                                                {
-                                                    "Name": "AgentPort",
-                                                    "Value": {
-                                                        "Source": "AgentsDataSource",
-                                                        "Property": "$.Port"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    }
+                }
+            }, {
+                "Button": {
+                    "Name": "init",
+                    "Text": "RunInit",
+                    "Action": {
+                        "ServerAction": {
+                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                            "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
+                            "Method": "POST",
+                            "Data": {
+                                "AppName": "<%appName%>",
+                                "Version": "<%version%>",
+                                "Instance": "<%instance%>",
+                                "Timeout": null
+                            },
+                            "Params": {
+                                "serverAddress": "localhost",
+                                "serverPort": "9901",
+                                "agentAddress": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Address"
+                                },
+                                "agentPort": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Port"
+                                },
+                                "appName": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Id"
+                                },
+                                "version": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Version"
+                                },
+                                "instance": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Instance"
                                 }
-                            }
+                            },
+                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
                         }
-                    },
-                    {
-                        "Button": {
-                            "Name": "uninstall",
-                            "Text": "Uninstall",
-                            "Action": {
-                                "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                    "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                    "Method": "POST",
-                                    "Data": {
-                                        "AppName": "<%appName%>",
-                                        "Version": "<%version%>",
-                                        "Instance": "<%instance%>"
-                                    },
-                                    "Params": {
-                                        "serverAddress": "localhost",
-                                        "serverPort": "9901",
-                                        "agentAddress": {
+                    }
+                }
+            }, {
+                "Button": {
+                    "Name": "start",
+                    "Text": "Start",
+                    "Action": {
+                        "ServerAction": {
+                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                            "Path": "/server/start?Address=<%agentAddress%>&Port=<%agentPort%>",
+                            "Method": "POST",
+                            "Data": {
+                                "AppName": "<%appName%>",
+                                "Version": "<%version%>",
+                                "Instance": "<%instance%>",
+                                "Timeout": null
+                            },
+                            "Params": {
+                                "serverAddress": "localhost",
+                                "serverPort": "9901",
+                                "agentAddress": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Address"
+                                },
+                                "agentPort": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Port"
+                                },
+                                "appName": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Id"
+                                },
+                                "version": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Version"
+                                },
+                                "instance": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Instance"
+                                }
+                            },
+                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
+                        }
+                    }
+                }
+            }, {
+                "Button": {
+                    "Name": "stop",
+                    "Text": "Stop",
+                    "Action": {
+                        "ServerAction": {
+                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                            "Path": "/server/stop?Address=<%agentAddress%>&Port=<%agentPort%>",
+                            "Method": "POST",
+                            "Data": {
+                                "AppName": "<%appName%>",
+                                "Version": "<%version%>",
+                                "Instance": "<%instance%>",
+                                "Timeout": null
+                            },
+                            "Params": {
+                                "serverAddress": "localhost",
+                                "serverPort": "9901",
+                                "agentAddress": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Address"
+                                },
+                                "agentPort": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Port"
+                                },
+                                "appName": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Id"
+                                },
+                                "version": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Version"
+                                },
+                                "instance": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Instance"
+                                }
+                            },
+                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
+                        }
+                    }
+                }
+            }, {
+                "Button": {
+                    "Name": "config",
+                    "Text": "Edit config",
+                    "Action": {
+                        "OpenAction": {
+                            "LinkView": {
+                                "AutoView": {
+                                    "OpenMode": "Dialog",
+                                    "Path": "jsonViews/configView.json",
+                                    "Parameters": [{
+                                        "Name": "AgentAddress",
+                                        "Value": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Address"
-                                        },
-                                        "agentPort": {
+                                        }
+                                    }, {
+                                        "Name": "AgentPort",
+                                        "Value": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Port"
-                                        },
-                                        "appName": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Id"
-                                        },
-                                        "version": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Version"
-                                        },
-                                        "instance": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Instance"
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "Button": {
-                            "Name": "init",
-                            "Text": "RunInit",
-                            "Action": {
-                                "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                    "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                    "Method": "POST",
-                                    "Data": {
-                                        "AppName": "<%appName%>",
-                                        "Version": "<%version%>",
-                                        "Instance": "<%instance%>",
-                                        "Timeout": null
-                                    },
-                                    "Params": {
-                                        "serverAddress": "localhost",
-                                        "serverPort": "9901",
-                                        "agentAddress": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Address"
-                                        },
-                                        "agentPort": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Port"
-                                        },
-                                        "appName": {
+                                    }, {
+                                        "Name": "AppFullName",
+                                        "Value": {
                                             "Source": "AppsDataSource",
-                                            "Property": "$.Id"
-                                        },
-                                        "version": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Version"
-                                        },
-                                        "instance": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Instance"
+                                            "Property": "$.AppFullName"
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "Button": {
-                            "Name": "start",
-                            "Text": "Start",
-                            "Action": {
-                                "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                    "Path": "/server/start?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                    "Method": "POST",
-                                    "Data": {
-                                        "AppName": "<%appName%>",
-                                        "Version": "<%version%>",
-                                        "Instance": "<%instance%>",
-                                        "Timeout": null
-                                    },
-                                    "Params": {
-                                        "serverAddress": "localhost",
-                                        "serverPort": "9901",
-                                        "agentAddress": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Address"
-                                        },
-                                        "agentPort": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Port"
-                                        },
-                                        "appName": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Id"
-                                        },
-                                        "version": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Version"
-                                        },
-                                        "instance": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Instance"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "Button": {
-                            "Name": "stop",
-                            "Text": "Stop",
-                            "Action": {
-                                "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                    "Path": "/server/stop?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                    "Method": "POST",
-                                    "Data": {
-                                        "AppName": "<%appName%>",
-                                        "Version": "<%version%>",
-                                        "Instance": "<%instance%>",
-                                        "Timeout": null
-                                    },
-                                    "Params": {
-                                        "serverAddress": "localhost",
-                                        "serverPort": "9901",
-                                        "agentAddress": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Address"
-                                        },
-                                        "agentPort": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Port"
-                                        },
-                                        "appName": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Id"
-                                        },
-                                        "version": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Version"
-                                        },
-                                        "instance": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Instance"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "Button": {
-                            "Name": "config",
-                            "Text": "Edit config",
-                            "Action": {
-                                "OpenAction": {
-                                    "LinkView": {
-                                        "AutoView": {
-                                            "OpenMode": "Dialog",
-                                            "Path": "jsonViews/configView.json",
-                                            "Parameters": [
-                                                {
-                                                    "Name": "AgentAddress",
-                                                    "Value": {
-                                                        "Source": "AgentsDataSource",
-                                                        "Property": "$.Address"
-                                                    }
-                                                },
-                                                {
-                                                    "Name": "AgentPort",
-                                                    "Value": {
-                                                        "Source": "AgentsDataSource",
-                                                        "Property": "$.Port"
-                                                    }
-                                                },
-                                                {
-                                                    "Name": "AppFullName",
-                                                    "Value": {
-                                                        "Source": "AppsDataSource",
-                                                        "Property": "$.AppFullName"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "Button": {
-                            "Name": "restart",
-                            "Text": "Restart",
-                            "Action": {
-                                "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                    "Path": "/server/restart?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                    "Method": "POST",
-                                    "Data": {
-                                        "AppName": "<%appName%>",
-                                        "Version": "<%version%>",
-                                        "Instance": "<%instance%>",
-                                        "Timeout": null
-                                    },
-                                    "Params": {
-                                        "serverAddress": "localhost",
-                                        "serverPort": "9901",
-                                        "agentAddress": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Address"
-                                        },
-                                        "agentPort": {
-                                            "Source": "AgentsDataSource",
-                                            "Property": "$.Port"
-                                        },
-                                        "appName": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Id"
-                                        },
-                                        "version": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Version"
-                                        },
-                                        "instance": {
-                                            "Source": "AppsDataSource",
-                                            "Property": "$.Instance"
-                                        }
-                                    }
+                                    }]
                                 }
                             }
                         }
                     }
-                ]
-            }
+                }
+            }, {
+                "Button": {
+                    "Name": "restart",
+                    "Text": "Restart",
+                    "Action": {
+                        "ServerAction": {
+                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                            "Path": "/server/restart?Address=<%agentAddress%>&Port=<%agentPort%>",
+                            "Method": "POST",
+                            "Data": {
+                                "AppName": "<%appName%>",
+                                "Version": "<%version%>",
+                                "Instance": "<%instance%>",
+                                "Timeout": null
+                            },
+                            "Params": {
+                                "serverAddress": "localhost",
+                                "serverPort": "9901",
+                                "agentAddress": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Address"
+                                },
+                                "agentPort": {
+                                    "Source": "AgentsDataSource",
+                                    "Property": "$.Port"
+                                },
+                                "appName": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Id"
+                                },
+                                "version": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Version"
+                                },
+                                "instance": {
+                                    "Source": "AppsDataSource",
+                                    "Property": "$.Instance"
+                                }
+                            },
+                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
+                        }
+                    }
+                }
+            }]
         }
-    ]
+    }]
 }
