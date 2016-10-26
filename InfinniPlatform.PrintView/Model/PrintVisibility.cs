@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Видимость элемента.
     /// </summary>
+    [Serializable]
     public enum PrintVisibility
     {
         /// <summary>

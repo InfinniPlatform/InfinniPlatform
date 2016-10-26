@@ -77,7 +77,7 @@ namespace InfinniPlatform.PrintView.Factories
                 return true;
             }
 
-            var visibility = elementTemplate.Visibility ?? PrintViewDefaults.Element.Visibility;
+            var visibility = elementTemplate.Visibility ?? PrintVisibility.Source;
 
             if (visibility == PrintVisibility.Never)
             {
@@ -119,11 +119,11 @@ namespace InfinniPlatform.PrintView.Factories
             // Если указано свойство данных
             if (!string.IsNullOrWhiteSpace(sourceProperty))
             {
-                if (sourceProperty != "$")
+                if (sourceProperty != PrintViewDefaults.RootSource)
                 {
-                    elementSourceValue = sourceProperty.StartsWith("$.")
-                        ? context.Source.GetProperty(sourceProperty.Substring(2))
-                        : context.ElementSourceValue.GetProperty(sourceProperty);
+                    elementSourceValue = sourceProperty.StartsWith(PrintViewDefaults.RootSource + ".")
+                        ? ObjectHelper.GetProperty(context.Source, sourceProperty.Substring(2))
+                        : ObjectHelper.GetProperty(context.ElementSourceValue, sourceProperty);
                 }
                 else
                 {

@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Стиль шрифта.
@@ -9,6 +11,7 @@
     /// обычных знаков вправо. Таким образом, наклонный обычно используется для имитации курсива в случае,
     /// если у используемого шрифта отсутствует курсивное начертание.
     /// </remarks>
+    [Serializable]
     public enum PrintFontStyle
     {
         /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Настройки шрифта.
@@ -6,6 +8,7 @@
     /// <remarks>
     /// Предполагается поддержка только OpenType шрифтов.
     /// </remarks>
+    [Serializable]
     public class PrintFont
     {
         /// <summary>

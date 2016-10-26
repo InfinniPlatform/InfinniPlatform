@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Format
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model.Format
 {
     /// <summary>
     /// Формат отображения значения даты и времени.
     /// </summary>
+    [Serializable]
     public class DateTimeFormat : ValueFormat
     {
         /// <summary>

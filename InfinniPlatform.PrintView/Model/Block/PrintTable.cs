@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.PrintView.Properties;
 
@@ -7,6 +8,7 @@ namespace InfinniPlatform.PrintView.Model.Block
     /// <summary>
     /// Элемент для создания таблицы.
     /// </summary>
+    [Serializable]
     public class PrintTable : PrintBlock
     {
         /// <summary>

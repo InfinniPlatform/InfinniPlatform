@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Базовый класс блочного элемента.
@@ -6,6 +8,7 @@
     /// <remarks>
     /// Все блочные элементы выводятся с новой строки.
     /// </remarks>
+    [Serializable]
     public abstract class PrintBlock : PrintElement
     {
         /// <summary>

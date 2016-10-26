@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Базовый класс строкового элемента.
@@ -6,6 +8,7 @@
     /// <remarks>
     /// Все строковые элементы выводятся на той же строке.
     /// </remarks>
+    [Serializable]
     public abstract class PrintInline : PrintElement
     {
         /// <summary>

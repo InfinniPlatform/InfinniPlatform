@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Block
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model.Block
 {
     /// <summary>
     /// Стиль маркера элементов списка.
     /// </summary>
+    [Serializable]
     public enum PrintListMarkerStyle
     {
         /// <summary>

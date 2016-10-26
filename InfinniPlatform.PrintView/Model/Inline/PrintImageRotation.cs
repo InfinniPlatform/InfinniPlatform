@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Inline
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Поворот изображения.
     /// </summary>
+    [Serializable]
     public enum PrintImageRotation
     {
         /// <summary>

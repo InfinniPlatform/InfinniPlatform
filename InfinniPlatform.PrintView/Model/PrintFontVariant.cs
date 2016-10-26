@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Вертикальное выравнивание шрифта.
@@ -6,6 +8,7 @@
     /// <remarks>
     /// Некоторые шрифты могут не поддерживать вертикальное выравнивание.
     /// </remarks>
+    [Serializable]
     public enum PrintFontVariant
     {
         /// <summary>

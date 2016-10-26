@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Базовый класс элемента.
     /// </summary>
+    [Serializable]
     public abstract class PrintElement : PrintNamedItem
     {
         /// <summary>

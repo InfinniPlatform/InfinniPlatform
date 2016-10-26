@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Оформление текста элемента.
     /// </summary>
+    [Serializable]
     public enum PrintTextDecoration
     {
         /// <summary>

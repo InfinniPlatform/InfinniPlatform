@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Model;
+using InfinniPlatform.PrintView.Model.Defaults;
 
 namespace InfinniPlatform.PrintView.Contract
 {
@@ -47,14 +48,14 @@ namespace InfinniPlatform.PrintView.Contract
                 throw new ArgumentNullException(nameof(template));
             }
 
-            PrintDocument dynamicTemplate;
+            PrintDocument documentTemplate;
 
             using (var templateStream = template())
             {
-                dynamicTemplate = _printViewSerializer.Deserialize(templateStream);
+                documentTemplate = _printViewSerializer.Deserialize(templateStream);
             }
 
-            return Build(stream, dynamicTemplate, dataSource, fileFormat);
+            return Build(stream, documentTemplate, dataSource, fileFormat);
         }
 
         /// <summary>
@@ -69,6 +70,11 @@ namespace InfinniPlatform.PrintView.Contract
             if (template == null)
             {
                 throw new ArgumentNullException(nameof(template));
+            }
+
+            if (string.IsNullOrWhiteSpace(template.Source) && string.IsNullOrWhiteSpace(template.Expression))
+            {
+                template.Source = PrintViewDefaults.RootSource;
             }
 
             // Формирование документа печатного представления

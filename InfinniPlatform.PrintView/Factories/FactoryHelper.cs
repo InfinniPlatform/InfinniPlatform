@@ -8,7 +8,6 @@ using System.Text;
 
 using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Model.Block;
-using InfinniPlatform.PrintView.Model.Defaults;
 using InfinniPlatform.PrintView.Model.Format;
 using InfinniPlatform.PrintView.Model.Inline;
 
@@ -19,26 +18,26 @@ namespace InfinniPlatform.PrintView.Factories
         public static void ApplyElementProperties(PrintElement element, PrintElement template, PrintStyle style)
         {
             element.Style = template.Style;
-            element.Font = template.Font ?? style?.Font ?? PrintViewDefaults.Element.Font;
-            element.Foreground = template.Foreground ?? style?.Foreground ?? PrintViewDefaults.Element.Foreground;
-            element.Background = template.Background ?? style?.Background ?? PrintViewDefaults.Element.Background;
-            element.TextCase = template.TextCase ?? style?.TextCase ?? PrintViewDefaults.Element.TextCase;
-            element.Visibility = template.Visibility ?? PrintViewDefaults.Element.Visibility;
+            element.Font = template.Font ?? style?.Font;
+            element.Foreground = template.Foreground ?? style?.Foreground;
+            element.Background = template.Background ?? style?.Background;
+            element.TextCase = template.TextCase ?? style?.TextCase;
+            element.Visibility = template.Visibility;
             element.Source = template.Source;
             element.Expression = template.Expression;
         }
 
         public static void ApplyBlockProperties(PrintBlock element, PrintBlock template, PrintStyle style)
         {
-            element.Border = template.Border ?? style?.Border ?? PrintViewDefaults.Block.Border;
-            element.Margin = template.Margin ?? style?.Margin ?? PrintViewDefaults.Block.Margin;
-            element.Padding = template.Padding ?? style?.Padding ?? PrintViewDefaults.Block.Padding;
-            element.TextAlignment = template.TextAlignment ?? style?.TextAlignment ?? PrintViewDefaults.Block.TextAlignment;
+            element.Border = template.Border ?? style?.Border;
+            element.Margin = template.Margin ?? style?.Margin;
+            element.Padding = template.Padding ?? style?.Padding;
+            element.TextAlignment = template.TextAlignment ?? style?.TextAlignment;
         }
 
         public static void ApplyInlineProperties(PrintInline element, PrintInline template, PrintStyle style)
         {
-            element.TextDecoration = template.TextDecoration ?? style?.TextDecoration ?? PrintViewDefaults.Inline.TextDecoration;
+            element.TextDecoration = template.TextDecoration ?? style?.TextDecoration;
         }
 
         public static void ApplyTextCase(object element, PrintTextCase? textCase)
