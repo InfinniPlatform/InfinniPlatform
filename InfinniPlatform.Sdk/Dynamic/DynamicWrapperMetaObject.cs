@@ -95,11 +95,12 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder, DynamicMetaObject[] invokeArguments)
         {
-            // DynamicWrapper.TryInvokeMember(binder.Name, invokeArguments)
+            // DynamicWrapper.TryInvokeMember(binder.Name, invokeArguments) 
             var tryInvokeMemberArgs = new Expression[] { Expression.Constant(binder.Name), Expression.NewArrayInit(ObjectType, invokeArguments.Select(a => Expression.Convert(Expression.Constant(a.Value), ObjectType))) };
             var tryInvokeMemberCall = Expression.Call(DynamicValue, TryInvokeMember, tryInvokeMemberArgs);
+            var invokeMember = new DynamicMetaObject(tryInvokeMemberCall, TypeRestrictions);
 
-            return new DynamicMetaObject(tryInvokeMemberCall, TypeRestrictions);
+            return binder.FallbackInvokeMember(this, invokeArguments, invokeMember);
         }
     }
 }
