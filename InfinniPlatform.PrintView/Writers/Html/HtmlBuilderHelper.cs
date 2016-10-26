@@ -87,10 +87,12 @@ namespace InfinniPlatform.PrintView.Writers.Html
         {
             if (size != null)
             {
+                // По умолчанию используется абсолютная единица измерения - pt, поскольку документ создается для печати
+
                 writer.Write(property);
                 writer.Write(':');
                 writer.WriteInvariant(size);
-                writer.WriteEnumValue(sizeUnit);
+                writer.WriteEnumValue(sizeUnit ?? PrintSizeUnit.Pt);
                 writer.Write(';');
             }
         }
