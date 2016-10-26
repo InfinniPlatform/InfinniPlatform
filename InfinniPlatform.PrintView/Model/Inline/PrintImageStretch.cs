@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Inline
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Растягивание изображения.
     /// </summary>
+    [Serializable]
     public enum PrintImageStretch
     {
         /// <summary>

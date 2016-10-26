@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Насыщенность шрифта.
@@ -6,6 +8,7 @@
     /// <remarks>
     /// Многие шрифты поддерживают не все уровни насыщенности.
     /// </remarks>
+    [Serializable]
     public enum PrintFontWeight
     {
         /// <summary>

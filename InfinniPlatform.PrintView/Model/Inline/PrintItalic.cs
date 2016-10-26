@@ -1,10 +1,13 @@
-﻿using InfinniPlatform.PrintView.Properties;
+﻿using System;
+
+using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Inline
 {
     /// <summary>
     /// Элемент для выделения содержимого курсивным шрифтом.
     /// </summary>
+    [Serializable]
     public class PrintItalic : PrintSpan
     {
         /// <summary>

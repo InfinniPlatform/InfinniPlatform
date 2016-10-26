@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Размеры прямоугольника.
     /// </summary>
+    [Serializable]
     public class PrintSize
     {
         /// <summary>

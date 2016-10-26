@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model.Format
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model.Format
 {
     /// <summary>
     /// Формат отображения логического значения.
     /// </summary>
+    [Serializable]
     public class BooleanFormat : ValueFormat
     {
         /// <summary>

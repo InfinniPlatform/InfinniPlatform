@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.PrintView.Model.Format;
+﻿using System;
+
+using InfinniPlatform.PrintView.Model.Format;
 using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Inline
@@ -6,6 +8,7 @@ namespace InfinniPlatform.PrintView.Model.Inline
     /// <summary>
     /// Элемент для вывода неформатированного текста.
     /// </summary>
+    [Serializable]
     public class PrintRun : PrintInline
     {
         /// <summary>

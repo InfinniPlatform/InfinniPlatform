@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Степень растягивания шрифта по горизонтали.
@@ -7,6 +9,7 @@
     /// Многие шрифты поддерживают не все уровни растягивания, а некоторые вообще не 
     /// поддерживают растягивания (например, моноширные шрифты типа "Courier New").
     /// </remarks>
+    [Serializable]
     public enum PrintFontStretch
     {
         /// <summary>

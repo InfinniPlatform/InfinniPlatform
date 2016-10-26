@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Единицы измерения размера.
     /// </summary>
+    [Serializable]
     public enum PrintSizeUnit
     {
         /// <summary>

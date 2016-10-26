@@ -1,8 +1,11 @@
-﻿namespace InfinniPlatform.PrintView.Model
+﻿using System;
+
+namespace InfinniPlatform.PrintView.Model
 {
     /// <summary>
     /// Регистр символов текста элемента.
     /// </summary>
+    [Serializable]
     public enum PrintTextCase
     {
         /// <summary>

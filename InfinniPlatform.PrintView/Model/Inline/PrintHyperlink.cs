@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.PrintView.Model.Format;
+﻿using System;
+
+using InfinniPlatform.PrintView.Model.Format;
 using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Model.Inline
@@ -6,6 +8,7 @@ namespace InfinniPlatform.PrintView.Model.Inline
     /// <summary>
     /// Элемент для выделения содержимого в виде гиперссылки.
     /// </summary>
+    [Serializable]
     public class PrintHyperlink : PrintSpan
     {
         /// <summary>

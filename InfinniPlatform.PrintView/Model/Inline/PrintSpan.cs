@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.PrintView.Properties;
 
@@ -7,6 +8,7 @@ namespace InfinniPlatform.PrintView.Model.Inline
     /// <summary>
     /// Элемент для создания группы строковых элементов.
     /// </summary>
+    [Serializable]
     public class PrintSpan : PrintInline
     {
         /// <summary>
