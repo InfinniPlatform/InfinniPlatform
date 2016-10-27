@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Owin.Modules;
+﻿using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Hosting;
 
 using Microsoft.Owin.Cors;
 
@@ -9,12 +10,14 @@ namespace InfinniPlatform.Cors.Modules
     /// <summary>
     /// Модуль хостинга обработчика запросов CORS (Cross-origin resource sharing).
     /// </summary>
-    internal sealed class CorsOwinHostingModule : IOwinHostingModule
+    internal sealed class CorsOwinHostingMiddleware : OwinHostingMiddleware
     {
-        public OwinHostingModuleType ModuleType => OwinHostingModuleType.Cors;
+        public CorsOwinHostingMiddleware() : base(HostingMiddlewareType.BeforeAuthentication)
+        {
+        }
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public override void Configure(IAppBuilder builder)
         {
             // TODO: Добавить правила CORS проверки из конфигурации
 

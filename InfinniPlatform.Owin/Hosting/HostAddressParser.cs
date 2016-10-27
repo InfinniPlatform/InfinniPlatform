@@ -6,9 +6,6 @@ namespace InfinniPlatform.Owin.Hosting
 {
     public class HostAddressParser : IHostAddressParser
     {
-        public static readonly HostAddressParser Default = new HostAddressParser();
-
-
         public bool IsLocalAddress(string hostNameOrAddress)
         {
             return IsLocalAddress(hostNameOrAddress, out hostNameOrAddress);

@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Owin.Modules;
+﻿using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.Owin.Security;
@@ -12,12 +13,12 @@ namespace InfinniPlatform.Authentication.Modules
     /// Модуль хостинга обработчика запросов к подсистеме внешней аутентификации через ADFS.
     /// </summary>
     /// <remarks>Аутентификация осуществляется через службу ADFS по протоколу WS-Federation.</remarks>
-    internal sealed class ExternalAuthAdfsOwinHostingModule : IOwinHostingModule
+    internal sealed class ExternalAuthAdfsOwinHostingMiddleware : OwinHostingMiddleware
     {
         private const string MetadataUri = "https://{0}/FederationMetadata/2007-06/FederationMetadata.xml";
 
 
-        public ExternalAuthAdfsOwinHostingModule(IAppConfiguration appConfiguration)
+        public ExternalAuthAdfsOwinHostingMiddleware(IAppConfiguration appConfiguration) : base(HostingMiddlewareType.ExternalAuthentication)
         {
             _settings = appConfiguration.GetSection<ExternalAuthAdfsOwinHostingModuleSettings>(ExternalAuthAdfsOwinHostingModuleSettings.SectionName);
         }
@@ -26,10 +27,7 @@ namespace InfinniPlatform.Authentication.Modules
         private readonly ExternalAuthAdfsOwinHostingModuleSettings _settings;
 
 
-        public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
-
-
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public override void Configure(IAppBuilder builder)
         {
             if (_settings.Enable)
             {

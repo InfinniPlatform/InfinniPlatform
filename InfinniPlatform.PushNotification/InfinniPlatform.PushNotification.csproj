@@ -85,7 +85,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SignalR\SignalRPushNotificationService.cs" />
-    <Compile Include="Owin\SignalROwinHostingModule.cs" />
+    <Compile Include="Owin\SignalROwinHostingMiddleware.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

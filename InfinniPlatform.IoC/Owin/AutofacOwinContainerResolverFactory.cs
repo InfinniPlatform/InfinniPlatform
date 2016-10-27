@@ -2,17 +2,14 @@
 
 using Autofac;
 
-using InfinniPlatform.IoC.Owin.Modules;
 using InfinniPlatform.IoC.Properties;
-using InfinniPlatform.Owin.Modules;
-using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.IoC.Owin
 {
-    public sealed class AutofacOwinHostingContextFactory
+    public class AutofacOwinContainerResolverFactory
     {
-        public IOwinHostingContext CreateOwinHostingContext(HostingConfig hostingConfig)
+        public IContainerResolver CreateContainerResolver()
         {
             var autofacContainerBuilder = new ContainerBuilder();
 
@@ -28,11 +25,6 @@ namespace InfinniPlatform.IoC.Owin
                 // Регистрация очередного модуля
                 autofacContainerBuilder.RegisterModule(new AutofacContainerModule(containerModule));
             }
-
-            // Регистрация IoC-модуля для OWIN 
-            autofacContainerBuilder.RegisterType<AutofacOwinHostingModule>()
-                                   .As<IOwinHostingModule>()
-                                   .SingleInstance();
 
             // ReSharper disable AccessToModifiedClosure
 
@@ -52,10 +44,11 @@ namespace InfinniPlatform.IoC.Owin
 
             // Построение контейнера зависимостей
             autofacRootContainer = autofacContainerBuilder.Build();
-            containerResolver = new AutofacContainerResolver(autofacRootContainer, Middleware.AutofacRequestLifetimeScopeOwinMiddleware.TryGetRequestContainer);
+            containerResolver = new AutofacContainerResolver(autofacRootContainer, AutofacRequestLifetimeScopeOwinMiddleware.TryGetRequestContainer);
 
-            return new OwinHostingContext(hostingConfig, containerResolver, new AutofacOwinMiddlewareResolver());
+            return containerResolver;
         }
+
 
         private static IContainerModule CreateContainerModule(ContainerModuleInfo moduleInfo)
         {

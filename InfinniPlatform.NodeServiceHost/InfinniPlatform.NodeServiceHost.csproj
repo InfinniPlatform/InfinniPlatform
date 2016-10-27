@@ -60,7 +60,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ServiceHostInstance.cs" />
     <Compile Include="ServiceHostStatus.cs" />
   </ItemGroup>
   <ItemGroup>

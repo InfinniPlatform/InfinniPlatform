@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Owin.Modules;
+﻿using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Hosting;
 
 using Microsoft.AspNet.SignalR;
 
@@ -9,9 +10,9 @@ namespace InfinniPlatform.PushNotification.Owin
     /// <summary>
     /// Модуль хостинга обработчика запросов ASP.NET SignalR.
     /// </summary>
-    public class SignalROwinHostingModule : IOwinHostingModule
+    internal class SignalROwinHostingMiddleware : OwinHostingMiddleware
     {
-        public SignalROwinHostingModule(IDependencyResolver dependencyResolver)
+        public SignalROwinHostingMiddleware(IDependencyResolver dependencyResolver) : base(HostingMiddlewareType.AfterAuthentication)
         {
             _dependencyResolver = dependencyResolver;
         }
@@ -20,10 +21,7 @@ namespace InfinniPlatform.PushNotification.Owin
         private readonly IDependencyResolver _dependencyResolver;
 
 
-        public OwinHostingModuleType ModuleType => OwinHostingModuleType.AspNetSignalR;
-
-
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public override void Configure(IAppBuilder builder)
         {
             var config = new HubConfiguration
             {

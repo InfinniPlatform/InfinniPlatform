@@ -26,7 +26,7 @@ namespace InfinniPlatform.Owin.Services
     /// модулей Nancy был максимально простым и быстрым.
     /// </remarks>
     [LoggerName("Nancy")]
-    internal sealed class HttpServiceNancyModuleInitializer
+    internal class HttpServiceNancyModuleInitializer
     {
         public HttpServiceNancyModuleInitializer(IMimeTypeResolver mimeTypeResolver,
                                                  IUserIdentityProvider userIdentityProvider,

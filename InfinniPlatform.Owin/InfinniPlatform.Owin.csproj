@@ -77,7 +77,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hosting\OwinHostingServiceFactory.cs" />
+    <Compile Include="Hosting\IHostingService.cs" />
     <Compile Include="Security\IOwinContextProvider.cs" />
     <Compile Include="Security\OwinContextProvider.cs" />
     <Compile Include="Services\EmbeddedStaticContentConventionBuilder.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Services\HttpServiceNancyModule.cs" />
     <Compile Include="Services\HttpServiceSource.cs" />
     <Compile Include="Services\NancyMimeTypeResolver.cs" />
-    <Compile Include="Services\NancyOwinHostingModule.cs" />
+    <Compile Include="Services\NancyOwinHostingMiddleware.cs" />
     <Compile Include="Services\HttpRequestExcutorFactory.cs" />
     <Compile Include="Services\HttpServiceRoute.cs" />
     <Compile Include="Services\HttpServiceBuilder.cs" />
@@ -97,14 +97,11 @@
     <Compile Include="Services\NancyHttpRequestFile.cs" />
     <Compile Include="IoC\OwinContainerModule.cs" />
     <Compile Include="Middleware\ErrorHandlingOwinMiddleware.cs" />
-    <Compile Include="Modules\IOwinHostingContext.cs" />
-    <Compile Include="Modules\IOwinMiddlewareResolver.cs" />
-    <Compile Include="Modules\OwinHostingContext.cs" />
-    <Compile Include="Modules\OwinHostingModuleType.cs" />
-    <Compile Include="Modules\ErrorHandlingOwinHostingModule.cs" />
+    <Compile Include="Middleware\IOwinMiddlewareResolver.cs" />
+    <Compile Include="Middleware\ErrorHandlingOwinHostingMiddleware.cs" />
     <Compile Include="Hosting\HostAddressParser.cs" />
     <Compile Include="Hosting\OwinHostingService.cs" />
-    <Compile Include="Modules\IOwinHostingModule.cs" />
+    <Compile Include="Middleware\OwinHostingMiddleware.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>

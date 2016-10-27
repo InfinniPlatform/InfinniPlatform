@@ -48,14 +48,6 @@ namespace InfinniPlatform.Sdk.Hosting
         /// </example>
         public int Port { get; set; }
 
-        /// <summary>
-        /// Отпечаток сертификата.
-        /// </summary>
-        /// <example>
-        /// 49 09 66 d6 df 5b 95 b5 45 6e 70 79 a0 bf 96 9f 43 62 05 34
-        /// </example>
-        public string Certificate { get; set; }
-
 
         public override string ToString()
         {

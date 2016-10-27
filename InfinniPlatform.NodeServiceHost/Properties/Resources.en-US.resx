@@ -132,6 +132,15 @@
   <data name="ServiceHostHasNotBeenStopped" xml:space="preserve">
     <value>Service host has not been stopped.</value>
   </data>
+  <data name="ServiceHostInitializationCompletedWithAnException" xml:space="preserve">
+    <value>Service host initialization completed with an exception.</value>
+  </data>
+  <data name="ServiceHostInitializationSuccessfullyCompleted" xml:space="preserve">
+    <value>Service host initialization successfully completed.</value>
+  </data>
+  <data name="ServiceHostInitializationWasStarted" xml:space="preserve">
+    <value>Service host initialization was started.</value>
+  </data>
   <data name="ServiceHostIsStarting" xml:space="preserve">
     <value>Service host is starting.</value>
   </data>

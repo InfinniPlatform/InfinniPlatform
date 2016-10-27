@@ -1,7 +1,6 @@
 ﻿using System.Text;
 
 using InfinniPlatform.Core.Compression;
-using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Settings;
@@ -20,8 +19,9 @@ namespace InfinniPlatform.Core.IoC
         {
             // Configuration
 
-            builder.RegisterInstance(AppConfiguration.Instance)
-                   .As<IAppConfiguration>();
+            builder.RegisterType<AppConfiguration>()
+                   .As<IAppConfiguration>()
+                   .SingleInstance();
 
             builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<AppEnvironment>(AppEnvironment.SectionName))
                    .As<IAppEnvironment>()

@@ -106,6 +106,33 @@ namespace InfinniPlatform.NodeServiceHost.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service host initialization completed with an exception..
+        /// </summary>
+        internal static string ServiceHostInitializationCompletedWithAnException {
+            get {
+                return ResourceManager.GetString("ServiceHostInitializationCompletedWithAnException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host initialization successfully completed..
+        /// </summary>
+        internal static string ServiceHostInitializationSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("ServiceHostInitializationSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host initialization was started..
+        /// </summary>
+        internal static string ServiceHostInitializationWasStarted {
+            get {
+                return ResourceManager.GetString("ServiceHostInitializationWasStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service host is starting..
         /// </summary>
         internal static string ServiceHostIsStarting {

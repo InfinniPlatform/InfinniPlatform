@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Owin.Modules;
+﻿using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.Owin.Security.Facebook;
@@ -10,9 +11,9 @@ namespace InfinniPlatform.Authentication.Modules
     /// <summary>
     /// Модуль хостинга обработчика запросов к подсистеме внешней аутентификации через Facebook.
     /// </summary>
-    internal sealed class ExternalAuthFacebookOwinHostingModule : IOwinHostingModule
+    internal sealed class ExternalAuthFacebookOwinHostingMiddleware : OwinHostingMiddleware
     {
-        public ExternalAuthFacebookOwinHostingModule(IAppConfiguration appConfiguration)
+        public ExternalAuthFacebookOwinHostingMiddleware(IAppConfiguration appConfiguration) : base(HostingMiddlewareType.ExternalAuthentication)
         {
             _settings = appConfiguration.GetSection<ExternalAuthFacebookOwinHostingModuleSettings>(ExternalAuthFacebookOwinHostingModuleSettings.SectionName);
         }
@@ -21,10 +22,7 @@ namespace InfinniPlatform.Authentication.Modules
         private readonly ExternalAuthFacebookOwinHostingModuleSettings _settings;
 
 
-        public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
-
-
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public override void Configure(IAppBuilder builder)
         {
             if (_settings.Enable)
             {

@@ -14,7 +14,7 @@ using Microsoft.AspNet.SignalR.Client;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PushNotification.Tests
+namespace InfinniPlatform.PushNotification.Tests.SignalR
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
@@ -68,18 +68,19 @@ namespace InfinniPlatform.PushNotification.Tests
         {
             // Given
 
-            var pushNotificationService = _serviceHost.HostingContext.ContainerResolver.Resolve<IPushNotificationService>();
+            var pushNotificationService = _serviceHost.ContainerResolver.Resolve<IPushNotificationService>();
+            var hostingConfig = _serviceHost.ContainerResolver.Resolve<HostingConfig>();
 
             var receiveEvent = new CountdownEvent(3 + 2 + 1);
 
-            var client1 = new SignalRClient(_serviceHost.HostingContext.Configuration, receiveEvent)
+            var client1 = new SignalRClient(hostingConfig, receiveEvent)
                 .Subscribe("key1");
 
-            var client2 = new SignalRClient(_serviceHost.HostingContext.Configuration, receiveEvent)
+            var client2 = new SignalRClient(hostingConfig, receiveEvent)
                 .Subscribe("key1")
                 .Subscribe("key2");
 
-            var client3 = new SignalRClient(_serviceHost.HostingContext.Configuration, receiveEvent)
+            var client3 = new SignalRClient(hostingConfig, receiveEvent)
                 .Subscribe("key1")
                 .Subscribe("key2")
                 .Subscribe("key3");

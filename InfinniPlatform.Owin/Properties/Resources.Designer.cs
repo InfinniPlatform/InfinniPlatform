@@ -61,6 +61,15 @@ namespace InfinniPlatform.Owin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot initialize service correctly..
+        /// </summary>
+        internal static string CannotInitializeServiceCorrectly {
+            get {
+                return ResourceManager.GetString("CannotInitializeServiceCorrectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot start service correctly..
         /// </summary>
         internal static string CannotStartServiceCorrectly {

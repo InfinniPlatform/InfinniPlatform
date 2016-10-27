@@ -4,7 +4,7 @@ using Nancy;
 
 namespace InfinniPlatform.Owin.Services
 {
-    internal sealed class NancyMimeTypeResolver : IMimeTypeResolver
+    internal class NancyMimeTypeResolver : IMimeTypeResolver
     {
         public string GetMimeType(string fileName)
         {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace InfinniPlatform.Core.Hosting
+﻿namespace InfinniPlatform.Owin.Hosting
 {
     /// <summary>
     /// Сервис хостинга приложения.
@@ -21,15 +19,5 @@ namespace InfinniPlatform.Core.Hosting
         /// Останавливает хостинг приложения.
         /// </summary>
         void Stop();
-
-        /// <summary>
-        /// Событие запуска хостинга приложения.
-        /// </summary>
-        event EventHandler OnAfterStart;
-
-        /// <summary>
-        /// Событие остановки хостинга приложения.
-        /// </summary>
-        event EventHandler OnBeforeStop;
     }
 }

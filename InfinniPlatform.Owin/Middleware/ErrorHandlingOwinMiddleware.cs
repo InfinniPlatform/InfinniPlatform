@@ -12,7 +12,7 @@ namespace InfinniPlatform.Owin.Middleware
     /// Обработчик HTTP-запросов для обработки ошибок выполнения запросов.
     /// </summary>
     [LoggerName("OWIN")]
-    internal sealed class ErrorHandlingOwinMiddleware : OwinMiddleware
+    internal class ErrorHandlingOwinMiddleware : OwinMiddleware
     {
         private static readonly Task EmptyTask = Task.FromResult<object>(null);
 

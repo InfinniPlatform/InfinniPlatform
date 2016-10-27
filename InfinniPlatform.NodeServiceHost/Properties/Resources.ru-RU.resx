@@ -117,25 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfigurationListIsEmpty" xml:space="preserve">
-    <value>Список конфигураций не может быть пустым.</value>
-  </data>
   <data name="ServiceHostHasBeenSuccessfullyStarted" xml:space="preserve">
-    <value>Узел службы успешно запущен.</value>
+    <value>Служба успешно запущена.</value>
   </data>
   <data name="ServiceHostHasBeenSuccessfullyStopped" xml:space="preserve">
-    <value>Узел службы успешно остановлен.</value>
+    <value>Служба успешно остановлена.</value>
   </data>
   <data name="ServiceHostHasNotBeenStarted" xml:space="preserve">
-    <value>Узел службы не удалось запустить.</value>
+    <value>Служба не была запущена.</value>
+  </data>
+  <data name="ServiceHostHasNotBeenStopped" xml:space="preserve">
+    <value>Служба не была остановлена.</value>
+  </data>
+  <data name="ServiceHostInitializationCompletedWithAnException" xml:space="preserve">
+    <value>Инициализация службы завершена с исключением.</value>
+  </data>
+  <data name="ServiceHostInitializationSuccessfullyCompleted" xml:space="preserve">
+    <value>Инициализация службы успешно завершена.</value>
+  </data>
+  <data name="ServiceHostInitializationWasStarted" xml:space="preserve">
+    <value>Инициализация службы запущена.</value>
   </data>
   <data name="ServiceHostIsStarting" xml:space="preserve">
-    <value>Узел службы запускается...</value>
+    <value>Служба запускается.</value>
   </data>
   <data name="ServiceHostIsStopping" xml:space="preserve">
-    <value>Узел службы останавливается</value>
-  </data>
-  <data name="Узел службы" xml:space="preserve">
-    <value>Узел службы не удалось остановить.</value>
+    <value>Служба останавливается.</value>
   </data>
 </root>

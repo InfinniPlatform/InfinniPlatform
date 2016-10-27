@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Cors.Modules;
-using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Cors.IoC
@@ -8,8 +8,8 @@ namespace InfinniPlatform.Cors.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<CorsOwinHostingModule>()
-                .As<IOwinHostingModule>()
+            builder.RegisterType<CorsOwinHostingMiddleware>()
+                .As<IHostingMiddleware>()
                 .SingleInstance();
         }
     }

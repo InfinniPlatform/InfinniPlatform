@@ -10,7 +10,7 @@ namespace InfinniPlatform.Owin.Services
     /// <summary>
     /// Реализация <see cref="IHttpRequestHeaders"/> на базе Nancy.
     /// </summary>
-    internal sealed class NancyHttpRequestHeaders : IHttpRequestHeaders
+    internal class NancyHttpRequestHeaders : IHttpRequestHeaders
     {
         public NancyHttpRequestHeaders(RequestHeaders nancyHeaders)
         {

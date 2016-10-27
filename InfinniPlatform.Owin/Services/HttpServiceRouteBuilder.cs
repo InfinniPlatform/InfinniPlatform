@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Owin.Services
 {
-    internal sealed class HttpServiceRouteBuilder : IHttpServiceRouteBuilder
+    internal class HttpServiceRouteBuilder : IHttpServiceRouteBuilder
     {
         private readonly List<IHttpServiceRoute> _routes = new List<IHttpServiceRoute>();
 

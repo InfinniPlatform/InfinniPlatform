@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Owin.Modules;
+﻿using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.Owin.Security.Google;
@@ -15,9 +16,9 @@ namespace InfinniPlatform.Authentication.Modules
     /// Информация о создании проекта Google:"https://developers.google.com/console/help/#creatingdeletingprojects"
     /// После создания проекта нужно не забыть включить "Google+ API".
     /// </remarks>
-    internal sealed class ExternalAuthGoogleOwinHostingModule : IOwinHostingModule
+    internal sealed class ExternalAuthGoogleOwinHostingMiddleware : OwinHostingMiddleware
     {
-        public ExternalAuthGoogleOwinHostingModule(IAppConfiguration appConfiguration)
+        public ExternalAuthGoogleOwinHostingMiddleware(IAppConfiguration appConfiguration) : base(HostingMiddlewareType.ExternalAuthentication)
         {
             _settings = appConfiguration.GetSection<ExternalAuthGoogleOwinHostingModuleSettings>(ExternalAuthGoogleOwinHostingModuleSettings.SectionName);
         }
@@ -26,9 +27,7 @@ namespace InfinniPlatform.Authentication.Modules
         private readonly ExternalAuthGoogleOwinHostingModuleSettings _settings;
 
 
-        public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
-
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public override void Configure(IAppBuilder builder)
         {
             if (_settings.Enable)
             {
