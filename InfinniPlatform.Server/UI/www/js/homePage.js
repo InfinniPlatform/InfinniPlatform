@@ -1,5 +1,23 @@
-function ShowAppsPanel(context) {
-    context.controls.AppsPanel.setVisible(true);
+function UpdateAppsGrid(context, args) {
+    var selectedItem = context.controls.AgentsTabPanel.getSelectedItem();
+    
+    if (selectedItem !== null && selectedItem !== undefined) {
+        var selectedText = selectedItem.getText();
+        var associatedItem = args.getTag();
+        context.dataSources.AgentsDataSource.setSelectedItem(associatedItem);
+    }
+}
+
+function AgentInfoHeaderConverter(context, args) {
+    var replacements = [
+        args.value.Name,
+        args.value.Address,
+        args.value.Port
+    ];
+
+    var headerText = InfinniUI.StringUtils.format("{0} ({1}:{2})", replacements);
+
+    return headerText;
 }
 
 function PostAppExtensionConfig(context) {

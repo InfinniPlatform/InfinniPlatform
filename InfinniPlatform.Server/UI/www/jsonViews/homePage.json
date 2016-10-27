@@ -35,15 +35,24 @@
     }],
     "Items": [{
         "TabPanel": {
-            "HeaderLocation": "Top",
+            "Name": "AgentsTabPanel",
+            "HeaderLocation": "Left",
             "Items": {
                 "Source": "AgentsDataSource"
             },
             "ItemTemplate": {
                 "TabPage": {
+                    "Tag": {
+                        "Source": "AgentsDataSource",
+                        "Property": "#"
+                    },
                     "Text": {
                         "Source": "AgentsDataSource",
-                        "Property": "#.Address"
+                        "Property": "#",
+                        "Mode": "ToElement",
+                        "Converter": {
+                            "ToElement": "{ return AgentInfoHeaderConverter(context, args); }"
+                        }
                     },
                     "Items": [{
                         "Label": {
@@ -51,6 +60,7 @@
                         }
                     }, {
                         "DataGrid": {
+                            "Name": "AppsGrid",
                             "Columns": [{
                                 "Header": "Id",
                                 "CellProperty": "Id"
@@ -143,7 +153,7 @@
                                                     "Property": "$.Instance"
                                                 }
                                             },
-                                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
+                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                         }
                                     }
                                 }
@@ -186,7 +196,7 @@
                                                     "Property": "$.Instance"
                                                 }
                                             },
-                                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
+                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                         }
                                     }
                                 }
@@ -229,7 +239,7 @@
                                                     "Property": "$.Instance"
                                                 }
                                             },
-                                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
+                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                         }
                                     }
                                 }
@@ -272,7 +282,7 @@
                                                     "Property": "$.Instance"
                                                 }
                                             },
-                                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
+                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                         }
                                     }
                                 }
@@ -349,7 +359,7 @@
                                                     "Property": "$.Instance"
                                                 }
                                             },
-                                            "OnSuccess": "{ RefreshAppsDataSource(context); }"
+                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                         }
                                     }
                                 }
@@ -357,7 +367,8 @@
                         }
                     }]
                 }
-            }
+            },
+            "OnSelectedItemChanged": "{ UpdateAppsGrid(context, args); }"
         }
     }]
 }
