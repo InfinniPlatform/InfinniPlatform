@@ -11,6 +11,11 @@
         "Address": "localhost",
         "Port": 9901,
         "Token": "cc670bc2b2124011a3f92056487f2cf3"
+      },
+      {
+        "Address": "127.0.0.1",
+        "Port": 9901,
+        "Token": "cc670bc2b2124011a3f92056487f2cf3"
       }
     ]
   },
