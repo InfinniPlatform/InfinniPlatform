@@ -1,4 +1,4 @@
-using Autofac;
+﻿using Autofac;
 
 using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Sdk.Hosting;
