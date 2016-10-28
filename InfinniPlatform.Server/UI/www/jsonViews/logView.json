@@ -1,0 +1,138 @@
+{
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+  "Text": "Log files",
+  "Parameters": [{
+    "Name": "AgentAddress"
+  }, {
+    "Name": "AgentPort"
+  }, {
+    "Name": "AppFullName"
+  }],
+  "DataSources": [{
+    "RestDataSource": {
+      "Name": "EventLogSource",
+      "GettingParams": {
+        "Method": "GET",
+        "Path": "/server/appLog",
+        "Data": {
+          "Address": "<%Address%>",
+          "Port": "<%Port%>",
+          "AppFullName": "<%AppFullName%>"
+        },
+        "Params": {
+          "Address": {
+            "Source": "AgentAddress"
+          },
+          "Port": {
+            "Source": "AgentPort"
+          },
+          "AppFullName": {
+            "Source": "AppFullName"
+          }
+        }
+      },
+      "UpdatingItemsConverter": "{ return new Array(args.value.Result); }"
+    }
+  }, {
+    "RestDataSource": {
+      "Name": "PerformanceLogSource",
+      "GettingParams": {
+        "Method": "GET",
+        "Path": "/server/perfLog",
+        "Data": {
+          "Address": "<%Address%>",
+          "Port": "<%Port%>",
+          "AppFullName": "<%AppFullName%>"
+        },
+        "Params": {
+          "Address": {
+            "Source": "AgentAddress"
+          },
+          "Port": {
+            "Source": "AgentPort"
+          },
+          "AppFullName": {
+            "Source": "AppFullName"
+          }
+        }
+      },
+      "UpdatingItemsConverter": "{ return new Array(args.value.Result); }"
+    }
+  }, {
+    "RestDataSource": {
+      "Name": "NodeLogSource",
+      "GettingParams": {
+        "Method": "GET",
+        "Path": "/server/nodeLog",
+        "Data": {
+          "Address": "<%Address%>",
+          "Port": "<%Port%>"
+        },
+        "Params": {
+          "Address": {
+            "Source": "AgentAddress"
+          },
+          "Port": {
+            "Source": "AgentPort"
+          }
+        }
+      },
+      "UpdatingItemsConverter": "{ return new Array(args.value.Result); }"
+    }
+  }],
+  "Items": [{
+    "TabPanel": {
+      "HeaderLocation": "Top",
+      "Items": [{
+        "TabPage": {
+          "Text": "Event log",
+          "Items": [{
+            "TextBox": {
+              "Multiline": true,
+              "LineCount": 30,
+              "Value": {
+                "Source": "EventLogSource",
+                "Property": "$"
+              }
+            }
+          }]
+        }
+      }, {
+        "TabPage": {
+          "Text": "Performance log",
+          "Items": [{
+            "TextBox": {
+              "Multiline": true,
+              "LineCount": 30,
+              "Value": {
+                "Source": "PerformanceLogSource",
+                "Property": "$"
+              }
+            }
+          }]
+        }
+      }, {
+        "TabPage": {
+          "Text": "Infinni.Node log",
+          "Items": [{
+            "TextBox": {
+              "Multiline": true,
+              "LineCount": 30,
+              "Value": {
+                "Source": "NodeLogSource",
+                "Property": "$"
+              }
+            }
+          }]
+        }
+      }]
+    }
+  }, {
+    "Button": {
+      "Text": "Close",
+      "Action": {
+        "CancelAction": {}
+      }
+    }
+  }]
+}

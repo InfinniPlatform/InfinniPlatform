@@ -68,7 +68,7 @@ namespace InfinniPlatform.Server.RestApi
             return await _agentHttpClient.Post<ServiceResult<object>>("config", address, port, arguments);
         }
 
-        private Task<object> GetAppLogFile(IHttpRequest request)
+        private async Task<object> GetAppLogFile(IHttpRequest request)
         {
             string address = request.Query.Address;
             int port = request.Query.Port;
@@ -78,10 +78,10 @@ namespace InfinniPlatform.Server.RestApi
                                 { "AppFullName", (string)request.Query.AppFullName }
                             };
 
-            return WrapStreamResponse(_agentHttpClient.GetStream("appLog", address, port, arguments));
+            return await WrapLogResponse("appLog", address, port, arguments);
         }
 
-        private Task<object> GetPerfLogFile(IHttpRequest request)
+        private async Task<object> GetPerfLogFile(IHttpRequest request)
         {
             string address = request.Query.Address;
             int port = request.Query.Port;
@@ -91,20 +91,39 @@ namespace InfinniPlatform.Server.RestApi
                                 { "AppFullName", (string)request.Query.AppFullName }
                             };
 
-            return WrapStreamResponse(_agentHttpClient.GetStream("perfLog", address, port, arguments));
+            return await WrapLogResponse("perfLog", address, port, arguments);
         }
 
-        private Task<object> GetNodeLogFile(IHttpRequest request)
+        private async Task<object> GetNodeLogFile(IHttpRequest request)
         {
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppFullName", (string)request.Query.AppFullName }
-                            };
+            var arguments = new DynamicWrapper();
 
-            return WrapStreamResponse(_agentHttpClient.GetStream("nodeLog", address, port, arguments));
+            return await WrapLogResponse("nodeLog", address, port, arguments);
+        }
+
+        private async Task<object> WrapLogResponse(string command, string address, int port, DynamicWrapper arguments)
+        {
+            using (var stream = await _agentHttpClient.GetStream(command, address, port, arguments))
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    var text = reader.ReadToEnd();
+
+                    if (string.IsNullOrEmpty(text))
+                    {
+                        text = "Log is empty.";
+                    }
+
+                    return new ServiceResult<string>
+                           {
+                               Success = true,
+                               Result = text
+                           };
+                }
+            }
         }
 
         private static Task<object> WrapStreamResponse(Task<Stream> stream)

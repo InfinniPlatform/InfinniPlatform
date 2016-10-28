@@ -93,8 +93,8 @@
                     "Name": "CloseButton",
                     "Visible": false,
                     "Text": "Done",
-                    "Action":{
-                        "AcceptAction":{}
+                    "Action": {
+                        "AcceptAction": {}
                     }
                 }
             }]

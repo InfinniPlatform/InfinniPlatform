@@ -1,0 +1,59 @@
+{
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+  "Text": "Environment variables",
+  "Parameters": [{
+    "Name": "AgentAddress"
+  }, {
+    "Name": "AgentPort"
+  }],
+  "DataSources": [{
+    "RestDataSource": {
+      "Name": "VariablesSource",
+      "GettingParams": {
+        "Method": "GET",
+        "Path": "/server/variables",
+        "Data": {
+          "Address": "<%Address%>",
+          "Port": "<%Port%>"
+        },
+        "Params": {
+          "Address": {
+            "Source": "AgentAddress"
+          },
+          "Port": {
+            "Source": "AgentPort"
+          }
+        }
+      },
+      "UpdatingItemsConverter": "{ return FormatResult(context, args); }"
+    }
+  }],
+  "Items": [{
+    "ScrollPanel": {
+      "HorizontalScroll": "Hidden",
+      "VerticalScroll": "Visible",
+      "Items": [{
+        "DataGrid": {
+          "Columns": [{
+            "Header": "Name",
+            "CellProperty": "Name"
+          }, {
+            "Header": "Value",
+            "CellProperty": "Value"
+          }],
+          "Items": {
+            "Source": "VariablesSource"
+          },
+          "ShowSelectors": false
+        }
+      }]
+    }
+  }, {
+    "Button": {
+      "Text": "Close",
+      "Action": {
+        "CancelAction": {}
+      }
+    }
+  }]
+}

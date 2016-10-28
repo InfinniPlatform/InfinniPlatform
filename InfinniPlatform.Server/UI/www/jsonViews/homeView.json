@@ -330,6 +330,76 @@
                                 }
                             }, {
                                 "Button": {
+                                    "Name": "envVariables",
+                                    "Text": "Get environment",
+                                    "Action": {
+                                        "OpenAction": {
+                                            "LinkView": {
+                                                "AutoView": {
+                                                    "OpenMode": "Dialog",
+                                                    "DialogWidth": "ExtraLarge",
+                                                    "Path": "jsonViews/environmentView.json",
+                                                    "Parameters": [{
+                                                        "Name": "AgentAddress",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Address"
+                                                        }
+                                                    }, {
+                                                        "Name": "AgentPort",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Port"
+                                                        }
+                                                    }, {
+                                                        "Name": "AppFullName",
+                                                        "Value": {
+                                                            "Source": "AppsDataSource",
+                                                            "Property": "$.AppFullName"
+                                                        }
+                                                    }]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }, {
+                                "Button": {
+                                    "Name": "log",
+                                    "Text": "Get log",
+                                    "Action": {
+                                        "OpenAction": {
+                                            "LinkView": {
+                                                "AutoView": {
+                                                    "OpenMode": "Dialog",
+                                                    "DialogWidth": "ExtraLarge",
+                                                    "Path": "jsonViews/logView.json",
+                                                    "Parameters": [{
+                                                        "Name": "AgentAddress",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Address"
+                                                        }
+                                                    }, {
+                                                        "Name": "AgentPort",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Port"
+                                                        }
+                                                    }, {
+                                                        "Name": "AppFullName",
+                                                        "Value": {
+                                                            "Source": "AppsDataSource",
+                                                            "Property": "$.AppFullName"
+                                                        }
+                                                    }]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }, {
+                                "Button": {
                                     "Name": "restart",
                                     "Text": "Restart",
                                     "Action": {
