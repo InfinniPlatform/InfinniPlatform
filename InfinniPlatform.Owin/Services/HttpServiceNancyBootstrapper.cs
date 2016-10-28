@@ -20,7 +20,7 @@ namespace InfinniPlatform.Owin.Services
     /// <summary>
     /// Настройки Nancy для <see cref="IHttpService" />
     /// </summary>
-    internal sealed class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
+    internal class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
         private static readonly string RazorViewFileExtension = ".cshtml";
 

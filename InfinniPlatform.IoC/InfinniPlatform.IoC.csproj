@@ -60,14 +60,15 @@
     <Compile Include="AutofacContainerRegistrationRule.cs" />
     <Compile Include="AutofacCreateInstanceModule.cs" />
     <Compile Include="BaseDirectoryContainerModuleScanner.cs" />
-    <Compile Include="Owin\AutofacOwinHostingContextFactory.cs" />
+    <Compile Include="Owin\AutofacOwinContainerModule.cs" />
+    <Compile Include="Owin\AutofacOwinContainerResolverFactory.cs" />
     <Compile Include="ContainerModuleInfo.cs" />
     <Compile Include="ContainerModuleLocation.cs" />
     <Compile Include="Owin\AutofacOwinConstants.cs" />
-    <Compile Include="Owin\Middleware\AutofacRequestLifetimeScopeOwinMiddleware.cs" />
-    <Compile Include="Owin\Middleware\AutofacWrapperOwinMiddleware.cs" />
-    <Compile Include="Owin\Modules\AutofacOwinHostingModule.cs" />
-    <Compile Include="Owin\Modules\AutofacOwinMiddlewareResolver.cs" />
+    <Compile Include="Owin\AutofacRequestLifetimeScopeOwinMiddleware.cs" />
+    <Compile Include="Owin\AutofacWrapperOwinMiddleware.cs" />
+    <Compile Include="Owin\AutofacOwinHostingMiddleware.cs" />
+    <Compile Include="Owin\AutofacOwinMiddlewareResolver.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>

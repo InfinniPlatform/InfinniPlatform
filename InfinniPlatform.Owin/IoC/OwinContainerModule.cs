@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.Owin.Hosting;
 using InfinniPlatform.Owin.Middleware;
-using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Security;
 using InfinniPlatform.Owin.Services;
 using InfinniPlatform.Sdk.Hosting;
@@ -17,10 +16,40 @@ namespace InfinniPlatform.Owin.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            // Settings
+
+            builder.RegisterFactory(GetHostingConfig)
+                   .As<HostingConfig>()
+                   .SingleInstance();
+
+            builder.RegisterFactory(GetStaticContentSettings)
+                   .As<StaticContentSettings>()
+                   .SingleInstance();
+
+            // Hosting
+
+            builder.RegisterType<HostAddressParser>()
+                   .As<IHostAddressParser>()
+                   .SingleInstance();
+
+            builder.RegisterType<OwinHostingService>()
+                   .As<IHostingService>()
+                   .SingleInstance();
+
+            // Middlewares
+
+            builder.RegisterType<ErrorHandlingOwinHostingMiddleware>()
+                   .As<IHostingMiddleware>()
+                   .SingleInstance();
+
+            builder.RegisterType<ErrorHandlingOwinMiddleware>()
+                   .AsSelf()
+                   .SingleInstance();
+
             // Nancy
 
-            builder.RegisterType<NancyOwinHostingModule>()
-                   .As<IOwinHostingModule>()
+            builder.RegisterType<NancyOwinHostingMiddleware>()
+                   .As<IHostingMiddleware>()
                    .SingleInstance();
 
             builder.RegisterType<HttpServiceNancyBootstrapper>()
@@ -62,28 +91,18 @@ namespace InfinniPlatform.Owin.IoC
             builder.RegisterType<HttpServiceContextProvider>()
                    .As<IHttpServiceContextProvider>()
                    .SingleInstance();
-
-            // ErrorHandling
-
-            builder.RegisterType<ErrorHandlingOwinHostingModule>()
-                   .As<IOwinHostingModule>()
-                   .SingleInstance();
-
-            builder.RegisterType<ErrorHandlingOwinMiddleware>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            // StaticContent
-
-            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<StaticContentSettings>(StaticContentSettings.SectionName))
-                   .As<StaticContentSettings>()
-                   .SingleInstance();
-
-            // Hosting
-
-            builder.RegisterInstance(HostAddressParser.Default)
-                   .As<IHostAddressParser>()
-                   .SingleInstance();
         }
+
+
+        private static HostingConfig GetHostingConfig(IContainerResolver resolver)
+        {
+            return resolver.Resolve<IAppConfiguration>().GetSection<HostingConfig>(HostingConfig.SectionName);
+        }
+
+        private static StaticContentSettings GetStaticContentSettings(IContainerResolver resolver)
+        {
+            return resolver.Resolve<IAppConfiguration>().GetSection<StaticContentSettings>(StaticContentSettings.SectionName);
+        }
+
     }
 }

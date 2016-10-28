@@ -7,7 +7,7 @@ using Autofac.Core.Lifetime;
 
 using Microsoft.Owin;
 
-namespace InfinniPlatform.IoC.Owin.Middleware
+namespace InfinniPlatform.IoC.Owin
 {
     /// <summary>
     /// Слой OWIN для регистрации контейнера зависимостей запроса.
@@ -20,12 +20,15 @@ namespace InfinniPlatform.IoC.Owin.Middleware
     {
         private const string RequestContainerKey = "RequestContainer";
 
+
         public AutofacRequestLifetimeScopeOwinMiddleware(OwinMiddleware next, ILifetimeScope rootContainer) : base(next)
         {
             _rootContainer = rootContainer;
         }
 
+
         private readonly ILifetimeScope _rootContainer;
+
 
         public override async Task Invoke(IOwinContext context)
         {
@@ -49,6 +52,7 @@ namespace InfinniPlatform.IoC.Owin.Middleware
                 }
             }
         }
+
 
         /// <summary>
         /// Устанавливает контейнер зависимостей запроса.
@@ -76,25 +80,25 @@ namespace InfinniPlatform.IoC.Owin.Middleware
             ILifetimeScope requestContainer;
             var noSerializeAppDomain = CallContext.LogicalGetData(RequestContainerKey) as NoSerializeAppDomain;
             var requestContainerReference = noSerializeAppDomain?.LifetimeScope;
-            return requestContainerReference != null && requestContainerReference.TryGetTarget(out requestContainer)
-                       ? requestContainer
-                       : null;
+            return (requestContainerReference != null && requestContainerReference.TryGetTarget(out requestContainer)) ? requestContainer : null;
         }
 
 
         /// <summary>
-        /// Обертка, позволяющая передавать <see cref="ILifetimeScope" /> между потоками, но не позволяет передавать
-        /// <see cref="ILifetimeScope" /> между доменами приложений.
+        /// Обертка, позволяющая передавать <see cref="ILifetimeScope" /> между потоками, но не между <see cref="AppDomain" />.
         /// </summary>
         /// <remarks>
         /// Необходимость в этом классе появилась ввиду следующих причин:
-        /// 1) <see cref="CallContext" /> передает данные не только между потоками, но и между доменами приложения.
-        /// 2) Для передачи контекста между доменами, он должен быть сериализуемым.
-        /// 3) Библиотека Autofac (следовательно и реализации <see cref="ILifetimeScope" />) не поддерживает бинарную сериализацию,
-        /// т.к является кроссплатформенной.
-        /// (см.
-        /// http://www.wintellect.com/devcenter/jeffreyr/logical-call-context-flowing-data-across-threads-appdomains-and-processes
-        /// и https://github.com/autofac/Autofac/issues/456)
+        /// <list type="bullet">
+        /// <item>механизм на базе <see cref="CallContext" /> передает данные не только между потоками, но и между <see cref="AppDomain" />;</item>
+        /// <item>данные, передаваемые между <see cref="AppDomain" />, должны быть помечены атрибутом <see cref="SerializableAttribute"/>;</item>
+        /// <item>экземпляр <see cref="ILifetimeScope" /> не может быть сериализован по целому ряду причин.</item>
+        /// </list>
+        /// Дополнительные материалы:
+        /// <list type="bullet">
+        /// <item>http://www.wintellect.com/devcenter/jeffreyr/logical-call-context-flowing-data-across-threads-appdomains-and-processes</item>
+        /// <item>https://github.com/autofac/Autofac/issues/456</item>
+        /// </list>
         /// </remarks>
         [Serializable]
         private class NoSerializeAppDomain

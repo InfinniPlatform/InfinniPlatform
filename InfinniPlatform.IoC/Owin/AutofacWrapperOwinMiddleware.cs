@@ -5,7 +5,7 @@ using Autofac.Core;
 
 using Microsoft.Owin;
 
-namespace InfinniPlatform.IoC.Owin.Middleware
+namespace InfinniPlatform.IoC.Owin
 {
     /// <summary>
     /// Представляет фиктивный класс-обертку над реальным слоем OWIN для возможности его создания через контейнер зависимостей.

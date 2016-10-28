@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.Authentication.Modules
 {
     /// <summary>
-    /// Настройки модуля <see cref="CookieAuthOwinHostingModule"/>.
+    /// Настройки модуля <see cref="CookieAuthOwinHostingMiddleware"/>.
     /// </summary>
     internal sealed class CookieAuthOwinHostingModuleSettings
     {

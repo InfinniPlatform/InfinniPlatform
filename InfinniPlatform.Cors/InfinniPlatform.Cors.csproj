@@ -61,7 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modules\CorsOwinHostingModule.cs" />
+    <Compile Include="Modules\CorsOwinHostingMiddleware.cs" />
     <Compile Include="IoC\CorsContainerModule.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

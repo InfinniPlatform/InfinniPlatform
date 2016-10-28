@@ -10,7 +10,7 @@ namespace InfinniPlatform.Owin.Services
     /// <summary>
     /// Фабрика создания функции обработки запросов.
     /// </summary>
-    internal sealed class HttpRequestExcutorFactory
+    internal class HttpRequestExcutorFactory
     {
         public HttpRequestExcutorFactory(ILog log)
         {

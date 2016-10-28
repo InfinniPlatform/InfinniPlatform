@@ -2,11 +2,13 @@
 {
     public enum ServiceHostStatus
     {
-        Stopped,
-        InitializationPending,
-        Initializing,
+        InitializePending,
+        Initialized,
+
         StartPending,
-        Running,
-        StopPending
+        Started,
+
+        StopPending,
+        Stopped
     }
 }

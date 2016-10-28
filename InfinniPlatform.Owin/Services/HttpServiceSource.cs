@@ -7,7 +7,7 @@ namespace InfinniPlatform.Owin.Services
     /// <summary>
     /// Источник зарегистрированных сервисов.
     /// </summary>
-    internal sealed class HttpServiceSource : IHttpServiceSource
+    internal class HttpServiceSource : IHttpServiceSource
     {
         public HttpServiceSource(IEnumerable<IHttpService> httpServices)
         {

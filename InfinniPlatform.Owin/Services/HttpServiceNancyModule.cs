@@ -7,7 +7,7 @@ namespace InfinniPlatform.Owin.Services
     /// <summary>
     /// Модуль Nancy для сервиса <see cref="IHttpService"/>.
     /// </summary>
-    internal sealed class HttpServiceNancyModule<TService> : NancyModule where TService : IHttpService
+    internal class HttpServiceNancyModule<TService> : NancyModule where TService : IHttpService
     {
         public HttpServiceNancyModule(HttpServiceNancyModuleInitializer initializer)
         {

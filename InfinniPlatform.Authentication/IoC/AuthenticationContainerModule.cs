@@ -6,7 +6,8 @@ using InfinniPlatform.Authentication.Security;
 using InfinniPlatform.Authentication.Services;
 using InfinniPlatform.Authentication.UserStorage;
 using InfinniPlatform.Core.Security;
-using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Metadata.Documents;
 using InfinniPlatform.Sdk.Queues;
@@ -44,28 +45,28 @@ namespace InfinniPlatform.Authentication.IoC
 
             // Модули аутентификации
 
-            builder.RegisterType<CookieAuthOwinHostingModule>()
-                   .As<IOwinHostingModule>()
+            builder.RegisterType<CookieAuthOwinHostingMiddleware>()
+                   .As<IHostingMiddleware>()
                    .SingleInstance();
 
-            builder.RegisterType<ExternalAuthAdfsOwinHostingModule>()
-                   .As<IOwinHostingModule>()
+            builder.RegisterType<ExternalAuthAdfsOwinHostingMiddleware>()
+                   .As<IHostingMiddleware>()
                    .SingleInstance();
 
-            builder.RegisterType<ExternalAuthFacebookOwinHostingModule>()
-                   .As<IOwinHostingModule>()
+            builder.RegisterType<ExternalAuthFacebookOwinHostingMiddleware>()
+                   .As<IHostingMiddleware>()
                    .SingleInstance();
 
-            builder.RegisterType<ExternalAuthGoogleOwinHostingModule>()
-                   .As<IOwinHostingModule>()
+            builder.RegisterType<ExternalAuthGoogleOwinHostingMiddleware>()
+                   .As<IHostingMiddleware>()
                    .SingleInstance();
 
-            builder.RegisterType<ExternalAuthVkOwinHostingModule>()
-                   .As<IOwinHostingModule>()
+            builder.RegisterType<ExternalAuthVkOwinHostingMiddleware>()
+                   .As<IHostingMiddleware>()
                    .SingleInstance();
 
-            builder.RegisterType<InternalAuthOwinHostingModule>()
-                   .As<IOwinHostingModule>()
+            builder.RegisterType<InternalAuthOwinHostingMiddleware>()
+                   .As<IHostingMiddleware>()
                    .SingleInstance();
 
             builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<UserStorageSettings>(UserStorageSettings.SectionName))

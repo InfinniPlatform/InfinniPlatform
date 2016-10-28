@@ -9,7 +9,7 @@ namespace InfinniPlatform.Owin.Services
     /// <summary>
     /// Реализация <see cref="IHttpRequestFile"/> на базе Nancy.
     /// </summary>
-    internal sealed class NancyHttpRequestFile : IHttpRequestFile
+    internal class NancyHttpRequestFile : IHttpRequestFile
     {
         public NancyHttpRequestFile(HttpFile nancyFile)
         {

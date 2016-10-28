@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Owin.Modules;
 using InfinniPlatform.Owin.Properties;
+using InfinniPlatform.Sdk.Hosting;
 
 using Microsoft.Owin.Hosting;
 
@@ -16,25 +15,16 @@ namespace InfinniPlatform.Owin.Hosting
     /// <summary>
     /// Сервис хостинга приложения на базе OWIN.
     /// </summary>
-    public sealed class OwinHostingService : IHostingService
+    public class OwinHostingService : IHostingService
     {
-        public OwinHostingService(IOwinHostingContext hostingContext)
+        public OwinHostingService(HostingConfig hostingConfig,
+                                  IHostAddressParser hostAddressParser,
+                                  IEnumerable<IHostingMiddleware> hostingMiddlewares = null,
+                                  IEnumerable<IAppEventHandler> appEventHandlers = null)
         {
-            if (hostingContext == null)
-            {
-                throw new ArgumentNullException(nameof(hostingContext));
-            }
-
-            // Проверка наличия конфигурации
-
-            if (hostingContext.Configuration == null)
-            {
-                throw new ArgumentNullException(Resources.ServerConfigurationCannotBeNull);
-            }
-
             // Имя схемы протокола сервера
 
-            var scheme = hostingContext.Configuration.Scheme;
+            var scheme = hostingConfig.Scheme;
 
             if (string.IsNullOrWhiteSpace(scheme))
             {
@@ -49,51 +39,72 @@ namespace InfinniPlatform.Owin.Hosting
 
             // Адрес или имя сервера
 
-            var server = hostingContext.Configuration.Name;
+            var server = hostingConfig.Name;
 
             if (string.IsNullOrWhiteSpace(server))
             {
                 throw new ArgumentNullException(Resources.ServerNameCannotBeNullOrWhiteSpace);
             }
 
-            if (!HostAddressParser.Default.IsLocalAddress(server, out server))
+            if (!hostAddressParser.IsLocalAddress(server, out server))
             {
                 throw new ArgumentOutOfRangeException(string.Format(Resources.ServerNameIsNotLocal, server));
             }
 
             // Номер порта сервера
 
-            var port = hostingContext.Configuration.Port;
+            var port = hostingConfig.Port;
 
             if (port <= 0)
             {
                 throw new ArgumentOutOfRangeException(string.Format(Resources.ServerPortIsIncorrect, port));
             }
 
-            // Отпечаток сертификата
+            _baseAddress = $"{scheme}://{server}:{port}/";
 
-            var certificate = hostingContext.Configuration.Certificate;
+            // Функция настройки порядка обработки запросов приложения
 
-            if (Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase) && string.IsNullOrWhiteSpace(certificate))
+            if (hostingMiddlewares != null)
             {
-                throw new ArgumentNullException(Resources.ServerCertificateCannotBeNullOrWhiteSpace);
+                hostingMiddlewares = hostingMiddlewares.OrderBy(m => m.Type);
+
+                foreach (var hostingMiddleware in hostingMiddlewares)
+                {
+                    _configure += hostingMiddleware.Configure;
+                }
             }
 
+            // Функции обработки событий приложения
 
-            _hostingContext = hostingContext;
+            if (appEventHandlers != null)
+            {
+                appEventHandlers = appEventHandlers.OrderBy(i => i.Order).ToList();
 
-            _baseAddress = $"{scheme}://{server}:{port}/";
-            _hostingModules = hostingContext.ContainerResolver.Resolve<IEnumerable<IOwinHostingModule>>().OrderBy(m => m.ModuleType);
+                foreach (var appEventHandler in appEventHandlers)
+                {
+                    _onInit += appEventHandler.OnInit;
+                    _onBeforeStart += appEventHandler.OnBeforeStart;
+                    _onAfterStart += appEventHandler.OnAfterStart;
+                    _onBeforeStop += appEventHandler.OnBeforeStop;
+                    _onAfterStop += appEventHandler.OnAfterStop;
+                }
+            }
         }
 
 
-        private readonly IOwinHostingContext _hostingContext;
-
         private readonly string _baseAddress;
-        private readonly IEnumerable<IOwinHostingModule> _hostingModules;
+
+        private readonly Action<object> _configure;
+
+        private readonly Action _onInit;
+        private readonly Action _onBeforeStart;
+        private readonly Action _onAfterStart;
+        private readonly Action _onBeforeStop;
+        private readonly Action _onAfterStop;
 
         private readonly object _hostSync = new object();
         private volatile IDisposable _host;
+
 
         public void Init()
         {
@@ -105,11 +116,11 @@ namespace InfinniPlatform.Owin.Hosting
                     {
                         try
                         {
-                            OnInit?.Invoke(this, EventArgs.Empty);
+                            _onInit?.Invoke();
                         }
                         catch (Exception exception)
                         {
-                            throw new AggregateException("Cannot initialize service correctly.", exception);
+                            throw new AggregateException(Resources.CannotInitializeServiceCorrectly, exception);
                         }
                     }
                 }
@@ -128,11 +139,11 @@ namespace InfinniPlatform.Owin.Hosting
 
                         try
                         {
-                            OnBeforeStart?.Invoke(this, EventArgs.Empty);
+                            _onBeforeStart?.Invoke();
 
                             host = WebApp.Start(_baseAddress, Startup);
 
-                            OnAfterStart?.Invoke(this, EventArgs.Empty);
+                            _onAfterStart?.Invoke();
                         }
                         catch (Exception exception)
                         {
@@ -165,7 +176,7 @@ namespace InfinniPlatform.Owin.Hosting
 
                         try
                         {
-                            OnBeforeStop?.Invoke(this, EventArgs.Empty);
+                            _onBeforeStop?.Invoke();
                         }
                         catch (Exception exception)
                         {
@@ -187,7 +198,7 @@ namespace InfinniPlatform.Owin.Hosting
 
                         try
                         {
-                            OnAfterStop?.Invoke(this, EventArgs.Empty);
+                            _onAfterStop?.Invoke();
                         }
                         catch (Exception exception)
                         {
@@ -203,18 +214,6 @@ namespace InfinniPlatform.Owin.Hosting
             }
         }
 
-
-        public event EventHandler OnInit;
-
-        public event EventHandler OnBeforeStart;
-
-        public event EventHandler OnAfterStart;
-
-        public event EventHandler OnBeforeStop;
-
-        public event EventHandler OnAfterStop;
-
-
         private void Startup(IAppBuilder builder)
         {
             object httpListener;
@@ -225,10 +224,7 @@ namespace InfinniPlatform.Owin.Hosting
                 ((HttpListener)httpListener).IgnoreWriteExceptions = true;
             }
 
-            foreach (var module in _hostingModules)
-            {
-                module.Configure(builder, _hostingContext);
-            }
+            _configure?.Invoke(builder);
         }
     }
 }

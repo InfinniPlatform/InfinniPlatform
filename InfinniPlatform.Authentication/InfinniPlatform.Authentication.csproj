@@ -130,18 +130,18 @@
     <Compile Include="IoC\AuthenticationContainerModule.cs" />
     <Compile Include="Modules\CookieAuthOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthAdfsOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\ExternalAuthAdfsOwinHostingModule.cs" />
-    <Compile Include="Modules\ExternalAuthFacebookOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthAdfsOwinHostingMiddleware.cs" />
+    <Compile Include="Modules\ExternalAuthFacebookOwinHostingMiddleware.cs" />
     <Compile Include="Modules\ExternalAuthFacebookOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\ExternalAuthGoogleOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthGoogleOwinHostingMiddleware.cs" />
     <Compile Include="Modules\ExternalAuthGoogleOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\ExternalAuthVkOwinHostingModule.cs" />
+    <Compile Include="Modules\ExternalAuthVkOwinHostingMiddleware.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUser.cs" />
     <Compile Include="InternalIdentity\IdentityAppUserManager.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserPasswordHasher.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserValidator.cs" />
     <Compile Include="Modules\ExternalAuthVkOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\InternalAuthOwinHostingModule.cs" />
+    <Compile Include="Modules\InternalAuthOwinHostingMiddleware.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
@@ -151,7 +151,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Modules\CookieAuthOwinHostingModule.cs" />
+    <Compile Include="Modules\CookieAuthOwinHostingMiddleware.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
     <Compile Include="RazorViews\RazorViewsHttpService.cs" />
     <Compile Include="Security\UserIdentityProvider.cs" />

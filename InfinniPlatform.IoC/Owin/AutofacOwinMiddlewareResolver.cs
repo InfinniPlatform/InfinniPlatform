@@ -1,11 +1,10 @@
 ﻿using System;
 
-using InfinniPlatform.IoC.Owin.Middleware;
-using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Owin.Middleware;
 
 using Microsoft.Owin;
 
-namespace InfinniPlatform.IoC.Owin.Modules
+namespace InfinniPlatform.IoC.Owin
 {
     internal sealed class AutofacOwinMiddlewareResolver : IOwinMiddlewareResolver
     {

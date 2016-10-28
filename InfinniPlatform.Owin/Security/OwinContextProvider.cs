@@ -4,14 +4,16 @@ using Microsoft.Owin;
 
 namespace InfinniPlatform.Owin.Security
 {
-    internal sealed class OwinContextProvider : IOwinContextProvider
+    internal class OwinContextProvider : IOwinContextProvider
     {
         public OwinContextProvider(IContainerResolver containerResolver)
         {
             _containerResolver = containerResolver;
         }
 
+
         private readonly IContainerResolver _containerResolver;
+
 
         public IOwinContext GetOwinContext()
         {

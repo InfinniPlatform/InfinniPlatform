@@ -1,7 +1,8 @@
 ﻿using System;
 
 using InfinniPlatform.Authentication.DataProtectors;
-using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.Identity;
@@ -16,21 +17,20 @@ namespace InfinniPlatform.Authentication.Modules
     /// <summary>
     /// Модуль хостинга обработчика запросов аутентификации через Cookie.
     /// </summary>
-    internal sealed class CookieAuthOwinHostingModule : IOwinHostingModule
+    internal sealed class CookieAuthOwinHostingMiddleware : OwinHostingMiddleware
     {
-        public CookieAuthOwinHostingModule(IAppConfiguration appConfiguration)
+        public CookieAuthOwinHostingMiddleware(IAppConfiguration appConfig, HostingConfig hostingConfig) : base(HostingMiddlewareType.AuthenticationBarrier)
         {
-            _settings = appConfiguration.GetSection<CookieAuthOwinHostingModuleSettings>(CookieAuthOwinHostingModuleSettings.SectionName);
+            _hostingConfig = hostingConfig;
+            _settings = appConfig.GetSection<CookieAuthOwinHostingModuleSettings>(CookieAuthOwinHostingModuleSettings.SectionName);
         }
 
 
         private readonly CookieAuthOwinHostingModuleSettings _settings;
+        private readonly HostingConfig _hostingConfig;
 
 
-        public OwinHostingModuleType ModuleType => OwinHostingModuleType.CookieAuth;
-
-
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public override void Configure(IAppBuilder builder)
         {
             // Домен для создания cookie
             var cookieDomain = _settings.CookieDomain;
@@ -54,7 +54,7 @@ namespace InfinniPlatform.Authentication.Modules
                 cookieAuthOptions.CookieDomain = cookieDomain;
             }
 
-            if (Uri.UriSchemeHttps.Equals(context.Configuration.Scheme, StringComparison.OrdinalIgnoreCase))
+            if (Uri.UriSchemeHttps.Equals(_hostingConfig.Scheme, StringComparison.OrdinalIgnoreCase))
             {
                 cookieAuthOptions.CookieSecure = CookieSecureOption.Always;
             }

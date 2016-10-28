@@ -11,7 +11,7 @@ using Nancy.Responses;
 
 namespace InfinniPlatform.Owin.Services
 {
-    public static class EmbeddedStaticContentConventionBuilder
+    internal static class EmbeddedStaticContentConventionBuilder
     {
         private const string PathSeparator = "/";
         private static readonly ConcurrentDictionary<string, Func<Response>> ResponseFactoryCache;
@@ -22,7 +22,7 @@ namespace InfinniPlatform.Owin.Services
         }
 
         /// <summary>
-        /// Добавляе соглашение по путям к файлам встроенных ресурсов.
+        /// Добавляет соглашение по путям к файлам встроенных ресурсов.
         /// </summary>
         /// <param name="conventions">Соглашения по путям к статическому контенту.</param>
         /// <param name="requestedPath">The path that should be matched with the request.</param>

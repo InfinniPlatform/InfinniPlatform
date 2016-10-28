@@ -5,7 +5,7 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Owin.Services
 {
-    internal sealed class HttpServiceRoute : IHttpServiceRoute
+    internal class HttpServiceRoute : IHttpServiceRoute
     {
         public HttpServiceRoute(string path, Func<IHttpRequest, Task<object>> action)
         {

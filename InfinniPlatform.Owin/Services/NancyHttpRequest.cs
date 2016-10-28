@@ -16,7 +16,7 @@ namespace InfinniPlatform.Owin.Services
     /// <summary>
     /// Реализация <see cref="IHttpRequest"/> на базе Nancy.
     /// </summary>
-    internal sealed class NancyHttpRequest : IHttpRequest
+    internal class NancyHttpRequest : IHttpRequest
     {
         public NancyHttpRequest(NancyContext nancyContext, Func<IIdentity> userIdentityProvider, IJsonObjectSerializer jsonObjectSerializer)
         {

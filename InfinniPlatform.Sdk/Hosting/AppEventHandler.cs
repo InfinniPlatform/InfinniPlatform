@@ -5,15 +5,21 @@
     /// </summary>
     public abstract class AppEventHandler : IAppEventHandler
     {
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="order">Порядковый номер при выполнении.</param>
         protected AppEventHandler(int order = 0)
         {
             Order = order;
         }
 
+
         /// <summary>
         /// Порядковый номер при выполнении.
         /// </summary>
         public int Order { get; }
+
 
         /// <summary>
         /// Вызывается при инициализации приложения.
@@ -21,6 +27,7 @@
         public virtual void OnInit()
         {
         }
+
 
         /// <summary>
         /// Вызывается перед запуском приложения.
@@ -35,6 +42,7 @@
         public virtual void OnAfterStart()
         {
         }
+
 
         /// <summary>
         /// Вызывается перед остановкой приложения.

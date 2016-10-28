@@ -9,12 +9,6 @@ namespace InfinniPlatform.Core.Settings
 {
     public sealed class AppConfiguration : IAppConfiguration
     {
-        /// <summary>
-        /// Статический экземпляр.
-        /// </summary>
-        public static readonly AppConfiguration Instance = new AppConfiguration();
-
-
         public AppConfiguration()
         {
             _appConfig = new Lazy<JObject>(ReadAppConfig);

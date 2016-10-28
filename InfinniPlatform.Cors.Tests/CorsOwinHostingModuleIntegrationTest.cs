@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -7,13 +6,10 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Cors.Modules;
 using InfinniPlatform.Owin.Hosting;
-using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Owin.Middleware;
 using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.IoC;
 
 using Microsoft.Owin;
-
-using Moq;
 
 using NUnit.Framework;
 
@@ -24,34 +20,24 @@ namespace InfinniPlatform.Cors.Tests
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
     [Ignore("Because need process AppDomain.AssemblyResolve")]
-    public sealed class CorsOwinHostingModuleIntegrationTest
+    public class CorsOwinHostingModuleIntegrationTest
     {
-        private static IOwinHostingContext CreateTestOwinHostingContext(params IOwinHostingModule[] owinHostingModules)
-        {
-            var containerResolverMoq = new Mock<IContainerResolver>();
-            containerResolverMoq.Setup(i => i.Resolve<IEnumerable<IOwinHostingModule>>()).Returns(owinHostingModules);
-
-            var hostingContextMoq = new Mock<IOwinHostingContext>();
-            hostingContextMoq.SetupGet(i => i.Configuration).Returns(new HostingConfig { Port = 9901 });
-            hostingContextMoq.SetupGet(i => i.ContainerResolver).Returns(containerResolverMoq.Object);
-
-            return hostingContextMoq.Object;
-        }
-
-
         [Test]
         public void ServerReplyShouldContainsAccessControlAllowOrigin()
         {
-            var owinHostingContext = CreateTestOwinHostingContext(new CorsOwinHostingModule(), new FakeOwinHostingModule());
-            var owinHostingService = new OwinHostingService(owinHostingContext);
+            var hostingConfig = HostingConfig.Default;
 
-            owinHostingService.Start();
+            var hostingMiddlewares = new IHostingMiddleware[] { new CorsOwinHostingMiddleware(), new FakeOwinHostingMiddleware() };
+
+            var hostingService = new OwinHostingService(hostingConfig, new HostAddressParser(), hostingMiddlewares);
+
+            hostingService.Start();
 
             try
             {
                 // Given
 
-                var requestUri = new Uri($"{owinHostingContext.Configuration.Scheme}://{owinHostingContext.Configuration.Name}:{owinHostingContext.Configuration.Port}/some/resource");
+                var requestUri = new Uri($"{hostingConfig.Scheme}://{hostingConfig.Name}:{hostingConfig.Port}/some/resource");
                 var request = WebRequest.Create(requestUri);
                 request.Method = "GET";
                 request.Headers.Add("Origin", "null");
@@ -69,18 +55,20 @@ namespace InfinniPlatform.Cors.Tests
             }
             finally
             {
-                owinHostingService.Stop();
+                hostingService.Stop();
             }
         }
     }
 
 
-    internal sealed class FakeOwinHostingModule : IOwinHostingModule
+    internal sealed class FakeOwinHostingMiddleware : OwinHostingMiddleware
     {
-        public OwinHostingModuleType ModuleType => OwinHostingModuleType.Application;
+        public FakeOwinHostingMiddleware() : base(HostingMiddlewareType.Application)
+        {
+        }
 
 
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public override void Configure(IAppBuilder builder)
         {
             builder.Use(typeof(FakeOwinHandler));
         }

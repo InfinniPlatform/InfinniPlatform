@@ -337,7 +337,7 @@ namespace InfinniPlatform.Conventions
             }
 
             // Then
-            Assert.IsTrue(result.Count == 0, @"Все файлы *.cs должны быть в кодировке UTF-8:{0}{1}", Environment.NewLine, string.Join(Environment.NewLine, result));
+            Assert.IsTrue(result.Count == 0, @"Все файлы *.cs должны быть в кодировке UTF-8: {0}", string.Join("; ", result));
         }
 
         [Test]

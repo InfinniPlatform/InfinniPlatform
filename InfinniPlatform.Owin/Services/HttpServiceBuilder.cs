@@ -5,7 +5,7 @@ using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Owin.Services
 {
-    internal sealed class HttpServiceBuilder : IHttpServiceBuilder
+    internal class HttpServiceBuilder : IHttpServiceBuilder
     {
         public HttpServiceBuilder()
         {

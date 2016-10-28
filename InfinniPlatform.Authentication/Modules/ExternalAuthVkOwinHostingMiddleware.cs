@@ -1,6 +1,7 @@
 ﻿using Duke.Owin.VkontakteMiddleware;
 
-using InfinniPlatform.Owin.Modules;
+using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Settings;
 
 using Owin;
@@ -10,9 +11,9 @@ namespace InfinniPlatform.Authentication.Modules
     /// <summary>
     /// Модуль хостинга обработчика запросов к подсистеме внешней аутентификации через ВКонтакте.
     /// </summary>
-    internal sealed class ExternalAuthVkOwinHostingModule : IOwinHostingModule
+    internal sealed class ExternalAuthVkOwinHostingMiddleware : OwinHostingMiddleware
     {
-        public ExternalAuthVkOwinHostingModule(IAppConfiguration appConfiguration)
+        public ExternalAuthVkOwinHostingMiddleware(IAppConfiguration appConfiguration) : base(HostingMiddlewareType.ExternalAuthentication)
         {
             _settings = appConfiguration.GetSection<ExternalAuthVkOwinHostingModuleSettings>(ExternalAuthVkOwinHostingModuleSettings.SectionName);
         }
@@ -21,10 +22,7 @@ namespace InfinniPlatform.Authentication.Modules
         private readonly ExternalAuthVkOwinHostingModuleSettings _settings;
 
 
-        public OwinHostingModuleType ModuleType => OwinHostingModuleType.ExternalAuth;
-
-
-        public void Configure(IAppBuilder builder, IOwinHostingContext context)
+        public override void Configure(IAppBuilder builder)
         {
             if (_settings.Enable)
             {

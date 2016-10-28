@@ -12,7 +12,7 @@ namespace InfinniPlatform.Owin.Services
     /// <summary>
     /// Каталог модулей Nancy для сервисов <see cref="IHttpService" />.
     /// </summary>
-    internal sealed class HttpServiceNancyModuleCatalog : INancyModuleCatalog
+    internal class HttpServiceNancyModuleCatalog : INancyModuleCatalog
     {
         public HttpServiceNancyModuleCatalog(IContainerResolver containerResolver, HttpServiceNancyModuleInitializer httpServiceNancyModuleInitializer)
         {

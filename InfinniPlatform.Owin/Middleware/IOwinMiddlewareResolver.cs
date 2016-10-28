@@ -4,7 +4,7 @@ using Microsoft.Owin;
 
 using Owin;
 
-namespace InfinniPlatform.Owin.Modules
+namespace InfinniPlatform.Owin.Middleware
 {
     /// <summary>
     /// Провайдер разрешения типа обработчика запросов OWIN для регистрации в <see cref="IAppBuilder"/>.
