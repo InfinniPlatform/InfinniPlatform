@@ -1,4 +1,5 @@
 ﻿{
+    "OnLoaded": "{ Subscribe(context, args); }",
     "DataSources": [{
         "RestDataSource": {
             "Name": "AgentsDataSource",
@@ -80,7 +81,6 @@
                             "Items": {
                                 "Source": "AppsDataSource"
                             },
-                            "OnRowClick": "{console.log(context.dataSources.AppsDataSource.getSelectedItem());}",
                             "ShowSelectors": false
                         }
                     }, {
@@ -92,10 +92,18 @@
                                     "Name": "install",
                                     "Text": "Install new app",
                                     "Action": {
-                                        "OpenAction": {
+                                        "AddAction": {
+                                            "SourceValue": {
+                                                "Source": "AppsDataSource"
+                                            },
+                                            "DestinationValue": {
+                                                "Source": "AppsDataSource",
+                                                "Property": ""
+                                            },
                                             "LinkView": {
                                                 "AutoView": {
                                                     "OpenMode": "Dialog",
+                                                    "DialogWidth": "Large",
                                                     "Path": "jsonViews/installView.json",
                                                     "Parameters": [{
                                                         "Name": "AgentAddress",

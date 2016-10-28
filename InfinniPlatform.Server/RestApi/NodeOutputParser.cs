@@ -19,7 +19,7 @@ namespace InfinniPlatform.Server.RestApi
 
         private readonly IJsonObjectSerializer _serializer;
 
-        public ServiceResult<ProcessResult> FormatAppsStatusOutput(ServiceResult<ProcessResult> serviceResult)
+        public ServiceResult<ProcessResult> FormatAppsInfoOutput(ServiceResult<ProcessResult> serviceResult)
         {
             var processResult = serviceResult.Result;
 

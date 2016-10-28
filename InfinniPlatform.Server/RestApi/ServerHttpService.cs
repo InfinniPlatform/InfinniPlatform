@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.PushNotification;
 using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Server.Agent;
 using InfinniPlatform.Server.Settings;
@@ -14,20 +15,26 @@ namespace InfinniPlatform.Server.RestApi
     /// </summary>
     public class ServerHttpService : IHttpService
     {
+        private const string NotifyMessageType = "WorkLog";
+
         public ServerHttpService(IAgentHttpClient agentHttpClient,
+                                 ILog log,
                                  INodeOutputParser nodeOutputParser,
-                                 ServerSettings serverSettings,
-                                 ILog log)
+                                 IPushNotificationService notifyService,
+                                 ServerSettings serverSettings
+        )
         {
             _agentHttpClient = agentHttpClient;
-            _nodeOutputParser = nodeOutputParser;
-            _serverSettings = serverSettings;
             _log = log;
+            _nodeOutputParser = nodeOutputParser;
+            _notifyService = notifyService;
+            _serverSettings = serverSettings;
         }
 
         private readonly IAgentHttpClient _agentHttpClient;
         private readonly ILog _log;
         private readonly INodeOutputParser _nodeOutputParser;
+        private readonly IPushNotificationService _notifyService;
         private readonly ServerSettings _serverSettings;
 
         public void Load(IHttpServiceBuilder builder)
@@ -64,16 +71,22 @@ namespace InfinniPlatform.Server.RestApi
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppName", ParseString(request.Form.AppName) },
-                                { "Version", ParseString(request.Form.Version) },
-                                { "Instance", ParseString(request.Form.Instance) },
-                                { "Source", ParseString(request.Form.Source) },
-                                { "AllowPrerelease", (bool?)request.Form.AllowPrerelease }
-                            };
+            var args = new DynamicWrapper
+                       {
+                           { "AppName", ParseString(request.Form.AppName) },
+                           { "Version", ParseString(request.Form.Version) },
+                           { "Instance", ParseString(request.Form.Instance) },
+                           { "Source", ParseString(request.Form.Source) },
+                           { "AllowPrerelease", (bool?)request.Form.AllowPrerelease }
+                       };
 
-            return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("install", address, port, arguments);
+            await _notifyService.NotifyAll(NotifyMessageType, $"Installing {args["AppName"]}...");
+
+            var serviceResult = await _agentHttpClient.Post<ServiceResult<ProcessResult>>("install", address, port, args);
+
+            await _notifyService.NotifyAll(NotifyMessageType, $"Installing {args["AppName"]} complete.");
+
+            return serviceResult;
         }
 
         private async Task<object> UninstallApp(IHttpRequest request)
@@ -81,14 +94,20 @@ namespace InfinniPlatform.Server.RestApi
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppName", ParseString(request.Form.AppName) },
-                                { "Version", ParseString(request.Form.Version) },
-                                { "Instance", ParseString(request.Form.Instance) }
-                            };
+            var args = new DynamicWrapper
+                       {
+                           { "AppName", ParseString(request.Form.AppName) },
+                           { "Version", ParseString(request.Form.Version) },
+                           { "Instance", ParseString(request.Form.Instance) }
+                       };
 
-            return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("uninstall", address, port, arguments);
+            await _notifyService.NotifyAll(NotifyMessageType, $"Uninstall {args["AppName"]}...");
+
+            var serviceResult = await _agentHttpClient.Post<ServiceResult<ProcessResult>>("uninstall", address, port, args);
+
+            await _notifyService.NotifyAll(NotifyMessageType, $"Uninstall {args["AppName"]} complete.");
+
+            return serviceResult;
         }
 
         private async Task<object> InitApp(IHttpRequest request)
@@ -96,15 +115,21 @@ namespace InfinniPlatform.Server.RestApi
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppName", ParseString(request.Form.AppName) },
-                                { "Version", ParseString(request.Form.Version) },
-                                { "Instance", ParseString(request.Form.Instance) },
-                                { "Timeout", ParseInt(request.Form.Timeout) }
-                            };
+            var args = new DynamicWrapper
+                       {
+                           { "AppName", ParseString(request.Form.AppName) },
+                           { "Version", ParseString(request.Form.Version) },
+                           { "Instance", ParseString(request.Form.Instance) },
+                           { "Timeout", ParseInt(request.Form.Timeout) }
+                       };
 
-            return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("init", address, port, arguments);
+            await _notifyService.NotifyAll(NotifyMessageType, $"Initializing {args["AppName"]}...");
+
+            var serviceResult = await _agentHttpClient.Post<ServiceResult<ProcessResult>>("init", address, port, args);
+
+            await _notifyService.NotifyAll(NotifyMessageType, $"Initializing {args["AppName"]} complete.");
+
+            return serviceResult;
         }
 
         private async Task<object> StartApp(IHttpRequest request)
@@ -112,15 +137,21 @@ namespace InfinniPlatform.Server.RestApi
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppName", ParseString(request.Form.AppName) },
-                                { "Version", ParseString(request.Form.Version) },
-                                { "Instance", ParseString(request.Form.Instance) },
-                                { "Timeout", ParseInt(request.Form.Timeout) }
-                            };
+            var args = new DynamicWrapper
+                       {
+                           { "AppName", ParseString(request.Form.AppName) },
+                           { "Version", ParseString(request.Form.Version) },
+                           { "Instance", ParseString(request.Form.Instance) },
+                           { "Timeout", ParseInt(request.Form.Timeout) }
+                       };
 
-            return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("start", address, port, arguments);
+            await _notifyService.NotifyAll(NotifyMessageType, $"Starting {args["AppName"]}...");
+
+            var serviceResult = await _agentHttpClient.Post<ServiceResult<ProcessResult>>("start", address, port, args);
+
+            await _notifyService.NotifyAll(NotifyMessageType, $"Starting {args["AppName"]} comleted!");
+
+            return serviceResult;
         }
 
         private async Task<object> StopApp(IHttpRequest request)
@@ -128,15 +159,21 @@ namespace InfinniPlatform.Server.RestApi
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppName", ParseString(request.Form.AppName) },
-                                { "Version", ParseString(request.Form.Version) },
-                                { "Instance", ParseString(request.Form.Instance) },
-                                { "Timeout", ParseInt(request.Form.Timeout) }
-                            };
+            var args = new DynamicWrapper
+                       {
+                           { "AppName", ParseString(request.Form.AppName) },
+                           { "Version", ParseString(request.Form.Version) },
+                           { "Instance", ParseString(request.Form.Instance) },
+                           { "Timeout", ParseInt(request.Form.Timeout) }
+                       };
 
-            return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("stop", address, port, arguments);
+            await _notifyService.NotifyAll(NotifyMessageType, $"Stopping {args["AppName"]}...");
+
+            var serviceResult = await _agentHttpClient.Post<ServiceResult<ProcessResult>>("stop", address, port, args);
+
+            await _notifyService.NotifyAll(NotifyMessageType, $"Stopping {args["AppName"]} comleted!");
+
+            return serviceResult;
         }
 
         private async Task<object> RestartApp(IHttpRequest request)
@@ -144,15 +181,21 @@ namespace InfinniPlatform.Server.RestApi
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            var arguments = new DynamicWrapper
-                            {
-                                { "AppName", ParseString(request.Form.AppName) },
-                                { "Version", ParseString(request.Form.Version) },
-                                { "Instance", ParseString(request.Form.Instance) },
-                                { "Timeout", ParseInt(request.Form.Timeout) }
-                            };
+            var args = new DynamicWrapper
+                       {
+                           { "AppName", ParseString(request.Form.AppName) },
+                           { "Version", ParseString(request.Form.Version) },
+                           { "Instance", ParseString(request.Form.Instance) },
+                           { "Timeout", ParseInt(request.Form.Timeout) }
+                       };
 
-            return await _agentHttpClient.Post<ServiceResult<ProcessResult>>("restart", address, port, arguments);
+            await _notifyService.NotifyAll(NotifyMessageType, $"Restarting {args["AppName"]}...");
+
+            var serviceResult = await _agentHttpClient.Post<ServiceResult<ProcessResult>>("restart", address, port, args);
+
+            await _notifyService.NotifyAll(NotifyMessageType, $"Restarting {args["AppName"]}...");
+
+            return serviceResult;
         }
 
         private async Task<object> GetAppsInfo(IHttpRequest request)
@@ -167,7 +210,9 @@ namespace InfinniPlatform.Server.RestApi
                 return new ServiceResult<object> { Success = false, Error = "Agent response is empty." };
             }
 
-            return _nodeOutputParser.FormatAppsStatusOutput(serviceResult);
+            var appsInfo = _nodeOutputParser.FormatAppsInfoOutput(serviceResult);
+
+            return appsInfo;
         }
 
         private async Task<object> GetEnvironmentVariables(IHttpRequest request)
@@ -175,7 +220,9 @@ namespace InfinniPlatform.Server.RestApi
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            return await _agentHttpClient.Get<ServiceResult<object>>("variables", address, port);
+            var environmentVariables = await _agentHttpClient.Get<ServiceResult<object>>("variables", address, port);
+
+            return environmentVariables;
         }
 
         private async Task<object> GetEnvironmentVariable(IHttpRequest request)
@@ -183,12 +230,14 @@ namespace InfinniPlatform.Server.RestApi
             string address = request.Query.Address;
             int port = request.Query.Port;
 
-            var arguments = new DynamicWrapper
-                            {
-                                { "Name", ParseString(request.Query.Name) }
-                            };
+            var args = new DynamicWrapper
+                       {
+                           { "Name", ParseString(request.Query.Name) }
+                       };
 
-            return await _agentHttpClient.Get<ServiceResult<object>>("variable", address, port, arguments);
+            var environmentVariable = await _agentHttpClient.Get<ServiceResult<object>>("variable", address, port, args);
+
+            return environmentVariable;
         }
 
         private Task<object> LogBeat(IHttpRequest request)
@@ -201,10 +250,12 @@ namespace InfinniPlatform.Server.RestApi
                                    { "InstanceId", ParseString(request.Form.InstanceId) }
                                });
 
-            return Task.FromResult<object>(new ServiceResult<object>
-                                           {
-                                               Success = true
-                                           });
+            var serviceResult = new ServiceResult<object>
+                                {
+                                    Success = true
+                                };
+
+            return Task.FromResult<object>(serviceResult);
         }
 
         private static int? ParseInt(dynamic value)

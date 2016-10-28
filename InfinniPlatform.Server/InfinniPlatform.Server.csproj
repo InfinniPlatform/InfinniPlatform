@@ -98,7 +98,9 @@
     <None Include="UI\www\compiled\platform\fonts\fontawesome-webfont.woff" />
     <None Include="UI\www\compiled\platform\fonts\fontawesome-webfont.woff2" />
     <None Include="UI\www\compiled\platform\fonts\FontAwesome.otf" />
-    <None Include="UI\www\jsonViews\homePage.json" />
+    <None Include="UI\www\jsonViews\configView.json" />
+    <None Include="UI\www\jsonViews\homeView.json" />
+    <None Include="UI\www\jsonViews\installView.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\gulpfile.js\gulptasks\cleanFolder.js" />
@@ -133,7 +135,9 @@
     <Content Include="UI\www\config.js" />
     <Content Include="UI\www\img\favicon.ico" />
     <Content Include="UI\www\index.html" />
-    <Content Include="UI\www\js\homePage.js" />
+    <Content Include="UI\www\js\configView.js" />
+    <Content Include="UI\www\js\homeView.js" />
+    <Content Include="UI\www\js\installView.js" />
     <Content Include="UI\www\js\main.js" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

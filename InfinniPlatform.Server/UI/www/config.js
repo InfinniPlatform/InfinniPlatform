@@ -6,7 +6,8 @@ window.InfinniUI.config = window.InfinniUI.config || {};
 window.InfinniUI.config.cacheMetadata = false;
 window.InfinniUI.config.serverUrl = 'http://' + window.location.host;
 window.InfinniUI.config.configName = 'Server.UI';
+window.InfinniUI.config.signalRHubName = "SignalRPushNotificationServiceHub";
 
-window.InfinniUI.config.homePage = '/jsonViews/homePage.json';
+window.InfinniUI.config.homePage = '/jsonViews/homeView.json';
 
 window.InfinniUI.config.lang = 'en-US';

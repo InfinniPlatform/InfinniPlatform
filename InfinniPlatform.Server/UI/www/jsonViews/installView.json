@@ -1,82 +1,68 @@
 {
     "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+    "OnLoaded": "{ RegisterOnSavedHandler(context, args); }",
     "Parameters": [{
         "Name": "AgentAddress"
     }, {
         "Name": "AgentPort"
     }],
-    "DataSources": [],
+    "DataSources": [{
+        "RestDataSource": {
+            "Name": "AppsDataSource",
+            "SettingParams": {
+                "Method": "POST",
+                "Path": "/server/install?Address=<%agentAddress%>&Port=<%agentPort%>",
+                "Data": {},
+                "Params": {
+                    "agentAddress": {
+                        "Source": "AgentAddress"
+                    },
+                    "agentPort": {
+                        "Source": "AgentPort"
+                    }
+                }
+            }
+        }
+    }],
     "Text": "Install new app",
     "Items": [{
         "TextBox": {
-            "Name": "NameTextBox",
-            "LabelText": "App name"
+            "LabelText": "App name",
+            "Value": {
+                "Source": "AppsDataSource",
+                "Property": "$.AppName"
+            }
         }
     }, {
         "TextBox": {
-            "Name": "VersionTextBox",
-            "LabelText": "App version"
+            "LabelText": "App version",
+            "Value": {
+                "Source": "AppsDataSource",
+                "Property": "$.Version"
+            }
         }
     }, {
         "TextBox": {
-            "Name": "InstanceNameTextBox",
-            "LabelText": "Instance name"
+            "LabelText": "Instance name",
+            "Value": {
+                "Source": "AppsDataSource",
+                "Property": "$.Instance"
+            }
         }
     }, {
         "TextBox": {
-            "Name": "SourcesTextBox",
-            "LabelText": "Sources"
+            "LabelText": "Sources",
+            "Value": {
+                "Source": "AppsDataSource",
+                "Property": "$.Source"
+            }
         }
     }, {
         "CheckBox": {
-            "Name": "PrereleaseCheckBox",
-            "Text": "Allow prerelease"
-        }
-    }, {
-        "Button": {
-            "Text": "Install",
-            "Action": {
-                "ServerAction": {
-                    "Origin": "http://localhost:9901",
-                    "Path": "/server/install?Address=<%agentAddress%>&Port=<%agentPort%>",
-                    "Method": "POST",
-                    "Data": {
-                        "AppName": "<%name%>",
-                        "Version": "<%version%>",
-                        "Instance": "<%instanceName%>",
-                        "Source": "<%source%>",
-                        "AllowPrerelease": "<%allowPrerelease%>"
-                    },
-                    "Params": {
-                        "agentAddress": {
-                            "Source": "AgentAddress"
-                        },
-                        "agentPort": {
-                            "Source": "AgentPort"
-                        },
-                        "name": {
-                            "Source": "NameTextBox",
-                            "Property": "value"
-                        },
-                        "version": {
-                            "Source": "VersionTextBox",
-                            "Property": "value"
-                        },
-                        "instanceName": {
-                            "Source": "InstanceNameTextBox",
-                            "Property": "value"
-                        },
-                        "source": {
-                            "Source": "SourcesTextBox",
-                            "Property": "value"
-                        },
-                        "allowPrerelease": {
-                            "Source": "PrereleaseCheckBox",
-                            "Property": "value"
-                        }
-                    },
-                    "OnSuccess": "{ ShowInstallationLog(context, args); }"
-                }
+            "Text": "Allow prerelease",
+            "Value": {
+                "Source": "AppsDataSource",
+                "Property": "$.AllowPrerelease"
             }
         }
     }, {
@@ -85,6 +71,33 @@
             "Visible": false,
             "Multiline": true,
             "LineCount": 10
+        }
+    }, {
+        "StackPanel": {
+            "Items": [{
+                "Button": {
+                    "Name": "InstallButton",
+                    "Text": "Install",
+                    "Action": {
+                        "SaveAction": {
+                            "DestinationValue": {
+                                "Source": "AppsDataSource"
+                            },
+                            "CanClose": false
+                        }
+                    },
+                    "OnClick": "{ SetButtonsAppearance(context, args); }"
+                }
+            }, {
+                "Button": {
+                    "Name": "CloseButton",
+                    "Visible": false,
+                    "Text": "Done",
+                    "Action":{
+                        "AcceptAction":{}
+                    }
+                }
+            }]
         }
     }]
 }
