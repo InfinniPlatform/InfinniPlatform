@@ -23,6 +23,7 @@ x86/
 [Dd]esigner[Bb]in/
 [Ll]ogs/
 project.lock.json
+compiled/
 
 # Visual Studio 2015 cache/options directory
 .vs/

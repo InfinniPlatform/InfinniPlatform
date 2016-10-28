@@ -27,11 +27,6 @@ gulp.task('fullWatch', function() {
 	watch(sourceForTasks.concatTemplates.src, gulp.series('concatTemplates'));
 });
 
-gulp.task('example', gulp.series(
-	'build',
-	gulp.parallel('fullWatch', 'server:example')
-));
-
 gulp.task('default', function(cb) {
 	console.log('####Task is not defined!\n' +
 							'####Use any of defined tasks:\n' +

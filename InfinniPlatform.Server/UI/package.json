@@ -26,8 +26,7 @@
     "stream-combiner2": "1.1.1",
     "through2": "2.x"
   },
-  "scripts": {
-    "start": "gulp example",
+  "scripts": {    
     "build": "npm i && bower update && gulp cleanFolder && gulp build",
     "rebuild": "gulp cleanFolder && gulp build"
   }
