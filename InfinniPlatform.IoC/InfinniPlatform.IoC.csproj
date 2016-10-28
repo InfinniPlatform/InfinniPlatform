@@ -60,15 +60,15 @@
     <Compile Include="AutofacContainerRegistrationRule.cs" />
     <Compile Include="AutofacCreateInstanceModule.cs" />
     <Compile Include="BaseDirectoryContainerModuleScanner.cs" />
-    <Compile Include="Owin\AutofacOwinContainerModule.cs" />
-    <Compile Include="Owin\AutofacOwinContainerResolverFactory.cs" />
+    <Compile Include="Http\AutofacHttpContainerModule.cs" />
+    <Compile Include="Http\AutofacHttpContainerResolverFactory.cs" />
     <Compile Include="ContainerModuleInfo.cs" />
     <Compile Include="ContainerModuleLocation.cs" />
-    <Compile Include="Owin\AutofacOwinConstants.cs" />
-    <Compile Include="Owin\AutofacRequestLifetimeScopeOwinMiddleware.cs" />
-    <Compile Include="Owin\AutofacWrapperOwinMiddleware.cs" />
-    <Compile Include="Owin\AutofacOwinHostingMiddleware.cs" />
-    <Compile Include="Owin\AutofacOwinMiddlewareResolver.cs" />
+    <Compile Include="Http\AutofacHttpConstants.cs" />
+    <Compile Include="Http\AutofacRequestLifetimeScopeOwinMiddleware.cs" />
+    <Compile Include="Http\AutofacWrapperOwinMiddleware.cs" />
+    <Compile Include="Http\AutofacHttpMiddleware.cs" />
+    <Compile Include="Http\AutofacOwinMiddlewareResolver.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
@@ -89,9 +89,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
-      <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>
-      <Name>InfinniPlatform.Owin</Name>
+    <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
+      <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
+      <Name>InfinniPlatform.Http</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>

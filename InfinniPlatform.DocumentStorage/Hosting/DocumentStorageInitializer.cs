@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using InfinniPlatform.Core.Threading;
 using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Metadata.Documents;
 
 namespace InfinniPlatform.DocumentStorage.Hosting
 {

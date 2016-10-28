@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.Authentication.Modules
 {
     /// <summary>
-    /// Настройки модуля <see cref="ExternalAuthGoogleOwinHostingMiddleware"/>.
+    /// Настройки модуля <see cref="ExternalAuthGoogleHttpMiddleware"/>.
     /// </summary>
     internal sealed class ExternalAuthGoogleOwinHostingModuleSettings
     {

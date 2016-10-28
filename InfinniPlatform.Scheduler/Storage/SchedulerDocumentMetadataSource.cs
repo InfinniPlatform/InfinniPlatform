@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Metadata.Documents;
+using InfinniPlatform.Sdk.Documents.Metadata;
 
 namespace InfinniPlatform.Scheduler.Storage
 {

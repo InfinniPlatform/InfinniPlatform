@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Authentication.InternalIdentity;
 using InfinniPlatform.Authentication.Properties;
-using InfinniPlatform.Owin;
-using InfinniPlatform.Owin.Security;
+using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
-using InfinniPlatform.Sdk.Services;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -520,7 +519,7 @@ namespace InfinniPlatform.Authentication.Services
             };
         }
 
-        //RESPONSE
+        // RESPONSE
 
         private static JsonHttpResponse CreateErrorResponse(string errorMessage, int statusCode)
         {

@@ -26,13 +26,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.BlobStorage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.PushNotification", "InfinniPlatform.PushNotification\InfinniPlatform.PushNotification.csproj", "{C78BFC13-E956-4229-A2FF-7D95AC9CA74F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Owin", "InfinniPlatform.Owin\InfinniPlatform.Owin.csproj", "{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Http", "InfinniPlatform.Http\InfinniPlatform.Http.csproj", "{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Cors", "InfinniPlatform.Cors\InfinniPlatform.Cors.csproj", "{303087BA-00C2-452D-907C-54C94F42A588}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Cors.Tests", "InfinniPlatform.Cors.Tests\InfinniPlatform.Cors.Tests.csproj", "{E2111B66-1BFF-4F1B-8FA9-EFAEA444FAD7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Owin.Tests", "InfinniPlatform.Owin.Tests\InfinniPlatform.Owin.Tests.csproj", "{4DC7AF1E-43A0-4D36-85AE-80B1BED556F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Http.Tests", "InfinniPlatform.Http.Tests\InfinniPlatform.Http.Tests.csproj", "{4DC7AF1E-43A0-4D36-85AE-80B1BED556F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.PushNotification.Tests", "InfinniPlatform.PushNotification.Tests\InfinniPlatform.PushNotification.Tests.csproj", "{A0310B59-9025-4394-90FF-777194481CDD}"
 EndProject
@@ -47,8 +43,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sdk.Tests", "InfinniPlatform.Sdk.Tests\InfinniPlatform.Sdk.Tests.csproj", "{4C6F499C-E183-4FC7-9F14-C94B2DA3F443}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Sdk", "InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj", "{2322469D-7D54-4C76-97E2-EF40F15645F5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.NodeServiceHost", "InfinniPlatform.NodeServiceHost\InfinniPlatform.NodeServiceHost.csproj", "{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Caching", "InfinniPlatform.Caching\InfinniPlatform.Caching.csproj", "{BD628B04-C2DF-458A-8406-6BB60729FC1C}"
 EndProject
@@ -143,14 +137,6 @@ Global
 		{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}.Release|Any CPU.Build.0 = Release|Any CPU
-		{303087BA-00C2-452D-907C-54C94F42A588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{303087BA-00C2-452D-907C-54C94F42A588}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{303087BA-00C2-452D-907C-54C94F42A588}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{303087BA-00C2-452D-907C-54C94F42A588}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2111B66-1BFF-4F1B-8FA9-EFAEA444FAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2111B66-1BFF-4F1B-8FA9-EFAEA444FAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2111B66-1BFF-4F1B-8FA9-EFAEA444FAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2111B66-1BFF-4F1B-8FA9-EFAEA444FAD7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4DC7AF1E-43A0-4D36-85AE-80B1BED556F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4DC7AF1E-43A0-4D36-85AE-80B1BED556F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DC7AF1E-43A0-4D36-85AE-80B1BED556F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -183,10 +169,6 @@ Global
 		{2322469D-7D54-4C76-97E2-EF40F15645F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2322469D-7D54-4C76-97E2-EF40F15645F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2322469D-7D54-4C76-97E2-EF40F15645F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD628B04-C2DF-458A-8406-6BB60729FC1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD628B04-C2DF-458A-8406-6BB60729FC1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD628B04-C2DF-458A-8406-6BB60729FC1C}.Release|Any CPU.ActiveCfg = Release|Any CPU

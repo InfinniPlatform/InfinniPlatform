@@ -10,8 +10,8 @@ using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-using InfinniPlatform.Owin.Middleware;
+using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.PushNotification.MessageBus;
 using InfinniPlatform.PushNotification.Owin;
 using InfinniPlatform.PushNotification.SignalR;
@@ -44,8 +44,8 @@ namespace InfinniPlatform.PushNotification.IoC
 
             // Модуль OWIN для SignalR
 
-            builder.RegisterType<SignalROwinHostingMiddleware>()
-                   .As<IHostingMiddleware>()
+            builder.RegisterType<SignalRHttpMiddleware>()
+                   .As<IHttpMiddleware>()
                    .SingleInstance();
 
             // Публичные контракты

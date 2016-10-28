@@ -4,8 +4,8 @@ using System.Linq;
 
 using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services
 {

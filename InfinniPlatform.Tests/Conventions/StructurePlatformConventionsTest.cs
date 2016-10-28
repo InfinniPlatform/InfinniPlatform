@@ -50,7 +50,6 @@ namespace InfinniPlatform.Conventions
 
             // When
             var result = project.EndsWith("InfinniPlatform.ServiceHost")
-                         || project.EndsWith("InfinniPlatform.NodeServiceHost")
                          || project.EndsWith("InfinniPlatform.Watcher")
                          || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
 

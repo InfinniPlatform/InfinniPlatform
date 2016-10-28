@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,26 +47,94 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.3.0.1\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.3.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nancy, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nancy.Owin, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.Owin.1.4.1\lib\net40\Nancy.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nancy.ViewEngines.Razor, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.Viewengines.Razor.1.4.3\lib\net40\Nancy.ViewEngines.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
+    <Compile Include="Http\HostAddressParser.cs" />
+    <Compile Include="Http\Hosting\IHostingService.cs" />
+    <Compile Include="Http\Hosting\OwinHostingService.cs" />
+    <Compile Include="Http\IoC\HttpContainerModule.cs" />
+    <Compile Include="Http\Middlewares\CorsHttpMiddleware.cs" />
+    <Compile Include="Http\Middlewares\ErrorHandlingHttpMiddleware.cs" />
+    <Compile Include="Http\Middlewares\ErrorHandlingOwinMiddleware.cs" />
+    <Compile Include="Http\Middlewares\OwinContextProvider.cs" />
+    <Compile Include="Http\StaticContentSettings.cs" />
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\PerformanceLogEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\JsonDocumentMetadataSource.cs" />
     <Compile Include="Metadata\MetadataSettings.cs" />
-    <Compile Include="Services\FileApiHttpService.cs" />
     <Compile Include="Diagnostics\SystemInfoHttpService.cs" />
+    <Compile Include="Http\Services\EmbeddedStaticContentConventionBuilder.cs" />
+    <Compile Include="Http\Services\HttpRequestExcutorFactory.cs" />
+    <Compile Include="Http\Services\HttpServiceBuilder.cs" />
+    <Compile Include="Http\Services\HttpServiceContext.cs" />
+    <Compile Include="Http\Services\HttpServiceContextProvider.cs" />
+    <Compile Include="Http\Services\HttpServiceNancyBootstrapper.cs" />
+    <Compile Include="Http\Services\HttpServiceNancyModule.cs" />
+    <Compile Include="Http\Services\HttpServiceNancyModuleCatalog.cs" />
+    <Compile Include="Http\Services\HttpServiceNancyModuleInitializer.cs" />
+    <Compile Include="Http\Services\HttpServiceRoute.cs" />
+    <Compile Include="Http\Services\HttpServiceRouteBuilder.cs" />
+    <Compile Include="Http\Services\HttpServiceSource.cs" />
+    <Compile Include="Http\Services\NancyHttpRequest.cs" />
+    <Compile Include="Http\Services\NancyHttpRequestFile.cs" />
+    <Compile Include="Http\Services\NancyHttpRequestHeaders.cs" />
+    <Compile Include="Http\Services\NancyMimeTypeResolver.cs" />
+    <Compile Include="Http\Middlewares\NancyHttpMiddleware.cs" />
+    <Compile Include="ServiceHost\ServiceHost.cs" />
+    <Compile Include="ServiceHost\ServiceHostStatus.cs" />
     <Compile Include="Settings\AppConfigurationPlaceholder.cs" />
     <Compile Include="Settings\AppEnvironment.cs" />
     <Compile Include="IoC\CoreContainerModule.cs" />
@@ -73,9 +143,7 @@
     <Compile Include="Logging\Log4NetLog.cs" />
     <Compile Include="Logging\LogManagerCache.cs" />
     <Compile Include="Logging\Log4NetPerformanceLog.cs" />
-    <Compile Include="Reporting\ReportFileFormat.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
-    <Compile Include="Schema\DataSchema.cs" />
     <Compile Include="Security\DefaultAppUserPasswordHasher.cs" />
     <Compile Include="Security\IAppUserPasswordHasher.cs" />
     <Compile Include="Security\IAppUserStore.cs" />
@@ -106,206 +174,29 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Hosting\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
+      <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
+      <Name>InfinniPlatform.Http</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.IoC\InfinniPlatform.IoC.csproj">
+      <Project>{197A078F-F42F-4F87-B8B2-463129ED4797}</Project>
+      <Name>InfinniPlatform.IoC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include=".schema\Configuration\Document\DataSchema\DataSchema.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\DataSchema\DataType.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\DataSchema\DataTypeInfo\BinaryLink\BinaryLink.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\DataSchema\DataTypeInfo\BinaryLink\BlobData.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\DataSchema\DataTypeInfo\DataTypeInfo.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\DataSchema\DataTypeInfo\DocumentLink\DocumentLink.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\DataSchema\DataTypeInfo\DocumentLink\ForeignKey.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\BaseValidationOperator.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\BooleanValidator\And.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\BooleanValidator\BooleanValidator.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\BooleanValidator\Not.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\BooleanValidator\Or.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\CollectionValidator\All.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\CollectionValidator\Any.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\CollectionValidator\CollectionValidator.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\CollectionValidator\IsContainsCollection.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\CollectionValidator\IsNullOrEmptyCollection.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsAbsoluteUri.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsContains.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsDefaultValue.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsEndsWith.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsEqual.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsGuid.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsIn.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsLessThan.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsLessThanOrEqual.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsMoreThan.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsMoreThanOrEqual.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsNull.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsNullOrEmpty.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsNullOrWhiteSpace.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsRegex.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsRelativeUri.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsStartsWith.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\IsUri.resjson" />
-    <EmbeddedResource Include=".schema\Configuration\Document\ValidationOperator\ObjectValidator\ObjectValidator.resjson" />
-    <EmbeddedResource Include=".schema\ObjectMetadata.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Border\PrintElementBorder.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Color.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\DisplayFormat\BaseFormat.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\DisplayFormat\BooleanFormat.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\DisplayFormat\DateTimeFormat.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\DisplayFormat\DisplayFormat.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\DisplayFormat\NumberFormat.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\DisplayFormat\ObjectFormat.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementBlockContainer.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementLine.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementList.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementListMarkerStyle.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementPageBreak.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementParagraph.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementSection.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementTable.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementTableCell.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementTableColumn.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Block\PrintElementTableRow.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementBarcodeEan13.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementBarcodeQr.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementBarcodeQrErrorCorrection.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementBold.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementHyperlink.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementImage.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementImageStretch.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementInlineContainer.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementItalic.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementLineBreak.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementRun.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementSpan.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\Inline\PrintElementUnderline.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\PrintElement.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\PrintElementBlock.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\PrintElementInline.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\PrintElementRotation.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\PrintElementVisibility.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\View\PrintView.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\View\PrintViewStyle.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Element\View\PrintViewType.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Font\Font.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Font\FontStretch.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Font\FontStyle.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Font\FontVariant.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Font\FontWeight.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Size.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\SizeUnit.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Text\PrintElementTextAlignment.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Text\PrintElementTextCase.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Text\PrintElementTextDecoration.resjson" />
-    <EmbeddedResource Include=".schema\PrintView\Thickness.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\AcceptAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\Action.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\ActionBase.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\AddAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\AddItemAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\CancelAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\DeleteAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\DeleteItemAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\EditAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\EditItemAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\OpenAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\PrintReportAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\PrintViewAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\SaveAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\SelectAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\ServerAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Action\UpdateAction.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\Button\Button.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\CheckBox\CheckBox.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\ComboBox\ComboBox.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\DataGrid\DataGrid.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\DataGrid\DataGridColumn.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\DataNavigation\DataNavigation.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\DatePicker\DatePicker.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\DatePicker\DatePickerMode.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\DocumentViewer\DocumentViewer.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\EditorBase\EditorBase.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\FileBox\FileBox.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\Frame\Frame.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\Icon\Icon.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\ImageBox\ImageBox.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\Label\Label.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\ListBox\ListBox.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\ListEditorBase\ListEditorBase.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\ListEditorBase\SortDirection.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\MenuBar\MenuBar.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\MenuBar\MenuBarItem.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\NumericBox\NumericBox.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\PasswordBox\PasswordBox.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\PopupButton\PopupButton.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\RadioGroup\RadioGroup.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\RadioGroup\RadioGroupOrientation.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TextBox\TextBox.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TextEditorBase\EditMask\DateTimeEditMask.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TextEditorBase\EditMask\EditMask.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TextEditorBase\EditMask\EditMaskBase.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TextEditorBase\EditMask\NumberEditMask.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TextEditorBase\EditMask\RegexEditMask.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TextEditorBase\EditMask\TemplateEditMask.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TextEditorBase\TextEditorBase.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\ToggleButton\ToggleButton.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\ToolBar\ToolBar.resjson" />
-    <EmbeddedResource Include=".schema\UI\Components\TreeView\TreeView.resjson" />
-    <EmbeddedResource Include=".schema\UI\Container\Container.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataBinding\BindingConverter.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataBinding\BindingMode.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataBinding\DataBinding.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataSource\BaseDataSource.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataSource\Criteria.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataSource\CriteriaType.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataSource\DataSource.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataSource\DocumentDataSource\DocumentDataSource.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataSource\MetadataDataSource\MetadataDataSource.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataSource\MetadataDataSource\MetadataType.resjson" />
-    <EmbeddedResource Include=".schema\UI\DataSource\ObjectDataSource\ObjectDataSource.resjson" />
-    <EmbeddedResource Include=".schema\UI\Element\Element.resjson" />
-    <EmbeddedResource Include=".schema\UI\Element\ElementHorizontalAlignment.resjson" />
-    <EmbeddedResource Include=".schema\UI\Element\ElementVerticalAlignment.resjson" />
-    <EmbeddedResource Include=".schema\UI\Element\TextHorizontalAlignment.resjson" />
-    <EmbeddedResource Include=".schema\UI\Element\TextVerticalAlignment.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\ExtensionPanel\ExtensionPanel.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\GridPanel\GridCell.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\GridPanel\GridPanel.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\Panel\Panel.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\ScrollPanel\ScrollPanel.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\ScrollPanel\ScrollVisibility.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\StackPanel\StackPanel.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\StackPanel\StackPanelOrientation.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\TabPanel\TabHeaderLocation.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\TabPanel\TabHeaderOrientation.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\TabPanel\TabPage.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\TabPanel\TabPanel.resjson" />
-    <EmbeddedResource Include=".schema\UI\LayoutPanel\ViewPanel\ViewPanel.resjson" />
-    <EmbeddedResource Include=".schema\UI\LinkView\AutoView.resjson" />
-    <EmbeddedResource Include=".schema\UI\LinkView\BaseLinkView.resjson" />
-    <EmbeddedResource Include=".schema\UI\LinkView\ChildView.resjson" />
-    <EmbeddedResource Include=".schema\UI\LinkView\ExistsView.resjson" />
-    <EmbeddedResource Include=".schema\UI\LinkView\InlineView.resjson" />
-    <EmbeddedResource Include=".schema\UI\LinkView\LinkView.resjson" />
-    <EmbeddedResource Include=".schema\UI\LinkView\OpenMode.resjson" />
-    <EmbeddedResource Include=".schema\UI\Script\LinkScript.resjson" />
-    <EmbeddedResource Include=".schema\UI\Script\Script.resjson" />
-    <EmbeddedResource Include=".schema\UI\Style\ColorStyle.resjson" />
-    <EmbeddedResource Include=".schema\UI\Style\TextStyle.resjson" />
-    <EmbeddedResource Include=".schema\UI\View\DialogResult.resjson" />
-    <EmbeddedResource Include=".schema\UI\View\LinkViewItem.resjson" />
-    <EmbeddedResource Include=".schema\UI\View\Parameter.resjson" />
-    <EmbeddedResource Include=".schema\UI\View\View.resjson" />
-    <EmbeddedResource Include=".schema\UI\View\ViewType.resjson" />
-    <EmbeddedResource Include=".schema\UI\VisualElement\VisualElement.resjson" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Nancy.Viewengines.Razor.1.4.3\build\Nancy.ViewEngines.Razor.targets" Condition="Exists('..\packages\Nancy.Viewengines.Razor.1.4.3\build\Nancy.ViewEngines.Razor.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Nancy.Viewengines.Razor.1.4.3\build\Nancy.ViewEngines.Razor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Nancy.Viewengines.Razor.1.4.3\build\Nancy.ViewEngines.Razor.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

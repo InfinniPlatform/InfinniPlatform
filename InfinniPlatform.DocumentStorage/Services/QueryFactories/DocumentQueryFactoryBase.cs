@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {

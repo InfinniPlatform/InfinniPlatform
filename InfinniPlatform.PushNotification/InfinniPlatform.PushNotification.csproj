@@ -85,7 +85,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SignalR\SignalRPushNotificationService.cs" />
-    <Compile Include="Owin\SignalROwinHostingMiddleware.cs" />
+    <Compile Include="Owin\SignalRHttpMiddleware.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -101,9 +101,9 @@
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
-      <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>
-      <Name>InfinniPlatform.Owin</Name>
+    <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
+      <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
+      <Name>InfinniPlatform.Http</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>

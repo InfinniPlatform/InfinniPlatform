@@ -7,8 +7,8 @@ using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {

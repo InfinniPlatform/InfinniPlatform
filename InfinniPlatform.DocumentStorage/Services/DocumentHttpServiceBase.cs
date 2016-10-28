@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.Sdk.Documents.Services;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services
 {

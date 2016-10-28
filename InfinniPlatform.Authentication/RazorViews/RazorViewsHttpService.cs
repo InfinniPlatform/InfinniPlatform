@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Authentication.RazorViews
 {

@@ -3,7 +3,7 @@
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.DocumentStorage.Diagnostics
 {

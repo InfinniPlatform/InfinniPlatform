@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.PrintView.Contract
 {

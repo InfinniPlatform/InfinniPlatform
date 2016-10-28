@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Security;
-using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Authentication.Tests.Services
 {

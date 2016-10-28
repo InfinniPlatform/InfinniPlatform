@@ -5,8 +5,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Metadata.Documents;
 
 using NUnit.Framework;
 

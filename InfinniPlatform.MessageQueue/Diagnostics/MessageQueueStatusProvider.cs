@@ -2,7 +2,7 @@
 
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.MessageQueue.Diagnostics
 {

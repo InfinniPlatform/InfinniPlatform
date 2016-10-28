@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Metadata.Documents;
+using InfinniPlatform.Sdk.Documents.Metadata;
 
 namespace InfinniPlatform.Sdk.Documents
 {

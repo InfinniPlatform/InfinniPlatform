@@ -130,18 +130,18 @@
     <Compile Include="IoC\AuthenticationContainerModule.cs" />
     <Compile Include="Modules\CookieAuthOwinHostingModuleSettings.cs" />
     <Compile Include="Modules\ExternalAuthAdfsOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\ExternalAuthAdfsOwinHostingMiddleware.cs" />
-    <Compile Include="Modules\ExternalAuthFacebookOwinHostingMiddleware.cs" />
+    <Compile Include="Modules\ExternalAuthAdfsHttpMiddleware.cs" />
+    <Compile Include="Modules\ExternalAuthFacebookHttpMiddleware.cs" />
     <Compile Include="Modules\ExternalAuthFacebookOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\ExternalAuthGoogleOwinHostingMiddleware.cs" />
+    <Compile Include="Modules\ExternalAuthGoogleHttpMiddleware.cs" />
     <Compile Include="Modules\ExternalAuthGoogleOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\ExternalAuthVkOwinHostingMiddleware.cs" />
+    <Compile Include="Modules\ExternalAuthVkHttpMiddleware.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUser.cs" />
     <Compile Include="InternalIdentity\IdentityAppUserManager.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserPasswordHasher.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserValidator.cs" />
     <Compile Include="Modules\ExternalAuthVkOwinHostingModuleSettings.cs" />
-    <Compile Include="Modules\InternalAuthOwinHostingMiddleware.cs" />
+    <Compile Include="Modules\InternalAuthHttpMiddleware.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
@@ -151,11 +151,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Modules\CookieAuthOwinHostingMiddleware.cs" />
+    <Compile Include="Modules\CookieAuthHttpMiddleware.cs" />
     <Compile Include="InternalIdentity\IdentityApplicationUserStore.cs" />
     <Compile Include="RazorViews\RazorViewsHttpService.cs" />
     <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="Services\AuthHttpService.cs" />
+    <Compile Include="Services\UrlBuilder.cs" />
     <Compile Include="Services\UserEventHandlerInvoker.cs" />
     <Compile Include="UserStorage\AppUserStoreCache.cs" />
     <Compile Include="UserStorage\AppUserStore.cs" />
@@ -185,9 +186,9 @@
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
-      <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>
-      <Name>InfinniPlatform.Owin</Name>
+    <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
+      <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
+      <Name>InfinniPlatform.Http</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>

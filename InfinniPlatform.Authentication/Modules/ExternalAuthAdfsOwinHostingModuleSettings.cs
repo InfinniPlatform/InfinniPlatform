@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.Authentication.Modules
 {
     /// <summary>
-    /// Настройки модуля <see cref="ExternalAuthAdfsOwinHostingMiddleware"/>.
+    /// Настройки модуля <see cref="ExternalAuthAdfsHttpMiddleware"/>.
     /// </summary>
     internal sealed class ExternalAuthAdfsOwinHostingModuleSettings
     {

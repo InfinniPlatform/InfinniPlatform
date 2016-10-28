@@ -1,9 +1,0 @@
-﻿{
-	"id": "PrintElementVisibility",
-	"description": "Видимость элемента печатного представления",
-	"enum": [
-		"Never",
-		"Always",
-		"Source"
-	]
-}

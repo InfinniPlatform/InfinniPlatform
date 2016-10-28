@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Sdk.Diagnostics
 {

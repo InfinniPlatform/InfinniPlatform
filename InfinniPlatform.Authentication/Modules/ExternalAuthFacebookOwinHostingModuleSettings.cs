@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.Authentication.Modules
 {
     /// <summary>
-    /// Настройки модуля <see cref="ExternalAuthFacebookOwinHostingMiddleware"/>.
+    /// Настройки модуля <see cref="ExternalAuthFacebookHttpMiddleware"/>.
     /// </summary>
     internal sealed class ExternalAuthFacebookOwinHostingModuleSettings
     {

@@ -5,7 +5,7 @@ using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Tests.MongoDB;
 using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Metadata.Documents;
+using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 

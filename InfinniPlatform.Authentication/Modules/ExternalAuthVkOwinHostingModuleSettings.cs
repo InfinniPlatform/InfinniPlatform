@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.Authentication.Modules
 {
     /// <summary>
-    /// Настройки модуля <see cref="ExternalAuthVkOwinHostingMiddleware"/>.
+    /// Настройки модуля <see cref="ExternalAuthVkHttpMiddleware"/>.
     /// </summary>
     internal sealed class ExternalAuthVkOwinHostingModuleSettings
     {

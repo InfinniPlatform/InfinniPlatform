@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 
 using InfinniPlatform.Core.Extensions;
-using InfinniPlatform.Sdk.Metadata.Documents;
+using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Core.Metadata

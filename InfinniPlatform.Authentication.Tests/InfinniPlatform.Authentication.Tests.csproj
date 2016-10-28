@@ -92,13 +92,9 @@
       <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
       <Name>InfinniPlatform.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.NodeServiceHost\InfinniPlatform.NodeServiceHost.csproj">
-      <Project>{DCB067DB-E581-4F90-85DF-ACF9C6B42AD4}</Project>
-      <Name>InfinniPlatform.NodeServiceHost</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
+    <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
       <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>
-      <Name>InfinniPlatform.Owin</Name>
+      <Name>InfinniPlatform.Http</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
