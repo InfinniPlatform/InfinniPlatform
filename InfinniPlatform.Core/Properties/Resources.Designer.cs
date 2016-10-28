@@ -61,11 +61,191 @@ namespace InfinniPlatform.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot initialize service correctly..
+        /// </summary>
+        public static string CannotInitializeServiceCorrectly {
+            get {
+                return ResourceManager.GetString("CannotInitializeServiceCorrectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot start service correctly..
+        /// </summary>
+        public static string CannotStartServiceCorrectly {
+            get {
+                return ResourceManager.GetString("CannotStartServiceCorrectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot stop service correctly..
+        /// </summary>
+        public static string CannotStopServiceCorrectly {
+            get {
+                return ResourceManager.GetString("CannotStopServiceCorrectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request processing completed with unexpected exception..
+        /// </summary>
+        public static string RequestProcessingCompletedWithUnexpectedException {
+            get {
+                return ResourceManager.GetString("RequestProcessingCompletedWithUnexpectedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server name cannot be null or whitespace..
+        /// </summary>
+        public static string ServerNameCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("ServerNameCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server name &apos;{0}&apos; is not local address..
+        /// </summary>
+        public static string ServerNameIsNotLocal {
+            get {
+                return ResourceManager.GetString("ServerNameIsNotLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server port &apos;{0}&apos; is incorrect. Server port should be more than zero..
+        /// </summary>
+        public static string ServerPortIsIncorrect {
+            get {
+                return ResourceManager.GetString("ServerPortIsIncorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server scheme cannot be null or whitespace..
+        /// </summary>
+        public static string ServerSchemeCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("ServerSchemeCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server scheme &apos;{0}&apos; is not supported. Use &apos;http&apos; or &apos;https&apos;..
+        /// </summary>
+        public static string ServerSchemeIsNotSupported {
+            get {
+                return ResourceManager.GetString("ServerSchemeIsNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host has been successfully started..
+        /// </summary>
+        public static string ServiceHostHasBeenSuccessfullyStarted {
+            get {
+                return ResourceManager.GetString("ServiceHostHasBeenSuccessfullyStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host has been successfully stopped..
+        /// </summary>
+        public static string ServiceHostHasBeenSuccessfullyStopped {
+            get {
+                return ResourceManager.GetString("ServiceHostHasBeenSuccessfullyStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host has not been started..
+        /// </summary>
+        public static string ServiceHostHasNotBeenStarted {
+            get {
+                return ResourceManager.GetString("ServiceHostHasNotBeenStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host has not been stopped..
+        /// </summary>
+        public static string ServiceHostHasNotBeenStopped {
+            get {
+                return ResourceManager.GetString("ServiceHostHasNotBeenStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host initialization completed with an exception..
+        /// </summary>
+        public static string ServiceHostInitializationCompletedWithAnException {
+            get {
+                return ResourceManager.GetString("ServiceHostInitializationCompletedWithAnException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host initialization successfully completed..
+        /// </summary>
+        public static string ServiceHostInitializationSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("ServiceHostInitializationSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host initialization was started..
+        /// </summary>
+        public static string ServiceHostInitializationWasStarted {
+            get {
+                return ResourceManager.GetString("ServiceHostInitializationWasStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host is starting..
+        /// </summary>
+        public static string ServiceHostIsStarting {
+            get {
+                return ResourceManager.GetString("ServiceHostIsStarting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service host is stopping..
+        /// </summary>
+        public static string ServiceHostIsStopping {
+            get {
+                return ResourceManager.GetString("ServiceHostIsStopping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serving static content..
+        /// </summary>
+        public static string ServingStaticContent {
+            get {
+                return ResourceManager.GetString("ServingStaticContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subsystem is not responding..
         /// </summary>
         public static string SubsystemIsNotResponding {
             get {
                 return ResourceManager.GetString("SubsystemIsNotResponding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unhandled exception..
+        /// </summary>
+        public static string UnhandledExceptionOwinMiddleware {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionOwinMiddleware", resourceCulture);
             }
         }
     }

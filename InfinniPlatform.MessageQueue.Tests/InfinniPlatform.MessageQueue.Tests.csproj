@@ -91,10 +91,6 @@
     <Compile Include="TestConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
-      <Project>{ebc684b7-b72a-475f-bbc1-b6293b607b9b}</Project>
-      <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj">
       <Project>{e14cce42-2563-4c36-919f-b389ff87ea65}</Project>
       <Name>InfinniPlatform.MessageQueue</Name>

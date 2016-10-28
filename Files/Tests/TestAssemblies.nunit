@@ -1,9 +1,8 @@
 ﻿<NUnitProject>
     <Settings activeconfig="Windows" />
     <Config name="Windows">
-        <assembly path="InfinniPlatform.Core.Tests.dll" />
         <assembly path="InfinniPlatform.Sdk.Tests.dll" />
-        <assembly path="InfinniPlatform.Cors.Tests.dll" />
+        <assembly path="InfinniPlatform.Core.Tests.dll" />
         <assembly path="InfinniPlatform.PrintView.Tests.dll" />
         <assembly path="InfinniPlatform.BlobStorage.Tests.dll" />
         <assembly path="InfinniPlatform.Caching.Tests.dll" />
@@ -12,9 +11,8 @@
         <assembly path="InfinniPlatform.Scheduler.Tests.dll" />
     </Config>
     <Config name="Linux">
-        <assembly path="InfinniPlatform.Core.Tests.dll" />
         <assembly path="InfinniPlatform.Sdk.Tests.dll" />
-        <assembly path="InfinniPlatform.Cors.Tests.dll" />
+        <assembly path="InfinniPlatform.Core.Tests.dll" />
         <assembly path="InfinniPlatform.PrintView.Tests.dll" />
         <assembly path="InfinniPlatform.BlobStorage.Tests.dll" />
         <assembly path="InfinniPlatform.Caching.Tests.dll" />

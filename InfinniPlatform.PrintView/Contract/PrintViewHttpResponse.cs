@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Sdk.Threading;
 
 namespace InfinniPlatform.PrintView.Contract
 {
@@ -28,7 +26,7 @@ namespace InfinniPlatform.PrintView.Contract
         {
             ContentType = GetPrintViewContentType(fileFormat);
 
-            Content = stream => RunSync(() => builder.Build(stream, template, dataSource, fileFormat));
+            Content = stream => AsyncHelper.RunSync(() => builder.Build(stream, template, dataSource, fileFormat));
         }
 
         /// <summary>
@@ -45,29 +43,7 @@ namespace InfinniPlatform.PrintView.Contract
         {
             ContentType = GetPrintViewContentType(fileFormat);
 
-            Content = stream => RunSync(() => builder.Build(stream, template, dataSource, fileFormat));
-        }
-
-
-        private static readonly TaskFactory InternalTaskFactory
-            = new TaskFactory(CancellationToken.None,
-                              TaskCreationOptions.None,
-                              TaskContinuationOptions.None,
-                              TaskScheduler.Default);
-
-        private static void RunSync(Func<Task> func)
-        {
-            var culture = CultureInfo.CurrentCulture;
-            var cultureUi = CultureInfo.CurrentUICulture;
-
-            var syncTask = InternalTaskFactory.StartNew(() =>
-            {
-                Thread.CurrentThread.CurrentCulture = culture;
-                Thread.CurrentThread.CurrentUICulture = cultureUi;
-                return func();
-            });
-
-            syncTask.Unwrap().GetAwaiter().GetResult();
+            Content = stream => AsyncHelper.RunSync(() => builder.Build(stream, template, dataSource, fileFormat));
         }
 
 

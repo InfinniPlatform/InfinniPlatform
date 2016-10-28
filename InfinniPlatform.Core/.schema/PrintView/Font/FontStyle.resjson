@@ -1,9 +1,0 @@
-﻿{
-	"id": "FontStyle",
-	"description": "Стиль шрифта",
-	"enum": [
-		"Normal",
-		"Italic",
-		"Oblique"
-	]
-}

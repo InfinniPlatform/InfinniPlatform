@@ -117,7 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CannotInitializeServiceCorrectly" xml:space="preserve">
+    <value>Не удается корректно инициализировать службу.</value>
+  </data>
+  <data name="CannotStartServiceCorrectly" xml:space="preserve">
+    <value>Не удается корректно запустить службу.</value>
+  </data>
+  <data name="CannotStopServiceCorrectly" xml:space="preserve">
+    <value>Не удается корректно остановить службу.</value>
+  </data>
+  <data name="RequestProcessingCompletedWithUnexpectedException" xml:space="preserve">
+    <value>Обработка запроса завершена с непредвиденным исключением.</value>
+  </data>
+  <data name="ServerNameCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Имя сервера не может быть пустым.</value>
+  </data>
+  <data name="ServerNameIsNotLocal" xml:space="preserve">
+    <value>Имя сервера '{0}' не является локальным адресом.</value>
+  </data>
+  <data name="ServerPortIsIncorrect" xml:space="preserve">
+    <value>Номер порта сервера '{0}' не корректен (должен быть больше нуля).</value>
+  </data>
+  <data name="ServerSchemeCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Имя схемы протокола сервера не может быть пустым.</value>
+  </data>
+  <data name="ServerSchemeIsNotSupported" xml:space="preserve">
+    <value>Имя схемы протокола сервера '{0}' не поддерживается. Используйте 'http' или 'https'.</value>
+  </data>
+  <data name="ServiceHostHasBeenSuccessfullyStarted" xml:space="preserve">
+    <value>Служба успешно запущена.</value>
+  </data>
+  <data name="ServiceHostHasBeenSuccessfullyStopped" xml:space="preserve">
+    <value>Служба успешно остановлена.</value>
+  </data>
+  <data name="ServiceHostHasNotBeenStarted" xml:space="preserve">
+    <value>Служба не была запущена.</value>
+  </data>
+  <data name="ServiceHostHasNotBeenStopped" xml:space="preserve">
+    <value>Служба не была остановлена.</value>
+  </data>
+  <data name="ServiceHostInitializationCompletedWithAnException" xml:space="preserve">
+    <value>Инициализация службы завершена с исключением.</value>
+  </data>
+  <data name="ServiceHostInitializationSuccessfullyCompleted" xml:space="preserve">
+    <value>Инициализация службы успешно завершена.</value>
+  </data>
+  <data name="ServiceHostInitializationWasStarted" xml:space="preserve">
+    <value>Инициализация службы запущена.</value>
+  </data>
+  <data name="ServiceHostIsStarting" xml:space="preserve">
+    <value>Служба запускается.</value>
+  </data>
+  <data name="ServiceHostIsStopping" xml:space="preserve">
+    <value>Служба останавливается.</value>
+  </data>
+  <data name="ServingStaticContent" xml:space="preserve">
+    <value>Обслуживание статического контента.</value>
+  </data>
   <data name="SubsystemIsNotResponding" xml:space="preserve">
     <value>Подсистема не отвечает.</value>
+  </data>
+  <data name="UnhandledExceptionOwinMiddleware" xml:space="preserve">
+    <value>Необработанное исключение.</value>
   </data>
 </root>

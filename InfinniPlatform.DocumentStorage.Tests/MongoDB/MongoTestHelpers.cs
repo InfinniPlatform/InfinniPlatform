@@ -3,7 +3,7 @@
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.MongoDB.Conventions;
 using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Metadata.Documents;
+using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
 

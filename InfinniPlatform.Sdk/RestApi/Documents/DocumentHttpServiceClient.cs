@@ -4,8 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Documents.Services;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Sdk.RestApi.Documents
 {

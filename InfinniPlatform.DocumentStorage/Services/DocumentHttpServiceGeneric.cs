@@ -4,10 +4,11 @@ using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Services;
+
 using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services
 {

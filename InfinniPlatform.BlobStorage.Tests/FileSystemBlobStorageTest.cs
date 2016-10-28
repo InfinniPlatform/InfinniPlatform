@@ -2,9 +2,9 @@
 using System.IO;
 
 using InfinniPlatform.Sdk.BlobStorage;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Services;
 
 using Moq;
 

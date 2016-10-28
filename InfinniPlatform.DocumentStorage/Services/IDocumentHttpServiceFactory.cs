@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Sdk.Documents.Services;
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services
 {

@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.DocumentStorage.Services;
-using InfinniPlatform.Sdk.Services;
+using InfinniPlatform.Sdk.Http.Services;
 
 using Moq;
 

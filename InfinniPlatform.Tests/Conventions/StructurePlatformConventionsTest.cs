@@ -50,7 +50,11 @@ namespace InfinniPlatform.Conventions
 
             // When
             var result = project.EndsWith("InfinniPlatform.ServiceHost")
-                         || project.EndsWith("InfinniPlatform.NodeServiceHost")
+                         || project.EndsWith("InfinniPlatform.Auth.Adfs")
+                         || project.EndsWith("InfinniPlatform.Auth.Cookie")
+                         || project.EndsWith("InfinniPlatform.Auth.Facebook")
+                         || project.EndsWith("InfinniPlatform.Auth.Google")
+                         || project.EndsWith("InfinniPlatform.Auth.Vk")
                          || project.EndsWith("InfinniPlatform.Watcher")
                          || project.EndsWith("InfinniPlatform.Agent")
                          || project.EndsWith("InfinniPlatform.Server")

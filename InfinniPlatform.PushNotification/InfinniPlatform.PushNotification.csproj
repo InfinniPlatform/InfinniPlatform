@@ -47,7 +47,6 @@
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
@@ -85,7 +84,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SignalR\SignalRPushNotificationService.cs" />
-    <Compile Include="Owin\SignalROwinHostingMiddleware.cs" />
+    <Compile Include="Owin\SignalRHttpMiddleware.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -97,13 +96,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
-      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
-      <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Owin\InfinniPlatform.Owin.csproj">
-      <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>
-      <Name>InfinniPlatform.Owin</Name>
+    <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
+      <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
+      <Name>InfinniPlatform.Http</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>

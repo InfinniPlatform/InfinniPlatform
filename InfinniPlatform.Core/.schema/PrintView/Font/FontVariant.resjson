@@ -1,9 +1,0 @@
-﻿{
-	"id": "FontVariant",
-	"description": "Вертикальное выравнивание шрифта",
-	"enum": [
-		"Normal",
-		"Subscript",
-		"Superscript"
-	]
-}

@@ -4,11 +4,11 @@ using InfinniPlatform.Core.Compression;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Sdk.Documents.Metadata;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Metadata.Documents;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Core.IoC

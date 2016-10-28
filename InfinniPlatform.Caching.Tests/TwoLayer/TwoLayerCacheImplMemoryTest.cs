@@ -3,7 +3,6 @@
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Core;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Queues.Producers;
 using InfinniPlatform.Sdk.Settings;

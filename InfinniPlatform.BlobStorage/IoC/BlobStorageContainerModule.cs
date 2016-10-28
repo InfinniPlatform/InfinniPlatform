@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.BlobStorage.Services;
 using InfinniPlatform.Sdk.BlobStorage;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.BlobStorage.IoC

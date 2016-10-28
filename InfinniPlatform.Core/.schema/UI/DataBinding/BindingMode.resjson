@@ -1,9 +1,0 @@
-﻿{
-  "id": "BindingMode",
-  "description": "Направление потока данных в привязке",
-  "enum": [
-    "TwoWay",
-    "ToSource",
-    "ToElement"
-  ]
-}

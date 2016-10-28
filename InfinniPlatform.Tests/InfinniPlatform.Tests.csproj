@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="Conventions\StructurePlatformConventionsTest.cs" />
     <Compile Include="Helpers\WindowsServices.cs" />
-    <Compile Include="Syntax\SyntaxTest.cs" />
     <Compile Include="TestCategories.cs" />
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>

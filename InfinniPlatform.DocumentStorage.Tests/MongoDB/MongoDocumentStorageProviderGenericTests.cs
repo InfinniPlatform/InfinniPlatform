@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Tests.TestEntities;
 using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Metadata.Documents;
+using InfinniPlatform.Sdk.Documents.Metadata;
 
 using NUnit.Framework;
 

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.BlobStorage.Properties;
 using InfinniPlatform.Sdk.BlobStorage;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.BlobStorage.Services
 {

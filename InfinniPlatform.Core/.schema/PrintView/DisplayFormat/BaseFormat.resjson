@@ -1,6 +1,0 @@
-﻿{
-	"id": "BaseFormat",
-	"description": "Базовый тип для формата отображения данных",
-	"type": "object",
-	"properties": {}
-}

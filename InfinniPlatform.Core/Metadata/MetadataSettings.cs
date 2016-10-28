@@ -10,17 +10,11 @@
         public MetadataSettings()
         {
             DocumentsPath = "content/metadata/Documents";
-            PrintViewsPath = "content/metadata/PrintViews";
         }
 
         /// <summary>
         /// Путь до подкаталога с файлами метаданных документов.
         /// </summary>
         public string DocumentsPath { get; set; }
-
-        /// <summary>
-        /// Путь до подкаталога с файлами метаданных печатных представлений.
-        /// </summary>
-        public string PrintViewsPath { get; set; }
     }
 }
