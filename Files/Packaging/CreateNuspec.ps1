@@ -26,6 +26,12 @@
 
         [Parameter(HelpMessage = "Solution extensions.")]
         [Array] $extensions = @(
+            'InfinniPlatform.Auth.Adfs',
+            'InfinniPlatform.Auth.Cookie',
+            'InfinniPlatform.Auth.Facebook',
+            'InfinniPlatform.Auth.Google',
+            'InfinniPlatform.Auth.Internal',
+            'InfinniPlatform.Auth.Vk',
             'InfinniPlatform.PrintView',
             'InfinniPlatform.Scheduler',
             'InfinniPlatform.Watcher'

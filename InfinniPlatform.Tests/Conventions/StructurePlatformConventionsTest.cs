@@ -50,6 +50,11 @@ namespace InfinniPlatform.Conventions
 
             // When
             var result = project.EndsWith("InfinniPlatform.ServiceHost")
+                         || project.EndsWith("InfinniPlatform.Auth.Adfs")
+                         || project.EndsWith("InfinniPlatform.Auth.Cookie")
+                         || project.EndsWith("InfinniPlatform.Auth.Facebook")
+                         || project.EndsWith("InfinniPlatform.Auth.Google")
+                         || project.EndsWith("InfinniPlatform.Auth.Vk")
                          || project.EndsWith("InfinniPlatform.Watcher")
                          || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
 

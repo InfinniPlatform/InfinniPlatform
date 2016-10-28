@@ -32,9 +32,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Http.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.PushNotification.Tests", "InfinniPlatform.PushNotification.Tests\InfinniPlatform.PushNotification.Tests.csproj", "{A0310B59-9025-4394-90FF-777194481CDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Authentication", "InfinniPlatform.Authentication\InfinniPlatform.Authentication.csproj", "{9FEC0071-8A7C-44C1-91C7-9C1219601B34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Internal", "InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.csproj", "{9FEC0071-8A7C-44C1-91C7-9C1219601B34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Authentication.Tests", "InfinniPlatform.Authentication.Tests\InfinniPlatform.Authentication.Tests.csproj", "{01FDB3B6-D433-4D85-AEF6-E194742A708D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Internal.Tests", "InfinniPlatform.Auth.Internal.Tests\InfinniPlatform.Auth.Internal.Tests.csproj", "{01FDB3B6-D433-4D85-AEF6-E194742A708D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.PrintView", "InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj", "{E47F0C5B-F775-44B4-9E2E-E4C044864125}"
 EndProject
@@ -90,6 +90,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{90A10053
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Watcher", "InfinniPlatform.Watcher\InfinniPlatform.Watcher.csproj", "{A60002BA-C68A-415C-A506-F929BE2526D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Cookie", "InfinniPlatform.Auth.Cookie\InfinniPlatform.Auth.Cookie.csproj", "{DAF73666-F354-499C-9C1E-5E96A5141F13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Adfs", "InfinniPlatform.Auth.Adfs\InfinniPlatform.Auth.Adfs.csproj", "{3C0E4440-349E-412E-B44C-D0EDBE4E25D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Facebook", "InfinniPlatform.Auth.Facebook\InfinniPlatform.Auth.Facebook.csproj", "{DBCC4736-3378-48BA-B36A-F21260DC102A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Google", "InfinniPlatform.Auth.Google\InfinniPlatform.Auth.Google.csproj", "{6364229A-5841-43A3-97A9-617D4B7B2719}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Vk", "InfinniPlatform.Auth.Vk\InfinniPlatform.Auth.Vk.csproj", "{CBAB198C-3CA3-49C2-8E47-749348DEAB43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -205,6 +215,26 @@ Global
 		{A60002BA-C68A-415C-A506-F929BE2526D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A60002BA-C68A-415C-A506-F929BE2526D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A60002BA-C68A-415C-A506-F929BE2526D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAF73666-F354-499C-9C1E-5E96A5141F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF73666-F354-499C-9C1E-5E96A5141F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF73666-F354-499C-9C1E-5E96A5141F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF73666-F354-499C-9C1E-5E96A5141F13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C0E4440-349E-412E-B44C-D0EDBE4E25D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C0E4440-349E-412E-B44C-D0EDBE4E25D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C0E4440-349E-412E-B44C-D0EDBE4E25D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C0E4440-349E-412E-B44C-D0EDBE4E25D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBCC4736-3378-48BA-B36A-F21260DC102A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBCC4736-3378-48BA-B36A-F21260DC102A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBCC4736-3378-48BA-B36A-F21260DC102A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBCC4736-3378-48BA-B36A-F21260DC102A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6364229A-5841-43A3-97A9-617D4B7B2719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6364229A-5841-43A3-97A9-617D4B7B2719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6364229A-5841-43A3-97A9-617D4B7B2719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6364229A-5841-43A3-97A9-617D4B7B2719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBAB198C-3CA3-49C2-8E47-749348DEAB43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBAB198C-3CA3-49C2-8E47-749348DEAB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBAB198C-3CA3-49C2-8E47-749348DEAB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBAB198C-3CA3-49C2-8E47-749348DEAB43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

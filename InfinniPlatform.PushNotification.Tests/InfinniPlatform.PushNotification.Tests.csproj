@@ -55,10 +55,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
-      <Project>{DEADC17E-4C51-48D7-9AEA-F8DAE3090C74}</Project>
-      <Name>InfinniPlatform.Http</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.PushNotification\InfinniPlatform.PushNotification.csproj">
       <Project>{c78bfc13-e956-4229-a2ff-7d95ac9ca74f}</Project>
       <Name>InfinniPlatform.PushNotification</Name>

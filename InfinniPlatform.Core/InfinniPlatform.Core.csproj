@@ -144,11 +144,6 @@
     <Compile Include="Logging\LogManagerCache.cs" />
     <Compile Include="Logging\Log4NetPerformanceLog.cs" />
     <Compile Include="Extensions\CommonExtensions.cs" />
-    <Compile Include="Security\DefaultAppUserPasswordHasher.cs" />
-    <Compile Include="Security\IAppUserPasswordHasher.cs" />
-    <Compile Include="Security\IAppUserStore.cs" />
-    <Compile Include="Security\MemoryAppUserStore.cs" />
-    <Compile Include="Security\StringHasher.cs" />
     <Compile Include="Settings\AppConfiguration.cs" />
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Logging\Logger.cs" />
@@ -161,7 +156,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Threading\AsyncHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
