@@ -1,5 +1,6 @@
 {
-    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",    
+    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+    "Text": "Application configuration files",    
     "Parameters": [
         {
             "Name": "AgentAddress"
@@ -66,8 +67,7 @@
                 "UpdatingItemsConverter": "{ return new Array(args.value.Result); }"
             }
         }
-    ],
-    "Text": "Config files",
+    ],    
     "Items": [
         {
             "TabPanel": {

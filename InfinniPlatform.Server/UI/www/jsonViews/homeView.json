@@ -1,4 +1,5 @@
 ﻿{
+    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",    
     "OnLoaded": "{ Subscribe(context, args); }",
     "DataSources": [{
         "RestDataSource": {
@@ -168,7 +169,7 @@
                             }, {
                                 "Button": {
                                     "Name": "init",
-                                    "Text": "RunInit",
+                                    "Text": "Init",
                                     "Action": {
                                         "ServerAction": {
                                             "Origin": "http://<%serverAddress%>:<%serverPort%>",
@@ -296,110 +297,6 @@
                                 }
                             }, {
                                 "Button": {
-                                    "Name": "config",
-                                    "Text": "Edit config",
-                                    "Action": {
-                                        "OpenAction": {
-                                            "LinkView": {
-                                                "AutoView": {
-                                                    "OpenMode": "Dialog",
-                                                    "Path": "jsonViews/configView.json",
-                                                    "Parameters": [{
-                                                        "Name": "AgentAddress",
-                                                        "Value": {
-                                                            "Source": "AgentsDataSource",
-                                                            "Property": "$.Address"
-                                                        }
-                                                    }, {
-                                                        "Name": "AgentPort",
-                                                        "Value": {
-                                                            "Source": "AgentsDataSource",
-                                                            "Property": "$.Port"
-                                                        }
-                                                    }, {
-                                                        "Name": "AppFullName",
-                                                        "Value": {
-                                                            "Source": "AppsDataSource",
-                                                            "Property": "$.AppFullName"
-                                                        }
-                                                    }]
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }, {
-                                "Button": {
-                                    "Name": "envVariables",
-                                    "Text": "Get environment",
-                                    "Action": {
-                                        "OpenAction": {
-                                            "LinkView": {
-                                                "AutoView": {
-                                                    "OpenMode": "Dialog",
-                                                    "DialogWidth": "ExtraLarge",
-                                                    "Path": "jsonViews/environmentView.json",
-                                                    "Parameters": [{
-                                                        "Name": "AgentAddress",
-                                                        "Value": {
-                                                            "Source": "AgentsDataSource",
-                                                            "Property": "$.Address"
-                                                        }
-                                                    }, {
-                                                        "Name": "AgentPort",
-                                                        "Value": {
-                                                            "Source": "AgentsDataSource",
-                                                            "Property": "$.Port"
-                                                        }
-                                                    }, {
-                                                        "Name": "AppFullName",
-                                                        "Value": {
-                                                            "Source": "AppsDataSource",
-                                                            "Property": "$.AppFullName"
-                                                        }
-                                                    }]
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }, {
-                                "Button": {
-                                    "Name": "log",
-                                    "Text": "Get log",
-                                    "Action": {
-                                        "OpenAction": {
-                                            "LinkView": {
-                                                "AutoView": {
-                                                    "OpenMode": "Dialog",
-                                                    "DialogWidth": "ExtraLarge",
-                                                    "Path": "jsonViews/logView.json",
-                                                    "Parameters": [{
-                                                        "Name": "AgentAddress",
-                                                        "Value": {
-                                                            "Source": "AgentsDataSource",
-                                                            "Property": "$.Address"
-                                                        }
-                                                    }, {
-                                                        "Name": "AgentPort",
-                                                        "Value": {
-                                                            "Source": "AgentsDataSource",
-                                                            "Property": "$.Port"
-                                                        }
-                                                    }, {
-                                                        "Name": "AppFullName",
-                                                        "Value": {
-                                                            "Source": "AppsDataSource",
-                                                            "Property": "$.AppFullName"
-                                                        }
-                                                    }]
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }, {
-                                "Button": {
                                     "Name": "restart",
                                     "Text": "Restart",
                                     "Action": {
@@ -438,6 +335,151 @@
                                                 }
                                             },
                                             "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
+                                        }
+                                    }
+                                }
+                            }, {
+                                "Button": {
+                                    "Name": "config",
+                                    "Text": "App configs",
+                                    "Action": {
+                                        "OpenAction": {
+                                            "LinkView": {
+                                                "AutoView": {
+                                                    "OpenMode": "Dialog",
+                                                    "Path": "jsonViews/configView.json",
+                                                    "Parameters": [{
+                                                        "Name": "AgentAddress",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Address"
+                                                        }
+                                                    }, {
+                                                        "Name": "AgentPort",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Port"
+                                                        }
+                                                    }, {
+                                                        "Name": "AppFullName",
+                                                        "Value": {
+                                                            "Source": "AppsDataSource",
+                                                            "Property": "$.AppFullName"
+                                                        }
+                                                    }]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }, {
+                                "Button": {
+                                    "Name": "log",
+                                    "Text": "App logs",
+                                    "Action": {
+                                        "OpenAction": {
+                                            "LinkView": {
+                                                "AutoView": {
+                                                    "OpenMode": "Dialog",
+                                                    "DialogWidth": "ExtraLarge",
+                                                    "Path": "jsonViews/appLogView.json",
+                                                    "Parameters": [{
+                                                        "Name": "AgentAddress",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Address"
+                                                        }
+                                                    }, {
+                                                        "Name": "AgentPort",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Port"
+                                                        }
+                                                    }, {
+                                                        "Name": "AppFullName",
+                                                        "Value": {
+                                                            "Source": "AppsDataSource",
+                                                            "Property": "$.AppFullName"
+                                                        }
+                                                    }]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }]
+                        }
+                    }, {
+                        "StackPanel": {
+                            "ViewMode": "FormGroup",
+                            "Orientation": "Horizontal",
+                            "Items": [{
+                                "Button": {
+                                    "Name": "envVariables",
+                                    "Text": "Agent environment variables",
+                                    "Action": {
+                                        "OpenAction": {
+                                            "LinkView": {
+                                                "AutoView": {
+                                                    "OpenMode": "Dialog",
+                                                    "DialogWidth": "ExtraLarge",
+                                                    "Path": "jsonViews/environmentView.json",
+                                                    "Parameters": [{
+                                                        "Name": "AgentAddress",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Address"
+                                                        }
+                                                    }, {
+                                                        "Name": "AgentPort",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Port"
+                                                        }
+                                                    }, {
+                                                        "Name": "AppFullName",
+                                                        "Value": {
+                                                            "Source": "AppsDataSource",
+                                                            "Property": "$.AppFullName"
+                                                        }
+                                                    }]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }, {
+                                "Button": {
+                                    "Name": "nodeLog",
+                                    "Text": "Infinni.Node log",
+                                    "Action": {
+                                        "OpenAction": {
+                                            "LinkView": {
+                                                "AutoView": {
+                                                    "OpenMode": "Dialog",
+                                                    "DialogWidth": "ExtraLarge",
+                                                    "Path": "jsonViews/nodeLogView.json",
+                                                    "Parameters": [{
+                                                        "Name": "AgentAddress",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Address"
+                                                        }
+                                                    }, {
+                                                        "Name": "AgentPort",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Port"
+                                                        }
+                                                    }, {
+                                                        "Name": "AppFullName",
+                                                        "Value": {
+                                                            "Source": "AppsDataSource",
+                                                            "Property": "$.AppFullName"
+                                                        }
+                                                    }]
+                                                }
+                                            }
                                         }
                                     }
                                 }
