@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Agent.InfinniNode;
 using InfinniPlatform.Agent.Settings;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Agent.IoC

@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.PushNotification;
-using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Server.Agent;
 using InfinniPlatform.Server.Settings;
 

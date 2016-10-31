@@ -4,8 +4,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Services;
 
 namespace InfinniPlatform.Server.Agent
 {

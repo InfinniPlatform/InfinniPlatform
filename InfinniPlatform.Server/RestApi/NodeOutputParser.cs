@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.RestApi

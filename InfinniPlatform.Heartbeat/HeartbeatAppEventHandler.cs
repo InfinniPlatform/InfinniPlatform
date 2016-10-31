@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using InfinniPlatform.Heartbeat.Settings;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Hosting;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Services;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Heartbeat

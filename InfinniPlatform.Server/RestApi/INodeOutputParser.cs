@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Services;
+﻿using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.RestApi

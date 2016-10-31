@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Services;
+﻿using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.Server.Agent;
 using InfinniPlatform.Server.RestApi;
