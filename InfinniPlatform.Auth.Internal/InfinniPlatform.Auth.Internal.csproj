@@ -105,7 +105,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Identity\IdentityApplicationUserStore.cs" />
-    <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="Services\AuthInternalHttpService.cs" />
     <Compile Include="Services\UrlBuilder.cs" />
     <Compile Include="Services\UserEventHandlerInvoker.cs" />

@@ -1,9 +1,9 @@
 ﻿using System;
 
 using InfinniPlatform.Auth.Internal.Identity;
-using InfinniPlatform.Auth.Internal.Security;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
 
@@ -17,15 +17,18 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
     internal class AuthInternalHttpMiddleware : HttpMiddleware
     {
         public AuthInternalHttpMiddleware(Func<UserManager<IdentityApplicationUser>> userManagerFactory,
+                                          IUserIdentityProvider identityProvider,
                                           ILog log)
             : base(HttpMiddlewareType.InternalAuthentication)
         {
             _userManagerFactory = userManagerFactory;
+            _identityProvider = identityProvider;
             _log = log;
         }
 
 
         private readonly Func<UserManager<IdentityApplicationUser>> _userManagerFactory;
+        private readonly IUserIdentityProvider _identityProvider;
         private readonly ILog _log;
 
 
@@ -39,7 +42,7 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
                         {
                             var requestUser = owinContext.Request.User;
 
-                            UserIdentityProvider.SetRequestUser(requestUser);
+                            _identityProvider.SetUserIdentity(requestUser);
 
                             _log.SetUserId(requestUser?.Identity);
 

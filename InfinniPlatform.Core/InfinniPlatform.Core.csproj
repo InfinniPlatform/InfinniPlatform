@@ -99,6 +99,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostics\DiagnosticsContainerModule.cs" />
     <Compile Include="Compression\GZipDataCompressor.cs" />
     <Compile Include="Compression\IDataCompressor.cs" />
     <Compile Include="Http\HostAddressParser.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Http\Middlewares\OwinContextProvider.cs" />
     <Compile Include="Http\StaticContentSettings.cs" />
     <Compile Include="Logging\LogEvent.cs" />
+    <Compile Include="Logging\LoggingContainerModule.cs" />
     <Compile Include="Logging\PerformanceLogEvent.cs" />
     <Compile Include="Logging\LogTraceListener.cs" />
     <Compile Include="Metadata\JsonDocumentMetadataSource.cs" />
@@ -133,6 +135,8 @@
     <Compile Include="Http\Services\NancyHttpRequestHeaders.cs" />
     <Compile Include="Http\Services\NancyMimeTypeResolver.cs" />
     <Compile Include="Http\Middlewares\NancyHttpMiddleware.cs" />
+    <Compile Include="Security\SecurityContainerModule.cs" />
+    <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="ServiceHost\ServiceHost.cs" />
     <Compile Include="ServiceHost\ServiceHostStatus.cs" />
     <Compile Include="Settings\AppConfigurationPlaceholder.cs" />
@@ -156,6 +160,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings\SettingsContainerModuler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

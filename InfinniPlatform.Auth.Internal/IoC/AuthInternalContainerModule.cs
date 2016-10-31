@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.Auth.Internal.Identity;
 using InfinniPlatform.Auth.Internal.Middlewares;
-using InfinniPlatform.Auth.Internal.Security;
 using InfinniPlatform.Auth.Internal.Services;
 using InfinniPlatform.Auth.Internal.UserStorage;
 using InfinniPlatform.Http.Middlewares;
@@ -40,13 +39,6 @@ namespace InfinniPlatform.Auth.Internal.IoC
 
             builder.RegisterType<AuthInternalHttpMiddleware>()
                    .As<IHttpMiddleware>()
-                   .SingleInstance();
-
-            // Security
-
-            // Идентификационные данных текущего пользователя
-            builder.RegisterType<UserIdentityProvider>()
-                   .As<IUserIdentityProvider>()
                    .SingleInstance();
 
             // Services
