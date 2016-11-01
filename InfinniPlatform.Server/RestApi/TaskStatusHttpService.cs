@@ -19,8 +19,8 @@ namespace InfinniPlatform.Server.RestApi
             string taskId = httpRequest.Form.TaskId;
             string log = httpRequest.Form.Log;
 
-            File.AppendAllText("1.txt",$"From {taskId}:");
-            File.AppendAllText("1.txt",log);
+            File.AppendAllLines("1.txt", new[] { $"From {taskId}:", log });
+            
 
             return null;
         }

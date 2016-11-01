@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
@@ -18,62 +15,25 @@ namespace InfinniPlatform.Agent.InfinniNode
         public TaskOutputHandler(IJsonObjectSerializer serializer)
         {
             _serializer = serializer;
-            _stringBuffer = new List<string>();
             _httpClient = new HttpClient();
         }
 
         private readonly HttpClient _httpClient;
         private readonly IJsonObjectSerializer _serializer;
-        private List<string> _stringBuffer;
 
         public async Task Handle(NodeOutputEventArgs args)
         {
             if (!args.IsOutputClosed)
             {
-                try
-                {
-                    if (_stringBuffer.Count < Capacity)
-                    {
-                        _stringBuffer.Add(args.Output);
-                    }
-                    else
-                    {
-                        await SendOutput(_stringBuffer);
-                        ClearBuffer();
-                    }
-                }
-                catch (Exception)
-                {
-                    //ignored
-                }
-            }
-            else
-            {
-                try
-                {
-                    await SendOutput(_stringBuffer);
-                    ClearBuffer();
-                }
-                catch (Exception)
-                {
-                    //ignored
-                }
+                await SendOutput(args.Output);
             }
         }
 
-        private void ClearBuffer()
-        {
-            var newList = new List<string>();
-            Interlocked.Exchange(ref _stringBuffer, newList);
-        }
-
-        private async Task SendOutput(List<string> stringBuffer)
+        private async Task SendOutput(string log)
         {
             var address = "localhost";
             var port = 9901;
             var path = "taskStatus";
-
-            var log = stringBuffer.Aggregate<string, string>(null, (current, s) => current + $"{s}{Environment.NewLine}");
 
             var uriString = $"http://{address}:{port}/server/{path}";
             var memberValue = Guid.NewGuid().ToString("D");
