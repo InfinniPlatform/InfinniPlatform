@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.Helpers;
 
@@ -18,9 +19,11 @@ namespace InfinniPlatform.Agent.InfinniNode
         private const string RestartCommand = "restart";
         private const string StatusCommand = "status";
 
-        public NodeCommandExecutor(ProcessHelper processHelper)
+        public NodeCommandExecutor(ProcessHelper processHelper,
+                                   ITaskOutputHandler taskOutputHandler)
         {
             _processHelper = processHelper;
+            _processHelper.OnNodeOutputDataRecieved += async (s, args) => { await taskOutputHandler.Handle(args); };
         }
 
         private readonly ProcessHelper _processHelper;
@@ -33,7 +36,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                                         .AppendArg("s", source)
                                         .AppendArg("p", allowPrerelease);
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout);
+            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, Guid.NewGuid().ToString("D"));
 
             return processResult;
         }
@@ -44,7 +47,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                                           .AppendArg("v", version)
                                           .AppendArg("n", instance);
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout);
+            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, Guid.NewGuid().ToString("D"));
 
             return processResult;
         }
@@ -56,7 +59,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                                      .AppendArg("n", instance)
                                      .AppendArg("t", timeout);
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout);
+            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, Guid.NewGuid().ToString("D"));
 
             return processResult;
         }
@@ -68,7 +71,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                                       .AppendArg("n", instance)
                                       .AppendArg("t", timeout);
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout);
+            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, Guid.NewGuid().ToString("D"));
 
             return processResult;
         }
@@ -80,7 +83,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                                      .AppendArg("n", instance)
                                      .AppendArg("t", timeout);
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout);
+            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, Guid.NewGuid().ToString("D"));
 
             return processResult;
         }
@@ -92,14 +95,14 @@ namespace InfinniPlatform.Agent.InfinniNode
                                         .AppendArg("n", instance)
                                         .AppendArg("t", timeout);
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout);
+            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, Guid.NewGuid().ToString("D"));
 
             return processResult;
         }
 
         public async Task<ProcessHelper.ProcessResult> GetInstalledAppsInfo()
         {
-            var processResult = await _processHelper.ExecuteCommand(StatusCommand, ProcessTimeout);
+            var processResult = await _processHelper.ExecuteCommand(StatusCommand, ProcessTimeout, Guid.NewGuid().ToString("D"));
 
             return processResult;
         }

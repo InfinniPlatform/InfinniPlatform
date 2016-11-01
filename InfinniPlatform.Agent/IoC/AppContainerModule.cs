@@ -43,6 +43,10 @@ namespace InfinniPlatform.Agent.IoC
                    .As<ILogFilePovider>()
                    .SingleInstance();
 
+            builder.RegisterType<TaskOutputHandler>()
+                   .As<ITaskOutputHandler>()
+                   .SingleInstance();
+
             builder.RegisterHttpServices(assembly);
         }
 

@@ -2,7 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
   "app": {
     "Name": "InfinniPlatform",
-    "InstanceId": ""
+    "InstanceId": "",
+    "IsInCluster":  false 
   },
   "host": {
     "Name": "localhost",

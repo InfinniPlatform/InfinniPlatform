@@ -10,6 +10,9 @@ namespace InfinniPlatform.Agent.InfinniNode
 {
     public class ProcessHelper
     {
+        public delegate void NodeOutputEventHandler(object sender, NodeOutputEventArgs e);
+
+
         public ProcessHelper(AgentSettings agentSettings)
         {
             _workingDirectory = agentSettings.NodeDirectory;
@@ -19,12 +22,15 @@ namespace InfinniPlatform.Agent.InfinniNode
         private readonly string _command;
         private readonly string _workingDirectory;
 
+        public event NodeOutputEventHandler OnNodeOutputDataRecieved;
+
         /// <summary>
         /// Запускает процесс и перехватывает его вывод.
         /// </summary>
         /// <param name="arguments">Аргументы запуска процесса.</param>
         /// <param name="timeout">Таймаут выполнения процесса.</param>
-        public async Task<ProcessResult> ExecuteCommand(string arguments, int timeout)
+        /// <param name="taskId">Идентификатор задачи.</param>
+        public async Task<ProcessResult> ExecuteCommand(string arguments, int timeout, string taskId)
         {
             var result = new ProcessResult();
 
@@ -52,10 +58,12 @@ namespace InfinniPlatform.Agent.InfinniNode
                                                   if (string.IsNullOrEmpty(e.Data))
                                                   {
                                                       outputCloseEvent.SetResult(true);
+                                                      OnNodeOutputDataRecieved?.Invoke(this, new NodeOutputEventArgs(e.Data, taskId, true));
                                                   }
                                                   else
                                                   {
                                                       outputBuilder.AppendLine(e.Data);
+                                                      OnNodeOutputDataRecieved?.Invoke(this, new NodeOutputEventArgs(e.Data, taskId));
                                                   }
                                               };
 
@@ -68,10 +76,12 @@ namespace InfinniPlatform.Agent.InfinniNode
                                                  if (string.IsNullOrEmpty(e.Data))
                                                  {
                                                      errorCloseEvent.SetResult(true);
+                                                     OnNodeOutputDataRecieved?.Invoke(this, new NodeOutputEventArgs(e.Data, taskId, true));
                                                  }
                                                  else
                                                  {
                                                      errorBuilder.AppendLine(e.Data);
+                                                     OnNodeOutputDataRecieved?.Invoke(this, new NodeOutputEventArgs(e.Data, taskId));
                                                  }
                                              };
 
@@ -141,5 +151,22 @@ namespace InfinniPlatform.Agent.InfinniNode
             public int? ExitCode;
             public string Output;
         }
+    }
+
+
+    public class NodeOutputEventArgs
+    {
+        public NodeOutputEventArgs(string output, string taskId, bool isOutputClosed = false)
+        {
+            Output = output;
+            TaskId = taskId;
+            IsOutputClosed = isOutputClosed;
+        }
+
+        public string Output { get; set; }
+
+        public string TaskId { get; set; }
+
+        public bool IsOutputClosed { get; set; }
     }
 }

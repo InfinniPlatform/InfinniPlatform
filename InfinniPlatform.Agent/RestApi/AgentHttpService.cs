@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.InfinniNode;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.RestApi
@@ -32,6 +34,7 @@ namespace InfinniPlatform.Agent.RestApi
             builder.ServicePath = "agent";
 
             builder.Post["install"] = InstallApp;
+            builder.Post["installTask"] = StartTaskInstallApp;
             builder.Post["uninstall"] = UninstallApp;
 
             builder.Post["init"] = InitApp;
@@ -50,6 +53,27 @@ namespace InfinniPlatform.Agent.RestApi
             builder.Get["appLog"] = GetAppLogFile;
             builder.Get["perfLog"] = GetPerfLogFile;
             builder.Get["nodeLog"] = GetNodeLogFile;
+        }
+
+        private Task<object> StartTaskInstallApp(IHttpRequest request)
+        {
+            string appName = request.Form.AppName;
+            string version = request.Form.Version;
+            string instance = request.Form.Instance;
+            string source = request.Form.Source;
+            bool? allowPrerelease = request.Form.AllowPrerelease;
+
+            var taskId = Guid.NewGuid().ToString("D");
+
+            _nodeCommandExecutor.InstallApp(appName, version, instance, source, allowPrerelease);
+
+            return Task.FromResult<object>(new ServiceResult<DynamicWrapper>
+                                           {
+                                               Success = true, Result = new DynamicWrapper
+                                                                        {
+                                                                            { "TaskId", taskId }
+                                                                        }
+                                           });
         }
 
         private async Task<object> InstallApp(IHttpRequest request)

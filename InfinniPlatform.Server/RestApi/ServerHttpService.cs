@@ -82,11 +82,12 @@ namespace InfinniPlatform.Server.RestApi
 
             await _notifyService.NotifyAll(NotifyMessageType, $"Installing {args["AppName"]}...");
 
-            var serviceResult = await _agentHttpClient.Post<ServiceResult<ProcessResult>>("install", address, port, args);
+            //var serviceResult = await _agentHttpClient.Post<ServiceResult<ProcessResult>>("install", address, port, args);
 
             await _notifyService.NotifyAll(NotifyMessageType, $"Installing {args["AppName"]} complete.");
 
-            return serviceResult;
+            //return serviceResult;
+            return new ServiceResult<object> {Success = true, Result = "Ok"};
         }
 
         private async Task<object> UninstallApp(IHttpRequest request)

@@ -13,6 +13,7 @@ namespace InfinniPlatform.Core.Settings
         public AppEnvironment()
         {
             Name = "InfinniPlatform";
+            IsInCluster = false;
             _instanceId = $"{Environment.MachineName}_{Environment.CurrentDirectory.Split(Path.DirectorySeparatorChar).Last()}";
         }
 
@@ -31,5 +32,7 @@ namespace InfinniPlatform.Core.Settings
                 }
             }
         }
+
+        public bool IsInCluster { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/App.json",
+    "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/App.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "App",
     "description": "Настройки приложения.",
@@ -13,6 +13,11 @@
         "InstanceId": {
             "description": "Идентификатор текущего экземпляра приложения (по умолчанию - NetBIOS имя машины + имя рабочей директории).",
             "type": "string"
+        },
+        "IsInCluster": {
+            "description": "Идентификатор принадлежности экземпляра к кластеру.",
+            "type": "boolean",
+            "default" : false
         }
     },
     "required": [

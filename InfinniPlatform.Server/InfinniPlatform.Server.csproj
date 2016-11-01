@@ -58,6 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RestApi\TaskStatusHttpService.cs" />
     <Compile Include="Settings\AgentInfo.cs" />
     <Compile Include="Settings\ServerSettings.cs" />
   </ItemGroup>
