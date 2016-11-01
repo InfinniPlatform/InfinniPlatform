@@ -8,7 +8,7 @@
     "Period": {
       "description": "Периодичность оповещения сервера (в секундах).",
       "type": "integer",
-      "default": 5
+      "default": 60
     },
     "ServerAddress": {
       "description": "Адрес сервера InfinniPlatform.Server.",

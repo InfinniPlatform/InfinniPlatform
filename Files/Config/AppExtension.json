@@ -32,7 +32,7 @@
     ]
   },
   "heartbeat": {
-    "Period": 5,
+    "Period": 60,
     "ServerAddress": "http://localhost:9901",
     "Token": "cc670bc2b2124011a3f92056487f2cf3"
   }
