@@ -55,7 +55,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             {
                 var basicProperties = _basicPropertiesProvider.Get();
 
-                channel.BasicPublish(_manager.BroadcastExchangeName, routingKey, true, basicProperties, messageToBytes);
+                channel?.BasicPublish(_manager.BroadcastExchangeName, routingKey, true, basicProperties, messageToBytes);
             }
         }
     }

@@ -124,7 +124,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             {
                 var declaredQueueName = GetTaskKey(queueName);
 
-                channel.QueueDeclare(declaredQueueName, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete);
+                channel?.QueueDeclare(declaredQueueName, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete);
 
                 return declaredQueueName;
             }
@@ -140,8 +140,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             {
                 var declaredQueueName = GetBroadcastKey(routingKey);
 
-                channel.QueueDeclare(declaredQueueName, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete);
-                channel.QueueBind(declaredQueueName, BroadcastExchangeName, routingKey);
+                channel?.QueueDeclare(declaredQueueName, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete);
+                channel?.QueueBind(declaredQueueName, BroadcastExchangeName, routingKey);
 
                 return declaredQueueName;
             }

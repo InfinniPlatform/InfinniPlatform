@@ -69,7 +69,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             eventingConsumer.Received += async (o, args) => await OnRecieved(consumer, args, channel);
             eventingConsumer.Shutdown += (sender, args) => { _log.Error("Consumer shutdown.", () => CreateLogContext(consumer)); };
 
-            channel.BasicConsume(queueName, false, eventingConsumer);
+            channel?.BasicConsume(queueName, false, eventingConsumer);
         }
 
         /// <summary>

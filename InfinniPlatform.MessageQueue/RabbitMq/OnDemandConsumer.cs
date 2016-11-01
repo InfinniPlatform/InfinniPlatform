@@ -30,7 +30,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
                 var declareQueueName = _manager.DeclareTaskQueue(queueName);
 
-                var result = channel.BasicGet(declareQueueName, false);
+                var result = channel?.BasicGet(declareQueueName, false);
 
                 if (result == null)
                 {

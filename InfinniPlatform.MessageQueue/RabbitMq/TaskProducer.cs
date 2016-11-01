@@ -60,7 +60,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
                 var basicProperties = _basicPropertiesProvider.GetPersistent();
                 basicProperties.Persistent = true;
 
-                channel.BasicPublish(string.Empty, taskKey, true, basicProperties, messageBodyToBytes);
+                channel?.BasicPublish(string.Empty, taskKey, true, basicProperties, messageBodyToBytes);
             }
         }
     }
