@@ -29,7 +29,7 @@ namespace InfinniPlatform.Agent.IoC
 
             builder.RegisterType<ProcessHelper>()
                    .AsSelf()
-                   .SingleInstance();
+                   .InstancePerDependency();
 
             builder.RegisterType<ConfigurationFileProvider>()
                    .As<IConfigurationFileProvider>()
@@ -43,9 +43,9 @@ namespace InfinniPlatform.Agent.IoC
                    .As<ILogFilePovider>()
                    .SingleInstance();
 
-            builder.RegisterType<TaskOutputHandler>()
-                   .As<ITaskOutputHandler>()
-                   .SingleInstance();
+//            builder.RegisterType<TaskOutputHandler>()
+//                   .As<ITaskOutputHandler>()
+//                   .SingleInstance();
 
             builder.RegisterHttpServices(assembly);
         }

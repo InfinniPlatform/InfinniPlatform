@@ -4,15 +4,13 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Agent.Settings;
 
 namespace InfinniPlatform.Agent.InfinniNode
 {
     public class ProcessHelper
     {
-        public delegate void NodeOutputEventHandler(object sender, NodeOutputEventArgs e);
-
-
         public ProcessHelper(AgentSettings agentSettings)
         {
             _workingDirectory = agentSettings.NodeDirectory;
@@ -21,8 +19,6 @@ namespace InfinniPlatform.Agent.InfinniNode
 
         private readonly string _command;
         private readonly string _workingDirectory;
-
-        public event NodeOutputEventHandler OnNodeOutputDataRecieved;
 
         /// <summary>
         /// Запускает процесс и перехватывает его вывод.
@@ -33,6 +29,7 @@ namespace InfinniPlatform.Agent.InfinniNode
         public async Task<ProcessResult> ExecuteCommand(string arguments, int timeout, string taskId)
         {
             var result = new ProcessResult();
+            var nodeOutputBuffer = new NodeOutputBuffer();
 
             using (var process = new Process())
             {
@@ -58,12 +55,17 @@ namespace InfinniPlatform.Agent.InfinniNode
                                                   if (string.IsNullOrEmpty(e.Data))
                                                   {
                                                       outputCloseEvent.SetResult(true);
-                                                      OnNodeOutputDataRecieved?.Invoke(this, new NodeOutputEventArgs(e.Data, taskId, true));
+                                                      nodeOutputBuffer.Send(taskId).Wait();
                                                   }
                                                   else
                                                   {
                                                       outputBuilder.AppendLine(e.Data);
-                                                      OnNodeOutputDataRecieved?.Invoke(this, new NodeOutputEventArgs(e.Data, taskId));
+                                                      nodeOutputBuffer.Output(e.Data);
+
+                                                      if (nodeOutputBuffer.OutputCount == 30)
+                                                      {
+                                                          nodeOutputBuffer.Send(taskId).Wait();
+                                                      }
                                                   }
                                               };
 
@@ -76,12 +78,16 @@ namespace InfinniPlatform.Agent.InfinniNode
                                                  if (string.IsNullOrEmpty(e.Data))
                                                  {
                                                      errorCloseEvent.SetResult(true);
-                                                     OnNodeOutputDataRecieved?.Invoke(this, new NodeOutputEventArgs(e.Data, taskId, true));
+                                                     nodeOutputBuffer.Send(taskId).Wait();
                                                  }
                                                  else
                                                  {
                                                      errorBuilder.AppendLine(e.Data);
-                                                     OnNodeOutputDataRecieved?.Invoke(this, new NodeOutputEventArgs(e.Data, taskId));
+                                                     nodeOutputBuffer.Error(e.Data);
+                                                     if (nodeOutputBuffer.ErrorCount == 10)
+                                                     {
+                                                         nodeOutputBuffer.Send(taskId).Wait();
+                                                     }
                                                  }
                                              };
 
@@ -151,22 +157,5 @@ namespace InfinniPlatform.Agent.InfinniNode
             public int? ExitCode;
             public string Output;
         }
-    }
-
-
-    public class NodeOutputEventArgs
-    {
-        public NodeOutputEventArgs(string output, string taskId, bool isOutputClosed = false)
-        {
-            Output = output;
-            TaskId = taskId;
-            IsOutputClosed = isOutputClosed;
-        }
-
-        public string Output { get; set; }
-
-        public string TaskId { get; set; }
-
-        public bool IsOutputClosed { get; set; }
     }
 }

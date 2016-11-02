@@ -19,11 +19,9 @@ namespace InfinniPlatform.Agent.InfinniNode
         private const string RestartCommand = "restart";
         private const string StatusCommand = "status";
 
-        public NodeCommandExecutor(ProcessHelper processHelper,
-                                   ITaskOutputHandler taskOutputHandler)
+        public NodeCommandExecutor(ProcessHelper processHelper)
         {
             _processHelper = processHelper;
-            _processHelper.OnNodeOutputDataRecieved += async (s, args) => { await taskOutputHandler.Handle(args); };
         }
 
         private readonly ProcessHelper _processHelper;

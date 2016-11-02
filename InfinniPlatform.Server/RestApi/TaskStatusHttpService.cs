@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Http.Services;
@@ -17,10 +18,9 @@ namespace InfinniPlatform.Server.RestApi
         private static Task<object> HandleTaskStatus(IHttpRequest httpRequest)
         {
             string taskId = httpRequest.Form.TaskId;
-            string log = httpRequest.Form.Log;
+            List<object> log = httpRequest.Form.Log;
 
-            File.AppendAllLines("1.txt", new[] { $"From {taskId}:", log });
-            
+            File.AppendAllLines("1.txt", log.Select(o => o.ToString()));
 
             return null;
         }
