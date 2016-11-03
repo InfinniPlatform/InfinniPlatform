@@ -23,8 +23,8 @@ namespace InfinniPlatform.Agent.InfinniNode.Tasks
 
         public Task<object> Run(IHttpRequest request)
         {
-            string appFullName = request.Form.AppFullName;
-            string fileName = request.Form.FileName;
+            string appFullName = request.Query.AppFullName;
+            string fileName = request.Query.FileName;
             string config = request.Form.Config;
 
             _configProvider.Set(appFullName, fileName, config);

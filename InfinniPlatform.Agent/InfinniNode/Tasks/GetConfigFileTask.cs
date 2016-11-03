@@ -21,14 +21,12 @@ namespace InfinniPlatform.Agent.InfinniNode.Tasks
 
         public Task<object> Run(IHttpRequest request)
         {
-            {
-                string appFullName = request.Query.AppFullName;
-                string fileName = request.Query.FileName;
+            string appFullName = request.Query.AppFullName;
+            string fileName = request.Query.FileName;
 
-                var configStream = _configProvider.Get(appFullName, fileName);
+            var configStream = _configProvider.Get(appFullName, fileName);
 
-                return Task.FromResult<object>(new StreamHttpResponse(configStream, "application/json"));
-            }
+            return Task.FromResult<object>(new StreamHttpResponse(configStream, "application/json"));
         }
     }
 }
