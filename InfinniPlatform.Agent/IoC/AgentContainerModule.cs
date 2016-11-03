@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Agent.InfinniNode;
+﻿using InfinniPlatform.Agent.Helpers;
+using InfinniPlatform.Agent.InfinniNode.Providers;
+using InfinniPlatform.Agent.InfinniNode.Tasks;
 using InfinniPlatform.Agent.Settings;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
@@ -9,11 +11,11 @@ namespace InfinniPlatform.Agent.IoC
     /// <summary>
     /// Регистрация компонентов в IoC-контейнере.
     /// </summary>
-    public sealed class AppContainerModule : IContainerModule
+    public sealed class AgentContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {
-            var assembly = typeof(AppContainerModule).Assembly;
+            var assembly = typeof(AgentContainerModule).Assembly;
 
             // Hosting
 
@@ -23,13 +25,13 @@ namespace InfinniPlatform.Agent.IoC
 
             // Infinni.Node
 
-            builder.RegisterType<NodeCommandExecutor>()
-                   .As<INodeCommandExecutor>()
-                   .SingleInstance();
+            builder.RegisterAssemblyTypes(assembly,
+                              t => typeof(IAppTask).IsAssignableFrom(t),
+                              r => r.AsImplementedInterfaces().SingleInstance());
 
             builder.RegisterType<ProcessHelper>()
                    .AsSelf()
-                   .InstancePerDependency();
+                   .SingleInstance();
 
             builder.RegisterType<ConfigurationFileProvider>()
                    .As<IConfigurationFileProvider>()
@@ -43,9 +45,6 @@ namespace InfinniPlatform.Agent.IoC
                    .As<ILogFilePovider>()
                    .SingleInstance();
 
-//            builder.RegisterType<TaskOutputHandler>()
-//                   .As<ITaskOutputHandler>()
-//                   .SingleInstance();
 
             builder.RegisterHttpServices(assembly);
         }

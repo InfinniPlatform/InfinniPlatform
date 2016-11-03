@@ -52,3 +52,15 @@ function UpdateAppsGrid(context, args) {
         context.dataSources.AgentsDataSource.setSelectedItem(associatedItem);
     }
 }
+
+/** Показывает/скрывает кнопки для управления приложением * 
+ * @param {any} context Контекст
+ * @param {any} args Аргументы
+ */
+function EnableAppsButtons(context, args) {
+    if (args.value !== null && args.value !== undefined) {
+        context.controls.AppButtonsStackPanel.setVisible(true);
+    } else {
+        context.controls.AppButtonsStackPanel.setVisible(true);
+    }
+}

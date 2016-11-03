@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
   "agent": {
     "NodeDirectory": "C:\\Projects\\Infinni.Node\\Assemblies",
-    "ServerAddress": "",
+    "ServerAddress": "localhost:9901",
     "Token": "cc670bc2b2124011a3f92056487f2cf3"
   },
   "server": {
@@ -27,7 +27,7 @@
   },
   "heartbeat": {
     "Period": 60,
-    "ServerAddress": "http://localhost:9901",
+    "ServerAddress": "localhost:9901",
     "Token": "cc670bc2b2124011a3f92056487f2cf3"
   }
 }

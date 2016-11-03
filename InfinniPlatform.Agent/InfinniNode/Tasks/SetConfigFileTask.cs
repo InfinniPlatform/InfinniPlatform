@@ -1,0 +1,35 @@
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+
+using InfinniPlatform.Agent.InfinniNode.Providers;
+using InfinniPlatform.Sdk.Http.Services;
+
+namespace InfinniPlatform.Agent.InfinniNode.Tasks
+{
+    public class SetConfigFileTask : IAppTask
+    {
+        private const int ProcessTimeout = 10 * 60 * 1000;
+
+        public SetConfigFileTask(IConfigurationFileProvider configProvider)
+        {
+            _configProvider = configProvider;
+        }
+
+        private readonly IConfigurationFileProvider _configProvider;
+
+        public HttpMethod HttpMethod => HttpMethod.Post;
+
+        public string CommandName => "config";
+
+        public Task<object> Run(IHttpRequest request)
+        {
+            string appFullName = request.Form.AppFullName;
+            string fileName = request.Form.FileName;
+            string config = request.Form.Config;
+
+            _configProvider.Set(appFullName, fileName, config);
+
+            return Task.FromResult<object>(new ServiceResult<object> { Success = true });
+        }
+    }
+}

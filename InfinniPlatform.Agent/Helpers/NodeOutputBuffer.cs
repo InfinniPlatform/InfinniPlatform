@@ -9,6 +9,9 @@ using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Agent.Helpers
 {
+    /// <summary>
+    /// Буфферизирует и отправляет InfinniPlatform.Server сообщения из вывода Infinni.Node.
+    /// </summary>
     public class NodeOutputBuffer
     {
         public NodeOutputBuffer()
@@ -26,29 +29,43 @@ namespace InfinniPlatform.Agent.Helpers
 
         public int ErrorCount => _errorDataBuffer.Count;
 
-        public async Task Send(string taskId)
+        /// <summary>
+        /// Отправляет сообщения из буффера и очищает его.
+        /// </summary>
+        /// <param name="serverAddress">Адрес InfinniPlatform.Server.</param>
+        /// <param name="taskId">Идентификатор задачи.</param>
+        public async Task Send(string serverAddress, string taskId)
         {
-            var address = "localhost";
-            var port = 9901;
-            var path = "taskStatus";
+            var requestUri = new Uri($"http://{serverAddress}/server/taskStatus");
 
-            var uriString = $"http://{address}:{port}/server/{path}";
-            var convertToString = JsonObjectSerializer.Default.ConvertToString(new DynamicWrapper
-                                                                               {
-                                                                                   { "TaskId", taskId },
-                                                                                   { "Log", _outputDataBuffer.ToArray() }
-                                                                               });
+            var content = new DynamicWrapper
+                          {
+                              { "TaskId", taskId },
+                              { "Log", _outputDataBuffer.ToArray() }
+                          };
 
-            var requestContent = new StringContent(convertToString, JsonObjectSerializer.Default.Encoding, HttpConstants.JsonContentType);
-            await _httpClient.PostAsync(new Uri(uriString), requestContent);
+            var contentString = JsonObjectSerializer.Default.ConvertToString(content);
+
+            var requestContent = new StringContent(contentString, JsonObjectSerializer.Default.Encoding, HttpConstants.JsonContentType);
+
+            await _httpClient.PostAsync(requestUri, requestContent);
+
             _outputDataBuffer.Clear();
         }
 
+        /// <summary>
+        /// Добавляет строку в буфер стандартного вывода.
+        /// </summary>
+        /// <param name="output">Строка стандартного вывода.</param>
         public void Output(string output)
         {
             _outputDataBuffer.Add(output);
         }
 
+        /// <summary>
+        /// Добавляет строку в буфер вывода ошибок.
+        /// </summary>
+        /// <param name="error">Строка вывода ошибок.</param>
         public void Error(string error)
         {
             _errorDataBuffer.Add(error);

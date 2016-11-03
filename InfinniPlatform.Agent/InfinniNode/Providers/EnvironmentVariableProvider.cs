@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Agent.InfinniNode
+namespace InfinniPlatform.Agent.InfinniNode.Providers
 {
     public class EnvironmentVariableProvider : IEnvironmentVariableProvider
     {

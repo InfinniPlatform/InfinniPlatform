@@ -3,9 +3,8 @@ using System.IO;
 
 using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Agent.Settings;
-using InfinniPlatform.Sdk.Serialization;
 
-namespace InfinniPlatform.Agent.InfinniNode
+namespace InfinniPlatform.Agent.InfinniNode.Providers
 {
     public class ConfigurationFileProvider : IConfigurationFileProvider
     {

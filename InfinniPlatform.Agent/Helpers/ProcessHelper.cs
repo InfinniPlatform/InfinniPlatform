@@ -4,21 +4,20 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Agent.Settings;
 
-namespace InfinniPlatform.Agent.InfinniNode
+namespace InfinniPlatform.Agent.Helpers
 {
     public class ProcessHelper
     {
         public ProcessHelper(AgentSettings agentSettings)
         {
-            _workingDirectory = agentSettings.NodeDirectory;
+            _agentSettings = agentSettings;
             _command = $"{agentSettings.NodeDirectory}{Path.DirectorySeparatorChar}Infinni.Node.exe";
         }
 
+        private readonly AgentSettings _agentSettings;
         private readonly string _command;
-        private readonly string _workingDirectory;
 
         /// <summary>
         /// Запускает процесс и перехватывает его вывод.
@@ -43,7 +42,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
                 process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.WorkingDirectory = _workingDirectory;
+                process.StartInfo.WorkingDirectory = _agentSettings.NodeDirectory;
 
                 // Подписка на события записи в выходные потоки процесса
                 var outputBuilder = new StringBuilder();
@@ -55,7 +54,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                                                   if (string.IsNullOrEmpty(e.Data))
                                                   {
                                                       outputCloseEvent.SetResult(true);
-                                                      nodeOutputBuffer.Send(taskId).Wait();
+                                                      nodeOutputBuffer.Send(_agentSettings.ServerAddress, taskId).Wait();
                                                   }
                                                   else
                                                   {
@@ -64,7 +63,7 @@ namespace InfinniPlatform.Agent.InfinniNode
 
                                                       if (nodeOutputBuffer.OutputCount == 30)
                                                       {
-                                                          nodeOutputBuffer.Send(taskId).Wait();
+                                                          nodeOutputBuffer.Send(_agentSettings.ServerAddress, taskId).Wait();
                                                       }
                                                   }
                                               };
@@ -78,7 +77,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                                                  if (string.IsNullOrEmpty(e.Data))
                                                  {
                                                      errorCloseEvent.SetResult(true);
-                                                     nodeOutputBuffer.Send(taskId).Wait();
+                                                     nodeOutputBuffer.Send(_agentSettings.ServerAddress, taskId).Wait();
                                                  }
                                                  else
                                                  {
@@ -86,7 +85,7 @@ namespace InfinniPlatform.Agent.InfinniNode
                                                      nodeOutputBuffer.Error(e.Data);
                                                      if (nodeOutputBuffer.ErrorCount == 10)
                                                      {
-                                                         nodeOutputBuffer.Send(taskId).Wait();
+                                                         nodeOutputBuffer.Send(_agentSettings.ServerAddress, taskId).Wait();
                                                      }
                                                  }
                                              };

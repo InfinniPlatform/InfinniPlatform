@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace InfinniPlatform.Agent.InfinniNode
+namespace InfinniPlatform.Agent.InfinniNode.Providers
 {
     /// <summary>
     /// Предоставляет доступ к переменным окружения.

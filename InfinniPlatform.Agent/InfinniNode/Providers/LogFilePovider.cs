@@ -4,7 +4,7 @@ using System.IO;
 using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Agent.Settings;
 
-namespace InfinniPlatform.Agent.InfinniNode
+namespace InfinniPlatform.Agent.InfinniNode.Providers
 {
     public class LogFilePovider : ILogFilePovider
     {

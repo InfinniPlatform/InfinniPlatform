@@ -15,8 +15,6 @@ namespace InfinniPlatform.Heartbeat
 {
     public class HeartbeatAppEventHandler : AppEventHandler
     {
-        private const string ServerHeartbeatPath = "/server/heartbeat";
-
         public HeartbeatAppEventHandler(HeartbeatSettings settings,
                                         IJsonObjectSerializer serializer,
                                         IAppEnvironment environment,
@@ -26,12 +24,9 @@ namespace InfinniPlatform.Heartbeat
             _serializer = serializer;
             _environment = environment;
             _log = log;
-
-            var uri = new Uri(new Uri(settings.ServerAddress), ServerHeartbeatPath);
-
             _httpClient = new HttpClient
                           {
-                              BaseAddress = uri
+                              BaseAddress = new Uri($"http://{settings.ServerAddress}/server/heartbeat")
                           };
         }
 
@@ -43,10 +38,26 @@ namespace InfinniPlatform.Heartbeat
 
         public override void OnAfterStart()
         {
-            Task.Run(async () => { await SendBeats(); });
+            Task.Run(async () => { await SendBeat(); });
         }
 
-        private async Task SendBeats()
+        public override void OnBeforeStop()
+        {
+            var requestUri = new Uri(string.Empty, UriKind.Relative);
+
+            var beatMessage = new DynamicWrapper
+                              {
+                                  { "Message", "Application is stopping." },
+                                  { "Name", _environment.Name },
+                                  { "InstanceId", _environment.InstanceId }
+                              };
+
+            var requestContent = new StringContent(_serializer.ConvertToString(beatMessage), _serializer.Encoding, HttpConstants.JsonContentType);
+
+            Task.Run(() => { _httpClient.PostAsync(requestUri, requestContent); });
+        }
+
+        private async Task SendBeat()
         {
             var period = _settings.Period;
 
@@ -90,23 +101,6 @@ namespace InfinniPlatform.Heartbeat
 
             var startResponce = await startedMessage.Content.ReadAsStringAsync();
             _log.Error("Unable to send message.", () => new Dictionary<string, object> { { "Content", startResponce } });
-        }
-
-        public override void OnBeforeStop()
-        {
-            var requestUri = new Uri("/server/heartbeat", UriKind.Relative);
-
-            var beatMessage = new DynamicWrapper
-                              {
-                                  { "Message", "Application is stopping." },
-                                  { "Name", _environment.Name },
-                                  { "InstanceId", _environment.InstanceId }
-                              };
-
-            var requestContent = new StringContent(_serializer.ConvertToString(beatMessage), _serializer.Encoding, HttpConstants.JsonContentType);
-
-            Task.Run(() => { _httpClient.PostAsync(requestUri, requestContent); })
-                .Wait();
         }
     }
 }

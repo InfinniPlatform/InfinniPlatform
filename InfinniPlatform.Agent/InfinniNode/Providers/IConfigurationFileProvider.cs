@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace InfinniPlatform.Agent.InfinniNode
+namespace InfinniPlatform.Agent.InfinniNode.Providers
 {
     /// <summary>
     /// Предоставляет доступ к конфигурационным файлам.
