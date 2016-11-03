@@ -8,8 +8,6 @@ namespace InfinniPlatform.Agent.InfinniNode.Tasks
 {
     public class SetConfigFileTask : IAppTask
     {
-        private const int ProcessTimeout = 10 * 60 * 1000;
-
         public SetConfigFileTask(IConfigurationFileProvider configProvider)
         {
             _configProvider = configProvider;
