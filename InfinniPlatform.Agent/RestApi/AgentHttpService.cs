@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-using InfinniPlatform.Agent.InfinniNode.Tasks;
+using InfinniPlatform.Agent.Tasks;
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.RestApi

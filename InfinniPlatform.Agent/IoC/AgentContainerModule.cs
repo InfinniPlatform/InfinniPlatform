@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Agent.Helpers;
-using InfinniPlatform.Agent.InfinniNode.Providers;
-using InfinniPlatform.Agent.InfinniNode.Tasks;
+using InfinniPlatform.Agent.Providers;
 using InfinniPlatform.Agent.Settings;
+using InfinniPlatform.Agent.Tasks;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
@@ -26,10 +26,10 @@ namespace InfinniPlatform.Agent.IoC
             // Infinni.Node
 
             builder.RegisterAssemblyTypes(assembly,
-                              t => typeof(IAppTask).IsAssignableFrom(t),
-                              r => r.AsImplementedInterfaces().SingleInstance());
+                                          t => typeof(IAppTask).IsAssignableFrom(t),
+                                          r => r.AsImplementedInterfaces().SingleInstance());
 
-            builder.RegisterType<ProcessHelper>()
+            builder.RegisterType<InfinniNodeAdapter>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -45,6 +45,9 @@ namespace InfinniPlatform.Agent.IoC
                    .As<ILogFilePovider>()
                    .SingleInstance();
 
+            builder.RegisterType<NodeTaskStorage>()
+                   .As<INodeTaskStorage>()
+                   .SingleInstance();
 
             builder.RegisterHttpServices(assembly);
         }

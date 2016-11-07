@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Agent.InfinniNode.Providers;
+using InfinniPlatform.Agent.Providers;
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.Agent.InfinniNode.Tasks
+namespace InfinniPlatform.Agent.Tasks.Environment
 {
     public class EnvirementVariablesTask : IAppTask
     {

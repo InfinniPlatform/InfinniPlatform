@@ -1,22 +1,21 @@
-﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.Agent.InfinniNode.Tasks
+namespace InfinniPlatform.Agent.Tasks.InfinniNode
 {
     public class UninstallAppTask : IAppTask
     {
         private const int ProcessTimeout = 10 * 60 * 1000;
 
-        public UninstallAppTask(ProcessHelper processHelper)
+        public UninstallAppTask(InfinniNodeAdapter infinniNodeAdapter)
         {
-            _processHelper = processHelper;
+            _infinniNodeAdapter = infinniNodeAdapter;
         }
 
-        private readonly ProcessHelper _processHelper;
+        private readonly InfinniNodeAdapter _infinniNodeAdapter;
 
         public HttpMethod HttpMethod => HttpMethod.Post;
 
@@ -28,11 +27,7 @@ namespace InfinniPlatform.Agent.InfinniNode.Tasks
                                      .AppendArg("v", (string)request.Form.Version)
                                      .AppendArg("n", (string)request.Form.Instance);
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, Guid.NewGuid().ToString("D"));
-
-            var taskStatus = new TaskStatus(processResult);
-
-            return taskStatus;
+            return await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout);
         }
     }
 }

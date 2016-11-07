@@ -1,22 +1,21 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.Agent.InfinniNode.Tasks
+namespace InfinniPlatform.Agent.Tasks.InfinniNode
 {
     public class StopAppTask : IAppTask
     {
         private const int ProcessTimeout = 10 * 60 * 1000;
 
-        public StopAppTask(ProcessHelper processHelper)
+        public StopAppTask(InfinniNodeAdapter infinniNodeAdapter)
         {
-            _processHelper = processHelper;
+            _infinniNodeAdapter = infinniNodeAdapter;
         }
 
-        private readonly ProcessHelper _processHelper;
+        private readonly InfinniNodeAdapter _infinniNodeAdapter;
 
         public HttpMethod HttpMethod => HttpMethod.Post;
 
@@ -29,9 +28,7 @@ namespace InfinniPlatform.Agent.InfinniNode.Tasks
                                      .AppendArg("n", (string)request.Form.Instance)
                                      .AppendArg("t", (string)request.Form.Timeout);
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, Guid.NewGuid().ToString("D"));
-
-            return new TaskStatus(processResult);
+            return await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout);
         }
     }
 }

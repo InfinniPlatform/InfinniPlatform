@@ -1,28 +1,30 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.Agent.InfinniNode.Tasks
+namespace InfinniPlatform.Agent.Tasks.InfinniNode
 {
     public class InstallAppTask : IAppTask
     {
         private const int ProcessTimeout = 10 * 60 * 1000;
 
-        public InstallAppTask(ProcessHelper processHelper)
+        public InstallAppTask(InfinniNodeAdapter infinniNodeAdapter,
+                              INodeTaskStorage nodeTaskStorage)
         {
-            _processHelper = processHelper;
+            _infinniNodeAdapter = infinniNodeAdapter;
+            _nodeTaskStorage = nodeTaskStorage;
         }
 
-        private readonly ProcessHelper _processHelper;
+        private readonly InfinniNodeAdapter _infinniNodeAdapter;
+        private readonly INodeTaskStorage _nodeTaskStorage;
 
         public string CommandName => "install";
 
         public HttpMethod HttpMethod => HttpMethod.Post;
 
-        public async Task<object> Run(IHttpRequest request)
+        public Task<object> Run(IHttpRequest request)
         {
             var command = CommandName.AppendArg("i", (string)request.Form.AppName)
                                      .AppendArg("v", (string)request.Form.Version)
@@ -30,11 +32,12 @@ namespace InfinniPlatform.Agent.InfinniNode.Tasks
                                      .AppendArg("s", (string)request.Form.Source)
                                      .AppendArg("p", (bool?)request.Form.AllowPrerelease);
 
-            var taskId = Guid.NewGuid().ToString("D");
 
-            var processResult = await _processHelper.ExecuteCommand(command, ProcessTimeout, taskId);
+            var taskId = _nodeTaskStorage.AddNewTask();
 
-            return new TaskStatus(processResult);
+            Task.Run(async () => { await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout, taskId); });
+
+            return Task.FromResult<object>(taskId);
         }
     }
 }

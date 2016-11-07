@@ -1,14 +1,14 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Agent.InfinniNode.Providers;
+using InfinniPlatform.Agent.Providers;
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.Agent.InfinniNode.Tasks
+namespace InfinniPlatform.Agent.Tasks.Files
 {
-    public class AppLogTask : IAppTask
+    public class NodeLogTask : IAppTask
     {
-        public AppLogTask(ILogFilePovider logFilePovider)
+        public NodeLogTask(ILogFilePovider logFilePovider)
         {
             _logFilePovider = logFilePovider;
         }
@@ -17,14 +17,11 @@ namespace InfinniPlatform.Agent.InfinniNode.Tasks
 
         public HttpMethod HttpMethod => HttpMethod.Get;
 
-        public string CommandName => "appLog";
+        public string CommandName => "nodeLog";
 
         public Task<object> Run(IHttpRequest request)
         {
-            string appFullName = request.Query.AppFullName;
-
-            var streamHttpResponse = new StreamHttpResponse(_logFilePovider.GetAppLog(appFullName), "application/text");
-
+            var streamHttpResponse = new StreamHttpResponse(_logFilePovider.GetNodeLog(), "application/text");
             return Task.FromResult<object>(streamHttpResponse);
         }
     }

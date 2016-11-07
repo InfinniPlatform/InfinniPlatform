@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace InfinniPlatform.Agent.InfinniNode.Providers
+namespace InfinniPlatform.Agent.Providers
 {
     /// <summary>
     /// Предоставляет доступ к файлам логов.

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.Agent.InfinniNode.Tasks
+namespace InfinniPlatform.Agent.Tasks
 {
     public interface IAppTask
     {

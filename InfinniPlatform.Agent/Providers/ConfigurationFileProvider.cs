@@ -4,7 +4,7 @@ using System.IO;
 using InfinniPlatform.Agent.Helpers;
 using InfinniPlatform.Agent.Settings;
 
-namespace InfinniPlatform.Agent.InfinniNode.Providers
+namespace InfinniPlatform.Agent.Providers
 {
     public class ConfigurationFileProvider : IConfigurationFileProvider
     {
