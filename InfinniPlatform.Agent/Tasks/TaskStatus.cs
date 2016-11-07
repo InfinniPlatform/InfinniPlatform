@@ -8,7 +8,7 @@
         /// <summary>
         /// Завершено ли выполнение задачи.
         /// </summary>
-        public bool? Completed { get; set; }
+        public bool Completed { get; set; }
 
         /// <summary>
         /// Идентификатор задачи.

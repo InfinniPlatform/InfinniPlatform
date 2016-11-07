@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.Helpers;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.InfinniNode
@@ -35,7 +36,7 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
 
             Task.Run(async () => { await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout, taskId); });
 
-            return Task.FromResult<object>(taskId);
+            return Task.FromResult<object>(new DynamicWrapper { { "TaskId", taskId } });
         }
     }
 }

@@ -39,14 +39,7 @@ namespace InfinniPlatform.Agent.Helpers
                 // При запуске на Linux bash-скриптов, возможен код ошибки 255.
                 // Решением является добавление заголовка #!/bin/bash в начало скрипта.
 
-                process.StartInfo.FileName = _command;
-                process.StartInfo.Arguments = arguments;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardInput = true;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.WorkingDirectory = _agentSettings.NodeDirectory;
+                FillProcessStartInfo(arguments, process);
 
                 // Подписка на события записи в выходные потоки процесса
                 var outputCloseEvent = new TaskCompletionSource<bool>();
@@ -142,14 +135,7 @@ namespace InfinniPlatform.Agent.Helpers
                 // При запуске на Linux bash-скриптов, возможен код ошибки 255.
                 // Решением является добавление заголовка #!/bin/bash в начало скрипта.
 
-                process.StartInfo.FileName = _command;
-                process.StartInfo.Arguments = arguments;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardInput = true;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.WorkingDirectory = _agentSettings.NodeDirectory;
+                FillProcessStartInfo(arguments, process);
 
                 // Подписка на события записи в выходные потоки процесса
                 var outputBuilder = new StringBuilder();
@@ -233,6 +219,18 @@ namespace InfinniPlatform.Agent.Helpers
             }
 
             return result;
+        }
+
+        private void FillProcessStartInfo(string arguments, Process process)
+        {
+            process.StartInfo.FileName = _command;
+            process.StartInfo.Arguments = arguments;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardInput = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.WorkingDirectory = _agentSettings.NodeDirectory;
         }
 
         private static Task<bool> WaitForExitAsync(Process process, int timeout)
