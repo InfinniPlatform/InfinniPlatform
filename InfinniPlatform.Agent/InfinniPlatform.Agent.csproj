@@ -63,10 +63,10 @@
     <Compile Include="Tasks\InfinniNode\AppsInfoTask.cs" />
     <Compile Include="Tasks\Environment\EnvirementVariablesTask.cs" />
     <Compile Include="Tasks\Files\GetConfigFileTask.cs" />
-    <Compile Include="Tasks\IAppTask.cs" />
+    <Compile Include="Tasks\IAgentTask.cs" />
     <Compile Include="Tasks\InfinniNode\InitAppTask.cs" />
     <Compile Include="Tasks\InfinniNode\InstallAppTask.cs" />
-    <Compile Include="Tasks\INodeTaskStorage.cs" />
+    <Compile Include="Tasks\ITaskStorage.cs" />
     <Compile Include="Tasks\Files\NodeLogTask.cs" />
     <Compile Include="Tasks\Files\PerfLogTask.cs" />
     <Compile Include="Tasks\InfinniNode\RestartAppTask.cs" />
@@ -75,7 +75,7 @@
     <Compile Include="Tasks\InfinniNode\StopAppTask.cs" />
     <Compile Include="Tasks\TaskStatus.cs" />
     <Compile Include="Tasks\InfinniNode\TaskStatusTask.cs" />
-    <Compile Include="Tasks\NodeTaskStorage.cs" />
+    <Compile Include="Tasks\TaskStorage.cs" />
     <Compile Include="Tasks\InfinniNode\UninstallAppTask.cs" />
     <Compile Include="IoC\AgentContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,7 +103,6 @@
       <Name>InfinniPlatform.Sdk</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

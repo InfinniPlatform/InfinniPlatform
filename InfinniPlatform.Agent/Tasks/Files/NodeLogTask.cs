@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.Files
 {
-    public class NodeLogTask : IAppTask
+    public class NodeLogTask : IAgentTask
     {
         public NodeLogTask(ILogFilePovider logFilePovider)
         {

@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.InfinniNode
 {
-    public class AppsInfoTask : IAppTask
+    public class AppsInfoTask : IAgentTask
     {
         private const int ProcessTimeout = 10 * 60 * 1000;
 
@@ -23,7 +23,9 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
 
         public async Task<object> Run(IHttpRequest request)
         {
-            return await _infinniNodeAdapter.ExecuteCommand("status", ProcessTimeout);
+            var result = await _infinniNodeAdapter.ExecuteCommand("status", ProcessTimeout);
+
+            return new ServiceResult<TaskStatus> { Success = true, Result = result };
         }
     }
 }

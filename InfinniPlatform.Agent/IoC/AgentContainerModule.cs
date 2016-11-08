@@ -26,7 +26,7 @@ namespace InfinniPlatform.Agent.IoC
             // Infinni.Node
 
             builder.RegisterAssemblyTypes(assembly,
-                                          t => typeof(IAppTask).IsAssignableFrom(t),
+                                          t => typeof(IAgentTask).IsAssignableFrom(t),
                                           r => r.AsImplementedInterfaces().SingleInstance());
 
             builder.RegisterType<InfinniNodeAdapter>()
@@ -45,8 +45,8 @@ namespace InfinniPlatform.Agent.IoC
                    .As<ILogFilePovider>()
                    .SingleInstance();
 
-            builder.RegisterType<NodeTaskStorage>()
-                   .As<INodeTaskStorage>()
+            builder.RegisterType<TaskStorage>()
+                   .As<ITaskStorage>()
                    .SingleInstance();
 
             builder.RegisterHttpServices(assembly);

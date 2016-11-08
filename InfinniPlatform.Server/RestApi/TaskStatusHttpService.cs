@@ -1,28 +1,65 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.RestApi
 {
     public class TaskStatusHttpService : IHttpService
     {
+        public TaskStatusHttpService(IAgentHttpClient agentHttpClient)
+        {
+            _agentHttpClient = agentHttpClient;
+        }
+
+        private readonly IAgentHttpClient _agentHttpClient;
+
         public void Load(IHttpServiceBuilder builder)
         {
             builder.ServicePath = "server";
-            builder.Post["taskStatus"] = HandleTaskStatus;
+            builder.Get["taskStatus"] = GetTaskStatus;
         }
 
-        private static Task<object> HandleTaskStatus(IHttpRequest httpRequest)
+        private async Task<object> GetTaskStatus(IHttpRequest request)
         {
-            string taskId = httpRequest.Form.TaskId;
-            List<object> log = httpRequest.Form.Log;
+            string address = request.Query.Address;
+            int port = request.Query.Port;
 
-            File.AppendAllLines("1.txt", log.Select(o => o.ToString()));
+            var taskId = (string)request.Query.TaskId;
 
-            return null;
+            if (taskId == null)
+            {
+                var result = await _agentHttpClient.Get<ServiceResult<Dictionary<string, AgentTaskStatus>>>("taskStatus", address, port);
+
+                var taskStatuses = result.Result.Select(pair => Convert(pair.Value));
+
+                return new ServiceResult<IEnumerable<DynamicWrapper>> { Success = true, Result = taskStatuses };
+            }
+
+            var queryContent = new DynamicWrapper { { "TaskId", taskId } };
+
+            var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>("taskStatus", address, port, queryContent);
+
+            return new ServiceResult<DynamicWrapper>
+                   {
+                       Success = true, Result = Convert(serviceResult.Result)
+                   };
+        }
+
+        private DynamicWrapper Convert(AgentTaskStatus taskStatus)
+        {
+            return new DynamicWrapper
+                   {
+                       {
+                           "Completed", taskStatus.Completed
+                                            ? "Completed"
+                                            : "Working"
+                       },
+                       { "Description", taskStatus.Description }
+                   };
         }
     }
 }

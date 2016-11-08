@@ -14,17 +14,17 @@ namespace InfinniPlatform.Agent.Helpers
     public class InfinniNodeAdapter
     {
         public InfinniNodeAdapter(AgentSettings agentSettings,
-                                  INodeTaskStorage nodeTaskStorage)
+                                  ITaskStorage taskStorage)
         {
             _command = $"{agentSettings.NodeDirectory}{Path.DirectorySeparatorChar}Infinni.Node.exe";
 
             _agentSettings = agentSettings;
-            _nodeTaskStorage = nodeTaskStorage;
+            _taskStorage = taskStorage;
         }
 
         private readonly AgentSettings _agentSettings;
         private readonly string _command;
-        private readonly INodeTaskStorage _nodeTaskStorage;
+        private readonly ITaskStorage _taskStorage;
 
         /// <summary>
         /// Запускает процесс и перехватывает его вывод.
@@ -53,7 +53,7 @@ namespace InfinniPlatform.Agent.Helpers
                                                   }
                                                   else
                                                   {
-                                                      _nodeTaskStorage.AddOutput(taskId, e.Data);
+                                                      _taskStorage.AddOutput(taskId, e.Data);
                                                   }
                                               };
 
@@ -68,7 +68,7 @@ namespace InfinniPlatform.Agent.Helpers
                                                  }
                                                  else
                                                  {
-                                                     _nodeTaskStorage.AddOutput(taskId, e.Data);
+                                                     _taskStorage.AddOutput(taskId, e.Data);
                                                  }
                                              };
 
@@ -82,8 +82,8 @@ namespace InfinniPlatform.Agent.Helpers
                 {
                     // Usually it occurs when an executable file is not found or is not executable
 
-                    _nodeTaskStorage.SetCompleted(taskId);
-                    _nodeTaskStorage.AddOutput(taskId, error.Message);
+                    _taskStorage.SetCompleted(taskId);
+                    _taskStorage.AddOutput(taskId, error.Message);
 
                     isStarted = false;
                 }
@@ -103,7 +103,7 @@ namespace InfinniPlatform.Agent.Helpers
                     // Waits process completion and then checks it was not completed by timeout
                     if ((await Task.WhenAny(Task.Delay(timeout), processTask) == processTask) && waitForExit.Result)
                     {
-                        _nodeTaskStorage.SetCompleted(taskId);
+                        _taskStorage.SetCompleted(taskId);
                     }
                     else
                     {

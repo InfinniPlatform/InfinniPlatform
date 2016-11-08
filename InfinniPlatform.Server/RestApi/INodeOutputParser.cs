@@ -12,6 +12,6 @@ namespace InfinniPlatform.Server.RestApi
         /// Преобразует вывод команды status и добавляет к ответу сервиса.
         /// </summary>
         /// <param name="serviceResult">Ответ сервиса.</param>
-        ServiceResult<ProcessResult> FormatAppsInfoOutput(ServiceResult<ProcessResult> serviceResult);
+        ServiceResult<AgentTaskStatus> FormatAppsInfoOutput(ServiceResult<AgentTaskStatus> serviceResult);
     }
 }

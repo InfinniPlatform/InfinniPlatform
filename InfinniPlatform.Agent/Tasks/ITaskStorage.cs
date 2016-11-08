@@ -1,15 +1,17 @@
-﻿namespace InfinniPlatform.Agent.Tasks
+﻿using System.Collections.Generic;
+
+namespace InfinniPlatform.Agent.Tasks
 {
     /// <summary>
     /// Обеспечивает доступ к хранилищу статуса задач агента.
     /// </summary>
-    public interface INodeTaskStorage
+    public interface ITaskStorage
     {
         /// <summary>
         /// Создает новую задачу.
         /// </summary>
         /// <returns>Идентификатор задачи.</returns>
-        string AddNewTask();
+        string AddNewTask(string description = null);
 
         /// <summary>
         /// Удаляет задачу.
@@ -35,5 +37,10 @@
         /// </summary>
         /// <param name="taskId">Идентификатор задачи.</param>
         void SetCompleted(string taskId);
+
+        /// <summary>
+        /// Возвращает хранилище статуса задач.
+        /// </summary>
+        Dictionary<string, TaskStatus> GetTaskStatusStorage();
     }
 }

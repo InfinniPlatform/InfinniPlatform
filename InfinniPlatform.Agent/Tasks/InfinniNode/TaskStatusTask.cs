@@ -1,18 +1,19 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.InfinniNode
 {
-    public class TaskStatusTask : IAppTask
+    public class TaskStatusTask : IAgentTask
     {
-        public TaskStatusTask(INodeTaskStorage nodeTaskStorage)
+        public TaskStatusTask(ITaskStorage taskStorage)
         {
-            _nodeTaskStorage = nodeTaskStorage;
+            _taskStorage = taskStorage;
         }
 
-        private readonly INodeTaskStorage _nodeTaskStorage;
+        private readonly ITaskStorage _taskStorage;
 
         public HttpMethod HttpMethod => HttpMethod.Get;
 
@@ -22,9 +23,22 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
         {
             string taskId = request.Query.TaskId;
 
-            var taskStatus = _nodeTaskStorage.GetTaskStatus(taskId);
+            if (taskId != null)
+            {
+                var result = _taskStorage.GetTaskStatus(taskId);
 
-            return Task.FromResult<object>(taskStatus);
+                var serviceResult = new ServiceResult<TaskStatus> { Success = true, Result = result };
+
+                return Task.FromResult<object>(serviceResult);
+            }
+            else
+            {
+                var result = _taskStorage.GetTaskStatusStorage();
+
+                var serviceResult = new ServiceResult<Dictionary<string, TaskStatus>> { Success = true, Result = result };
+
+                return Task.FromResult<object>(serviceResult);
+            }
         }
     }
 }

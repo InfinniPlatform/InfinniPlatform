@@ -7,7 +7,7 @@ using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.Environment
 {
-    public class EnvirementVariablesTask : IAppTask
+    public class EnvirementVariablesTask : IAgentTask
     {
         public EnvirementVariablesTask(IEnvironmentVariableProvider variableProvider)
         {

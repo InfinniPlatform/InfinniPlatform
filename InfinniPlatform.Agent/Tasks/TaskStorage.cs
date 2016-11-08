@@ -3,21 +3,22 @@ using System.Collections.Generic;
 
 namespace InfinniPlatform.Agent.Tasks
 {
-    public class NodeTaskStorage : INodeTaskStorage
+    public class TaskStorage : ITaskStorage
     {
-        public NodeTaskStorage()
+        public TaskStorage()
         {
             _taskStorage = new Dictionary<string, TaskStatus>();
         }
 
         private readonly Dictionary<string, TaskStatus> _taskStorage;
 
-        public string AddNewTask()
+        public string AddNewTask(string description = null)
         {
             var taskStatus = new TaskStatus
                              {
-                                 TaskId = Guid.NewGuid().ToString("D")
-                             };
+                                 TaskId = Guid.NewGuid().ToString("D"),
+                                 Description = description
+            };
 
             _taskStorage.Add(taskStatus.TaskId, taskStatus);
 
@@ -42,6 +43,11 @@ namespace InfinniPlatform.Agent.Tasks
         public void SetCompleted(string taskId)
         {
             _taskStorage[taskId].Completed = true;
+        }
+
+        public Dictionary<string, TaskStatus> GetTaskStatusStorage()
+        {
+            return _taskStorage;
         }
     }
 }

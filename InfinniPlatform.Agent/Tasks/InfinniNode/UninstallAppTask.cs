@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.InfinniNode
 {
-    public class UninstallAppTask : IAppTask
+    public class UninstallAppTask : IAgentTask
     {
         private const int ProcessTimeout = 10 * 60 * 1000;
 
@@ -27,7 +27,11 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
                                      .AppendArg("v", (string)request.Form.Version)
                                      .AppendArg("n", (string)request.Form.Instance);
 
-            return await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout);
+            var result = await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout);
+
+            var serviceResult = new ServiceResult<TaskStatus> { Success = true, Result = result };
+
+            return serviceResult;
         }
     }
 }

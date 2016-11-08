@@ -1,9 +1,9 @@
-﻿namespace InfinniPlatform.Agent.Tasks
+﻿namespace InfinniPlatform.Server.Agent
 {
     /// <summary>
     /// Информация о выполнении задачи.
     /// </summary>
-    public class TaskStatus
+    public class AgentTaskStatus
     {
         /// <summary>
         /// Завершено ли выполнение задачи.
@@ -29,5 +29,10 @@
         /// Лог выполнения задачи.
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Форматированный лог выполнения задачи.
+        /// </summary>
+        public object FormattedOutput { get; set; }
     }
 }

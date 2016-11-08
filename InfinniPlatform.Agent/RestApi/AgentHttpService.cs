@@ -10,12 +10,12 @@ namespace InfinniPlatform.Agent.RestApi
     /// </summary>
     public class AgentHttpService : IHttpService
     {
-        public AgentHttpService(IAppTask[] appTasks)
+        public AgentHttpService(IAgentTask[] appTasks)
         {
             _appTasks = appTasks;
         }
 
-        private readonly IAppTask[] _appTasks;
+        private readonly IAgentTask[] _appTasks;
 
         public void Load(IHttpServiceBuilder builder)
         {

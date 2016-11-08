@@ -19,7 +19,7 @@ namespace InfinniPlatform.Server.RestApi
 
         private readonly IJsonObjectSerializer _serializer;
 
-        public ServiceResult<ProcessResult> FormatAppsInfoOutput(ServiceResult<ProcessResult> serviceResult)
+        public ServiceResult<AgentTaskStatus> FormatAppsInfoOutput(ServiceResult<AgentTaskStatus> serviceResult)
         {
             var processResult = serviceResult.Result;
 
@@ -27,7 +27,7 @@ namespace InfinniPlatform.Server.RestApi
                                     .Split(new[] { Environment.NewLine }, StringSplitOptions.None)
                                     .FirstOrDefault(s => s.StartsWith("["));
 
-            processResult.FormatedOutput = _serializer.Deserialize<object[]>(appsInfoJson);
+            processResult.FormattedOutput = _serializer.Deserialize<object[]>(appsInfoJson);
 
             serviceResult.Result = processResult;
 

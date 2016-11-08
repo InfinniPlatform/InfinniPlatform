@@ -53,6 +53,16 @@ function UpdateAppsGrid(context, args) {
     }
 }
 
+/** Обновляет данные в гриде о задачах * 
+ * @param {any} context Контекст
+ * @param {any} args Аргументы
+ */
+function UpdateTasksGrid(context, args) {
+    if (args.getText() === "Tasks") {
+        context.dataSources.TasksDataSource.updateItems();
+    }
+}
+
 /** Показывает/скрывает кнопки для управления приложением * 
  * @param {any} context Контекст
  * @param {any} args Аргументы

@@ -83,18 +83,8 @@
                             "DestinationValue": {
                                 "Source": "AppsDataSource"
                             },
-                            "CanClose": false
+                            "CanClose": true
                         }
-                    },
-                    "OnClick": "{ SetButtonsAppearance(context, args); }"
-                }
-            }, {
-                "Button": {
-                    "Name": "CloseButton",
-                    "Visible": false,
-                    "Text": "Done",
-                    "Action": {
-                        "AcceptAction": {}
                     }
                 }
             }]

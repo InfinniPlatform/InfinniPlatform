@@ -32,8 +32,31 @@
                     }
                 }
             },
-            "UpdatingItemsConverter": "{ return args.value.Result.FormatedOutput; }",
+            "UpdatingItemsConverter": "{ return args.value.Result.FormattedOutput; }",
             "OnSelectedItemChanged": "{ EnableAppsButtons(context, args); }"
+        }
+    },{
+        "RestDataSource": {
+            "Name": "TasksDataSource",
+            "GettingParams": {
+                "Method": "GET",
+                "Path": "/server/taskStatus",
+                "Data": {
+                    "Address": "<%Address%>",
+                    "Port": "<%Port%>"
+                },
+                "Params": {
+                    "Address": {
+                        "Source": "AgentsDataSource",
+                        "Property": "$.Address"
+                    },
+                    "Port": {
+                        "Source": "AgentsDataSource",
+                        "Property": "$.Port"
+                    }
+                }
+            },
+            "UpdatingItemsConverter": "{ return args.value.Result; }"
         }
     }],
     "Items": [{
@@ -502,12 +525,24 @@
                                 "TabPage": {
                                     "Text": "Tasks",
                                     "Items": [{
-                                        "Label": {
-                                            "Text": "Здесь могли быть ваши таски"
+                                        "DataGrid": {
+                                            "Name": "TasksGrid",
+                                            "Columns": [{
+                                                "Header": "Description",
+                                                "CellProperty": "Description"
+                                            }, {
+                                                "Header": "Completed",
+                                                "CellProperty": "Completed"
+                                            }],
+                                            "Items": {
+                                                "Source": "TasksDataSource"
+                                            },
+                                            "ShowSelectors": false
                                         }
                                     }]
                                 }
-                            }]
+                            }],
+                            "OnSelectedItemChanged": "{ UpdateTasksGrid(context, args); }"
                         }
                     }]
                 }

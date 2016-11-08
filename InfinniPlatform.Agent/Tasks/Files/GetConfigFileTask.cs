@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.Files
 {
-    public class GetConfigFileTask : IAppTask
+    public class GetConfigFileTask : IAgentTask
     {
         public GetConfigFileTask(IConfigurationFileProvider configProvider)
         {
