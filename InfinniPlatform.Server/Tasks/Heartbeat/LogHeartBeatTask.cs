@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Server.Tasks.Infinni.Node;
 
-namespace InfinniPlatform.Server.Tasks.Agents
+namespace InfinniPlatform.Server.Tasks.Heartbeat
 {
     public class LogHeartBeatTask : IServerTask
     {

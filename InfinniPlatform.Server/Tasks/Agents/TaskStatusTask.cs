@@ -11,6 +11,9 @@ namespace InfinniPlatform.Server.Tasks.Agents
 {
     public class TaskStatusTask : IServerTask
     {
+        private const string CompletedStatus = "Completed";
+        private const string WorkingStatus = "Working";
+
         public TaskStatusTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
@@ -55,8 +58,8 @@ namespace InfinniPlatform.Server.Tasks.Agents
                    {
                        {
                            "Completed", taskStatus.Completed
-                                            ? "Completed"
-                                            : "Working"
+                                            ? CompletedStatus
+                                            : WorkingStatus
                        },
                        { "Description", taskStatus.Description },
                        { "Output", taskStatus.Output }

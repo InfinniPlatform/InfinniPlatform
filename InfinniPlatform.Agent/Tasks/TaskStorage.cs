@@ -18,7 +18,7 @@ namespace InfinniPlatform.Agent.Tasks
                              {
                                  TaskId = Guid.NewGuid().ToString("D"),
                                  Description = description
-            };
+                             };
 
             _taskStorage.Add(taskStatus.TaskId, taskStatus);
 
