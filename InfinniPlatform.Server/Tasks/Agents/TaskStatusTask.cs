@@ -1,29 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Server.Agent;
 
-namespace InfinniPlatform.Server.RestApi
+namespace InfinniPlatform.Server.Tasks.Agents
 {
-    public class TaskStatusHttpService : IHttpService
+    public class TaskStatusTask : IServerTask
     {
-        public TaskStatusHttpService(IAgentHttpClient agentHttpClient)
+        public TaskStatusTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
 
         private readonly IAgentHttpClient _agentHttpClient;
 
-        public void Load(IHttpServiceBuilder builder)
-        {
-            builder.ServicePath = "server";
-            builder.Get["taskStatus"] = GetTaskStatus;
-        }
+        public string CommandName => "taskStatus";
 
-        private async Task<object> GetTaskStatus(IHttpRequest request)
+        public HttpMethod HttpMethod => HttpMethod.Get;
+
+        public async Task<object> Run(IHttpRequest request)
         {
             string address = request.Query.Address;
             int port = request.Query.Port;
@@ -32,7 +31,7 @@ namespace InfinniPlatform.Server.RestApi
 
             if (taskId == null)
             {
-                var result = await _agentHttpClient.Get<ServiceResult<Dictionary<string, AgentTaskStatus>>>("taskStatus", address, port);
+                var result = await _agentHttpClient.Get<ServiceResult<Dictionary<string, AgentTaskStatus>>>(CommandName, address, port);
 
                 var taskStatuses = result.Result.Select(pair => Convert(pair.Value));
 
@@ -41,15 +40,16 @@ namespace InfinniPlatform.Server.RestApi
 
             var queryContent = new DynamicWrapper { { "TaskId", taskId } };
 
-            var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>("taskStatus", address, port, queryContent);
+            var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port, queryContent);
 
             return new ServiceResult<DynamicWrapper>
                    {
-                       Success = true, Result = Convert(serviceResult.Result)
+                       Success = true,
+                       Result = Convert(serviceResult.Result)
                    };
         }
 
-        private DynamicWrapper Convert(AgentTaskStatus taskStatus)
+        private static DynamicWrapper Convert(AgentTaskStatus taskStatus)
         {
             return new DynamicWrapper
                    {
@@ -58,7 +58,8 @@ namespace InfinniPlatform.Server.RestApi
                                             ? "Completed"
                                             : "Working"
                        },
-                       { "Description", taskStatus.Description }
+                       { "Description", taskStatus.Description },
+                       { "Output", taskStatus.Output }
                    };
         }
     }

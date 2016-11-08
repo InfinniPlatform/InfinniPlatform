@@ -35,7 +35,7 @@
             "UpdatingItemsConverter": "{ return args.value.Result.FormattedOutput; }",
             "OnSelectedItemChanged": "{ EnableAppsButtons(context, args); }"
         }
-    },{
+    }, {
         "RestDataSource": {
             "Name": "TasksDataSource",
             "GettingParams": {
@@ -525,6 +525,39 @@
                                 "TabPage": {
                                     "Text": "Tasks",
                                     "Items": [{
+                                        "StackPanel": {
+                                            "ViewMode": "FormGroup",
+                                            "Orientation": "Horizontal",
+                                            "Items": [{
+                                                "Button": {
+                                                    "Text": "Refresh",
+                                                    "OnClick": "{ context.dataSources.TasksDataSource.updateItems(); }"
+                                                }
+                                            }, {
+                                                "Button": {
+                                                    "Text": "Show output",
+                                                    "Action": {
+                                                        "OpenAction": {
+                                                            "LinkView": {
+                                                                "AutoView": {
+                                                                    "OpenMode": "Dialog",
+                                                                    "DialogWidth": "Large",
+                                                                    "Path": "jsonViews/taskView.json",
+                                                                    "Parameters": [{
+                                                                        "Name": "Task",
+                                                                        "Value": {
+                                                                            "Source": "TasksDataSource",
+                                                                            "Property": "$"
+                                                                        }
+                                                                    }]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }]
+                                        }
+                                    }, {
                                         "DataGrid": {
                                             "Name": "TasksGrid",
                                             "Columns": [{

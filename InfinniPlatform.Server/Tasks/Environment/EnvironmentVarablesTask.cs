@@ -6,9 +6,9 @@ using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.Tasks.Environment
 {
-    public class GetEnvironmentVarables : IServerTask
+    public class EnvironmentVarablesTask : IServerTask
     {
-        public GetEnvironmentVarables(IAgentHttpClient agentHttpClient)
+        public EnvironmentVarablesTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }

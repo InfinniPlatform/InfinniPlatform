@@ -18,10 +18,10 @@ namespace InfinniPlatform.Server.Tasks.Files
                 }
 
                 return new ServiceResult<string>
-                {
-                    Success = true,
-                    Result = text
-                };
+                       {
+                           Success = true,
+                           Result = text
+                       };
             }
         }
     }

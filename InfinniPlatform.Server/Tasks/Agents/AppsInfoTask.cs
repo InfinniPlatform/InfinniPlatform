@@ -7,10 +7,10 @@ using InfinniPlatform.Server.RestApi;
 
 namespace InfinniPlatform.Server.Tasks.Agents
 {
-    public class GetAppsInfoTask : IServerTask
+    public class AppsInfoTask : IServerTask
     {
-        public GetAppsInfoTask(IAgentHttpClient agentHttpClient,
-                               INodeOutputParser nodeOutputParser)
+        public AppsInfoTask(IAgentHttpClient agentHttpClient,
+                            INodeOutputParser nodeOutputParser)
         {
             _agentHttpClient = agentHttpClient;
             _nodeOutputParser = nodeOutputParser;

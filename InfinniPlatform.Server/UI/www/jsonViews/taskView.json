@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+  "OnLoaded":"{ args.source.setText(context.parameters.Task.Description); }",
+  "Text": "Task",
+  "Parameters": [{
+    "Name": "Task"
+  }],
+  "DataSources": [],
+  "Items": [{
+    "TextBox": {
+      "Multiline": true,
+      "LineCount": 30,
+      "Value": {
+        "Source": "Task",
+        "Property": "Output"
+      }
+    }
+  }]
+}

@@ -4,6 +4,7 @@ using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.Server.Agent;
 using InfinniPlatform.Server.RestApi;
 using InfinniPlatform.Server.Settings;
+using InfinniPlatform.Server.Tasks;
 
 namespace InfinniPlatform.Server.IoC
 {
@@ -23,6 +24,10 @@ namespace InfinniPlatform.Server.IoC
                    .SingleInstance();
 
             // Agents
+
+            builder.RegisterAssemblyTypes(assembly,
+                                          t => typeof(IServerTask).IsAssignableFrom(t),
+                                          r => r.AsImplementedInterfaces().SingleInstance());
 
             builder.RegisterType<AgentHttpClient>()
                    .As<IAgentHttpClient>()

@@ -57,13 +57,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RestApi\TaskStatusHttpService.cs" />
+    <Compile Include="Tasks\Agents\TaskStatusTask.cs" />
     <Compile Include="Settings\AgentInfo.cs" />
     <Compile Include="Settings\ServerSettings.cs" />
-    <Compile Include="Tasks\Agents\GetAgentsStatusTask.cs" />
-    <Compile Include="Tasks\Agents\GetAppsInfoTask.cs" />
+    <Compile Include="Tasks\Agents\AgentsStatusTask.cs" />
+    <Compile Include="Tasks\Agents\AppsInfoTask.cs" />
     <Compile Include="Tasks\Agents\LogHeartBeatTask.cs" />
-    <Compile Include="Tasks\Environment\GetEnvironmentVarables.cs" />
+    <Compile Include="Tasks\Environment\EnvironmentVarablesTask.cs" />
     <Compile Include="Tasks\Files\FileHelper.cs" />
     <Compile Include="Tasks\Files\AppLogGetTask.cs" />
     <Compile Include="Tasks\Files\ConfigGetTask.cs" />

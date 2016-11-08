@@ -43,8 +43,6 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
 
             var serviceResult = await _agentHttpClient.Post<ServiceResult<AgentTaskStatus>>(CommandName, address, port, args);
 
-            await _notifyService.NotifyAll(NotifyMessageType, $"Initializing {args["AppName"]} complete.");
-
             return serviceResult;
         }
     }
