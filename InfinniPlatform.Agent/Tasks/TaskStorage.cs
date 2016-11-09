@@ -1,8 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Caching;
+
+using InfinniPlatform.Sdk.Cache;
 
 namespace InfinniPlatform.Agent.Tasks
 {
+    public class InMemoryTaskStorage
+    {
+        public InMemoryTaskStorage()
+        {
+            _storage = new MemoryCache("Tasks");
+        }
+
+        private readonly MemoryCache _storage;
+
+        private object Get()
+        {
+            return null;
+        }
+
+        private void Set(string taskId, object task)
+        {
+            var absoluteExpiration = DateTimeOffset.Now.Add(TimeSpan.FromMinutes(30));
+
+            _storage.Add(taskId, task, new CacheItemPolicy { AbsoluteExpiration = absoluteExpiration });
+        }
+    }
+
+
     public class TaskStorage : ITaskStorage
     {
         public TaskStorage()
