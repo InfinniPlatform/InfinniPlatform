@@ -36,30 +36,25 @@ namespace InfinniPlatform.Server.Tasks.Agents
             {
                 var result = await _agentHttpClient.Get<ServiceResult<Dictionary<string, AgentTaskStatus>>>(CommandName, address, port);
 
-                var taskStatuses = result.Result.Select(pair => Convert(pair.Value));
-
-                return new ServiceResult<IEnumerable<DynamicWrapper>> { Success = true, Result = taskStatuses };
+                return new ServiceResult<IEnumerable<DynamicWrapper>> { Success = true, Result = result.Result.Select(s => Convert(s.Value)) };
             }
 
             var queryContent = new DynamicWrapper { { "TaskId", taskId } };
 
             var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port, queryContent);
 
-            return new ServiceResult<DynamicWrapper>
-                   {
-                       Success = true,
-                       Result = Convert(serviceResult.Result)
-                   };
+            return new ServiceResult<DynamicWrapper> { Success = true, Result = Convert(serviceResult.Result) };
         }
 
         private static DynamicWrapper Convert(AgentTaskStatus taskStatus)
         {
             return new DynamicWrapper
                    {
+                       { "TaskId", taskStatus.TaskId },
                        {
-                           "Completed", taskStatus.Completed
-                                            ? CompletedStatus
-                                            : WorkingStatus
+                           "State", taskStatus.Completed
+                                        ? CompletedStatus
+                                        : WorkingStatus
                        },
                        { "Description", taskStatus.Description },
                        { "Output", taskStatus.Output }

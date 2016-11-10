@@ -5,6 +5,7 @@ using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.PushNotification;
 using InfinniPlatform.Server.Agent;
+using InfinniPlatform.Server.Tasks.Agents;
 
 namespace InfinniPlatform.Server.Tasks.Infinni.Node
 {

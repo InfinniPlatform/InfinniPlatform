@@ -3,7 +3,7 @@
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Server.Tasks;
 
-namespace InfinniPlatform.Server.RestApi
+namespace InfinniPlatform.Server.HttpService
 {
     /// <summary>
     /// Сервис взаимодействия с приложением Infinni.Agent.

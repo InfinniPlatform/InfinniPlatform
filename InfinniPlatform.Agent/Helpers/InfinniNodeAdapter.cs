@@ -23,8 +23,8 @@ namespace InfinniPlatform.Agent.Helpers
         }
 
         private readonly AgentSettings _agentSettings;
-        private readonly string _command;
         private readonly IAgentTaskStorage _agentTaskStorage;
+        private readonly string _command;
 
         /// <summary>
         /// Запускает процесс и перехватывает его вывод.

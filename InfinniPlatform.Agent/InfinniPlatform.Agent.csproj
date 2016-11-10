@@ -51,7 +51,6 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Helpers\CommandArgsHelper.cs" />
-    <Compile Include="Helpers\NodeOutputBuffer.cs" />
     <Compile Include="Helpers\StreamHelper.cs" />
     <Compile Include="Providers\ConfigurationFileProvider.cs" />
     <Compile Include="Providers\EnvironmentVariableProvider.cs" />
@@ -85,7 +84,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RestApi\AgentHttpService.cs" />
+    <Compile Include="HttpService\AgentHttpService.cs" />
     <Compile Include="Settings\AgentSettings.cs" />
   </ItemGroup>
   <ItemGroup>

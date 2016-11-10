@@ -18,8 +18,8 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
             _agentTaskStorage = agentTaskStorage;
         }
 
-        private readonly InfinniNodeAdapter _infinniNodeAdapter;
         private readonly IAgentTaskStorage _agentTaskStorage;
+        private readonly InfinniNodeAdapter _infinniNodeAdapter;
 
         public string CommandName => "init";
 

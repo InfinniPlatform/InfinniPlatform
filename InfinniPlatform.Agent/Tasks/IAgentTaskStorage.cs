@@ -41,6 +41,6 @@ namespace InfinniPlatform.Agent.Tasks
         /// <summary>
         /// Возвращает хранилище статуса задач.
         /// </summary>
-        IDictionary<string, TaskStatus> GetTaskStatusStorage();
+        IDictionary<string, TaskStatus> GetStorageContent();
     }
 }

@@ -33,7 +33,7 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
             }
             else
             {
-                var result = _agentTaskStorage.GetTaskStatusStorage();
+                var result = _agentTaskStorage.GetStorageContent();
 
                 var serviceResult = new ServiceResult<IDictionary<string, TaskStatus>> { Success = true, Result = result };
 

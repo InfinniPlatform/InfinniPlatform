@@ -2,9 +2,9 @@
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.Server.Agent;
-using InfinniPlatform.Server.RestApi;
 using InfinniPlatform.Server.Settings;
 using InfinniPlatform.Server.Tasks;
+using InfinniPlatform.Server.Tasks.Agents;
 
 namespace InfinniPlatform.Server.IoC
 {

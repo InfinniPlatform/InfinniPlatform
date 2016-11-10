@@ -18,7 +18,6 @@ namespace InfinniPlatform.Agent.Tasks
 
         private readonly ConcurrentDictionary<string, TaskStatus> _dictionary;
         private readonly AgentSettings _setting;
-
         private readonly MemoryCache _storage;
 
         public string AddNewTask(string description = null)
@@ -56,7 +55,7 @@ namespace InfinniPlatform.Agent.Tasks
             task.Completed = true;
         }
 
-        public IDictionary<string, TaskStatus> GetTaskStatusStorage()
+        public IDictionary<string, TaskStatus> GetStorageContent()
         {
             return _dictionary;
         }

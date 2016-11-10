@@ -45,11 +45,10 @@
     </Compile>
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
-    <Compile Include="Agent\AgentTaskStatus.cs" />
-    <Compile Include="RestApi\AsyncHelper.cs" />
-    <Compile Include="RestApi\INodeOutputParser.cs" />
-    <Compile Include="RestApi\NodeOutputParser.cs" />
-    <Compile Include="RestApi\ServerHttpService.cs" />
+    <Compile Include="Tasks\Agents\AgentTaskStatus.cs" />
+    <Compile Include="Tasks\Agents\INodeOutputParser.cs" />
+    <Compile Include="Tasks\Agents\NodeOutputParser.cs" />
+    <Compile Include="HttpService\ServerHttpService.cs" />
     <Compile Include="IoC\AppContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

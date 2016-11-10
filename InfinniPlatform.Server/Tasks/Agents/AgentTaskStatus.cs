@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Server.Agent
+﻿namespace InfinniPlatform.Server.Tasks.Agents
 {
     /// <summary>
     /// Информация о выполнении задачи.
