@@ -16,7 +16,7 @@ function Subscribe(context, args) {
         function (context, args) {
             var message = JSON.parse(args.message);
             toastr.success("Installing " + message.AppName + " started.");
-            context.AppsDataSource.setSelectedItem(message);
+            context.dataSources.AppsDataSource.setSelectedItem(message);
         },
         viewContext);
 }
@@ -78,10 +78,30 @@ function UpdateTasksGrid(context, args) {
  * @param {any} context Контекст
  * @param {any} args Аргументы
  */
-function EnableAppsButtons(context, args) {
+function EnableAppButtons(context, args) {
     if (args.value === null || args.value === undefined) {
         context.controls.AppButtonsStackPanel.setVisible(false);
     } else {
         context.controls.AppButtonsStackPanel.setVisible(true);
     }
+}
+
+/** Показывает/скрывает кнопки для управления задачами * 
+ * @param {any} context Контекст
+ * @param {any} args Аргументы
+ */
+function EnableTaskButtons(context, args) {
+    if (args.value === null || args.value === undefined) {
+        context.controls.OutputButton.setVisible(false);
+    } else {
+        context.controls.OutputButton.setVisible(true);
+    }
+}
+
+/** Обновляет статус выбранной задачи * 
+ * @param {any} context Контекст
+ * @param {any} args Аргументы
+ */
+function GetTasksStatus(context, args) {
+    context.dataSources.TasksDataSource.updateItems();
 }
