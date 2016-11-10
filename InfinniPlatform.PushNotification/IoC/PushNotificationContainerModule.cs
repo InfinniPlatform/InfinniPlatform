@@ -25,8 +25,7 @@ namespace InfinniPlatform.PushNotification.IoC
             builder.RegisterType<SignalRPushNotificationServiceHub>()
                    .AsSelf()
                    .As<IHub>()
-                   .InstancePerDependency()
-                   .ExternallyOwned();
+                   .InstancePerDependency();
 
             // Внутренние зависимости SignalR
 

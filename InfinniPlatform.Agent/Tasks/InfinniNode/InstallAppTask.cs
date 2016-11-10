@@ -12,14 +12,14 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
         private const int ProcessTimeout = 10 * 60 * 1000;
 
         public InstallAppTask(InfinniNodeAdapter infinniNodeAdapter,
-                              ITaskStorage taskStorage)
+                              IAgentTaskStorage agentTaskStorage)
         {
             _infinniNodeAdapter = infinniNodeAdapter;
-            _taskStorage = taskStorage;
+            _agentTaskStorage = agentTaskStorage;
         }
 
         private readonly InfinniNodeAdapter _infinniNodeAdapter;
-        private readonly ITaskStorage _taskStorage;
+        private readonly IAgentTaskStorage _agentTaskStorage;
 
         public string CommandName => "install";
 
@@ -40,13 +40,20 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
 
             var description = BuildDescription(appName, version, instanceName);
 
-            var taskId = _taskStorage.AddNewTask(description);
+            var taskId = _agentTaskStorage.AddNewTask(description);
 
             Task.Run(async () => { await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout, taskId); });
 
-            var result = new DynamicWrapper { { "TaskId", taskId } };
+            var result = new DynamicWrapper
+                         {
+                             { "TaskId", taskId }
+                         };
 
-            var serviceResult = new ServiceResult<DynamicWrapper> { Success = true, Result = result };
+            var serviceResult = new ServiceResult<DynamicWrapper>
+                                {
+                                    Success = true,
+                                    Result = result
+                                };
 
             return Task.FromResult<object>(serviceResult);
         }

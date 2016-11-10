@@ -1,6 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
-    "OnLoaded": "{ RegisterOnSavedHandler(context, args); }",
+    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",    
     "Parameters": [{
         "Name": "AgentAddress"
     }, {
@@ -23,14 +22,24 @@
                 }
             }
         }
+    }, {
+        "ObjectDataSource": {
+            "Name": "AvailableAppsDataSource",
+            "Items": ["InfinniPlatform.Northwind", "UpravdomGkh"]
+        }
     }],
     "Text": "Install new app",
     "Items": [{
-        "TextBox": {
-            "LabelText": "App name",
+        "ComboBox": {
+            "LabelText": "App Name",
+            "Name": "AvailableAppsComboBox",
             "Value": {
                 "Source": "AppsDataSource",
                 "Property": "$.AppName"
+            },
+            "Items": {
+                "Source": "AvailableAppsDataSource",
+                "Property": ""
             }
         }
     }, {
@@ -64,13 +73,6 @@
                 "Source": "AppsDataSource",
                 "Property": "$.AllowPrerelease"
             }
-        }
-    }, {
-        "TextBox": {
-            "Name": "InstallLogTextBox",
-            "Visible": false,
-            "Multiline": true,
-            "LineCount": 10
         }
     }, {
         "StackPanel": {

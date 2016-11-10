@@ -25,5 +25,10 @@
         /// Уникальный token для аутентификации при обмене данными между агентом и сервером.
         /// </summary>
         public string Token { get; set; }
+
+        /// <summary>
+        /// Время хранения задачи в очереди (в минутах, по умолчанию 30).
+        /// </summary>
+        public int CacheTimeout { get; set; }
     }
 }

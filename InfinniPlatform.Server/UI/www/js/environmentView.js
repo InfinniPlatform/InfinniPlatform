@@ -1,3 +1,7 @@
+/** Форматирует список переменных окружения для отображения в DataGrid * 
+ * @param {any} context Контекст
+ * @param {any} args Аргументы
+ */
 function FormatResult(context, args) {
   var variables = [];
 

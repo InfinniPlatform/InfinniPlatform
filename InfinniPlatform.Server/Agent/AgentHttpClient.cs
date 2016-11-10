@@ -50,7 +50,6 @@ namespace InfinniPlatform.Server.Agent
             var uriString = $"http://{address}:{port}/agent/{path}{ToQuery(queryContent)}";
 
             var response = await _httpClient.GetAsync(uriString);
-
             var content = await response.Content.ReadAsStreamAsync();
 
             return content;

@@ -67,7 +67,7 @@
     <Compile Include="Tasks\IAgentTask.cs" />
     <Compile Include="Tasks\InfinniNode\InitAppTask.cs" />
     <Compile Include="Tasks\InfinniNode\InstallAppTask.cs" />
-    <Compile Include="Tasks\ITaskStorage.cs" />
+    <Compile Include="Tasks\IAgentTaskStorage.cs" />
     <Compile Include="Tasks\Files\NodeLogTask.cs" />
     <Compile Include="Tasks\Files\PerfLogTask.cs" />
     <Compile Include="Tasks\InfinniNode\RestartAppTask.cs" />
@@ -76,7 +76,7 @@
     <Compile Include="Tasks\InfinniNode\StopAppTask.cs" />
     <Compile Include="Tasks\TaskStatus.cs" />
     <Compile Include="Tasks\InfinniNode\TaskStatusTask.cs" />
-    <Compile Include="Tasks\TaskStorage.cs" />
+    <Compile Include="Tasks\AgentTaskStorage.cs" />
     <Compile Include="Tasks\InfinniNode\UninstallAppTask.cs" />
     <Compile Include="IoC\AgentContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -12,14 +12,14 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
         private const int ProcessTimeout = 10 * 60 * 1000;
 
         public InitAppTask(InfinniNodeAdapter infinniNodeAdapter,
-                           ITaskStorage taskStorage)
+                           IAgentTaskStorage agentTaskStorage)
         {
             _infinniNodeAdapter = infinniNodeAdapter;
-            _taskStorage = taskStorage;
+            _agentTaskStorage = agentTaskStorage;
         }
 
         private readonly InfinniNodeAdapter _infinniNodeAdapter;
-        private readonly ITaskStorage _taskStorage;
+        private readonly IAgentTaskStorage _agentTaskStorage;
 
         public string CommandName => "init";
 
@@ -38,7 +38,7 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
 
             var description = $"Initializing {appName} version {version} with instance name {instanceName}.";
 
-            var taskId = _taskStorage.AddNewTask(description);
+            var taskId = _agentTaskStorage.AddNewTask(description);
 
             Task.Run(async () => { await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout, taskId); });
 

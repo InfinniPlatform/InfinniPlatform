@@ -8,7 +8,7 @@ using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.Tasks.Infinni.Node
 {
-    public class StartAppTask
+    public class StartAppTask : IServerTask
     {
         private const string NotifyMessageType = "WorkLog";
 

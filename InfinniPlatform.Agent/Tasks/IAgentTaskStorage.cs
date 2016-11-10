@@ -5,7 +5,7 @@ namespace InfinniPlatform.Agent.Tasks
     /// <summary>
     /// Обеспечивает доступ к хранилищу статуса задач агента.
     /// </summary>
-    public interface ITaskStorage
+    public interface IAgentTaskStorage
     {
         /// <summary>
         /// Создает новую задачу.
@@ -41,6 +41,6 @@ namespace InfinniPlatform.Agent.Tasks
         /// <summary>
         /// Возвращает хранилище статуса задач.
         /// </summary>
-        Dictionary<string, TaskStatus> GetTaskStatusStorage();
+        IDictionary<string, TaskStatus> GetTaskStatusStorage();
     }
 }

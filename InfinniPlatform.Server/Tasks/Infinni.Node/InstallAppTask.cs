@@ -10,7 +10,7 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
 {
     public class InstallAppTask : IServerTask
     {
-        private const string NotifyMessageType = "WorkLog";
+        private const string InstallMessageType = "Install";
 
         public InstallAppTask(IAgentHttpClient agentHttpClient,
                               IPushNotificationService notifyService)
@@ -40,9 +40,16 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
                            { "AllowPrerelease", (bool?)request.Form.AllowPrerelease }
                        };
 
-            await _notifyService.NotifyAll(NotifyMessageType, $"Installing {args["AppName"]}...");
+            await _notifyService.NotifyAll(InstallMessageType, new DynamicWrapper
+                                                               {
+                                                                   { "AppName", args["AppName"] },
+                                                                   { "Version", args["Version"] },
+                                                                   { "Instance", args["Instance"] },
+                                                                   { "State", "Installing" }
+                                                               });
 
             var serviceResult = await _agentHttpClient.Post<ServiceResult<AgentTaskStatus>>("install", address, port, args);
+
 
             return serviceResult;
         }

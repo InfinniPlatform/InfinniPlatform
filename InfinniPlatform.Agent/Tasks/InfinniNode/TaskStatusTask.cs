@@ -8,12 +8,12 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
 {
     public class TaskStatusTask : IAgentTask
     {
-        public TaskStatusTask(ITaskStorage taskStorage)
+        public TaskStatusTask(IAgentTaskStorage agentTaskStorage)
         {
-            _taskStorage = taskStorage;
+            _agentTaskStorage = agentTaskStorage;
         }
 
-        private readonly ITaskStorage _taskStorage;
+        private readonly IAgentTaskStorage _agentTaskStorage;
 
         public HttpMethod HttpMethod => HttpMethod.Get;
 
@@ -25,7 +25,7 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
 
             if (taskId != null)
             {
-                var result = _taskStorage.GetTaskStatus(taskId);
+                var result = _agentTaskStorage.GetTaskStatus(taskId);
 
                 var serviceResult = new ServiceResult<TaskStatus> { Success = true, Result = result };
 
@@ -33,9 +33,9 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
             }
             else
             {
-                var result = _taskStorage.GetTaskStatusStorage();
+                var result = _agentTaskStorage.GetTaskStatusStorage();
 
-                var serviceResult = new ServiceResult<Dictionary<string, TaskStatus>> { Success = true, Result = result };
+                var serviceResult = new ServiceResult<IDictionary<string, TaskStatus>> { Success = true, Result = result };
 
                 return Task.FromResult<object>(serviceResult);
             }

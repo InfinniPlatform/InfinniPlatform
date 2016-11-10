@@ -45,8 +45,8 @@ namespace InfinniPlatform.Agent.IoC
                    .As<ILogFilePovider>()
                    .SingleInstance();
 
-            builder.RegisterType<TaskStorage>()
-                   .As<ITaskStorage>()
+            builder.RegisterType<AgentTaskStorage>()
+                   .As<IAgentTaskStorage>()
                    .SingleInstance();
 
             builder.RegisterHttpServices(assembly);

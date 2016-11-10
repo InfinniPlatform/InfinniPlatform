@@ -11,6 +11,14 @@ function Subscribe(context, args) {
             toastr.success(args.message);
         },
         viewContext);
+
+    InfinniUI.global.notificationSubscription.subscribe("Install",
+        function (context, args) {
+            var message = JSON.parse(args.message);
+            toastr.success("Installing " + message.AppName + " started.");
+            context.AppsDataSource.setSelectedItem(message);
+        },
+        viewContext);
 }
 
 /** Форматирует статус для отображения в заголовке TabPage * 
@@ -18,7 +26,7 @@ function Subscribe(context, args) {
  * @param {any} args Аргументы
  * @returns {string} Текст заголовка TabPage
  */
-function AgentInfoHeaderConverter(context, args) {
+function ConvertAgentInfoHeader(context, args) {
     var replacements = [
         args.value.Name,
         args.value.Address,
@@ -61,6 +69,9 @@ function UpdateTasksGrid(context, args) {
     if (args.getText() === "Tasks") {
         context.dataSources.TasksDataSource.updateItems();
     }
+    if (args.getText() === "Apps") {
+        context.dataSources.AppsDataSource.updateItems();
+    }
 }
 
 /** Показывает/скрывает кнопки для управления приложением * 
@@ -68,8 +79,8 @@ function UpdateTasksGrid(context, args) {
  * @param {any} args Аргументы
  */
 function EnableAppsButtons(context, args) {
-    if (args.value !== null && args.value !== undefined) {
-        context.controls.AppButtonsStackPanel.setVisible(true);
+    if (args.value === null || args.value === undefined) {
+        context.controls.AppButtonsStackPanel.setVisible(false);
     } else {
         context.controls.AppButtonsStackPanel.setVisible(true);
     }
