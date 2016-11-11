@@ -69,6 +69,7 @@
     <Compile Include="Tasks\IAgentTaskStorage.cs" />
     <Compile Include="Tasks\Files\NodeLogTask.cs" />
     <Compile Include="Tasks\Files\PerfLogTask.cs" />
+    <Compile Include="Tasks\InfinniNode\PackagesTask.cs" />
     <Compile Include="Tasks\InfinniNode\RestartAppTask.cs" />
     <Compile Include="Tasks\Files\SetConfigFileTask.cs" />
     <Compile Include="Tasks\InfinniNode\StartAppTask.cs" />

@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Server.Agent;
+using InfinniPlatform.Server.Tasks.Agents;
 
-namespace InfinniPlatform.Server.Tasks.Agents
+namespace InfinniPlatform.Server.Tasks.Infinni.Node
 {
     public class AppsInfoTask : IServerTask
     {
@@ -28,11 +29,6 @@ namespace InfinniPlatform.Server.Tasks.Agents
             int port = request.Query.Port;
 
             var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port);
-
-            if (serviceResult == null)
-            {
-                return new ServiceResult<object> { Success = false, Error = "Agent response is empty." };
-            }
 
             var appsInfo = _nodeOutputParser.FormatAppsInfoOutput(serviceResult);
 

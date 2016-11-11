@@ -1,95 +1,114 @@
 {
-    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",    
-    "Parameters": [{
-        "Name": "AgentAddress"
-    }, {
-        "Name": "AgentPort"
-    }],
-    "DataSources": [{
-        "RestDataSource": {
-            "Name": "AppsDataSource",
-            "SettingParams": {
-                "Method": "POST",
-                "Path": "/server/install?Address=<%agentAddress%>&Port=<%agentPort%>",
-                "Data": {},
-                "Params": {
-                    "agentAddress": {
-                        "Source": "AgentAddress"
-                    },
-                    "agentPort": {
-                        "Source": "AgentPort"
-                    }
-                }
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+  "Parameters": [{
+    "Name": "AgentAddress"
+  }, {
+    "Name": "AgentPort"
+  }],
+  "DataSources": [{
+    "RestDataSource": {
+      "Name": "AppsDataSource",
+      "SettingParams": {
+        "Method": "POST",
+        "Path": "/server/install?Address=<%agentAddress%>&Port=<%agentPort%>",
+        "Data": {},
+        "Params": {
+          "agentAddress": {
+            "Source": "AgentAddress"
+          },
+          "agentPort": {
+            "Source": "AgentPort"
+          }
+        }
+      }
+    }
+  }, {
+    "RestDataSource": {
+      "Name": "AvailableAppsDataSource",
+      "GettingParams": {
+        "Method": "GET",
+        "Path": "/server/packages",
+        "Data": {
+          "Address": "<%agentAddress%>",
+          "Port": "<%agentPort%>",
+          "SearchTerm": "<%searchTerm%>",
+          "Prerelease": "<%prerelease%>"
+        },
+        "Params": {
+          "agentAddress": {
+            "Source": "AgentAddress"
+          },
+          "agentPort": {
+            "Source": "AgentPort"
+          },
+          "searchTerm": {
+            "Source": "AvailableAppsComboBox",
+            "Property": "autocompleteValue",
+            "Converter": {
+              "ToElement": "{ var oldValue = context.dataSources.AvailableAppsDataSource.getProperty('.urlParams.get.params.searchTerm'); return (args.value && args.value.length >2)  ? args.value : oldValue;}"
             }
+          },
+          "prerelease": {
+            "Source": "PrereleaseCheckBox",
+            "Property": "value"
+          }
         }
-    }, {
-        "ObjectDataSource": {
-            "Name": "AvailableAppsDataSource",
-            "Items": ["InfinniPlatform.Northwind", "UpravdomGkh"]
+      },
+      "UpdatingItemsConverter": "{ return args.value.Result.FormattedOutput; }"
+    }
+  }],
+  "Text": "Install new app",
+  "Items": [{
+    "ComboBox": {
+      "LabelText": "App Name",
+      "Name": "AvailableAppsComboBox",
+      "Autocomplete": true,
+      "Value": {
+        "Source": "AppsDataSource",
+        "Property": "$.AppName"
+      },
+      "Items": {
+        "Source": "AvailableAppsDataSource",
+        "Property": ""
+      }
+    }
+  }, {
+    "CheckBox": {
+      "Name": "PrereleaseCheckBox",
+      "Text": "Allow prerelease",
+      "Value": {
+        "Source": "AppsDataSource",
+        "Property": "$.AllowPrerelease"
+      }
+    }
+  }, {
+    "TextBox": {
+      "LabelText": "App version",
+      "Value": {
+        "Source": "AppsDataSource",
+        "Property": "$.Version"
+      }
+    }
+  }, {
+    "TextBox": {
+      "LabelText": "Instance name",
+      "Value": {
+        "Source": "AppsDataSource",
+        "Property": "$.Instance"
+      }
+    }
+  }, {
+    "Button": {
+      "Name": "InstallButton",
+      "Text": "Install",
+      "Action": {
+        "SaveAction": {
+          "DestinationValue": {
+            "Source": "AppsDataSource"
+          },
+          "CanClose": true
         }
-    }],
-    "Text": "Install new app",
-    "Items": [{
-        "ComboBox": {
-            "LabelText": "App Name",
-            "Name": "AvailableAppsComboBox",
-            "Value": {
-                "Source": "AppsDataSource",
-                "Property": "$.AppName"
-            },
-            "Items": {
-                "Source": "AvailableAppsDataSource",
-                "Property": ""
-            }
-        }
-    }, {
-        "TextBox": {
-            "LabelText": "App version",
-            "Value": {
-                "Source": "AppsDataSource",
-                "Property": "$.Version"
-            }
-        }
-    }, {
-        "TextBox": {
-            "LabelText": "Instance name",
-            "Value": {
-                "Source": "AppsDataSource",
-                "Property": "$.Instance"
-            }
-        }
-    }, {
-        "TextBox": {
-            "LabelText": "Sources",
-            "Value": {
-                "Source": "AppsDataSource",
-                "Property": "$.Source"
-            }
-        }
-    }, {
-        "CheckBox": {
-            "Text": "Allow prerelease",
-            "Value": {
-                "Source": "AppsDataSource",
-                "Property": "$.AllowPrerelease"
-            }
-        }
-    }, {
-        "StackPanel": {
-            "Items": [{
-                "Button": {
-                    "Name": "InstallButton",
-                    "Text": "Install",
-                    "Action": {
-                        "SaveAction": {
-                            "DestinationValue": {
-                                "Source": "AppsDataSource"
-                            },
-                            "CanClose": true
-                        }
-                    }
-                }
-            }]
-        }
-    }]
+      }
+    }
+  }]
 }

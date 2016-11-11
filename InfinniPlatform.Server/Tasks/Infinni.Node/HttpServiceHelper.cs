@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Server.Tasks.Infinni.Node
+﻿using System;
+
+namespace InfinniPlatform.Server.Tasks.Infinni.Node
 {
     public static class HttpServiceHelper
     {
@@ -14,6 +16,11 @@
             return string.IsNullOrEmpty(value) || (value == "null")
                        ? null
                        : (string)value;
+        }
+
+        public static bool ParseBool(dynamic value)
+        {
+            return string.Equals((string)value, bool.TrueString, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

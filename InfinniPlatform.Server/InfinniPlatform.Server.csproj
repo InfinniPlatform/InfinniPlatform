@@ -46,8 +46,8 @@
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
     <Compile Include="Tasks\Agents\AgentTaskStatus.cs" />
-    <Compile Include="Tasks\Agents\INodeOutputParser.cs" />
-    <Compile Include="Tasks\Agents\NodeOutputParser.cs" />
+    <Compile Include="Tasks\Infinni.Node\INodeOutputParser.cs" />
+    <Compile Include="Tasks\Infinni.Node\NodeOutputParser.cs" />
     <Compile Include="HttpService\ServerHttpService.cs" />
     <Compile Include="IoC\AppContainerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,7 +60,7 @@
     <Compile Include="Settings\AgentInfo.cs" />
     <Compile Include="Settings\ServerSettings.cs" />
     <Compile Include="Tasks\Agents\AgentsStatusTask.cs" />
-    <Compile Include="Tasks\Agents\AppsInfoTask.cs" />
+    <Compile Include="Tasks\Infinni.Node\AppsInfoTask.cs" />
     <Compile Include="Tasks\Heartbeat\LogHeartBeatTask.cs" />
     <Compile Include="Tasks\Environment\EnvironmentVarablesTask.cs" />
     <Compile Include="Tasks\Files\FileHelper.cs" />
@@ -72,6 +72,7 @@
     <Compile Include="Tasks\Infinni.Node\HttpServiceHelper.cs" />
     <Compile Include="Tasks\Infinni.Node\InitAppTask.cs" />
     <Compile Include="Tasks\Infinni.Node\InstallAppTask.cs" />
+    <Compile Include="Tasks\Infinni.Node\PackagesTask.cs" />
     <Compile Include="Tasks\Infinni.Node\RestartAppTask.cs" />
     <Compile Include="Tasks\Infinni.Node\StartAppTask.cs" />
     <Compile Include="Tasks\Infinni.Node\StopAppTask.cs" />
@@ -110,9 +111,13 @@
     <None Include="UI\styles\bootstrap-variables.less" />
     <None Include="UI\styles\extensions.less" />
     <None Include="UI\styles\platform-variables.less" />
+    <None Include="UI\www\jsonViews\appLogView.json" />
     <None Include="UI\www\jsonViews\configView.json" />
+    <None Include="UI\www\jsonViews\environmentView.json" />
     <None Include="UI\www\jsonViews\homeView.json" />
     <None Include="UI\www\jsonViews\installView.json" />
+    <None Include="UI\www\jsonViews\nodeLogView.json" />
+    <None Include="UI\www\jsonViews\taskView.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\gulpfile.js\gulptasks\cleanFolder.js" />
@@ -131,8 +136,10 @@
     <Content Include="UI\js\extentionPanels\testExtention.js" />
     <Content Include="UI\js\routerCallbacks.js" />
     <Content Include="UI\www\config.js" />
+    <Content Include="UI\www\img\favicon.ico" />
     <Content Include="UI\www\index.html" />
     <Content Include="UI\www\js\configView.js" />
+    <Content Include="UI\www\js\environmentView.js" />
     <Content Include="UI\www\js\homeView.js" />
     <Content Include="UI\www\js\installView.js" />
     <Content Include="UI\www\js\main.js" />
