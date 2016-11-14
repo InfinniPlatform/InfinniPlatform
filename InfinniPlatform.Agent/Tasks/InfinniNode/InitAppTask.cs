@@ -69,5 +69,3 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
         }
     }
 }
-
-}
