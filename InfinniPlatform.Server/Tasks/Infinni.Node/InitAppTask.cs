@@ -11,7 +11,7 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
 {
     public class InitAppTask : IServerTask
     {
-        private const string NotifyMessageType = "WorkLog";
+        private const string NotifyMessageType = "Init";
 
         public InitAppTask(IAgentHttpClient agentHttpClient,
                            IPushNotificationService notifyService)
@@ -27,7 +27,7 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
 
         public HttpMethod HttpMethod => HttpMethod.Post;
 
-        public async Task<object> Run(IHttpRequest request)
+        public Task<object> Run(IHttpRequest request)
         {
             string address = request.Query.Address;
             int port = request.Query.Port;
@@ -40,11 +40,19 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
                            { "Timeout", HttpServiceHelper.ParseInt(request.Form.Timeout) }
                        };
 
-            await _notifyService.NotifyAll(NotifyMessageType, $"Initializing {args["AppName"]}...");
+            Task.Run(async () =>
+                     {
+                         await _notifyService.NotifyAll(NotifyMessageType, $"Initializing {args["AppName"]}...");
 
-            var serviceResult = await _agentHttpClient.Post<ServiceResult<AgentTaskStatus>>(CommandName, address, port, args);
+                         var serviceResult = await _agentHttpClient.Post<ServiceResult<AgentTaskStatus>>(CommandName, address, port, args);
 
-            return serviceResult;
+                         if (serviceResult.Result.Completed)
+                         {
+                             await _notifyService.NotifyAll(NotifyMessageType, $"Initializing {args["AppName"]}...");
+                         }
+                     });
+
+            return Task.FromResult(args["AppName"]);
         }
     }
 }

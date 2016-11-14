@@ -43,11 +43,7 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
 
             await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout, taskId);
 
-            var serviceResult = new ServiceResult<TaskStatus>
-                                {
-                                    Success = true,
-                                    Result = _agentTaskStorage.GetTaskStatus(taskId)
-                                };
+            var serviceResult = new ServiceResult<TaskStatus> { Success = true, Result = _agentTaskStorage.GetTaskStatus(taskId) };
 
             return serviceResult;
         }

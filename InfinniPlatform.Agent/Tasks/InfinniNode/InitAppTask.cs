@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Agent.Helpers;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.InfinniNode
@@ -25,7 +24,7 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
 
         public HttpMethod HttpMethod => HttpMethod.Post;
 
-        public Task<object> Run(IHttpRequest request)
+        public async Task<object> Run(IHttpRequest request)
         {
             var appName = (string)request.Form.AppName;
             var version = (string)request.Form.Version;
@@ -36,17 +35,39 @@ namespace InfinniPlatform.Agent.Tasks.InfinniNode
                                      .AppendArg("n", instanceName)
                                      .AppendArg("t", (string)request.Form.Timeout);
 
-            var description = $"Initializing {appName} version {version} with instance name {instanceName}.";
+            var description = BuildDescription(appName, version, instanceName);
 
             var taskId = _agentTaskStorage.AddNewTask(description);
 
-            Task.Run(async () => { await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout, taskId); });
+            await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout, taskId);
 
-            var result = new DynamicWrapper { { "TaskId", taskId } };
-
-            var serviceResult = new ServiceResult<DynamicWrapper> { Success = true, Result = result };
+            var serviceResult = new ServiceResult<TaskStatus> { Success = true, Result = _agentTaskStorage.GetTaskStatus(taskId) };
 
             return Task.FromResult<object>(serviceResult);
         }
+
+        private static string BuildDescription(string appName, string version, string instanceName)
+        {
+            string result = null;
+
+            if (appName != null)
+            {
+                result += $"Initializing {appName} ";
+            }
+
+            if (version != null)
+            {
+                result += $"version {version} ";
+            }
+
+            if (instanceName != null)
+            {
+                result += $"with instance name {instanceName}";
+            }
+
+            return result?.TrimEnd() + ".";
+        }
     }
+}
+
 }

@@ -13,10 +13,16 @@ function Subscribe(context, args) {
         viewContext);
 
     InfinniUI.global.notificationSubscription.subscribe("Install",
+        function (context, args) {            
+            toastr.success(args.message);
+            RefreshDataSources(context);
+        },
+        viewContext);
+
+    InfinniUI.global.notificationSubscription.subscribe("Init",
         function (context, args) {
-            var message = JSON.parse(args.message);
-            toastr.success("Installing " + message.AppName + " started.");
-            context.dataSources.AppsDataSource.setSelectedItem(message);
+            toastr.success(args.message);
+            RefreshDataSources(context);
         },
         viewContext);
 }
