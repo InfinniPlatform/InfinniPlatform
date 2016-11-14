@@ -88,6 +88,12 @@
                             "Orientation": "Horizontal",
                             "Items": [{
                                 "Button": {
+                                    "Name": "RefreshButton",
+                                    "Text": "Refresh",
+                                    "OnClick": "{ RefreshDataSources(context, args); }"
+                                }
+                            },{
+                                "Button": {
                                     "Name": "envVarsButton",
                                     "Text": "Agent environment variables",
                                     "Action": {
@@ -521,12 +527,6 @@
                             "ViewMode": "FormGroup",
                             "Orientation": "Horizontal",
                             "Items": [{
-                                "Button": {
-                                    "Name": "RefreshButton",
-                                    "Text": "Refresh",
-                                    "OnClick": "{ GetTasksStatus(context, args); }"
-                                }
-                            }, {
                                 "Button": {
                                     "Name": "OutputButton",
                                     "Text": "Show output",

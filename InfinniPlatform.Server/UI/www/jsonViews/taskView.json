@@ -1,7 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
-  "OnLoaded": "{ debugger; args.source.setText(context.parameters.Task.Description); }",
-  "OnCloased": "{ debugger; }",
+  "OnLoaded": "{ args.source.setText(context.parameters.Task.Description); }",  
   "Text": "Task",
   "Parameters": [{
     "Name": "Task"

@@ -6,16 +6,16 @@ using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.Agent.Tasks.Files
 {
-    public class SetConfigFileTask : IAgentTask
+    public class ConfigGetTask : IAgentTask
     {
-        public SetConfigFileTask(IConfigurationFileProvider configProvider)
+        public ConfigGetTask(IConfigurationFileProvider configProvider)
         {
             _configProvider = configProvider;
         }
 
         private readonly IConfigurationFileProvider _configProvider;
 
-        public HttpMethod HttpMethod => HttpMethod.Post;
+        public HttpMethod HttpMethod => HttpMethod.Get;
 
         public string CommandName => "config";
 
@@ -23,11 +23,10 @@ namespace InfinniPlatform.Agent.Tasks.Files
         {
             string appFullName = request.Query.AppFullName;
             string fileName = request.Query.FileName;
-            string config = request.Form.Config;
 
-            _configProvider.Set(appFullName, fileName, config);
+            var configStream = _configProvider.Get(appFullName, fileName);
 
-            return Task.FromResult<object>(new ServiceResult<object> { Success = true });
+            return Task.FromResult<object>(new StreamHttpResponse(configStream, "application/json"));
         }
     }
 }

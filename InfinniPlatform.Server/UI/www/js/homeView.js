@@ -102,6 +102,7 @@ function EnableTaskButtons(context, args) {
  * @param {any} context Контекст
  * @param {any} args Аргументы
  */
-function GetTasksStatus(context, args) {
+function RefreshDataSources(context, args) {
     context.dataSources.TasksDataSource.updateItems();
+    context.dataSources.AppsDataSource.updateItems();
 }

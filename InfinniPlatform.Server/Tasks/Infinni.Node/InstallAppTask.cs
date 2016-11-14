@@ -27,7 +27,7 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
 
         public HttpMethod HttpMethod => HttpMethod.Post;
 
-        public async Task<object> Run(IHttpRequest request)
+        public Task<object> Run(IHttpRequest request)
         {
             string address = request.Query.Address;
             int port = request.Query.Port;
@@ -41,18 +41,20 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
                            { "AllowPrerelease", (bool?)request.Form.AllowPrerelease }
                        };
 
-            await _notifyService.NotifyAll(InstallMessageType, new DynamicWrapper
-                                                               {
-                                                                   { "AppName", args["AppName"] },
-                                                                   { "Version", args["Version"] },
-                                                                   { "Instance", args["Instance"] },
-                                                                   { "State", "Installing" }
-                                                               });
+            Task.Run(async () =>
+                     {
+                         await _notifyService.NotifyAll(InstallMessageType, $"Installing {args["AppName"]}...");
 
-            var serviceResult = await _agentHttpClient.Post<ServiceResult<AgentTaskStatus>>("install", address, port, args);
+                         var serviceResult = await _agentHttpClient.Post<ServiceResult<AgentTaskStatus>>("install", address, port, args);
+
+                         if (serviceResult.Result.Completed)
+                         {
+                             await _notifyService.NotifyAll(InstallMessageType, $"Installing {args["AppName"]} complete.");
+                         }
+                     });
 
 
-            return serviceResult;
+            return Task.FromResult(args["AppName"]);
         }
     }
 }

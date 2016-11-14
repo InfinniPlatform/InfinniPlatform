@@ -7,9 +7,9 @@ using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.Tasks.Files
 {
-    public class PerfLogGetTask : IServerTask
+    public class PerfLogTask : IServerTask
     {
-        public PerfLogGetTask(IAgentHttpClient agentHttpClient)
+        public PerfLogTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }

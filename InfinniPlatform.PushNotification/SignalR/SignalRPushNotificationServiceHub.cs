@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 using InfinniPlatform.PushNotification.Properties;
@@ -90,6 +91,12 @@ namespace InfinniPlatform.PushNotification.SignalR
             {
                 _performanceLog.Log(methodName, startTime, error);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            Debugger.Launch();
+            base.Dispose(disposing);
         }
     }
 }

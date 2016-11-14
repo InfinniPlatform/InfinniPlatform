@@ -62,7 +62,7 @@
     <Compile Include="Tasks\Files\AppLogTask.cs" />
     <Compile Include="Tasks\InfinniNode\AppsInfoTask.cs" />
     <Compile Include="Tasks\Environment\EnvirementVariablesTask.cs" />
-    <Compile Include="Tasks\Files\GetConfigFileTask.cs" />
+    <Compile Include="Tasks\Files\ConfigGetTask.cs" />
     <Compile Include="Tasks\IAgentTask.cs" />
     <Compile Include="Tasks\InfinniNode\InitAppTask.cs" />
     <Compile Include="Tasks\InfinniNode\InstallAppTask.cs" />
@@ -71,7 +71,7 @@
     <Compile Include="Tasks\Files\PerfLogTask.cs" />
     <Compile Include="Tasks\InfinniNode\PackagesTask.cs" />
     <Compile Include="Tasks\InfinniNode\RestartAppTask.cs" />
-    <Compile Include="Tasks\Files\SetConfigFileTask.cs" />
+    <Compile Include="Tasks\Files\ConfigSetTask.cs" />
     <Compile Include="Tasks\InfinniNode\StartAppTask.cs" />
     <Compile Include="Tasks\InfinniNode\StopAppTask.cs" />
     <Compile Include="Tasks\TaskStatus.cs" />

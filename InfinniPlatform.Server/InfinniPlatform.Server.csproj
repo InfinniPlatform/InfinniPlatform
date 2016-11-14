@@ -64,10 +64,10 @@
     <Compile Include="Tasks\Heartbeat\LogHeartBeatTask.cs" />
     <Compile Include="Tasks\Environment\EnvironmentVarablesTask.cs" />
     <Compile Include="Tasks\Files\FileHelper.cs" />
-    <Compile Include="Tasks\Files\AppLogGetTask.cs" />
+    <Compile Include="Tasks\Files\AppLogTask.cs" />
     <Compile Include="Tasks\Files\ConfigGetTask.cs" />
-    <Compile Include="Tasks\Files\NodeLogGetTask.cs" />
-    <Compile Include="Tasks\Files\PerfLogGetTask.cs" />
+    <Compile Include="Tasks\Files\NodeLogTask.cs" />
+    <Compile Include="Tasks\Files\PerfLogTask.cs" />
     <Compile Include="Tasks\Files\ConfigSetTask.cs" />
     <Compile Include="Tasks\Infinni.Node\HttpServiceHelper.cs" />
     <Compile Include="Tasks\Infinni.Node\InitAppTask.cs" />

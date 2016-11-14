@@ -59,6 +59,15 @@
   }],
   "Text": "Install new app",
   "Items": [{
+    "CheckBox": {
+      "Name": "PrereleaseCheckBox",
+      "Text": "Allow prerelease",
+      "Value": {
+        "Source": "AppsDataSource",
+        "Property": "$.AllowPrerelease"
+      }
+    }
+  }, {
     "ComboBox": {
       "LabelText": "App Name",
       "Name": "AvailableAppsComboBox",
@@ -70,15 +79,6 @@
       "Items": {
         "Source": "AvailableAppsDataSource",
         "Property": ""
-      }
-    }
-  }, {
-    "CheckBox": {
-      "Name": "PrereleaseCheckBox",
-      "Text": "Allow prerelease",
-      "Value": {
-        "Source": "AppsDataSource",
-        "Property": "$.AllowPrerelease"
       }
     }
   }, {

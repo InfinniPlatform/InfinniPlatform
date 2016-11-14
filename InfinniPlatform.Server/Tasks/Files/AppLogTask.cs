@@ -7,9 +7,9 @@ using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.Tasks.Files
 {
-    public class AppLogGetTask : IServerTask
+    public class AppLogTask : IServerTask
     {
-        public AppLogGetTask(IAgentHttpClient agentHttpClient)
+        public AppLogTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
