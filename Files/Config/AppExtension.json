@@ -5,7 +5,7 @@
     "NodeDirectory": "C:\\Projects\\Infinni.Node\\Assemblies",
     "ServerAddress": "localhost:9901",
     "Token": "cc670bc2b2124011a3f92056487f2cf3",
-    "CacheTimeout": 30
+    "CacheTimeout": 600
   },
   "server": {
     "AgentsInfo": [

@@ -46,7 +46,7 @@ namespace InfinniPlatform.Agent.Tasks
         public void AddOutput(string taskId, string output)
         {
             var task = _dictionary[taskId];
-            task.Output += output;
+            task.Output += $"{output}{System.Environment.NewLine}";
         }
 
         public void SetCompleted(string taskId)

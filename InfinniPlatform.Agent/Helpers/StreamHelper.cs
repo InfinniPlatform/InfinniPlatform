@@ -15,7 +15,8 @@ namespace InfinniPlatform.Agent.Helpers
                    {
                        try
                        {
-                           return new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                           var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                           return fileStream;
                        }
                        catch (Exception)
                        {

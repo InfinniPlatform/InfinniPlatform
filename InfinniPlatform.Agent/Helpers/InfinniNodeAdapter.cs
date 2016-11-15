@@ -36,17 +36,12 @@ namespace InfinniPlatform.Agent.Helpers
         {
             using (var process = new Process())
             {
-                // При запуске на Linux bash-скриптов, возможен код ошибки 255.
-                // Решением является добавление заголовка #!/bin/bash в начало скрипта.
-
                 FillProcessStartInfo(arguments, process);
 
-                // Подписка на события записи в выходные потоки процесса
                 var outputCloseEvent = new TaskCompletionSource<bool>();
 
                 process.OutputDataReceived += (s, e) =>
                                               {
-                                                  // Поток output закрылся (процесс завершил работу)
                                                   if (string.IsNullOrEmpty(e.Data))
                                                   {
                                                       outputCloseEvent.SetResult(true);
@@ -61,7 +56,6 @@ namespace InfinniPlatform.Agent.Helpers
 
                 process.ErrorDataReceived += (s, e) =>
                                              {
-                                                 // Поток error закрылся (процесс завершил работу)
                                                  if (string.IsNullOrEmpty(e.Data))
                                                  {
                                                      errorCloseEvent.SetResult(true);
@@ -80,8 +74,6 @@ namespace InfinniPlatform.Agent.Helpers
                 }
                 catch (Exception error)
                 {
-                    // Usually it occurs when an executable file is not found or is not executable
-
                     _agentTaskStorage.SetCompleted(taskId);
                     _agentTaskStorage.AddOutput(taskId, error.Message);
 
@@ -90,17 +82,13 @@ namespace InfinniPlatform.Agent.Helpers
 
                 if (isStarted)
                 {
-                    // Reads the output stream first and then waits because deadlocks are possible
                     process.BeginOutputReadLine();
                     process.BeginErrorReadLine();
 
-                    // Creates task to wait for process exit using timeout
                     var waitForExit = WaitForExitAsync(process, timeout);
 
-                    // Create task to wait for process exit and closing all output streams
                     var processTask = Task.WhenAll(waitForExit, outputCloseEvent.Task, errorCloseEvent.Task);
 
-                    // Waits process completion and then checks it was not completed by timeout
                     if ((await Task.WhenAny(Task.Delay(timeout), processTask) == processTask) && waitForExit.Result)
                     {
                         _agentTaskStorage.SetCompleted(taskId);
@@ -109,7 +97,6 @@ namespace InfinniPlatform.Agent.Helpers
                     {
                         try
                         {
-                            // Kill hung process
                             process.Kill();
                         }
                         catch
@@ -132,18 +119,13 @@ namespace InfinniPlatform.Agent.Helpers
 
             using (var process = new Process())
             {
-                // При запуске на Linux bash-скриптов, возможен код ошибки 255.
-                // Решением является добавление заголовка #!/bin/bash в начало скрипта.
-
                 FillProcessStartInfo(arguments, process);
 
-                // Подписка на события записи в выходные потоки процесса
                 var outputBuilder = new StringBuilder();
                 var outputCloseEvent = new TaskCompletionSource<bool>();
 
                 process.OutputDataReceived += (s, e) =>
                                               {
-                                                  // Поток output закрылся (процесс завершил работу)
                                                   if (string.IsNullOrEmpty(e.Data))
                                                   {
                                                       outputCloseEvent.SetResult(true);
@@ -159,7 +141,6 @@ namespace InfinniPlatform.Agent.Helpers
 
                 process.ErrorDataReceived += (s, e) =>
                                              {
-                                                 // Поток error закрылся (процесс завершил работу)
                                                  if (string.IsNullOrEmpty(e.Data))
                                                  {
                                                      errorCloseEvent.SetResult(true);
@@ -178,7 +159,6 @@ namespace InfinniPlatform.Agent.Helpers
                 }
                 catch (Exception error)
                 {
-                    // Usually it occurs when an executable file is not found or is not executable
                     result.Completed = true;
                     result.Error = error.Message;
 
@@ -187,17 +167,13 @@ namespace InfinniPlatform.Agent.Helpers
 
                 if (isStarted)
                 {
-                    // Reads the output stream first and then waits because deadlocks are possible
                     process.BeginOutputReadLine();
                     process.BeginErrorReadLine();
 
-                    // Creates task to wait for process exit using timeout
                     var waitForExit = WaitForExitAsync(process, timeout);
 
-                    // Create task to wait for process exit and closing all output streams
                     var processTask = Task.WhenAll(waitForExit, outputCloseEvent.Task, errorCloseEvent.Task);
 
-                    // Waits process completion and then checks it was not completed by timeout
                     if ((await Task.WhenAny(Task.Delay(timeout), processTask) == processTask) && waitForExit.Result)
                     {
                         result.Completed = true;
@@ -207,7 +183,6 @@ namespace InfinniPlatform.Agent.Helpers
                     {
                         try
                         {
-                            // Kill hung process
                             process.Kill();
                         }
                         catch

@@ -1,19 +1,56 @@
 {
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
-  "OnLoaded": "{ args.source.setText(context.parameters.Task.Description); }",  
+  "OnLoaded": "{ args.source.setText(context.parameters.Task.getValue().Description); }",
   "Text": "Task",
   "Parameters": [{
+    "Name": "AgentAddress"
+  }, {
+    "Name": "AgentPort"
+  }, {
     "Name": "Task"
   }],
   "DataSources": [],
   "Items": [{
+    "Button": {
+      "Text": "Refresh",
+      "Action": {
+        "ServerAction": {
+          "Origin": "http://<%serverAddress%>:<%serverPort%>",
+          "Path": "/server/taskStatus",
+          "Method": "GET",
+          "Data": {
+            "Address": "<%agentAddress%>",
+            "Port": "<%agentPort%>",
+            "TaskId": "<%taskId%>"
+          },
+          "Params": {
+            "serverAddress": "localhost",
+            "serverPort": "9901",
+            "agentAddress": {
+              "Source": "AgentAddress"
+            },
+            "agentPort": {
+              "Source": "AgentPort"
+            },
+            "taskId": {
+              "Source": "Task",
+              "Property": "TaskId"
+            }
+          },
+          "OnSuccess":"{ RefreshTaskStatus(context, args); }"
+        }        
+      }
+    }
+  }, {
     "TextBox": {
+      "Name":"OutputTextBox",
       "Multiline": true,
       "LineCount": 30,
       "Value": {
         "Source": "Task",
-        "Property": "Output"
-      }
+        "Property": ""
+      },
+      "DisplayFormat":"{Output}"      
     }
   }]
 }

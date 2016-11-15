@@ -34,7 +34,7 @@
             },
             "UpdatingItemsConverter": "{ return args.value.Result.FormattedOutput; }",
             "OnSelectedItemChanged": "{ EnableAppButtons(context, args); }",
-            "OnItemsUpdated":"{ context.dataSources.TasksDataSource.updateItems(); }"
+            "OnItemsUpdated": "{ context.dataSources.TasksDataSource.updateItems(); }"
         }
     }, {
         "RestDataSource": {
@@ -92,7 +92,7 @@
                                     "Text": "Refresh",
                                     "OnClick": "{ RefreshDataSources(context, args); }"
                                 }
-                            },{
+                            }, {
                                 "Button": {
                                     "Name": "envVarsButton",
                                     "Text": "Agent environment variables",
@@ -543,6 +543,18 @@
                                                         "Value": {
                                                             "Source": "TasksDataSource",
                                                             "Property": "$"
+                                                        }
+                                                    }, {
+                                                        "Name": "AgentAddress",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Address"
+                                                        }
+                                                    }, {
+                                                        "Name": "AgentPort",
+                                                        "Value": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "$.Port"
                                                         }
                                                     }]
                                                 }
