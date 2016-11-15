@@ -30,10 +30,9 @@ namespace InfinniPlatform.Server.Tasks.Files
                                 { "AppFullName", (string)request.Query.AppFullName }
                             };
 
-            using (var stream = await _agentHttpClient.GetStream(CommandName, address, port, arguments))
-            {
-                return FileHelper.WrapLogResponse(stream);
-            }
+            var stream = await _agentHttpClient.GetStream(CommandName, address, port, arguments);
+
+            return new StreamHttpResponse(() => stream, "text/plain");
         }
     }
 }

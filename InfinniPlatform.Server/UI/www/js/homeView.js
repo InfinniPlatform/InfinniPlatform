@@ -13,7 +13,7 @@ function Subscribe(context, args) {
         viewContext);
 
     InfinniUI.global.notificationSubscription.subscribe("Install",
-        function (context, args) {            
+        function (context, args) {
             toastr.success(args.message);
             RefreshDataSources(context);
         },
@@ -111,4 +111,34 @@ function EnableTaskButtons(context, args) {
 function RefreshDataSources(context, args) {
     context.dataSources.TasksDataSource.updateItems();
     context.dataSources.AppsDataSource.updateItems();
+}
+
+function OpenEventsLogInTab(context, args) {
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
+    var app = context.dataSources.AppsDataSource.getSelectedItem();
+
+    var replacements = [
+        agent.Address,
+        agent.Port,
+        app.AppFullName
+    ];
+
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/appLog?Address={0}&Port={1}&AppFullName={2}", replacements);
+
+    window.open(url);
+}
+
+function OpenPerfLogInTab(context, args) {
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
+    var app = context.dataSources.AppsDataSource.getSelectedItem();
+
+    var replacements = [
+        agent.Address,
+        agent.Port,
+        app.AppFullName
+    ];
+
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/perfLog?Address={0}&Port={1}&AppFullName={2}", replacements);
+
+    window.open(url);
 }

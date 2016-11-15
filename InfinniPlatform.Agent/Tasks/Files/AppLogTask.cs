@@ -23,7 +23,7 @@ namespace InfinniPlatform.Agent.Tasks.Files
         {
             string appFullName = request.Query.AppFullName;
 
-            var streamHttpResponse = new StreamHttpResponse(_logFilePovider.GetAppLog(appFullName), "application/text");
+            var streamHttpResponse = new StreamHttpResponse(_logFilePovider.GetAppLog(appFullName));
 
             return Task.FromResult<object>(streamHttpResponse);
         }

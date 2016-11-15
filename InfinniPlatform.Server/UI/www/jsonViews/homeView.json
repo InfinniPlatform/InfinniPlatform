@@ -460,38 +460,23 @@
                                         }
                                     }, {
                                         "Button": {
-                                            "Name": "appLogsButton",
-                                            "Text": "App logs",
-                                            "Action": {
-                                                "OpenAction": {
-                                                    "LinkView": {
-                                                        "AutoView": {
-                                                            "OpenMode": "Dialog",
-                                                            "DialogWidth": "ExtraLarge",
-                                                            "Path": "jsonViews/appLogView.json",
-                                                            "Parameters": [{
-                                                                "Name": "AgentAddress",
-                                                                "Value": {
-                                                                    "Source": "AgentsDataSource",
-                                                                    "Property": "$.Address"
-                                                                }
-                                                            }, {
-                                                                "Name": "AgentPort",
-                                                                "Value": {
-                                                                    "Source": "AgentsDataSource",
-                                                                    "Property": "$.Port"
-                                                                }
-                                                            }, {
-                                                                "Name": "AppFullName",
-                                                                "Value": {
-                                                                    "Source": "AppsDataSource",
-                                                                    "Property": "$.AppFullName"
-                                                                }
-                                                            }]
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                            "Name": "eventsLogButton",
+                                            "Text": "Events log",
+                                            "OnClick": "{ OpenEventsLogInTab(context, args); }"
+                                        }
+                                    }, {
+                                        "Icon": {
+                                            "Value": "fa-external-link"
+                                        }
+                                    }, {
+                                        "Button": {
+                                            "Name": "perfLogButton",
+                                            "Text": "Performance log",
+                                            "OnClick": "{ OpenPerfLogInTab(context, args); }"
+                                        }
+                                    }, {
+                                        "Icon": {
+                                            "Value": "fa-external-link"
                                         }
                                     }]
                                 }
