@@ -142,3 +142,59 @@ function OpenPerfLogInTab(context, args) {
 
     window.open(url);
 }
+
+function OpenNodeLogInTab(context, args) {
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();    
+
+    var replacements = [
+        agent.Address,
+        agent.Port
+    ];
+
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/nodeLog?Address={0}&Port={1}", replacements);
+
+    window.open(url);
+}
+
+function DownloadEventsLogFile(context, args) {
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
+    var app = context.dataSources.AppsDataSource.getSelectedItem();
+
+    var replacements = [
+        agent.Address,
+        agent.Port,
+        app.AppFullName
+    ];
+
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/events.log?Address={0}&Port={1}&AppFullName={2}", replacements);
+
+    window.open(url);
+}
+
+function DownloadPerfLogFile(context, args) {
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
+    var app = context.dataSources.AppsDataSource.getSelectedItem();
+
+    var replacements = [
+        agent.Address,
+        agent.Port,
+        app.AppFullName
+    ];
+
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/performance.log?Address={0}&Port={1}&AppFullName={2}", replacements);
+
+    window.open(url);
+}
+
+function DownloadNodeLogFile(context, args) {
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();    
+
+    var replacements = [
+        agent.Address,
+        agent.Port
+    ];
+
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/infinniNode.log?Address={0}&Port={1}", replacements);
+
+    window.open(url);
+}

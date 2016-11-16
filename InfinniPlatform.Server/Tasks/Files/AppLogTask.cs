@@ -32,7 +32,7 @@ namespace InfinniPlatform.Server.Tasks.Files
 
             var stream = await _agentHttpClient.GetStream(CommandName, address, port, arguments);
 
-            return new StreamHttpResponse(() => stream, "text/plain");
+            return new StreamHttpResponse(() => stream, HttpConstants.TextPlainContentType);
         }
     }
 }

@@ -46,6 +46,9 @@
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
     <Compile Include="Tasks\Agents\AgentTaskStatus.cs" />
+    <Compile Include="Tasks\Files\AppLogFileTask.cs" />
+    <Compile Include="Tasks\Files\NodeLogFileTask.cs" />
+    <Compile Include="Tasks\Files\PerfLogFileTask.cs" />
     <Compile Include="Tasks\Infinni.Node\INodeOutputParser.cs" />
     <Compile Include="Tasks\Infinni.Node\NodeOutputParser.cs" />
     <Compile Include="HttpService\ServerHttpService.cs" />

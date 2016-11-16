@@ -7,9 +7,9 @@ using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.Tasks.Files
 {
-    public class NodeLogGetTask : IServerTask
+    public class NodeLogTask : IServerTask
     {
-        public NodeLogGetTask(IAgentHttpClient agentHttpClient)
+        public NodeLogTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
@@ -27,10 +27,9 @@ namespace InfinniPlatform.Server.Tasks.Files
 
             var arguments = new DynamicWrapper();
 
-            using (var stream = await _agentHttpClient.GetStream(CommandName, address, port, arguments))
-            {
-                return FileHelper.WrapLogResponse(stream);
-            }
+            var stream = await _agentHttpClient.GetStream(CommandName, address, port, arguments);
+
+            return new StreamHttpResponse(() => stream, HttpConstants.TextPlainContentType);
         }
     }
 }

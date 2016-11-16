@@ -7,16 +7,16 @@ using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.Tasks.Files
 {
-    public class PerfLogTask : IServerTask
+    public class PerfLogFileTask : IServerTask
     {
-        public PerfLogTask(IAgentHttpClient agentHttpClient)
+        public PerfLogFileTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
 
         private readonly IAgentHttpClient _agentHttpClient;
 
-        public string CommandName => "perfLog";
+        public string CommandName => "performance.log";
 
         public HttpMethod HttpMethod => HttpMethod.Get;
 
@@ -30,9 +30,11 @@ namespace InfinniPlatform.Server.Tasks.Files
                                 { "AppFullName", (string)request.Query.AppFullName }
                             };
 
-            var stream = await _agentHttpClient.GetStream(CommandName, address, port, arguments);
+            var stream = await _agentHttpClient.GetStream("perfLog", address, port, arguments);
 
-            return new StreamHttpResponse(() => stream, HttpConstants.TextPlainContentType);
+            var streamHttpResponse = new StreamHttpResponse(() => stream, HttpConstants.TextContentType);
+
+            return streamHttpResponse;
         }
     }
 }

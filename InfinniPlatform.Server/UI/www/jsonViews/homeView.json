@@ -89,13 +89,29 @@
                             "Items": [{
                                 "Button": {
                                     "Name": "RefreshButton",
-                                    "Text": "Refresh",
-                                    "OnClick": "{ RefreshDataSources(context, args); }"
+                                    "ToolTip": "Update agent info",
+                                    "OnClick": "{ RefreshDataSources(context, args); }",
+                                    "ContentTemplate": {
+                                        "StackPanel": {
+                                            "ViewMode": "Base",
+                                            "Orientation": "Horizontal",
+                                            "Items": [{
+                                                "Icon": {
+                                                    "Value": "rotate-right"
+                                                }
+                                            }, {
+                                                "Label": {
+                                                    "Value": "&nbsp;Refresh",
+                                                    "EscapeHtml": false
+                                                }
+                                            }]
+                                        }
+                                    }
                                 }
                             }, {
                                 "Button": {
                                     "Name": "envVarsButton",
-                                    "Text": "Agent environment variables",
+                                    "ToolTip": "Show agent machine environment variables",
                                     "Action": {
                                         "OpenAction": {
                                             "LinkView": {
@@ -125,40 +141,54 @@
                                                 }
                                             }
                                         }
+                                    },
+                                    "ContentTemplate": {
+                                        "StackPanel": {
+                                            "ViewMode": "Base",
+                                            "Orientation": "Horizontal",
+                                            "Items": [{
+                                                "Icon": {
+                                                    "Value": "envira"
+                                                }
+                                            }, {
+                                                "Label": {
+                                                    "Value": "&nbsp;Environment variables",
+                                                    "EscapeHtml": false
+                                                }
+                                            }]
+                                        }
                                     }
                                 }
                             }, {
                                 "Button": {
                                     "Name": "nodeLogButton",
-                                    "Text": "Infinni.Node log",
-                                    "Action": {
-                                        "OpenAction": {
-                                            "LinkView": {
-                                                "AutoView": {
-                                                    "OpenMode": "Dialog",
-                                                    "DialogWidth": "ExtraLarge",
-                                                    "Path": "jsonViews/nodeLogView.json",
-                                                    "Parameters": [{
-                                                        "Name": "AgentAddress",
-                                                        "Value": {
-                                                            "Source": "AgentsDataSource",
-                                                            "Property": "$.Address"
-                                                        }
-                                                    }, {
-                                                        "Name": "AgentPort",
-                                                        "Value": {
-                                                            "Source": "AgentsDataSource",
-                                                            "Property": "$.Port"
-                                                        }
-                                                    }, {
-                                                        "Name": "AppFullName",
-                                                        "Value": {
-                                                            "Source": "AppsDataSource",
-                                                            "Property": "$.AppFullName"
-                                                        }
-                                                    }]
+                                    "ToolTip": "Open Infinni.Node log in tab",
+                                    "OnClick": "{ OpenNodeLogInTab(context, args); }",
+                                    "ContentTemplate": {
+                                        "StackPanel": {
+                                            "ViewMode": "Base",
+                                            "Orientation": "Horizontal",
+                                            "Items": [{
+                                                "Label": {
+                                                    "Value": "Infinni.Node log&nbsp;",
+                                                    "EscapeHtml": false
                                                 }
-                                            }
+                                            }, {
+                                                "Icon": {
+                                                    "Value": "external-link"
+                                                }
+                                            }]
+                                        }
+                                    }
+                                }
+                            }, {
+                                "Button": {
+                                    "Name": "perfLogTabButton",
+                                    "ToolTip": "Download Infinni.Node log file",
+                                    "OnClick": "{ DownloadNodeLogFile(context, args); }",
+                                    "ContentTemplate": {
+                                        "Icon": {
+                                            "Value": "download"
                                         }
                                     }
                                 }
@@ -171,7 +201,7 @@
                             "Items": [{
                                 "Button": {
                                     "Name": "installButton",
-                                    "Text": "Install new app",
+                                    "ToolTip": "Install new app",
                                     "Action": {
                                         "AddAction": {
                                             "SourceValue": {
@@ -202,6 +232,22 @@
                                                 }
                                             }
                                         }
+                                    },
+                                    "ContentTemplate": {
+                                        "StackPanel": {
+                                            "ViewMode": "Base",
+                                            "Orientation": "Horizontal",
+                                            "Items": [{
+                                                "Icon": {
+                                                    "Value": "download"
+                                                }
+                                            }, {
+                                                "Label": {
+                                                    "Value": "&nbsp;Install",
+                                                    "EscapeHtml": false
+                                                }
+                                            }]
+                                        }
                                     }
                                 }
                             }, {
@@ -213,7 +259,7 @@
                                     "Items": [{
                                         "Button": {
                                             "Name": "uninstallButton",
-                                            "Text": "Uninstall",
+                                            "ToolTip": "Uninstall app",
                                             "Action": {
                                                 "ServerAction": {
                                                     "Origin": "http://<%serverAddress%>:<%serverPort%>",
@@ -250,12 +296,32 @@
                                                     },
                                                     "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                                 }
+                                            },
+                                            "ContentTemplate": {
+                                                "StackPanel": {
+                                                    "ViewMode": "Base",
+                                                    "Orientation": "Horizontal",
+                                                    "Items": [{
+                                                        "Icon": {
+                                                            "Value": "trash-o"
+                                                        }
+                                                    }, {
+                                                        "Label": {
+                                                            "Value": "&nbsp;Uninstall",
+                                                            "EscapeHtml": false
+                                                        }
+                                                    }]
+                                                }
                                             }
+                                        }
+                                    }, {
+                                        "Icon": {
+                                            "Value": "bug"
                                         }
                                     }, {
                                         "Button": {
                                             "Name": "initButton",
-                                            "Text": "Init",
+                                            "ToolTip": "Run app initialization logic",
                                             "Action": {
                                                 "ServerAction": {
                                                     "Origin": "http://<%serverAddress%>:<%serverPort%>",
@@ -293,12 +359,28 @@
                                                     },
                                                     "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                                 }
+                                            },
+                                            "ContentTemplate": {
+                                                "StackPanel": {
+                                                    "ViewMode": "Base",
+                                                    "Orientation": "Horizontal",
+                                                    "Items": [{
+                                                        "Icon": {
+                                                            "Value": "wrench"
+                                                        }
+                                                    }, {
+                                                        "Label": {
+                                                            "Value": "&nbsp;Init",
+                                                            "EscapeHtml": false
+                                                        }
+                                                    }]
+                                                }
                                             }
                                         }
                                     }, {
                                         "Button": {
                                             "Name": "startButton",
-                                            "Text": "Start",
+                                            "ToolTip": "Start app",
                                             "Action": {
                                                 "ServerAction": {
                                                     "Origin": "http://<%serverAddress%>:<%serverPort%>",
@@ -336,12 +418,29 @@
                                                     },
                                                     "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                                 }
+                                            },
+                                            "ContentTemplate": {
+                                                "StackPanel": {
+                                                    "ViewMode": "Base",
+                                                    "Orientation": "Horizontal",
+                                                    "Items": [{
+                                                        "Icon": {
+                                                            "Value": "play",
+                                                            "Foreground": "accent3"
+                                                        }
+                                                    }, {
+                                                        "Label": {
+                                                            "Value": "&nbsp;Start",
+                                                            "EscapeHtml": false
+                                                        }
+                                                    }]
+                                                }
                                             }
                                         }
                                     }, {
                                         "Button": {
                                             "Name": "stopButton",
-                                            "Text": "Stop",
+                                            "ToolTip": "Stop app",
                                             "Action": {
                                                 "ServerAction": {
                                                     "Origin": "http://<%serverAddress%>:<%serverPort%>",
@@ -379,12 +478,28 @@
                                                     },
                                                     "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                                 }
+                                            },
+                                            "ContentTemplate": {
+                                                "StackPanel": {
+                                                    "ViewMode": "Base",
+                                                    "Orientation": "Horizontal",
+                                                    "Items": [{
+                                                        "Icon": {
+                                                            "Value": "stop"
+                                                        }
+                                                    }, {
+                                                        "Label": {
+                                                            "Value": "&nbsp;Stop",
+                                                            "EscapeHtml": false
+                                                        }
+                                                    }]
+                                                }
                                             }
                                         }
                                     }, {
                                         "Button": {
                                             "Name": "restartButton",
-                                            "Text": "Restart",
+                                            "ToolTip": "Restart app",
                                             "Action": {
                                                 "ServerAction": {
                                                     "Origin": "http://<%serverAddress%>:<%serverPort%>",
@@ -422,12 +537,32 @@
                                                     },
                                                     "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
                                                 }
+                                            },
+                                            "ContentTemplate": {
+                                                "StackPanel": {
+                                                    "ViewMode": "Base",
+                                                    "Orientation": "Horizontal",
+                                                    "Items": [{
+                                                        "Icon": {
+                                                            "Value": "refresh"
+                                                        }
+                                                    }, {
+                                                        "Label": {
+                                                            "Value": "&nbsp;Restart",
+                                                            "EscapeHtml": false
+                                                        }
+                                                    }]
+                                                }
                                             }
+                                        }
+                                    }, {
+                                        "Icon": {
+                                            "Value": "bug"
                                         }
                                     }, {
                                         "Button": {
                                             "Name": "appConfigsButton",
-                                            "Text": "App configs",
+                                            "ToolTip": "Read and edit app configs",
                                             "Action": {
                                                 "OpenAction": {
                                                     "LinkView": {
@@ -456,27 +591,105 @@
                                                         }
                                                     }
                                                 }
+                                            },
+                                            "ContentTemplate": {
+                                                "StackPanel": {
+                                                    "ViewMode": "Base",
+                                                    "Orientation": "Horizontal",
+                                                    "Items": [{
+                                                        "Icon": {
+                                                            "Value": "file-code-o"
+                                                        }
+                                                    }, {
+                                                        "Label": {
+                                                            "Value": "&nbsp;Configs",
+                                                            "EscapeHtml": false
+                                                        }
+                                                    }]
+                                                }
                                             }
                                         }
                                     }, {
-                                        "Button": {
-                                            "Name": "eventsLogButton",
-                                            "Text": "Events log",
-                                            "OnClick": "{ OpenEventsLogInTab(context, args); }"
-                                        }
-                                    }, {
                                         "Icon": {
-                                            "Value": "fa-external-link"
+                                            "Value": "bug"
                                         }
                                     }, {
-                                        "Button": {
-                                            "Name": "perfLogButton",
-                                            "Text": "Performance log",
-                                            "OnClick": "{ OpenPerfLogInTab(context, args); }"
+                                        "StackPanel": {
+                                            "ViewMode": "FormGroup",
+                                            "Orientation": "Horizontal",
+                                            "Items": [{
+                                                "Button": {
+                                                    "Name": "eventsLogButton",
+                                                    "ToolTip": "Open events log in tab",
+                                                    "OnClick": "{ OpenEventsLogInTab(context, args); }",
+                                                    "ContentTemplate": {
+                                                        "StackPanel": {
+                                                            "ViewMode": "Base",
+                                                            "Orientation": "Horizontal",
+                                                            "Items": [{
+                                                                "Label": {
+                                                                    "Value": "Events log&nbsp;",
+                                                                    "EscapeHtml": false
+                                                                }
+                                                            }, {
+                                                                "Icon": {
+                                                                    "Value": "external-link"
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                }
+                                            }, {
+                                                "Button": {
+                                                    "Name": "eventsLogTabButton",
+                                                    "ToolTip": "Download events log file",
+                                                    "OnClick": "{ DownloadEventsLogFile(context, args); }",
+                                                    "ContentTemplate": {
+                                                        "Icon": {
+                                                            "Value": "download"
+                                                        }
+                                                    }
+                                                }
+                                            }]
                                         }
                                     }, {
-                                        "Icon": {
-                                            "Value": "fa-external-link"
+                                        "StackPanel": {
+                                            "ViewMode": "Base",
+                                            "Orientation": "Horizontal",
+                                            "Items": [{
+                                                "Button": {
+                                                    "Name": "perfLogButton",
+                                                    "ToolTip": "Open performance log in tab",
+                                                    "OnClick": "{ OpenPerfLogInTab(context, args); }",
+                                                    "ContentTemplate": {
+                                                        "StackPanel": {
+                                                            "ViewMode": "Base",
+                                                            "Orientation": "Horizontal",
+                                                            "Items": [{
+                                                                "Label": {
+                                                                    "Value": "Performance log&nbsp;",
+                                                                    "EscapeHtml": false
+                                                                }
+                                                            }, {
+                                                                "Icon": {
+                                                                    "Value": "external-link"
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                }
+                                            }, {
+                                                "Button": {
+                                                    "Name": "perfLogTabButton",
+                                                    "ToolTip": "Download performance log file",
+                                                    "OnClick": "{ DownloadPerfLogFile(context, args); }",
+                                                    "ContentTemplate": {
+                                                        "Icon": {
+                                                            "Value": "download"
+                                                        }
+                                                    }
+                                                }
+                                            }]
                                         }
                                     }]
                                 }
