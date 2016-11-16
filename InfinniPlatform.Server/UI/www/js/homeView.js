@@ -80,18 +80,6 @@ function UpdateTasksGrid(context, args) {
     }
 }
 
-/** Показывает/скрывает кнопки для управления приложением * 
- * @param {any} context Контекст
- * @param {any} args Аргументы
- */
-function EnableAppButtons(context, args) {
-    if (args.value === null || args.value === undefined) {
-        context.controls.AppButtonsStackPanel.setVisible(false);
-    } else {
-        context.controls.AppButtonsStackPanel.setVisible(true);
-    }
-}
-
 /** Показывает/скрывает кнопки для управления задачами * 
  * @param {any} context Контекст
  * @param {any} args Аргументы
