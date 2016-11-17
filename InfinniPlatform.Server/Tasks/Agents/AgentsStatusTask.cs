@@ -1,8 +1,10 @@
-﻿using System.Net.Http;
+﻿using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Server.Settings;
 
 namespace InfinniPlatform.Server.Tasks.Agents
@@ -22,11 +24,18 @@ namespace InfinniPlatform.Server.Tasks.Agents
 
         public Task<object> Run(IHttpRequest request)
         {
-            var agents = new DynamicWrapper { { "Agents", _settings.AgentsInfo } };
+            var fileStream = File.OpenRead(_settings.AgentsInfoFilePath);
 
-            var serviceResult = new ServiceResult<DynamicWrapper> { Success = true, Result = agents };
+            using (fileStream)
+            {
+                var agentsInfo = JsonObjectSerializer.Default.Deserialize<AgentInfo[]>(fileStream);
 
-            return Task.FromResult<object>(serviceResult);
+                var agents = new DynamicWrapper { { "Agents", agentsInfo } };
+
+                var serviceResult = new ServiceResult<DynamicWrapper> { Success = true, Result = agents };
+
+                return Task.FromResult<object>(serviceResult);
+            }
         }
     }
 }

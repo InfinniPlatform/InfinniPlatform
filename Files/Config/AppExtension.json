@@ -8,14 +8,7 @@
     "CacheTimeout": 600
   },
   "server": {
-    "AgentsInfo": [
-      {
-        "Name": "Local",
-        "Address": "localhost",
-        "Port": 9901,
-        "Token": "cc670bc2b2124011a3f92056487f2cf3"
-      }
-    ]
+    "AgentsInfoFilePath": "agents.json"
   },
   "watcher": {
     "SourceDirectory": "..\\InfinniPlatform.Server\\UI\\www",

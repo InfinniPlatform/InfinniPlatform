@@ -6,12 +6,12 @@
 
         public ServerSettings()
         {
-            AgentsInfo = new AgentInfo[] { };
+            AgentsInfoFilePath = "agents.json";
         }
 
         /// <summary>
-        /// Информация об экземплярах приложения InfinniPlatform.Agent.
+        /// Путь до файла с информацией об экземплярах приложения InfinniPlatform.Agent.
         /// </summary>
-        public AgentInfo[] AgentsInfo { get; set; }
+        public string AgentsInfoFilePath { get; set; }
     }
 }

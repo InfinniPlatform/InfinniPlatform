@@ -1,19 +1,18 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Server.json",
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "Server",
-    "description": "Настройки приложения InfinniPlatform.Server.",
-    "type": "object",
-    "properties": {
-        "AgentsInfo": {
-            "description": "Информация об экземплярах приложения InfinniPlatform.Agent.",
-            "type": "array",
-            "items": {
-                "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AgentInfo.json"
-            }
-        }
-    },
-    "required": [
-        "AgentsInfo"
-    ]
+  "id":
+    "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Server.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Server",
+  "description": "Настройки приложения InfinniPlatform.Server.",
+  "type": "object",
+  "properties": {
+    "AgentsInfoFilePath": {
+      "description": "Путь до файла с информацией об экземплярах приложения InfinniPlatform.Agent.",
+      "type": "string",
+      "default": "agents.json"
+    }
+  },
+  "required": [
+    "AgentsInfo"
+  ]
 }
