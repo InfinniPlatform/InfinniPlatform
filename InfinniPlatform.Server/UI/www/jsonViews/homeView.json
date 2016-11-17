@@ -159,91 +159,58 @@
                                     }
                                 }
                             }, {
-                                "Button": {
-                                    "Name": "nodeLogButton",
-                                    "ToolTip": "Open Infinni.Node log in tab",
-                                    "OnClick": "{ OpenNodeLogInTab(context, args); }",
-                                    "ContentTemplate": {
-                                        "StackPanel": {
-                                            "ViewMode": "Base",
-                                            "Orientation": "Horizontal",
-                                            "Items": [{
-                                                "Label": {
-                                                    "Value": "Infinni.Node log&nbsp;",
-                                                    "EscapeHtml": false
+                                "PopupButton": {
+                                    "Text": "Infinni.Node log",
+                                    "Items": [{
+                                        "Button": {
+                                            "Name": "nodeLogButton",
+                                            "OnClick": "{ OpenNodeLogInTab(context, args); }",
+                                            "ContentTemplate": {
+                                                "StackPanel": {
+                                                    "ViewMode": "Base",
+                                                    "Orientation": "Horizontal",
+                                                    "Items": [{
+                                                        "Icon": {
+                                                            "Value": "external-link"
+                                                        }
+                                                    }, {
+                                                        "Label": {
+                                                            "Value": "&nbsp;Open in tab",
+                                                            "EscapeHtml": false
+                                                        }
+                                                    }]
                                                 }
-                                            }, {
-                                                "Icon": {
-                                                    "Value": "external-link"
+                                            }
+                                        }
+                                    }, {
+                                        "Button": {
+                                            "Name": "perfLogTabButton",
+                                            "OnClick": "{ DownloadNodeLogFile(context, args); }",
+                                            "ContentTemplate": {
+                                                "StackPanel": {
+                                                    "ViewMode": "Base",
+                                                    "Orientation": "Horizontal",
+                                                    "Items": [{
+                                                        "Icon": {
+                                                            "Value": "download"
+                                                        }
+                                                    }, {
+                                                        "Label": {
+                                                            "Value": "&nbsp;Download",
+                                                            "EscapeHtml": false
+                                                        }
+                                                    }]
                                                 }
-                                            }]
+                                            }
                                         }
-                                    }
-                                }
-                            }, {
-                                "Button": {
-                                    "Name": "perfLogTabButton",
-                                    "ToolTip": "Download Infinni.Node log file",
-                                    "OnClick": "{ DownloadNodeLogFile(context, args); }",
-                                    "ContentTemplate": {
-                                        "Icon": {
-                                            "Value": "download"
-                                        }
-                                    }
+                                    }]
                                 }
                             }]
                         }
                     }, {
-                        "Button": {
-                            "Name": "installButton",
-                            "ToolTip": "Install new app",
-                            "Action": {
-                                "AddAction": {
-                                    "SourceValue": {
-                                        "Source": "AppsDataSource"
-                                    },
-                                    "DestinationValue": {
-                                        "Source": "AppsDataSource",
-                                        "Property": ""
-                                    },
-                                    "LinkView": {
-                                        "AutoView": {
-                                            "OpenMode": "Dialog",
-                                            "DialogWidth": "Large",
-                                            "Path": "jsonViews/installView.json",
-                                            "Parameters": [{
-                                                "Name": "AgentAddress",
-                                                "Value": {
-                                                    "Source": "AgentsDataSource",
-                                                    "Property": "$.Address"
-                                                }
-                                            }, {
-                                                "Name": "AgentPort",
-                                                "Value": {
-                                                    "Source": "AgentsDataSource",
-                                                    "Property": "$.Port"
-                                                }
-                                            }]
-                                        }
-                                    }
-                                }
-                            },
-                            "ContentTemplate": {
-                                "StackPanel": {
-                                    "ViewMode": "Base",
-                                    "Orientation": "Horizontal",
-                                    "Items": [{
-                                        "Icon": {
-                                            "Value": "download"
-                                        }
-                                    }, {
-                                        "Label": {
-                                            "Value": "&nbsp;Install",
-                                            "EscapeHtml": false
-                                        }
-                                    }]
-                                }
-                            }
+                        "Label": {
+                            "Value": "Apps",
+                            "TextStyle": "Display1"
                         }
                     }, {
                         "StackPanel": {
@@ -257,6 +224,11 @@
                                             "ViewMode": "FormGroup",
                                             "Orientation": "Horizontal",
                                             "Items": [{
+                                                "Icon": {
+                                                    "Value": "check-circle",
+                                                    "Foreground": "accent1"
+                                                }
+                                            }, {
                                                 "Label": {
                                                     "Value": {
                                                         "Source": "AppsDataSource",
@@ -299,121 +271,6 @@
                                             "ViewMode": "FormGroup",
                                             "Orientation": "Horizontal",
                                             "Items": [{
-                                                "Button": {
-                                                    "ToolTip": "Uninstall app",
-                                                    "Action": {
-                                                        "ServerAction": {
-                                                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                                            "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                                            "Method": "POST",
-                                                            "Data": {
-                                                                "AppName": "<%appName%>",
-                                                                "Version": "<%version%>",
-                                                                "Instance": "<%instance%>"
-                                                            },
-                                                            "Params": {
-                                                                "serverAddress": "localhost",
-                                                                "serverPort": "9901",
-                                                                "agentAddress": {
-                                                                    "Source": "AgentsDataSource",
-                                                                    "Property": "$.Address"
-                                                                },
-                                                                "agentPort": {
-                                                                    "Source": "AgentsDataSource",
-                                                                    "Property": "$.Port"
-                                                                },
-                                                                "appName": {
-                                                                    "Source": "AppsDataSource",
-                                                                    "Property": "#.Id"
-                                                                },
-                                                                "version": {
-                                                                    "Source": "AppsDataSource",
-                                                                    "Property": "#.Version"
-                                                                },
-                                                                "instance": {
-                                                                    "Source": "AppsDataSource",
-                                                                    "Property": "#.Instance"
-                                                                }
-                                                            },
-                                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
-                                                        }
-                                                    },
-                                                    "ContentTemplate": {
-                                                        "StackPanel": {
-                                                            "ViewMode": "Base",
-                                                            "Orientation": "Horizontal",
-                                                            "Items": [{
-                                                                "Icon": {
-                                                                    "Value": "trash-o"
-                                                                }
-                                                            }, {
-                                                                "Label": {
-                                                                    "Value": "&nbsp;Uninstall",
-                                                                    "EscapeHtml": false
-                                                                }
-                                                            }]
-                                                        }
-                                                    }
-                                                }
-                                            }, {
-                                                "Button": {
-                                                    "ToolTip": "Run app initialization logic",
-                                                    "Action": {
-                                                        "ServerAction": {
-                                                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
-                                                            "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
-                                                            "Method": "POST",
-                                                            "Data": {
-                                                                "AppName": "<%appName%>",
-                                                                "Version": "<%version%>",
-                                                                "Instance": "<%instance%>",
-                                                                "Timeout": null
-                                                            },
-                                                            "Params": {
-                                                                "serverAddress": "localhost",
-                                                                "serverPort": "9901",
-                                                                "agentAddress": {
-                                                                    "Source": "AgentsDataSource",
-                                                                    "Property": "$.Address"
-                                                                },
-                                                                "agentPort": {
-                                                                    "Source": "AgentsDataSource",
-                                                                    "Property": "$.Port"
-                                                                },
-                                                                "appName": {
-                                                                    "Source": "AppsDataSource",
-                                                                    "Property": "#.Id"
-                                                                },
-                                                                "version": {
-                                                                    "Source": "AppsDataSource",
-                                                                    "Property": "#.Version"
-                                                                },
-                                                                "instance": {
-                                                                    "Source": "AppsDataSource",
-                                                                    "Property": "#.Instance"
-                                                                }
-                                                            },
-                                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
-                                                        }
-                                                    },
-                                                    "ContentTemplate": {
-                                                        "StackPanel": {
-                                                            "ViewMode": "Base",
-                                                            "Orientation": "Horizontal",
-                                                            "Items": [{
-                                                                "Icon": {
-                                                                    "Value": "wrench"
-                                                                }
-                                                            }, {
-                                                                "Label": {
-                                                                    "Value": "&nbsp;Init",
-                                                                    "EscapeHtml": false
-                                                                }
-                                                            }]
-                                                        }
-                                                    }
-                                                }
-                                            }, {
                                                 "Button": {
                                                     "ToolTip": "Start app",
                                                     "Action": {
@@ -589,6 +446,64 @@
                                                 }
                                             }, {
                                                 "Button": {
+                                                    "ToolTip": "Run app initialization logic",
+                                                    "Action": {
+                                                        "ServerAction": {
+                                                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                                            "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                                            "Method": "POST",
+                                                            "Data": {
+                                                                "AppName": "<%appName%>",
+                                                                "Version": "<%version%>",
+                                                                "Instance": "<%instance%>",
+                                                                "Timeout": null
+                                                            },
+                                                            "Params": {
+                                                                "serverAddress": "localhost",
+                                                                "serverPort": "9901",
+                                                                "agentAddress": {
+                                                                    "Source": "AgentsDataSource",
+                                                                    "Property": "$.Address"
+                                                                },
+                                                                "agentPort": {
+                                                                    "Source": "AgentsDataSource",
+                                                                    "Property": "$.Port"
+                                                                },
+                                                                "appName": {
+                                                                    "Source": "AppsDataSource",
+                                                                    "Property": "#.Id"
+                                                                },
+                                                                "version": {
+                                                                    "Source": "AppsDataSource",
+                                                                    "Property": "#.Version"
+                                                                },
+                                                                "instance": {
+                                                                    "Source": "AppsDataSource",
+                                                                    "Property": "#.Instance"
+                                                                }
+                                                            },
+                                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
+                                                        }
+                                                    },
+                                                    "ContentTemplate": {
+                                                        "StackPanel": {
+                                                            "ViewMode": "Base",
+                                                            "Orientation": "Horizontal",
+                                                            "Items": [{
+                                                                "Icon": {
+                                                                    "Value": "wrench"
+                                                                }
+                                                            }, {
+                                                                "Label": {
+                                                                    "Value": "&nbsp;Init",
+                                                                    "EscapeHtml": false
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                }
+                                            },{
+                                                "Button": {
                                                     "ToolTip": "Read and edit app configs",
                                                     "Action": {
                                                         "OpenAction": {
@@ -637,9 +552,8 @@
                                                     }
                                                 }
                                             }, {
-                                                "StackPanel": {
-                                                    "ViewMode": "FormGroup",
-                                                    "Orientation": "Horizontal",
+                                                "PopupButton": {
+                                                    "Text": "Events log",
                                                     "Items": [{
                                                         "Button": {
                                                             "ToolTip": "Open events log in tab",
@@ -649,13 +563,13 @@
                                                                     "ViewMode": "Base",
                                                                     "Orientation": "Horizontal",
                                                                     "Items": [{
-                                                                        "Label": {
-                                                                            "Value": "Events log&nbsp;",
-                                                                            "EscapeHtml": false
-                                                                        }
-                                                                    }, {
                                                                         "Icon": {
                                                                             "Value": "external-link"
+                                                                        }
+                                                                    }, {
+                                                                        "Label": {
+                                                                            "Value": "&nbsp;Open in tab",
+                                                                            "EscapeHtml": false
                                                                         }
                                                                     }]
                                                                 }
@@ -666,17 +580,27 @@
                                                             "ToolTip": "Download events log file",
                                                             "OnClick": "{ DownloadEventsLogFile(context, args); }",
                                                             "ContentTemplate": {
-                                                                "Icon": {
-                                                                    "Value": "download"
+                                                                "StackPanel": {
+                                                                    "ViewMode": "Base",
+                                                                    "Orientation": "Horizontal",
+                                                                    "Items": [{
+                                                                        "Icon": {
+                                                                            "Value": "download"
+                                                                        }
+                                                                    }, {
+                                                                        "Label": {
+                                                                            "Value": "&nbsp;Download",
+                                                                            "EscapeHtml": false
+                                                                        }
+                                                                    }]
                                                                 }
                                                             }
                                                         }
                                                     }]
                                                 }
                                             }, {
-                                                "StackPanel": {
-                                                    "ViewMode": "Base",
-                                                    "Orientation": "Horizontal",
+                                                "PopupButton": {
+                                                    "Text": "Performance log",
                                                     "Items": [{
                                                         "Button": {
                                                             "ToolTip": "Open performance log in tab",
@@ -686,13 +610,13 @@
                                                                     "ViewMode": "Base",
                                                                     "Orientation": "Horizontal",
                                                                     "Items": [{
-                                                                        "Label": {
-                                                                            "Value": "Performance log&nbsp;",
-                                                                            "EscapeHtml": false
-                                                                        }
-                                                                    }, {
                                                                         "Icon": {
                                                                             "Value": "external-link"
+                                                                        }
+                                                                    }, {
+                                                                        "Label": {
+                                                                            "Value": "&nbsp;Open in tab",
+                                                                            "EscapeHtml": false
                                                                         }
                                                                     }]
                                                                 }
@@ -703,12 +627,80 @@
                                                             "ToolTip": "Download performance log file",
                                                             "OnClick": "{ DownloadPerfLogFile(context, args); }",
                                                             "ContentTemplate": {
-                                                                "Icon": {
-                                                                    "Value": "download"
+                                                                "StackPanel": {
+                                                                    "ViewMode": "Base",
+                                                                    "Orientation": "Horizontal",
+                                                                    "Items": [{
+                                                                        "Icon": {
+                                                                            "Value": "download"
+                                                                        }
+                                                                    }, {
+                                                                        "Label": {
+                                                                            "Value": "&nbsp;Download",
+                                                                            "EscapeHtml": false
+                                                                        }
+                                                                    }]
                                                                 }
                                                             }
                                                         }
                                                     }]
+                                                }
+                                            }, {
+                                                "Button": {
+                                                    "ToolTip": "Uninstall app",
+                                                    "Action": {
+                                                        "ServerAction": {
+                                                            "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                                            "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
+                                                            "Method": "POST",
+                                                            "Data": {
+                                                                "AppName": "<%appName%>",
+                                                                "Version": "<%version%>",
+                                                                "Instance": "<%instance%>"
+                                                            },
+                                                            "Params": {
+                                                                "serverAddress": "localhost",
+                                                                "serverPort": "9901",
+                                                                "agentAddress": {
+                                                                    "Source": "AgentsDataSource",
+                                                                    "Property": "$.Address"
+                                                                },
+                                                                "agentPort": {
+                                                                    "Source": "AgentsDataSource",
+                                                                    "Property": "$.Port"
+                                                                },
+                                                                "appName": {
+                                                                    "Source": "AppsDataSource",
+                                                                    "Property": "#.Id"
+                                                                },
+                                                                "version": {
+                                                                    "Source": "AppsDataSource",
+                                                                    "Property": "#.Version"
+                                                                },
+                                                                "instance": {
+                                                                    "Source": "AppsDataSource",
+                                                                    "Property": "#.Instance"
+                                                                }
+                                                            },
+                                                            "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
+                                                        }
+                                                    },
+                                                    "ContentTemplate": {
+                                                        "StackPanel": {
+                                                            "ViewMode": "Base",
+                                                            "Orientation": "Horizontal",
+                                                            "Items": [{
+                                                                "Icon": {
+                                                                    "Value": "trash-o"
+                                                                }
+                                                            }, {
+                                                                "Label": {
+                                                                    "Value": "&nbsp;Uninstall",
+                                                                    "EscapeHtml": false
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
                                                 }
                                             }]
                                         }
@@ -761,6 +753,63 @@
                                     }
                                 }
                             }]
+                        }
+                    }, {
+                        "Button": {
+                            "Name": "installButton",
+                            "ToolTip": "Install new app",
+                            "Action": {
+                                "AddAction": {
+                                    "SourceValue": {
+                                        "Source": "AppsDataSource"
+                                    },
+                                    "DestinationValue": {
+                                        "Source": "AppsDataSource",
+                                        "Property": ""
+                                    },
+                                    "LinkView": {
+                                        "AutoView": {
+                                            "OpenMode": "Dialog",
+                                            "DialogWidth": "Large",
+                                            "Path": "jsonViews/installView.json",
+                                            "Parameters": [{
+                                                "Name": "AgentAddress",
+                                                "Value": {
+                                                    "Source": "AgentsDataSource",
+                                                    "Property": "$.Address"
+                                                }
+                                            }, {
+                                                "Name": "AgentPort",
+                                                "Value": {
+                                                    "Source": "AgentsDataSource",
+                                                    "Property": "$.Port"
+                                                }
+                                            }]
+                                        }
+                                    }
+                                }
+                            },
+                            "ContentTemplate": {
+                                "StackPanel": {
+                                    "ViewMode": "Base",
+                                    "Orientation": "Horizontal",
+                                    "Items": [{
+                                        "Icon": {
+                                            "Value": "plus"
+                                        }
+                                    }, {
+                                        "Label": {
+                                            "Value": "&nbsp;Install new app",
+                                            "EscapeHtml": false
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    }, {
+                        "Label": {
+                            "Value": "Tasks",
+                            "TextStyle": "Display1"
                         }
                     }, {
                         "DataGrid": {
