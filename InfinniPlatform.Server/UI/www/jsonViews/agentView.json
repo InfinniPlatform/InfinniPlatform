@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
+  "Text": "Add new agent",  
+  "DataSources": [{
+    "RestDataSource": {
+      "Name": "AgentsDataSource",
+      "SettingParams": {
+        "Method": "POST",
+        "Path": "/server/addAgent",
+        "Data": {}
+      }
+    }
+  }],
+  "Items": [{
+    "TextBox": {
+      "LabelText": "Address",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Address"
+      }
+    }
+  }, {
+    "TextBox": {
+      "LabelText": "Port",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Port"
+      }
+    }
+  }, {
+    "TextBox": {
+      "LabelText": "Name",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Name"
+      }
+    }
+  }, {
+    "Button": {
+      "Name": "AddButton",
+      "Text": "Add agent",
+      "Action": {
+        "SaveAction": {
+          "DestinationValue": {
+            "Source": "AgentsDataSource"
+          },
+          "CanClose": true
+        }
+      }
+    }
+  }]
+}

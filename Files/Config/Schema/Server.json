@@ -1,6 +1,5 @@
 {
-  "id":
-    "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Server.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Server.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Server",
   "description": "Настройки приложения InfinniPlatform.Server.",

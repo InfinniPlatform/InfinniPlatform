@@ -1,10 +1,20 @@
-﻿namespace InfinniPlatform.Server.Settings
+﻿using System;
+
+namespace InfinniPlatform.Server.Settings
 {
     /// <summary>
     /// Информация об агенте.
     /// </summary>
     public class AgentInfo
     {
+        public AgentInfo(string name, string address, int port, string token = null)
+        {
+            Name = name;
+            Address = address;
+            Port = port;
+            Token = Guid.NewGuid().ToString("N");
+        }
+
         /// <summary>
         /// Наименование агента.
         /// </summary>

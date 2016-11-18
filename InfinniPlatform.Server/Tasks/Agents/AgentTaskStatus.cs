@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Server.Tasks.Agents
+﻿using System;
+
+namespace InfinniPlatform.Server.Tasks.Agents
 {
     /// <summary>
     /// Информация о выполнении задачи.
@@ -29,6 +31,16 @@
         /// Лог выполнения задачи.
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Время начала выполнения задачи.
+        /// </summary>
+        public DateTime? StartTime { get; set; }
+
+        /// <summary>
+        /// Время окончания выполнения задачи.
+        /// </summary>
+        public DateTime? EndTime { get; set; }
 
         /// <summary>
         /// Форматированный лог выполнения задачи.

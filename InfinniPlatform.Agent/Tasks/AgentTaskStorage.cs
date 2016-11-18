@@ -25,7 +25,8 @@ namespace InfinniPlatform.Agent.Tasks
             var taskStatus = new TaskStatus
                              {
                                  TaskId = Guid.NewGuid().ToString("D"),
-                                 Description = description
+                                 Description = description,
+                                 StartTime = DateTime.Now
                              };
 
             Set(taskStatus.TaskId, taskStatus);
@@ -53,6 +54,7 @@ namespace InfinniPlatform.Agent.Tasks
         {
             var task = _dictionary[taskId];
             task.Completed = true;
+            task.EndTime = DateTime.Now;
         }
 
         public IDictionary<string, TaskStatus> GetStorageContent()

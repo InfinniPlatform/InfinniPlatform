@@ -1,6 +1,5 @@
 ﻿{
-  "$schema":
-    "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
   "agent": {
     "NodeDirectory": "C:\\Projects\\Infinni.Node\\Assemblies",
     "ServerAddress": "localhost:9901",

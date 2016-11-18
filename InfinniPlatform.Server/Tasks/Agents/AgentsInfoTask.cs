@@ -9,9 +9,9 @@ using InfinniPlatform.Server.Settings;
 
 namespace InfinniPlatform.Server.Tasks.Agents
 {
-    public class AgentsStatusTask : IServerTask
+    public class AgentsInfoTask : IServerTask
     {
-        public AgentsStatusTask(ServerSettings settings)
+        public AgentsInfoTask(ServerSettings settings)
         {
             _settings = settings;
         }

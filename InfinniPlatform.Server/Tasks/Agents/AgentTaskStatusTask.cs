@@ -9,12 +9,9 @@ using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.Tasks.Agents
 {
-    public class TaskStatusTask : IServerTask
+    public class AgentTaskStatusTask : IServerTask
     {
-        private const string CompletedStatus = "Completed";
-        private const string WorkingStatus = "Working";
-
-        public TaskStatusTask(IAgentHttpClient agentHttpClient)
+        public AgentTaskStatusTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
@@ -36,29 +33,14 @@ namespace InfinniPlatform.Server.Tasks.Agents
             {
                 var result = await _agentHttpClient.Get<ServiceResult<Dictionary<string, AgentTaskStatus>>>(CommandName, address, port);
 
-                return new ServiceResult<IEnumerable<DynamicWrapper>> { Success = true, Result = result.Result.Select(s => Convert(s.Value)) };
+                return new ServiceResult<IEnumerable<AgentTaskStatus>> { Success = true, Result = result.Result.Select(s => s.Value) };
             }
 
             var queryContent = new DynamicWrapper { { "TaskId", taskId } };
 
             var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port, queryContent);
 
-            return new ServiceResult<DynamicWrapper> { Success = true, Result = Convert(serviceResult.Result) };
-        }
-
-        private static DynamicWrapper Convert(AgentTaskStatus taskStatus)
-        {
-            return new DynamicWrapper
-                   {
-                       { "TaskId", taskStatus.TaskId },
-                       {
-                           "State", taskStatus.Completed
-                                        ? CompletedStatus
-                                        : WorkingStatus
-                       },
-                       { "Description", taskStatus.Description },
-                       { "Output", taskStatus.Output }
-                   };
+            return new ServiceResult<AgentTaskStatus> { Success = true, Result = serviceResult.Result };
         }
     }
 }

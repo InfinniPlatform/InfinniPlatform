@@ -45,6 +45,7 @@
     </Compile>
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
+    <Compile Include="Tasks\Agents\AddAgentTask.cs" />
     <Compile Include="Tasks\Agents\AgentTaskStatus.cs" />
     <Compile Include="Tasks\Files\AppLogFileTask.cs" />
     <Compile Include="Tasks\Files\NodeLogFileTask.cs" />
@@ -59,10 +60,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\Agents\TaskStatusTask.cs" />
+    <Compile Include="Tasks\Agents\AgentTaskStatusTask.cs" />
     <Compile Include="Settings\AgentInfo.cs" />
     <Compile Include="Settings\ServerSettings.cs" />
-    <Compile Include="Tasks\Agents\AgentsStatusTask.cs" />
+    <Compile Include="Tasks\Agents\AgentsInfoTask.cs" />
     <Compile Include="Tasks\Infinni.Node\AppsInfoTask.cs" />
     <Compile Include="Tasks\Heartbeat\LogHeartBeatTask.cs" />
     <Compile Include="Tasks\Environment\EnvironmentVarablesTask.cs" />

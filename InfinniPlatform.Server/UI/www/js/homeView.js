@@ -15,33 +15,16 @@ function Subscribe(context, args) {
     InfinniUI.global.notificationSubscription.subscribe("Install",
         function (context, args) {
             toastr.success(args.message);
-            RefreshDataSources(context);
+            RefreshAppsDataSource(context);
         },
         viewContext);
 
     InfinniUI.global.notificationSubscription.subscribe("Init",
         function (context, args) {
             toastr.success(args.message);
-            RefreshDataSources(context);
+            RefreshAppsDataSource(context);
         },
         viewContext);
-}
-
-/** Форматирует статус для отображения в заголовке TabPage * 
- * @param {any} context Контекст
- * @param {any} args Аргументы
- * @returns {string} Текст заголовка TabPage
- */
-function ConvertAgentInfoHeader(context, args) {
-    var replacements = [
-        args.value.Name,
-        args.value.Address,
-        args.value.Port
-    ];
-
-    var headerText = InfinniUI.StringUtils.format("{0} ({1}:{2})", replacements);
-
-    return headerText;
 }
 
 /** Обновляет содержимое источника данных о приложениях * 
@@ -50,34 +33,6 @@ function ConvertAgentInfoHeader(context, args) {
  */
 function RefreshAppsDataSource(context) {
     context.dataSources.AppsDataSource.updateItems();
-}
-
-/** Обновляет данные в гриде данных о приложениях * 
- * @param {any} context Контекст
- * @param {any} args Аргументы
- */
-function UpdateAppsGrid(context, args) {
-    var selectedItem = context.controls.AgentsTabPanel.getSelectedItem();
-
-    if (selectedItem !== null && selectedItem !== undefined) {
-        var selectedText = selectedItem.getText();
-        //В Tag должен содержаться объект, соответствующий выбранной странице в TabPanel
-        var associatedItem = args.getTag();
-        context.dataSources.AgentsDataSource.setSelectedItem(associatedItem);
-    }
-}
-
-/** Обновляет данные в гриде о задачах * 
- * @param {any} context Контекст
- * @param {any} args Аргументы
- */
-function UpdateTasksGrid(context, args) {
-    if (args.getText() === "Tasks") {
-        context.dataSources.TasksDataSource.updateItems();
-    }
-    if (args.getText() === "Apps") {
-        context.dataSources.AppsDataSource.updateItems();
-    }
 }
 
 /** Показывает/скрывает кнопки для управления задачами * 
@@ -90,15 +45,6 @@ function EnableTaskButtons(context, args) {
     } else {
         context.controls.OutputButton.setVisible(true);
     }
-}
-
-/** Обновляет статус выбранной задачи * 
- * @param {any} context Контекст
- * @param {any} args Аргументы
- */
-function RefreshDataSources(context, args) {
-    context.dataSources.TasksDataSource.updateItems();
-    context.dataSources.AppsDataSource.updateItems();
 }
 
 function OpenEventsLogInTab(context, args) {
@@ -132,7 +78,7 @@ function OpenPerfLogInTab(context, args) {
 }
 
 function OpenNodeLogInTab(context, args) {
-    var agent = context.dataSources.AgentsDataSource.getSelectedItem();    
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
 
     var replacements = [
         agent.Address,
@@ -175,7 +121,7 @@ function DownloadPerfLogFile(context, args) {
 }
 
 function DownloadNodeLogFile(context, args) {
-    var agent = context.dataSources.AgentsDataSource.getSelectedItem();    
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
 
     var replacements = [
         agent.Address,
@@ -185,4 +131,23 @@ function DownloadNodeLogFile(context, args) {
     var url = InfinniUI.StringUtils.format("http://localhost:9901/server/infinniNode.log?Address={0}&Port={1}", replacements);
 
     window.open(url);
+}
+
+function ConvertProcessInfoState(context, args) {
+    switch (args.value) {
+        case "Stopped":
+            return "stop-circle";
+        case "Running":
+            return "play-circle";
+        default:
+            break;
+    }
+}
+
+function ConvertTaskState(context, args) {
+    if (args.value) {
+        return 'Completed';
+    } else {
+        return 'Working';
+    }
 }
