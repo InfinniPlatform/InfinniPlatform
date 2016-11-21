@@ -1,6 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
-  "Text": "Add new agent",  
+  "OnLoaded": "{  }",
+  "Text": "Add new agent",
+  "Parameters": [{
+    "Name": "Agent"
+  }],
   "DataSources": [{
     "RestDataSource": {
       "Name": "AgentsDataSource",
@@ -13,6 +17,7 @@
   }],
   "Items": [{
     "TextBox": {
+      "Name": "AddressBox",
       "LabelText": "Address",
       "Value": {
         "Source": "AgentsDataSource",
@@ -21,6 +26,7 @@
     }
   }, {
     "TextBox": {
+      "Name": "PortBox",
       "LabelText": "Port",
       "Value": {
         "Source": "AgentsDataSource",
@@ -29,6 +35,7 @@
     }
   }, {
     "TextBox": {
+      "Name": "NameBox",
       "LabelText": "Name",
       "Value": {
         "Source": "AgentsDataSource",

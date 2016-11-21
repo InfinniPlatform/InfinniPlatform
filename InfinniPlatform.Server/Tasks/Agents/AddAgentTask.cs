@@ -47,4 +47,62 @@ namespace InfinniPlatform.Server.Tasks.Agents
             return new AgentInfo(name, address, port);
         }
     }
+
+
+    public class RemoveAgentTask : IServerTask
+    {
+        public RemoveAgentTask(ServerSettings settings,
+                               IJsonObjectSerializer serializer)
+        {
+            _settings = settings;
+            _serializer = serializer;
+        }
+
+        private readonly IJsonObjectSerializer _serializer;
+        private readonly ServerSettings _settings;
+
+        public string CommandName => "removeAgent";
+
+        public HttpMethod HttpMethod => HttpMethod.Post;
+
+        public Task<object> Run(IHttpRequest request)
+        {
+            var agentsInfoString = File.ReadAllText(_settings.AgentsInfoFilePath);
+
+            var agentsInfo = _serializer.Deserialize<List<AgentInfo>>(agentsInfoString);
+
+            //File.WriteAllBytes(_settings.AgentsInfoFilePath, _serializer.Serialize(agentsInfo));
+
+            return Task.FromResult<object>(new ServiceResult<object> { Success = true });
+        }
+    }
+
+
+    public class EditAgentTask : IServerTask
+    {
+        public EditAgentTask(ServerSettings settings,
+                             IJsonObjectSerializer serializer)
+        {
+            _settings = settings;
+            _serializer = serializer;
+        }
+
+        private readonly IJsonObjectSerializer _serializer;
+        private readonly ServerSettings _settings;
+
+        public string CommandName => "editAgent";
+
+        public HttpMethod HttpMethod => HttpMethod.Post;
+
+        public Task<object> Run(IHttpRequest request)
+        {
+            var agentsInfoString = File.ReadAllText(_settings.AgentsInfoFilePath);
+
+            var agentsInfo = _serializer.Deserialize<List<AgentInfo>>(agentsInfoString);
+
+            //File.WriteAllBytes(_settings.AgentsInfoFilePath, _serializer.Serialize(agentsInfo));
+
+            return Task.FromResult<object>(new ServiceResult<object> { Success = true });
+        }
+    }
 }

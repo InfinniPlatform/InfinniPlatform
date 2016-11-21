@@ -1,9 +1,9 @@
 ﻿{
-    "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniUI-schema/master/View/View.json",
     "OnLoaded": "{ Subscribe(context, args); }",
     "DataSources": [{
         "RestDataSource": {
             "Name": "AgentsDataSource",
+            "IdProperty": "Name",
             "GettingParams": {
                 "Method": "GET",
                 "Path": "/server/agents",
@@ -64,7 +64,7 @@
         "GridPanel": {
             "Items": [{
                 "Cell": {
-                    "ColumnSpan": 2,
+                    "ColumnSpan": 3,
                     "Items": [{
                         "ListBox": {
                             "ItemTemplate": {
@@ -83,6 +83,72 @@
                                             },
                                             "DisplayFormat": "&nbsp;{Name} ({Address}:{Port})",
                                             "EscapeHtml": false
+                                        }
+                                    }, {
+                                        "Button": {
+                                            "Visible": false,
+                                            "ToolTip": "Edit agent",
+                                            "Action": {
+                                                "EditAction": {
+                                                    "DestinationValue": {
+                                                        "Source": "AgentsDataSource",
+                                                        "Property": "#"
+                                                    },
+                                                    "SourceValue": {
+                                                        "Source": "AgentsDataSource"
+                                                    },
+                                                    "LinkView": {
+                                                        "AutoView": {
+                                                            "Path": "jsonViews/agentView.json",
+                                                            "OpenMode": "Dialog"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "ContentTemplate": {
+                                                "Icon": {
+                                                    "Value": "pencil"
+                                                }
+                                            }
+                                        }
+                                    }, {
+                                        "Button": {
+                                            "Visible": false,
+                                            "ToolTip": "Remove agent",
+                                            "Action": {
+                                                "ServerAction": {
+                                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
+                                                    "Path": "/server/removeAgent",
+                                                    "Method": "POST",
+                                                    "Data": {
+                                                        "Name": "<%name%>",
+                                                        "Address": "<%address%>",
+                                                        "Port": "<%port%>"
+                                                    },
+                                                    "Params": {
+                                                        "serverAddress": "localhost",
+                                                        "serverPort": "9901",
+                                                        "name": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "#.Name"
+                                                        },
+                                                        "address": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "#.Address"
+                                                        },
+                                                        "port": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "#.Port"
+                                                        }
+                                                    },
+                                                    "OnSuccess": "{ context.dataSources.AgentsDataSource.updateItems(); }"
+                                                }
+                                            },
+                                            "ContentTemplate": {
+                                                "Icon": {
+                                                    "Value": "trash"
+                                                }
+                                            }
                                         }
                                     }]
                                 }
@@ -134,7 +200,7 @@
                 }
             }, {
                 "Cell": {
-                    "ColumnSpan": 10,
+                    "ColumnSpan": 9,
                     "Items": [{
                         "StackPanel": {
                             "ViewMode": "FormGroup",
