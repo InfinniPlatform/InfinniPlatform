@@ -22,7 +22,7 @@ namespace InfinniPlatform.Core.Http.Services
     /// </summary>
     internal class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
-        private static readonly string RazorViewFileExtension = ".cshtml";
+        private const string RazorViewFileExtension = ".cshtml";
 
         public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
                                             StaticContentSettings staticContentSettings,
@@ -40,7 +40,7 @@ namespace InfinniPlatform.Core.Http.Services
 
         protected override NancyInternalConfiguration InternalConfiguration
         {
-            get { return NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = typeof(ResourceViewLocationProvider)); }
+            get { return NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = typeof(AggregateViewLocationProvider)); }
         }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
