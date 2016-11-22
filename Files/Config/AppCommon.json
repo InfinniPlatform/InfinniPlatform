@@ -64,7 +64,7 @@
       "/": "content/www"
     },
     "EmbeddedResourceMapping": {},
-    "RazorViewsPath": "content/RazorViews",
+    "RazorViewsPath": "content/www/RazorViews",
     "EmbeddedRazorViewsAssemblies": []
   },
   "authCookie": {

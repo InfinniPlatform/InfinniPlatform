@@ -15,6 +15,8 @@ using Nancy.Conventions;
 using Nancy.TinyIoc;
 using Nancy.ViewEngines;
 
+using SquishIt.Framework;
+
 namespace InfinniPlatform.Core.Http.Services
 {
     /// <summary>
@@ -50,6 +52,8 @@ namespace InfinniPlatform.Core.Http.Services
             // Соглашения обработки запросов должны устанавливаться явно, так как автоматический поиск соглашений в Mono/Linux не работает,
             // поскольку при поиске Nancy использует метод AppDomain.CurrentDomain.GetAssemblies(), который возвращает все сборки текущего
             // домена приложения, кроме той, который его вызывала. Ниже зарегистрированы соглашения, используемые Nancy по умолчанию.
+
+            StaticConfiguration.DisableErrorTraces = false;
 
             nancyContainer.RegisterMultiple<IConvention>(new[]
                                                          {
