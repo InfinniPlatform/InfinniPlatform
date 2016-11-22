@@ -123,6 +123,9 @@
   <data name="DestinationDirectoryCannotBeEmpty" xml:space="preserve">
     <value>DestinationDirectory in watcher settings cannot be empty.</value>
   </data>
+  <data name="Syncing" xml:space="preserve">
+    <value>Syncing...</value>
+  </data>
   <data name="SyncComplete" xml:space="preserve">
     <value>Sync complete.</value>
   </data>
@@ -151,12 +154,6 @@
     /* File extentions to synchronize */
     "WatchingFileExtensions": ["json", "js", "css", "html"]
 }</value>
-  </data>
-  <data name="CantCopyFile" xml:space="preserve">
-    <value>Cant't copy file.</value>
-  </data>
-  <data name="BusyFileCopyAttempt" xml:space="preserve">
-    <value>File is busy by another process. Trying again ({0}/{1}).</value>
   </data>
   <data name="CantCopyFile" xml:space="preserve">
     <value>Cant't copy file.</value>

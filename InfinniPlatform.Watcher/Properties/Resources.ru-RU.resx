@@ -130,7 +130,7 @@
     <value>{0}{1}{0}Файл {2} был {3}.</value>
   </data>
   <data name="SyncingContentDirectories" xml:space="preserve">
-    <value>Синхронизация содержимого папок {0} и {1}...</value>
+    <value>Содержимое папок{2}{0}{2}и{2}{1}{2}отличается.</value>
   </data>
   <data name="ChangesWillBeTransferred" xml:space="preserve">
     <value>Изменения в папке{0}{1}{0}будут перенесены в папку{0}{2}.</value>
@@ -158,10 +158,7 @@
   <data name="BusyFileCopyAttempt" xml:space="preserve">
     <value>Файл занят другим процессом. Повторная попытка ({0}/{1}).</value>
   </data>
-  <data name="CantCopyFile" xml:space="preserve">
-    <value>Невозможно скопировать файл.</value>
-  </data>
-  <data name="BusyFileCopyAttempt" xml:space="preserve">
-    <value>Файл занят другим процессом. Повторная попытка ({0}/{1}).</value>
+  <data name="Syncing" xml:space="preserve">
+    <value>Синхронизация...</value>
   </data>
 </root>
