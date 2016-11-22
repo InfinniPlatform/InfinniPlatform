@@ -1,7 +1,6 @@
 ﻿using InfinniPlatform.Core.Http.Hosting;
 using InfinniPlatform.Core.Http.Middlewares;
 using InfinniPlatform.Core.Http.Services;
-using InfinniPlatform.Core.Http.Services.Bundling;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http;
@@ -96,10 +95,6 @@ namespace InfinniPlatform.Core.Http.IoC
 
             builder.RegisterType<HttpServiceContextProvider>()
                    .As<IHttpServiceContextProvider>()
-                   .SingleInstance();
-
-            builder.RegisterType<AssetsInitializer>()
-                   .As<IAppEventHandler>()
                    .SingleInstance();
         }
 

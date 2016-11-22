@@ -2,11 +2,11 @@
 
 using SquishIt.Framework;
 
-namespace InfinniPlatform.Core.Http.Services.Bundling
+namespace InfinniPlatform.ContentManager.Bundling
 {
     public class AssetsInitializer : AppEventHandler
     {
-        public AssetsInitializer()
+        public AssetsInitializer() : base(1)
         {
             Bundle.ConfigureDefaults()
                   .UsePathTranslator(new NancyPathTranslator(new RootSourceProvider()));

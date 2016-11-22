@@ -5,7 +5,7 @@ using Nancy;
 
 using SquishIt.Framework;
 
-namespace InfinniPlatform.Core.Http.Services.Bundling
+namespace InfinniPlatform.ContentManager.Bundling
 {
     public class NancyPathTranslator : IPathTranslator
     {

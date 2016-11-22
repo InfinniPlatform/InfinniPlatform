@@ -131,9 +131,6 @@
     <Compile Include="Http\Middlewares\ErrorHandlingOwinMiddleware.cs" />
     <Compile Include="Http\Middlewares\OwinContextProvider.cs" />
     <Compile Include="Http\Services\AggregateViewLocationProvider.cs" />
-    <Compile Include="Http\Services\Bundling\NancyPathTranslator.cs" />
-    <Compile Include="Http\Services\Bundling\RootSourceProvider.cs" />
-    <Compile Include="Http\Services\Bundling\AssetsInitializer.cs" />
     <Compile Include="Http\StaticContentSettings.cs" />
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\LoggingContainerModule.cs" />
