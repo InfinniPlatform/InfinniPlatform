@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
+    <Compile Include="Hosting\ServerContentSource.cs" />
     <Compile Include="Tasks\Agents\AddAgentTask.cs" />
     <Compile Include="Tasks\Agents\AgentTaskStatus.cs" />
     <Compile Include="Tasks\Files\AppLogFileTask.cs" />
@@ -120,6 +121,10 @@
     <Compile Include="Tasks\IServerTask.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.ContentManager\InfinniPlatform.ContentManager.csproj">
+      <Project>{F79491C5-4AD2-4312-84EE-F4EB7F32ABE7}</Project>
+      <Name>InfinniPlatform.ContentManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
       <Name>InfinniPlatform.Sdk</Name>

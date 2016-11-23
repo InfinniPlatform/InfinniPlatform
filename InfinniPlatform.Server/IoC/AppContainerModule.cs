@@ -1,10 +1,11 @@
-﻿using InfinniPlatform.Sdk.Http.Services;
+﻿using InfinniPlatform.ContentManager.Bundling;
+using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.Server.Agent;
+using InfinniPlatform.Server.Hosting;
 using InfinniPlatform.Server.Settings;
 using InfinniPlatform.Server.Tasks;
-using InfinniPlatform.Server.Tasks.Agents;
 using InfinniPlatform.Server.Tasks.Infinni.Node;
 
 namespace InfinniPlatform.Server.IoC
@@ -22,6 +23,10 @@ namespace InfinniPlatform.Server.IoC
 
             builder.RegisterFactory(GetServerSettings)
                    .As<ServerSettings>()
+                   .SingleInstance();
+
+            builder.RegisterType<ServerContentSource>()
+                   .As<IContentSource>()
                    .SingleInstance();
 
             // Agents

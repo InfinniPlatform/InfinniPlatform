@@ -75,6 +75,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Bundling\AssetsInitializer.cs" />
+    <Compile Include="Bundling\IContentSource.cs" />
     <Compile Include="Bundling\NancyPathTranslator.cs" />
     <Compile Include="Bundling\RootSourceProvider.cs" />
     <Compile Include="IoC\ContentManagerContainerModule.cs" />
