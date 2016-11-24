@@ -40,7 +40,7 @@ namespace InfinniPlatform.ViewEngine
         {
             Conventions.ViewLocationConventions.Add((viewName, model, context) => $"{_viewEngineSettings.RazorViewsPath.ToWebPath()}/{viewName}");
         }
-
+        
         private void RegisterEmbeddedRazorViews()
         {
             foreach (var mapping in _viewEngineSettings.EmbeddedRazorViewsAssemblies)
