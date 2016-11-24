@@ -14,6 +14,7 @@ namespace InfinniPlatform.Watcher
             _sourceDirectory = string.Empty;
             _destinationDirectory = string.Empty;
             WatchingFileExtensions = new[] { ".json" };
+            SyncOnStart = false;
         }
 
         private string _destinationDirectory;
@@ -52,5 +53,10 @@ namespace InfinniPlatform.Watcher
         /// Расширения синхронизируемых файлов.
         /// </summary>
         public string[] WatchingFileExtensions { get; set; }
+
+        /// <summary>
+        /// Разрешить синхронизация содежимого папок при старте приложения.
+        /// </summary>
+        public bool SyncOnStart { get; set; }
     }
 }

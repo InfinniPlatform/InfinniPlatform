@@ -15,7 +15,7 @@ namespace InfinniPlatform.Watcher
     {
         private const int MaxCopyAttempts = 10;
 
-        public Watcher(WatcherSettings settings) : base(1)
+        public Watcher(WatcherSettings settings)
         {
             _settings = settings;
         }
@@ -58,21 +58,25 @@ namespace InfinniPlatform.Watcher
 
             if (destFiles.Length != sourceFiles.Length)
             {
-                ConsoleLog.Info(string.Format(Resources.SyncingContentDirectories, _settings.SourceDirectory, _settings.DestinationDirectory));
-
-                Directory.Delete(_settings.DestinationDirectory, true);
-
-                foreach (var dirPath in Directory.GetDirectories(_settings.SourceDirectory, "*", SearchOption.AllDirectories))
+                ConsoleLog.Warning(string.Format(Resources.SyncingContentDirectories, _settings.SourceDirectory, _settings.DestinationDirectory, Environment.NewLine));
+                if (_settings.SyncOnStart)
                 {
-                    Directory.CreateDirectory(dirPath.Replace(_settings.SourceDirectory, _settings.DestinationDirectory));
-                }
+                    ConsoleLog.Info(string.Format(Resources.Syncing));
 
-                foreach (var newPath in Directory.GetFiles(_settings.SourceDirectory, "*.*", SearchOption.AllDirectories))
-                {
-                    File.Copy(newPath, newPath.Replace(_settings.SourceDirectory, _settings.DestinationDirectory), true);
-                }
+                    Directory.Delete(_settings.DestinationDirectory, true);
 
-                ConsoleLog.Info(Resources.SyncComplete);
+                    foreach (var dirPath in Directory.GetDirectories(_settings.SourceDirectory, "*", SearchOption.AllDirectories))
+                    {
+                        Directory.CreateDirectory(dirPath.Replace(_settings.SourceDirectory, _settings.DestinationDirectory));
+                    }
+
+                    foreach (var newPath in Directory.GetFiles(_settings.SourceDirectory, "*.*", SearchOption.AllDirectories))
+                    {
+                        File.Copy(newPath, newPath.Replace(_settings.SourceDirectory, _settings.DestinationDirectory), true);
+                    }
+
+                    ConsoleLog.Info(Resources.SyncComplete);
+                }
             }
         }
 

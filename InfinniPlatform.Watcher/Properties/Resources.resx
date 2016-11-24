@@ -123,6 +123,9 @@
   <data name="DestinationDirectoryCannotBeEmpty" xml:space="preserve">
     <value>DestinationDirectory in watcher settings cannot be empty.</value>
   </data>
+  <data name="Syncing" xml:space="preserve">
+    <value>Syncing...</value>
+  </data>
   <data name="SyncComplete" xml:space="preserve">
     <value>Sync complete.</value>
   </data>
