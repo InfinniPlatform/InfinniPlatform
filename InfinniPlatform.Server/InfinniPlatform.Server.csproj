@@ -109,6 +109,7 @@
     <None Include="agents.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="UI\bower.json" />
     <None Include="UI\build.bat" />
     <None Include="UI\package.json" />
