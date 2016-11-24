@@ -118,12 +118,12 @@ namespace InfinniPlatform.Watcher.Properties {
         ///   Looks up a localized string similar to Add watcher setting to AppExtentions.json configuration file:
         ///&quot;watcher&quot;: {
         ///    /* Matadata source directory */
-        ///    &quot;SourceDirectory&quot;: &lt; path &gt; ,
+        ///    &quot;SourceDirectory&quot;: &quot;&lt;path&gt;&quot;,
         ///    /* Directory to synchronize */
-        ///    &quot;DestinationDirectory&quot;: &lt; path &gt; ,
+        ///    &quot;DestinationDirectory&quot;: &quot;&lt;path&gt;&quot;,
         ///    /* File extentions to synchronize */
-        ///    &quot;WatchingFileExtensions&quot;: [&quot;.json&quot;]
-        ///};.
+        ///    &quot;WatchingFileExtensions&quot;: [&quot;json&quot;, &quot;js&quot;, &quot;css&quot;, &quot;html&quot;]
+        ///}.
         /// </summary>
         internal static string SettingsExample {
             get {
@@ -159,7 +159,16 @@ namespace InfinniPlatform.Watcher.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Content of directories {0} and {1} are different. Syncing....
+        ///   Looks up a localized string similar to Syncing....
+        /// </summary>
+        internal static string Syncing {
+            get {
+                return ResourceManager.GetString("Syncing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content of directories{2}{0}{2}and{2}{1}{2}are different..
         /// </summary>
         internal static string SyncingContentDirectories {
             get {

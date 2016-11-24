@@ -123,6 +123,9 @@
   <data name="DestinationDirectoryCannotBeEmpty" xml:space="preserve">
     <value>DestinationDirectory in watcher settings cannot be empty.</value>
   </data>
+  <data name="Syncing" xml:space="preserve">
+    <value>Syncing...</value>
+  </data>
   <data name="SyncComplete" xml:space="preserve">
     <value>Sync complete.</value>
   </data>
@@ -130,7 +133,7 @@
     <value>{0}{1}{0}File {2} was {3}.</value>
   </data>
   <data name="SyncingContentDirectories" xml:space="preserve">
-    <value>Content of directories {0} and {1} are different. Syncing...</value>
+    <value>Content of directories{2}{0}{2}and{2}{1}{2}are different.</value>
   </data>
   <data name="ChangesWillBeTransferred" xml:space="preserve">
     <value>Changes within directory{0}{1}{0}will be transferred to directory{0}{2}.</value>
@@ -145,12 +148,12 @@
     <value>Add watcher setting to AppExtentions.json configuration file:
 "watcher": {
     /* Matadata source directory */
-    "SourceDirectory": &lt; path &gt; ,
+    "SourceDirectory": "&lt;path&gt;",
     /* Directory to synchronize */
-    "DestinationDirectory": &lt; path &gt; ,
+    "DestinationDirectory": "&lt;path&gt;",
     /* File extentions to synchronize */
-    "WatchingFileExtensions": [".json"]
-};</value>
+    "WatchingFileExtensions": ["json", "js", "css", "html"]
+}</value>
   </data>
   <data name="CantCopyFile" xml:space="preserve">
     <value>Cant't copy file.</value>
