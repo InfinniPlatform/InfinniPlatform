@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+
+using dotless.Core;
+using dotless.Core.configuration;
 
 using InfinniPlatform.Sdk.Hosting;
 
@@ -23,6 +27,7 @@ namespace InfinniPlatform.ContentManager.Bundling
 
             BundleCss();
             BundleJavaScript();
+            BundleLess();
         }
 
 
@@ -54,6 +59,31 @@ namespace InfinniPlatform.ContentManager.Bundling
             }
 
             bundle.AsNamed("script", "~/content/www/compiled/bundle.js");
+        }
+
+        private void BundleLess()
+        {
+            //var files = Directory.GetFiles(@"C:\Projects\InfinniPlatform\InfinniPlatform.Server\UI\bower_components\infinni-ui-v2\app\styles\main.less");
+
+            var dotlessConfiguration = new DotlessConfiguration
+                                       {
+                                           MinifyOutput = true,
+                                       };
+
+            var lessEngine = new EngineFactory(dotlessConfiguration).GetEngine();
+            lessEngine.CurrentDirectory = @"C:\Projects\InfinniPlatform\InfinniPlatform.Server\UI\bower_components\infinni-ui-v2\app\styles";
+
+            //            foreach (var f in files)
+            //            {
+            var lessText = File.ReadAllText(@"C:\Projects\InfinniPlatform\InfinniPlatform.Server\UI\bower_components\infinni-ui-v2\app\styles\main.less");
+
+            //var s = Less.Parse(lessText);
+
+            var transformToCss = lessEngine.TransformToCss(lessText, "try.less");
+
+            //            }
+
+            //Bundle.Css().AddString();
         }
     }
 }

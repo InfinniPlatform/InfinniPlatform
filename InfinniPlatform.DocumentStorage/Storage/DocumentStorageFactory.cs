@@ -78,6 +78,7 @@ namespace InfinniPlatform.DocumentStorage.Storage
 
             var storageProviderKey = $"{typeof(TDocument).FullName};{documentTypeName}";
 
+
             // Кэширование хранилища для каждого типа документа, чтобы не создавать его каждый раз при запросе
             if (!_genericStorages.TryGetValue(storageProviderKey, out storage))
             {

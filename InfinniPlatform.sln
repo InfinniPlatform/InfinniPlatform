@@ -133,8 +133,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{CB33EB
 		Files\Config\Schema\Watcher.json = Files\Config\Schema\Watcher.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ContentManager", "InfinniPlatform.ContentManager\InfinniPlatform.ContentManager.csproj", "{F79491C5-4AD2-4312-84EE-F4EB7F32ABE7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -281,10 +279,6 @@ Global
 		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F79491C5-4AD2-4312-84EE-F4EB7F32ABE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F79491C5-4AD2-4312-84EE-F4EB7F32ABE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F79491C5-4AD2-4312-84EE-F4EB7F32ABE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F79491C5-4AD2-4312-84EE-F4EB7F32ABE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
