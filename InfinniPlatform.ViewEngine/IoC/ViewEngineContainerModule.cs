@@ -1,9 +1,9 @@
 ﻿using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.Sdk.ViewEngine;
+using InfinniPlatform.ViewEngine.Nancy;
 using InfinniPlatform.ViewEngine.Settings;
-
-using Nancy.Bootstrapper;
 
 namespace InfinniPlatform.ViewEngine.IoC
 {
@@ -21,8 +21,8 @@ namespace InfinniPlatform.ViewEngine.IoC
                    .As<ViewEngineSettings>()
                    .SingleInstance();
 
-            builder.RegisterType<NancyBootstrapper>()
-                   .As<INancyBootstrapper>()
+            builder.RegisterType<ViewEngineBootstrapperExtension>()
+                   .As<IViewEngineBootstrapperExtension>()
                    .SingleInstance();
 
             builder.RegisterHttpServices(typeof(WatcherContainerModule).Assembly);

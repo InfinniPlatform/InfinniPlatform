@@ -244,6 +244,7 @@
     <Compile Include="Types\TimeJsonConverter.cs" />
     <Compile Include="Types\DateJsonConverter.cs" />
     <Compile Include="Types\Time.cs" />
+    <Compile Include="ViewEngine\IViewEngineBootstrapperExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

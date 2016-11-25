@@ -5,6 +5,7 @@ using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.Sdk.ViewEngine;
 
 namespace InfinniPlatform.Core.IoC
 {

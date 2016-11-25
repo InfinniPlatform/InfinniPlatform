@@ -8,6 +8,7 @@ using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.ViewEngine;
 
 using Nancy;
 using Nancy.Bootstrapper;
@@ -23,21 +24,29 @@ namespace InfinniPlatform.Core.Http.Services
     {
         public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
                                             StaticContentSettings staticContentSettings,
-                                            ILog log)
+                                            ILog log,
+                                            IViewEngineBootstrapperExtension viewEngineBootstrapperExtension = null)
         {
             _nancyModuleCatalog = nancyModuleCatalog;
             _staticContentSettings = staticContentSettings;
             _log = log;
+            _viewEngineBootstrapperExtension = viewEngineBootstrapperExtension;
         }
 
         private readonly ILog _log;
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
         private readonly StaticContentSettings _staticContentSettings;
+        private readonly dynamic _viewEngineBootstrapperExtension;
 
         protected override NancyInternalConfiguration InternalConfiguration
         {
-            get { return NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = typeof(AggregateViewLocationProvider)); }
+            get
+            {
+                return _viewEngineBootstrapperExtension != null
+                    ? NancyInternalConfiguration.Default :
+                    NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = _viewEngineBootstrapperExtension.ViewLocatorType);
+            }
         }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
@@ -87,6 +96,8 @@ namespace InfinniPlatform.Core.Http.Services
 
             RegisterStaticFiles();
             RegisterEmbeddedResource();
+
+            _viewEngineBootstrapperExtension?.ApplicationStartup(Conventions);
         }
 
         private static void CheckForIfModifiedSince(NancyContext context)
@@ -155,7 +166,5 @@ namespace InfinniPlatform.Core.Http.Services
                 Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
             }
         }
-
-
     }
 }

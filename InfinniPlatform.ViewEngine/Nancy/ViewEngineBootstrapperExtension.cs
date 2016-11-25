@@ -1,46 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.Http.Services;
-using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.ViewEngine;
 using InfinniPlatform.ViewEngine.Settings;
 
-using Nancy;
-using Nancy.Bootstrapper;
-using Nancy.TinyIoc;
+using Nancy.Conventions;
 using Nancy.ViewEngines;
 
-namespace InfinniPlatform.ViewEngine
+namespace InfinniPlatform.ViewEngine.Nancy
 {
-    public class NancyBootstrapper : HttpServiceNancyBootstrapper
+    public class ViewEngineBootstrapperExtension : IViewEngineBootstrapperExtension
     {
         private const string RazorViewFileExtension = ".cshtml";
 
-        public NancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
-                                 StaticContentSettings staticContentSettings,
-                                 ILog log,
-                                 ViewEngineSettings viewEngineSettings) : base(nancyModuleCatalog, staticContentSettings, log)
+        public ViewEngineBootstrapperExtension(ViewEngineSettings viewEngineSettings)
         {
             _viewEngineSettings = viewEngineSettings;
         }
 
         private readonly ViewEngineSettings _viewEngineSettings;
 
-        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
-        {
-            base.ApplicationStartup(container, pipelines);
+        public Type ViewLocatorType => typeof(AggregateViewLocationProvider);
 
-            RegisterRazorViews();
+        public void ViewLocatorsRegistration(dynamic conventions)
+        {
+            RegisterRazorViews((NancyConventions)conventions);
             RegisterEmbeddedRazorViews();
         }
 
-        private void RegisterRazorViews()
+        private void RegisterRazorViews(NancyConventions conventions)
         {
-            Conventions.ViewLocationConventions.Add((viewName, model, context) => $"{_viewEngineSettings.RazorViewsPath.ToWebPath()}/{viewName}");
+            conventions.ViewLocationConventions.Add((viewName, model, context) => $"{_viewEngineSettings.RazorViewsPath.ToWebPath()}/{viewName}");
         }
-        
+
         private void RegisterEmbeddedRazorViews()
         {
             foreach (var mapping in _viewEngineSettings.EmbeddedRazorViewsAssemblies)

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.ViewEngine
+﻿namespace InfinniPlatform.ViewEngine.Nancy
 {
     /// <summary>
     /// Содержит общие и часто используемые методы расширения.

@@ -102,7 +102,6 @@
     <Compile Include="Http\Middlewares\ErrorHandlingHttpMiddleware.cs" />
     <Compile Include="Http\Middlewares\ErrorHandlingOwinMiddleware.cs" />
     <Compile Include="Http\Middlewares\OwinContextProvider.cs" />
-    <Compile Include="Http\Services\AggregateViewLocationProvider.cs" />
     <Compile Include="Http\StaticContentSettings.cs" />
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\LoggingContainerModule.cs" />
