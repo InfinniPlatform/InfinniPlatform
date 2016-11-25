@@ -97,7 +97,10 @@ namespace InfinniPlatform.Core.Http.Services
             RegisterStaticFiles();
             RegisterEmbeddedResource();
 
-            _viewEngineBootstrapperExtension?.ApplicationStartup(Conventions);
+            if (_viewEngineBootstrapperExtension != null)
+            {
+                _viewEngineBootstrapperExtension.ApplicationStartup(Conventions);
+            }
         }
 
         private static void CheckForIfModifiedSince(NancyContext context)
