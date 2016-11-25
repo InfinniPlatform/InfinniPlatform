@@ -37,15 +37,16 @@ namespace InfinniPlatform.Core.Http.Services
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
         private readonly StaticContentSettings _staticContentSettings;
-        private readonly dynamic _viewEngineBootstrapperExtension;
+        private readonly IViewEngineBootstrapperExtension _viewEngineBootstrapperExtension;
 
         protected override NancyInternalConfiguration InternalConfiguration
         {
             get
             {
+                // регистрирует тип локатора Razor-представлений, если подключен пакет InfinniPlatform.ViewEngine.
                 return _viewEngineBootstrapperExtension != null
-                    ? NancyInternalConfiguration.Default :
-                    NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = _viewEngineBootstrapperExtension.ViewLocatorType);
+                    ? NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = _viewEngineBootstrapperExtension.ViewLocatorType)
+                    : NancyInternalConfiguration.Default;
             }
         }
 
@@ -97,10 +98,8 @@ namespace InfinniPlatform.Core.Http.Services
             RegisterStaticFiles();
             RegisterEmbeddedResource();
 
-            if (_viewEngineBootstrapperExtension != null)
-            {
-                _viewEngineBootstrapperExtension.ApplicationStartup(Conventions);
-            }
+            // Добавляет источники Razor-представлений, если подключен пакет InfinniPlatform.ViewEngine.
+            _viewEngineBootstrapperExtension?.RegisterViewLocators(Conventions);
         }
 
         private static void CheckForIfModifiedSince(NancyContext context)

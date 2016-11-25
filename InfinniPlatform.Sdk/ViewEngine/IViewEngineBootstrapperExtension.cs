@@ -16,6 +16,6 @@ namespace InfinniPlatform.Sdk.ViewEngine
         /// Регистрация источников Razor-представлений.
         /// </summary>
         /// <param name="nancyConventions">Соглашения Nancy.</param>
-        void ViewLocatorsRegistration(dynamic nancyConventions);
+        void RegisterViewLocators(dynamic nancyConventions);
     }
 }

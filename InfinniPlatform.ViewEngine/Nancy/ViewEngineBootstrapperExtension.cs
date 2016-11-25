@@ -24,7 +24,7 @@ namespace InfinniPlatform.ViewEngine.Nancy
 
         public Type ViewLocatorType => typeof(AggregateViewLocationProvider);
 
-        public void ViewLocatorsRegistration(dynamic conventions)
+        public void RegisterViewLocators(dynamic conventions)
         {
             RegisterRazorViews((NancyConventions)conventions);
             RegisterEmbeddedRazorViews();
