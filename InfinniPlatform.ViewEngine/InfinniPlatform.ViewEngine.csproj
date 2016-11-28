@@ -67,7 +67,6 @@
     </Compile>
     <Compile Include="IoC\ViewEngineContainerModule.cs" />
     <Compile Include="Nancy\AggregateViewLocationProvider.cs" />
-    <Compile Include="RazorViews\RazorViewsHttpService.cs" />
     <Compile Include="Settings\ViewEngineSettings.cs" />
   </ItemGroup>
   <ItemGroup>
