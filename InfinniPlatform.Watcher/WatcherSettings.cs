@@ -14,7 +14,7 @@ namespace InfinniPlatform.Watcher
             _sourceDirectory = string.Empty;
             _destinationDirectory = string.Empty;
             WatchingFileExtensions = new[] { ".json" };
-            SyncOnStart = true;
+            SyncOnStart = false;
         }
 
         private string _destinationDirectory;

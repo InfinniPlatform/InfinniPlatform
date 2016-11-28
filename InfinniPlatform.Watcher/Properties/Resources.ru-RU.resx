@@ -161,4 +161,7 @@
   <data name="Syncing" xml:space="preserve">
     <value>Синхронизация...</value>
   </data>
+  <data name="CantCopyFile" xml:space="preserve">
+    <value>Невозможно скопировать файл.</value>
+  </data>
 </root>
