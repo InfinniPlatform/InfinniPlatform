@@ -15,7 +15,6 @@ using Nancy.Conventions;
 using Nancy.TinyIoc;
 using Nancy.ViewEngines;
 
-using SquishIt.Framework;
 
 namespace InfinniPlatform.Core.Http.Services
 {
