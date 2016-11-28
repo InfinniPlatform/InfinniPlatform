@@ -4,7 +4,7 @@ using System.Linq;
 using Nancy;
 using Nancy.ViewEngines;
 
-namespace InfinniPlatform.ViewEngine.Nancy
+namespace InfinniPlatform.Plugins.ViewEngine.Nancy
 {
     /// <summary>
     /// Источник Razor-представлений.

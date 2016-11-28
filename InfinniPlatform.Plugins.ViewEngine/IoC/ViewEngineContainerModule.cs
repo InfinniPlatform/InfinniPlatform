@@ -2,10 +2,10 @@
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.Sdk.ViewEngine;
-using InfinniPlatform.ViewEngine.Nancy;
-using InfinniPlatform.ViewEngine.Settings;
+using InfinniPlatform.Plugins.ViewEngine.Nancy;
+using InfinniPlatform.Plugins.ViewEngine.Settings;
 
-namespace InfinniPlatform.ViewEngine.IoC
+namespace InfinniPlatform.Plugins.ViewEngine.IoC
 {
     /// <summary>
     /// Регистрация компонентов в IoC-контейнере.

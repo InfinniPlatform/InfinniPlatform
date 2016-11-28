@@ -7,8 +7,8 @@
     <ProjectGuid>{55F8F37E-5510-4101-9E3A-2F62E958951D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InfinniPlatform.ViewEngine</RootNamespace>
-    <AssemblyName>InfinniPlatform.ViewEngine</AssemblyName>
+    <RootNamespace>InfinniPlatform.Plugins.ViewEngine</RootNamespace>
+    <AssemblyName>InfinniPlatform.Plugins.ViewEngine</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

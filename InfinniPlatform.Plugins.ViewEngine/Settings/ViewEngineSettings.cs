@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.ViewEngine.Settings
+﻿namespace InfinniPlatform.Plugins.ViewEngine.Settings
 {
     /// <summary>
     /// Настройки хостинга статических файлов.

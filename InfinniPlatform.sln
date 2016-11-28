@@ -133,9 +133,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{CB33EB
 		Files\Config\Schema\Watcher.json = Files\Config\Schema\Watcher.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ViewEngine", "InfinniPlatform.ViewEngine\InfinniPlatform.ViewEngine.csproj", "{55F8F37E-5510-4101-9E3A-2F62E958951D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Plugins.ViewEngine", "InfinniPlatform.Plugins.ViewEngine\InfinniPlatform.Plugins.ViewEngine.csproj", "{55F8F37E-5510-4101-9E3A-2F62E958951D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.ViewEngine.Tests", "InfinniPlatform.ViewEngine.Tests\InfinniPlatform.ViewEngine.Tests.csproj", "{B658B824-8B93-422D-A641-486AF646FE86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Plugins.ViewEngine.Tests", "InfinniPlatform.Plugins.ViewEngine.Tests\InfinniPlatform.Plugins.ViewEngine.Tests.csproj", "{B658B824-8B93-422D-A641-486AF646FE86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

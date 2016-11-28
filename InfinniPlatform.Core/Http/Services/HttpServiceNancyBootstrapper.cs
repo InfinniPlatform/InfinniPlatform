@@ -43,7 +43,7 @@ namespace InfinniPlatform.Core.Http.Services
         {
             get
             {
-                // регистрирует тип локатора Razor-представлений, если подключен пакет InfinniPlatform.ViewEngine.
+                // регистрирует тип локатора Razor-представлений, если подключен пакет InfinniPlatform.Plugins.ViewEngine.
                 return _viewEngineBootstrapperExtension != null
                     ? NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = _viewEngineBootstrapperExtension.ViewLocatorType)
                     : NancyInternalConfiguration.Default;
@@ -98,7 +98,7 @@ namespace InfinniPlatform.Core.Http.Services
             RegisterStaticFiles();
             RegisterEmbeddedResource();
 
-            // Добавляет источники Razor-представлений, если подключен пакет InfinniPlatform.ViewEngine.
+            // Добавляет источники Razor-представлений, если подключен пакет InfinniPlatform.Plugins.ViewEngine.
             _viewEngineBootstrapperExtension?.RegisterViewLocators(Conventions);
         }
 

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Reflection;
 
 using InfinniPlatform.Sdk.ViewEngine;
-using InfinniPlatform.ViewEngine.Settings;
+using InfinniPlatform.Plugins.ViewEngine.Settings;
 
 using Nancy.Conventions;
 using Nancy.ViewEngines;
 
-namespace InfinniPlatform.ViewEngine.Nancy
+namespace InfinniPlatform.Plugins.ViewEngine.Nancy
 {
     public class ViewEngineBootstrapperExtension : IViewEngineBootstrapperExtension
     {
