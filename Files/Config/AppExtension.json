@@ -17,7 +17,8 @@
       ".js",
       ".css",
       ".html"
-    ]
+    ],
+    "SyncOnStart":  false
   },
   "heartbeat": {
     "Period": 60,

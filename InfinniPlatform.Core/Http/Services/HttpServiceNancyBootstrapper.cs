@@ -8,40 +8,46 @@ using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Sdk.ViewEngine;
 
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Conventions;
 using Nancy.TinyIoc;
-using Nancy.ViewEngines;
-
 
 namespace InfinniPlatform.Core.Http.Services
 {
     /// <summary>
     /// Настройки Nancy для <see cref="IHttpService" />
     /// </summary>
-    internal class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
+    public class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
-        private const string RazorViewFileExtension = ".cshtml";
-
         public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
                                             StaticContentSettings staticContentSettings,
-                                            ILog log)
+                                            ILog log,
+                                            IViewEngineBootstrapperExtension viewEngineBootstrapperExtension = null)
         {
             _nancyModuleCatalog = nancyModuleCatalog;
             _staticContentSettings = staticContentSettings;
             _log = log;
+            _viewEngineBootstrapperExtension = viewEngineBootstrapperExtension;
         }
 
         private readonly ILog _log;
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
         private readonly StaticContentSettings _staticContentSettings;
+        private readonly IViewEngineBootstrapperExtension _viewEngineBootstrapperExtension;
 
         protected override NancyInternalConfiguration InternalConfiguration
         {
-            get { return NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = typeof(AggregateViewLocationProvider)); }
+            get
+            {
+                // регистрирует тип локатора Razor-представлений, если подключен пакет InfinniPlatform.Plugins.ViewEngine.
+                return _viewEngineBootstrapperExtension != null
+                    ? NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = _viewEngineBootstrapperExtension.ViewLocatorType)
+                    : NancyInternalConfiguration.Default;
+            }
         }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
@@ -91,8 +97,9 @@ namespace InfinniPlatform.Core.Http.Services
 
             RegisterStaticFiles();
             RegisterEmbeddedResource();
-            RegisterRazorViews();
-            RegisterEmbeddedRazorViews();
+
+            // Добавляет источники Razor-представлений, если подключен пакет InfinniPlatform.Plugins.ViewEngine.
+            _viewEngineBootstrapperExtension?.RegisterViewLocators(Conventions);
         }
 
         private static void CheckForIfModifiedSince(NancyContext context)
@@ -159,38 +166,6 @@ namespace InfinniPlatform.Core.Http.Services
                 var assembly = Assembly.Load(mapping.Value);
 
                 Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
-            }
-        }
-
-        private void RegisterRazorViews()
-        {
-            Conventions.ViewLocationConventions.Add((viewName, model, context) => $"{_staticContentSettings.RazorViewsPath.ToWebPath()}/{viewName}");
-        }
-
-        private void RegisterEmbeddedRazorViews()
-        {
-            foreach (var mapping in _staticContentSettings.EmbeddedRazorViewsAssemblies)
-            {
-                var razorViews = Assembly.Load(mapping)
-                                         .GetManifestResourceNames()
-                                         .Where(s => s.EndsWith(RazorViewFileExtension));
-
-                var rootNamespaces = new List<string>();
-
-                foreach (var razorView in razorViews)
-                {
-                    var pathWithoutExtention = razorView.Replace(RazorViewFileExtension, string.Empty);
-
-                    // Assuming views names does not contains '.'
-                    var fileName = pathWithoutExtention.Split('.').Last();
-
-                    rootNamespaces.Add(pathWithoutExtention.Replace($".{fileName}", string.Empty));
-                }
-
-                foreach (var path in rootNamespaces)
-                {
-                    ResourceViewLocationProvider.RootNamespaces.Add(Assembly.Load(mapping), path);
-                }
             }
         }
     }

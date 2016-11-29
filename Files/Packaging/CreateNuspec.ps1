@@ -66,7 +66,15 @@
             $projectDirectory = Project-GetDirectory $projectFile
             $projectVersion = $projectVersions[$projectFile]
             $isNotExtension = ($extensions -notcontains $projectName)
+            $isPlugin = ($projectName -like 'InfinniPlatform.Plugins.*')
 
+            if ($isPlugin) {
+                $targetFolder = "plugin"
+            }
+            else {
+                $targetFolder = "lib"
+            }
+            
             Write-Host "Create $projectName.$projectVersion.nuspec"
 
             # Adds nuspec-header
@@ -84,15 +92,6 @@
                 "        <copyright>Infinnity Solutions $(Get-Date -Format yyyy)</copyright>`r`n" + `
                 "        <dependencies>`r`n"
 
-            # Adds external dependencies from packages.config
-
-            $projectPackages = Project-GetPackages $projectFile
-
-            foreach ($package in $projectPackages)
-            {
-                $projectNuspec = $projectNuspec + "            <dependency id=""$($package.id)"" version=""[$($package.version)]"" />`r`n"
-            }
-
             # Adds internal dependencies from project file
 
             [xml] $projectXml = Get-Content $projectFile
@@ -108,9 +107,21 @@
                 $projectNuspec = $projectNuspec + "            <dependency id=""$projectReferenceName"" version=""[$projectReferenceVersion]"" />`r`n"
 
                 $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$framework\$projectReferenceName.dll"
-            }
+            }  
 
-            $projectRefs += Project-GetExternalReferences $projectXml
+            if (-Not $isPlugin) 
+            {
+                # Adds external dependencies from packages.config
+                
+                $projectPackages = Project-GetPackages $projectFile
+
+                foreach ($package in $projectPackages)
+                {
+                    $projectNuspec = $projectNuspec + "            <dependency id=""$($package.id)"" version=""[$($package.version)]"" />`r`n"
+                }
+
+                $projectRefs += Project-GetExternalReferences $projectXml
+            }
 
             # Ends the dependencies part
 
@@ -119,72 +130,86 @@
                 "    </metadata>`r`n" + `
                 "    <files>`r`n"
 
-            $projectLibPath = "$projectName.$projectVersion\lib\$framework";
+            $projectTargetPath = "$projectName.$projectVersion\$targetFolder\$framework";
+
+            if ($isPlugin) 
+            {
+                # Adds external dependencies from packages.config
+
+                $projectPackagesRefs = Project-GetExternalReferences $projectXml                
+
+                foreach ($package in $projectPackagesRefs)
+                {
+                    $pluginAssembly = $package.substring($package.LastIndexOf('\') + 1)
+                    $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$pluginAssembly"" />`r`n"
+                    $solutionRefs += "$projectTargetPath\$pluginAssembly"
+                }                
+            }
 
             # Adds project assembly
 
             $projectAssemblyName = Project-GetAssemblyName $projectXml
             $projectIsLibrary = Project-IsLibrary $projectXml
             $projectAssembly = $projectAssemblyName + $(if ($projectIsLibrary) { '.dll' } else { '.exe' })
-            $projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssembly"" />`r`n"
-            if ($isNotExtension) { $solutionRefs += "$projectLibPath\$projectAssembly" }
+            $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectAssembly"" />`r`n"
+            if ($isNotExtension) { $solutionRefs += "$projectTargetPath\$projectAssembly" }
 
             # Adds resources for ru-RU
 
             if (Project-HasEmbeddedResource $projectXml 'ru-RU')
             {
-                $projectNuspec = $projectNuspec + "        <file target=""lib\$framework\ru-RU"" src=""ru-RU\$projectAssemblyName.resources.dll"" />`r`n"
-                if ($isNotExtension) { $solutionRefs += "$projectLibPath\ru-RU\$projectAssemblyName.resources.dll" }
+                $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework\ru-RU"" src=""ru-RU\$projectAssemblyName.resources.dll"" />`r`n"
+                if ($isNotExtension) { $solutionRefs += "$projectTargetPath\ru-RU\$projectAssemblyName.resources.dll" }
             }
 
             # Adds resources for en-US
 
             if (Project-HasEmbeddedResource $projectXml 'en-US')
             {
-                $projectNuspec = $projectNuspec + "        <file target=""lib\$framework\en-US"" src=""en-US\$projectAssemblyName.resources.dll"" />`r`n"
-                if ($isNotExtension) { $solutionRefs += "$projectLibPath\en-US\$projectAssemblyName.resources.dll" }
+                $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework\en-US"" src=""en-US\$projectAssemblyName.resources.dll"" />`r`n"
+                if ($isNotExtension) { $solutionRefs += "$projectTargetPath\en-US\$projectAssemblyName.resources.dll" }
             }
 
             # Adds symbol file
 
-            $projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.pdb"" />`r`n"
-            if ($isNotExtension) { $solutionRefs += "$projectLibPath\$projectAssemblyName.pdb" }
+            $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectAssemblyName.pdb"" />`r`n"
+            if ($isNotExtension) { $solutionRefs += "$projectTargetPath\$projectAssemblyName.pdb" }
 
             # Adds XML-documentation
 
             if (Project-HasDocumentationFile $projectXml)
             {
-                $projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssemblyName.xml"" />`r`n"
+                $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectAssemblyName.xml"" />`r`n"
             }
 
             # Adds app config-file
 
             if (Project-HasFile $projectXml 'App.config')
             {
-                $projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""$projectAssembly.config"" />`r`n"
-                if ($isNotExtension) { $solutionRefs += "$projectLibPath\$projectAssembly.config" }
+                $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectAssembly.config"" />`r`n"
+                if ($isNotExtension) { $solutionRefs += "$projectTargetPath\$projectAssembly.config" }
             }
 
             # Adds log config-file
 
             if (Project-HasFile $projectXml 'AppLog.config')
             {
-                $projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""AppLog.config"" />`r`n"
-                if ($isNotExtension) { $solutionRefs += "$projectLibPath\AppLog.config" }
+                $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""AppLog.config"" />`r`n"
+                if ($isNotExtension) { $solutionRefs += "$projectTargetPath\AppLog.config" }
             }
 
             # Adds platform config-file
 
             if (Project-HasFile $projectXml 'AppCommon.json')
             {
-                $projectNuspec = $projectNuspec + "        <file target=""lib\$framework"" src=""AppCommon.json"" />`r`n"
-                if ($isNotExtension) { $solutionRefs += "$projectLibPath\AppCommon.json" }
+                $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""AppCommon.json"" />`r`n"
+                if ($isNotExtension) { $solutionRefs += "$projectTargetPath\AppCommon.json" }
             }
 
             # Ends the files part
 
             $projectNuspec = $projectNuspec + `
-                "        <file target=""lib\$framework\$projectName.references"" src=""$projectName.references"" />`r`n" + `
+                "        <file target=""$targetFolder\$framework\$projectName.references"" src=""$projectName.references"" />`r`n" + `
                 "    </files>`r`n" + `
                 "</package>"
 

@@ -4,8 +4,11 @@ using System.Linq;
 using Nancy;
 using Nancy.ViewEngines;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Plugins.ViewEngine.Nancy
 {
+    /// <summary>
+    /// Источник Razor-представлений.
+    /// </summary>
     public class AggregateViewLocationProvider : IViewLocationProvider
     {
         //TODO: Should it be customizable?

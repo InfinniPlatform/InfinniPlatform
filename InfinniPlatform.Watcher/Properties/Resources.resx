@@ -161,10 +161,4 @@
   <data name="BusyFileCopyAttempt" xml:space="preserve">
     <value>File is busy by another process. Trying again ({0}/{1}).</value>
   </data>
-  <data name="CantCopyFile" xml:space="preserve">
-    <value>Cant't copy file.</value>
-  </data>
-  <data name="BusyFileCopyAttempt" xml:space="preserve">
-    <value>File is busy by another process. Trying again ({0}/{1}).</value>
-  </data>
 </root>

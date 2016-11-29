@@ -13,7 +13,6 @@ namespace InfinniPlatform.Core.Http
         {
             StaticFilesMapping = new Dictionary<string, string>();
             EmbeddedResourceMapping = new Dictionary<string, string>();
-            RazorViewsPath = string.Empty;
         }
 
         /// <summary>
@@ -25,15 +24,5 @@ namespace InfinniPlatform.Core.Http
         /// Соответствие виртуальных путей и сборок с файлами ресурсов.
         /// </summary>
         public Dictionary<string, string> EmbeddedResourceMapping { get; set; }
-
-        /// <summary>
-        /// Путь до файлов Razor-представлений (относительно рабочей папки).
-        /// </summary>
-        public string RazorViewsPath { get; set; }
-
-        /// <summary>
-        /// Путь до файлов Razor-представлений (относительно рабочей папки).
-        /// </summary>
-        public string[] EmbeddedRazorViewsAssemblies { get; set; }
     }
 }

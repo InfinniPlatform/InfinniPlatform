@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 				});
 			};
 for(var key in sourceForTasks) {
-	help += ('- gulp ' + key + '\n');
+	help += '- gulp ' + key + '\n';
 	lazyRequireTask(key, sourceForTasks[key].taskPath, sourceForTasks[key]);
 }
 
