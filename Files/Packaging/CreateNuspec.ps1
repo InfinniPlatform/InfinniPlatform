@@ -115,23 +115,6 @@
                     $projectNuspec = $projectNuspec + "            <dependency id=""$($package.id)"" version=""[$($package.version)]"" />`r`n"
                 }
 
-                # Adds internal dependencies from project file
-
-                [xml] $projectXml = Get-Content $projectFile
-
-                $projectReferences = Project-InternalReferences $projectXml
-
-                foreach ($projectReference in $projectReferences)
-                {
-                    $projectReferenceFile = (Get-Item (Join-Path $projectDirectory $projectReference)).FullName
-                    $projectReferenceName = Project-GetName $projectReferenceFile
-                    $projectReferenceVersion = $projectVersions[$projectReferenceFile]
-
-                    $projectNuspec = $projectNuspec + "            <dependency id=""$projectReferenceName"" version=""[$projectReferenceVersion]"" />`r`n"
-
-                    $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$framework\$projectReferenceName.dll"
-                }
-
                 $projectRefs += Project-GetExternalReferences $projectXml
             }
 
