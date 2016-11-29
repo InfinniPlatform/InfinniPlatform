@@ -37,7 +37,6 @@
             'InfinniPlatform.PrintView',
             'InfinniPlatform.Server',
             'InfinniPlatform.Scheduler',
-            'InfinniPlatform.Plugins.ViewEngine',
             'InfinniPlatform.Watcher'
         )
     )
@@ -103,11 +102,11 @@
                 $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$framework\$projectReferenceName.dll"
             }  
 
-            if (-Not $isPlugin) {
-                $targetFolder = "lib"
-
+            if (-Not $isPlugin) 
+            {
                 # Adds external dependencies from packages.config
 
+                $targetFolder = "lib"
                 $projectPackages = Project-GetPackages $projectFile
 
                 foreach ($package in $projectPackages)
@@ -118,27 +117,28 @@
                 $projectRefs += Project-GetExternalReferences $projectXml
             }
 
-                # Ends the dependencies part
+            # Ends the dependencies part
 
-                $projectNuspec = $projectNuspec + `
-                    "        </dependencies>`r`n" + `
-                    "    </metadata>`r`n" + `
-                    "    <files>`r`n"
+            $projectNuspec = $projectNuspec + `
+                "        </dependencies>`r`n" + `
+                "    </metadata>`r`n" + `
+                "    <files>`r`n"
 
-                $projectTargetPath = "$projectName.$projectVersion\$targetFolder\$framework";
+            $projectTargetPath = "$projectName.$projectVersion\$targetFolder\$framework";
 
-                            if ($isPlugin) {
-                $targetFolder = "tools"
-
+            if ($isPlugin) 
+            {
                 # Adds external dependencies from packages.config
 
+                $targetFolder = "plugin"
                 $projectPackagesRefs = Project-GetExternalReferences $projectXml                
 
                 foreach ($package in $projectPackagesRefs)
                 {
-                    $dll = $package.substring($package.LastIndexOf('\') + 1)
-                    $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$dll"" />`r`n"                    
-                }
+                    $pluginAssembly = $package.substring($package.LastIndexOf('\') + 1)
+                    $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$pluginAssembly"" />`r`n"
+                    $solutionRefs += "$projectTargetPath\$pluginAssembly"
+                }                
             }
 
             # Adds project assembly
