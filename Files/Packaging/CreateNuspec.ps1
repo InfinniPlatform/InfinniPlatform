@@ -68,6 +68,13 @@
             $isNotExtension = ($extensions -notcontains $projectName)
             $isPlugin = ($projectName -like 'InfinniPlatform.Plugins.*')
 
+            if ($isPlugin) {
+                $targetFolder = "plugin"
+            }
+            else {
+                $targetFolder = "lib"
+            }
+            
             Write-Host "Create $projectName.$projectVersion.nuspec"
 
             # Adds nuspec-header
@@ -105,8 +112,7 @@
             if (-Not $isPlugin) 
             {
                 # Adds external dependencies from packages.config
-
-                $targetFolder = "lib"
+                
                 $projectPackages = Project-GetPackages $projectFile
 
                 foreach ($package in $projectPackages)
@@ -130,7 +136,6 @@
             {
                 # Adds external dependencies from packages.config
 
-                $targetFolder = "plugin"
                 $projectPackagesRefs = Project-GetExternalReferences $projectXml                
 
                 foreach ($package in $projectPackagesRefs)
