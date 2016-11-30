@@ -113,8 +113,6 @@ namespace InfinniPlatform.Sdk.Serialization
                     using (var writer = CreateWriter(stream, false))
                     {
                         _serializer.Serialize(writer, value);
-
-                        writer.Flush();
                     }
 
                     return stream.ToArray();
@@ -136,8 +134,6 @@ namespace InfinniPlatform.Sdk.Serialization
                 using (var writer = CreateWriter(data, true))
                 {
                     _serializer.Serialize(writer, value);
-
-                    writer.Flush();
                 }
             }
         }
@@ -288,8 +284,6 @@ namespace InfinniPlatform.Sdk.Serialization
                 {
                     _serializer.Serialize(writer, value);
 
-                    writer.Flush();
-
                     return writer.ToString();
                 }
             }
@@ -314,8 +308,6 @@ namespace InfinniPlatform.Sdk.Serialization
                     using (var writer = CreateWriter(stream, true))
                     {
                         _serializer.Serialize(writer, value);
-
-                        writer.Flush();
                     }
 
                     stream.Position = 0;
