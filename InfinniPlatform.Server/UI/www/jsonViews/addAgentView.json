@@ -1,4 +1,4 @@
-{  
+{
   "Text": "Add new agent",
   "Parameters": [{
     "Name": "Agent"
@@ -64,7 +64,8 @@
               "Source": "AgentsDataSource",
               "Property": "$.Name"
             }
-          }
+          },
+          "OnSuccess": "{ context.view.setDialogResult(InfinniUI.DialogResult.accepted); context.view.close(); }"
         }
       }
     }

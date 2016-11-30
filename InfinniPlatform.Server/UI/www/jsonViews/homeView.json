@@ -2,8 +2,7 @@
     "OnLoaded": "{ Subscribe(context, args); }",
     "DataSources": [{
         "RestDataSource": {
-            "Name": "AgentsDataSource",
-            "IdProperty": "Name",
+            "Name": "AgentsDataSource",            
             "GettingParams": {
                 "Method": "GET",
                 "Path": "/server/agents",
@@ -32,8 +31,7 @@
                     }
                 }
             },
-            "UpdatingItemsConverter": "{ return args.value.Result.FormattedOutput; }",
-            "OnItemsUpdated": "{ context.dataSources.TasksDataSource.updateItems(); }"
+            "UpdatingItemsConverter": "{ return args.value.Result.FormattedOutput; }"
         }
     }, {
         "RestDataSource": {
@@ -91,7 +89,7 @@
                                                 "EditAction": {
                                                     "DestinationValue": {
                                                         "Source": "AgentsDataSource",
-                                                        "Property": "#"
+                                                        "Property": "$"
                                                     },
                                                     "SourceValue": {
                                                         "Source": "AgentsDataSource"
@@ -147,6 +145,7 @@
                                                     "OnSuccess": "{ context.dataSources.AgentsDataSource.updateItems(); }"
                                                 }
                                             },
+                                            "OnClick": "{debugger;}",
                                             "ContentTemplate": {
                                                 "Icon": {
                                                     "Value": "trash"
@@ -183,19 +182,8 @@
                                 }
                             },
                             "ContentTemplate": {
-                                "StackPanel": {
-                                    "ViewMode": "Base",
-                                    "Orientation": "Horizontal",
-                                    "Items": [{
-                                        "Icon": {
-                                            "Value": "plus"
-                                        }
-                                    }, {
-                                        "Label": {
-                                            "Value": "&nbsp;New agent",
-                                            "EscapeHtml": false
-                                        }
-                                    }]
+                                "Icon": {
+                                    "Value": "plus"
                                 }
                             }
                         }
