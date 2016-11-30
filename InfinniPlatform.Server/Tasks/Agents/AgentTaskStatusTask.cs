@@ -9,6 +9,9 @@ using InfinniPlatform.Server.Agent;
 
 namespace InfinniPlatform.Server.Tasks.Agents
 {
+    /// <summary>
+    /// Возвращает статус задачи, выполняемой на агенте.
+    /// </summary>
     public class AgentTaskStatusTask : IServerTask
     {
         public AgentTaskStatusTask(IAgentHttpClient agentHttpClient)

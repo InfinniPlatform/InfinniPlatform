@@ -9,7 +9,7 @@
                 "Path": "/server/agents",
                 "Data": {}
             },
-            "UpdatingItemsConverter": "{ return args.value.Result.Agents; }"
+            "UpdatingItemsConverter": "{ return args.value.Result; }"
         }
     }, {
         "RestDataSource": {
@@ -69,7 +69,7 @@
                         "ListBox": {
                             "ItemTemplate": {
                                 "StackPanel": {
-                                    "ViewMode": "Base",
+                                    "ViewMode": "FormGroup",
                                     "Orientation": "Horizontal",
                                     "Items": [{
                                         "Icon": {
@@ -86,7 +86,6 @@
                                         }
                                     }, {
                                         "Button": {
-                                            "Visible": false,
                                             "ToolTip": "Edit agent",
                                             "Action": {
                                                 "EditAction": {
@@ -99,7 +98,7 @@
                                                     },
                                                     "LinkView": {
                                                         "AutoView": {
-                                                            "Path": "jsonViews/agentView.json",
+                                                            "Path": "jsonViews/editAgentView.json",
                                                             "OpenMode": "Dialog"
                                                         }
                                                     }
@@ -113,7 +112,6 @@
                                         }
                                     }, {
                                         "Button": {
-                                            "Visible": false,
                                             "ToolTip": "Remove agent",
                                             "Action": {
                                                 "ServerAction": {
@@ -121,6 +119,7 @@
                                                     "Path": "/server/removeAgent",
                                                     "Method": "POST",
                                                     "Data": {
+                                                        "Id": "<%id%>",
                                                         "Name": "<%name%>",
                                                         "Address": "<%address%>",
                                                         "Port": "<%port%>"
@@ -128,6 +127,10 @@
                                                     "Params": {
                                                         "serverAddress": "localhost",
                                                         "serverPort": "9901",
+                                                        "id": {
+                                                            "Source": "AgentsDataSource",
+                                                            "Property": "#.Id"
+                                                        },
                                                         "name": {
                                                             "Source": "AgentsDataSource",
                                                             "Property": "#.Name"
@@ -174,7 +177,7 @@
                                         "AutoView": {
                                             "OpenMode": "Dialog",
                                             "DialogWidth": "Large",
-                                            "Path": "jsonViews/agentView.json"
+                                            "Path": "jsonViews/addAgentView.json"
                                         }
                                     }
                                 }

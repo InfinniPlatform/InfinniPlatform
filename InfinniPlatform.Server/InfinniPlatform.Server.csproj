@@ -46,7 +46,10 @@
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
     <Compile Include="Tasks\Agents\AddAgentTask.cs" />
+    <Compile Include="Tasks\Agents\AgentsInfoProvider.cs" />
     <Compile Include="Tasks\Agents\AgentTaskStatus.cs" />
+    <Compile Include="Tasks\Agents\EditAgentTask.cs" />
+    <Compile Include="Tasks\Agents\RemoveAgentTask.cs" />
     <Compile Include="Tasks\Files\AppLogFileTask.cs" />
     <Compile Include="Tasks\Files\NodeLogFileTask.cs" />
     <Compile Include="Tasks\Files\PerfLogFileTask.cs" />
@@ -118,12 +121,12 @@
     <None Include="UI\styles\bootstrap-variables.less" />
     <None Include="UI\styles\extensions.less" />
     <None Include="UI\styles\platform-variables.less" />
-    <None Include="UI\www\jsonViews\appLogView.json" />
+    <None Include="UI\www\jsonViews\addAgentView.json" />
     <None Include="UI\www\jsonViews\configView.json" />
+    <None Include="UI\www\jsonViews\editAgentView.json" />
     <None Include="UI\www\jsonViews\environmentView.json" />
     <None Include="UI\www\jsonViews\homeView.json" />
     <None Include="UI\www\jsonViews\installView.json" />
-    <None Include="UI\www\jsonViews\nodeLogView.json" />
     <None Include="UI\www\jsonViews\taskView.json" />
   </ItemGroup>
   <ItemGroup>

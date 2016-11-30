@@ -6,11 +6,11 @@ using InfinniPlatform.Sdk.Http.Services;
 namespace InfinniPlatform.Server.Tasks.Agents
 {
     /// <summary>
-    /// Добавляет агента.
+    /// Удаляет информацию об агенте.
     /// </summary>
-    public class AddAgentTask : IServerTask
+    public class RemoveAgentTask : IServerTask
     {
-        public AddAgentTask(AgentsInfoProvider agentsInfoProvider)
+        public RemoveAgentTask(AgentsInfoProvider agentsInfoProvider)
         {
             _agentsInfoProvider = agentsInfoProvider;
         }
@@ -18,13 +18,13 @@ namespace InfinniPlatform.Server.Tasks.Agents
         private readonly AgentsInfoProvider _agentsInfoProvider;
 
 
-        public string CommandName => "addAgent";
+        public string CommandName => "removeAgent";
 
         public HttpMethod HttpMethod => HttpMethod.Post;
 
         public Task<object> Run(IHttpRequest request)
         {
-            _agentsInfoProvider.AddInfo(request);
+            _agentsInfoProvider.RemoveInfo(request);
 
             return Task.FromResult<object>(new ServiceResult<object> { Success = true });
         }

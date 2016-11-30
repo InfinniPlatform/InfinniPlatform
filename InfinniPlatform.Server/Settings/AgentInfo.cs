@@ -9,11 +9,17 @@ namespace InfinniPlatform.Server.Settings
     {
         public AgentInfo(string name, string address, int port, string token = null)
         {
+            Id = Guid.NewGuid();
             Name = name;
             Address = address;
             Port = port;
-            Token = Guid.NewGuid().ToString("N");
+            Token = token ?? Guid.NewGuid().ToString("N");
         }
+
+        /// <summary>
+        /// Идентификатор агента.
+        /// </summary>
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Наименование агента.

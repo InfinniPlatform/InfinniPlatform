@@ -1,0 +1,83 @@
+{
+  "Text": "Edit agent",
+  "DataSources": [{
+    "ObjectDataSource": {
+      "Name": "AgentsDataSource"
+    }
+  }],
+  "Items": [{
+    "TextBox": {
+      "Name": "AddressBox",
+      "LabelText": "Address",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Address"
+      }
+    }
+  }, {
+    "TextBox": {
+      "Name": "PortBox",
+      "LabelText": "Port",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Port"
+      }
+    }
+  }, {
+    "TextBox": {
+      "Name": "NameBox",
+      "LabelText": "Name",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Name"
+      }
+    }
+  }, {
+    "TextBox": {
+      "Name": "TokenBox",
+      "LabelText": "Token",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Token"
+      }
+    }
+  }, {
+    "Button": {
+      "Name": "EditButton",
+      "Text": "Save",
+      "Action": {
+        "ServerAction": {
+          "Origin": "http://<%serverAddress%>:<%serverPort%>",
+          "Path": "/server/editAgent",
+          "Method": "POST",
+          "Data": {
+            "Id": "<%id%>",
+            "Address": "<%address%>",
+            "Port": "<%port%>",
+            "Name": "<%name%>"
+          },
+          "Params": {
+            "serverAddress": "localhost",
+            "serverPort": "9901",
+            "id": {
+              "Source": "AgentsDataSource",
+              "Property": "$.Id"
+            },
+            "address": {
+              "Source": "AgentsDataSource",
+              "Property": "$.Address"
+            },
+            "port": {
+              "Source": "AgentsDataSource",
+              "Property": "$.Port"
+            },
+            "name": {
+              "Source": "AgentsDataSource",
+              "Property": "$.Name"
+            }
+          }
+        }
+      }
+    }
+  }]
+}

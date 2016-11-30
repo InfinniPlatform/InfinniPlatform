@@ -4,6 +4,7 @@ using InfinniPlatform.Sdk.Settings;
 using InfinniPlatform.Server.Agent;
 using InfinniPlatform.Server.Settings;
 using InfinniPlatform.Server.Tasks;
+using InfinniPlatform.Server.Tasks.Agents;
 using InfinniPlatform.Server.Tasks.Infinni.Node;
 
 namespace InfinniPlatform.Server.IoC
@@ -35,6 +36,10 @@ namespace InfinniPlatform.Server.IoC
 
             builder.RegisterType<NodeOutputParser>()
                    .As<INodeOutputParser>()
+                   .SingleInstance();
+
+            builder.RegisterType<AgentsInfoProvider>()
+                   .AsSelf()
                    .SingleInstance();
 
             builder.RegisterHttpServices(assembly);

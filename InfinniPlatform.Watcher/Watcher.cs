@@ -53,14 +53,24 @@ namespace InfinniPlatform.Watcher
 
         private void SyncDirectories()
         {
-            var sourceFiles = Directory.GetFiles(_settings.SourceDirectory, "*.*", SearchOption.AllDirectories);
-            var destFiles = Directory.GetFiles(_settings.DestinationDirectory, "*.*", SearchOption.AllDirectories);
+            var extensions = _settings.WatchingFileExtensions;
 
-            if (destFiles.Length != sourceFiles.Length)
+            foreach (var ext in extensions)
             {
-                ConsoleLog.Warning(string.Format(Resources.SyncingContentDirectories, _settings.SourceDirectory, _settings.DestinationDirectory, Environment.NewLine));
-                if (_settings.SyncOnStart)
+                var pattern = $"*{ext}";
+
+                var sourceFiles = Directory.GetFiles(_settings.SourceDirectory, pattern, SearchOption.AllDirectories);
+                var destFiles = Directory.GetFiles(_settings.DestinationDirectory, pattern, SearchOption.AllDirectories);
+
+                if (destFiles.Length != sourceFiles.Length)
                 {
+                    ConsoleLog.Warning(string.Format(Resources.SyncingContentDirectories, _settings.SourceDirectory, _settings.DestinationDirectory, Environment.NewLine));
+
+                    if (!_settings.SyncOnStart)
+                    {
+                        continue;
+                    }
+
                     ConsoleLog.Info(string.Format(Resources.Syncing));
 
                     Directory.Delete(_settings.DestinationDirectory, true);

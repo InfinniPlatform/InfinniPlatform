@@ -1,0 +1,72 @@
+{  
+  "Text": "Add new agent",
+  "Parameters": [{
+    "Name": "Agent"
+  }],
+  "DataSources": [{
+    "ObjectDataSource": {
+      "Name": "AgentsDataSource"
+    }
+  }],
+  "Items": [{
+    "TextBox": {
+      "Name": "AddressBox",
+      "LabelText": "Address",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Address"
+      }
+    }
+  }, {
+    "TextBox": {
+      "Name": "PortBox",
+      "LabelText": "Port",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Port"
+      }
+    }
+  }, {
+    "TextBox": {
+      "Name": "NameBox",
+      "LabelText": "Name",
+      "Value": {
+        "Source": "AgentsDataSource",
+        "Property": "$.Name"
+      }
+    }
+  }, {
+    "Button": {
+      "Name": "AddButton",
+      "Text": "Save",
+      "Action": {
+        "ServerAction": {
+          "Origin": "http://<%serverAddress%>:<%serverPort%>",
+          "Path": "/server/addAgent",
+          "Method": "POST",
+          "Data": {
+            "Address": "<%address%>",
+            "Port": "<%port%>",
+            "Name": "<%name%>"
+          },
+          "Params": {
+            "serverAddress": "localhost",
+            "serverPort": "9901",
+            "address": {
+              "Source": "AgentsDataSource",
+              "Property": "$.Address"
+            },
+            "port": {
+              "Source": "AgentsDataSource",
+              "Property": "$.Port"
+            },
+            "name": {
+              "Source": "AgentsDataSource",
+              "Property": "$.Name"
+            }
+          }
+        }
+      }
+    }
+  }]
+}
