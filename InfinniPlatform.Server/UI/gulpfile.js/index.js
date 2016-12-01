@@ -17,14 +17,14 @@ for(var key in sourceForTasks) {
 }
 
 gulp.task('build', gulp.series(
-	gulp.parallel(gulp.series('copyPlatform', 'overrideLess'), 'concatJs', 'concatTemplates')
+	gulp.parallel(gulp.series('copyPlatform', 'copyApp', 'overrideLess'), 'concatJs')
 ));
 
 gulp.task('fullWatch', function() {
 	watch(sourceForTasks.copyPlatform.src, gulp.series('copyPlatform', 'overrideLess'));
+	watch(sourceForTasks.copyApp.src, gulp.series('copyApp'));
 	watch(sourceForTasks.overrideLess.srcForWatch, gulp.series('overrideLess'));
-	watch(sourceForTasks.concatJs.src, gulp.series('concatJs'));
-	watch(sourceForTasks.concatTemplates.src, gulp.series('concatTemplates'));
+	watch(sourceForTasks.concatJs.src, gulp.series('concatJs'));	
 });
 
 gulp.task('default', function(cb) {

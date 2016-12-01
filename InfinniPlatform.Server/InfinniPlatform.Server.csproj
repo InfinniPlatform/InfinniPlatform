@@ -94,14 +94,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <WebFiles Include="UI\www\**\*.*">
-      <Visible>false</Visible>
-    </WebFiles>
-  </ItemGroup>
-  <Target Name="AfterBuild">
-    <Copy SourceFiles="@(WebFiles)" DestinationFolder="$(OutDir)content\www\%(RecursiveDir)" />
-  </Target>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -121,13 +113,13 @@
     <None Include="UI\styles\bootstrap-variables.less" />
     <None Include="UI\styles\extensions.less" />
     <None Include="UI\styles\platform-variables.less" />
-    <None Include="UI\www\jsonViews\addAgentView.json" />
-    <None Include="UI\www\jsonViews\configView.json" />
-    <None Include="UI\www\jsonViews\editAgentView.json" />
-    <None Include="UI\www\jsonViews\environmentView.json" />
-    <None Include="UI\www\jsonViews\homeView.json" />
-    <None Include="UI\www\jsonViews\installView.json" />
-    <None Include="UI\www\jsonViews\taskView.json" />
+    <None Include="UI\views\addAgentView.json" />
+    <None Include="UI\views\configView.json" />
+    <None Include="UI\views\editAgentView.json" />
+    <None Include="UI\views\environmentView.json" />
+    <None Include="UI\views\homeView.json" />
+    <None Include="UI\views\installView.json" />
+    <None Include="UI\views\taskView.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\gulpfile.js\gulptasks\cleanFolder.js" />
@@ -137,24 +129,25 @@
     <Content Include="UI\gulpfile.js\gulptasks\overrideLess.js" />
     <Content Include="UI\gulpfile.js\gulptasks\sourceForTasks.js" />
     <Content Include="UI\gulpfile.js\index.js" />
-    <Content Include="UI\js\elements\testElement\template\testElement.tpl.html" />
-    <Content Include="UI\js\elements\testElement\testControl.js" />
-    <Content Include="UI\js\elements\testElement\testElement.js" />
-    <Content Include="UI\js\elements\testElement\testElementBuilder.js" />
-    <Content Include="UI\js\elements\testElement\testModel.js" />
-    <Content Include="UI\js\elements\testElement\testView.js" />
-    <Content Include="UI\js\extentionPanels\testExtention.js" />
-    <Content Include="UI\js\routerCallbacks.js" />
+    <Content Include="UI\js\configView.js" />
+    <Content Include="UI\js\environmentView.js" />
+    <Content Include="UI\js\homeView.js" />
+    <Content Include="UI\js\installView.js" />
+    <Content Include="UI\js\main.js" />
+    <Content Include="UI\js\taskView.js" />
     <Content Include="UI\www\config.js" />
     <Content Include="UI\www\img\favicon.ico" />
     <Content Include="UI\www\index.html" />
-    <Content Include="UI\www\js\configView.js" />
-    <Content Include="UI\www\js\environmentView.js" />
-    <Content Include="UI\www\js\homeView.js" />
-    <Content Include="UI\www\js\installView.js" />
-    <Content Include="UI\www\js\main.js" />
   </ItemGroup>
   <ItemGroup />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

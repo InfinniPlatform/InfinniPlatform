@@ -2,8 +2,7 @@
  * @param {any} context Контекст
  * @param {any} args Аргументы
  */
-function Subscribe(context, args) {
-    var viewContext = context;
+function Subscribe(viewContext, viewArgs) {
 
     InfinniUI.global.notificationSubscription.startConnection(window.InfinniUI.config.signalRHubName);
     InfinniUI.global.notificationSubscription.subscribe("WorkLog",

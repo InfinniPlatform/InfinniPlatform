@@ -6,11 +6,11 @@ var infinniUIpath = './bower_components/infinni-ui-v2/';
 var fromInfinniToNewStylesPath = '/../../styles/';
 
 // Путь до папки-результата
-var projectRootFolder = './www/';
+var projectRootFolder = '../../Assemblies/content/www/';
 // куда собирать платформу?
-var projectFolderForPlatform = './www/compiled/platform/';
+var projectFolderForPlatform = '../../Assemblies/content/www/compiled/platform/';
 // куда собирать прикладную часть?
-var projectFolderForExtensions = './www/compiled/js/';
+var projectFolderForExtensions = '../../Assemblies/content/www/compiled/js/';
 
 
 // Платформенные перменные (не рекомендуется менять)
@@ -43,17 +43,17 @@ var sourceForTasks = {
 		dest: projectFolderForPlatform,
 		taskPath: "./gulptasks/copyFiles"
 	},
+	copyApp: {
+		src: ['./img/'+ '**/*.*', './views/'+ '**/*.*', './config.js', './index.html'],
+		base: '.',
+		dest: projectRootFolder,
+		taskPath: "./gulptasks/copyFiles"
+	},
 	concatJs: {
 		src: jsFiles,
 		finalName: "app.js",
 		dest: projectFolderForExtensions,
 		taskPath: "./gulptasks/concatJs"
-	},
-	concatTemplates: {
-		src: templateFiles,
-		finalName: "templates.js",
-		dest: projectFolderForExtensions,
-		taskPath: "./gulptasks/concatTemplates"
 	}
 };
 
