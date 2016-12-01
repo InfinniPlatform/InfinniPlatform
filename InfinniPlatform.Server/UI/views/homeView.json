@@ -107,8 +107,7 @@
                       },
                       {
                         "Button": {
-                          "Name": "EditAgentButton",
-                          "Visible": false,
+                          "Name": "EditAgentButton",                          
                           "ToolTip": "Edit agent",
                           "Action": {
                             "EditAction": {
@@ -136,8 +135,7 @@
                       },
                       {
                         "Button": {
-                          "Name": "RemoveAgentButton",
-                          "Visible":  false, 
+                          "Name": "RemoveAgentButton",                          
                           "ToolTip": "Remove agent",
                           "Action": {
                             "ServerAction": {
