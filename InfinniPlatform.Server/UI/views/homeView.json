@@ -139,7 +139,6 @@
                           "ToolTip": "Remove agent",
                           "Action": {
                             "ServerAction": {
-                              "Origin": "http://<%serverAddress%>:<%serverPort%>",
                               "Path": "/server/removeAgent",
                               "Method": "POST",
                               "Data": {
@@ -149,8 +148,6 @@
                                 "Port": "<%port%>"
                               },
                               "Params": {
-                                "serverAddress": "localhost",
-                                "serverPort": "9901",
                                 "id": {
                                   "Source": "AgentsDataSource",
                                   "Property": "$.Id"
@@ -436,7 +433,6 @@
                                     "ToolTip": "Start app",
                                     "Action": {
                                       "ServerAction": {
-                                        "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                         "Path": "/server/start?Address=<%agentAddress%>&Port=<%agentPort%>",
                                         "Method": "POST",
                                         "Data": {
@@ -446,8 +442,6 @@
                                           "Timeout": null
                                         },
                                         "Params": {
-                                          "serverAddress": "localhost",
-                                          "serverPort": "9901",
                                           "agentAddress": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Address"
@@ -498,7 +492,6 @@
                                     "ToolTip": "Stop app",
                                     "Action": {
                                       "ServerAction": {
-                                        "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                         "Path": "/server/stop?Address=<%agentAddress%>&Port=<%agentPort%>",
                                         "Method": "POST",
                                         "Data": {
@@ -508,8 +501,6 @@
                                           "Timeout": null
                                         },
                                         "Params": {
-                                          "serverAddress": "localhost",
-                                          "serverPort": "9901",
                                           "agentAddress": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Address"
@@ -560,7 +551,6 @@
                                     "ToolTip": "Restart app",
                                     "Action": {
                                       "ServerAction": {
-                                        "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                         "Path": "/server/restart?Address=<%agentAddress%>&Port=<%agentPort%>",
                                         "Method": "POST",
                                         "Data": {
@@ -622,7 +612,6 @@
                                     "ToolTip": "Run app initialization logic",
                                     "Action": {
                                       "ServerAction": {
-                                        "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                         "Path": "/server/init?Address=<%agentAddress%>&Port=<%agentPort%>",
                                         "Method": "POST",
                                         "Data": {
@@ -632,8 +621,6 @@
                                           "Timeout": null
                                         },
                                         "Params": {
-                                          "serverAddress": "localhost",
-                                          "serverPort": "9901",
                                           "agentAddress": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Address"
@@ -855,7 +842,6 @@
                                     "ToolTip": "Uninstall app",
                                     "Action": {
                                       "ServerAction": {
-                                        "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                         "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
                                         "Method": "POST",
                                         "Data": {
@@ -864,8 +850,6 @@
                                           "Instance": "<%instance%>"
                                         },
                                         "Params": {
-                                          "serverAddress": "localhost",
-                                          "serverPort": "9901",
                                           "agentAddress": {
                                             "Source": "AgentsDataSource",
                                             "Property": "$.Address"

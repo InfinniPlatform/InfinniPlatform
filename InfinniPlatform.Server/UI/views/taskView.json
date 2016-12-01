@@ -14,7 +14,6 @@
       "Text": "Refresh",
       "Action": {
         "ServerAction": {
-          "Origin": "http://<%serverAddress%>:<%serverPort%>",
           "Path": "/server/taskStatus",
           "Method": "GET",
           "Data": {
@@ -23,8 +22,6 @@
             "TaskId": "<%taskId%>"
           },
           "Params": {
-            "serverAddress": "localhost",
-            "serverPort": "9901",
             "agentAddress": {
               "Source": "AgentAddress"
             },

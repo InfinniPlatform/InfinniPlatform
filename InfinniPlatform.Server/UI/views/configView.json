@@ -80,15 +80,12 @@
                             "Text": "Save",
                             "Action": {
                                 "ServerAction": {
-                                    "Origin": "http://<%serverAddress%>:<%serverPort%>",
                                     "Path": "/server/config?Address=<%agentAddress%>&Port=<%agentPort%>&AppFullName=<%appFullName%>&FileName=AppExtension.json",
                                     "Method": "POST",
                                     "Data": {                                        
                                         "Config": "<%config%>"
                                     },
                                     "Params": {
-                                        "serverAddress": "localhost",
-                                        "serverPort": "9901",
                                         "agentAddress": {
                                             "Source": "AgentAddress"
                                         },

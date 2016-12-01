@@ -41,7 +41,6 @@
       "Text": "Save",
       "Action": {
         "ServerAction": {
-          "Origin": "http://<%serverAddress%>:<%serverPort%>",
           "Path": "/server/addAgent",
           "Method": "POST",
           "Data": {
@@ -50,8 +49,6 @@
             "Name": "<%name%>"
           },
           "Params": {
-            "serverAddress": "localhost",
-            "serverPort": "9901",
             "address": {
               "Source": "AgentsDataSource",
               "Property": "$.Address"
