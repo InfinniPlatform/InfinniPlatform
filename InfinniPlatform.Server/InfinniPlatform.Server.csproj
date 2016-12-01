@@ -108,7 +108,6 @@
     <None Include="UI\bower.json" />
     <None Include="UI\build.bat" />
     <None Include="UI\package.json" />
-    <None Include="UI\rebuild.bat" />
     <None Include="UI\styles\bootstrap-theme.less" />
     <None Include="UI\styles\bootstrap-variables.less" />
     <None Include="UI\styles\extensions.less" />
@@ -122,24 +121,25 @@
     <None Include="UI\views\taskView.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UI\config.js" />
     <Content Include="UI\gulpfile.js\gulptasks\cleanFolder.js" />
     <Content Include="UI\gulpfile.js\gulptasks\concatJs.js" />
-    <Content Include="UI\gulpfile.js\gulptasks\concatTemplates.js" />
     <Content Include="UI\gulpfile.js\gulptasks\copyFiles.js" />
     <Content Include="UI\gulpfile.js\gulptasks\overrideLess.js" />
     <Content Include="UI\gulpfile.js\gulptasks\sourceForTasks.js" />
     <Content Include="UI\gulpfile.js\index.js" />
+    <Content Include="UI\img\favicon.ico" />
+    <Content Include="UI\index.html" />
     <Content Include="UI\js\configView.js" />
     <Content Include="UI\js\environmentView.js" />
     <Content Include="UI\js\homeView.js" />
     <Content Include="UI\js\installView.js" />
     <Content Include="UI\js\main.js" />
     <Content Include="UI\js\taskView.js" />
-    <Content Include="UI\www\config.js" />
-    <Content Include="UI\www\img\favicon.ico" />
-    <Content Include="UI\www\index.html" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="content\" />
+  </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
