@@ -103,10 +103,11 @@
                 $projectReferenceFile = (Get-Item (Join-Path $projectDirectory $projectReference)).FullName
                 $projectReferenceName = Project-GetName $projectReferenceFile
                 $projectReferenceVersion = $projectVersions[$projectReferenceFile]
+                $projectReferenceFramework = Project-GetFrameworkVersion (Get-Content $projectReferenceFile)
 
                 $projectNuspec = $projectNuspec + "            <dependency id=""$projectReferenceName"" version=""[$projectReferenceVersion]"" />`r`n"
 
-                $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$framework\$projectReferenceName.dll"
+                $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$projectReferenceFramework\$projectReferenceName.dll"            
             }  
 
             if (-Not $isPlugin) 
@@ -204,6 +205,16 @@
             {
                 $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""AppCommon.json"" />`r`n"
                 if ($isNotExtension) { $solutionRefs += "$projectTargetPath\AppCommon.json" }
+            }
+
+            # Adds content files
+
+            $projectContentFiles = Project-GetContentFiles $projectDirectory
+
+            foreach ($contentFile in $projectContentFiles)
+            {
+                $projectNuspec = $projectNuspec +
+                    "        <file src=""$contentFile"" target=""$contentFile""/>`r`n"
             }
 
             # Ends the files part
@@ -685,5 +696,57 @@ function Project-GetDirectory
         $projectItem = Get-ChildItem $projectFile
         $projectDirectory = $projectItem.Directory.FullName
         return $projectDirectory
+    }
+}
+
+
+function Project-GetFrameworkVersion
+{
+    <#
+    .Synopsis
+        Returns framework version of the given project.
+    #>
+
+    param
+    (
+        [Parameter(HelpMessage = "Project file.")]
+        [xml] $projectXml
+    )
+
+    process
+    {
+        $frameworkVersion = ($projectXml.Project.PropertyGroup.TargetFrameworkVersion | Select-Object -First 1) -replace '[v\.\s]', ''
+
+        return 'net' + $frameworkVersion
+    }
+}
+
+
+function Project-GetContentFiles
+{
+    <#
+    .Synopsis
+        Returns content files of the given project.
+    #>
+
+    param
+    (
+        [Parameter(HelpMessage = "Path to the project directory.")]
+        [String] $projectDirectory
+    )
+
+    process
+    {
+        $contentFiles = @()
+        $projectContent = Join-Path $projectDirectory 'content'
+
+        if (Test-Path $projectContent)
+        {
+            $contentFiles += Get-ChildItem -Path $projectContent -File -Recurse `
+                                | Where { $_ -notlike '*.vshost.exe*' } `
+                                | ForEach-Object { $_.FullName.Substring($projectDirectory.Length).TrimStart('\') }
+        }
+
+        return $contentFiles
     }
 }

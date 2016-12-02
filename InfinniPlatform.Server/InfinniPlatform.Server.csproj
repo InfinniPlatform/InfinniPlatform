@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugTools|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -115,8 +116,6 @@
     </None>
     <None Include="packages.config" />
     <None Include="UI\bower.json" />
-    <None Include="UI\build.bat" />
-    <None Include="UI\build.ps1" />
     <None Include="UI\package.json" />
     <None Include="UI\styles\bootstrap-theme.less" />
     <None Include="UI\styles\bootstrap-variables.less" />
