@@ -130,7 +130,6 @@
     <Content Include="UI\gulpfile.js\index.js" />
     <Content Include="UI\img\favicon.ico" />
     <Content Include="UI\index.html" />
-    <Content Include="UI\js\configView.js" />
     <Content Include="UI\js\environmentView.js" />
     <Content Include="UI\js\homeView.js" />
     <Content Include="UI\js\installView.js" />

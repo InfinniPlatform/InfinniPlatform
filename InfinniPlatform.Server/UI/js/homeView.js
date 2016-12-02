@@ -132,12 +132,35 @@ function DownloadNodeLogFile(context, args) {
     window.open(url);
 }
 
-function ConvertProcessInfoState(context, args) {
+function GetProcessInfoStateIconValue(context, args) {
     switch (args.value) {
         case "Stopped":
             return "stop-circle";
         case "Running":
             return "play-circle";
+        default:
+            break;
+    }
+}
+
+function GetProcessInfoStateStartButtonVisibility(context, args) {
+    if(args.value==="Stopped"){
+        return true;
+    }
+}
+
+function GetProcessInfoStateStopButtonVisibility(context, args) {
+    if(args.value==="Running"){
+        return true;
+    }
+}
+
+function GetProcessInfoStateIconForeground(context, args) {
+    switch (args.value) {
+        case "Stopped":
+            return "accent2";
+        case "Running":
+            return "accent1";
         default:
             break;
     }

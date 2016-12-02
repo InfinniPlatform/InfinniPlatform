@@ -6,17 +6,11 @@
     "Token": "cc670bc2b2124011a3f92056487f2cf3",
     "CacheTimeout": 600
   },
-  "server": {
-    "AgentsInfoFilePath": "agents.json"
-  },
   "watcher": {
-    "SourceDirectory": "..\\InfinniPlatform.Server\\UI\\www",
-    "DestinationDirectory": "content\\www",
+    "SourceDirectory": "..\\InfinniPlatform.Server\\UI\\views",
+    "DestinationDirectory": "content\\www\\views",
     "WatchingFileExtensions": [
-      ".json",
-      ".js",
-      ".css",
-      ".html"
+      ".json"
     ],
     "SyncOnStart":  false
   },

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Server.Tasks.Agents;
@@ -27,7 +28,17 @@ namespace InfinniPlatform.Server.Tasks.Infinni.Node
                                     .Split(new[] { System.Environment.NewLine }, StringSplitOptions.None)
                                     .FirstOrDefault(s => s.StartsWith("["));
 
-            processResult.FormattedOutput = _serializer.Deserialize<object[]>(appsInfoJson);
+            var appsInfo = _serializer.Deserialize<DynamicWrapper[]>(appsInfoJson);
+
+            foreach (var info in appsInfo)
+            {
+                if (string.IsNullOrEmpty((string)info["IconUrl"]))
+                {
+                    info["IconUrl"] = "/img/app.png";
+                }
+            }
+
+            processResult.FormattedOutput = appsInfo;
 
             serviceResult.Result = processResult;
 
