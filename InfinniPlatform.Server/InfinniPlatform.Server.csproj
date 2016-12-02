@@ -29,6 +29,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugTools|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -107,6 +116,7 @@
     <None Include="packages.config" />
     <None Include="UI\bower.json" />
     <None Include="UI\build.bat" />
+    <None Include="UI\build.ps1" />
     <None Include="UI\package.json" />
     <None Include="UI\styles\bootstrap-theme.less" />
     <None Include="UI\styles\bootstrap-variables.less" />
@@ -128,6 +138,7 @@
     <Content Include="UI\gulpfile.js\gulptasks\overrideLess.js" />
     <Content Include="UI\gulpfile.js\gulptasks\sourceForTasks.js" />
     <Content Include="UI\gulpfile.js\index.js" />
+    <Content Include="UI\img\app.png" />
     <Content Include="UI\img\favicon.ico" />
     <Content Include="UI\index.html" />
     <Content Include="UI\js\environmentView.js" />
