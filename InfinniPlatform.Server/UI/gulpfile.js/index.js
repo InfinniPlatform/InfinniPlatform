@@ -17,12 +17,13 @@ for(var key in sourceForTasks) {
 }
 
 gulp.task('build', gulp.series(
-	gulp.parallel(gulp.series('copyPlatform', 'copyApp', 'overrideLess'), 'concatJs')
+	gulp.parallel(gulp.series('copyPlatform', 'overrideLess', 'copyApp', 'copyAssemblies'), 'concatJs')
 ));
 
 gulp.task('fullWatch', function() {
 	watch(sourceForTasks.copyPlatform.src, gulp.series('copyPlatform', 'overrideLess'));
 	watch(sourceForTasks.copyApp.src, gulp.series('copyApp'));
+	watch(sourceForTasks.copyAssemblies.src, gulp.series('copyAssemblies'));
 	watch(sourceForTasks.overrideLess.srcForWatch, gulp.series('overrideLess'));
 	watch(sourceForTasks.concatJs.src, gulp.series('concatJs'));	
 });

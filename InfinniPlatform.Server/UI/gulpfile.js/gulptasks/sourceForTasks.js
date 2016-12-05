@@ -7,6 +7,7 @@ var fromInfinniToNewStylesPath = '/../../styles/';
 
 // Путь до папки-результата
 var projectRootFolder = '../content/www/';
+var solutionAssembliesFolder = '../../Assemblies/content';
 // куда собирать платформу?
 var projectFolderForPlatform = '../content/www/compiled/platform/';
 // куда собирать прикладную часть?
@@ -47,6 +48,12 @@ var sourceForTasks = {
 		src: ['./img/'+ '**/*.*', './views/'+ '**/*.*', './config.js', './index.html'],
 		base: '.',
 		dest: projectRootFolder,
+		taskPath: "./gulptasks/copyFiles"
+	},
+	copyAssemblies: {
+		src: ['../content/**/*.*'],
+		base: '.',
+		dest: solutionAssembliesFolder,
 		taskPath: "./gulptasks/copyFiles"
 	},
 	concatJs: {
