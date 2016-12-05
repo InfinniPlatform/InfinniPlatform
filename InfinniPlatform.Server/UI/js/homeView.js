@@ -34,18 +34,6 @@ function RefreshAppsDataSource(context) {
     context.dataSources.AppsDataSource.updateItems();
 }
 
-/** Показывает/скрывает кнопки для управления задачами * 
- * @param {any} context Контекст
- * @param {any} args Аргументы
- */
-function EnableTaskButtons(context, args) {
-    if (args.value === null || args.value === undefined) {
-        context.controls.OutputButton.setVisible(false);
-    } else {
-        context.controls.OutputButton.setVisible(true);
-    }
-}
-
 function OpenEventsLogInTab(context, args) {
     var agent = context.dataSources.AgentsDataSource.getSelectedItem();
     var app = context.dataSources.AppsDataSource.getSelectedItem();

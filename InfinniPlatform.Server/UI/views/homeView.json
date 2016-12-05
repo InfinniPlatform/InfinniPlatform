@@ -67,7 +67,12 @@
           "Items": [{
             "Label": {
               "Value": "Agents",
-              "TextStyle": "Display2"
+              "TextStyle": "Display1"
+            }
+          }, {
+            "Label": {
+              "Value": "&nbsp;",
+              "EscapeHtml": false
             }
           }, {
             "StackPanel": {
@@ -208,6 +213,11 @@
               "TextStyle": "Display1"
             }
           }, {
+            "Label": {
+              "Value": "&nbsp;",
+              "EscapeHtml": false
+            }
+          }, {
             "StackPanel": {
               "ViewMode": "FormGroup",
               "Orientation": "Horizontal",
@@ -315,6 +325,52 @@
             "Label": {
               "Value": "Apps",
               "TextStyle": "Display1"
+            }
+          }, {
+            "Label": {
+              "Value": "&nbsp;",
+              "EscapeHtml": false
+            }
+          }, {
+            "Button": {
+              "Name": "installButton",
+              "ToolTip": "Install new app",
+              "Action": {
+                "AddAction": {
+                  "SourceValue": {
+                    "Source": "AppsDataSource"
+                  },
+                  "DestinationValue": {
+                    "Source": "AppsDataSource",
+                    "Property": ""
+                  },
+                  "LinkView": {
+                    "AutoView": {
+                      "OpenMode": "Dialog",
+                      "DialogWidth": "Large",
+                      "Path": "views/installView.json",
+                      "Parameters": [{
+                        "Name": "AgentAddress",
+                        "Value": {
+                          "Source": "AgentsDataSource",
+                          "Property": "$.Address"
+                        }
+                      }, {
+                        "Name": "AgentPort",
+                        "Value": {
+                          "Source": "AgentsDataSource",
+                          "Property": "$.Port"
+                        }
+                      }]
+                    }
+                  }
+                }
+              },
+              "ContentTemplate": {
+                "Icon": {
+                  "Value": "plus"
+                }
+              }
             }
           }, {
             "StackPanel": {
@@ -858,61 +914,14 @@
               }
             }
           }, {
-            "Button": {
-              "Name": "installButton",
-              "ToolTip": "Install new app",
-              "Action": {
-                "AddAction": {
-                  "SourceValue": {
-                    "Source": "AppsDataSource"
-                  },
-                  "DestinationValue": {
-                    "Source": "AppsDataSource",
-                    "Property": ""
-                  },
-                  "LinkView": {
-                    "AutoView": {
-                      "OpenMode": "Dialog",
-                      "DialogWidth": "Large",
-                      "Path": "views/installView.json",
-                      "Parameters": [{
-                        "Name": "AgentAddress",
-                        "Value": {
-                          "Source": "AgentsDataSource",
-                          "Property": "$.Address"
-                        }
-                      }, {
-                        "Name": "AgentPort",
-                        "Value": {
-                          "Source": "AgentsDataSource",
-                          "Property": "$.Port"
-                        }
-                      }]
-                    }
-                  }
-                }
-              },
-              "ContentTemplate": {
-                "StackPanel": {
-                  "ViewMode": "Base",
-                  "Orientation": "Horizontal",
-                  "Items": [{
-                    "Icon": {
-                      "Value": "plus"
-                    }
-                  }, {
-                    "Label": {
-                      "Value": "&nbsp;New app",
-                      "EscapeHtml": false
-                    }
-                  }]
-                }
-              }
-            }
-          }, {
             "Label": {
               "Value": "Tasks",
               "TextStyle": "Display1"
+            }
+          }, {
+            "Label": {
+              "Value": "&nbsp;",
+              "EscapeHtml": false
             }
           }, {
             "StackPanel": {
@@ -923,7 +932,6 @@
                 "Button": {
                   "Name": "OutputButton",
                   "Text": "Show output",
-                  "Visible": false,
                   "Action": {
                     "OpenAction": {
                       "LinkView": {
@@ -970,7 +978,7 @@
                   "Label": {
                     "Value": {
                       "Source": "TasksDataSource",
-                      "Property": "$.State",
+                      "Property": "$.Completed",
                       "Mode": "ToElement",
                       "Converter": {
                         "ToElement": "{ return ConvertTaskState(context, args); }"
