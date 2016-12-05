@@ -14,24 +14,18 @@ function Subscribe(viewContext, viewArgs) {
     InfinniUI.global.notificationSubscription.subscribe("Install",
         function (context, args) {
             toastr.success(args.message);
-            RefreshAppsDataSource(context);
+            context.dataSources.AppsDataSource.updateItems();
+            context.dataSources.TasksDataSource.updateItems();
         },
         viewContext);
 
     InfinniUI.global.notificationSubscription.subscribe("Init",
         function (context, args) {
             toastr.success(args.message);
-            RefreshAppsDataSource(context);
+            context.dataSources.AppsDataSource.updateItems();
+            context.dataSources.TasksDataSource.updateItems();
         },
         viewContext);
-}
-
-/** Обновляет содержимое источника данных о приложениях * 
- * @param {any} context Контекст
- * @param {any} args Аргументы
- */
-function RefreshAppsDataSource(context) {
-    context.dataSources.AppsDataSource.updateItems();
 }
 
 function OpenEventsLogInTab(context, args) {

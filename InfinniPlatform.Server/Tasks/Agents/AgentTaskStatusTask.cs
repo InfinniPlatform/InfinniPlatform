@@ -32,18 +32,34 @@ namespace InfinniPlatform.Server.Tasks.Agents
 
             var taskId = (string)request.Query.TaskId;
 
-            if (taskId == null)
+            if (taskId != null)
             {
-                var result = await _agentHttpClient.Get<ServiceResult<Dictionary<string, AgentTaskStatus>>>(CommandName, address, port);
-
-                return new ServiceResult<IEnumerable<AgentTaskStatus>> { Success = true, Result = result.Result.Select(s => s.Value) };
+                return await GetTaskStatus(taskId, address, port);
             }
 
+            return await GetTasksStatus(address, port);
+        }
+
+        private async Task<object> GetTaskStatus(string taskId, string address, int port)
+        {
             var queryContent = new DynamicWrapper { { "TaskId", taskId } };
 
-            var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port, queryContent);
+            var agentResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port, queryContent);
 
-            return new ServiceResult<AgentTaskStatus> { Success = true, Result = serviceResult.Result };
+            var result = new ServiceResult<AgentTaskStatus> { Success = true, Result = agentResult.Result };
+
+            return result;
+        }
+
+        private async Task<object> GetTasksStatus(string address, int port)
+        {
+            var agentResult = await _agentHttpClient.Get<ServiceResult<Dictionary<string, AgentTaskStatus>>>(CommandName, address, port);
+
+            var result = new ServiceResult<IEnumerable<AgentTaskStatus>> { Success = true, Result = agentResult.Result.Select(s => s.Value) };
+
+            var agentTaskStatuses = result.Result.ToArray();
+
+            return result;
         }
     }
 }

@@ -55,8 +55,7 @@
           }
         }
       },
-      "UpdatingItemsConverter": "{ return args.value.Result; }",
-      "OnSelectedItemChanged": "{ EnableTaskButtons(context, args); }"
+      "UpdatingItemsConverter": "{ return args.value.Result; }"
     }
   }],
   "Items": [{
@@ -323,6 +322,11 @@
             }
           }, {
             "Label": {
+              "Value": "&nbsp;",
+              "EscapeHtml": false
+            }
+          }, {
+            "Label": {
               "Value": "Apps",
               "TextStyle": "Display1"
             }
@@ -512,7 +516,7 @@
                                   "Property": "#.Instance"
                                 }
                               },
-                              "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
+                              "OnSuccess": "{ context.dataSources.AppsDataSource.updateItems(); }"
                             }
                           },
                           "ContentTemplate": {
@@ -575,7 +579,7 @@
                                   "Property": "#.Instance"
                                 }
                               },
-                              "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
+                              "OnSuccess": "{ context.dataSources.AppsDataSource.updateItems(); }"
                             }
                           },
                           "ContentTemplate": {
@@ -632,7 +636,7 @@
                                   "Property": "#.Instance"
                                 }
                               },
-                              "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
+                              "OnSuccess": "{ context.dataSources.TasksDataSource.updateItems(); }"
                             }
                           },
                           "ContentTemplate": {
@@ -687,7 +691,7 @@
                                   "Property": "#.Instance"
                                 }
                               },
-                              "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
+                              "OnSuccess": "{ context.dataSources.TasksDataSource.updateItems(); }"
                             }
                           },
                           "ContentTemplate": {
@@ -884,7 +888,7 @@
                                   "Property": "#.Instance"
                                 }
                               },
-                              "OnSuccess": "{ RefreshAppsDataSource(context, args); }"
+                              "OnSuccess": "{ context.dataSources.AppsDataSource.updateItems(); }"
                             }
                           },
                           "ContentTemplate": {
@@ -912,6 +916,11 @@
               "Items": {
                 "Source": "AppsDataSource"
               }
+            }
+          }, {
+            "Label": {
+              "Value": "&nbsp;",
+              "EscapeHtml": false
             }
           }, {
             "Label": {
@@ -978,7 +987,7 @@
                   "Label": {
                     "Value": {
                       "Source": "TasksDataSource",
-                      "Property": "$.Completed",
+                      "Property": "#.Completed",
                       "Mode": "ToElement",
                       "Converter": {
                         "ToElement": "{ return ConvertTaskState(context, args); }"
