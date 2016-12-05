@@ -155,8 +155,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>pushd "$(ProjectDir)UI"
-call npm install -g bower
-call npm install -g gulp
 call npm run build
 popd</PostBuildEvent>
   </PropertyGroup>
