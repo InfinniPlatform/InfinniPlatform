@@ -6,11 +6,11 @@ var infinniUIpath = './bower_components/infinni-ui-v2/';
 var fromInfinniToNewStylesPath = '/../../styles/';
 
 // Путь до папки-результата
-var projectRootFolder = '../../Assemblies/content/www/';
+var projectRootFolder = '../content/www/';
 // куда собирать платформу?
-var projectFolderForPlatform = '../../Assemblies/content/www/compiled/platform/';
+var projectFolderForPlatform = '../content/www/compiled/platform/';
 // куда собирать прикладную часть?
-var projectFolderForExtensions = '../../Assemblies/content/www/compiled/js/';
+var projectFolderForExtensions = '../content/www/compiled/js/';
 
 
 // Платформенные перменные (не рекомендуется менять)

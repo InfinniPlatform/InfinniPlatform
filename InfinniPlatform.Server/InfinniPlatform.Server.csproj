@@ -149,15 +149,24 @@
   <ItemGroup>
     <Folder Include="content\" />
   </ItemGroup>
+  <ItemGroup>
+    <ContentFiles Include="content\**\*.*">
+      <Visible>false</Visible>
+    </ContentFiles>
+  </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>pushd "$(ProjectDir)UI"
+    <PostBuildEvent>mkdir "$(ProjectDir)content"
+pushd "$(ProjectDir)UI"
 call npm run build
 popd</PostBuildEvent>
-  </PropertyGroup>
+  </PropertyGroup>  
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(ContentFiles)" DestinationFolder="$(OutDir)content\%(RecursiveDir)" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -24,6 +24,7 @@ x86/
 [Ll]ogs/
 project.lock.json
 compiled/
+*/[Cc]ontent/
 
 # Visual Studio 2015 cache/options directory
 .vs/
