@@ -13,7 +13,7 @@
     "ServerAddress": {
       "description": "Адрес сервера Infinni.Server.",
       "type": "string",
-      "default": "localhost:9901"
+      "default": "localhost:9900"
     },
     "Token": {
       "description": "Уникальный token для аутентификации при обмене данными между агентом и сервером.",

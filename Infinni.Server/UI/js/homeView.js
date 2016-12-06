@@ -1,6 +1,6 @@
 /** Отправляет POST-запрос с измененным файлом конфигурации AppExtension.json * 
- * @param {any} context Контекст
- * @param {any} args Аргументы
+ * @param {any} viewContext Контекст
+ * @param {any} viewArgs Аргументы
  */
 function Subscribe(viewContext, viewArgs) {
 

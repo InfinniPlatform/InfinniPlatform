@@ -7,7 +7,7 @@
   },
   "host": {
     "Name": "localhost",
-    "Port": 9901
+    "Port": 9900
   },
   "redis": {
     "Host": "localhost",
