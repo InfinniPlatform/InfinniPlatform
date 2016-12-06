@@ -1,6 +1,0 @@
-{
-  "file": [
-    "<file target='lib\\$framework\\agents.json' src='agents.json' />",
-    "<file target='lib\\$framework\\AppExtension.json' src='$projectName.AppExtension.json' />"
-  ]
-}

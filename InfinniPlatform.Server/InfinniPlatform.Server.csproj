@@ -111,13 +111,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="agents.json">
+    <None Include="AppExtension.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="InfinniPlatform.Server.AppExtension.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="nuspecExtension.json" />
     <None Include="packages.config" />
     <None Include="UI\bower.json" />
     <None Include="UI\package.json" />
@@ -163,6 +159,9 @@ pushd "$(ProjectDir)UI"
 npm run build
 popd</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="AppExtension.json" DestinationFiles="$(OutDir)\$(ProjectName).AppExtension.json" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

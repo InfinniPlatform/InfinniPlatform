@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
   "server": {
-    "AgentsInfoFilePath": "app\\agents.json"
+    "AgentsInfoFilePath": "agents.json"
   }
 }

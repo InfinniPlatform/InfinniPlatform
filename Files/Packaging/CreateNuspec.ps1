@@ -208,6 +208,13 @@
                 if ($isNotExtension) { $solutionRefs += "$projectTargetPath\AppCommon.json" }
             }
 
+            # Adds extension config-file
+
+            if (Project-HasFile $projectXml 'AppExtension.json')
+            {
+                if (-Not $isNotExtension) { $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectName.AppExtension.json"" />`r`n" }                
+            }
+
             # Adds content files
 
             $projectContentFiles = Project-GetContentFiles $projectDirectory
@@ -216,18 +223,6 @@
             {
                 $projectNuspec = $projectNuspec +
                     "        <file target=""$contentFile"" src=""$contentFile"" />`r`n"
-            }
-
-            $extensionFile = "$projectDirectory\nuspecExtension.json"            
-
-            if (Test-Path $extensionFile) 
-            {
-                $nuspecExtension = (Get-Content $extensionFile) -join "`n" | ConvertFrom-Json
-                foreach ($j in $nuspecExtension.file) {
-                    $j = $j.Replace('$framework', $framework).Replace('$projectName', $projectName)                    
-                    $projectNuspec = $projectNuspec +
-                    "        $j`r`n"
-                }                
             }
 
             # Ends the files part

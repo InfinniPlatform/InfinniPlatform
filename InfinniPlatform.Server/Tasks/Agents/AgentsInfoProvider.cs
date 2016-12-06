@@ -27,7 +27,7 @@ namespace InfinniPlatform.Server.Tasks.Agents
 
         public List<AgentInfo> GetAgentsInfoList()
         {
-            var agentsInfoText = File.ReadAllText(_settings.AgentsInfoFilePath);
+            var agentsInfoText = GetOrCreateAgentsInfoFile();
 
             var agentsInfo = _serializer.Deserialize<List<AgentInfo>>(agentsInfoText);
 
@@ -66,6 +66,21 @@ namespace InfinniPlatform.Server.Tasks.Agents
             SaveAgentsList(agentsInfoList);
         }
 
+
+        private string GetOrCreateAgentsInfoFile()
+        {
+            if (!File.Exists(_settings.AgentsInfoFilePath))
+            {
+                var agentInfos = new[]
+                                 {
+                                     new AgentInfo("local", "localhost", 9900, Guid.NewGuid().ToString("N"))
+                                 };
+
+                File.WriteAllBytes(_settings.AgentsInfoFilePath, _serializer.Serialize(agentInfos));
+            }
+
+            return File.ReadAllText(_settings.AgentsInfoFilePath);
+        }
 
         private static AgentInfo CreateAgentInfo(IHttpRequest request)
         {
