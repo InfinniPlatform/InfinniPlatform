@@ -101,7 +101,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Google
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Vk", "InfinniPlatform.Auth.Vk\InfinniPlatform.Auth.Vk.csproj", "{CBAB198C-3CA3-49C2-8E47-749348DEAB43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Agent", "InfinniPlatform.Agent\InfinniPlatform.Agent.csproj", "{7FD6C37A-BCC5-4E71-B65C-177573155AD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infinni.Agent", "Infinni.Agent\Infinni.Agent.csproj", "{7FD6C37A-BCC5-4E71-B65C-177573155AD3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Server", "InfinniPlatform.Server\InfinniPlatform.Server.csproj", "{6F2272BD-FCB7-4C1A-87AF-815FE0BCD95E}"
 EndProject

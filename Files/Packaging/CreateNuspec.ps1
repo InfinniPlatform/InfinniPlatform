@@ -26,7 +26,7 @@
 
         [Parameter(HelpMessage = "Solution extensions.")]
         [Array] $extensions = @(
-            'InfinniPlatform.Agent',
+            'Infinni.Agent',
             'InfinniPlatform.Heartbeat',
             'InfinniPlatform.Auth.Adfs',
             'InfinniPlatform.Auth.Cookie',

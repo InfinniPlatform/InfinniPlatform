@@ -1,0 +1,38 @@
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+
+using Infinni.Agent.Helpers;
+using InfinniPlatform.Sdk.Http.Services;
+
+namespace Infinni.Agent.Tasks.InfinniNode
+{
+    public class RestartAppTask : IAgentTask
+    {
+        private const int ProcessTimeout = 10 * 60 * 1000;
+
+        public RestartAppTask(InfinniNodeAdapter infinniNodeAdapter)
+        {
+            _infinniNodeAdapter = infinniNodeAdapter;
+        }
+
+        private readonly InfinniNodeAdapter _infinniNodeAdapter;
+
+        public string CommandName => "restart";
+
+        public HttpMethod HttpMethod => HttpMethod.Post;
+
+        public async Task<object> Run(IHttpRequest request)
+        {
+            var command = CommandName.AppendArg("i", (string)request.Form.AppName)
+                                     .AppendArg("v", (string)request.Form.Version)
+                                     .AppendArg("n", (string)request.Form.Instance)
+                                     .AppendArg("t", (string)request.Form.Timeout);
+
+            var result = await _infinniNodeAdapter.ExecuteCommand(command, ProcessTimeout);
+
+            var serviceResult = new ServiceResult<TaskStatus> { Success = true, Result = result };
+
+            return serviceResult;
+        }
+    }
+}

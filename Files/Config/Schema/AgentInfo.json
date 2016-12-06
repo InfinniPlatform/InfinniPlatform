@@ -2,7 +2,7 @@
     "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AgentInfo.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "AgentInfo",
-    "description": "Информация об агенте (InfinniPlatform.Agent).",
+    "description": "Информация об агенте (Infinni.Agent).",
     "type": "object",
     "properties": {
         "Address": {

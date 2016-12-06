@@ -10,7 +10,7 @@
         }
 
         /// <summary>
-        /// Путь до файла с информацией об экземплярах приложения InfinniPlatform.Agent.
+        /// Путь до файла с информацией об экземплярах приложения Infinni.Agent.
         /// </summary>
         public string AgentsInfoFilePath { get; set; }
     }
