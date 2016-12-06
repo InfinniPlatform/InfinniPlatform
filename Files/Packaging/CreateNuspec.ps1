@@ -37,7 +37,7 @@
             'InfinniPlatform.PrintView',
             'InfinniPlatform.Server',
             'InfinniPlatform.Scheduler',
-            'InfinniPlatform.Plugin.ViewEngine',
+            'InfinniPlatform.Plugins.ViewEngine',
             'InfinniPlatform.Watcher'
         )
     )
