@@ -212,7 +212,7 @@
 
             if (Project-HasFile $projectXml 'AppExtension.json')
             {
-                if (-Not $isNotExtension) { $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectName.AppExtension.json"" />`r`n" }                
+                if (-Not $isNotExtension) { $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework\AppExtension.json"" src=""$projectName.AppExtension.json"" />`r`n" }                
             }
 
             # Adds content files
