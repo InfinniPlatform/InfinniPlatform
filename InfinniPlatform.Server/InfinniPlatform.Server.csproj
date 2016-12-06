@@ -114,6 +114,9 @@
     <None Include="agents.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="InfinniPlatform.Server.AppExtension.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="nuspecExtension.json" />
     <None Include="packages.config" />
     <None Include="UI\bower.json" />
