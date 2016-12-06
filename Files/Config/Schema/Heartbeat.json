@@ -11,7 +11,7 @@
       "default": 60
     },
     "ServerAddress": {
-      "description": "Адрес сервера InfinniPlatform.Server.",
+      "description": "Адрес сервера Infinni.Server.",
       "type": "string",
       "default": "localhost:9901"
     },

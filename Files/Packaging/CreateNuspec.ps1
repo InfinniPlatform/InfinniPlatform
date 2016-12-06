@@ -27,6 +27,7 @@
         [Parameter(HelpMessage = "Solution extensions.")]
         [Array] $extensions = @(
             'Infinni.Agent',
+            'Infinni.Server',
             'InfinniPlatform.Heartbeat',
             'InfinniPlatform.Auth.Adfs',
             'InfinniPlatform.Auth.Cookie',
@@ -34,8 +35,7 @@
             'InfinniPlatform.Auth.Google',
             'InfinniPlatform.Auth.Internal',
             'InfinniPlatform.Auth.Vk',
-            'InfinniPlatform.PrintView',
-            'InfinniPlatform.Server',
+            'InfinniPlatform.PrintView',            
             'InfinniPlatform.Scheduler',
             'InfinniPlatform.Plugins.ViewEngine',
             'InfinniPlatform.Watcher'
@@ -324,7 +324,7 @@ function Solution-GetProjectVersions
     process
     {
         #$projectVersions = @{}
-        #$projectVersions.Add('C:\Projects\InfinniPlatform\InfinniPlatform.Server\InfinniPlatform.Server.csproj', '1.11.0.0-test')
+        #$projectVersions.Add('C:\Projects\InfinniPlatform\Infinni.Server\Infinni.Server.csproj', '1.11.0.0-test')
 
         #return $projectVersions
 

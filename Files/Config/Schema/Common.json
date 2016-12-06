@@ -82,7 +82,7 @@
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Agent.json"
     },
     "server": {
-      "description": "Настройки приложения InfinniPlatform.Server.",
+      "description": "Настройки приложения Infinni.Server.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Server.json"
     },
     "heartbeat": {

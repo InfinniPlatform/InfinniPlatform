@@ -7,7 +7,7 @@
     "CacheTimeout": 600
   },
   "watcher": {
-    "SourceDirectory": "..\\InfinniPlatform.Server\\UI\\views",
+    "SourceDirectory": "..\\Infinni.Server\\UI\\views",
     "DestinationDirectory": "content\\www\\views",
     "WatchingFileExtensions": [
       ".json"

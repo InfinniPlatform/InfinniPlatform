@@ -15,7 +15,7 @@
         public int Period { get; set; }
 
         /// <summary>
-        /// Адрес сервера InfinniPlatform.Server.
+        /// Адрес сервера Infinni.Server.
         /// </summary>
         public string ServerAddress { get; set; }
 

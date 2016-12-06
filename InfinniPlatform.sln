@@ -103,7 +103,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.Vk", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infinni.Agent", "Infinni.Agent\Infinni.Agent.csproj", "{7FD6C37A-BCC5-4E71-B65C-177573155AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Server", "InfinniPlatform.Server\InfinniPlatform.Server.csproj", "{6F2272BD-FCB7-4C1A-87AF-815FE0BCD95E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infinni.Server", "Infinni.Server\Infinni.Server.csproj", "{6F2272BD-FCB7-4C1A-87AF-815FE0BCD95E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Heartbeat", "InfinniPlatform.Heartbeat\InfinniPlatform.Heartbeat.csproj", "{A769A09B-C751-4039-8972-6DE5DF3CFB30}"
 EndProject
