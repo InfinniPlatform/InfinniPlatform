@@ -244,10 +244,10 @@
                               "Property": "$.Port"
                             }
                           }, {
-                            "Name": "AppFullName",
+                            "Name": "FullName",
                             "Value": {
                               "Source": "AppsDataSource",
-                              "Property": "$.AppFullName"
+                              "Property": "$.FullName"
                             }
                           }]
                         }
@@ -417,7 +417,7 @@
                                             "Source": "AppsDataSource",
                                             "Property": "#.Id"
                                           },
-                                          "TextStyle": "Headline"
+                                          "TextStyle": "Title"
                                         }
                                       }, {
                                         "Icon": {
@@ -733,10 +733,10 @@
                                       "Property": "$.Port"
                                     }
                                   }, {
-                                    "Name": "AppFullName",
+                                    "Name": "FullName",
                                     "Value": {
                                       "Source": "AppsDataSource",
-                                      "Property": "$.AppFullName"
+                                      "Property": "$.FullName"
                                     }
                                   }]
                                 }
@@ -764,8 +764,7 @@
                         "PopupButton": {
                           "Text": "Events log",
                           "Items": [{
-                            "Button": {
-                              "ToolTip": "Open events log in tab",
+                            "Button": {                              
                               "OnClick": "{ OpenEventsLogInTab(context, args); }",
                               "ContentTemplate": {
                                 "StackPanel": {
@@ -785,8 +784,7 @@
                               }
                             }
                           }, {
-                            "Button": {
-                              "ToolTip": "Download events log file",
+                            "Button": {                              
                               "OnClick": "{ DownloadEventsLogFile(context, args); }",
                               "ContentTemplate": {
                                 "StackPanel": {
@@ -811,8 +809,7 @@
                         "PopupButton": {
                           "Text": "Performance log",
                           "Items": [{
-                            "Button": {
-                              "ToolTip": "Open performance log in tab",
+                            "Button": {                              
                               "OnClick": "{ OpenPerfLogInTab(context, args); }",
                               "ContentTemplate": {
                                 "StackPanel": {
@@ -832,8 +829,7 @@
                               }
                             }
                           }, {
-                            "Button": {
-                              "ToolTip": "Download performance log file",
+                            "Button": {                              
                               "OnClick": "{ DownloadPerfLogFile(context, args); }",
                               "ContentTemplate": {
                                 "StackPanel": {

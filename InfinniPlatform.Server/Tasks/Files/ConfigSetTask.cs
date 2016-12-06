@@ -27,7 +27,7 @@ namespace InfinniPlatform.Server.Tasks.Files
 
             var arguments = new DynamicWrapper
                             {
-                                { "AppFullName", (string)request.Query.AppFullName },
+                                { "FullName", (string)request.Query.FullName },
                                 { "FileName", (string)request.Query.FileName },
                                 { "Config", (string)request.Form.Config.ToString() }
                             };

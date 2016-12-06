@@ -27,7 +27,7 @@ namespace InfinniPlatform.Server.Tasks.Files
 
             var arguments = new DynamicWrapper
                             {
-                                { "AppFullName", (string)request.Query.AppFullName }
+                                { "FullName", (string)request.Query.FullName }
                             };
 
             var stream = await _agentHttpClient.GetStream("perfLog", address, port, arguments);

@@ -5,7 +5,7 @@
     }, {
         "Name": "AgentPort"
     }, {
-        "Name": "AppFullName"
+        "Name": "FullName"
     }],
     "DataSources": [{
         "RestDataSource": {
@@ -16,7 +16,7 @@
                 "Data": {
                     "Address": "<%Address%>",
                     "Port": "<%Port%>",
-                    "AppFullName": "<%AppFullName%>",
+                    "FullName": "<%FullName%>",
                     "FileName": "AppCommon.json"
                 },
                 "Params": {
@@ -26,8 +26,8 @@
                     "Port": {
                         "Source": "AgentPort"
                     },
-                    "AppFullName": {
-                        "Source": "AppFullName"
+                    "FullName": {
+                        "Source": "FullName"
                     }
                 }
             },
@@ -42,7 +42,7 @@
                 "Data": {
                     "Address": "<%Address%>",
                     "Port": "<%Port%>",
-                    "AppFullName": "<%AppFullName%>",
+                    "FullName": "<%FullName%>",
                     "FileName": "AppExtension.json"
                 },
                 "Params": {
@@ -52,8 +52,8 @@
                     "Port": {
                         "Source": "AgentPort"
                     },
-                    "AppFullName": {
-                        "Source": "AppFullName"
+                    "FullName": {
+                        "Source": "FullName"
                     }
                 }
             },
@@ -80,7 +80,7 @@
                             "Text": "Save",
                             "Action": {
                                 "ServerAction": {
-                                    "Path": "/server/config?Address=<%agentAddress%>&Port=<%agentPort%>&AppFullName=<%appFullName%>&FileName=AppExtension.json",
+                                    "Path": "/server/config?Address=<%agentAddress%>&Port=<%agentPort%>&FullName=<%appFullName%>&FileName=AppExtension.json",
                                     "Method": "POST",
                                     "Data": {                                        
                                         "Config": "<%config%>"
@@ -93,7 +93,7 @@
                                             "Source": "AgentPort"
                                         },
                                         "appFullName": {
-                                            "Source": "AppFullName"
+                                            "Source": "FullName"
                                         },                                        
                                         "config":{
                                             "Source":"AppExtensionSource",

@@ -21,7 +21,7 @@ namespace InfinniPlatform.Agent.Tasks.Files
 
         public Task<object> Run(IHttpRequest request)
         {
-            string appFullName = request.Form.AppFullName;
+            string appFullName = request.Form.FullName;
             string fileName = request.Form.FileName;
             string config = request.Form.Config;
 

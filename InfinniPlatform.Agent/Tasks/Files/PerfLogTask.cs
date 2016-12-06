@@ -21,7 +21,7 @@ namespace InfinniPlatform.Agent.Tasks.Files
 
         public Task<object> Run(IHttpRequest request)
         {
-            string appFullName = request.Query.AppFullName;
+            string appFullName = request.Query.FullName;
 
             var streamHttpResponse = new StreamHttpResponse(_logFilePovider.GetPerformanceLog(appFullName), "application/text");
             return Task.FromResult<object>(streamHttpResponse);

@@ -35,10 +35,10 @@ function OpenEventsLogInTab(context, args) {
     var replacements = [
         agent.Address,
         agent.Port,
-        app.AppFullName
+        app.FullName
     ];
 
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/appLog?Address={0}&Port={1}&AppFullName={2}", replacements);
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/appLog?Address={0}&Port={1}&FullName={2}", replacements);
 
     window.open(url);
 }
@@ -50,10 +50,10 @@ function OpenPerfLogInTab(context, args) {
     var replacements = [
         agent.Address,
         agent.Port,
-        app.AppFullName
+        app.FullName
     ];
 
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/perfLog?Address={0}&Port={1}&AppFullName={2}", replacements);
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/perfLog?Address={0}&Port={1}&FullName={2}", replacements);
 
     window.open(url);
 }
@@ -78,10 +78,10 @@ function DownloadEventsLogFile(context, args) {
     var replacements = [
         agent.Address,
         agent.Port,
-        app.AppFullName
+        app.FullName
     ];
 
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/events.log?Address={0}&Port={1}&AppFullName={2}", replacements);
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/events.log?Address={0}&Port={1}&FullName={2}", replacements);
 
     window.open(url);
 }
@@ -93,10 +93,10 @@ function DownloadPerfLogFile(context, args) {
     var replacements = [
         agent.Address,
         agent.Port,
-        app.AppFullName
+        app.FullName
     ];
 
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/performance.log?Address={0}&Port={1}&AppFullName={2}", replacements);
+    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/performance.log?Address={0}&Port={1}&FullName={2}", replacements);
 
     window.open(url);
 }
