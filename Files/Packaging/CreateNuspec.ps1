@@ -214,7 +214,19 @@
             foreach ($contentFile in $projectContentFiles)
             {
                 $projectNuspec = $projectNuspec +
-                    "        <file src=""$contentFile"" target=""$contentFile""/>`r`n"
+                    "        <file target=""$contentFile"" src=""$contentFile"" />`r`n"
+            }
+
+            $extensionFile = "$projectDirectory\nuspecExtension.json"            
+
+            if (Test-Path $extensionFile) 
+            {
+                $nuspecExtension = (Get-Content $extensionFile) -join "`n" | ConvertFrom-Json
+                foreach ($j in $nuspecExtension.file) {
+                    $j = $j.Replace('$framework', $framework).Replace('$projectName', $projectName)                    
+                    $projectNuspec = $projectNuspec +
+                    "        $j`r`n"
+                }                
             }
 
             # Ends the files part
@@ -315,6 +327,11 @@ function Solution-GetProjectVersions
 
     process
     {
+        #$projectVersions = @{}
+        #$projectVersions.Add('C:\Projects\InfinniPlatform\InfinniPlatform.Server\InfinniPlatform.Server.csproj', '1.11.0.0-test')
+
+        #return $projectVersions
+
         $isReleaseBranch = $false
 
         # Gets semantic version of the solution

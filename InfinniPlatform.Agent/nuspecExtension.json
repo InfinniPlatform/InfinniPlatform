@@ -1,0 +1,5 @@
+{
+  "file": [    
+    "<file target='lib\\$framework\\AppExtension.json' src='$projectName.AppExtension.json' />"
+  ]
+}

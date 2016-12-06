@@ -57,8 +57,6 @@ namespace InfinniPlatform.Server.Tasks.Agents
 
             var result = new ServiceResult<IEnumerable<AgentTaskStatus>> { Success = true, Result = agentResult.Result.Select(s => s.Value) };
 
-            var agentTaskStatuses = result.Result.ToArray();
-
             return result;
         }
     }

@@ -105,6 +105,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="InfinniPlatform.Agent.AppExtension.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="nuspecExtension.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
