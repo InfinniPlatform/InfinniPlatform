@@ -139,6 +139,10 @@
     <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="ServiceHost\ServiceHost.cs" />
     <Compile Include="ServiceHost\ServiceHostStatus.cs" />
+    <Compile Include="Session\TenantProvider.cs" />
+    <Compile Include="Session\TenantScope.cs" />
+    <Compile Include="Session\TenantScopeContext.cs" />
+    <Compile Include="Session\TenantScopeProvider.cs" />
     <Compile Include="Settings\AppConfigurationPlaceholder.cs" />
     <Compile Include="Settings\AppEnvironment.cs" />
     <Compile Include="IoC\CoreContainerModule.cs" />

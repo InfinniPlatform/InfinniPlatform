@@ -3,19 +3,21 @@
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 
-namespace InfinniPlatform.DocumentStorage.Storage
+namespace InfinniPlatform.Core.Session
 {
     /// <summary>
     /// Предоставляет методы определения пользователя системы по модели SaaS.
     /// </summary>
     internal class TenantProvider : ITenantProvider
     {
-        public TenantProvider(IUserIdentityProvider userIdentityProvider)
+        public TenantProvider(ITenantScopeProvider tenantScopeProvider, IUserIdentityProvider userIdentityProvider)
         {
+            _tenantScopeProvider = tenantScopeProvider;
             _userIdentityProvider = userIdentityProvider;
         }
 
 
+        private readonly ITenantScopeProvider _tenantScopeProvider;
         private readonly IUserIdentityProvider _userIdentityProvider;
 
 
@@ -30,7 +32,13 @@ namespace InfinniPlatform.DocumentStorage.Storage
         {
             string tenantId;
 
-            if (identity != null && identity.IsAuthenticated)
+            var tenantScope = _tenantScopeProvider.GetTenantScope();
+
+            if (tenantScope != null)
+            {
+                tenantId = tenantScope.TenantId;
+            }
+            else if (identity != null && identity.IsAuthenticated)
             {
                 // Идентификатор текущей организации
                 tenantId = identity.FindFirstClaim(ApplicationClaimTypes.TenantId);

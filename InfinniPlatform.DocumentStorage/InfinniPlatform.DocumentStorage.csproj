@@ -143,7 +143,6 @@
     <Compile Include="Storage\SystemDocumentStorageImpl.cs" />
     <Compile Include="Storage\SystemDocumentStorageImplGeneric.cs" />
     <Compile Include="Storage\SystemTenantProvider.cs" />
-    <Compile Include="Storage\TenantProvider.cs" />
     <Compile Include="Transactions\UnitOfWorkFactory.cs" />
     <Compile Include="Transactions\UnitOfWorkItem.cs" />
     <Compile Include="Transactions\UnitOfWork.cs" />
