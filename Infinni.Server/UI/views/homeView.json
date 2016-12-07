@@ -276,8 +276,8 @@
                   "Text": "Infinni.Node log",
                   "Items": [{
                     "Button": {
-                      "Name": "nodeLogButton",
-                      "OnClick": "{ OpenNodeLogInTab(context, args); }",
+                      "Name": "NodeLogTabButton",
+                      "OnClick": "{ GetLog(context, args, 'nodeTab'); }",
                       "ContentTemplate": {
                         "StackPanel": {
                           "ViewMode": "Base",
@@ -297,8 +297,8 @@
                     }
                   }, {
                     "Button": {
-                      "Name": "perfLogTabButton",
-                      "OnClick": "{ DownloadNodeLogFile(context, args); }",
+                      "Name": "NodeLogFileButton",
+                      "OnClick": "{ GetLog(context, args, 'nodeFile'); }",
                       "ContentTemplate": {
                         "StackPanel": {
                           "ViewMode": "Base",
@@ -764,8 +764,9 @@
                         "PopupButton": {
                           "Text": "Events log",
                           "Items": [{
-                            "Button": {                              
-                              "OnClick": "{ OpenEventsLogInTab(context, args); }",
+                            "Button": {
+                              "Name": "EventsLogTabButton",
+                              "OnClick": "{ GetLog(context, args, 'eventsTab'); }",
                               "ContentTemplate": {
                                 "StackPanel": {
                                   "ViewMode": "Base",
@@ -784,8 +785,9 @@
                               }
                             }
                           }, {
-                            "Button": {                              
-                              "OnClick": "{ DownloadEventsLogFile(context, args); }",
+                            "Button": {
+                              "Name": "EventsLogFileButton",
+                              "OnClick": "{ GetLog(context, args, 'eventsFile'); }",
                               "ContentTemplate": {
                                 "StackPanel": {
                                   "ViewMode": "Base",
@@ -809,8 +811,9 @@
                         "PopupButton": {
                           "Text": "Performance log",
                           "Items": [{
-                            "Button": {                              
-                              "OnClick": "{ OpenPerfLogInTab(context, args); }",
+                            "Button": {
+                              "Name": "PerformanceLogTabButton",
+                              "OnClick": "{ GetLog(context, args, 'perfTab'); }",
                               "ContentTemplate": {
                                 "StackPanel": {
                                   "ViewMode": "Base",
@@ -829,8 +832,9 @@
                               }
                             }
                           }, {
-                            "Button": {                              
-                              "OnClick": "{ DownloadPerfLogFile(context, args); }",
+                            "Button": {
+                              "Name": "PerformanceLogFileButton",
+                              "OnClick": "{ GetLog(context, args, 'perfFile'); }",
                               "ContentTemplate": {
                                 "StackPanel": {
                                   "ViewMode": "Base",

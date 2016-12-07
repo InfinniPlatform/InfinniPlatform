@@ -1,4 +1,4 @@
-/** Отправляет POST-запрос с измененным файлом конфигурации AppExtension.json * 
+/** Осуществляет подписку на сообщения SignalR * 
  * @param {any} viewContext Контекст
  * @param {any} viewArgs Аргументы
  */
@@ -28,88 +28,47 @@ function Subscribe(viewContext, viewArgs) {
         viewContext);
 }
 
-function OpenEventsLogInTab(context, args) {
+/** Открывает/скачивает файл лога * 
+ * @param {any} context Контекст
+ * @param {any} args Аргументы
+ * @param {any} name Имя сценария
+ */
+function GetLog(context, args, name) {
     var agent = context.dataSources.AgentsDataSource.getSelectedItem();
     var app = context.dataSources.AppsDataSource.getSelectedItem();
+
+    var template = window.InfinniUI.config.serverUrl + "/server";
+
+    switch (name) {
+        case 'eventsTab':
+            template = template + "/appLog?Address={0}&Port={1}&FullName={2}";
+            break;
+        case 'eventsFile':
+            template = template + "/events.log?Address={0}&Port={1}&FullName={2}";
+            break;
+        case 'perfTab':
+            template = template + "/perfLog?Address={0}&Port={1}&FullName={2}";
+            break;
+        case 'perfFile':
+            template = template + "/performance.log?Address={0}&Port={1}&FullName={2}";
+            break;
+        case 'nodeTab':
+            template = template + "/nodeLog?Address={0}&Port={1}";
+            break;
+        case 'nodeFile':
+            template = template + "/infinniNode.log?Address={0}&Port={1}";
+            break;
+        default:
+            break;
+    }
 
     var replacements = [
         agent.Address,
         agent.Port,
         app.FullName
-    ];
+    ];    
 
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/appLog?Address={0}&Port={1}&FullName={2}", replacements);
-
-    window.open(url);
-}
-
-function OpenPerfLogInTab(context, args) {
-    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
-    var app = context.dataSources.AppsDataSource.getSelectedItem();
-
-    var replacements = [
-        agent.Address,
-        agent.Port,
-        app.FullName
-    ];
-
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/perfLog?Address={0}&Port={1}&FullName={2}", replacements);
-
-    window.open(url);
-}
-
-function OpenNodeLogInTab(context, args) {
-    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
-
-    var replacements = [
-        agent.Address,
-        agent.Port
-    ];
-
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/nodeLog?Address={0}&Port={1}", replacements);
-
-    window.open(url);
-}
-
-function DownloadEventsLogFile(context, args) {
-    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
-    var app = context.dataSources.AppsDataSource.getSelectedItem();
-
-    var replacements = [
-        agent.Address,
-        agent.Port,
-        app.FullName
-    ];
-
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/events.log?Address={0}&Port={1}&FullName={2}", replacements);
-
-    window.open(url);
-}
-
-function DownloadPerfLogFile(context, args) {
-    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
-    var app = context.dataSources.AppsDataSource.getSelectedItem();
-
-    var replacements = [
-        agent.Address,
-        agent.Port,
-        app.FullName
-    ];
-
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/performance.log?Address={0}&Port={1}&FullName={2}", replacements);
-
-    window.open(url);
-}
-
-function DownloadNodeLogFile(context, args) {
-    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
-
-    var replacements = [
-        agent.Address,
-        agent.Port
-    ];
-
-    var url = InfinniUI.StringUtils.format("http://localhost:9901/server/infinniNode.log?Address={0}&Port={1}", replacements);
+    var url = InfinniUI.StringUtils.format(template, replacements);
 
     window.open(url);
 }
@@ -126,13 +85,13 @@ function GetProcessInfoStateIconValue(context, args) {
 }
 
 function GetProcessInfoStateStartButtonVisibility(context, args) {
-    if(args.value==="Stopped"){
+    if (args.value === "Stopped") {
         return true;
     }
 }
 
 function GetProcessInfoStateStopButtonVisibility(context, args) {
-    if(args.value==="Running"){
+    if (args.value === "Running") {
         return true;
     }
 }
@@ -150,8 +109,8 @@ function GetProcessInfoStateIconForeground(context, args) {
 
 function ConvertTaskState(context, args) {
     if (args.value) {
-        return 'Completed';
+        return "Completed";
     } else {
-        return 'Working';
+        return "Working";
     }
 }
