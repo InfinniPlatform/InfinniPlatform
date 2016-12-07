@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Infinni.Server.Agent;
+
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
-using Infinni.Server.Agent;
 
 namespace Infinni.Server.Tasks.Agents
 {
@@ -31,13 +33,19 @@ namespace Infinni.Server.Tasks.Agents
             int port = request.Query.Port;
 
             var taskId = (string)request.Query.TaskId;
+//            try
+//            {
+                if (taskId != null)
+                {
+                    return await GetTaskStatus(taskId, address, port);
+                }
 
-            if (taskId != null)
-            {
-                return await GetTaskStatus(taskId, address, port);
-            }
-
-            return await GetTasksStatus(address, port);
+                return await GetTasksStatus(address, port);
+//            }
+//            catch (Exception e)
+//            {
+//                return await HandleError(e);
+//            }
         }
 
         private async Task<object> GetTaskStatus(string taskId, string address, int port)
@@ -58,6 +66,19 @@ namespace Infinni.Server.Tasks.Agents
             var result = new ServiceResult<IEnumerable<AgentTaskStatus>> { Success = true, Result = agentResult.Result.Select(s => s.Value) };
 
             return result;
+        }
+
+        private static Task<object> HandleError(Exception e)
+        {
+            var error = new ServiceResult<DynamicWrapper>
+                        {
+                            Success = false,
+                            Error = "Понятное сообщение!"
+                        };
+
+            var errorHttpResponse = new JsonHttpResponse(error) { StatusCode = 500 };
+
+            return Task.FromResult<object>(errorHttpResponse);
         }
     }
 }

@@ -2,6 +2,7 @@
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
 using Infinni.Server.Agent;
+using Infinni.Server.HttpService;
 using Infinni.Server.Settings;
 using Infinni.Server.Tasks;
 using Infinni.Server.Tasks.Agents;
@@ -40,6 +41,10 @@ namespace Infinni.Server.IoC
 
             builder.RegisterType<AgentsInfoProvider>()
                    .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<ServerHttpGlobalHandler>()
+                   .As<IHttpGlobalHandler>()
                    .SingleInstance();
 
             builder.RegisterHttpServices(assembly);

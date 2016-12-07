@@ -73,6 +73,10 @@ function GetLog(context, args, name) {
     window.open(url);
 }
 
+function OnRestDataSourceError(context, args) {
+    toastr.error(args.data.data.responseJSON.Error);
+}
+
 function GetProcessInfoStateIconValue(context, args) {
     switch (args.value) {
         case "Stopped":

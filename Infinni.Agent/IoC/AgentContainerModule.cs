@@ -49,7 +49,7 @@ namespace Infinni.Agent.IoC
                    .As<IAgentTaskStorage>()
                    .SingleInstance();
 
-            builder.RegisterHttpServices(assembly);
+            //builder.RegisterHttpServices(assembly);
         }
 
         private static AgentSettings GetAgentSettings(IContainerResolver resolver)

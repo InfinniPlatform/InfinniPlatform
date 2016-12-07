@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
+    <Compile Include="HttpService\ServerHttpGlobalHandler.cs" />
     <Compile Include="Tasks\Agents\AddAgentTask.cs" />
     <Compile Include="Tasks\Agents\AgentsInfoProvider.cs" />
     <Compile Include="Tasks\Agents\AgentTaskStatus.cs" />
