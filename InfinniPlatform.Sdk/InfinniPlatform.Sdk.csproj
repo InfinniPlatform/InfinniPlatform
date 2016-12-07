@@ -188,6 +188,8 @@
     <Compile Include="Http\Services\IHttpServiceSource.cs" />
     <Compile Include="Http\Services\IMimeTypeProvider.cs" />
     <Compile Include="Http\Services\ViewHttpResponce.cs" />
+    <Compile Include="Session\ITenantScope.cs" />
+    <Compile Include="Session\ITenantScopeProvider.cs" />
     <Compile Include="Session\IUserEventHandler.cs" />
     <Compile Include="Session\ITenantProvider.cs" />
     <Compile Include="Session\UserEventHandler.cs" />

@@ -113,11 +113,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .As<IUnitOfWorkFactory>()
                    .SingleInstance();
 
-            // SaaS
-
-            builder.RegisterType<TenantProvider>()
-                   .As<ITenantProvider>()
-                   .SingleInstance();
+            // Session
 
             builder.RegisterType<SystemTenantProvider>()
                    .As<ISystemTenantProvider>()

@@ -1,9 +1,11 @@
 ﻿using System.Text;
 
 using InfinniPlatform.Core.Metadata;
+using InfinniPlatform.Core.Session;
 using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Core.IoC
@@ -31,6 +33,16 @@ namespace InfinniPlatform.Core.IoC
 
             builder.RegisterType<JsonDocumentMetadataSource>()
                    .As<IDocumentMetadataSource>()
+                   .SingleInstance();
+
+            // Session
+
+            builder.RegisterType<TenantScopeProvider>()
+                   .As<ITenantScopeProvider>()
+                   .SingleInstance();
+
+            builder.RegisterType<TenantProvider>()
+                   .As<ITenantProvider>()
                    .SingleInstance();
         }
     }
