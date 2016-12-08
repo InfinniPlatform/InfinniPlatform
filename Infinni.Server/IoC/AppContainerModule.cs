@@ -43,10 +43,6 @@ namespace Infinni.Server.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<ServerHttpGlobalHandler>()
-                   .As<IHttpGlobalHandler>()
-                   .SingleInstance();
-
             builder.RegisterHttpServices(assembly);
         }
 
