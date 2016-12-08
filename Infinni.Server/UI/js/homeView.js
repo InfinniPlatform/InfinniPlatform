@@ -33,10 +33,43 @@ function Subscribe(viewContext, viewArgs) {
  * @param {any} args Аргументы
  * @param {any} name Имя сценария
  */
-function GetLog(context, args, name) {
+function GetNodeLog(context, args, name) {
     var agent = context.dataSources.AgentsDataSource.getSelectedItem();
-    var app = context.dataSources.AppsDataSource.getSelectedItem();
+    var template = window.InfinniUI.config.serverUrl + "/server";
 
+    switch (name) {
+        case 'tab':
+            template = template + "/nodeLog?Address={0}&Port={1}";
+            break;
+        case 'file':
+            template = template + "/infinniNode.log?Address={0}&Port={1}";
+            break;
+        default:
+            break;
+    }
+
+    var replacements = [
+        agent.Address,
+        agent.Port
+    ];
+
+    var url = InfinniUI.StringUtils.format(template, replacements);
+
+    window.open(url);
+}
+
+/** Открывает/скачивает файл лога * 
+ * @param {any} context Контекст
+ * @param {any} args Аргументы
+ * @param {any} name Имя сценария
+ */
+function GetLog(context, args, name) {
+    var app = context.dataSources.AppsDataSource.getSelectedItem();
+    if (app === null || app === undefined) {
+        return;
+    }
+
+    var agent = context.dataSources.AgentsDataSource.getSelectedItem();
     var template = window.InfinniUI.config.serverUrl + "/server";
 
     switch (name) {
@@ -52,12 +85,6 @@ function GetLog(context, args, name) {
         case 'perfFile':
             template = template + "/performance.log?Address={0}&Port={1}&FullName={2}";
             break;
-        case 'nodeTab':
-            template = template + "/nodeLog?Address={0}&Port={1}";
-            break;
-        case 'nodeFile':
-            template = template + "/infinniNode.log?Address={0}&Port={1}";
-            break;
         default:
             break;
     }
@@ -66,7 +93,7 @@ function GetLog(context, args, name) {
         agent.Address,
         agent.Port,
         app.FullName
-    ];    
+    ];
 
     var url = InfinniUI.StringUtils.format(template, replacements);
 

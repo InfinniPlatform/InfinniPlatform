@@ -46,7 +46,7 @@
         "Source": "Task",
         "Property": ""
       },
-      "DisplayFormat":"{Output}"      
+      "DisplayFormat":"{FormattedOutput}"      
     }
   }]
 }

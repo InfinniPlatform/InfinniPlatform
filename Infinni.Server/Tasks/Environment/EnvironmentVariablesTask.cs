@@ -1,14 +1,15 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Http.Services;
 using Infinni.Server.Agent;
+
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace Infinni.Server.Tasks.Environment
 {
-    public class EnvironmentVarablesTask : IServerTask
+    public class EnvironmentVariablesTask : IServerTask
     {
-        public EnvironmentVarablesTask(IAgentHttpClient agentHttpClient)
+        public EnvironmentVariablesTask(IAgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }

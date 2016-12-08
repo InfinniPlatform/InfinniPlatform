@@ -3,13 +3,14 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Infinni.Agent.Providers;
+
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace Infinni.Agent.Tasks.Environment
 {
-    public class EnvirementVariablesTask : IAgentTask
+    public class EnvironmentVariablesTask : IAgentTask
     {
-        public EnvirementVariablesTask(IEnvironmentVariableProvider variableProvider)
+        public EnvironmentVariablesTask(IEnvironmentVariableProvider variableProvider)
         {
             _variableProvider = variableProvider;
         }

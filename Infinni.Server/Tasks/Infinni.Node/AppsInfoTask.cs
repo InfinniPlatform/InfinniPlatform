@@ -1,11 +1,9 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 using Infinni.Server.Agent;
 using Infinni.Server.Tasks.Agents;
 
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace Infinni.Server.Tasks.Infinni.Node
@@ -30,30 +28,11 @@ namespace Infinni.Server.Tasks.Infinni.Node
         {
             string address = request.Query.Address;
             int port = request.Query.Port;
-//            try
-//            {
-                var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port);
-                var appsInfo = _nodeOutputParser.FormatAppsInfoOutput(serviceResult);
 
-                return appsInfo;
-//            }
-//            catch (Exception e)
-//            {
-//                return await HandleError(e);
-//            }
-        }
+            var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port);
+            var appsInfo = _nodeOutputParser.FormatAppsInfoOutput(serviceResult);
 
-        private static Task<object> HandleError(Exception e)
-        {
-            var error = new ServiceResult<DynamicWrapper>
-                        {
-                            Success = false,
-                            Error = "Понятное сообщение!"
-                        };
-
-            var errorHttpResponse = new JsonHttpResponse(error) { StatusCode = 500 };
-
-            return Task.FromResult<object>(errorHttpResponse);
+            return appsInfo;
         }
     }
 }

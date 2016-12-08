@@ -1,12 +1,11 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
+using Infinni.Server.Properties;
 using Infinni.Server.Tasks;
 
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
-
-using Newtonsoft.Json;
 
 namespace Infinni.Server.HttpService
 {
@@ -28,13 +27,15 @@ namespace Infinni.Server.HttpService
 
             builder.OnError = (request, e) =>
                               {
-                                  if (e is JsonReaderException)
-                                  {
-                                      return CreateErrorResponse($"Не удалось преобразовать результат ответа Infinni.Agent ({request.Path}).");
+                                  var exception = e as HttpServiceException;
 
+                                  if (exception != null)
+                                  {
+                                      var errorHttpResponse = exception.ErrorHttpResponse;
+                                      return Task.FromResult<object>(errorHttpResponse);
                                   }
 
-                                  return CreateErrorResponse("Непредвиденная ошибка сервера! Покинуть корабль!");
+                                  return CreateErrorResponse(Resources.UnexpectedServerError);
                               };
 
             foreach (var serverTask in _serverTasks)

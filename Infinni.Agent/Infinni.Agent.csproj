@@ -70,7 +70,7 @@
     <Compile Include="Helpers\InfinniNodeAdapter.cs" />
     <Compile Include="Tasks\Files\AppLogTask.cs" />
     <Compile Include="Tasks\InfinniNode\AppsInfoTask.cs" />
-    <Compile Include="Tasks\Environment\EnvirementVariablesTask.cs" />
+    <Compile Include="Tasks\Environment\EnvironmentVariablesTask.cs" />
     <Compile Include="Tasks\Files\ConfigGetTask.cs" />
     <Compile Include="Tasks\IAgentTask.cs" />
     <Compile Include="Tasks\InfinniNode\InitAppTask.cs" />

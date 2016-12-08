@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Agent\AgentHttpClient.cs" />
     <Compile Include="Agent\IAgentHttpClient.cs" />
+    <Compile Include="HttpService\HttpServiceException.cs" />
     <Compile Include="Tasks\Agents\AddAgentTask.cs" />
     <Compile Include="Tasks\Agents\AgentsInfoProvider.cs" />
     <Compile Include="Tasks\Agents\AgentTaskStatus.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="Tasks\Agents\AgentsInfoTask.cs" />
     <Compile Include="Tasks\Infinni.Node\AppsInfoTask.cs" />
     <Compile Include="Tasks\Heartbeat\LogHeartBeatTask.cs" />
-    <Compile Include="Tasks\Environment\EnvironmentVarablesTask.cs" />
+    <Compile Include="Tasks\Environment\EnvironmentVariablesTask.cs" />
     <Compile Include="Tasks\Files\FileHelper.cs" />
     <Compile Include="Tasks\Files\AppLogTask.cs" />
     <Compile Include="Tasks\Files\ConfigGetTask.cs" />
@@ -113,6 +114,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AppExtension.json">

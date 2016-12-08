@@ -24,7 +24,8 @@
           }
         }
       },
-      "UpdatingItemsConverter": "{ return FormatResult(context, args); }"
+      "UpdatingItemsConverter": "{ return FormatResult(context, args); }",
+      "OnProviderError":"{ OnRestDataSourceError(context, args); }"
     }
   }],
   "Items": [{

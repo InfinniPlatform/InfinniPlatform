@@ -19,7 +19,8 @@
             "Source": "AgentPort"
           }
         }
-      }
+      },
+      "OnProviderError":"{ OnRestDataSourceError(context, args); }"
     }
   }, {
     "RestDataSource": {
@@ -53,7 +54,8 @@
           }
         }
       },
-      "UpdatingItemsConverter": "{ return args.value.Result.FormattedOutput; }"
+      "UpdatingItemsConverter": "{ return args.value.Result.FormattedOutput; }",
+      "OnProviderError":"{ OnRestDataSourceError(context, args); }"
     }
   }],
   "Text": "Install new app",

@@ -31,7 +31,8 @@
                     }
                 }
             },
-            "UpdatingItemsConverter": "{ return new Array(args.value.Result); }"
+            "UpdatingItemsConverter": "{ return new Array(args.value.Result); }",
+            "OnProviderError":"{ OnRestDataSourceError(context, args); }"
         }
     }, {
         "RestDataSource": {
@@ -57,7 +58,8 @@
                     }
                 }
             },
-            "UpdatingItemsConverter": "{ return new Array(args.value.Result); }"
+            "UpdatingItemsConverter": "{ return new Array(args.value.Result); }",
+            "OnProviderError":"{ OnRestDataSourceError(context, args); }"
         }
     }],
     "Items": [{
