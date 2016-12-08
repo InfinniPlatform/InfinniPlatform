@@ -13,14 +13,14 @@ namespace Infinni.Server.Tasks.Infinni.Node
     {
         private const string NotifyMessageType = "Init";
 
-        public InitAppTask(IAgentHttpClient agentHttpClient,
+        public InitAppTask(AgentHttpClient agentHttpClient,
                            IPushNotificationService notifyService)
         {
             _agentHttpClient = agentHttpClient;
             _notifyService = notifyService;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
         private readonly IPushNotificationService _notifyService;
 
         public string CommandName => "init";

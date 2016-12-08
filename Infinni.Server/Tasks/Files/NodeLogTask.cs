@@ -9,12 +9,12 @@ namespace Infinni.Server.Tasks.Files
 {
     public class NodeLogTask : IServerTask
     {
-        public NodeLogTask(IAgentHttpClient agentHttpClient)
+        public NodeLogTask(AgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
 
         public string CommandName => "nodeLog";
 

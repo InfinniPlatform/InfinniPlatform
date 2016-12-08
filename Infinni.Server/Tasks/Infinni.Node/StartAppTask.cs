@@ -13,14 +13,14 @@ namespace Infinni.Server.Tasks.Infinni.Node
     {
         private const string NotifyMessageType = "WorkLog";
 
-        public StartAppTask(IAgentHttpClient agentHttpClient,
+        public StartAppTask(AgentHttpClient agentHttpClient,
                             IPushNotificationService notifyService)
         {
             _agentHttpClient = agentHttpClient;
             _notifyService = notifyService;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
         private readonly IPushNotificationService _notifyService;
 
         public string CommandName => "start";

@@ -58,7 +58,6 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Agent\AgentHttpClient.cs" />
-    <Compile Include="Agent\IAgentHttpClient.cs" />
     <Compile Include="HttpService\HttpServiceException.cs" />
     <Compile Include="Tasks\Agents\AddAgentTask.cs" />
     <Compile Include="Tasks\Agents\AgentsInfoProvider.cs" />

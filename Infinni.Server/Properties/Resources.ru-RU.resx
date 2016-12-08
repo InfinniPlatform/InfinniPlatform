@@ -118,12 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="UnableConnectAgent" xml:space="preserve">
-    <value>Не удалось получить ответ от Infinni.Agent. Проверьте адрес.</value>
+    <value>Не удалось получить ответ от Infinni.Agent. Проверьте адрес/порт.</value>
   </data>
   <data name="UnableReadAgentResponse" xml:space="preserve">
     <value>Не удалось прочитать ответ от Infinni.Agent.</value>
   </data>
   <data name="UnexpectedServerError" xml:space="preserve">
     <value>Произошла непредвиденная ошибка сервера.</value>
+  </data>
+  <data name="CheckUriFormat" xml:space="preserve">
+    <value>Некорректный URL. Проверьте адрес/порт.</value>
   </data>
 </root>

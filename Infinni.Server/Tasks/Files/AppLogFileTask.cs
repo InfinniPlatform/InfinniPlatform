@@ -9,12 +9,12 @@ namespace Infinni.Server.Tasks.Files
 {
     public class AppLogFileTask : IServerTask
     {
-        public AppLogFileTask(IAgentHttpClient agentHttpClient)
+        public AppLogFileTask(AgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
 
         public string CommandName => "events.log";
 

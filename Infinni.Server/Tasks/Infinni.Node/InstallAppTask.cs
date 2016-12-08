@@ -13,14 +13,14 @@ namespace Infinni.Server.Tasks.Infinni.Node
     {
         private const string InstallMessageType = "Install";
 
-        public InstallAppTask(IAgentHttpClient agentHttpClient,
+        public InstallAppTask(AgentHttpClient agentHttpClient,
                               IPushNotificationService notifyService)
         {
             _notifyService = notifyService;
             _agentHttpClient = agentHttpClient;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
         private readonly IPushNotificationService _notifyService;
 
         public string CommandName => "install";

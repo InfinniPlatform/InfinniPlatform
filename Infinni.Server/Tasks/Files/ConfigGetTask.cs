@@ -11,12 +11,12 @@ namespace Infinni.Server.Tasks.Files
 {
     public class ConfigGetTask : IServerTask
     {
-        public ConfigGetTask(IAgentHttpClient agentHttpClient)
+        public ConfigGetTask(AgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
 
         public string CommandName => "config";
 

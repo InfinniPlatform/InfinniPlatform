@@ -10,14 +10,14 @@ namespace Infinni.Server.Tasks.Infinni.Node
 {
     public class PackagesTask : IServerTask
     {
-        public PackagesTask(IAgentHttpClient agentHttpClient,
+        public PackagesTask(AgentHttpClient agentHttpClient,
                             INodeOutputParser nodeOutputParser)
         {
             _agentHttpClient = agentHttpClient;
             _nodeOutputParser = nodeOutputParser;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
         private readonly INodeOutputParser _nodeOutputParser;
 
         public string CommandName => "packages";

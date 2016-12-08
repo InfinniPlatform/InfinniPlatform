@@ -1,12 +1,12 @@
-﻿using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Settings;
-using Infinni.Server.Agent;
-using Infinni.Server.HttpService;
+﻿using Infinni.Server.Agent;
 using Infinni.Server.Settings;
 using Infinni.Server.Tasks;
 using Infinni.Server.Tasks.Agents;
 using Infinni.Server.Tasks.Infinni.Node;
+
+using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Settings;
 
 namespace Infinni.Server.IoC
 {
@@ -32,7 +32,7 @@ namespace Infinni.Server.IoC
                                           r => r.AsImplementedInterfaces().SingleInstance());
 
             builder.RegisterType<AgentHttpClient>()
-                   .As<IAgentHttpClient>()
+                   .AsSelf()
                    .SingleInstance();
 
             builder.RegisterType<NodeOutputParser>()

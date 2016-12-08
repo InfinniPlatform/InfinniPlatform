@@ -9,12 +9,12 @@ namespace Infinni.Server.Tasks.Files
 {
     public class PerfLogFileTask : IServerTask
     {
-        public PerfLogFileTask(IAgentHttpClient agentHttpClient)
+        public PerfLogFileTask(AgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
 
         public string CommandName => "performance.log";
 

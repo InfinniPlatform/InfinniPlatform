@@ -15,12 +15,12 @@ namespace Infinni.Server.Tasks.Agents
     /// </summary>
     public class AgentTaskStatusTask : IServerTask
     {
-        public AgentTaskStatusTask(IAgentHttpClient agentHttpClient)
+        public AgentTaskStatusTask(AgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
 
         public string CommandName => "taskStatus";
 

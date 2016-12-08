@@ -61,7 +61,16 @@ namespace Infinni.Server.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to connect with Infinni.Agent. Check address..
+        ///   Looks up a localized string similar to Malformed URI. Check address/port..
+        /// </summary>
+        internal static string CheckUriFormat {
+            get {
+                return ResourceManager.GetString("CheckUriFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to connect with Infinni.Agent. Check address/port..
         /// </summary>
         internal static string UnableConnectAgent {
             get {

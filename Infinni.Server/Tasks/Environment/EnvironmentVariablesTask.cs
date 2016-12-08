@@ -9,12 +9,12 @@ namespace Infinni.Server.Tasks.Environment
 {
     public class EnvironmentVariablesTask : IServerTask
     {
-        public EnvironmentVariablesTask(IAgentHttpClient agentHttpClient)
+        public EnvironmentVariablesTask(AgentHttpClient agentHttpClient)
         {
             _agentHttpClient = agentHttpClient;
         }
 
-        private readonly IAgentHttpClient _agentHttpClient;
+        private readonly AgentHttpClient _agentHttpClient;
 
         public string CommandName => "variables";
 

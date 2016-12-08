@@ -98,12 +98,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="UnableConnectAgent" xml:space="preserve">
-    <value>Unable to connect with Infinni.Agent. Check address.</value>
+    <value>Unable to connect with Infinni.Agent. Check address/port.</value>
   </data>
   <data name="UnableReadAgentResponse" xml:space="preserve">
     <value>Unable to read Infinni.Agent response.</value>
   </data>
   <data name="UnexpectedServerError" xml:space="preserve">
     <value>Unexpected server error occurred.</value>
+  </data>
+  <data name="CheckUriFormat" xml:space="preserve">
+    <value>Malformed URI. Check address/port.</value>
   </data>
 </root>
