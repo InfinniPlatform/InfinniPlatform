@@ -1,0 +1,29 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthGoogle.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "AuthGoogle",
+    "description": "Настройки аутентификации через Google+.",
+    "type": "object",
+    "properties": {
+        "Enable": {
+            "description": "Разрешает аутентификацию через Google+.",
+            "type": "boolean",
+            "default": false
+        },
+        "ClientId": {
+            "description": "ClientId приложения в Google+.",
+            "type": "string",
+            "default": null
+        },
+        "ClientSecret": {
+            "description": "ClientSecret приложения в Google+.",
+            "type": "string",
+            "default": null
+        }
+    },
+    "required": [
+        "Enable",
+        "ClientId",
+        "ClientSecret"
+    ]
+}

@@ -23,6 +23,8 @@ x86/
 [Dd]esigner[Bb]in/
 [Ll]ogs/
 project.lock.json
+compiled/
+*/[Cc]ontent/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -164,8 +166,8 @@ ClientBin/
 *.dbmdl
 *.dbproj.schemaview
 *.publishsettings
-node_modules/
-bower_components/
+**/node_modules/
+**/bower_components/
 
 # RIA/Silverlight projects
 Generated_Code/

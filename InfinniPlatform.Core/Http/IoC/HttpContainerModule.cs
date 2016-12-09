@@ -2,6 +2,7 @@
 using InfinniPlatform.Core.Http.Middlewares;
 using InfinniPlatform.Core.Http.Services;
 using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;

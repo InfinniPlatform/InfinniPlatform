@@ -1,0 +1,18 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/UserStorage.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "UserStorage",
+    "description": "Настройки хранения пользователей.",
+    "type": "object",
+    "properties": {
+        "UserCacheTimeout": {
+            "description": "Таймаут сброса кэша пользователей в минутах.",
+            "type": "integer",
+            "default": 30,
+            "minimum": 1
+        }
+    },
+    "required": [
+        "UserCacheTimeout"
+    ]
+}

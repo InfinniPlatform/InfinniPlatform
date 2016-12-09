@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Serialization;
+﻿using System;
+
+using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.Sdk.Http.Services
 {
@@ -18,7 +20,17 @@ namespace InfinniPlatform.Sdk.Http.Services
 
             if (content != null)
             {
-                Content = stream => Serializer.Serialize(stream, content);
+                Content = stream =>
+                          {
+                              try
+                              {
+                                  Serializer.Serialize(stream, content);
+                              }
+                              catch (ObjectDisposedException)
+                              {
+                                  //Ignore when client connection closed before response was ready.
+                              }
+                          };
             }
         }
 

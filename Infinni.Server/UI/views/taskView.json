@@ -1,0 +1,52 @@
+{
+  "OnLoaded": "{ args.source.setText(context.parameters.Task.getValue().Description); }",
+  "Text": "Task",
+  "Parameters": [{
+    "Name": "AgentAddress"
+  }, {
+    "Name": "AgentPort"
+  }, {
+    "Name": "Task"
+  }],
+  "DataSources": [],
+  "Items": [{
+    "Button": {
+      "Text": "Refresh",
+      "Action": {
+        "ServerAction": {
+          "Path": "/server/taskStatus",
+          "Method": "GET",
+          "Data": {
+            "Address": "<%agentAddress%>",
+            "Port": "<%agentPort%>",
+            "TaskId": "<%taskId%>"
+          },
+          "Params": {
+            "agentAddress": {
+              "Source": "AgentAddress"
+            },
+            "agentPort": {
+              "Source": "AgentPort"
+            },
+            "taskId": {
+              "Source": "Task",
+              "Property": "TaskId"
+            }
+          },
+          "OnSuccess":"{ RefreshTaskStatus(context, args); }"
+        }        
+      }
+    }
+  }, {
+    "TextBox": {
+      "Name":"OutputTextBox",
+      "Multiline": true,
+      "LineCount": 30,
+      "Value": {
+        "Source": "Task",
+        "Property": ""
+      },
+      "DisplayFormat":"{Output}"      
+    }
+  }]
+}

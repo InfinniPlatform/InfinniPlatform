@@ -1,0 +1,9 @@
+{
+  "name": "infinni-ui",
+  "authors": [
+    "Infinnity Solutions"
+  ],
+  "dependencies": {
+    "infinni-ui-v2": "latest"
+  }
+}

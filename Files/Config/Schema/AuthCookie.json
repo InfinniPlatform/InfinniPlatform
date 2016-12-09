@@ -1,0 +1,17 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthCookie.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "AuthCookie",
+    "description": "Настройки аутентификации через Cookie.",
+    "type": "object",
+    "properties": {
+        "CookieDomain": {
+            "description": "Домен для создания cookie. При развертывании в кластере - указать шаблон. Если равен '.mycluster.local', тогда 'node1.mycluster.local' и 'node2.mycluster.local' будут считаться допустимыми.",
+            "type": "string",
+            "default": null
+        }
+    },
+    "required": [
+        "CookieDomain"
+    ]
+}

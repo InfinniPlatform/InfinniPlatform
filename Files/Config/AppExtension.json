@@ -1,2 +1,22 @@
 ﻿{
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
+  "agent": {
+    "NodeDirectory": "C:\\Projects\\Infinni.Node\\Assemblies",
+    "ServerAddress": "localhost:9900",
+    "Token": "cc670bc2b2124011a3f92056487f2cf3",
+    "CacheTimeout": 600
+  },
+  "watcher": {
+    "SourceDirectory": "..\\Infinni.Server\\UI\\views",
+    "DestinationDirectory": "content\\www\\views",
+    "WatchingFileExtensions": [
+      ".json"
+    ],
+    "SyncOnStart":  false
+  },
+  "heartbeat": {
+    "Period": 60,
+    "ServerAddress": "localhost:9900",
+    "Token": "cc670bc2b2124011a3f92056487f2cf3"
+  }
 }

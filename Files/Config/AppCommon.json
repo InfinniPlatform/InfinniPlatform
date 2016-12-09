@@ -1,178 +1,93 @@
 ﻿{
-  /* Настройки приложения */
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
   "app": {
-    /* Уникальное имя приложения, используется для изоляции данных между приложениями (по умолчанию - 'InfinniPlatform') */
     "Name": "InfinniPlatform",
-    /* Идентификатор текущего экземпляра приложения (по умолчанию - NetBIOS имя машины + имя рабочей директории) */
-    "InstanceId": ""
+    "InstanceId": "",
+    "IsInCluster":  false 
   },
-  /* Настройки хостинга приложения */
   "host": {
-    /* Адрес или доменное имя (по умолчанию - 'localhost') */
     "Name": "localhost",
-    /* Номер порта (по умолчанию - 9900) */
     "Port": 9900
   },
-
-  /* Настройки подключения к Redis */
   "redis": {
-    /* Адрес или доменное имя (по умолчанию - 'localhost') */
     "Host": "localhost",
-    /* Номер порта (по умолчанию - 6379) */
     "Port": 6379,
-    /* Номер базы данных (по умолчанию - 0) */
     "Database": 0,
-    /* Пароль подключения (значения по умолчанию нет) */
     "Password": "TeamCity",
-    /* Размер буфера чтения (по умолчанию - 512) */
     "ReadBufferSize": 512,
-    /* Размер буфера записи (по умолчанию - 512) */
     "WriteBufferSize": 512,
-    /* Таймаут подключения в миллисекундах (по умолчанию - 0, отсутствие таймаута) */
     "ConnectionTimeout": 0,
-    /* Количество попыток подключения (по умолчанию - 10) */
     "MaxReconnectRetries": 10,
-    /* Размер пула подключений (по умолчанию - 0, то есть неограничен) */
     "PoolSize": 0
   },
-  /* Настройки подключения к MongoDB */
   "mongodb": {
-    /* Список узлов кластера (по умолчанию - 'localhost:27017') */
-    /* Каждый узел должен быть представлен в формате 'host:port' */
     "Nodes": [
       "localhost:27017"
     ],
-    /* Имя пользователя в механизме аутентификации по умолчанию (значения по умолчанию нет) * /
-    /* Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR) */
     "UserName": "",
-    /* Пароль пользователя в механизме аутентификации по умолчанию (значения по умолчанию нет) */
-    /* Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR) */
     "Password": ""
   },
-  /* Настройки подключения к RabbitMQ */
   "rabbitmq": {
-    /* Адрес или доменное имя (по умолчанию - 'localhost') */
     "HostName": "localhost",
-    /* Номер порта (по умолчанию - 5672) */
     "Port": 5672,
-    /* Имя пользователя (по умолчанию - guest) */
     "UserName": "guest",
-    /* Пароль пользователя (по умолчанию - guest) */
     "Password": "guest",
-    /* Номер порта для RabbitMQ Management HTTP API (по умолчанию - 15672) */
-    /* Для включения RabbitMQ Management HTTP API выполнить команду rabbitmq-plugins enable rabbitmq_management */
-    /* по пути <путь до RabbitMQ Server>\sbin */
-    /* Подробнее - https://www.rabbitmq.com/management.html */
     "ManagementApiPort": 15672,
-    /* Количество сообщений, единовременно передаваемых потребителю. */
-    /* Возможные значения 0..65535 (по умолчанию 1). */
-    /* При значении 0 очередь будет передавать все сообщения потребителю. */
     "PrefetchCount": 1,
-    /* Максимальное количество одновременно обрабатываемых сообщений. */
     "MaxConcurrentThreads": 200,
-    /* Время между попытками переподключения к серверу RabbitMQ в cекундах (по умолчанию - 5 с). */
     "ReconnectTimeout": 5
   },
-  /* Настройки хранения BLOB и файлов */
   "blobStorage": {
-    /* Базовый каталог для хранения файлов системы (по умолчанию - 'BlobStorage') */
     "BaseDirectory": "${INFINNI_BLOBSTORAGE=BlobStorage}"
   },
-  /* Настройки хранения пользователей */
   "userStorage": {
-    /* Таймаут сброса кэша пользователей в минутах (минимум - 1, по умолчанию - 30) */
     "UserCacheTimeout": 30
   },
-  /* Настройки кэширования данных */
   "cache": {
-    /* Тип кэша для приложения (возможные варианты: 'Memory', 'Shared', по умолчанию - 'Memory') */
-    /* При развертывании приложения в промышленной инфраструктуре рекомендуемое значение - 'Shared' */
     "Type": "Memory"
   },
-  /* Настройки печатных представлений */
   "printView": {
-    /* Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы) */
-    /* В Linux, если X Server не установлен, утилиту wkhtmltopdf следует запускать через xvfb, поместив код запуска в /usr/local/bin/wkhtmltopdf.sh */
-    /* Пример содержимого файла /usr/local/bin/wkhtmltopdf.sh (заголовок обязателен): */
-    /* #!/bin/bash
-    /* xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf "$@" */
-    /* Также нужно не забыть установить права на исполнение: chmod a+x /usr/local/bin/wkhtmltopdf.sh */
     "HtmlToPdfUtilCommand": "",
-    /* Формат аргументов утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы) */
     "HtmlToPdfUtilArguments": "",
-    /* Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя) */
     "HtmlToPdfTemp": ""
   },
-  /* Настройки хранения метаданных */
   "metadata": {
-    /* Путь до подкаталога  с файлами метаданных документов (по умолчанию - 'content/metadata/Documents') */
     "DocumentsPath": "content/metadata/Documents",
-    /* Путь до подкаталога  с файлами метаданных печатных представлений (по умолчанию - 'content/metadata/PrintViews') */
     "PrintViewsPath": "content/metadata/PrintViews"
   },
-  /* Планировщик заданий */
   "scheduler": {
-    /* Время хранения информации о вызове обработчиков заданий (в секундах, по умолчанию - время хранения не ограничено). */
     "ExpireHistoryAfter": null
   },
-  /* Настройки хостинга статических файлов */
   "staticContent": {
-    /* Соответствие виртуальных и физических путей до статических файлов */
     "StaticFilesMapping": {
-      /* Виртуальный путь каталога: Физический путь каталога */
       "/metadata": "content/metadata",
       "/": "content/www"
     },
-    /* Соответствие виртуальных путей и сборок с файлами ресурсов */
-    "EmbeddedResourceMapping": {
-      /* Виртуальный путь: Путь к ресурсам сборки */
-      /* "/resources/MyResources": "MyAssembly.ResourceFolder" */
-    },
-    /* Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews) */
-    "RazorViewsPath": "content/RazorViews",
-    /* Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews) */
-    "EmbeddedRazorViewsAssemblies": [ ]
+    "EmbeddedResourceMapping": {},
+    "RazorViewsPath": "content/www/RazorViews",
+    "EmbeddedRazorViewsAssemblies": []
   },
-  /* Настройки аутентификации через Cookie */
   "authCookie": {
-    /* Домен для создания cookie (значения по умолчанию нет, при развертывании в кластере - указать шаблон) */
-    /* Если равен ".mycluster.local", тогда "node1.mycluster.local" и "node2.mycluster.local" будут считаться допустимыми */
     "CookieDomain": ""
   },
-  /* Настройки аутентификации через ADFS */
   "authAdfs": {
-    /* Разрешает аутентификацию через ADFS (допустимые значения - true или false, по умолчанию - false) */
     "Enable": false,
-    /* Адрес сервера ADFS (например, 'myadfs.org:1234', значения по умолчанию нет) */
     "Server": "Adfs-Server",
-    /* URI защищенного ресурса ADFS (например, 'https://InfinniPlatform', значения по умолчанию нет) */
     "ResourceUri": ""
   },
-  /* Настройки аутентификации через Google+ */
   "authGoogle": {
-    /* Разрешает аутентификацию через Google+ (допустимые значения - true или false, по умолчанию - false) */
     "Enable": false,
-    /* ClientId приложения в Goole+ (значения по умолчанию нет) */
     "ClientId": "Google-Client-Id",
-    /* ClientSecret приложения в Goole+ (значения по умолчанию нет) */
     "ClientSecret": "Google-Client-Secret"
   },
-  /* Настройки аутентификации через Facebook */
   "authFacebook": {
-    /* Разрешает аутентификацию через Facebook (допустимые значения - true или false, по умолчанию - false) */
     "Enable": false,
-    /* ClientId приложения в Facebook (значения по умолчанию нет) */
     "ClientId": "Facebook-Client-Id",
-    /* ClientSecret приложения в Facebook (значения по умолчанию нет) */
     "ClientSecret": "Facebook-Client-Secret"
   },
-  /* Настройки аутентификации через ВКонтакте */
   "authVk": {
-    /* Разрешает аутентификацию через ВКонтакте (допустимые значения - true или false, по умолчанию - false) */
     "Enable": false,
-    /* ClientId приложения в ВКонтакте (значения по умолчанию нет) */
     "ClientId": "Vk-Client-Id",
-    /* ClientSecret приложения в ВКонтакте (значения по умолчанию нет) */
     "ClientSecret": "Vk-Client-Secret"
   }
 }

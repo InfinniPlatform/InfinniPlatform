@@ -1,0 +1,29 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthAdfs.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "AuthAdfs",
+    "description": "Настройки аутентификации через ADFS.",
+    "type": "object",
+    "properties": {
+        "Enable": {
+            "description": "Разрешает аутентификацию через ADFS.",
+            "type": "boolean",
+            "default": false
+        },
+        "Server": {
+            "description": "Адрес сервера ADFS (например, 'myadfs.org:1234').",
+            "type": "string",
+            "default": null
+        },
+        "ResourceUri": {
+            "description": "URI защищенного ресурса ADFS (например, 'https://InfinniPlatform').",
+            "type": "string",
+            "default": null
+        }
+    },
+    "required": [
+        "Enable",
+        "Server",
+        "ResourceUri"
+    ]
+}

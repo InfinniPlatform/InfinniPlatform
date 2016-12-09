@@ -1,13 +1,11 @@
-﻿using System.Reflection;
-
-using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.PushNotification.MessageBus;
 using InfinniPlatform.PushNotification.Owin;
 using InfinniPlatform.PushNotification.SignalR;
-using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.PushNotification;
 using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -22,15 +20,12 @@ namespace InfinniPlatform.PushNotification.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            var assembly = typeof(PushNotificationContainerModule).GetTypeInfo().Assembly;
-
             // Список всех точек обмена SignalR
 
             builder.RegisterType<SignalRPushNotificationServiceHub>()
                    .AsSelf()
                    .As<IHub>()
-                   .InstancePerDependency()
-                   .ExternallyOwned();
+                   .InstancePerDependency();
 
             // Внутренние зависимости SignalR
 
@@ -57,6 +52,14 @@ namespace InfinniPlatform.PushNotification.IoC
             // Шина сообщений
 
             builder.RegisterType<SignalRMessageBus>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterType<Microsoft.AspNet.SignalR.Messaging.MessageBus>()
+                   .AsSelf()
+                   .SingleInstance();
+
+            builder.RegisterFactory(CreateMessageBus)
                    .As<IMessageBus>()
                    .SingleInstance();
 
@@ -64,7 +67,16 @@ namespace InfinniPlatform.PushNotification.IoC
                    .As<ScaleoutConfiguration>()
                    .SingleInstance();
 
-            builder.RegisterConsumers(assembly);
+            builder.RegisterType<PushNotificationMessageConsumerSource>()
+                   .As<IMessageConsumerSource>()
+                   .SingleInstance();
+        }
+
+        private static IMessageBus CreateMessageBus(IContainerResolver resolver)
+        {
+            return resolver.Resolve<IAppEnvironment>().IsInCluster
+                       ? resolver.Resolve<SignalRMessageBus>()
+                       : resolver.Resolve<Microsoft.AspNet.SignalR.Messaging.MessageBus>();
         }
     }
 }

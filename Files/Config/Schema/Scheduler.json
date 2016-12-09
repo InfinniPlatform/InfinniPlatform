@@ -1,0 +1,16 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Scheduler.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Scheduler",
+    "description": "Планировщик заданий.",
+    "type": "object",
+    "properties": {
+        "ExpireHistoryAfter": {
+            "description": "Время хранения информации о вызове обработчиков заданий (в секундах, по умолчанию - время хранения не ограничено)",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "ExpireHistoryAfter"
+    ]
+}

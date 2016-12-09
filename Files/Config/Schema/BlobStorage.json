@@ -1,0 +1,17 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/BlobStorage.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "BlobStorage",
+    "description": "Настройки хранения BLOB и файлов.",
+    "type": "object",
+    "properties": {
+        "BaseDirectory": {
+            "description": "Базовый каталог для хранения файлов системы.",
+            "type": "string",
+            "default": "BlobStorage"
+        }
+    },
+    "required": [
+        "BaseDirectory"
+    ]
+}

@@ -48,8 +48,8 @@ namespace InfinniPlatform.Core.Diagnostics
                                };
 
             // Краткая информация о статусе системы
-            builder.Get["/"] = async r => await GetStatus(r, false, ParseTimeout(r.Query.timeout));
-            builder.Post["/"] = async r => await GetStatus(r, false, ParseTimeout(r.Query.timeout));
+//            builder.Get["/"] = async r => await GetStatus(r, false, ParseTimeout(r.Query.timeout));
+//            builder.Post["/"] = async r => await GetStatus(r, false, ParseTimeout(r.Query.timeout));
 
             // Подробная информация о статусе системы
             builder.Get["/info"] = async r => await GetStatus(r, true, ParseTimeout(r.Query.timeout));

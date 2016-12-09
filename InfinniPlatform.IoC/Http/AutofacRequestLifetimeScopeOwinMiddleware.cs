@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Autofac;
 using Autofac.Core.Lifetime;
+using Autofac.Util;
 
 using Microsoft.Owin;
 
@@ -41,15 +42,8 @@ namespace InfinniPlatform.IoC.Http
                 // Регистрация контейнера зависимостей запроса в статическом контексте для возможности доступа к нему извне
                 SetRequestContainer(requestContainer);
 
-                try
-                {
-                    // Обработка запроса в рамках контейнера
-                    await Next.Invoke(context);
-                }
-                finally
-                {
-                    SetRequestContainer(null);
-                }
+                // Обработка запроса в рамках контейнера
+                await Next.Invoke(context);
             }
         }
 
@@ -69,6 +63,7 @@ namespace InfinniPlatform.IoC.Http
         {
             var requestContainerReference = new WeakReference<ILifetimeScope>(requestContainer);
             var noSerializeAppDomain = new NoSerializeAppDomain { LifetimeScope = requestContainerReference };
+            requestContainer.Disposer.AddInstanceForDisposal(noSerializeAppDomain);
             CallContext.LogicalSetData(RequestContainerKey, noSerializeAppDomain);
         }
 
@@ -101,7 +96,7 @@ namespace InfinniPlatform.IoC.Http
         /// </list>
         /// </remarks>
         [Serializable]
-        private class NoSerializeAppDomain
+        private class NoSerializeAppDomain : IDisposable
         {
             [NonSerialized]
             private WeakReference<ILifetimeScope> _lifetimeScope;
@@ -110,6 +105,11 @@ namespace InfinniPlatform.IoC.Http
             {
                 get { return _lifetimeScope; }
                 set { _lifetimeScope = value; }
+            }
+
+            public void Dispose()
+            {
+                _lifetimeScope = null;
             }
         }
     }

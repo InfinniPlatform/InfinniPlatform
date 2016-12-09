@@ -56,6 +56,9 @@ namespace InfinniPlatform.Conventions
                          || project.EndsWith("InfinniPlatform.Auth.Google")
                          || project.EndsWith("InfinniPlatform.Auth.Vk")
                          || project.EndsWith("InfinniPlatform.Watcher")
+                         || project.EndsWith("Infinni.Agent")
+                         || project.EndsWith("Infinni.Server")
+                         || project.EndsWith("InfinniPlatform.Heartbeat")
                          || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
 
             // Then

@@ -1,0 +1,29 @@
+{
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthVk.json",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "AuthVk",
+    "description": "Настройки аутентификации через ВКонтакте.",
+    "type": "object",
+    "properties": {
+        "Enable": {
+            "description": "Разрешает аутентификацию через ВКонтакте.",
+            "type": "boolean",
+            "default": false
+        },
+        "ClientId": {
+            "description": "ClientId приложения в ВКонтакте.",
+            "type": "string",
+            "default": null
+        },
+        "ClientSecret": {
+            "description": "ClientSecret приложения в ВКонтакте.",
+            "type": "string",
+            "default": null
+        }
+    },
+    "required": [
+        "Enable",
+        "ClientId",
+        "ClientSecret"
+    ]
+}

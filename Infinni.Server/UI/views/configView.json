@@ -1,0 +1,135 @@
+{
+    "Text": "Application configuration files",
+    "Parameters": [{
+        "Name": "AgentAddress"
+    }, {
+        "Name": "AgentPort"
+    }, {
+        "Name": "FullName"
+    }],
+    "DataSources": [{
+        "RestDataSource": {
+            "Name": "AppCommonSource",
+            "GettingParams": {
+                "Method": "GET",
+                "Path": "/server/config",
+                "Data": {
+                    "Address": "<%Address%>",
+                    "Port": "<%Port%>",
+                    "FullName": "<%FullName%>",
+                    "FileName": "AppCommon.json"
+                },
+                "Params": {
+                    "Address": {
+                        "Source": "AgentAddress"
+                    },
+                    "Port": {
+                        "Source": "AgentPort"
+                    },
+                    "FullName": {
+                        "Source": "FullName"
+                    }
+                }
+            },
+            "UpdatingItemsConverter": "{ return new Array(args.value.Result); }",
+            "OnProviderError":"{ OnRestDataSourceError(context, args); }"
+        }
+    }, {
+        "RestDataSource": {
+            "Name": "AppExtensionSource",
+            "GettingParams": {
+                "Method": "GET",
+                "Path": "/server/config",
+                "Data": {
+                    "Address": "<%Address%>",
+                    "Port": "<%Port%>",
+                    "FullName": "<%FullName%>",
+                    "FileName": "AppExtension.json"
+                },
+                "Params": {
+                    "Address": {
+                        "Source": "AgentAddress"
+                    },
+                    "Port": {
+                        "Source": "AgentPort"
+                    },
+                    "FullName": {
+                        "Source": "FullName"
+                    }
+                }
+            },
+            "UpdatingItemsConverter": "{ return new Array(args.value.Result); }",
+            "OnProviderError":"{ OnRestDataSourceError(context, args); }"
+        }
+    }],
+    "Items": [{
+        "TabPanel": {
+            "HeaderLocation": "Top",
+            "Items": [{
+                "TabPage": {
+                    "Text": "AppExtension.json",
+                    "Items": [{
+                        "TextBox": {
+                            "Multiline": true,
+                            "LineCount": 30,
+                            "Value": {
+                                "Source": "AppExtensionSource",
+                                "Property": "$"
+                            }
+                        }
+                    }, {
+                        "Button": {
+                            "Text": "Save",
+                            "Action": {
+                                "ServerAction": {
+                                    "Path": "/server/config?Address=<%agentAddress%>&Port=<%agentPort%>&FullName=<%appFullName%>&FileName=AppExtension.json",
+                                    "Method": "POST",
+                                    "Data": {                                        
+                                        "Config": "<%config%>"
+                                    },
+                                    "Params": {
+                                        "agentAddress": {
+                                            "Source": "AgentAddress"
+                                        },
+                                        "agentPort": {
+                                            "Source": "AgentPort"
+                                        },
+                                        "appFullName": {
+                                            "Source": "FullName"
+                                        },                                        
+                                        "config":{
+                                            "Source":"AppExtensionSource",
+                                            "Property":"$"
+                                        }
+                                    },
+                                    "OnSuccess":"{ toastr.success('Config successfully saved.'); }"
+                                }
+                            }
+                        }
+                    }]
+                }
+            }, {
+                "TabPage": {
+                    "Text": "AppCommon.json",
+                    "Items": [{
+                        "TextBox": {
+                            "Multiline": true,
+                            "LineCount": 30,
+                            "Value": {
+                                "Source": "AppCommonSource",
+                                "Property": "$"
+                            }
+                        }
+                    }, {
+                        "Button": {
+                            "Text": "OK",
+                            "Action": {
+                                "CancelAction": {}
+                            }
+                        }
+                    }]
+                }
+            }]
+        }
+    }]
+}

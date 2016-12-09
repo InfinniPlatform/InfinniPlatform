@@ -76,7 +76,17 @@ namespace InfinniPlatform.Sdk.Http.Services
 
             if (fileLength > 0)
             {
-                Content = stream => CopyStream(new MemoryStream(fileContent), stream, fileLength);
+                Content = stream =>
+                          {
+                              try
+                              {
+                                  CopyStream(new MemoryStream(fileContent), stream, fileLength);
+                              }
+                              catch (ObjectDisposedException)
+                              {
+                                  //Ignore when client connection closed before response was ready.
+                              }
+                          };
             }
         }
 
