@@ -10,7 +10,7 @@ namespace Infinni.Server.HttpService
     /// </summary>
     public class HttpServiceException : Exception
     {
-        public HttpServiceException(string errorMessage)
+        public HttpServiceException(string errorMessage) : base(errorMessage)
         {
             ErrorHttpResponse = CreateErrorResponse(errorMessage);
         }

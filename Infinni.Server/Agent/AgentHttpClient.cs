@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,10 +10,7 @@ using Infinni.Server.Properties;
 
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
-
-using Newtonsoft.Json;
 
 namespace Infinni.Server.Agent
 {
@@ -23,23 +19,13 @@ namespace Infinni.Server.Agent
     /// </summary>
     public class AgentHttpClient
     {
-        private static readonly Dictionary<Type, Action> ExceptionsWrappers = new Dictionary<Type, Action>
-                                                                              {
-                                                                                  { typeof(UriFormatException), () => { throw new HttpServiceException(Resources.CheckUriFormat); } },
-                                                                                  { typeof(HttpRequestException), () => { throw new HttpServiceException(Resources.UnableConnectAgent); } },
-                                                                                  { typeof(JsonReaderException), () => { throw new HttpServiceException(Resources.UnableReadAgentResponse); } }
-                                                                              };
-
-        public AgentHttpClient(IJsonObjectSerializer serializer,
-                               ILog log)
+        public AgentHttpClient(IJsonObjectSerializer serializer)
         {
             _serializer = serializer;
-            _log = log;
             _httpClient = new HttpClient();
         }
 
         private readonly HttpClient _httpClient;
-        private readonly ILog _log;
         private readonly IJsonObjectSerializer _serializer;
 
         /// <summary>
@@ -54,18 +40,13 @@ namespace Infinni.Server.Agent
         {
             var uriString = $"http://{address}:{port}/agent/{path}{ToQuery(queryContent)}";
 
-            var result = await TryExecute(async () =>
-                                          {
-                                              var response = await _httpClient.GetAsync(uriString);
+            var response = await _httpClient.GetAsync(uriString);
 
-                                              CheckResponse(response);
+            CheckResponse(response);
 
-                                              var content = await response.Content.ReadAsStreamAsync();
+            var content = await response.Content.ReadAsStreamAsync();
 
-                                              return _serializer.Deserialize<T>(content);
-                                          });
-
-            return result;
+            return _serializer.Deserialize<T>(content);
         }
 
         /// <summary>
@@ -80,21 +61,16 @@ namespace Infinni.Server.Agent
         {
             var uriString = $"http://{address}:{port}/agent/{path}";
 
-            var result = await TryExecute(async () =>
-                                          {
-                                              var formStringContent = _serializer.ConvertToString(formContent);
-                                              var requestContent = new StringContent(formStringContent, _serializer.Encoding, HttpConstants.JsonContentType);
+            var formStringContent = _serializer.ConvertToString(formContent);
+            var requestContent = new StringContent(formStringContent, _serializer.Encoding, HttpConstants.JsonContentType);
 
-                                              var response = await _httpClient.PostAsync(new Uri(uriString), requestContent);
+            var response = await _httpClient.PostAsync(new Uri(uriString), requestContent);
 
-                                              CheckResponse(response);
+            CheckResponse(response);
 
-                                              var content = await response.Content.ReadAsStreamAsync();
+            var content = await response.Content.ReadAsStreamAsync();
 
-                                              return _serializer.Deserialize<T>(content);
-                                          });
-
-            return result;
+            return _serializer.Deserialize<T>(content);
         }
 
         /// <summary>
@@ -114,26 +90,6 @@ namespace Infinni.Server.Agent
             return content;
         }
 
-        private async Task<T> TryExecute<T>(Func<Task<T>> request)
-        {
-            try
-            {
-                return await request.Invoke();
-            }
-            catch (Exception e)
-            {
-                _log.Error(e);
-
-                var exceptionType = e.GetType();
-
-                if (ExceptionsWrappers.ContainsKey(exceptionType))
-                {
-                    ExceptionsWrappers[exceptionType].Invoke();
-                }
-
-                throw new HttpServiceException(Resources.UnexpectedServerError);
-            }
-        }
 
         private static void CheckResponse(HttpResponseMessage response)
         {

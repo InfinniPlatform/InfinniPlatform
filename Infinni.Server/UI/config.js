@@ -9,5 +9,6 @@ window.InfinniUI.config.configName = 'Server.UI';
 window.InfinniUI.config.signalRHubName = "SignalRPushNotificationServiceHub";
 
 window.InfinniUI.config.homePage = '/views/homeView.json';
-
+window.InfinniUI.config.disableGetCurrentUser = true;
+window.InfinniUI.config.disableSignInExternalForm = true;
 window.InfinniUI.config.lang = 'en-US';
