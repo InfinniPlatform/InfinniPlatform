@@ -7,7 +7,6 @@
         public AgentSettings()
         {
             NodeDirectory = string.Empty;
-            ServerAddress = string.Empty;
             Token = string.Empty;
         }
 
@@ -15,11 +14,6 @@
         /// Путь к приложению Infinni.Node.
         /// </summary>
         public string NodeDirectory { get; set; }
-
-        /// <summary>
-        /// Адрес сервера Infinni.Server.
-        /// </summary>
-        public string ServerAddress { get; set; }
 
         /// <summary>
         /// Уникальный token для аутентификации при обмене данными между агентом и сервером.

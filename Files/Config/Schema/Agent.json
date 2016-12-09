@@ -10,11 +10,6 @@
             "type": "string",
             "default": null
         },
-        "ServerAddress": {
-            "description": "Адрес сервера Infinni.Server.",
-            "type": "string",
-            "default": null
-        },
         "Token": {
             "description": "Уникальный token для аутентификации при обмене данными между агентом и сервером.",
             "type": "string",
@@ -23,7 +18,6 @@
     },
     "required": [
         "NodeDirectory",
-        "ServerAddress",
         "Token"
     ]
 }
