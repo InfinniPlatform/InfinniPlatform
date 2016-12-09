@@ -5,5 +5,9 @@
     "ServerAddress": "localhost:9901",
     "Token": "cc670bc2b2124011a3f92056487f2cf3",
     "CacheTimeout": 600
+  },
+  "host": {
+    "Name": "localhost",
+    "Port": 9902
   }
 }

@@ -2,5 +2,9 @@
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
   "server": {
     "AgentsInfoFilePath": "agents.json"
+  },
+  "host": {
+    "Name": "localhost",
+    "Port": 9901
   }
 }
