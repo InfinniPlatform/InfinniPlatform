@@ -1,10 +1,11 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Http.Services;
 using Infinni.Server.Agent;
 using Infinni.Server.Tasks.Agents;
+
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace Infinni.Server.Tasks.Infinni.Node
 {
@@ -32,7 +33,7 @@ namespace Infinni.Server.Tasks.Infinni.Node
             var args = new DynamicWrapper
                        {
                            { "SearchTerm", HttpServiceHelper.ParseString(request.Query.SearchTerm) },
-                           { "Prerelease", HttpServiceHelper.ParseBool(request.Query.Prerelease)  }
+                           { "Prerelease", HttpServiceHelper.ParseBool(request.Query.Prerelease) }
                        };
 
             var serviceResult = await _agentHttpClient.Get<ServiceResult<AgentTaskStatus>>(CommandName, address, port, args);

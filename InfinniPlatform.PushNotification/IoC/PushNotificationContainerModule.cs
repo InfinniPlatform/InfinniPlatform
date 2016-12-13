@@ -1,9 +1,9 @@
 ﻿using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.PushNotification.Contract;
 using InfinniPlatform.PushNotification.MessageBus;
 using InfinniPlatform.PushNotification.Owin;
 using InfinniPlatform.PushNotification.SignalR;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.PushNotification;
 using InfinniPlatform.Sdk.Queues;
 using InfinniPlatform.Sdk.Settings;
 

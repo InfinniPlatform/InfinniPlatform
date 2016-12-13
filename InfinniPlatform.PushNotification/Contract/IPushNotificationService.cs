@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace InfinniPlatform.Sdk.PushNotification
+namespace InfinniPlatform.PushNotification.Contract
 {
     /// <summary>
     /// Сервис для PUSH-уведомлений Web-клиентов.

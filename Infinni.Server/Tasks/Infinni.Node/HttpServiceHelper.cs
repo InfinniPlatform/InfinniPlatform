@@ -7,15 +7,15 @@ namespace Infinni.Server.Tasks.Infinni.Node
         public static int? ParseInt(dynamic value)
         {
             return string.IsNullOrEmpty(value)
-                       ? null
-                       : int.Parse(value);
+                ? null
+                : int.Parse(value);
         }
 
         public static string ParseString(dynamic value)
         {
-            return string.IsNullOrEmpty(value) || (value == "null")
-                       ? null
-                       : (string)value;
+            return string.IsNullOrEmpty(value) || value == "null"
+                ? null
+                : (string)value;
         }
 
         public static bool ParseBool(dynamic value)
