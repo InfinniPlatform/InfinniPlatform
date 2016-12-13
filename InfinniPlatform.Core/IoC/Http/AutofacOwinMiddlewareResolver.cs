@@ -4,7 +4,7 @@ using InfinniPlatform.Http.Middlewares;
 
 using Microsoft.Owin;
 
-namespace InfinniPlatform.IoC.Http
+namespace InfinniPlatform.Core.IoC.Http
 {
     internal sealed class AutofacOwinMiddlewareResolver : IOwinMiddlewareTypeResolver
     {

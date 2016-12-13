@@ -180,4 +180,7 @@
   <data name="UnhandledExceptionOwinMiddleware" xml:space="preserve">
     <value>Необработанное исключение.</value>
   </data>
+  <data name="CannotCreateContainerModule" xml:space="preserve">
+    <value>Не удается создать модуль IoC-контейнера.</value>
+  </data>
 </root>

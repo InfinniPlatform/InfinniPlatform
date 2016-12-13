@@ -7,7 +7,7 @@ using System.Reflection;
 
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.IoC
+namespace InfinniPlatform.Core.IoC
 {
     /// <summary>
     /// Поисковик модулей регистрации зависимостей <see cref="IContainerModule"/> в базовом каталоге текущего домена приложения <see cref="AppDomain.BaseDirectory"/>.

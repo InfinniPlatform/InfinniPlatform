@@ -6,7 +6,7 @@ using Autofac.Builder;
 
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.IoC
+namespace InfinniPlatform.Core.IoC
 {
     internal sealed class AutofacContainerRegistrationRule<TLimit, TActivatorData, TRegistrationStyle> : IContainerRegistrationRule
     {

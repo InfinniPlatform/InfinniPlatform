@@ -6,7 +6,7 @@ using Autofac.Core;
 
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.IoC
+namespace InfinniPlatform.Core.IoC
 {
     internal sealed class AutofacCreateInstanceModule : Module
     {

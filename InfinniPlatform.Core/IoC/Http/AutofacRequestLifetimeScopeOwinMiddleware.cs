@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 
 using Autofac;
 using Autofac.Core.Lifetime;
-using Autofac.Util;
 
 using Microsoft.Owin;
 
-namespace InfinniPlatform.IoC.Http
+namespace InfinniPlatform.Core.IoC.Http
 {
     /// <summary>
     /// Слой OWIN для регистрации контейнера зависимостей запроса.

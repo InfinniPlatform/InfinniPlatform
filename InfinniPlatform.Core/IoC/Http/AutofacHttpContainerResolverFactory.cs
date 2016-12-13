@@ -2,10 +2,10 @@
 
 using Autofac;
 
-using InfinniPlatform.IoC.Properties;
+using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.IoC.Http
+namespace InfinniPlatform.Core.IoC.Http
 {
     public class AutofacHttpContainerResolverFactory
     {

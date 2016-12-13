@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.IoC.Http
+namespace InfinniPlatform.Core.IoC.Http
 {
     internal class AutofacHttpContainerModule : IContainerModule
     {

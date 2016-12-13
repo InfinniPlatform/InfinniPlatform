@@ -180,4 +180,7 @@
   <data name="UnhandledExceptionOwinMiddleware" xml:space="preserve">
     <value>Unhandled exception.</value>
   </data>
+  <data name="CannotCreateContainerModule" xml:space="preserve">
+    <value>Can not create IoC container module.</value>
+  </data>
 </root>

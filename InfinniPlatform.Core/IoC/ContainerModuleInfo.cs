@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Sdk.IoC;
 
-namespace InfinniPlatform.IoC
+namespace InfinniPlatform.Core.IoC
 {
     /// <summary>
     /// Информация о модуле регистрации зависимостей <see cref="IContainerModule"/>.
