@@ -9,9 +9,6 @@ namespace InfinniPlatform.MessageQueue.Contract.Consumers
     /// <typeparam name="T">Тип тела сообщения.</typeparam>
     public abstract class TaskConsumerBase<T> : ITaskConsumer
     {
-        /// <summary>
-        /// Тип тела сообщения.
-        /// </summary>
         public Type MessageType => typeof(T);
 
         async Task IConsumer.Consume(IMessage message)

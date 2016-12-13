@@ -3,6 +3,10 @@ using System.Threading.Tasks;
 
 namespace InfinniPlatform.MessageQueue.Contract.Consumers
 {
+    /// <summary>
+    /// Базовый потребитель сообщений широковещательной очереди.
+    /// </summary>
+    /// <typeparam name="T">Тип тела сообщения.</typeparam>
     public abstract class BroadcastConsumerBase<T> : IBroadcastConsumer where T : class
     {
         public Type MessageType => typeof(T);
