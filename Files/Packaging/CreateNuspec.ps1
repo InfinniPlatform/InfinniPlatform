@@ -28,16 +28,17 @@
         [Array] $extensions = @(
             'Infinni.Agent',
             'Infinni.Server',
-            'InfinniPlatform.Heartbeat',
             'InfinniPlatform.Auth.Adfs',
             'InfinniPlatform.Auth.Cookie',
             'InfinniPlatform.Auth.Facebook',
             'InfinniPlatform.Auth.Google',
+            'InfinniPlatform.Heartbeat',
             'InfinniPlatform.Auth.Internal',
             'InfinniPlatform.Auth.Vk',
-            'InfinniPlatform.PrintView',            
-            'InfinniPlatform.Scheduler',
             'InfinniPlatform.Plugins.ViewEngine',
+            'InfinniPlatform.PrintView',
+            'InfinniPlatform.PushNotification',
+            'InfinniPlatform.Scheduler',
             'InfinniPlatform.Watcher'
         )
     )

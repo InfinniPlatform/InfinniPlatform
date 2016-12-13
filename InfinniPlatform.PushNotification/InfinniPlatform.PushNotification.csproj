@@ -81,6 +81,7 @@
     <Compile Include="MessageBus\SignalRMessageBus.cs" />
     <Compile Include="MessageBus\RabbitMqScaleoutConfiguration.cs" />
     <Compile Include="MessageBus\ScaleoutMessageWrapper.cs" />
+    <Compile Include="SignalR\IPushNotificationService.cs" />
     <Compile Include="SignalR\SignalRDependencyResolver.cs" />
     <Compile Include="SignalR\SignalRHubDescriptorProvider.cs" />
     <Compile Include="SignalR\SignalRPushNotificationServiceHub.cs" />

@@ -18,9 +18,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             _basicPropertiesProvider = basicPropertiesProvider;
         }
 
+        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
+
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
-        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
 
         public void Publish<T>(T messageBody, string queueName = null)
         {

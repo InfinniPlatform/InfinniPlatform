@@ -22,7 +22,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         /// </summary>
         /// <remarks>
         /// Сообщение сохраняется после перезапуска.
-        /// </remarks> 
+        /// </remarks>
         BasicProperties GetPersistent();
 
         /// <summary>

@@ -38,10 +38,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             _log = log;
         }
 
+        private readonly List<IBroadcastConsumer> _broadcastConsumers;
+        private readonly IMessageQueueConsumersManager _consumersManager;
+
         private readonly ILog _log;
         private readonly RabbitMqManager _manager;
-        private readonly IMessageQueueConsumersManager _consumersManager;
-        private readonly List<IBroadcastConsumer> _broadcastConsumers;
         private readonly List<ITaskConsumer> _taskConsumers;
 
         public override void OnAfterStart()
