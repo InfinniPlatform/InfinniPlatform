@@ -286,22 +286,22 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
                                    new SimpleEntity { _id = 2, prop2 = 44 },
                                    new SimpleEntity { _id = 3, prop2 = 33 },
                                    new SimpleEntity { _id = 4, prop2 = 22 },
-                                   new SimpleEntity { _id = 5, prop2 = 11 }
+                                   new SimpleEntity { _id = 5, prop2 = null }
                                });
 
-            var inResult = storage.Find(i => new int?[] { 11, 33, 55 }.Contains(i.prop2)).ToList();
-            var notInResult = storage.Find(i => !new int?[] { 11, 33, 55 }.Contains(i.prop2)).ToList();
+            var inResult = storage.Find(i => new[] { 11, 33, 55 }.Contains(i.prop2.Value)).ToList();
+            var notInResult = storage.Find(i => !new[] { 11, 33, 55 }.Contains(i.prop2.Value)).ToList();
 
             // Then
 
-            Assert.AreEqual(3, inResult.Count);
+            Assert.AreEqual(2, inResult.Count);
             Assert.AreEqual(1, inResult[0]._id);
             Assert.AreEqual(3, inResult[1]._id);
-            Assert.AreEqual(5, inResult[2]._id);
 
-            Assert.AreEqual(2, notInResult.Count);
+            Assert.AreEqual(3, notInResult.Count);
             Assert.AreEqual(2, notInResult[0]._id);
             Assert.AreEqual(4, notInResult[1]._id);
+            Assert.AreEqual(5, notInResult[2]._id);
         }
 
         [Test]
