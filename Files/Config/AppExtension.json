@@ -1,5 +1,5 @@
 ﻿{
-  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Common.json",
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Common.json",
   "agent": {
     "NodeDirectory": "C:\\Projects\\Infinni.Node\\Assemblies",
     "Token": "cc670bc2b2124011a3f92056487f2cf3",

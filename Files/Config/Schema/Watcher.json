@@ -1,5 +1,5 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Watcher.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Watcher.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Watcher",
   "description": "Настройки приложения InfinniPlatform.Watcher.",
