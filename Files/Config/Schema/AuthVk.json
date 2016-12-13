@@ -1,5 +1,5 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthVk.json",
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthVk.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "AuthVk",
     "description": "Настройки аутентификации через ВКонтакте.",

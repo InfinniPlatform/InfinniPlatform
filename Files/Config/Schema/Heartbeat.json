@@ -1,5 +1,5 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Heartbeat.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Heartbeat.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Heartbeat",
   "description": "Настройки приложения InfinniPlatform.Heartbeat.",
