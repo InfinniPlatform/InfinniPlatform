@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Queues.Consumers;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.MessageQueue.Contract
 {
     /// <summary>
     /// Источник потребителей сообщений.

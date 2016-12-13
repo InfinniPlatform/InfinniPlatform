@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;

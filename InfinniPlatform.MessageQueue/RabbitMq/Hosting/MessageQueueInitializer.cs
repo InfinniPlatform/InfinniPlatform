@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
 
 using RabbitMQ.Client;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.MessageQueue.Contract
 {
     /// <summary>
     /// Атрибут для определения имени очереди для сообщения.

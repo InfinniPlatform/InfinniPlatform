@@ -9,7 +9,7 @@ using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.Sdk.Settings;
 
 using Quartz;

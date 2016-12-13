@@ -8,7 +8,7 @@ using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Settings;
 

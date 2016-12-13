@@ -1,4 +1,7 @@
-﻿using InfinniPlatform.MessageQueue.Diagnostics;
+﻿using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
+using InfinniPlatform.MessageQueue.Contract.Producers;
+using InfinniPlatform.MessageQueue.Diagnostics;
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
@@ -7,9 +10,6 @@ using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
-using InfinniPlatform.Sdk.Queues.Producers;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.MessageQueue.IoC

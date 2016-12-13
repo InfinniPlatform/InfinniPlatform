@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Queues.Consumers;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.MessageQueue.Contract
 {
     public static class QueuesExtentions
     {
@@ -14,7 +14,7 @@ namespace InfinniPlatform.Sdk.Queues
         /// Сервисы будут зарегистрированы со стратегией SingleInstance().
         /// </remarks>
         /// <example>
-        /// <code>
+        ///     <code>
         /// RegisterConsumers(GetType().Assembly)
         /// </code>
         /// </example>

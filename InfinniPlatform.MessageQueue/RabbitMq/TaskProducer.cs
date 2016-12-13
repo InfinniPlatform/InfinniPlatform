@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 
+using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Queues.Producers;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {

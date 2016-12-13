@@ -4,7 +4,7 @@ using InfinniPlatform.PushNotification.MessageBus;
 using InfinniPlatform.PushNotification.Owin;
 using InfinniPlatform.PushNotification.SignalR;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.SignalR;

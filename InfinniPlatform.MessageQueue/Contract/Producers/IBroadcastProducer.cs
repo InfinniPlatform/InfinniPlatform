@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Sdk.Dynamic;
 
-namespace InfinniPlatform.Sdk.Queues.Producers
+namespace InfinniPlatform.MessageQueue.Contract.Producers
 {
     /// <summary>
     /// Отправитель сообщений в широковещательную очередь.

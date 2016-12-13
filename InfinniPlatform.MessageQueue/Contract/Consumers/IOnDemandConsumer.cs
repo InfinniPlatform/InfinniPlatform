@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace InfinniPlatform.Sdk.Queues.Consumers
+namespace InfinniPlatform.MessageQueue.Contract.Consumers
 {
     /// <summary>
     /// Получатель сообщений из очереди по запросу.

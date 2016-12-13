@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 
 namespace InfinniPlatform.Auth.Internal.UserStorage
 {

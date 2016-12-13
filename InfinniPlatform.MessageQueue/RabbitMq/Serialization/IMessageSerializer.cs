@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.MessageQueue.Contract;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;

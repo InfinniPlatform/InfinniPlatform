@@ -111,6 +111,10 @@
       <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
       <Name>InfinniPlatform.Http</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj">
+      <Project>{e14cce42-2563-4c36-919f-b389ff87ea65}</Project>
+      <Name>InfinniPlatform.MessageQueue</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
       <Name>InfinniPlatform.Sdk</Name>

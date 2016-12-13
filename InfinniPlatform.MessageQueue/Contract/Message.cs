@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Sdk.Queues
+namespace InfinniPlatform.MessageQueue.Contract
 {
     /// <summary>
     /// Сообщение в очереди.

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Queues;
+﻿using InfinniPlatform.MessageQueue.Contract;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {

@@ -35,6 +35,7 @@
             'InfinniPlatform.Heartbeat',
             'InfinniPlatform.Auth.Internal',
             'InfinniPlatform.Auth.Vk',
+            'InfinniPlatform.MessageQueue',
             'InfinniPlatform.Plugins.ViewEngine',
             'InfinniPlatform.PrintView',
             'InfinniPlatform.PushNotification',

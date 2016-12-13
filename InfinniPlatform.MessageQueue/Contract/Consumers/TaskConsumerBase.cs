@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Sdk.Queues.Consumers
+namespace InfinniPlatform.MessageQueue.Contract.Consumers
 {
-    public abstract class BroadcastConsumerBase<T> : IBroadcastConsumer where T : class
+    /// <summary>
+    /// Базовый потребитель сообщений очереди задач.
+    /// </summary>
+    /// <typeparam name="T">Тип тела сообщения.</typeparam>
+    public abstract class TaskConsumerBase<T> : ITaskConsumer
     {
+        /// <summary>
+        /// Тип тела сообщения.
+        /// </summary>
         public Type MessageType => typeof(T);
 
         async Task IConsumer.Consume(IMessage message)
@@ -12,12 +19,12 @@ namespace InfinniPlatform.Sdk.Queues.Consumers
             await Consume((Message<T>)message);
         }
 
-        protected abstract Task Consume(Message<T> message);
-
         async Task<bool> IConsumer.OnError(Exception exception)
         {
             return await OnError(exception);
         }
+
+        protected abstract Task Consume(Message<T> message);
 
         protected virtual Task<bool> OnError(Exception exception)
         {
