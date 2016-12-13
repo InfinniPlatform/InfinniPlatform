@@ -5,7 +5,7 @@ using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Cache;
+using InfinniPlatform.Caching;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.MessageQueue.Contract.Producers;

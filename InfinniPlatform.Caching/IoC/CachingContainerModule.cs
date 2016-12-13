@@ -1,11 +1,11 @@
 ﻿using System;
 
+using InfinniPlatform.Caching.Contract;
 using InfinniPlatform.Caching.Diagnostics;
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.MessageQueue.Contract;

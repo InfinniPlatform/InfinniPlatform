@@ -55,6 +55,8 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CacheSettings.cs" />
+    <Compile Include="Contract\ICache.cs" />
     <Compile Include="Diagnostics\CachingStatusProvider.cs" />
     <Compile Include="IMemoryCache.cs" />
     <Compile Include="ISharedCache.cs" />

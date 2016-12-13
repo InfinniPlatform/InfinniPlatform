@@ -32,6 +32,7 @@
             'InfinniPlatform.Auth.Cookie',
             'InfinniPlatform.Auth.Facebook',
             'InfinniPlatform.Auth.Google',
+            'InfinniPlatform.Caching',
             'InfinniPlatform.Heartbeat',
             'InfinniPlatform.Auth.Internal',
             'InfinniPlatform.Auth.Vk',

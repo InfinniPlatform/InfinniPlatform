@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Cache;
+using InfinniPlatform.Caching;
 using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.MessageQueue.Contract.Consumers;
 

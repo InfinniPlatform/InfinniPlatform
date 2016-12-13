@@ -141,6 +141,10 @@
       <Project>{daf73666-f354-499c-9c1e-5e96a5141f13}</Project>
       <Name>InfinniPlatform.Auth.Cookie</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj">
+      <Project>{bd628b04-c2df-458a-8406-6bb60729fc1c}</Project>
+      <Name>InfinniPlatform.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
       <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
       <Name>InfinniPlatform.Http</Name>

@@ -68,8 +68,6 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BlobStorage\BlobStorageExtensions.cs" />
-    <Compile Include="Cache\CacheSettings.cs" />
-    <Compile Include="Cache\ICache.cs" />
     <Compile Include="Diagnostics\ISubsystemStatusProvider.cs" />
     <Compile Include="Documents\Attributes\DocumentIgnoreAttribute.cs" />
     <Compile Include="Http\IHostAddressParser.cs" />
