@@ -1,5 +1,5 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/Agent.json",
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Agent.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Agent",
     "description": "Настройки приложения Infinni.Agent.",

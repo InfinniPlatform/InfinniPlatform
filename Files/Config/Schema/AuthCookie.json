@@ -1,5 +1,5 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthCookie.json",
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthCookie.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "AuthCookie",
     "description": "Настройки аутентификации через Cookie.",

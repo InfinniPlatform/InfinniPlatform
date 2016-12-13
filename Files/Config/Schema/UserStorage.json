@@ -1,5 +1,5 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/UserStorage.json",
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/UserStorage.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "UserStorage",
     "description": "Настройки хранения пользователей.",

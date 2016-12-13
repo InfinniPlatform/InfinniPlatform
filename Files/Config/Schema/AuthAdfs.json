@@ -1,5 +1,5 @@
 {
-    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/f-infinniClusterTools/Files/Config/Schema/AuthAdfs.json",
+    "id":"https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthAdfs.json",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "AuthAdfs",
     "description": "Настройки аутентификации через ADFS.",
