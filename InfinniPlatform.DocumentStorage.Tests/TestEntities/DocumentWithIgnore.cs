@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Documents.Attributes;
+﻿using InfinniPlatform.DocumentStorage.Contract.Attributes;
 
 namespace InfinniPlatform.DocumentStorage.Tests.TestEntities
 {

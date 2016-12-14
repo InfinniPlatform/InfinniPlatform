@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.BlobStorage.Services;
-using InfinniPlatform.Sdk.BlobStorage;
+﻿using InfinniPlatform.BlobStorage.Contract;
+using InfinniPlatform.BlobStorage.Services;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;

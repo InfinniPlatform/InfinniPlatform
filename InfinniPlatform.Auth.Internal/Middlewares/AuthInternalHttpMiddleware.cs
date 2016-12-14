@@ -1,5 +1,6 @@
 ﻿using System;
 
+using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Auth.Internal.Identity;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Logging;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.DocumentStorage.Contract;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;

@@ -1,13 +1,13 @@
-﻿using InfinniPlatform.Auth.Internal.Identity;
+﻿using InfinniPlatform.Auth.Internal.Contract;
+using InfinniPlatform.Auth.Internal.Identity;
 using InfinniPlatform.Auth.Internal.Middlewares;
 using InfinniPlatform.Auth.Internal.Services;
 using InfinniPlatform.Auth.Internal.UserStorage;
 using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.MessageQueue.Contract;
-using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.Identity;

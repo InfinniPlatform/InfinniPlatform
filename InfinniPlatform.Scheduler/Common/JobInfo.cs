@@ -1,8 +1,8 @@
 ﻿using System;
 
+using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract.Attributes;
 using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Attributes;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Scheduler.Common

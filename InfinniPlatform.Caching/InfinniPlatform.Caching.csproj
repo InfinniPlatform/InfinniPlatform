@@ -75,7 +75,6 @@
     <Compile Include="Redis\RedisCacheImpl.cs" />
     <Compile Include="Redis\RedisConnectionFactory.cs" />
     <Compile Include="Redis\RedisExtensions.cs" />
-    <Compile Include="Session\SessionManager.cs" />
     <Compile Include="TwoLayer\ICacheSynchronizer.cs" />
     <Compile Include="TwoLayer\TwoLayerCacheConsumer.cs" />
     <Compile Include="TwoLayer\CachingMessageConsumerSource.cs" />

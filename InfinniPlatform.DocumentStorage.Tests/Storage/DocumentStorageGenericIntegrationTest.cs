@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.DocumentStorage.Tests.TestEntities;
 
 using NUnit.Framework;
-using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.DocumentStorage.Tests.Storage
 {

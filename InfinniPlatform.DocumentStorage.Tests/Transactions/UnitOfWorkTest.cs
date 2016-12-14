@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Transactions;
-using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Dynamic;
 
 using Moq;

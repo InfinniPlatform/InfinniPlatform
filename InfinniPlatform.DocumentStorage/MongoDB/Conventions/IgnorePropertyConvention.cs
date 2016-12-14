@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Documents.Attributes;
+using InfinniPlatform.DocumentStorage.Contract.Attributes;
 
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;

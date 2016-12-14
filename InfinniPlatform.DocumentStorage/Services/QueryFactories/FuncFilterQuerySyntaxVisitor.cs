@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Metadata;
-using InfinniPlatform.Sdk.Documents.Services;
+using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {

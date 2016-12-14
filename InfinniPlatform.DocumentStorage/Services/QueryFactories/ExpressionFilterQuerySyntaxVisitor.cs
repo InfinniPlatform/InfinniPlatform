@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
+using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
-using InfinniPlatform.Sdk.Documents.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {

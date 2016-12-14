@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.DocumentStorage.Storage

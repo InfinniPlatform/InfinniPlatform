@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.DocumentStorage.Tests.TestEntities;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Metadata;
+using InfinniPlatform.Sdk.Metadata;
 
 using NUnit.Framework;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 
-using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Sdk.Serialization;
 
 using log4net;

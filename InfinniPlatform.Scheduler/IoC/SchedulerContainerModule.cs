@@ -5,11 +5,11 @@ using InfinniPlatform.Scheduler.Hosting;
 using InfinniPlatform.Scheduler.Quartz;
 using InfinniPlatform.Scheduler.Storage;
 using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Settings;
 
 using Quartz;

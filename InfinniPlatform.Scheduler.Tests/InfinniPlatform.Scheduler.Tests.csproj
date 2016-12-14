@@ -80,6 +80,10 @@
     <Compile Include="Quartz\QuartzJobSchedulerDispatcherTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj">
+      <Project>{8eaf5465-16fb-456f-b562-6e4f38dd8885}</Project>
+      <Name>InfinniPlatform.DocumentStorage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj">
       <Project>{8b4ab571-c7fb-48eb-8c43-f2f7f305963b}</Project>
       <Name>InfinniPlatform.Scheduler</Name>

@@ -2,8 +2,8 @@
 
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Session;
-using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;

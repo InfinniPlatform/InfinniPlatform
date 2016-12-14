@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.Scheduler.Common;
-using InfinniPlatform.Sdk.Documents;
 
 namespace InfinniPlatform.Scheduler.Storage
 {

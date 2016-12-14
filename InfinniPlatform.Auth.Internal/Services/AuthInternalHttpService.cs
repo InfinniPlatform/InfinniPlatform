@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Auth.Internal.Identity;
 using InfinniPlatform.Auth.Internal.Properties;
 using InfinniPlatform.Http.Middlewares;

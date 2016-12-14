@@ -1,5 +1,6 @@
 ﻿using System.Security.Principal;
 
+using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 

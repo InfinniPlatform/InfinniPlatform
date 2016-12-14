@@ -91,12 +91,21 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Caching" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RestApi\AuthApiClient.cs" />
     <Compile Include="Identity\DefaultAppUserPasswordHasher.cs" />
     <Compile Include="Identity\IAppUserPasswordHasher.cs" />
     <Compile Include="Identity\StringHasher.cs" />
+    <Compile Include="Contract\ApplicationUser.cs" />
+    <Compile Include="Contract\ApplicationUserClaim.cs" />
+    <Compile Include="Contract\ApplicationUserLogin.cs" />
+    <Compile Include="Contract\ForeignKey.cs" />
+    <Compile Include="Contract\IAppUserManager.cs" />
+    <Compile Include="Security\SecurityContainerModule.cs" />
+    <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="UserStorage\AuthInternalDocumentMetadataSource.cs" />
     <Compile Include="IoC\AuthInternalContainerModule.cs" />
     <Compile Include="Identity\IdentityApplicationUser.cs" />
@@ -144,6 +153,10 @@
     <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj">
       <Project>{bd628b04-c2df-458a-8406-6bb60729fc1c}</Project>
       <Name>InfinniPlatform.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj">
+      <Project>{8eaf5465-16fb-456f-b562-6e4f38dd8885}</Project>
+      <Name>InfinniPlatform.DocumentStorage</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
       <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
-using InfinniPlatform.Sdk.Documents.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {
