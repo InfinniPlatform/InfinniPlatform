@@ -113,7 +113,7 @@
 
                 $projectNuspec = $projectNuspec + "            <dependency id=""$projectReferenceName"" version=""[$projectReferenceVersion]"" />`r`n"
 
-                $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$projectReferenceFramework\$projectReferenceName.dll"            
+                $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$projectReferenceFramework\$projectReferenceName.dll"
             }  
 
             if (-Not $isPlugin) 
@@ -139,18 +139,18 @@
 
             $projectTargetPath = "$projectName.$projectVersion\$targetFolder\$framework";
 
-            if ($isPlugin) 
+            if ($isPlugin)
             {
                 # Adds external dependencies from packages.config
 
-                $projectPackagesRefs = Project-GetExternalReferences $projectXml                
+                $projectPackagesRefs = Project-GetExternalReferences $projectXml
 
                 foreach ($package in $projectPackagesRefs)
                 {
                     $pluginAssembly = $package.substring($package.LastIndexOf('\') + 1)
                     $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$pluginAssembly"" />`r`n"
                     $solutionRefs += "$projectTargetPath\$pluginAssembly"
-                }                
+                }
             }
 
             # Adds project assembly
@@ -160,6 +160,7 @@
             $projectAssembly = $projectAssemblyName + $(if ($projectIsLibrary) { '.dll' } else { '.exe' })
             $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectAssembly"" />`r`n"
             if ($isNotExtension) { $solutionRefs += "$projectTargetPath\$projectAssembly" }
+            if ($isPlugin) { $solutionRefs += "$projectTargetPath\$projectAssembly" }
 
             # Adds resources for ru-RU
 
