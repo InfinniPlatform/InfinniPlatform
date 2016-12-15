@@ -143,14 +143,14 @@
             {
                 # Adds external dependencies from packages.config
 
-                $projectPackagesRefs = Project-GetExternalReferences $projectXml                
-
+                $projectPackagesRefs = Project-GetExternalReferences $projectXml
+                
                 foreach ($package in $projectPackagesRefs)
                 {
                     $pluginAssembly = $package.substring($package.LastIndexOf('\') + 1)
                     $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$pluginAssembly"" />`r`n"
-                    $solutionRefs += "$projectTargetPath\$pluginAssembly"
-                }                
+                    $projectRefs += "$projectTargetPath\$pluginAssembly"
+                }
             }
 
             # Adds project assembly
@@ -160,6 +160,7 @@
             $projectAssembly = $projectAssemblyName + $(if ($projectIsLibrary) { '.dll' } else { '.exe' })
             $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectAssembly"" />`r`n"
             if ($isNotExtension) { $solutionRefs += "$projectTargetPath\$projectAssembly" }
+            if ($isPlugin) { $projectRefs += "$projectTargetPath\$projectAssembly" }
 
             # Adds resources for ru-RU
 
@@ -217,7 +218,7 @@
 
             if (Project-HasFile $projectXml 'AppExtension.json')
             {
-                if (-Not $isNotExtension) { $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework\AppExtension.json"" src=""$projectName.AppExtension.json"" />`r`n" }                
+                if (-Not $isNotExtension) { $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework\AppExtension.json"" src=""$projectName.AppExtension.json"" />`r`n" }
             }
 
             # Adds content files
@@ -233,7 +234,7 @@
             # Ends the files part
 
             $projectNuspec = $projectNuspec + `
-                "        <file target=""$targetFolder\$framework\$projectName.references"" src=""$projectName.references"" />`r`n" + `
+                "        <file target=""lib\$framework\$projectName.references"" src=""$projectName.references"" />`r`n" + `
                 "    </files>`r`n" + `
                 "</package>"
 
