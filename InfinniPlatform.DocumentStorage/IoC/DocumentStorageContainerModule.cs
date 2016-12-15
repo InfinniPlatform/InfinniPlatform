@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.DocumentStorage.Diagnostics;
+﻿using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract.Transactions;
+using InfinniPlatform.DocumentStorage.Diagnostics;
 using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Services;
@@ -7,8 +9,6 @@ using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Transactions;
 using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;

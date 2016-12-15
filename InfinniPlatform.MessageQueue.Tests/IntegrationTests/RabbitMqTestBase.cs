@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 using InfinniPlatform.MessageQueue.RabbitMq;
 using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
 

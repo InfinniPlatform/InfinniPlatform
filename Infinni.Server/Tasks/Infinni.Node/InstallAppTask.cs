@@ -1,11 +1,12 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.PushNotification;
 using Infinni.Server.Agent;
 using Infinni.Server.Tasks.Agents;
+
+using InfinniPlatform.PushNotification.Contract;
+using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace Infinni.Server.Tasks.Infinni.Node
 {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Security.Claims;
 
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Tests.MongoDB;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Metadata;
+using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;
 

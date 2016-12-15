@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Metadata;
+using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.Sdk.Metadata;
 
 using MongoDB.Bson;
 using MongoDB.Driver;

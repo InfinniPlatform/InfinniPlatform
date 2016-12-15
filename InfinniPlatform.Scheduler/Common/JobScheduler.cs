@@ -6,7 +6,7 @@ using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Properties;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.MessageQueue.Contract.Producers;
 
 namespace InfinniPlatform.Scheduler.Common
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Interceptors;
+using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract.Interceptors;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {

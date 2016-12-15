@@ -55,6 +55,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
@@ -64,7 +65,77 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Contract\RestApi\DocumentDeleteQueryClient.cs" />
+    <Compile Include="Contract\RestApi\DocumentGetQueryClient.cs" />
+    <Compile Include="Contract\RestApi\DocumentHttpServiceClient.cs" />
+    <Compile Include="Contract\RestApi\DocumentPostQueryClient.cs" />
+    <Compile Include="Contract\RestApi\HttpRequestFileClient.cs" />
     <Compile Include="Diagnostics\DocumentStorageStatusProvider.cs" />
+    <Compile Include="Contract\Attributes\DocumentIgnoreAttribute.cs" />
+    <Compile Include="Contract\Document.cs" />
+    <Compile Include="Contract\DocumentBulkResult.cs" />
+    <Compile Include="Contract\DocumentHeader.cs" />
+    <Compile Include="Contract\DocumentStorageExtensions.cs" />
+    <Compile Include="Contract\DocumentStorageWriteException.cs" />
+    <Compile Include="Contract\DocumentStorageWriteResult.cs" />
+    <Compile Include="Contract\DocumentTypeAttribute.cs" />
+    <Compile Include="Contract\DocumentUpdateResult.cs" />
+    <Compile Include="Contract\DocumentUpdateStatus.cs" />
+    <Compile Include="Contract\DocumentValidationResult.cs" />
+    <Compile Include="Contract\DocumentValidationResultItem.cs" />
+    <Compile Include="Contract\IDocumentAggregateCursor.cs" />
+    <Compile Include="Contract\IDocumentAggregateCursorGeneric.cs" />
+    <Compile Include="Contract\IDocumentAggregateSortedCursor.cs" />
+    <Compile Include="Contract\IDocumentAggregateSortedCursorGeneric.cs" />
+    <Compile Include="Contract\IDocumentBulkBuilder.cs" />
+    <Compile Include="Contract\IDocumentBulkBuilderGeneric.cs" />
+    <Compile Include="Contract\IDocumentCursor.cs" />
+    <Compile Include="Contract\IDocumentFilterBuilder.cs" />
+    <Compile Include="Contract\IDocumentFindCursor.cs" />
+    <Compile Include="Contract\IDocumentFindCursorGeneric.cs" />
+    <Compile Include="Contract\IDocumentFindSortedCursor.cs" />
+    <Compile Include="Contract\IDocumentFindSortedCursorGeneric.cs" />
+    <Compile Include="Contract\IDocumentIdGenerator.cs" />
+    <Compile Include="Contract\IDocumentKnownTypeSource.cs" />
+    <Compile Include="Contract\IDocumentProjectionBuilder.cs" />
+    <Compile Include="Contract\IDocumentStorage.cs" />
+    <Compile Include="Contract\IDocumentStorageFactory.cs" />
+    <Compile Include="Contract\IDocumentStorageGeneric.cs" />
+    <Compile Include="Contract\IDocumentStorageManager.cs" />
+    <Compile Include="Contract\IDocumentStorageProvider.cs" />
+    <Compile Include="Contract\IDocumentStorageProviderFactory.cs" />
+    <Compile Include="Contract\IDocumentStorageProviderGeneric.cs" />
+    <Compile Include="Contract\IDocumentUpdateBuilder.cs" />
+    <Compile Include="Contract\IDocumentUpdateBuilderGeneric.cs" />
+    <Compile Include="Contract\Interceptors\DocumentBulkCommand.cs" />
+    <Compile Include="Contract\Interceptors\DocumentDeleteManyCommand.cs" />
+    <Compile Include="Contract\Interceptors\DocumentDeleteOneCommand.cs" />
+    <Compile Include="Contract\Interceptors\DocumentInsertManyCommand.cs" />
+    <Compile Include="Contract\Interceptors\DocumentInsertOneCommand.cs" />
+    <Compile Include="Contract\Interceptors\DocumentReplaceOneCommand.cs" />
+    <Compile Include="Contract\Interceptors\DocumentStorageInterceptor.cs" />
+    <Compile Include="Contract\Interceptors\DocumentStorageWriteResult.cs" />
+    <Compile Include="Contract\Interceptors\DocumentUpdateManyCommand.cs" />
+    <Compile Include="Contract\Interceptors\DocumentUpdateOneCommand.cs" />
+    <Compile Include="Contract\Interceptors\IDocumentStorageInterceptor.cs" />
+    <Compile Include="Contract\Interceptors\IDocumentWriteCommand.cs" />
+    <Compile Include="Contract\ISystemDocumentStorage.cs" />
+    <Compile Include="Contract\ISystemDocumentStorageFactory.cs" />
+    <Compile Include="Contract\ISystemDocumentStorageGeneric.cs" />
+    <Compile Include="Contract\Services\DocumentDeleteQuery.cs" />
+    <Compile Include="Contract\Services\DocumentDeleteQueryResult.cs" />
+    <Compile Include="Contract\Services\DocumentGetQuery.cs" />
+    <Compile Include="Contract\Services\DocumentGetQueryResult.cs" />
+    <Compile Include="Contract\Services\DocumentHttpServiceExtensions.cs" />
+    <Compile Include="Contract\Services\DocumentHttpServiceHandler.cs" />
+    <Compile Include="Contract\Services\DocumentPostQuery.cs" />
+    <Compile Include="Contract\Services\DocumentPostQueryResult.cs" />
+    <Compile Include="Contract\Services\DocumentQueryResult.cs" />
+    <Compile Include="Contract\Services\DocumentSortOrder.cs" />
+    <Compile Include="Contract\Services\IDocumentHttpServiceHandler.cs" />
+    <Compile Include="Contract\Services\IDocumentHttpServiceHandlerBase.cs" />
+    <Compile Include="Contract\Transactions\IUnitOfWork.cs" />
+    <Compile Include="Contract\Transactions\IUnitOfWorkFactory.cs" />
     <Compile Include="IoC\DocumentStorageContainerModule.cs" />
     <Compile Include="MongoDB\Conventions\IgnorePropertyConvention.cs" />
     <Compile Include="MongoDB\Conventions\IgnoreDiscriminatorConvention.cs" />
@@ -162,6 +233,10 @@
     <Compile Include="Transactions\UnitOfWorkLog.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj">
+      <Project>{3BCBCD4C-1155-464E-B020-51FA57B5E9B3}</Project>
+      <Name>InfinniPlatform.BlobStorage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
       <Name>InfinniPlatform.Sdk</Name>

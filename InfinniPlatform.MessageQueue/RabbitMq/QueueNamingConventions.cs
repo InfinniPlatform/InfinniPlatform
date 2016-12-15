@@ -1,8 +1,8 @@
 ﻿using System;
 
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {

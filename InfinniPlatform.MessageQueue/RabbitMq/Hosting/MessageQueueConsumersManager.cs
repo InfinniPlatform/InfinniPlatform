@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
-using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;

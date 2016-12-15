@@ -53,6 +53,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\BlobData.cs" />
+    <Compile Include="Contract\BlobInfo.cs" />
+    <Compile Include="Contract\BlobStorageExtensions.cs" />
+    <Compile Include="Contract\IBlobStorage.cs" />
+    <Compile Include="RestApi\BlobHttpServiceClient.cs" />
     <Compile Include="FileSystemBlobStorage.cs" />
     <Compile Include="FileSystemBlobStorageSettings.cs" />
     <Compile Include="IoC\BlobStorageContainerModule.cs" />

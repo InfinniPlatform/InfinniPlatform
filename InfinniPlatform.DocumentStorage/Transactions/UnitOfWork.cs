@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract.Transactions;
 using InfinniPlatform.DocumentStorage.Storage;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Transactions

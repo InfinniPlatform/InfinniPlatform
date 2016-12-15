@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Interceptors;
+using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract.Interceptors;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {

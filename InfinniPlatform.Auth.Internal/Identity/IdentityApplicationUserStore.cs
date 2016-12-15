@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Auth.Internal.UserStorage;
-using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
 

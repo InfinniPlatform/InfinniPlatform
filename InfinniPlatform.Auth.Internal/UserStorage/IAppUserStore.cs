@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Security;
+﻿using InfinniPlatform.Auth.Internal.Contract;
 
 namespace InfinniPlatform.Auth.Internal.UserStorage
 {

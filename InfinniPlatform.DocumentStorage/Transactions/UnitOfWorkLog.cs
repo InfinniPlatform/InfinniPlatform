@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.DocumentStorage.Contract;
 
 namespace InfinniPlatform.DocumentStorage.Transactions
 {

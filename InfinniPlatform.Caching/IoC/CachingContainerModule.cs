@@ -1,15 +1,13 @@
 ﻿using System;
 
+using InfinniPlatform.Caching.Contract;
 using InfinniPlatform.Caching.Diagnostics;
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Caching.Session;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Session;
+using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.IoC
@@ -18,7 +16,7 @@ namespace InfinniPlatform.Caching.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            // НАСТРОЙКИ
+            // Settings
 
             builder.RegisterFactory(GetCacheSettings)
                    .As<CacheSettings>()
@@ -34,7 +32,7 @@ namespace InfinniPlatform.Caching.IoC
                    .AsSelf()
                    .InstancePerDependency();
 
-            // РЕАЛИЗАЦИИ КЭША
+            // Cache implementations
 
             builder.RegisterType<MemoryCacheImpl>()
                    .AsSelf()
@@ -65,13 +63,7 @@ namespace InfinniPlatform.Caching.IoC
                    .As<ISharedCache>()
                    .SingleInstance();
 
-            // СЕССИЯ ПОЛЬЗОВАТЕЛЯ
-
-            builder.RegisterType<SessionManager>()
-                   .As<ISessionManager>()
-                   .SingleInstance();
-
-            // ДИАГНОСТИКА
+            // Diagnostic
 
             builder.RegisterType<CachingStatusProvider>()
                    .As<ISubsystemStatusProvider>()

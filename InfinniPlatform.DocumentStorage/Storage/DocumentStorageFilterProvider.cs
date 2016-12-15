@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.DocumentStorage.Storage

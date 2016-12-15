@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Metadata;
+using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.Scheduler.Storage
 {

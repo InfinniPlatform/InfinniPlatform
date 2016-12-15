@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Runtime.Caching;
 
-using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.Memory

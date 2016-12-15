@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.DocumentStorage.Services.QueryFactories;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Tests.Storage;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Metadata;
 
 using NUnit.Framework;
 

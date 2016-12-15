@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Documents.Services;
+﻿using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services

@@ -5,11 +5,11 @@ using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Cache;
+using InfinniPlatform.Auth.Internal.Contract;
+using InfinniPlatform.Caching;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Producers;
-using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Auth.Internal.UserStorage

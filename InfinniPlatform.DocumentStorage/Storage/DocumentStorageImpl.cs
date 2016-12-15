@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Interceptors;
+using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract.Interceptors;
 using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Storage

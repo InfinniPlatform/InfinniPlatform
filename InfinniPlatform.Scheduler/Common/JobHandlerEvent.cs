@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.MessageQueue.Contract;
 
 namespace InfinniPlatform.Scheduler.Common
 {

@@ -61,6 +61,15 @@ namespace InfinniPlatform.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not create IoC container module..
+        /// </summary>
+        public static string CannotCreateContainerModule {
+            get {
+                return ResourceManager.GetString("CannotCreateContainerModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot initialize service correctly..
         /// </summary>
         public static string CannotInitializeServiceCorrectly {

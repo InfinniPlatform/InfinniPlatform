@@ -1,6 +1,7 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Auth.Internal.Contract;
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Security;
 using InfinniPlatform.Sdk.Session;

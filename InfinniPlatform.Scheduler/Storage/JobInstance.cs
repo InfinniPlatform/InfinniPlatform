@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.Documents;
+﻿using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.Scheduler.Contract;
 
 namespace InfinniPlatform.Scheduler.Storage
 {

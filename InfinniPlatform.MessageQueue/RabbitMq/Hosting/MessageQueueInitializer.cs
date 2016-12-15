@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 using InfinniPlatform.MessageQueue.Properties;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
 
 using RabbitMQ.Client;
 
@@ -38,10 +38,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             _log = log;
         }
 
+        private readonly List<IBroadcastConsumer> _broadcastConsumers;
+        private readonly IMessageQueueConsumersManager _consumersManager;
+
         private readonly ILog _log;
         private readonly RabbitMqManager _manager;
-        private readonly IMessageQueueConsumersManager _consumersManager;
-        private readonly List<IBroadcastConsumer> _broadcastConsumers;
         private readonly List<ITaskConsumer> _taskConsumers;
 
         public override void OnAfterStart()

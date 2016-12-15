@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Documents;
+﻿using InfinniPlatform.DocumentStorage.Contract;
 
 using MongoDB.Bson;
 

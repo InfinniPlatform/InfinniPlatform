@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Security;
+﻿using InfinniPlatform.Auth.Internal.Contract;
 
 using Microsoft.AspNet.Identity;
 

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.DocumentStorage.Properties;
-using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 

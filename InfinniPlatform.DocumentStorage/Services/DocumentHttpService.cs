@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.BlobStorage;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Logging;
 
 using System.Collections.Generic;
 
+using InfinniPlatform.BlobStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 

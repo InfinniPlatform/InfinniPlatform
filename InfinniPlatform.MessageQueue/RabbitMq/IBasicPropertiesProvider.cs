@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Queues;
+using InfinniPlatform.MessageQueue.Contract;
 
 using RabbitMQ.Client.Framing;
 
@@ -22,7 +22,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
         /// </summary>
         /// <remarks>
         /// Сообщение сохраняется после перезапуска.
-        /// </remarks> 
+        /// </remarks>
         BasicProperties GetPersistent();
 
         /// <summary>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.PushNotification.Contract;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.PushNotification;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Session;
 

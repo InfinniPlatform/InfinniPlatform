@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.MessageQueue.Contract.Producers;
 
 using Quartz;
 

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Caching.Contract;
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Sdk.Cache;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.TwoLayer

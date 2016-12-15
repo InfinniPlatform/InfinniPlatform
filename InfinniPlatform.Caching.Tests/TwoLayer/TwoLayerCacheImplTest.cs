@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.Sdk.Settings;
 
 using Moq;

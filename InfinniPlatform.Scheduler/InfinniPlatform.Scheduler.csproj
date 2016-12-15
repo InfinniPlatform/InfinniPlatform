@@ -140,6 +140,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj">
+      <Project>{8eaf5465-16fb-456f-b562-6e4f38dd8885}</Project>
+      <Name>InfinniPlatform.DocumentStorage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj">
+      <Project>{e14cce42-2563-4c36-919f-b389ff87ea65}</Project>
+      <Name>InfinniPlatform.MessageQueue</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469d-7d54-4c76-97e2-ef40f15645f5}</Project>
       <Name>InfinniPlatform.Sdk</Name>

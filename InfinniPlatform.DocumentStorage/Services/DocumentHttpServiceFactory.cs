@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Documents.Services;
+using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;

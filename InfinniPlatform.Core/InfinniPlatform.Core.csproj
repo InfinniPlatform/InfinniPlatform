@@ -51,6 +51,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -112,6 +116,22 @@
     <Compile Include="Http\Middlewares\ErrorHandlingOwinMiddleware.cs" />
     <Compile Include="Http\Middlewares\OwinContextProvider.cs" />
     <Compile Include="Http\StaticContentSettings.cs" />
+    <Compile Include="IoC\AutofacActivateInstanceModule.cs" />
+    <Compile Include="IoC\AutofacContainerBuilder.cs" />
+    <Compile Include="IoC\AutofacContainerModule.cs" />
+    <Compile Include="IoC\AutofacContainerRegistrationRule.cs" />
+    <Compile Include="IoC\AutofacContainerResolver.cs" />
+    <Compile Include="IoC\AutofacCreateInstanceModule.cs" />
+    <Compile Include="IoC\BaseDirectoryContainerModuleScanner.cs" />
+    <Compile Include="IoC\ContainerModuleInfo.cs" />
+    <Compile Include="IoC\ContainerModuleLocation.cs" />
+    <Compile Include="IoC\Http\AutofacHttpConstants.cs" />
+    <Compile Include="IoC\Http\AutofacHttpContainerModule.cs" />
+    <Compile Include="IoC\Http\AutofacHttpContainerResolverFactory.cs" />
+    <Compile Include="IoC\Http\AutofacHttpMiddleware.cs" />
+    <Compile Include="IoC\Http\AutofacOwinMiddlewareResolver.cs" />
+    <Compile Include="IoC\Http\AutofacRequestLifetimeScopeOwinMiddleware.cs" />
+    <Compile Include="IoC\Http\AutofacWrapperOwinMiddleware.cs" />
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\LoggingContainerModule.cs" />
     <Compile Include="Logging\PerformanceLogEvent.cs" />
@@ -183,10 +203,6 @@
     <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
       <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
       <Name>InfinniPlatform.Http</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.IoC\InfinniPlatform.IoC.csproj">
-      <Project>{197A078F-F42F-4F87-B8B2-463129ED4797}</Project>
-      <Name>InfinniPlatform.IoC</Name>
     </ProjectReference>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
       <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>

@@ -68,6 +68,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\Consumers\BroadcastConsumerBase.cs" />
+    <Compile Include="Contract\Consumers\IBroadcastConsumer.cs" />
+    <Compile Include="Contract\Consumers\IConsumer.cs" />
+    <Compile Include="Contract\Consumers\IOnDemandConsumer.cs" />
+    <Compile Include="Contract\Consumers\ITaskConsumer.cs" />
+    <Compile Include="Contract\Consumers\TaskConsumerBase.cs" />
+    <Compile Include="Contract\IMessage.cs" />
+    <Compile Include="Contract\IMessageConsumerSource.cs" />
+    <Compile Include="Contract\IMessageGeneric.cs" />
+    <Compile Include="Contract\Message.cs" />
+    <Compile Include="Contract\Producers\IBroadcastProducer.cs" />
+    <Compile Include="Contract\Producers\ITaskProducer.cs" />
+    <Compile Include="Contract\QueueNameAttribute.cs" />
+    <Compile Include="Contract\QueuesExtentions.cs" />
     <Compile Include="RabbitMq\Hosting\IMessageConsumeEventHandler.cs" />
     <Compile Include="RabbitMq\Hosting\IMessageQueueConsumersManager.cs" />
     <Compile Include="RabbitMq\Hosting\IMessageQueueThreadPool.cs" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Sdk.BlobStorage;
+using InfinniPlatform.BlobStorage.Contract;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;

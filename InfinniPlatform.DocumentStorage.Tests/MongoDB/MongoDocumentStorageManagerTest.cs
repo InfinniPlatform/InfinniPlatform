@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.Sdk.Documents.Metadata;
 using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Sdk.Metadata;
 
 using MongoDB.Driver;
 

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Documents.Transactions;
+﻿using InfinniPlatform.DocumentStorage.Contract.Transactions;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.DocumentStorage.Transactions

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Queues;
-using InfinniPlatform.Sdk.Queues.Consumers;
-using InfinniPlatform.Sdk.Queues.Producers;
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
+using InfinniPlatform.MessageQueue.Contract.Producers;
 
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Messaging;

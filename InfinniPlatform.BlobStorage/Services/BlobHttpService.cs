@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using InfinniPlatform.BlobStorage.Contract;
 using InfinniPlatform.BlobStorage.Properties;
-using InfinniPlatform.Sdk.BlobStorage;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 

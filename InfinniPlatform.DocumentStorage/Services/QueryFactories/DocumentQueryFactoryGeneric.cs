@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
-using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
 

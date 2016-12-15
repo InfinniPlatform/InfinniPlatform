@@ -28,16 +28,21 @@
         [Array] $extensions = @(
             'Infinni.Agent',
             'Infinni.Server',
-            'InfinniPlatform.Heartbeat',
             'InfinniPlatform.Auth.Adfs',
             'InfinniPlatform.Auth.Cookie',
             'InfinniPlatform.Auth.Facebook',
             'InfinniPlatform.Auth.Google',
             'InfinniPlatform.Auth.Internal',
             'InfinniPlatform.Auth.Vk',
-            'InfinniPlatform.PrintView',            
-            'InfinniPlatform.Scheduler',
+            'InfinniPlatform.BlobStorage',
+            'InfinniPlatform.Caching',
+            'InfinniPlatform.DocumentStorage',
+            'InfinniPlatform.Heartbeat',
+            'InfinniPlatform.MessageQueue',
             'InfinniPlatform.Plugins.ViewEngine',
+            'InfinniPlatform.PrintView',
+            'InfinniPlatform.PushNotification',
+            'InfinniPlatform.Scheduler',
             'InfinniPlatform.Watcher'
         )
     )
@@ -108,7 +113,7 @@
 
                 $projectNuspec = $projectNuspec + "            <dependency id=""$projectReferenceName"" version=""[$projectReferenceVersion]"" />`r`n"
 
-                $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$projectReferenceFramework\$projectReferenceName.dll"            
+                $projectRefs += "$projectReferenceName.$projectReferenceVersion\lib\$projectReferenceFramework\$projectReferenceName.dll"
             }  
 
             if (-Not $isPlugin) 
@@ -134,18 +139,18 @@
 
             $projectTargetPath = "$projectName.$projectVersion\$targetFolder\$framework";
 
-            if ($isPlugin) 
+            if ($isPlugin)
             {
                 # Adds external dependencies from packages.config
 
-                $projectPackagesRefs = Project-GetExternalReferences $projectXml                
+                $projectPackagesRefs = Project-GetExternalReferences $projectXml
 
                 foreach ($package in $projectPackagesRefs)
                 {
                     $pluginAssembly = $package.substring($package.LastIndexOf('\') + 1)
                     $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$pluginAssembly"" />`r`n"
                     $solutionRefs += "$projectTargetPath\$pluginAssembly"
-                }                
+                }
             }
 
             # Adds project assembly
@@ -155,6 +160,7 @@
             $projectAssembly = $projectAssemblyName + $(if ($projectIsLibrary) { '.dll' } else { '.exe' })
             $projectNuspec = $projectNuspec + "        <file target=""$targetFolder\$framework"" src=""$projectAssembly"" />`r`n"
             if ($isNotExtension) { $solutionRefs += "$projectTargetPath\$projectAssembly" }
+            if ($isPlugin) { $solutionRefs += "$projectTargetPath\$projectAssembly" }
 
             # Adds resources for ru-RU
 

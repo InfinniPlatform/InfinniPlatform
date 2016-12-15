@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Linq.Expressions;
 
+using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Auth.Internal.Properties;
-using InfinniPlatform.Sdk.Documents;
-using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.DocumentStorage.Contract;
 
 namespace InfinniPlatform.Auth.Internal.UserStorage
 {

@@ -3,9 +3,9 @@ using System.ComponentModel.Composition;
 using System.Threading;
 
 using InfinniPlatform.Core.Http.Hosting;
+using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Properties;
-using InfinniPlatform.IoC.Http;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Core.ServiceHost

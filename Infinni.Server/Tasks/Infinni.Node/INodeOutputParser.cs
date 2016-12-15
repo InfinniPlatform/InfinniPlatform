@@ -1,5 +1,6 @@
-﻿using InfinniPlatform.Sdk.Http.Services;
-using Infinni.Server.Tasks.Agents;
+﻿using Infinni.Server.Tasks.Agents;
+
+using InfinniPlatform.Sdk.Http.Services;
 
 namespace Infinni.Server.Tasks.Infinni.Node
 {

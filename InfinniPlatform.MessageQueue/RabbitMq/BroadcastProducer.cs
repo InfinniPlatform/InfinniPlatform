@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 
+using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
 using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Queues.Producers;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq
 {
@@ -18,9 +18,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
             _basicPropertiesProvider = basicPropertiesProvider;
         }
 
+        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
+
         private readonly RabbitMqManager _manager;
         private readonly IMessageSerializer _messageSerializer;
-        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
 
         public void Publish<T>(T messageBody, string queueName = null)
         {

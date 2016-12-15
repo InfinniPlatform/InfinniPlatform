@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using Infinni.Server.Tasks.Agents;
+
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
-using Infinni.Server.Tasks.Agents;
 
 namespace Infinni.Server.Tasks.Infinni.Node
 {

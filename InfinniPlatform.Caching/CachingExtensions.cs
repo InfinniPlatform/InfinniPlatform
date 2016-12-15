@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Cache;
+﻿using InfinniPlatform.Caching.Contract;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
