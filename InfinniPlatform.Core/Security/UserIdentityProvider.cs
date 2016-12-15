@@ -3,10 +3,9 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Principal;
 using System.Threading;
 
-using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Sdk.Security;
 
-namespace InfinniPlatform.Auth.Internal.Security
+namespace InfinniPlatform.Core.Security
 {
     internal class UserIdentityProvider : IUserIdentityProvider
     {

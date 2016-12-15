@@ -1,8 +1,7 @@
-﻿using InfinniPlatform.Auth.Internal.Contract;
-using InfinniPlatform.Sdk.IoC;
+﻿using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Security;
 
-namespace InfinniPlatform.Auth.Internal.Security
+namespace InfinniPlatform.Core.Security
 {
     internal class SecurityContainerModule : IContainerModule
     {

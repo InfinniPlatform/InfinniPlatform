@@ -104,8 +104,6 @@
     <Compile Include="Contract\ApplicationUserLogin.cs" />
     <Compile Include="Contract\ForeignKey.cs" />
     <Compile Include="Contract\IAppUserManager.cs" />
-    <Compile Include="Security\SecurityContainerModule.cs" />
-    <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="UserStorage\AuthInternalDocumentMetadataSource.cs" />
     <Compile Include="IoC\AuthInternalContainerModule.cs" />
     <Compile Include="Identity\IdentityApplicationUser.cs" />

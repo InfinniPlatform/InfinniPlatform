@@ -156,6 +156,8 @@
     <Compile Include="Http\Services\NancyHttpRequestHeaders.cs" />
     <Compile Include="Http\Services\NancyMimeTypeResolver.cs" />
     <Compile Include="Http\Middlewares\NancyHttpMiddleware.cs" />
+    <Compile Include="Security\SecurityContainerModule.cs" />
+    <Compile Include="Security\UserIdentityProvider.cs" />
     <Compile Include="ServiceHost\ServiceHost.cs" />
     <Compile Include="ServiceHost\ServiceHostStatus.cs" />
     <Compile Include="Session\TenantProvider.cs" />
