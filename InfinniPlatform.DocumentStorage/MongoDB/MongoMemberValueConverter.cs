@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 using InfinniPlatform.Sdk.Serialization;
 
@@ -12,7 +11,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// </summary>
     internal sealed class MongoMemberValueConverter : MongoBsonSerializerBase
     {
-        public MongoMemberValueConverter(MemberInfo memberInfo, IMemberValueConverter converter) : base(GetMemberType(memberInfo))
+        public MongoMemberValueConverter(Type memberType, IMemberValueConverter converter) : base(memberType)
         {
             _converter = converter;
         }
@@ -31,22 +30,6 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         {
             var convertedValue = _converter.ConvertBack(valueType => ReadValue(context, valueType));
             return convertedValue;
-        }
-
-
-        private static Type GetMemberType(MemberInfo memberInfo)
-        {
-            if (memberInfo.MemberType == MemberTypes.Property)
-            {
-                return ((PropertyInfo)memberInfo).PropertyType;
-            }
-
-            if (memberInfo.MemberType == MemberTypes.Field)
-            {
-                return ((FieldInfo)memberInfo).FieldType;
-            }
-
-            return null;
         }
     }
 }

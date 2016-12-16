@@ -120,6 +120,7 @@
     <Compile Include="Transactions\UnitOfWorkTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MongoDB\MongoObjectMemberConverterTest.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using InfinniPlatform.Sdk.Serialization;
 
@@ -29,8 +31,25 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             if (converter != null)
             {
-                memberMap.SetSerializer(new MongoMemberValueConverter(member, converter));
+                var memberType = GetMemberType(member);
+                memberMap.SetSerializer(new MongoMemberValueConverter(memberType, converter));
             }
+        }
+
+
+        private static Type GetMemberType(MemberInfo memberInfo)
+        {
+            if (memberInfo.MemberType == MemberTypes.Property)
+            {
+                return ((PropertyInfo)memberInfo).PropertyType;
+            }
+
+            if (memberInfo.MemberType == MemberTypes.Field)
+            {
+                return ((FieldInfo)memberInfo).FieldType;
+            }
+
+            return null;
         }
     }
 }
