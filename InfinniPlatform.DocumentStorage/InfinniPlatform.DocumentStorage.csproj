@@ -88,6 +88,8 @@
     <Compile Include="MongoDB\MongoHelpers.cs" />
     <Compile Include="MongoDB\MongoMemberValueConverter.cs" />
     <Compile Include="MongoDB\MongoMemberValueConverterResolver.cs" />
+    <Compile Include="MongoDB\MongoObjectMemberConverter.cs" />
+    <Compile Include="MongoDB\MongoObjectMemberConverterResolver.cs" />
     <Compile Include="MongoDB\MongoTimeBsonSerializationProvider.cs" />
     <Compile Include="MongoDB\MongoTimeBsonSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

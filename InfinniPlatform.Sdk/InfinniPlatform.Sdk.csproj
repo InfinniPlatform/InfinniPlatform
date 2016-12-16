@@ -132,6 +132,7 @@
     <Compile Include="Serialization\JsonDefaultContractResolver.cs" />
     <Compile Include="Serialization\JsonMemberValueConverter.cs" />
     <Compile Include="Serialization\JsonMemberValueConverterResolver.cs" />
+    <Compile Include="Serialization\JsonObjectMemberConverter.cs" />
     <Compile Include="Serialization\SerializerVisible.cs" />
     <Compile Include="Serialization\XmlDateMemberValueConverter.cs" />
     <Compile Include="Http\Services\IHttpServiceContext.cs" />
