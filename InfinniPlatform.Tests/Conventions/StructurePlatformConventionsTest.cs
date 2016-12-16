@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Xml.Linq;
 
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace InfinniPlatform.Conventions
 {

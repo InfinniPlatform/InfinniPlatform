@@ -1,7 +1,7 @@
-namespace InfinniPlatform.Heartbeat
+п»їnamespace InfinniPlatform.Heartbeat
 {
     /// <summary>
-    /// Сообщение для Infinni.Server.
+    /// РЎРѕРѕР±С‰РµРЅРёРµ РґР»СЏ Infinni.Server.
     /// </summary>
     public class HeartbeatMessage
     {
@@ -13,17 +13,17 @@ namespace InfinniPlatform.Heartbeat
         }
 
         /// <summary>
-        /// Имя экземпляра приложения.
+        /// РРјСЏ СЌРєР·РµРјРїР»СЏСЂР° РїСЂРёР»РѕР¶РµРЅРёСЏ.
         /// </summary>
         public string InstanceId;
 
         /// <summary>
-        /// Содержимое сообщения.
+        /// РЎРѕРґРµСЂР¶РёРјРѕРµ СЃРѕРѕР±С‰РµРЅРёСЏ.
         /// </summary>
         public string Message;
 
         /// <summary>
-        /// Имя машины.
+        /// РРјСЏ РјР°С€РёРЅС‹.
         /// </summary>
         public string Name;
     }
