@@ -63,14 +63,14 @@ namespace InfinniPlatform.Heartbeat
 
         public override void OnBeforeStop()
         {
-            Task.Run(async () =>
+            Task.Run(() =>
                      {
                          var requestUri = new Uri(string.Empty, UriKind.Relative);
                          var beatMessageResponse = new HeartbeatMessage(Resources.AppStopping, _environment.Name, _environment.InstanceId);
 
                          var requestContent = new StringContent(_serializer.ConvertToString(beatMessageResponse), _serializer.Encoding, HttpConstants.JsonContentType);
 
-                         await _httpClient.PostAsync(requestUri, requestContent);
+                         _httpClient.PostAsync(requestUri, requestContent);
                      });
         }
 
@@ -79,12 +79,19 @@ namespace InfinniPlatform.Heartbeat
             var beatMessage = new HeartbeatMessage(Resources.AppWorking, _environment.Name, _environment.InstanceId);
             var requestContent = new StringContent(_serializer.ConvertToString(beatMessage), _serializer.Encoding, HttpConstants.JsonContentType);
 
-            var workingMessage = await _httpClient.PostAsync(string.Empty, requestContent);
-
-            if (!workingMessage.IsSuccessStatusCode)
+            try
             {
-                var workResponce = await workingMessage.Content.ReadAsStringAsync();
-                _log.Error(Resources.UnableSendMessage, () => new Dictionary<string, object> { { "Content", workResponce } });
+                var workingMessage = await _httpClient.PostAsync(string.Empty, requestContent);
+
+                if (!workingMessage.IsSuccessStatusCode)
+                {
+                    var workResponce = await workingMessage.Content.ReadAsStringAsync();
+                    _log.Error(Resources.UnableSendMessage, () => new Dictionary<string, object> { { "Content", workResponce } });
+                }
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
             }
         }
     }
