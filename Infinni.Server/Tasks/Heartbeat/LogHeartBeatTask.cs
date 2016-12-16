@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Infinni.Server.Tasks.Infinni.Node;
+
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
-using Infinni.Server.Tasks.Infinni.Node;
 
 namespace Infinni.Server.Tasks.Heartbeat
 {
@@ -28,7 +30,8 @@ namespace Infinni.Server.Tasks.Heartbeat
             _log.Info(s, () => new Dictionary<string, object>
                                {
                                    { "Name", HttpServiceHelper.ParseString(request.Form.Name) },
-                                   { "InstanceId", HttpServiceHelper.ParseString(request.Form.InstanceId) }
+                                   { "InstanceId", HttpServiceHelper.ParseString(request.Form.InstanceId) },
+                                   { "Time", DateTime.Now.ToString("O") }
                                });
 
             var serviceResult = new ServiceResult<object>
