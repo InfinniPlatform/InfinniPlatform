@@ -62,6 +62,13 @@ namespace InfinniPlatform.Sdk.Serialization
         {
             var property = base.CreateProperty(member, memberSerialization);
 
+            // Если тип свойства не определен
+            if (property.PropertyType == typeof(object))
+            {
+                // Используется дополнительная логика при десериализации значения свойства
+                property.MemberConverter = new JsonObjectMemberConverter();
+            }
+
             if ((!property.Readable || !property.Writable) && IsSerializerVisible(member))
             {
                 property.Readable = true;
