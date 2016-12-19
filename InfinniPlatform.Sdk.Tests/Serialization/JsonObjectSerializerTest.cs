@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Tests.TestEntities;
 
@@ -364,5 +367,71 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
             Assert.AreEqual(entity.GetPublicPropertyWithePrivateVisiblSetter(), deserializedEntity.GetPublicPropertyWithePrivateVisiblSetter());
             Assert.AreEqual(entity.GetPrivateVisibleProperty(), deserializedEntity.GetPrivateVisibleProperty());
         }
+
+        [Test]
+        public void ShouldDeserializeObjectPropertiesAsDynamicWrapper()
+        {
+            // Given
+
+            const string sourceJson
+                = @"{
+                        'PropertyInt': 111,
+                        'PropertyScalar': 222,
+                        'PropertyObject': {
+                            'Property1': 333,
+                            'Property2': 'Hello!'
+                        },
+                        'PropertyArray': [
+                            1,
+                            2,
+                            3
+                        ]
+                    }";
+
+            var serializer = new JsonObjectSerializer();
+
+            // When
+            var result = serializer.Deserialize<SomeClass>(sourceJson);
+
+            // Then
+
+            Assert.IsNotNull(result);
+
+            // Strong type
+            Assert.AreEqual(111, result.PropertyInt);
+
+            // Scalar type
+            Assert.AreEqual(222, result.PropertyScalar);
+
+            // Object type
+            Assert.IsInstanceOf<DynamicWrapper>(result.PropertyObject);
+            var propertyObject = (DynamicWrapper)result.PropertyObject;
+            Assert.AreEqual(333, propertyObject["Property1"]);
+            Assert.AreEqual("Hello!", propertyObject["Property2"]);
+
+            // Array type
+            Assert.IsInstanceOf<IEnumerable>(result.PropertyArray);
+            var propertyArray = ((IEnumerable)result.PropertyArray).Cast<object>().ToArray();
+            Assert.AreEqual(3, propertyArray.Length);
+            Assert.AreEqual(1, propertyArray[0]);
+            Assert.AreEqual(2, propertyArray[1]);
+            Assert.AreEqual(3, propertyArray[2]);
+        }
+
+
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+
+        private class SomeClass
+        {
+            public int PropertyInt { get; set; }
+
+            public object PropertyScalar { get; set; }
+
+            public object PropertyObject { get; set; }
+
+            public object PropertyArray { get; set; }
+        }
+
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
     }
 }

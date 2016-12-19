@@ -37,10 +37,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                          // Не устанавливает дискриминатор
                                          new IgnoreDiscriminatorConvention(),
                                          // Не сохраняет указанные свойства
-                                         new IgnorePropertyConvention()
+                                         new IgnorePropertyConvention(),
+                                         // Определяет логику сериализации object
+                                         new MongoObjectMemberConverterResolver()
                                      };
 
-            ConventionRegistry.Register("IgnoreRules", defaultConventions, t => true);
+            ConventionRegistry.Register("DefaultConventions", defaultConventions, t => true);
 
             // Установка правил сериализации и десериализации внутренних типов данных
             BsonSerializer.RegisterSerializer(MongoDateBsonSerializer.Default);
