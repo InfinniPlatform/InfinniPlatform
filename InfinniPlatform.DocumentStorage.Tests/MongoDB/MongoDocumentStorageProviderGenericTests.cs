@@ -1473,6 +1473,38 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
+        public void ShouldUpdateOneWhenDocumentIsNotExists()
+        {
+            // Given
+            object id = Guid.NewGuid().ToString("N");
+            var storage = MongoTestHelpers.GetEmptyStorageProvider<SimpleEntity>(nameof(ShouldUpdateOneWhenDocumentIsNotExists));
+
+            // When
+            storage.UpdateOne(u => u.Set(i => i._id, id), i => i._id == id, true);
+            var document = storage.Find(i => i._id == id).FirstOrDefault();
+
+            // Then
+            Assert.IsNotNull(document);
+            Assert.AreEqual(id, document._id);
+        }
+
+        [Test]
+        public async Task ShouldUpdateOneAsynWhenDocumentIsNotExists()
+        {
+            // Given
+            object id = Guid.NewGuid().ToString("N");
+            var storage = MongoTestHelpers.GetEmptyStorageProvider<SimpleEntity>(nameof(ShouldUpdateOneAsynWhenDocumentIsNotExists));
+
+            // When
+            await storage.UpdateOneAsync(u => u.Set(i => i._id, id), i => i._id == id, true);
+            var document = await storage.Find(i => i._id == id).FirstOrDefaultAsync();
+
+            // Then
+            Assert.IsNotNull(document);
+            Assert.AreEqual(id, document._id);
+        }
+
+        [Test]
         public void ShoudlUpdateMany()
         {
             // Given
