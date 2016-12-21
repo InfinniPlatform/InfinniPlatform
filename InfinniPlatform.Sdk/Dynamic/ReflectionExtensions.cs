@@ -16,7 +16,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static object GetDefaultValue(this Type target)
         {
-            return target.IsValueType ? Activator.CreateInstance(target) : null;
+            return target.GetTypeInfo().IsValueType ? Activator.CreateInstance(target) : null;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static bool IsInstanceOfType(this object target, Type type)
         {
-            return (target == null && !type.IsValueType) || type.IsInstanceOfType(target);
+            return (target == null && !type.GetTypeInfo().IsValueType) || target.IsInstanceOfType(type);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static bool SetFieldValue(this object target, FieldInfo memberInfo, object memberValue)
         {
-            if (memberInfo.FieldType.IsInstanceOfType(memberValue) && !memberInfo.IsLiteral && !memberInfo.IsInitOnly)
+            if (memberValue.IsInstanceOfType(memberInfo.FieldType) && !memberInfo.IsLiteral && !memberInfo.IsInitOnly)
             {
                 memberInfo.SetValue(target, memberValue);
                 return true;
@@ -315,7 +315,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static bool SetPropertyValue(this object target, PropertyInfo memberInfo, object memberValue)
         {
-            if (memberInfo.PropertyType.IsInstanceOfType(memberValue) && memberInfo.CanWrite)
+            if (memberValue.IsInstanceOfType(memberInfo.PropertyType) && memberInfo.CanWrite)
             {
                 memberInfo.SetValue(target, memberValue);
                 return true;
@@ -523,7 +523,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         {
             var eventFieldInfo = (FieldInfo)FindMember(target.GetType(), memberInfo.Name, null, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.GetField);
 
-            if (eventFieldInfo != null && eventFieldInfo.FieldType.IsInstanceOfType(memberValue))
+            if (eventFieldInfo != null && memberValue.IsInstanceOfType(eventFieldInfo.FieldType))
             {
                 eventFieldInfo.SetValue(target, memberValue);
                 return true;
@@ -539,7 +539,7 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static object FastDynamicInvoke(this Delegate target, params object[] args)
         {
-            if (target.Method.ReturnType == typeof(void))
+            if (target.GetMethodInfo().ReturnType == typeof(void))
             {
                 // ReSharper disable CoVariantArrayConversion
                 FastDynamicInvokeAction(target, args ?? EmptyObjects);

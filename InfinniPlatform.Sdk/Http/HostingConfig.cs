@@ -51,7 +51,7 @@ namespace InfinniPlatform.Sdk.Http
 
         public override string ToString()
         {
-            return $"{Scheme}{Uri.SchemeDelimiter}{Name}:{Port}";
+            return $"{Scheme}://{Name}:{Port}";
         }
     }
 }

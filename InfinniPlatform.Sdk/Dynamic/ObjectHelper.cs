@@ -429,7 +429,7 @@ namespace InfinniPlatform.Sdk.Dynamic
                     }
                     else
                     {
-                        var properties = target.GetType().GetProperties();
+                        var properties = target.GetType().GetTypeInfo().GetProperties();
 
                         foreach (var property in properties)
                         {

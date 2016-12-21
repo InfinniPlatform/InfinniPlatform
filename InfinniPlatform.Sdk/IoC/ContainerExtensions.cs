@@ -34,7 +34,7 @@ namespace InfinniPlatform.Sdk.IoC
 
             foreach (var type in assembly.GetTypes())
             {
-                if (type.IsClass && !type.IsAbstract && !type.IsGenericType && typeSelector(type))
+                if (type.GetTypeInfo().IsClass && !type.GetTypeInfo().IsAbstract && !type.GetTypeInfo().IsGenericType && typeSelector(type))
                 {
                     registrationRule(builder.RegisterType(type));
                 }

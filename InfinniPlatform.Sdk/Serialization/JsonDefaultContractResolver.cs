@@ -21,7 +21,7 @@ namespace InfinniPlatform.Sdk.Serialization
 
             var serializableMembers = base.GetSerializableMembers(objectType);
 
-            var fields = objectType.GetFields(membersSearchFlags);
+            var fields = objectType.GetTypeInfo().GetFields(membersSearchFlags);
 
             if (fields.Length > 0)
             {
@@ -36,7 +36,7 @@ namespace InfinniPlatform.Sdk.Serialization
                 }
             }
 
-            var properties = objectType.GetProperties(membersSearchFlags);
+            var properties = objectType.GetTypeInfo().GetProperties(membersSearchFlags);
 
             if (properties.Length > 0)
             {

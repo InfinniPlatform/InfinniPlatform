@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Autofac": "4.2.1",
+    "InfinniPlatform.Sdk": "1.0.0-*",
+    "Nancy": "2.0.0-barneyrubble",
+    "NETStandard.Library": "1.6.1"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

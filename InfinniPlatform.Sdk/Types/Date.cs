@@ -324,7 +324,7 @@ namespace InfinniPlatform.Sdk.Types
         /// </summary>
         public string ToShortDateString()
         {
-            return ((DateTime)this).ToShortDateString();
+            return ((DateTime)this).ToString("d");
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace InfinniPlatform.Sdk.Types
         /// </summary>
         public string ToLongDateString()
         {
-            return ((DateTime)this).ToLongDateString();
+            return ((DateTime)this).ToString("D");
         }
 
         /// <summary>

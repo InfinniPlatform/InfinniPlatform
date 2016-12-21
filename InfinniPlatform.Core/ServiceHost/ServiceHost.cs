@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Threading;
 
 using InfinniPlatform.Core.Http.Hosting;
@@ -10,7 +9,7 @@ using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Core.ServiceHost
 {
-    [Export("InfinniPlatformServiceHost")]
+    //[Export("InfinniPlatformServiceHost")]
     public class ServiceHost
     {
         public ServiceHost()

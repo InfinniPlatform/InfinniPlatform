@@ -25,14 +25,14 @@ namespace InfinniPlatform.Sdk.Dynamic
 
                         while (type != null)
                         {
-                            var members = type.GetMember(memberName, bindingFlags);
+                            var members = type.GetTypeInfo().GetMember(memberName, bindingFlags);
 
                             if (members.Length > 0)
                             {
                                 value.AddRange(members);
                             }
 
-                            type = type.BaseType;
+                            type = type.GetTypeInfo().BaseType;
                         }
 
                         value.Sort(MemberInfoComparer.Instance);
@@ -107,7 +107,7 @@ namespace InfinniPlatform.Sdk.Dynamic
                         }
                     }
 
-                    return type1.IsAssignableFrom(type2) ? 1 : -1;
+                    return type1.GetTypeInfo().IsAssignableFrom(type2) ? 1 : -1;
                 }
 
                 return 0;

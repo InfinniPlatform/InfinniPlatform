@@ -92,14 +92,12 @@ namespace InfinniPlatform.Sdk.Serialization
                 throw new ArgumentException(string.Format(Resources.NameIsAlreadyAdded, name), nameof(name));
             }
 
-            if (type.IsInterface || type.IsAbstract)
+            if (type.GetTypeInfo().IsInterface || type.GetTypeInfo().IsAbstract)
             {
                 throw new ArgumentException(Resources.TypeShouldNotBeAbstract, nameof(type));
             }
 
-            if (
-                type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null,
-                    Type.EmptyTypes, null) == null)
+            if (type.GetTypeInfo().GetConstructor(Type.EmptyTypes) == null)
             {
                 throw new ArgumentException(Resources.TypeShouldHaveDefaultConstructor, nameof(type));
             }

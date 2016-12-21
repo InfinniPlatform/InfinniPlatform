@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-
+using System.Reflection;
+using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Properties;
 
 using Newtonsoft.Json;
@@ -30,7 +31,7 @@ namespace InfinniPlatform.Sdk.Serialization
         public override bool CanConvert(Type objectType)
         {
             return _knownTypes.HasType(objectType) ||
-                   ((objectType.IsInterface || objectType.IsAbstract) && !_enumerableType.IsAssignableFrom(objectType));
+                   ((objectType.GetTypeInfo().IsInterface || objectType.GetTypeInfo().IsAbstract) && !_enumerableType.GetTypeInfo().IsAssignableFrom(objectType));
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -61,14 +62,11 @@ namespace InfinniPlatform.Sdk.Serialization
             {
                 var objProperty = objType.GetProperty(jProperty.Name);
 
-                if (objProperty != null)
-                {
-                    var objPropertyValue = objProperty.GetValue(value);
+                var objPropertyValue = (objProperty as PropertyInfo)?.GetValue(value);
 
-                    if (objPropertyValue != null)
-                    {
-                        jProperty.Value = JToken.FromObject(objPropertyValue, serializer);
-                    }
+                if (objPropertyValue != null)
+                {
+                    jProperty.Value = JToken.FromObject(objPropertyValue, serializer);
                 }
             }
         }

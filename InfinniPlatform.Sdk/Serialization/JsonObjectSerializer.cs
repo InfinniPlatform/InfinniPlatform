@@ -332,7 +332,7 @@ namespace InfinniPlatform.Sdk.Serialization
         {
             if (value != null)
             {
-                if (type.IsInstanceOfType(value))
+                if (value.IsInstanceOfType(type))
                 {
                     return value;
                 }

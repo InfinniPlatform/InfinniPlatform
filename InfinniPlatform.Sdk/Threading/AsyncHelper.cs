@@ -21,8 +21,8 @@ namespace InfinniPlatform.Sdk.Threading
 
             var syncTask = InternalTaskFactory.StartNew(() =>
                                                         {
-                                                            Thread.CurrentThread.CurrentCulture = culture;
-                                                            Thread.CurrentThread.CurrentUICulture = cultureUi;
+                                                            CultureInfo.CurrentCulture = culture;
+                                                            CultureInfo.CurrentUICulture = cultureUi;
                                                             return func();
                                                         });
 
@@ -36,8 +36,8 @@ namespace InfinniPlatform.Sdk.Threading
 
             var syncTask = InternalTaskFactory.StartNew(() =>
                                                         {
-                                                            Thread.CurrentThread.CurrentCulture = culture;
-                                                            Thread.CurrentThread.CurrentUICulture = cultureUi;
+                                                            CultureInfo.CurrentCulture = culture;
+                                                            CultureInfo.CurrentUICulture = cultureUi;
                                                             return func();
                                                         });
 

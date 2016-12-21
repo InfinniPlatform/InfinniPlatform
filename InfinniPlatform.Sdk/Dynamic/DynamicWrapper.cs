@@ -16,11 +16,10 @@ namespace InfinniPlatform.Sdk.Dynamic
     /// <remarks>
     /// Обеспечивает поведение, аналогичное поведению объекта в JavaScript. По аналогии можно осуществлять прототипное наследование.
     /// Прототип может быть определен, как наследник <see cref="DynamicWrapper"/> с определенными в нем прототипными членами, которые
-    /// можно будет подменить у конкретного экземпляра - наследника прототипа. Другой способ создания наследника прототипа - клонирование
-    /// с использованием метода <see cref="Clone"/> с дальнейшей подменой нужных членов.
+    /// можно будет подменить у конкретного экземпляра - наследника прототипа.
     /// </remarks>
     [JsonConverter(typeof(DynamicWrapperJsonConverter))]
-    public class DynamicWrapper : IDynamicMetaObjectProvider, IEnumerable, ICloneable, ICustomTypeDescriptor
+    public class DynamicWrapper : IDynamicMetaObjectProvider, IEnumerable, ICustomTypeDescriptor
     {
         public DynamicWrapper()
         {
@@ -176,95 +175,6 @@ namespace InfinniPlatform.Sdk.Dynamic
         {
             _properties.Clear();
         }
-
-
-        #region ICloneable
-
-        /// <summary>
-        /// Осуществляет клонирование объекта.
-        /// </summary>
-        public virtual object Clone()
-        {
-            return CloneObject(this, new Dictionary<object, object>());
-        }
-
-        private static object CloneObject(object target, Dictionary<object, object> clones)
-        {
-            object clone = null;
-
-            if (target != null && clones.TryGetValue(target, out clone) == false)
-            {
-                if (TryCloneAsDynamicWrapper(target, clones, out clone) == false
-                    && TryCloneAsEnumerable(target, clones, out clone) == false
-                    && TryCloneAsCloneable(target, clones, out clone) == false)
-                {
-                    clone = target;
-                }
-            }
-
-            return clone;
-        }
-
-        private static bool TryCloneAsDynamicWrapper(object target, Dictionary<object, object> clones, out object clone)
-        {
-            clone = null;
-
-            if (target is DynamicWrapper)
-            {
-                var targetClone = new DynamicWrapper();
-                clones.Add(target, targetClone);
-                clone = targetClone;
-
-                foreach (KeyValuePair<string, object> property in ((DynamicWrapper)target))
-                {
-                    targetClone[property.Key] = CloneObject(property.Value, clones);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool TryCloneAsEnumerable(object target, Dictionary<object, object> clones, out object clone)
-        {
-            clone = null;
-
-            if (!(target is string) && target is IEnumerable)
-            {
-                var targetClone = new List<object>();
-                clones.Add(target, targetClone);
-                clone = targetClone;
-
-                foreach (var item in ((IEnumerable)target))
-                {
-                    var cloneItem = CloneObject(item, clones);
-                    targetClone.Add(cloneItem);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool TryCloneAsCloneable(object target, Dictionary<object, object> clones, out object clone)
-        {
-            clone = null;
-
-            if (target is ICloneable)
-            {
-                var targetClone = ((ICloneable)target).Clone();
-                clones.Add(target, targetClone);
-                clone = targetClone;
-
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion ICloneable
 
         #region ICustomTypeDescriptor
 

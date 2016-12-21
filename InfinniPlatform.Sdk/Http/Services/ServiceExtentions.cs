@@ -27,7 +27,7 @@ namespace InfinniPlatform.Sdk.Http.Services
         public static void RegisterHttpServices(this IContainerBuilder builder, Assembly assembly)
         {
             builder.RegisterAssemblyTypes(assembly,
-                t => typeof(IHttpService).IsAssignableFrom(t),
+                t => typeof(IHttpService).GetTypeInfo().IsAssignableFrom(t),
                 r => r.As<IHttpService>().SingleInstance());
         }
 

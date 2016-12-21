@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
@@ -200,8 +201,8 @@ namespace InfinniPlatform.Core.Http.Services
                                                                       var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
 
                                                                       // Локализация ответа в зависимости от региональных параметров запроса
-                                                                      Thread.CurrentThread.CurrentCulture = httpRequest.Culture;
-                                                                      Thread.CurrentThread.CurrentUICulture = httpRequest.Culture;
+                                                                      CultureInfo.CurrentCulture = httpRequest.Culture;
+                                                                      CultureInfo.CurrentUICulture = httpRequest.Culture;
 
                                                                       // Инициализация контекста выполнения запроса
                                                                       var httpServiceContext = (HttpServiceContext)_httpServiceContextProvider.GetContext();
