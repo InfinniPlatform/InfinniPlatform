@@ -346,7 +346,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.Services.QuerySyntax
         }
 
 
-        [DebuggerDisplay("{Expression}")]
+        [DebuggerDisplay("{" + nameof(Expression) + "}")]
         public class ExpressionTestCase
         {
             public string Expression { get; set; }
