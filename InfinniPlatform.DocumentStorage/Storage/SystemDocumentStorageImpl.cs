@@ -1,7 +1,10 @@
-﻿using InfinniPlatform.DocumentStorage.Contract;
+﻿using System.Diagnostics;
+
+using InfinniPlatform.DocumentStorage.Contract;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
+    [DebuggerDisplay("DocumentType = {" + nameof(DocumentType) + "}")]
     internal class SystemDocumentStorageImpl : DocumentStorageImpl, ISystemDocumentStorage
     {
         public SystemDocumentStorageImpl(string documentType,
