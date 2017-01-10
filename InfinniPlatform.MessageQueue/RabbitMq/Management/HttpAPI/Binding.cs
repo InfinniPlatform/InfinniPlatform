@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
 {
-    [DebuggerDisplay("{Destination}")]
+    [DebuggerDisplay("{" + nameof(Destination) + "}")]
     public class Binding
     {
         public string Source { get; set; }

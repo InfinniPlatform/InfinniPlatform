@@ -11,7 +11,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// <summary>
     /// Реализует логику сериализации и десериализации для MongoDB в случаях, когда тип объекта заранее не известен <see cref="object"/>.
     /// </summary>
-    internal class MongoObjectMemberConverter : MongoBsonSerializerBase
+    internal class MongoObjectMemberConverter : MongoBsonSerializerBase, IBsonSerializer<object>
     {
         public MongoObjectMemberConverter(Type memberType) : base(memberType)
         {

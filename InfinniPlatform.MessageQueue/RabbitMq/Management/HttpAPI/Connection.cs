@@ -2,7 +2,7 @@
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
 {
-    [DebuggerDisplay("{Name}")]
+    [DebuggerDisplay("{" + nameof(Name) + "}")]
     public class Connection
     {
         public long RecvOct { get; set; }

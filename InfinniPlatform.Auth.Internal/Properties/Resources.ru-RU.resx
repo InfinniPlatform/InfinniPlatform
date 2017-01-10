@@ -142,7 +142,7 @@
     <value>Неудачный вход с внешним провайдером.</value>
   </data>
   <data name="UserNameCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Имя пользователя не может быть мустым.</value>
+    <value>Имя пользователя не может быть пустым.</value>
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>Пользователь не найден.</value>

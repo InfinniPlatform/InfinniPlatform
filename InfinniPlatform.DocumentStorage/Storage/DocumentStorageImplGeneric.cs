@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ using InfinniPlatform.DocumentStorage.Contract.Interceptors;
 
 namespace InfinniPlatform.DocumentStorage.Storage
 {
+    [DebuggerDisplay("DocumentType = {" + nameof(DocumentType) + "}")]
     internal class DocumentStorageImpl<TDocument> : IDocumentStorage<TDocument>, IDocumentStorageBulkExecutor where TDocument : Document
     {
         public DocumentStorageImpl(IDocumentStorageProviderFactory storageProviderFactory,
