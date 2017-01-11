@@ -97,6 +97,8 @@
     <Compile Include="Services\QueryFactories\FuncSelectQuerySyntaxVisitorTest.cs" />
     <Compile Include="Services\QuerySyntax\QuerySyntaxTreeParserTest.cs" />
     <Compile Include="Services\QuerySyntax\QueryTokenReaderTest.cs" />
+    <Compile Include="Specifications\DocumentStorageGenericSpecTest.cs" />
+    <Compile Include="Specifications\DocumentStorageSpecTest.cs" />
     <Compile Include="Storage\DocumentStorageGenericIntegrationTest.cs" />
     <Compile Include="Storage\DocumentStorageIntegrationTest.cs" />
     <Compile Include="Storage\DocumentStorageTestHelpers.cs" />
