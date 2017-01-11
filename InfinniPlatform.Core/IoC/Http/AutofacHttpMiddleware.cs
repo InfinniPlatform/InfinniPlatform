@@ -1,8 +1,7 @@
 ﻿using Autofac;
 
 using InfinniPlatform.Http.Middlewares;
-
-using Owin;
+using Microsoft.AspNetCore.Builder;
 
 namespace InfinniPlatform.Core.IoC.Http
 {
@@ -17,9 +16,10 @@ namespace InfinniPlatform.Core.IoC.Http
         private readonly IContainer _container;
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder appBuilder)
         {
-            builder.Use(typeof(AutofacRequestLifetimeScopeOwinMiddleware), _container);
+            //TODO Find way to extend OWIN pipelines in ASP.NET Core.
+            //appBuilder.UseOwin(typeof(AutofacRequestLifetimeScopeOwinMiddleware), _container);
         }
     }
 }

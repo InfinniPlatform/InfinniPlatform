@@ -1,29 +1,21 @@
 ﻿using System.Net;
-
+using System.Threading.Tasks;
 using InfinniPlatform.Sdk.Http;
 
 namespace InfinniPlatform.Core.Http
 {
     internal class HostAddressParser : IHostAddressParser
     {
-        public bool IsLocalAddress(string hostNameOrAddress)
-        {
-            return IsLocalAddress(hostNameOrAddress, out hostNameOrAddress);
-        }
-
-
-        public bool IsLocalAddress(string hostNameOrAddress, out string normalizedAddress)
+        public async Task<bool> IsLocalAddress(string hostNameOrAddress)
         {
             var result = false;
-
-            normalizedAddress = hostNameOrAddress;
 
             if (!string.IsNullOrWhiteSpace(hostNameOrAddress))
             {
                 try
                 {
-                    var hostIPs = Dns.GetHostAddresses(hostNameOrAddress);
-                    var localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+                    var hostIPs = await Dns.GetHostAddressesAsync(hostNameOrAddress);
+                    var localIPs = await Dns.GetHostAddressesAsync(Dns.GetHostName());
 
                     if (hostIPs != null)
                     {
@@ -32,7 +24,7 @@ namespace InfinniPlatform.Core.Http
                             // localhost
                             if (IPAddress.IsLoopback(hostIp))
                             {
-                                normalizedAddress = "+";
+                                hostNameOrAddress = "+";
                                 result = true;
                                 break;
                             }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Http.Services;
@@ -95,11 +94,30 @@ namespace InfinniPlatform.Core.Http.Services
 
             if (_nancyHttpServices.Value.TryGetValue(typeof(TService), out nancyHttpService))
             {
-                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Get, nancyHttpService.Get);
-                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Post, nancyHttpService.Post);
-                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Put, nancyHttpService.Put);
-                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Patch, nancyHttpService.Patch);
-                ApplyNancyHttpServiceRoutes(nancyModule, nancyModule.Delete, nancyHttpService.Delete);
+                foreach (var route in nancyHttpService.Get)
+                {
+                    nancyModule.Get(route.Path, (p, t) => route.Action(nancyModule));
+                }
+
+                foreach (var route in nancyHttpService.Post)
+                {
+                    nancyModule.Post(route.Path, (p, t) => route.Action(nancyModule));
+                }
+
+                foreach (var route in nancyHttpService.Put)
+                {
+                    nancyModule.Put(route.Path, (p, t) => route.Action(nancyModule));
+                }
+
+                foreach (var route in nancyHttpService.Patch)
+                {
+                    nancyModule.Patch(route.Path, (p, t) => route.Action(nancyModule));
+                }
+
+                foreach (var route in nancyHttpService.Delete)
+                {
+                    nancyModule.Delete(route.Path, (p, t) => route.Action(nancyModule));
+                }
             }
         }
 
@@ -342,15 +360,6 @@ namespace InfinniPlatform.Core.Http.Services
             if (contentLength != null)
             {
                 nancyResponse.Headers["Content-Length"] = contentLength.ToString();
-            }
-        }
-
-
-        private static void ApplyNancyHttpServiceRoutes(NancyModule nancyModule, NancyModule.RouteBuilder nancyRouteBuilder, IEnumerable<NancyHttpServiceRoute> nancyHttpServiceRoutes)
-        {
-            foreach (var route in nancyHttpServiceRoutes)
-            {
-                nancyRouteBuilder[route.Path, true] = (p, t) => route.Action(nancyModule);
             }
         }
 

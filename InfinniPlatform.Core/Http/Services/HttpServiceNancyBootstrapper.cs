@@ -39,7 +39,7 @@ namespace InfinniPlatform.Core.Http.Services
         private readonly StaticContentSettings _staticContentSettings;
         private readonly IViewEngineBootstrapperExtension _viewEngineBootstrapperExtension;
 
-        protected override NancyInternalConfiguration InternalConfiguration
+        protected override Func<ITypeCatalog, NancyInternalConfiguration> InternalConfiguration
         {
             get
             {
@@ -57,8 +57,6 @@ namespace InfinniPlatform.Core.Http.Services
             // Соглашения обработки запросов должны устанавливаться явно, так как автоматический поиск соглашений в Mono/Linux не работает,
             // поскольку при поиске Nancy использует метод AppDomain.CurrentDomain.GetAssemblies(), который возвращает все сборки текущего
             // домена приложения, кроме той, который его вызывала. Ниже зарегистрированы соглашения, используемые Nancy по умолчанию.
-
-            StaticConfiguration.DisableErrorTraces = false;
 
             nancyContainer.RegisterMultiple<IConvention>(new[]
                                                          {
@@ -160,13 +158,14 @@ namespace InfinniPlatform.Core.Http.Services
 
         private void RegisterEmbeddedResource()
         {
-            foreach (var mapping in _staticContentSettings.EmbeddedResourceMapping)
-            {
-                var requestedPath = mapping.Key;
-                var assembly = Assembly.Load(mapping.Value);
-
-                Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
-            }
+            //TODO Update embedded resource logic.
+//            foreach (var mapping in _staticContentSettings.EmbeddedResourceMapping)
+//            {
+//                var requestedPath = mapping.Key;
+//                var assembly = Assembly.Load(mapping.Value);
+//
+//                Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
+//            }
         }
     }
 }

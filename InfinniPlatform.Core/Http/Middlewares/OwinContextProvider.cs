@@ -1,7 +1,6 @@
 ﻿using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.IoC;
-
-using Microsoft.Owin;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Core.Http.Middlewares
 {
@@ -16,9 +15,9 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private readonly IContainerResolver _containerResolver;
 
 
-        public IOwinContext GetOwinContext()
+        public HttpContext GetOwinContext()
         {
-            var owinContext = _containerResolver.ResolveOptional<IOwinContext>();
+            var owinContext = _containerResolver.ResolveOptional<HttpContext>();
 
             return owinContext;
         }

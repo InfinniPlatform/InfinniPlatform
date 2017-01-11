@@ -71,20 +71,20 @@ namespace InfinniPlatform.Core.Logging
 
         public void SetRequestId(object requestId)
         {
-            LogicalThreadContext.Properties[KeyRequestId] = requestId;
+            ThreadContext.Properties[KeyRequestId] = requestId;
         }
 
         public void SetUserId(IIdentity user)
         {
             if (user != null)
             {
-                LogicalThreadContext.Properties[KeyUserId] = user.GetUserId();
-                LogicalThreadContext.Properties[KeyUserName] = user.Name;
+                ThreadContext.Properties[KeyUserId] = user.GetUserId();
+                ThreadContext.Properties[KeyUserName] = user.Name;
             }
             else
             {
-                LogicalThreadContext.Properties[KeyUserId] = null;
-                LogicalThreadContext.Properties[KeyUserName] = null;
+                ThreadContext.Properties[KeyUserId] = null;
+                ThreadContext.Properties[KeyUserName] = null;
             }
         }
     }

@@ -72,9 +72,7 @@ namespace InfinniPlatform.Core.Settings
 
         private static string GetEnvironmentVariable(string name)
         {
-            return ExecuteSilent(() => Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process),
-                ExecuteSilent(() => Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.User),
-                    ExecuteSilent(() => Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Machine))));
+            return ExecuteSilent(() => Environment.GetEnvironmentVariable(name));
         }
 
 

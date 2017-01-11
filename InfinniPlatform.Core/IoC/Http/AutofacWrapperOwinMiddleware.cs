@@ -2,8 +2,8 @@
 
 using Autofac;
 using Autofac.Core;
-
-using Microsoft.Owin;
+using InfinniPlatform.Http.Middlewares;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Core.IoC.Http
 {
@@ -19,10 +19,12 @@ namespace InfinniPlatform.Core.IoC.Http
         }
 
 
-        public override Task Invoke(IOwinContext context)
+        public override Task Invoke(HttpContext context)
         {
             // Получение контейнера зависимостей запроса из окружения OWIN
-            var requestContainer = context.Get<ILifetimeScope>(AutofacHttpConstants.LifetimeScopeKey);
+            //TODO Check if this approach is correct.
+            //var requestContainer = context.Get<ILifetimeScope>(AutofacHttpConstants.LifetimeScopeKey);
+            var requestContainer = context.Items[AutofacHttpConstants.LifetimeScopeKey] as ILifetimeScope;
 
             // Попытка получения OWIN слоя через контейнер зависимостей запроса
 

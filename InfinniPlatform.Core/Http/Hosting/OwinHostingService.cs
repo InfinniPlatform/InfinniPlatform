@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net;
 
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http;
-
-using Microsoft.Owin.Hosting;
-
-using Owin;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
 namespace InfinniPlatform.Core.Http.Hosting
 {
@@ -19,6 +17,9 @@ namespace InfinniPlatform.Core.Http.Hosting
     /// </summary>
     internal class OwinHostingService : IHostingService
     {
+        private const string UriSchemeHttp = "http";
+        private const string UriSchemeHttps = "https";
+
         public OwinHostingService(HostingConfig hostingConfig,
                                   IHostAddressParser hostAddressParser,
                                   IEnumerable<IHttpMiddleware> hostingMiddlewares = null,
@@ -33,8 +34,8 @@ namespace InfinniPlatform.Core.Http.Hosting
                 throw new ArgumentNullException(Resources.ServerSchemeCannotBeNullOrWhiteSpace);
             }
 
-            if (!Uri.UriSchemeHttp.Equals(scheme, StringComparison.OrdinalIgnoreCase) &&
-                !Uri.UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase))
+            if (!UriSchemeHttp.Equals(scheme, StringComparison.OrdinalIgnoreCase) &&
+                !UriSchemeHttps.Equals(scheme, StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentOutOfRangeException(string.Format(Resources.ServerSchemeIsNotSupported, scheme));
             }
@@ -48,7 +49,7 @@ namespace InfinniPlatform.Core.Http.Hosting
                 throw new ArgumentNullException(Resources.ServerNameCannotBeNullOrWhiteSpace);
             }
 
-            if (!hostAddressParser.IsLocalAddress(server, out server))
+            if (!hostAddressParser.IsLocalAddress(server).Result)
             {
                 throw new ArgumentOutOfRangeException(string.Format(Resources.ServerNameIsNotLocal, server));
             }
@@ -96,7 +97,7 @@ namespace InfinniPlatform.Core.Http.Hosting
 
         private readonly string _baseAddress;
 
-        private readonly Action<IAppBuilder> _configure;
+        private readonly Action<IApplicationBuilder> _configure;
 
         private readonly Action _onInit;
         private readonly Action _onBeforeStart;
@@ -143,7 +144,16 @@ namespace InfinniPlatform.Core.Http.Hosting
                         {
                             _onBeforeStart?.Invoke();
 
-                            host = WebApp.Start(_baseAddress, Startup);
+//                            var host = new WebHostBuilder()
+//                                                    .UseContentRoot(Directory.GetCurrentDirectory())
+//                                                    .UseKestrel()
+//                                                    .UseStartup<Startup>()
+//                                                    .UseUrls("http://localhost:9900")
+//                                                    .Build();
+//
+//                            host.Run();
+
+                            //host = WebApp.Start(_baseAddress, Startup);
 
                             _onAfterStart?.Invoke();
                         }
@@ -216,17 +226,17 @@ namespace InfinniPlatform.Core.Http.Hosting
             }
         }
 
-        private void Startup(IAppBuilder builder)
-        {
-            object httpListener;
-
-            if (builder.Properties.TryGetValue(typeof(HttpListener).FullName, out httpListener) && httpListener is HttpListener)
-            {
-                // HttpListener should not return exceptions that occur when sending the response to the client
-                ((HttpListener)httpListener).IgnoreWriteExceptions = true;
-            }
-
-            _configure?.Invoke(builder);
-        }
+//        private void Startup(IApplicationBuilder builder)
+//        {
+//            object httpListener;
+//
+//            if (builder.Properties.TryGetValue(typeof(HttpListener).FullName, out httpListener) && httpListener is HttpListener)
+//            {
+//                // HttpListener should not return exceptions that occur when sending the response to the client
+//                ((HttpListener)httpListener).IgnoreWriteExceptions = true;
+//            }
+//
+//            _configure?.Invoke(builder);
+//        }
     }
 }

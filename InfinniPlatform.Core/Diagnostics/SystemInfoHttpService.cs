@@ -36,10 +36,10 @@ namespace InfinniPlatform.Core.Diagnostics
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.OnBefore = r =>
+            builder.OnBefore = async r =>
                                {
                                    // Запрос статуса разрешен только с локального узла
-                                   if (!_hostAddressParser.IsLocalAddress(r.UserHostAddress))
+                                   if (!await _hostAddressParser.IsLocalAddress(r.UserHostAddress))
                                    {
                                        return Task.FromResult<object>(HttpResponse.Forbidden);
                                    }
@@ -172,7 +172,7 @@ namespace InfinniPlatform.Core.Diagnostics
         /// </summary>
         private static Tuple<string, string> GetSystemVersion()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = typeof(SystemInfoHttpService).GetTypeInfo().Assembly;
             var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             return new Tuple<string, string>(versionInfo.FileVersion, versionInfo.ProductVersion);
         }

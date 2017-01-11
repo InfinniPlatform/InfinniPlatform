@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Http.Middlewares;
+using Microsoft.AspNetCore.Builder;
 
-using Owin;
 
 namespace InfinniPlatform.Core.Http.Middlewares
 {
@@ -18,9 +18,10 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private readonly IOwinMiddlewareTypeResolver _typeResolver;
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder appBuilder)
         {
-            builder.Use(_typeResolver.ResolveType<ErrorHandlingOwinMiddleware>());
+            //TODO Find way to extend OWIN pipelines in ASP.NET Core.
+            //appBuilder.UseOwin(_typeResolver.ResolveType<ErrorHandlingOwinMiddleware>());
         }
     }
 }

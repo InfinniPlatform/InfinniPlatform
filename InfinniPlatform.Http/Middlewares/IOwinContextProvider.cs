@@ -1,4 +1,4 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Http.Middlewares
 {
@@ -10,6 +10,6 @@ namespace InfinniPlatform.Http.Middlewares
         /// <summary>
         /// Возвращает контекст OWIN текущего запроса.
         /// </summary>
-        IOwinContext GetOwinContext();
+        HttpContext GetOwinContext();
     }
 }

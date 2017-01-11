@@ -1,4 +1,4 @@
-﻿using Owin;
+﻿using Microsoft.AspNetCore.Builder;
 
 namespace InfinniPlatform.Http.Middlewares
 {
@@ -26,7 +26,7 @@ namespace InfinniPlatform.Http.Middlewares
         /// <summary>
         /// Настраивает промежуточный слой.
         /// </summary>
-        /// <param name="builder">Объект для регистрации обработчиков запросов OWIN.</param>
-        public abstract void Configure(IAppBuilder builder);
+        /// <param name="appBuilder">Объект для регистрации обработчиков запросов OWIN.</param>
+        public abstract void Configure(IApplicationBuilder appBuilder);
     }
 }

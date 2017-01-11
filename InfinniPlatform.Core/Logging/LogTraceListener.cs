@@ -59,11 +59,11 @@ namespace InfinniPlatform.Core.Logging
                                    });
         }
 
-
-        public override void TraceTransfer(TraceEventCache eventCache, string source, int id, string message, Guid relatedActivityId)
-        {
-            TraceEvent(eventCache, source, TraceEventType.Transfer, id, message + ", relatedActivityId=" + relatedActivityId);
-        }
+        //TODO TraceTransfer not available in core.
+        //        public override void TraceTransfer(TraceEventCache eventCache, string source, int id, string message, Guid relatedActivityId)
+        //        {
+        //            TraceEvent(eventCache, source, TraceEventType.Transfer, id, message + ", relatedActivityId=" + relatedActivityId);
+        //        }
 
 
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id)
@@ -142,30 +142,30 @@ namespace InfinniPlatform.Core.Logging
             {
                 message.AppendLine("ProcessId=" + eventCache.ProcessId);
             }
-
-            if (IsEnabled(TraceOptions.LogicalOperationStack))
-            {
-                message.Append("LogicalOperationStack=");
-
-                var first = true;
-                var operationStack = eventCache.LogicalOperationStack;
-
-                foreach (var obj in operationStack)
-                {
-                    if (first)
-                    {
-                        first = false;
-                    }
-                    else
-                    {
-                        message.Append(", ");
-                    }
-
-                    message.Append(obj);
-                }
-
-                message.AppendLine();
-            }
+            //TODO LogicalOperationStack not available in core.
+            //            if (IsEnabled(TraceOptions.LogicalOperationStack))
+            //            {
+            //                message.Append("LogicalOperationStack=");
+            //
+            //                var first = true;
+            //                var operationStack = eventCache.LogicalOperationStack;
+            //
+            //                foreach (var obj in operationStack)
+            //                {
+            //                    if (first)
+            //                    {
+            //                        first = false;
+            //                    }
+            //                    else
+            //                    {
+            //                        message.Append(", ");
+            //                    }
+            //
+            //                    message.Append(obj);
+            //                }
+            //
+            //                message.AppendLine();
+            //            }
 
             if (IsEnabled(TraceOptions.ThreadId))
             {
@@ -182,10 +182,11 @@ namespace InfinniPlatform.Core.Logging
                 message.AppendLine("Timestamp=" + eventCache.Timestamp);
             }
 
-            if (IsEnabled(TraceOptions.Callstack))
-            {
-                message.AppendLine("Callstack=" + eventCache.Callstack);
-            }
+            //TODO Callstack not available in core.
+            //            if (IsEnabled(TraceOptions.Callstack))
+            //            {
+            //                message.AppendLine("Callstack=" + eventCache.Callstack);
+            //            }
         }
 
 

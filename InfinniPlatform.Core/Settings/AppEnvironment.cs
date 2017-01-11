@@ -14,7 +14,7 @@ namespace InfinniPlatform.Core.Settings
         {
             Name = "InfinniPlatform";
             IsInCluster = false;
-            _instanceId = $"{Environment.MachineName}_{Environment.CurrentDirectory.Split(Path.DirectorySeparatorChar).Last()}";
+            _instanceId = $"{Environment.MachineName}_{Directory.GetCurrentDirectory().Split(Path.DirectorySeparatorChar).Last()}";
         }
 
         private string _instanceId;

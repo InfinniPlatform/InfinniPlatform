@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
+using System.Runtime.Loader;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Core.IoC
@@ -83,7 +83,8 @@ namespace InfinniPlatform.Core.IoC
 
             if (!_moduleAssemblies.TryGetValue(assemblyPath, out assembly))
             {
-                assembly = Assembly.LoadFrom(assemblyPath);
+                //assembly = Assembly.LoadFrom(assemblyPath);
+                assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
 
                 _moduleAssemblies.TryAdd(assemblyPath, assembly);
             }
@@ -104,7 +105,8 @@ namespace InfinniPlatform.Core.IoC
                 try
                 {
                     // Загрузка сборки для анализа (ReflectionOnlyLoadFrom не подходит по многим причинам)
-                    var assembly = Assembly.LoadFrom(assemblyFile);
+                    //var assembly = Assembly.LoadFrom(assemblyFile);
+                    var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFile);
 
                     // Сборки со строгим именем не рассматриваются (предполагается, что прикладные сборки его не имеют)
                     if (!HasPublicKeyToken(assembly))
@@ -113,7 +115,7 @@ namespace InfinniPlatform.Core.IoC
 
                         foreach (var type in types)
                         {
-                            if (type.IsClass && !type.IsAbstract && !type.IsGenericType && typeof(IContainerModule).IsAssignableFrom(type))
+                            if (type.GetTypeInfo().IsClass && !type.GetTypeInfo().IsAbstract && !type.GetTypeInfo().IsGenericType && typeof(IContainerModule).IsAssignableFrom(type))
                             {
                                 result.Add(new ContainerModuleLocation(assemblyFile, type.FullName));
                             }

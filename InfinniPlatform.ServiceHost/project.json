@@ -1,17 +1,10 @@
-﻿{
-  "version": "1.0.0-*",
-
-  "dependencies": {
-    "NETStandard.Library": "1.6.0"
+{
+  "buildOptions": {
+    "emitEntryPoint": true
   },
-
   "frameworks": {
-    "netstandard1.6": {
+    "netcoreapp1.0": {
       "dependencies": {
-        "Microsoft.AspNetCore.Hosting": "1.1.0",
-        "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
-        "Microsoft.AspNetCore.Owin": "1.1.0",
-        "Nancy": "2.0.0-barneyrubble",
         "Microsoft.NETCore.App": {
           "type": "platform",
           "version": "1.1.0"
@@ -19,5 +12,9 @@
       },
       "imports": "dnxcore50"
     }
-  }
+  },
+  "dependencies": {
+    "System.Runtime.Loader": "4.3.0"
+  },
+  "version": "1.0.0-*"
 }

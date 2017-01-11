@@ -1,5 +1,6 @@
 ﻿using System.IO;
-using Microsoft.AspNetCore.Hosting;
+using System.Runtime.Loader;
+
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -7,29 +8,17 @@ namespace InfinniPlatform.ServiceHost
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseKestrel()
-                .UseStartup<Startup>()
-                .UseUrls("http://localhost:9900")
-                .Build();
+            /* Вся логика метода Main() находится в отдельных методах, чтобы JIT-компиляция Main()
+             * прошла без загрузки дополнительных сборок, поскольку до этого момента нужно успеть
+             * установить свою собственную логику загрузки сборок.
+             */
 
-            host.Run();
-        }
-
-//        public static void Main(string[] args)
-//        {
-//            /* Вся логика метода Main() находится в отдельных методах, чтобы JIT-компиляция Main()
-//             * прошла без загрузки дополнительных сборок, поскольку до этого момента нужно успеть
-//             * установить свою собственную логику загрузки сборок.
-//             */
-//
-//            // Устанавливает для приложения контекст загрузки сборок по умолчанию
+            // Устанавливает для приложения контекст загрузки сборок по умолчанию
 //            InitializeAssemblyLoadContext();
-//
-//            // Запускает хостинг приложения
-//            RunServiceHost(args);
-//        }
+
+            // Запускает хостинг приложения
+            RunServiceHost(args);
+        }
 
 //        private static void InitializeAssemblyLoadContext()
 //        {
@@ -37,45 +26,47 @@ namespace InfinniPlatform.ServiceHost
 //            DirectoryAssemblyLoadContext.InitializeDefaultContext(context);
 //        }
 
-//        private static void RunServiceHost(string[] args)
-//        {
-//            try
-//            {
-//                // Поиск компонента для хостинга приложения
-//                var serviceHost = CreateComponent<dynamic>("InfinniPlatformServiceHost");
-//
-//                // Запуск хостинга приложения
-//
-//                if (args.Any(s => (s == "-i") || (s == "--init")))
-//                {
-//                    serviceHost.Init(Timeout.InfiniteTimeSpan);
-//                    Console.WriteLine(Resources.ServerInitialized);
-//                }
-//
-//                if (!args.Any()
-//                    || args.Any(s => (s == "-s") || (s == "--start")))
-//                {
-//                    serviceHost.Start(Timeout.InfiniteTimeSpan);
-//                    Console.WriteLine(Resources.ServerStarted);
-//                }
-//
-//                var stopEvent = new TaskCompletionSource<bool>();
-//
-//                Console.CancelKeyPress += (s, e) =>
-//                                          {
-//                                              // Остановка хостинга приложения
-//                                              serviceHost.Stop(Timeout.InfiniteTimeSpan);
-//                                              stopEvent.SetResult(true);
-//                                          };
-//
-//                // Ожидание остановки приложения (Ctrl+C)
-//                stopEvent.Task.Wait(Timeout.Infinite);
-//            }
-//            catch (Exception error)
-//            {
-//                Console.WriteLine(error);
-//            }
-//        }
+        private static void RunServiceHost(string[] args)
+        {
+
+
+            //            try
+            //            {
+            //                // Поиск компонента для хостинга приложения
+            //                var serviceHost = CreateComponent<dynamic>("InfinniPlatformServiceHost");
+            //
+            //                // Запуск хостинга приложения
+            //
+            //                if (args.Any(s => (s == "-i") || (s == "--init")))
+            //                {
+            //                    serviceHost.Init(Timeout.InfiniteTimeSpan);
+            //                    Console.WriteLine(Resources.ServerInitialized);
+            //                }
+            //
+            //                if (!args.Any()
+            //                    || args.Any(s => (s == "-s") || (s == "--start")))
+            //                {
+            //                    serviceHost.Start(Timeout.InfiniteTimeSpan);
+            //                    Console.WriteLine(Resources.ServerStarted);
+            //                }
+            //
+            //                var stopEvent = new TaskCompletionSource<bool>();
+            //
+            //                Console.CancelKeyPress += (s, e) =>
+            //                                          {
+            //                                              // Остановка хостинга приложения
+            //                                              serviceHost.Stop(Timeout.InfiniteTimeSpan);
+            //                                              stopEvent.SetResult(true);
+            //                                          };
+            //
+            //                // Ожидание остановки приложения (Ctrl+C)
+            //                stopEvent.Task.Wait(Timeout.Infinite);
+            //            }
+            //            catch (Exception error)
+            //            {
+            //                Console.WriteLine(error);
+            //            }
+        }
 
 //        private static T CreateComponent<T>(string contractName) where T : class
 //        {

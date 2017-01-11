@@ -10,6 +10,7 @@ using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Serialization;
 
 using Nancy;
+using Nancy.Responses.Negotiation;
 
 namespace InfinniPlatform.Core.Http.Services
 {
@@ -76,8 +77,8 @@ namespace InfinniPlatform.Core.Http.Services
                 || string.Equals(method, "PATCH", StringComparison.OrdinalIgnoreCase))
             {
                 var contentType = _nancyRequest.Headers.ContentType;
-
-                if (contentType != null && contentType.StartsWith(HttpConstants.JsonContentType, StringComparison.OrdinalIgnoreCase))
+                
+                if (contentType != null && contentType.Matches(new MediaRange(HttpConstants.JsonContentType)))
                 {
                     return _jsonObjectSerializer.Deserialize(_nancyRequest.Body, typeof(DynamicWrapper));
                 }

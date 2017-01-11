@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
-
+using System.Threading;
 using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.Core.Session
 {
     internal class TenantScopeProvider : ITenantScopeProvider
     {
-        private const string TenantScopeKey = "TenantScope";
+        private static readonly AsyncLocal<TenantScopeContext> TenantScopeContext = new AsyncLocal<TenantScopeContext>();
 
 
         public ITenantScope GetTenantScope()
@@ -45,12 +44,12 @@ namespace InfinniPlatform.Core.Session
 
         private static TenantScopeContext GetCurrentTenantScope()
         {
-            return CallContext.LogicalGetData(TenantScopeKey) as TenantScopeContext;
+            return TenantScopeContext.Value;
         }
 
         private static void SetCurrentTenantScope(TenantScopeContext scopeContext)
         {
-            CallContext.LogicalSetData(TenantScopeKey, scopeContext);
+            TenantScopeContext.Value = scopeContext;
         }
     }
 }

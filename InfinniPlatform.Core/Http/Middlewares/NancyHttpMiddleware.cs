@@ -1,9 +1,7 @@
 ﻿using InfinniPlatform.Http.Middlewares;
-
+using Microsoft.AspNetCore.Builder;
 using Nancy.Bootstrapper;
 using Nancy.Owin;
-
-using Owin;
 
 namespace InfinniPlatform.Core.Http.Middlewares
 {
@@ -21,9 +19,9 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private readonly INancyBootstrapper _nancyBootstrapper;
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder appBuilder)
         {
-            builder.UseNancy(new NancyOptions { Bootstrapper = _nancyBootstrapper });
+            appBuilder.UseOwin(x => x.UseNancy(new NancyOptions {Bootstrapper = _nancyBootstrapper}));
         }
     }
 }

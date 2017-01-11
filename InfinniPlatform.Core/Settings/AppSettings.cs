@@ -90,7 +90,9 @@ namespace InfinniPlatform.Core.Settings
 
             try
             {
-                var configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+                //TODO Find a way to read XML config or remove it.
+                //var configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+                var configFile = File.ReadAllText("app.config");
 
                 if (!string.IsNullOrEmpty(configFile) && File.Exists(configFile))
                 {

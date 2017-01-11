@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-
+using System.Reflection;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
@@ -66,7 +66,9 @@ namespace InfinniPlatform.Core.Logging
 
             if (!InternalLogs.TryGetValue(loggerName, out internalLog))
             {
-                internalLog = log4net.LogManager.GetLogger(loggerName);
+                //TODO Fix logging.
+                //internalLog = log4net.LogManager.GetLogger(loggerName);
+                internalLog = log4net.LogManager.GetLogger(type);
 
                 InternalLogs.TryAdd(loggerName, internalLog);
             }
@@ -76,7 +78,7 @@ namespace InfinniPlatform.Core.Logging
 
         private static string GetInternalLoggerName(string prefix, Type type)
         {
-            var loggerName = type.GetAttributeValue<LoggerNameAttribute, string>(i => i.Name, type.FullName);
+            var loggerName = type.GetTypeInfo().GetAttributeValue<LoggerNameAttribute, string>(i => i.Name, type.FullName);
 
             return $"{prefix}.{loggerName}";
         }

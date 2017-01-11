@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Logging;
-
-using Microsoft.Owin;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Core.Http.Middlewares
 {
@@ -28,13 +28,15 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private readonly IPerformanceLog _performanceLog;
 
 
-        public override Task Invoke(IOwinContext context)
+        public override Task Invoke(HttpContext context)
         {
             var start = DateTime.Now;
 
             try
             {
-                var requestId = context.Environment?["owin.RequestId"];
+                //TODO Find owin.RequestId in HttpContext.
+                //var requestId = context.Environment?["owin.RequestId"];
+                var requestId = Guid.NewGuid().ToString();
 
                 // Установка контекста логирования ошибок текущего потока.
                 _log.SetRequestId(requestId);
@@ -45,7 +47,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
                                              // Повторная установка контекста логирования ошибок текущего потока,
                                              // так как ContinueWith работает не в потоке обработки запроса.
                                              _log.SetRequestId(requestId);
-                                             _log.SetUserId(context.Request.User?.Identity);
+                                             _log.SetUserId(context.User?.Identity);
 
                                              if (task.IsFaulted)
                                              {
