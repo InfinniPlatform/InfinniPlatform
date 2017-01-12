@@ -1,20 +1,20 @@
 {
   "version": "1.0.0-*",
-
+  "name": "InfinniPlatform.Core",
   "dependencies": {
     "Autofac": "4.2.1",
-    "InfinniPlatform.Sdk": "1.0.0-*",
+    "InfinniPlatform.Http": { "target": "project" },
+    "InfinniPlatform.Sdk": { "target": "project" },
     "log4net": "2.0.7",
+    "Microsoft.AspNetCore.Cors": "1.1.0",
+    "Microsoft.AspNetCore.Hosting": "1.1.0",
     "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+    "Microsoft.Extensions.Configuration.Binder": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
     "Nancy": "2.0.0-clinteastwood",
     "NETStandard.Library": "1.6.1",
-    "InfinniPlatform.Http": { "target": "project" },
-    "Microsoft.AspNetCore.Cors": "1.1.0",
-    "System.Diagnostics.FileVersionInfo": "4.0.0",
-    "Microsoft.AspNetCore.Hosting": "1.1.0",
-    "Microsoft.Extensions.Configuration.Binder": "1.1.0",
-    "Microsoft.Extensions.Configuration.Json": "1.1.0"
-},
+    "System.Diagnostics.FileVersionInfo": "4.0.0"
+  },
 
   "frameworks": {
     "netstandard1.6": {

@@ -1,6 +1,13 @@
 {
+  "name": "InfinniPlatform.ServiceHost",
+  "version": "1.0.0-*",
   "buildOptions": {
-    "emitEntryPoint": true
+    "emitEntryPoint": true,
+    "copyToOutput": {
+      "include": [
+        "AppCommon.json"
+      ]
+    }
   },
   "frameworks": {
     "netcoreapp1.0": {
@@ -14,7 +21,8 @@
     }
   },
   "dependencies": {
+    "InfinniPlatform.Core": { "target": "project" },
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
     "System.Runtime.Loader": "4.3.0"
-  },
-  "version": "1.0.0-*"
+  }
 }

@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using System.Runtime.Loader;
-
+using InfinniPlatform.Core.Http.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -28,7 +28,15 @@ namespace InfinniPlatform.ServiceHost
 
         private static void RunServiceHost(string[] args)
         {
+            var host = new WebHostBuilder()
+                    .UseKestrel()
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseStartup<Startup>()
+                    //TODO Move to some kind of configuration file?
+                    .UseUrls("http://localhost:9900")
+                    .Build();
 
+            host.Run();
 
             //            try
             //            {
@@ -68,8 +76,9 @@ namespace InfinniPlatform.ServiceHost
             //            }
         }
 
-//        private static T CreateComponent<T>(string contractName) where T : class
 //        {
+
+//        private static T CreateComponent<T>(string contractName) where T : class
 //            var aggregateCatalog = new DirectoryAssemblyCatalog();
 //            var compositionContainer = new CompositionContainer(aggregateCatalog);
 //            var lazyInstance = compositionContainer.GetExport<T>(contractName);

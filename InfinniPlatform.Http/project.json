@@ -1,6 +1,6 @@
 {
   "version": "1.0.0-*",
-
+  "name": "InfinniPlatform.Http",
   "dependencies": {
     "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
     "Microsoft.AspNetCore.Owin": "1.1.0",
