@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 
+using InfinniPlatform.Sdk.Dynamic;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -75,6 +77,8 @@ namespace InfinniPlatform.Sdk.Serialization
                 property.Writable = true;
             }
 
+            property.PropertyName = GetSerializerPropertyName(member, property.PropertyName);
+
             return property;
         }
 
@@ -84,6 +88,14 @@ namespace InfinniPlatform.Sdk.Serialization
         private static bool IsSerializerVisible(MemberInfo member)
         {
             return member.IsDefined(typeof(SerializerVisibleAttribute), false);
+        }
+
+        /// <summary>
+        /// Возвращает имя свойства с учетом настроек атрибута <see cref="SerializerPropertyNameAttribute"/>.
+        /// </summary>
+        private static string GetSerializerPropertyName(MemberInfo member, string name)
+        {
+            return member.GetAttributeValue<SerializerPropertyNameAttribute, string>(i => i.Name, name);
         }
     }
 }

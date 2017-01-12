@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -168,8 +167,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
             Assert.AreEqual(item1.Price, result.OrderHistory.ElementAt(0).Items.ElementAt(0).Price);
             Assert.IsInstanceOf<Bread>(result.OrderHistory.ElementAt(1).Items.ElementAt(0).Product);
             Assert.AreEqual(bread.Caption, ((Bread)result.OrderHistory.ElementAt(1).Items.ElementAt(0).Product).Caption);
-            Assert.AreEqual(bread.Richness,
-                            ((Bread)result.OrderHistory.ElementAt(1).Items.ElementAt(0).Product).Richness);
+            Assert.AreEqual(bread.Richness, ((Bread)result.OrderHistory.ElementAt(1).Items.ElementAt(0).Product).Richness);
             Assert.AreEqual(item2.Count, result.OrderHistory.ElementAt(1).Items.ElementAt(0).Count);
             Assert.AreEqual(item2.Price, result.OrderHistory.ElementAt(1).Items.ElementAt(0).Price);
         }
@@ -366,6 +364,26 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
             Assert.AreEqual(null, deserializedEntity.GetPrivateProperty());
             Assert.AreEqual(entity.GetPublicPropertyWithePrivateVisiblSetter(), deserializedEntity.GetPublicPropertyWithePrivateVisiblSetter());
             Assert.AreEqual(entity.GetPrivateVisibleProperty(), deserializedEntity.GetPrivateVisibleProperty());
+        }
+
+        [Test]
+        public void ShouldSerializeWithCustomPropertyName()
+        {
+            // Given
+            var entity = new EnityWithCustomPropertyName { FirstName = "John", LastName = "Smith" };
+            var serializer = new JsonObjectSerializer();
+
+            // When
+            var entityToJson = serializer.ConvertToString(entity);
+            var jsonToEntity = serializer.Deserialize<EnityWithCustomPropertyName>(entityToJson);
+
+            // Then
+
+            StringAssert.IsMatch(@"\{\s*\""forename\""\s*\:\s*\""John\""\s*\,\s*\""surname\""\s*\:\s*\""Smith\""\s*\}", entityToJson);
+
+            Assert.IsNotNull(jsonToEntity);
+            Assert.AreEqual("John", entity.FirstName);
+            Assert.AreEqual("Smith", entity.LastName);
         }
 
         [Test]

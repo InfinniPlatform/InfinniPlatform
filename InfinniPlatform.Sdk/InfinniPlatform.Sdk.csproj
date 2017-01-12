@@ -85,7 +85,8 @@
     <Compile Include="Serialization\JsonMemberValueConverter.cs" />
     <Compile Include="Serialization\JsonMemberValueConverterResolver.cs" />
     <Compile Include="Serialization\JsonObjectMemberConverter.cs" />
-    <Compile Include="Serialization\SerializerVisible.cs" />
+    <Compile Include="Serialization\SerializerPropertyNameAttribute.cs" />
+    <Compile Include="Serialization\SerializerVisibleAttribute.cs" />
     <Compile Include="Serialization\XmlDateMemberValueConverter.cs" />
     <Compile Include="Http\Services\IHttpServiceContext.cs" />
     <Compile Include="Http\Services\IHttpServiceContextProvider.cs" />
