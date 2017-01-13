@@ -10,7 +10,7 @@
     <ProjectGuid>168a0089-ae82-4f8d-a124-dc31ed6561d0</ProjectGuid>
     <RootNamespace>InfinniPlatform.Core</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\Assemblies\</OutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin</OutputPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
 

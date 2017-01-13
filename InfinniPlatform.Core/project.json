@@ -3,6 +3,7 @@
   "name": "InfinniPlatform.Core",
   "dependencies": {
     "Autofac": "4.2.1",
+    "Autofac.Extensions.DependencyInjection": "4.0.0",
     "InfinniPlatform.Http": { "target": "project" },
     "InfinniPlatform.Sdk": { "target": "project" },
     "log4net": "2.0.7",
@@ -20,5 +21,9 @@
     "netstandard1.6": {
       "imports": "dnxcore50"
     }
+  },
+  
+  "scripts": {
+    "postcompile": "..\\copy.bat"
   }
 }

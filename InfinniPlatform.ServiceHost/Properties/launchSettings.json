@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "InfinniPlatform.ServiceHost": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Projects\\InfinniPlatform\\Assemblies"
+    }
+  }
+}

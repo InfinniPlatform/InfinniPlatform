@@ -11,9 +11,9 @@ namespace InfinniPlatform.Core.Settings
                    .As<IAppConfiguration>()
                    .SingleInstance();
 
-            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<AppEnvironment>(AppEnvironment.SectionName))
-                   .As<IAppEnvironment>()
-                   .SingleInstance();
+//            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<AppEnvironment>(AppEnvironment.SectionName))
+//                   .As<IAppEnvironment>()
+//                   .SingleInstance();
         }
     }
 }
