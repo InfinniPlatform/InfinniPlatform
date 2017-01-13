@@ -32,5 +32,21 @@ namespace InfinniPlatform.DocumentStorage.Contract.Specifications
         {
             return new Specification(value);
         }
+
+
+        public static Specification operator !(Specification value)
+        {
+            return new Specification(f => f.Not(value));
+        }
+
+        public static Specification operator &(Specification left, Specification right)
+        {
+            return new Specification(f => f.And(left, right));
+        }
+
+        public static Specification operator |(Specification left, Specification right)
+        {
+            return new Specification(f => f.Or(left, right));
+        }
     }
 }

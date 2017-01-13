@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.DocumentStorage.Contract;
+﻿using InfinniPlatform.DocumentStorage.Contract.Attributes;
 
 using MongoDB.Bson.Serialization;
 

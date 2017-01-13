@@ -74,7 +74,7 @@
     <Compile Include="Contract\Specifications\ISpecificationGeneric.cs" />
     <Compile Include="Contract\Specifications\Specification.cs" />
     <Compile Include="Contract\Specifications\SpecificationGeneric.cs" />
-    <Compile Include="Contract\DocumentPropertyNameAttribute.cs" />
+    <Compile Include="Contract\Attributes\DocumentPropertyNameAttribute.cs" />
     <Compile Include="Diagnostics\DocumentStorageStatusProvider.cs" />
     <Compile Include="Contract\Attributes\DocumentIgnoreAttribute.cs" />
     <Compile Include="Contract\Document.cs" />

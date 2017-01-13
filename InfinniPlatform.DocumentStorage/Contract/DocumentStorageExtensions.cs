@@ -225,11 +225,11 @@ namespace InfinniPlatform.DocumentStorage.Contract
 
 
         /// <summary>
-        /// Объединяет два выражения фильтрации с использованием логического оператора ИЛИ.
+        /// Инвертирует выражение фильтрации с использованием логического оператора НЕ.
         /// </summary>
-        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        public static Expression<Func<T, bool>> Not<T>(this Expression<Func<T, bool>> value)
         {
-            return Compose(first, second, Expression.OrElse);
+            return Expression.Lambda<Func<T, bool>>(Expression.Not(value.Body), value.Parameters[0]);
         }
 
         /// <summary>
@@ -238,6 +238,14 @@ namespace InfinniPlatform.DocumentStorage.Contract
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
         {
             return Compose(first, second, Expression.AndAlso);
+        }
+
+        /// <summary>
+        /// Объединяет два выражения фильтрации с использованием логического оператора ИЛИ.
+        /// </summary>
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        {
+            return Compose(first, second, Expression.OrElse);
         }
 
         /// <summary>

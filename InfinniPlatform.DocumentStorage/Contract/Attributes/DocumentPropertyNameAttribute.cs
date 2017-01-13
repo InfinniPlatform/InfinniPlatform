@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.DocumentStorage.Contract
+namespace InfinniPlatform.DocumentStorage.Contract.Attributes
 {
     /// <summary>
     /// Определяет имя свойства документа в хранилище при работе с <see cref="IDocumentStorage{TDocument}" /> и <see cref="IDocumentStorageProvider{TDocument}"/>.
