@@ -1,33 +1,14 @@
-﻿using System;
-using System.Linq;
-
-using InfinniPlatform.DocumentStorage.Contract.Attributes;
+﻿using InfinniPlatform.DocumentStorage.Contract.Attributes;
 
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Conventions;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB.Conventions
 {
-    internal class IgnorePropertyConvention : ConventionBase, IClassMapConvention
+    internal class IgnorePropertyConvention : AttributePropertyConvention<DocumentIgnoreAttribute>
     {
-        public void Apply(BsonClassMap classMap)
+        protected override void ApplyAttribute(BsonClassMap classMap, BsonMemberMap memberMap, DocumentIgnoreAttribute attribute)
         {
-            ApplyAttributeConvention<DocumentIgnoreAttribute>(classMap, (c, m, a) => c.UnmapMember(m.MemberInfo));
-        }
-
-        private static void ApplyAttributeConvention<TAttribute>(BsonClassMap classMap, Action<BsonClassMap, BsonMemberMap, TAttribute> memberConvention) where TAttribute : Attribute
-        {
-            foreach (var memberMap in classMap.DeclaredMemberMaps.ToList())
-            {
-                var attributes = memberMap.MemberInfo.GetCustomAttributes(typeof(TAttribute), false);
-
-                if (attributes.Length > 0)
-                {
-                    var attribute = (TAttribute)attributes[0];
-
-                    memberConvention(classMap, memberMap, attribute);
-                }
-            }
+            classMap.UnmapMember(memberMap.MemberInfo);
         }
     }
 }

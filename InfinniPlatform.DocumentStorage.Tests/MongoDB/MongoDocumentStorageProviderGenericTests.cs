@@ -2287,5 +2287,33 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
             Assert.AreEqual(document2.Property3, actualDocument2.Property3);
             Assert.AreEqual(default(int), actualDocument2.Property4Ignore);
         }
+
+        [Test]
+        public void ShouldApplyDocumentPropertyNameAttribute()
+        {
+            // Given
+
+            const string storageName = nameof(ShouldApplyDocumentPropertyNameAttribute);
+            var dynamicStorage = MongoTestHelpers.GetEmptyStorageProvider(storageName);
+            var genericStorage = MongoTestHelpers.GetEmptyStorageProvider<DocumentWithCustomPropertyName>(storageName);
+
+            var document = new DocumentWithCustomPropertyName { FirstName = "John", LastName = "Smith" };
+
+            // When
+
+            genericStorage.InsertOne(document);
+            var genericDocument = genericStorage.Find().FirstOrDefault();
+            var dynamicDocument = dynamicStorage.Find().FirstOrDefault();
+
+            // Then
+
+            Assert.IsNotNull(genericDocument);
+            Assert.AreEqual(document.FirstName, genericDocument.FirstName);
+            Assert.AreEqual(document.LastName, genericDocument.LastName);
+
+            Assert.IsNotNull(dynamicDocument);
+            Assert.AreEqual(document.FirstName, dynamicDocument["forename"]);
+            Assert.AreEqual(document.LastName, dynamicDocument["surname"]);
+        }
     }
 }
