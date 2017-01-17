@@ -14,6 +14,6 @@
   },
   
   "scripts": {
-    "postcompile": "..\\copy.bat"
+    "postcompile": "..\\copy.bat InfinniPlatform.Http netstandard1.6"
   }
 }

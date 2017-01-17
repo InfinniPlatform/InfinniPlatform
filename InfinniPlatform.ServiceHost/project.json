@@ -27,6 +27,6 @@
   },
 
   "scripts": {
-    "postcompile": "..\\copy.bat InfinniPlatfrom.ServiceHost"
+    "postcompile": "..\\copy.bat InfinniPlatform.ServiceHost netcoreapp1.0"
   }
 }

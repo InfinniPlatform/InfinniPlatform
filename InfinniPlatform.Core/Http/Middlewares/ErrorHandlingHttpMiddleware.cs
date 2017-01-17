@@ -20,6 +20,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
 
         public override void Configure(IApplicationBuilder appBuilder)
         {
+            appBuilder.UseMiddleware<ErrorHandlingOwinMiddleware>();
             //TODO Find way to extend OWIN pipelines in ASP.NET Core.
             //appBuilder.UseOwin(_typeResolver.ResolveType<ErrorHandlingOwinMiddleware>());
         }

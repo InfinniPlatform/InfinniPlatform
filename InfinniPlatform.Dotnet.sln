@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.xproj", "{1996F172-BE5B-4999-A472-81C1E470D49B}"
+EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Core", "InfinniPlatform.Core\InfinniPlatform.Core.xproj", "{168A0089-AE82-4F8D-A124-DC31ED6561D0}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Sdk", "InfinniPlatform.Sdk\InfinniPlatform.Sdk.xproj", "{4B6B6B09-AF21-4746-B3D9-4FF3921BD9A0}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Http", "InfinniPlatform.Http\InfinniPlatform.Http.xproj", "{1D29338A-E798-4B18-8B28-5A8999AA2BC0}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.xproj", "{1996F172-BE5B-4999-A472-81C1E470D49B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
 EndProject

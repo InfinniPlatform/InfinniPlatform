@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using InfinniPlatform.Core.Http.Hosting;
 using Microsoft.AspNetCore.Hosting;
 
@@ -28,57 +32,48 @@ namespace InfinniPlatform.ServiceHost
 
         private static void RunServiceHost(string[] args)
         {
-            var host = new WebHostBuilder()
-                    .UseKestrel()
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseStartup<Startup>()
-                    //TODO Move to some kind of configuration file?
-                    .UseUrls("http://localhost:9900")
-                    .Build();
+            try
+            {
+                // Поиск компонента для хостинга приложения
+                //var serviceHost = CreateComponent<dynamic>("InfinniPlatformServiceHost");
+                var serviceHost = new Core.ServiceHost.ServiceHost();
 
-            host.Run();
+                // Запуск хостинга приложения
 
-            //            try
-            //            {
-            //                // Поиск компонента для хостинга приложения
-            //                var serviceHost = CreateComponent<dynamic>("InfinniPlatformServiceHost");
-            //
-            //                // Запуск хостинга приложения
-            //
-            //                if (args.Any(s => (s == "-i") || (s == "--init")))
-            //                {
-            //                    serviceHost.Init(Timeout.InfiniteTimeSpan);
-            //                    Console.WriteLine(Resources.ServerInitialized);
-            //                }
-            //
-            //                if (!args.Any()
-            //                    || args.Any(s => (s == "-s") || (s == "--start")))
-            //                {
-            //                    serviceHost.Start(Timeout.InfiniteTimeSpan);
-            //                    Console.WriteLine(Resources.ServerStarted);
-            //                }
-            //
-            //                var stopEvent = new TaskCompletionSource<bool>();
-            //
-            //                Console.CancelKeyPress += (s, e) =>
-            //                                          {
-            //                                              // Остановка хостинга приложения
-            //                                              serviceHost.Stop(Timeout.InfiniteTimeSpan);
-            //                                              stopEvent.SetResult(true);
-            //                                          };
-            //
-            //                // Ожидание остановки приложения (Ctrl+C)
-            //                stopEvent.Task.Wait(Timeout.Infinite);
-            //            }
-            //            catch (Exception error)
-            //            {
-            //                Console.WriteLine(error);
-            //            }
+                if (args.Any(s => s == "-i" || s == "--init"))
+                {
+                    serviceHost.Init(Timeout.InfiniteTimeSpan);
+                    Console.WriteLine("Resources.ServerInitialized");
+                }
+
+                if (!args.Any()
+                    || args.Any(s => s == "-s" || s == "--start"))
+                {
+                    serviceHost.Start(Timeout.InfiniteTimeSpan);
+                    Console.WriteLine("Resources.ServerStarted");
+                }
+
+                var stopEvent = new TaskCompletionSource<bool>();
+
+                Console.CancelKeyPress += (s, e) =>
+                                          {
+                                              // Остановка хостинга приложения
+                                              serviceHost.Stop(Timeout.InfiniteTimeSpan);
+                                              stopEvent.SetResult(true);
+                                          };
+
+                // Ожидание остановки приложения (Ctrl+C)
+                stopEvent.Task.Wait(Timeout.Infinite);
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error);
+            }
         }
 
-//        {
-
 //        private static T CreateComponent<T>(string contractName) where T : class
+
+//        {
 //            var aggregateCatalog = new DirectoryAssemblyCatalog();
 //            var compositionContainer = new CompositionContainer(aggregateCatalog);
 //            var lazyInstance = compositionContainer.GetExport<T>(contractName);

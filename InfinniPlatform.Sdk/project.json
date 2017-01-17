@@ -20,6 +20,6 @@
   },
   
   "scripts": {
-    "postcompile": "..\\copy.bat"
+    "postcompile": "..\\copy.bat InfinniPlatform.Sdk netstandard1.6"
   }
 }

@@ -10,6 +10,7 @@
     "Microsoft.AspNetCore.Cors": "1.1.0",
     "Microsoft.AspNetCore.Hosting": "1.1.0",
     "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
     "Microsoft.Extensions.Configuration.Binder": "1.1.0",
     "Microsoft.Extensions.Configuration.Json": "1.1.0",
     "Nancy": "2.0.0-clinteastwood",
@@ -24,6 +25,6 @@
   },
   
   "scripts": {
-    "postcompile": "..\\copy.bat"
+    "postcompile": "..\\copy.bat InfinniPlatform.Core netstandard1.6"
   }
 }

@@ -1,9 +1,9 @@
 echo off
 
-SET ASSEMBLIES="C:\Projects\InfinniPlatform\Assemblies\"
-SET ASSEMBLIES_RU="C:\Projects\InfinniPlatform\Assemblies\ru-RU\"
-SET "OUTPUT=%1\bin\Debug\netcoreapp1.0\"
-SET "OUTPUT_RU=%1\bin\Debug\netcoreapp1.0\ru-RU\"
+SET "ASSEMBLIES=%~dp0Assemblies\"
+SET "ASSEMBLIES_RU=%~dp0Assemblies\ru-RU\"
+SET "OUTPUT=%~dp0%1\bin\Debug\%2\"
+SET "OUTPUT_RU=%~dp0%1\bin\Debug\%2\ru-RU\"
 
 pushd %OUTPUT%
 for %%i in (*) do xcopy /Y /F %%i %ASSEMBLIES%

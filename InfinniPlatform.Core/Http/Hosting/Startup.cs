@@ -2,7 +2,9 @@
 using System.IO;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Http.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +31,9 @@ namespace InfinniPlatform.Core.Http.Hosting
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var builder = new ContainerBuilder();
-
+            var containerResolverFactory = new AutofacHttpContainerResolverFactory();
+            var containerResolver = containerResolverFactory.CreateContainerResolver();
+            
             //builder.RegisterModule(new AutofacContainerModule());
 
             builder.Populate(services);
@@ -39,13 +43,9 @@ namespace InfinniPlatform.Core.Http.Hosting
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, OwinMiddleware[] sd)
         {
-            var config = Configuration;
-            var appConfig = new AppEnvironment();
-            config.Bind(appConfig);
-            var appEnvironment = Configuration.Get<AppEnvironment>();
-
+            //TODO Register OWIN layers.
             //TODO Register Nancy bootstrapper.
             //app.UseOwin(x => x.UseNancy(opt => opt.Bootstrapper = new HttpServiceNancyBootstrapper()));
         }

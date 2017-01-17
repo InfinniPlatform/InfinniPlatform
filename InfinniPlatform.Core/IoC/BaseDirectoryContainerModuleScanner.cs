@@ -83,8 +83,7 @@ namespace InfinniPlatform.Core.IoC
 
             if (!_moduleAssemblies.TryGetValue(assemblyPath, out assembly))
             {
-                //assembly = Assembly.LoadFrom(assemblyPath);
-                assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
+                assembly = Assembly.Load(AssemblyLoadContext.GetAssemblyName(assemblyPath));
 
                 _moduleAssemblies.TryAdd(assemblyPath, assembly);
             }
@@ -98,21 +97,20 @@ namespace InfinniPlatform.Core.IoC
 
             // Поиск всех исполняемых модулей в каталоге текущего домена приложения
             var assemblyFiles = Directory.EnumerateFiles(".", "*.dll", SearchOption.AllDirectories)
-                                         .Concat(Directory.EnumerateFiles(".", "*.exe", SearchOption.AllDirectories));
+                                         .Concat(Directory.EnumerateFiles(".", "*.exe", SearchOption.AllDirectories))
+                                         .Select(Path.GetFullPath);
 
             foreach (var assemblyFile in assemblyFiles)
             {
                 try
                 {
-                    // Загрузка сборки для анализа (ReflectionOnlyLoadFrom не подходит по многим причинам)
-                    //var assembly = Assembly.LoadFrom(assemblyFile);
-                    var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFile);
+                    var assembly = Assembly.Load(AssemblyLoadContext.GetAssemblyName(assemblyFile));
 
                     // Сборки со строгим именем не рассматриваются (предполагается, что прикладные сборки его не имеют)
                     if (!HasPublicKeyToken(assembly))
                     {
                         var types = assembly.GetTypes();
-
+                        
                         foreach (var type in types)
                         {
                             if (type.GetTypeInfo().IsClass && !type.GetTypeInfo().IsAbstract && !type.GetTypeInfo().IsGenericType && typeof(IContainerModule).IsAssignableFrom(type))
@@ -122,7 +120,7 @@ namespace InfinniPlatform.Core.IoC
                         }
                     }
                 }
-                catch
+                catch(Exception e)
                 {
                     // ReflectionTypeLoadException
                 }

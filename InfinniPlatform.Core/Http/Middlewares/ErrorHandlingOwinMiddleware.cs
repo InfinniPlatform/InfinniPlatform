@@ -34,9 +34,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
 
             try
             {
-                //TODO Find owin.RequestId in HttpContext.
-                //var requestId = context.Environment?["owin.RequestId"];
-                var requestId = Guid.NewGuid().ToString();
+                var requestId = context.TraceIdentifier;
 
                 // Установка контекста логирования ошибок текущего потока.
                 _log.SetRequestId(requestId);

@@ -138,20 +138,20 @@ namespace InfinniPlatform.Core.Http.Hosting
                 {
                     if (_host == null)
                     {
-                        IDisposable host = null;
+                        IWebHost host = null;
 
                         try
                         {
                             _onBeforeStart?.Invoke();
 
-//                            var host = new WebHostBuilder()
-//                                                    .UseContentRoot(Directory.GetCurrentDirectory())
-//                                                    .UseKestrel()
-//                                                    .UseStartup<Startup>()
-//                                                    .UseUrls("http://localhost:9900")
-//                                                    .Build();
-//
-//                            host.Run();
+                            host = new WebHostBuilder()
+                                    .UseKestrel()
+                                    .UseContentRoot(Directory.GetCurrentDirectory())
+                                    .UseStartup<Startup>()
+                                    .UseUrls(_baseAddress)
+                                    .Build();
+
+                            host.Run();
 
                             //host = WebApp.Start(_baseAddress, Startup);
 
