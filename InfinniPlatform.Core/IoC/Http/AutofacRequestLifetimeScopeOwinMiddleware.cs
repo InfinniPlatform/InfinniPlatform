@@ -21,7 +21,7 @@ namespace InfinniPlatform.Core.IoC.Http
         private static readonly AsyncLocal<NoSerializeAppDomain> NoSerializeAppDomainReference = new AsyncLocal<NoSerializeAppDomain>();
 
 
-        public AutofacRequestLifetimeScopeOwinMiddleware(OwinMiddleware next, ILifetimeScope rootContainer) : base(next)
+        public AutofacRequestLifetimeScopeOwinMiddleware(RequestDelegate next, ILifetimeScope rootContainer) : base(next)
         {
             _rootContainer = rootContainer;
         }

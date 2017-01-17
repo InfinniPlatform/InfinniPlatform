@@ -17,7 +17,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private static readonly Task EmptyTask = Task.FromResult<object>(null);
 
 
-        public ErrorHandlingOwinMiddleware(OwinMiddleware next, ILog log, IPerformanceLog performanceLog) : base(next)
+        public ErrorHandlingOwinMiddleware(RequestDelegate next, ILog log, IPerformanceLog performanceLog) : base(next)
         {
             _log = log;
             _performanceLog = performanceLog;
@@ -34,7 +34,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
 
             try
             {
-                var requestId = context.TraceIdentifier;
+                                var requestId = context.TraceIdentifier;
 
                 // Установка контекста логирования ошибок текущего потока.
                 _log.SetRequestId(requestId);

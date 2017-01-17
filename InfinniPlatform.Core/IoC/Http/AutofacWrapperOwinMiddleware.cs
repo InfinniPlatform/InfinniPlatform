@@ -12,9 +12,9 @@ namespace InfinniPlatform.Core.IoC.Http
     /// </summary>
     /// <typeparam name="T">Тип реального слоя OWIN.</typeparam>
     /// <seealso cref="AutofacRequestLifetimeScopeOwinMiddleware"/>
-    internal sealed class AutofacWrapperOwinMiddleware<T> : OwinMiddleware where T : OwinMiddleware
+    internal sealed class AutofacWrapperOwinMiddleware<T> : OwinMiddleware where T : class//OwinMiddleware
     {
-        public AutofacWrapperOwinMiddleware(OwinMiddleware next) : base(next)
+        public AutofacWrapperOwinMiddleware(RequestDelegate next) : base(next)
         {
         }
 
@@ -28,11 +28,11 @@ namespace InfinniPlatform.Core.IoC.Http
 
             // Попытка получения OWIN слоя через контейнер зависимостей запроса
 
-            OwinMiddleware realMiddleware = null;
+            RequestDelegate realMiddleware = null;
 
             if (requestContainer != null)
             {
-                realMiddleware = requestContainer.ResolveOptional<T>(TypedParameter.From(Next) as Parameter);
+                //realMiddleware = requestContainer.ResolveOptional<T>(TypedParameter.From(Next) as Parameter);
             }
 
             if (realMiddleware == null)

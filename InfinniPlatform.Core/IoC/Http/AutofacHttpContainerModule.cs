@@ -16,6 +16,10 @@ namespace InfinniPlatform.Core.IoC.Http
             builder.RegisterType<AutofacOwinMiddlewareResolver>()
                    .As<IOwinMiddlewareTypeResolver>()
                    .SingleInstance();
+
+            builder.RegisterType<AutofacRequestLifetimeScopeOwinMiddleware>()
+                   .As<OwinMiddleware>()
+                   .SingleInstance();
         }
     }
 }
