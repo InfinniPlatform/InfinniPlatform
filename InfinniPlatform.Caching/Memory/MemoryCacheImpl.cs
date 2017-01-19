@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Runtime.Caching;
-
-using InfinniPlatform.Sdk.Settings;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace InfinniPlatform.Caching.Memory
 {
@@ -15,9 +12,9 @@ namespace InfinniPlatform.Caching.Memory
         /// Конструктор.
         /// </summary>
         /// <param name="appEnvironment">Пространство имен для ключей.</param>
-        public MemoryCacheImpl(IAppEnvironment appEnvironment)
+        public MemoryCacheImpl()
         {
-            _cache = new MemoryCache(appEnvironment.Name);
+            _cache = new MemoryCache(new MemoryCacheOptions());
         }
 
 
@@ -31,7 +28,9 @@ namespace InfinniPlatform.Caching.Memory
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return _cache.Contains(key);
+            object value
+                ;
+            return _cache.TryGetValue(key,out value);
         }
 
         public string Get(string key)
@@ -50,7 +49,7 @@ namespace InfinniPlatform.Caching.Memory
                 throw new ArgumentNullException(nameof(key));
             }
 
-            value = (string)_cache.Get(key);
+            value = _cache.Get<string>(key);
 
             return (value != null);
         }
@@ -67,26 +66,27 @@ namespace InfinniPlatform.Caching.Memory
                 throw new ArgumentNullException(nameof(value));
             }
 
-            _cache.Set(key, value, new CacheItemPolicy());
+            _cache.Set(key, value, new MemoryCacheEntryOptions());
         }
 
-        public bool Remove(string key)
+        public void Remove(string key)
         {
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return (_cache.Remove(key) != null);
+            _cache.Remove(key);
         }
 
-        public void Clear()
-        {
-            foreach (var item in _cache.ToArray())
-            {
-                _cache.Remove(item.Key);
-            }
-        }
+        // TODO Cant get all items from cache Microsoft.Extensions.Caching.Memory.MemoryCache
+//        public void Clear()
+//        {
+//            foreach (var item in _cache.ToArray())
+//            {
+//                _cache.Remove(item.Key);
+//            }
+//        }
 
         public void Dispose()
         {

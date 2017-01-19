@@ -35,11 +35,12 @@
         /// Удаляет ключ из кэша.
         /// </summary>
         /// <param name="key">Ключ.</param>
-        bool Remove(string key);
+        void Remove(string key);
 
         /// <summary>
         /// Очищает кэш.
         /// </summary>
-        void Clear();
+        // TODO Cant get all items from cache Microsoft.Extensions.Caching.Memory.MemoryCache
+        //void Clear();
     }
 }
