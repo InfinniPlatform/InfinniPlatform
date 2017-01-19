@@ -1,8 +1,5 @@
 ﻿using InfinniPlatform.Http.Middlewares;
-
-using Microsoft.Owin.Security.Google;
-
-using Owin;
+using Microsoft.AspNetCore.Builder;
 
 namespace InfinniPlatform.Auth.Google.Middlewares
 {
@@ -25,11 +22,11 @@ namespace InfinniPlatform.Auth.Google.Middlewares
         private readonly AuthGoogleHttpMiddlewareSettings _settings;
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder builder)
         {
             if (_settings.Enable)
             {
-                builder.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions
+                builder.UseGoogleAuthentication(new GoogleOptions
                                                 {
                                                     ClientId = _settings.ClientId,
                                                     ClientSecret = _settings.ClientSecret

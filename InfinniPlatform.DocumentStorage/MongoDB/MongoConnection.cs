@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Contract;
@@ -77,7 +78,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             {
                 var bsonClassMap = new BsonClassMap(type);
 
-                foreach (var property in type.GetProperties().Where(i => i.DeclaringType == type))
+                foreach (var property in type.GetTypeInfo().GetProperties().Where(i => i.DeclaringType == type))
                 {
                     bsonClassMap.MapProperty(property.Name);
                 }

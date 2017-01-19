@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Reflection;
 using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Http.Services;
@@ -36,9 +36,10 @@ namespace InfinniPlatform.DocumentStorage.Services
             // Создание типизированных сервисов
 
             var clrDocumentTypes = httpServiceHandlerType
+                .GetTypeInfo()
                 .GetInterfaces()
-                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDocumentHttpServiceHandler<>))
-                .Select(i => i.GetGenericArguments()[0]);
+                .Where(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IDocumentHttpServiceHandler<>))
+                .Select(i => i.GetTypeInfo().GetGenericArguments()[0]);
 
             foreach (var clrDocumentType in clrDocumentTypes)
             {

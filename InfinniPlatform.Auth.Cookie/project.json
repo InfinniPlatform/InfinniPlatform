@@ -1,16 +1,17 @@
 {
   "version": "1.0.0-*",
 
-  "name": "InfinniPlatform.Http",
+  "name": "InfinniPlatform.Auth.Cookie",
 
   "buildOptions": {
     "debugType": "portable"
   },
 
   "dependencies": {
-    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
-    "Microsoft.AspNetCore.Owin": "1.1.0",
-    "NETStandard.Library": "1.6.1"
+    "InfinniPlatform.Http": { "target": "project" },
+    "InfinniPlatform.Sdk": { "target": "project" },
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
+    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0"
   },
 
   "frameworks": {

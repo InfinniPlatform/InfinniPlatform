@@ -1,9 +1,5 @@
 ﻿using InfinniPlatform.Http.Middlewares;
-
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.WsFederation;
-
-using Owin;
+using Microsoft.AspNetCore.Builder;
 
 namespace InfinniPlatform.Auth.Adfs.Middlewares
 {
@@ -27,18 +23,19 @@ namespace InfinniPlatform.Auth.Adfs.Middlewares
         private readonly AuthAdfsHttpMiddlewareSettings _settings;
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder builder)
         {
             if (_settings.Enable)
             {
-                builder.UseWsFederationAuthentication(new WsFederationAuthenticationOptions
-                                                      {
-                                                          Caption = WsFederationAuthenticationDefaults.Caption,
-                                                          AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
-                                                          AuthenticationMode = AuthenticationMode.Passive,
-                                                          MetadataAddress = string.Format(MetadataUri, _settings.Server),
-                                                          Wtrealm = _settings.ResourceUri
-                                                      });
+                //TODO WsFederation middleware is blocked by https://github.com/dotnet/corefx/issues/1132.
+                //                builder.UseWsFederationAuthentication(new WsFederationAuthenticationOptions
+                //                                                      {
+                //                                                          Caption = WsFederationAuthenticationDefaults.Caption,
+                //                                                          AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
+                //                                                          AuthenticationMode = AuthenticationMode.Passive,
+                //                                                          MetadataAddress = string.Format(MetadataUri, _settings.Server),
+                //                                                          Wtrealm = _settings.ResourceUri
+                //                                                      });
             }
         }
     }

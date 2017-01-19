@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Reflection;
 using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.MessageQueue.Contract.Consumers;
 using InfinniPlatform.Sdk.Dynamic;
@@ -30,7 +30,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq
 
         public static string GetQueueName(Type type, string defaultValue = null)
         {
-            return type.GetAttributeValue<QueueNameAttribute, string>(i => i.Name, defaultValue ?? type.FullName);
+            return type.GetTypeInfo().GetAttributeValue<QueueNameAttribute, string>(i => i.Name, defaultValue ?? type.FullName);
         }
     }
 }

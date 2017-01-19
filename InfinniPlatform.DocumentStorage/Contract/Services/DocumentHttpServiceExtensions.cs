@@ -81,7 +81,7 @@ namespace InfinniPlatform.DocumentStorage.Contract.Services
         /// </example>
         public static void RegisterDocumentHttpServices(this IContainerBuilder builder, Assembly assembly)
         {
-            builder.RegisterAssemblyTypes(assembly, t => typeof(IDocumentHttpServiceHandlerBase).IsAssignableFrom(t), r => r.As<IDocumentHttpServiceHandlerBase>().SingleInstance());
+            builder.RegisterAssemblyTypes(assembly, t => typeof(IDocumentHttpServiceHandlerBase).GetTypeInfo().IsAssignableFrom(t), r => r.As<IDocumentHttpServiceHandlerBase>().SingleInstance());
         }
     }
 }

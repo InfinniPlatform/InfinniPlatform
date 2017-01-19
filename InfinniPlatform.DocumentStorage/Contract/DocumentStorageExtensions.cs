@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Contract.Transactions;
@@ -26,7 +27,7 @@ namespace InfinniPlatform.DocumentStorage.Contract
         {
             var type = typeof(TDocument);
 
-            return type.GetAttributeValue<DocumentTypeAttribute, string>(i => i.Name, type.NameOf());
+            return type.GetTypeInfo().GetAttributeValue<DocumentTypeAttribute, string>(i => i.Name, type.NameOf());
         }
 
 

@@ -15,8 +15,8 @@ using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Internal.Services
 {
@@ -40,7 +40,7 @@ namespace InfinniPlatform.Auth.Internal.Services
 
         private IIdentity Identity => _userIdentityProvider.GetUserIdentity();
 
-        private IOwinContext OwinContext => _owinContextProvider.GetOwinContext();
+        private IHttpContext OwinContext => _owinContextProvider.GetOwinContext();
 
         private IAuthenticationManager AuthenticationManager => OwinContext.Authentication;
 
@@ -218,10 +218,10 @@ namespace InfinniPlatform.Auth.Internal.Services
             _userEventHandlerInvoker.OnBeforeSignOut(prevIdentity);
 
             // Выход из системы
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            AuthenticationManager.SignOut("ExternalCookie");
 
             // Создание новых учетных данных
-            var identity = await ApplicationUserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            var identity = await ApplicationUserManager.CreateIdentityAsync(user, "ApplicationCookie");
 
             // Вход в систему с новыми учетными данными
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = remember == true }, identity);
@@ -319,7 +319,7 @@ namespace InfinniPlatform.Auth.Internal.Services
             return ChallengeExternalProviderCallback(request, async loginInfo =>
                                                               {
                                                                   // Определение текущего пользователя
-                                                                  var userId = SecurityExtensions.GetUserId(Identity);
+                                                                  var userId = Identity.GetUserId();
 
                                                                   // Добавление имени входа пользователя
                                                                   var addLoginTask = await ApplicationUserManager.AddLoginAsync(userId, loginInfo.Login);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Reflection;
 using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.DocumentStorage.Contract.Interceptors;
 
@@ -22,9 +22,10 @@ namespace InfinniPlatform.DocumentStorage.Storage
 
                     var clrDocumentTypes
                         = writeHandler.GetType()
+                                      .GetTypeInfo()
                                       .GetInterfaces()
-                                      .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDocumentStorageInterceptor<>))
-                                      .Select(i => i.GetGenericArguments()[0]);
+                                      .Where(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IDocumentStorageInterceptor<>))
+                                      .Select(i => i.GetTypeInfo().GetGenericArguments()[0]);
 
                     foreach (var clrDocumentType in clrDocumentTypes)
                     {

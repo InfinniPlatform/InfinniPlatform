@@ -1,15 +1,11 @@
 ﻿using System;
-
 using InfinniPlatform.Auth.Cookie.DataProtectors;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Http;
 
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.DataProtection;
 
-using Owin;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Auth.Cookie.Middlewares
 {
@@ -27,25 +23,23 @@ namespace InfinniPlatform.Auth.Cookie.Middlewares
 
         private readonly AuthCookieHttpMiddlewareSettings _settings;
         private readonly HostingConfig _hostingConfig;
+        private const string UriSchemeHttps = "https";
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder builder)
         {
             // Домен для создания cookie
             var cookieDomain = _settings.CookieDomain;
 
-            // Шифрование данных по умолчанию (работает также в Linux/Mono)
-            builder.SetDataProtectionProvider(new AesDataProtectionProvider());
-
             // Разрешение использования cookie для входа в систему через внутренний провайдер
-
             var cookieAuthOptions = new CookieAuthenticationOptions
                                     {
-                                        AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                                        AuthenticationScheme = "ApplicationCookie",
                                         LoginPath = new PathString(_settings.LoginPath),
                                         LogoutPath = new PathString(_settings.LogoutPath),
                                         ExpireTimeSpan = TimeSpan.FromDays(1),
-                                        SlidingExpiration = true
+                                        SlidingExpiration = true,
+                                        DataProtectionProvider = new AesDataProtectionProvider()
                                     };
 
             if (!string.IsNullOrWhiteSpace(cookieDomain))
@@ -53,15 +47,16 @@ namespace InfinniPlatform.Auth.Cookie.Middlewares
                 cookieAuthOptions.CookieDomain = cookieDomain;
             }
 
-            if (Uri.UriSchemeHttps.Equals(_hostingConfig.Scheme, StringComparison.OrdinalIgnoreCase))
+            if (UriSchemeHttps.Equals(_hostingConfig.Scheme, StringComparison.OrdinalIgnoreCase))
             {
-                cookieAuthOptions.CookieSecure = CookieSecureOption.Always;
+                cookieAuthOptions.CookieSecure = CookieSecurePolicy.Always;
             }
 
             builder.UseCookieAuthentication(cookieAuthOptions);
 
             // Разрешение использования cookie для входа в систему через внешние провайдеры
-            builder.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            //TODO 
+            //builder.UseExternalSignInCookie("ExternalCookie");
         }
     }
 }

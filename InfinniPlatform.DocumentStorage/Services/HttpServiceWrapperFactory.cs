@@ -61,7 +61,7 @@ namespace InfinniPlatform.DocumentStorage.Services
 
             // return new HttpServiceWrapper(httpService);
 
-            return (IHttpService)Activator.CreateInstance(httpServiceWrapperType.CreateType(), httpService);
+            return (IHttpService)Activator.CreateInstance(httpServiceWrapperType.CreateTypeInfo().AsType(), httpService);
         }
 
 
@@ -104,7 +104,7 @@ namespace InfinniPlatform.DocumentStorage.Services
         {
             // public HttpServiceWrapper(IHttpService httpService) { _httpService = httpService; }
 
-            var baseConstructor = typeof(object).GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+            var baseConstructor = typeof(object).GetTypeInfo().GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
 
             var constructor = httpServiceWrapperType.DefineMethod(".ctor", MethodAttributes.Public | MethodAttributes.HideBySig);
             constructor.SetReturnType(typeof(void));
@@ -124,7 +124,7 @@ namespace InfinniPlatform.DocumentStorage.Services
         {
             // public void Load(IHttpServiceBuilder builder) { _httpService.Load(builder); }
 
-            var invokeMethod = typeof(IHttpService).GetMethod("Load", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(IHttpServiceBuilder) }, null);
+            var invokeMethod = typeof(IHttpService).GetTypeInfo().GetMethod("Load", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(IHttpServiceBuilder) }, null);
 
             var method = httpServiceWrapperType.DefineMethod("Load", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig | MethodAttributes.NewSlot);
             method.SetReturnType(typeof(void));

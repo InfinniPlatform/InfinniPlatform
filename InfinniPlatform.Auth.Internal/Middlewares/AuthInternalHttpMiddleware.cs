@@ -7,7 +7,7 @@ using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
 
 using Microsoft.AspNet.Identity;
-
+using Microsoft.AspNetCore.Builder;
 using Owin;
 
 namespace InfinniPlatform.Auth.Internal.Middlewares
@@ -33,7 +33,7 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
         private readonly ILog _log;
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder builder)
         {
             // Регистрация метода для создания менеджера управления пользователями
             builder.CreatePerOwinContext(_userManagerFactory);

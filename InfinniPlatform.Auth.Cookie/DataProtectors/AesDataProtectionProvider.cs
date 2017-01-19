@@ -1,21 +1,19 @@
 ﻿using System;
 
-using Microsoft.Owin.Security.DataProtection;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace InfinniPlatform.Auth.Cookie.DataProtectors
 {
     internal class AesDataProtectionProvider : IDataProtectionProvider
     {
-        public IDataProtector Create(params string[] purposes)
+        public IDataProtector CreateProtector(string purpose)
         {
-            if (purposes == null)
+            if (purpose == null)
             {
                 throw new ArgumentNullException();
             }
 
-            var key = string.Join(";", purposes);
-
-            return new AesDataProtector(key);
+            return new AesDataProtector(purpose);
         }
     }
 }

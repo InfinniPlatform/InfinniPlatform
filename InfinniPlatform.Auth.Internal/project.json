@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0-*",
+
+  "name": "InfinniPlatform.Auth.Internal",
+
+  "buildOptions": {
+    "debugType": "portable"
+  },
+
+  "dependencies": {
+    "InfinniPlatform.Caching": { "target": "project" },
+    "InfinniPlatform.DocumentStorage": { "target": "project" },
+    "InfinniPlatform.Http": { "target": "project" },
+    "InfinniPlatform.MessageQueue": { "target": "project" },
+    "InfinniPlatform.Sdk": { "target": "project" },
+    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+    "Microsoft.AspNetCore.Identity": "1.1.0",
+    "NETStandard.Library": "1.6.1"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  },
+
+  "scripts": {
+    "postcompile": "..\\copy.bat InfinniPlatform.Auth.Internal netstandard1.6"
+  }
+}

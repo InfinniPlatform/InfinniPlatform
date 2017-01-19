@@ -4,13 +4,14 @@ using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
-
-using Microsoft.Owin.Security.DataProtection;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace InfinniPlatform.Auth.Cookie.DataProtectors
 {
     internal class AesDataProtector : IDataProtector
     {
+        private readonly byte[] _keyHash;
+
         public AesDataProtector(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -20,26 +21,22 @@ namespace InfinniPlatform.Auth.Cookie.DataProtectors
 
             var keyBytes = Encoding.UTF8.GetBytes(key);
 
-            using (var sha = new SHA256Managed())
+            using (var sha = SHA256.Create())
             {
                 _keyHash = sha.ComputeHash(keyBytes);
             }
         }
 
-
-        private readonly byte[] _keyHash;
-
-
         public byte[] Protect(byte[] data)
         {
             byte[] dataHash;
 
-            using (var sha = new SHA256Managed())
+            using (var sha = SHA256.Create())
             {
                 dataHash = sha.ComputeHash(data);
             }
 
-            using (var aesAlg = new AesManaged())
+            using (var aesAlg = Aes.Create())
             {
                 aesAlg.Key = _keyHash;
                 aesAlg.GenerateIV();
@@ -70,7 +67,7 @@ namespace InfinniPlatform.Auth.Cookie.DataProtectors
 
         public byte[] Unprotect(byte[] protectedData)
         {
-            using (var aesAlg = new AesManaged())
+            using (var aesAlg = Aes.Create())
             {
                 aesAlg.Key = _keyHash;
 
@@ -93,7 +90,7 @@ namespace InfinniPlatform.Auth.Cookie.DataProtectors
 
                                 byte[] dataHash;
 
-                                using (var sha = new SHA256Managed())
+                                using (var sha = SHA256.Create())
                                 {
                                     dataHash = sha.ComputeHash(data);
                                 }
@@ -109,6 +106,11 @@ namespace InfinniPlatform.Auth.Cookie.DataProtectors
                     }
                 }
             }
+        }
+
+        public IDataProtector CreateProtector(string purpose)
+        {
+            return this;
         }
     }
 }

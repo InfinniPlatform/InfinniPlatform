@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0-*",
+
+  "name": "InfinniPlatform.Caching",
+
+  "buildOptions": {
+    "debugType": "portable"
+  },
+
+  "dependencies": {
+    "InfinniPlatform.MessageQueue": { "target": "project" },
+    "InfinniPlatform.Sdk": { "target": "project" },
+    "NETStandard.Library": "1.6.1"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {}
+  },
+
+  "scripts": {
+    "postcompile": "..\\copy.bat InfinniPlatform.Caching netstandard1.6"
+  }
+}

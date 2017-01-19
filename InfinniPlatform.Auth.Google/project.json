@@ -1,15 +1,17 @@
 {
   "version": "1.0.0-*",
 
-  "name": "InfinniPlatform.Http",
+  "name": "InfinniPlatform.Auth.Google",
 
   "buildOptions": {
     "debugType": "portable"
   },
 
   "dependencies": {
+    "InfinniPlatform.Http": { "target": "project" },
+    "InfinniPlatform.Sdk": { "target": "project" },
+    "Microsoft.AspNetCore.Authentication.Google": "1.1.0",
     "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
-    "Microsoft.AspNetCore.Owin": "1.1.0",
     "NETStandard.Library": "1.6.1"
   },
 
@@ -20,6 +22,6 @@
   },
 
   "scripts": {
-    "postcompile": "..\\copy.bat InfinniPlatform.Http netstandard1.6"
+    "postcompile": "..\\copy.bat InfinniPlatform.Auth.Google netstandard1.6"
   }
 }
