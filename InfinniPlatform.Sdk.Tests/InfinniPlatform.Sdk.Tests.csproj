@@ -70,6 +70,7 @@
     <Compile Include="TestEntities\Bum.cs" />
     <Compile Include="TestEntities\Employee.cs" />
     <Compile Include="Serialization\IgnoreSerializerErrorHandlerTest.cs" />
+    <Compile Include="TestEntities\EnityWithCustomPropertyName.cs" />
     <Compile Include="TestEntities\IProduct.cs" />
     <Compile Include="Serialization\JsonObjectSerializerTest.cs" />
     <Compile Include="TestEntities\Milk.cs" />

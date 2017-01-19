@@ -39,6 +39,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                          new IgnoreDiscriminatorConvention(),
                                          // Не сохраняет указанные свойства
                                          new IgnorePropertyConvention(),
+                                         // Позволяет определять имена свойств
+                                         new PropertyNameConvention(),
                                          // Определяет логику сериализации object
                                          new MongoObjectMemberConverterResolver()
                                      };
