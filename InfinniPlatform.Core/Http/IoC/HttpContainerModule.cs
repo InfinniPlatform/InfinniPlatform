@@ -39,8 +39,8 @@ namespace InfinniPlatform.Core.Http.IoC
 
             // Middlewares
 
-            builder.RegisterType<OwinContextProvider>()
-                   .As<IOwinContextProvider>()
+            builder.RegisterType<HttpContextProvider>()
+                   .As<IHttpContextProvider>()
                    .SingleInstance();
 
             builder.RegisterType<ErrorHandlingHttpMiddleware>()

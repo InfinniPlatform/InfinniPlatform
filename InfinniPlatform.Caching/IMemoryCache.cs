@@ -35,7 +35,7 @@
         /// Удаляет ключ из кэша.
         /// </summary>
         /// <param name="key">Ключ.</param>
-        void Remove(string key);
+        bool Remove(string key);
 
         /// <summary>
         /// Очищает кэш.

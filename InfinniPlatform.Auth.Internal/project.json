@@ -8,6 +8,7 @@
   },
 
   "dependencies": {
+    "AutoMapper": "5.2.0",
     "InfinniPlatform.Caching": { "target": "project" },
     "InfinniPlatform.DocumentStorage": { "target": "project" },
     "InfinniPlatform.Http": { "target": "project" },

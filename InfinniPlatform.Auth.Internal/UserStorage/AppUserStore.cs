@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Auth.Internal.Contract;
+using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Auth.Internal.Properties;
 using InfinniPlatform.DocumentStorage.Contract;
 
@@ -15,15 +15,15 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
             _userCache = userCache;
-            _userStorage = new Lazy<ISystemDocumentStorage<ApplicationUser>>(() => documentStorageFactory.GetStorage<ApplicationUser>());
+            _userStorage = new Lazy<ISystemDocumentStorage<IdentityUser>>(() => documentStorageFactory.GetStorage<IdentityUser>());
         }
 
 
         private readonly Lazy<AppUserStoreCache> _userCache;
-        private readonly Lazy<ISystemDocumentStorage<ApplicationUser>> _userStorage;
+        private readonly Lazy<ISystemDocumentStorage<IdentityUser>> _userStorage;
 
 
-        public void CreateUser(ApplicationUser user)
+        public void CreateUser(IdentityUser user)
         {
             if (string.IsNullOrEmpty(user.Id))
             {
@@ -33,50 +33,50 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
             UpdateUser(user);
         }
 
-        public void UpdateUser(ApplicationUser user)
+        public void UpdateUser(IdentityUser user)
         {
             SaveUser(user);
             UpdateUserInCache(user);
         }
 
-        public void DeleteUser(ApplicationUser user)
+        public void DeleteUser(IdentityUser user)
         {
             _userStorage.Value.DeleteOne(f => f._id == user._id);
 
             RemoveUserFromCache(user.Id);
         }
 
-        public ApplicationUser FindUserById(string userId)
+        public IdentityUser FindUserById(string userId)
         {
             return FindUserInCache(c => c.FindUserById(userId), () => FindUser(f => f._header._deleted == null && f.Id == userId));
         }
 
-        public ApplicationUser FindUserByUserName(string userName)
+        public IdentityUser FindUserByUserName(string userName)
         {
             return FindUserInCache(c => c.FindUserByUserName(userName), () => FindUser(f => f._header._deleted == null && f.UserName == userName));
         }
 
-        public ApplicationUser FindUserByEmail(string email)
+        public IdentityUser FindUserByEmail(string email)
         {
             return FindUserInCache(c => c.FindUserByEmail(email), () => FindUser(f => f._header._deleted == null && f.Email == email));
         }
 
-        public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
+        public IdentityUser FindUserByPhoneNumber(string phoneNumber)
         {
             return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => FindUser(f => f._header._deleted == null && f.PhoneNumber == phoneNumber));
         }
 
-        public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
+        public IdentityUser FindUserByLogin(IdentityUserLogin userLogin)
         {
             return FindUserInCache(c => c.FindUserByLogin(userLogin), () => FindUser(f => f._header._deleted == null && f.Logins.Any(l => l.ProviderKey == userLogin.ProviderKey)));
         }
 
-        public ApplicationUser FindUserByName(string name)
+        public IdentityUser FindUserByName(string name)
         {
             return FindUserByUserName(name) ?? FindUserByEmail(name) ?? FindUserByPhoneNumber(name);
         }
 
-        public void AddUserToRole(ApplicationUser user, string roleName)
+        public void AddUserToRole(IdentityUser user, string roleName)
         {
             if (user.Id == null)
             {
@@ -85,16 +85,16 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
 
             var roles = user.Roles.ToList();
 
-            if (roles.All(r => r.Id != roleName))
+            if (roles.All(r => r != roleName))
             {
                 // Обновление сведений пользователя
-                roles.Add(new ForeignKey { Id = roleName, DisplayName = roleName });
+                roles.Add(roleName);
                 user.Roles = roles;
                 UpdateUser(user);
             }
         }
 
-        public void RemoveUserFromRole(ApplicationUser user, string roleName)
+        public void RemoveUserFromRole(IdentityUser user, string roleName)
         {
             if (user.Id == null)
             {
@@ -103,39 +103,39 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
 
             var roles = user.Roles.ToList();
 
-            if (roles.Any(r => r.Id == roleName))
+            if (roles.Any(r => r == roleName))
             {
                 // Обновление сведений пользователя
-                user.Roles = roles.Where(r => r.Id != roleName).ToList();
+                user.Roles = roles.Where(r => r != roleName).ToList();
                 UpdateUser(user);
             }
         }
 
-        public void AddUserClaim(ApplicationUser user, string claimType, string claimValue)
+        public void AddUserClaim(IdentityUser user, string claimType, string claimValue)
         {
-            if (!user.Claims.Any(c => c.Type.DisplayName == claimType && c.Value == claimValue))
+            if (!user.Claims.Any(c => c.Type == claimType && c.Value == claimValue))
             {
                 var claims = user.Claims.ToList();
-                claims.Add(new ApplicationUserClaim { Type = new ForeignKey { Id = claimType, DisplayName = claimType }, Value = claimValue });
+                claims.Add(new IdentityUserClaim { Type = claimType, Value = claimValue });
                 user.Claims = claims;
                 UpdateUser(user);
             }
         }
 
-        public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
+        public void RemoveUserClaim(IdentityUser user, string claimType, string claimValue)
         {
-            if (user.Claims.Any(c => c.Type.DisplayName == claimType && c.Value == claimValue))
+            if (user.Claims.Any(c => c.Type == claimType && c.Value == claimValue))
             {
-                user.Claims = user.Claims.Where(c => !(c.Type.DisplayName == claimType && c.Value == claimValue)).ToList();
+                user.Claims = user.Claims.Where(c => !(c.Type == claimType && c.Value == claimValue)).ToList();
                 UpdateUser(user);
             }
         }
 
-        public void AddUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
+        public void AddUserLogin(IdentityUser user, IdentityUserLogin userLogin)
         {
             var logins = user.Logins.ToList();
 
-            if (!logins.Any(f => f.Provider == userLogin.ProviderKey && f.ProviderKey == userLogin.ProviderKey))
+            if (!logins.Any(f => f.LoginProvider == userLogin.LoginProvider && f.ProviderKey == userLogin.ProviderKey))
             {
                 logins.Add(userLogin);
                 user.Logins = logins;
@@ -143,21 +143,21 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
             }
         }
 
-        public void RemoveUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
+        public void RemoveUserLogin(IdentityUser user, IdentityUserLogin userLogin)
         {
-            if (user.Logins.Any(f => f.Provider == userLogin.Provider && f.ProviderKey == userLogin.ProviderKey))
+            if (user.Logins.Any(f => f.LoginProvider == userLogin.LoginProvider && f.ProviderKey == userLogin.ProviderKey))
             {
-                user.Logins = user.Logins.Where(f => !(f.Provider == userLogin.Provider && f.ProviderKey == userLogin.ProviderKey)).ToList();
+                user.Logins = user.Logins.Where(f => !(f.LoginProvider == userLogin.LoginProvider && f.ProviderKey == userLogin.ProviderKey)).ToList();
                 UpdateUser(user);
             }
         }
 
-        private ApplicationUser FindUser(Expression<Func<ApplicationUser, bool>> expression)
+        private IdentityUser FindUser(Expression<Func<IdentityUser, bool>> expression)
         {
             return _userStorage.Value.Find(expression).FirstOrDefault();
         }
 
-        private void SaveUser(ApplicationUser user)
+        private void SaveUser(IdentityUser user)
         {
             user.SecurityStamp = CreateUnique();
 
@@ -167,7 +167,7 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
         /// <summary>
         /// Обновляет сведения о пользователе в локальном кэше.
         /// </summary>
-        private void UpdateUserInCache(ApplicationUser user)
+        private void UpdateUserInCache(IdentityUser user)
         {
             _userCache.Value.AddOrUpdateUser(user);
         }
@@ -183,7 +183,7 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
         /// <summary>
         /// Ищет сведения о пользователе в локальном кэше.
         /// </summary>
-        private ApplicationUser FindUserInCache(Func<AppUserStoreCache, ApplicationUser> cacheSelector, Func<ApplicationUser> storageSelector)
+        private IdentityUser FindUserInCache(Func<AppUserStoreCache, IdentityUser> cacheSelector, Func<IdentityUser> storageSelector)
         {
             var user = cacheSelector(_userCache.Value);
 

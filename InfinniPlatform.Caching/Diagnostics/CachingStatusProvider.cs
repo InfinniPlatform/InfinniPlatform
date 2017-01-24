@@ -36,7 +36,7 @@ namespace InfinniPlatform.Caching.Diagnostics
 
             if (_cacheSettings.Type == CacheSettings.SharedCacheKey)
             {
-                using (var client = _connectionFactory.GetClient())
+                using (var client = _connectionFactory.RedisClient)
                 {
                     status["redis"] = await client.GetStatusAsync();
                 }

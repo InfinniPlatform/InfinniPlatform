@@ -11,7 +11,6 @@ namespace InfinniPlatform.Caching.Memory
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="appEnvironment">Пространство имен для ключей.</param>
         public MemoryCacheImpl()
         {
             _cache = new MemoryCache(new MemoryCacheOptions());
@@ -69,14 +68,23 @@ namespace InfinniPlatform.Caching.Memory
             _cache.Set(key, value, new MemoryCacheEntryOptions());
         }
 
-        public void Remove(string key)
+        public bool Remove(string key)
         {
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            _cache.Remove(key);
+            try
+            {
+                _cache.Remove(key);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         // TODO Cant get all items from cache Microsoft.Extensions.Caching.Memory.MemoryCache

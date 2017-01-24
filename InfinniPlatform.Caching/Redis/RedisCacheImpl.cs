@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using InfinniPlatform.Caching.Properties;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
-
-using Sider;
+using StackExchange.Redis;
 
 namespace InfinniPlatform.Caching.Redis
 {
@@ -46,7 +45,7 @@ namespace InfinniPlatform.Caching.Redis
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return TryExecute((c, wk) => c.Exists(wk), key, CachingHelpers.PerformanceLogRedisContainsMethod);
+            return TryExecute((c, wk) => c.KeyExists(wk), key, CachingHelpers.PerformanceLogRedisContainsMethod);
         }
 
         public string Get(string key)
@@ -65,7 +64,7 @@ namespace InfinniPlatform.Caching.Redis
                 throw new ArgumentNullException(nameof(key));
             }
 
-            var cacheValue = TryExecute((c, wk) => c.Get(wk), key, CachingHelpers.PerformanceLogRedisGetMethod);
+            var cacheValue = TryExecute((c, wk) => c.StringGet(wk), key, CachingHelpers.PerformanceLogRedisGetMethod);
 
             value = cacheValue;
 
@@ -84,7 +83,7 @@ namespace InfinniPlatform.Caching.Redis
                 throw new ArgumentNullException(nameof(value));
             }
 
-            TryExecute((c, wk) => c.Set(wk, value), key, CachingHelpers.PerformanceLogRedisSetMethod);
+            TryExecute((c, wk) => c.StringSet(wk, value), key, CachingHelpers.PerformanceLogRedisSetMethod);
         }
 
         public bool Remove(string key)
@@ -94,19 +93,14 @@ namespace InfinniPlatform.Caching.Redis
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return TryExecute((c, wk) => c.Del(wk) > 0, key, CachingHelpers.PerformanceLogRedisRemoveMethod);
+            return TryExecute((c, wk) => c.KeyDelete(wk), key, CachingHelpers.PerformanceLogRedisRemoveMethod);
         }
 
         public void Clear()
         {
             TryExecute((c, wk) =>
                        {
-                           c.Pipeline(pc =>
-                                      {
-                                          var allKeys = pc.Keys(wk);
-                                          pc.Del(allKeys);
-                                      });
-
+                           c.Multiplexer.GetServer("localhost:6935").FlushDatabase();
                            return true;
                        },
                 CachingHelpers.RedisStarWildcards,
@@ -114,7 +108,7 @@ namespace InfinniPlatform.Caching.Redis
         }
 
 
-        private T TryExecute<T>(Func<IRedisClient<string>, string, T> action, string key, string method)
+        private T TryExecute<T>(Func<IDatabase, string, T> action, string key, string method)
         {
             var startTime = DateTime.Now;
 
@@ -124,10 +118,9 @@ namespace InfinniPlatform.Caching.Redis
 
             try
             {
-                using (var client = _connectionFactory.GetClient())
-                {
-                    return action(client, wrappedKey);
-                }
+                var client = _connectionFactory.RedisClient.GetDatabase();
+
+                return action(client, wrappedKey);
             }
             catch (Exception exception)
             {

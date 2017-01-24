@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Reflection.Emit;
-
+using System.Runtime.Loader;
 using InfinniPlatform.Sdk.Http.Services;
 
 namespace InfinniPlatform.DocumentStorage.Services
@@ -67,9 +67,9 @@ namespace InfinniPlatform.DocumentStorage.Services
 
         private static ModuleBuilder DefineHttpServiceWrapperModule()
         {
-            var currentDomain = AppDomain.CurrentDomain;
-            var assemblyName = new AssemblyName("HttpServiceWrapperTypes");
-            var assembly = currentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            //TODO Check if it's work.
+            var assemblyName = AssemblyLoadContext.GetAssemblyName("HttpServiceWrapperTypes");
+            var assembly = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
             var module = assembly.DefineDynamicModule(assemblyName.Name);
 
             return module;
@@ -104,7 +104,7 @@ namespace InfinniPlatform.DocumentStorage.Services
         {
             // public HttpServiceWrapper(IHttpService httpService) { _httpService = httpService; }
 
-            var baseConstructor = typeof(object).GetTypeInfo().GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+            var baseConstructor = typeof(object).GetTypeInfo().GetConstructor(Type.EmptyTypes);
 
             var constructor = httpServiceWrapperType.DefineMethod(".ctor", MethodAttributes.Public | MethodAttributes.HideBySig);
             constructor.SetReturnType(typeof(void));
@@ -124,7 +124,7 @@ namespace InfinniPlatform.DocumentStorage.Services
         {
             // public void Load(IHttpServiceBuilder builder) { _httpService.Load(builder); }
 
-            var invokeMethod = typeof(IHttpService).GetTypeInfo().GetMethod("Load", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(IHttpServiceBuilder) }, null);
+            var invokeMethod = typeof(IHttpService).GetTypeInfo().GetMethod("Load", new[] { typeof(IHttpServiceBuilder) });
 
             var method = httpServiceWrapperType.DefineMethod("Load", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig | MethodAttributes.NewSlot);
             method.SetReturnType(typeof(void));

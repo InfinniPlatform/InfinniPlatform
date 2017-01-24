@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 
 namespace InfinniPlatform.Auth.Internal.Contract
 {
@@ -11,16 +12,16 @@ namespace InfinniPlatform.Auth.Internal.Contract
         /// <summary>
         /// Возвращает сведения о текущем пользователе.
         /// </summary>
-        ApplicationUser GetCurrentUser();
-        Task<ApplicationUser> GetCurrentUserAsync();
+        IdentityUser GetCurrentUser();
+        Task<IdentityUser> GetCurrentUserAsync();
 
         /// <summary>
         /// Возвращает пользователя системы.
         /// </summary>
         /// <param name="userName">Логин пользователя.</param>
         /// <returns>Пользователь системы.</returns>
-        ApplicationUser FindUserByName(string userName);
-        Task<ApplicationUser> FindUserByNameAsync(string userName);
+        IdentityUser FindUserByName(string userName);
+        Task<IdentityUser> FindUserByNameAsync(string userName);
 
 
         /// <summary>

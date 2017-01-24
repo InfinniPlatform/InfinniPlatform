@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Core.Http.Middlewares
 {
-    internal class OwinContextProvider : IOwinContextProvider
+    internal class HttpContextProvider : IHttpContextProvider
     {
-        public OwinContextProvider(IContainerResolver containerResolver)
+        public HttpContextProvider(IContainerResolver containerResolver)
         {
             _containerResolver = containerResolver;
         }
@@ -15,7 +15,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private readonly IContainerResolver _containerResolver;
 
 
-        public HttpContext GetOwinContext()
+        public HttpContext GetHttpContext()
         {
             var owinContext = _containerResolver.ResolveOptional<HttpContext>();
 

@@ -181,7 +181,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
                 return elementType;
             }
 
-            var genericArguments = collectionType.GetGenericArguments();
+            var genericArguments = collectionType.GetTypeInfo().GetGenericArguments();
 
             if (genericArguments.Length > 0)
             {

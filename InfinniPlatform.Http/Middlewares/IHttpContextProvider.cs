@@ -5,11 +5,11 @@ namespace InfinniPlatform.Http.Middlewares
     /// <summary>
     /// Предоставляет метод для получения контекста OWIN текущего запроса.
     /// </summary>
-    public interface IOwinContextProvider
+    public interface IHttpContextProvider
     {
         /// <summary>
         /// Возвращает контекст OWIN текущего запроса.
         /// </summary>
-        HttpContext GetOwinContext();
+        HttpContext GetHttpContext();
     }
 }

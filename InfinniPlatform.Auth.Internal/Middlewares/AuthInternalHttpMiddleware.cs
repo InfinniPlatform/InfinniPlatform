@@ -2,13 +2,13 @@
 
 using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Auth.Internal.Identity;
+using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
 
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Builder;
-using Owin;
+using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Internal.Middlewares
 {
@@ -17,7 +17,7 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
     /// </summary>
     internal class AuthInternalHttpMiddleware : HttpMiddleware
     {
-        public AuthInternalHttpMiddleware(Func<UserManager<IdentityApplicationUser>> userManagerFactory,
+        public AuthInternalHttpMiddleware(Func<UserManager<IdentityUser>> userManagerFactory,
                                           IUserIdentityProvider identityProvider,
                                           ILog log)
             : base(HttpMiddlewareType.InternalAuthentication)
@@ -28,7 +28,7 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
         }
 
 
-        private readonly Func<UserManager<IdentityApplicationUser>> _userManagerFactory;
+        private readonly Func<UserManager<IdentityUser>> _userManagerFactory;
         private readonly IUserIdentityProvider _identityProvider;
         private readonly ILog _log;
 
@@ -36,12 +36,13 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
         public override void Configure(IApplicationBuilder builder)
         {
             // Регистрация метода для создания менеджера управления пользователями
-            builder.CreatePerOwinContext(_userManagerFactory);
+            // TODO Extension method deleted.
+            //builder.CreatePerOwinContext(_userManagerFactory);
 
             // Прослойка для установки информации об идентификационных данных текущего пользователя
-            builder.Use((owinContext, nextOwinMiddleware) =>
+            builder.Use((httpContext, nextOwinMiddleware) =>
                         {
-                            var requestUser = owinContext.Request.User;
+                            var requestUser = httpContext.User;
 
                             _identityProvider.SetUserIdentity(requestUser);
 

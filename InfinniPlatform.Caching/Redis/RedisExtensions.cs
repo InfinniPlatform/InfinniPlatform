@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Caching.Properties;
 using InfinniPlatform.Sdk.Dynamic;
-
-using Sider;
+using StackExchange.Redis;
 
 namespace InfinniPlatform.Caching.Redis
 {
@@ -25,65 +26,13 @@ namespace InfinniPlatform.Caching.Redis
         /// <param name="sections">Категории статистической информации сервера Redis.</param>
         /// <exception cref="TimeoutException"></exception>
         /// <returns>Информация о состоянии сервера Redis.</returns>
-        /// <remarks>
-        /// К сожалению, используемая библиотека для работы с Redis (Sider) не предоставляет адекватного метода для получения данных о состоянии.
-        /// </remarks>
-        public static async Task<DynamicWrapper> GetStatusAsync(this IRedisClient<string> client, RedisSectionStatus sections = RedisSectionStatus.Stats | RedisSectionStatus.Clients | RedisSectionStatus.Keyspace)
+        public static async Task<IGrouping<string, KeyValuePair<string, string>>[]> GetStatusAsync(this ConnectionMultiplexer client, RedisSectionStatus sections = RedisSectionStatus.Stats | RedisSectionStatus.Clients | RedisSectionStatus.Keyspace)
         {
-            var status = new DynamicWrapper();
+            //TODO Multiple server status.
+            var endPoint = client.GetEndPoints().First();
 
-            foreach (Enum section in Enum.GetValues(typeof(RedisSectionStatus)))
-            {
-                if (sections.HasFlag(section))
-                {
-                    var sectionName = section.ToString().ToLower();
-                    var sectionStatus = await GetSectionStatusAsync(client, (RedisSectionStatus)section);
-
-                    status[sectionName] = sectionStatus;
-                }
-            }
-
-            return status;
+            return await client.GetServer(endPoint).InfoAsync();
         }
-
-
-        private static async Task<DynamicWrapper> GetSectionStatusAsync(IRedisClient<string> client, RedisSectionStatus section)
-        {
-            var infoCommandTask = Task.Run(() => client.Custom(InfoCommandName,
-                w =>
-                {
-                    var sectionName = section.ToString().ToLower();
-                    w.WriteCmdStart(InfoCommandName, 1);
-                    w.WriteArg(sectionName);
-                },
-                r =>
-                {
-                    var sectionStatus = new DynamicWrapper();
-
-                    var infoCommandResult = r.ReadStrBulk();
-
-                    if (!string.IsNullOrEmpty(infoCommandResult))
-                    {
-                        foreach (Match item in InfoCommandRegex.Matches(infoCommandResult))
-                        {
-                            var key = item.Groups["key"].Value;
-                            var value = item.Groups["value"].Value;
-
-                            sectionStatus[key] = value;
-                        }
-                    }
-
-                    return sectionStatus;
-                }));
-
-            if (await Task.WhenAny(infoCommandTask, Task.Delay(InfoCommandTimeout)) != infoCommandTask)
-            {
-                throw new TimeoutException(Resources.RedisInfoCommandCompletedWithTimeout);
-            }
-
-            return infoCommandTask.Result;
-        }
-
 
         /// <summary>
         /// Категории статистической информации сервера Redis.
