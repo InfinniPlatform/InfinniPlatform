@@ -19,7 +19,7 @@ namespace InfinniPlatform.Core.Http.Hosting
             var builder = new ContainerBuilder();
             var containerResolverFactory = new AutofacHttpContainerResolverFactory();
             var containerResolver = containerResolverFactory.CreateContainerResolver();
-
+            
             //builder.RegisterModule(new AutofacContainerModule());
 
             builder.Populate(services);

@@ -10,7 +10,7 @@ using InfinniPlatform.Sdk.IoC;
 namespace InfinniPlatform.Core.IoC
 {
     /// <summary>
-    /// Поисковик модулей регистрации зависимостей <see cref="IContainerModule"/> в базовом каталоге текущего домена приложения <see cref="AppDomain.BaseDirectory"/>.
+    /// Поисковик модулей регистрации зависимостей <see cref="IContainerModule"/> в базовом каталоге приложения.
     /// </summary>
     internal sealed class BaseDirectoryContainerModuleScanner
     {
@@ -104,13 +104,13 @@ namespace InfinniPlatform.Core.IoC
             {
                 try
                 {
-                    var assembly = Assembly.Load(AssemblyLoadContext.GetAssemblyName(assemblyFile));
+                    var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFile);
 
                     // Сборки со строгим именем не рассматриваются (предполагается, что прикладные сборки его не имеют)
                     if (!HasPublicKeyToken(assembly))
                     {
                         var types = assembly.GetTypes();
-                        
+
                         foreach (var type in types)
                         {
                             if (type.GetTypeInfo().IsClass && !type.GetTypeInfo().IsAbstract && !type.GetTypeInfo().IsGenericType && typeof(IContainerModule).IsAssignableFrom(type))

@@ -1,5 +1,19 @@
 {
-    "projects": ["InfinniPlatform.Core", "InfinniPlatform.Http", "InfinniPlatform.Sdk", "InfinniPlatform.ServiceHost"],
+    "projects": [
+        "InfinniPlatform.Core",
+        "InfinniPlatform.Http",
+        "InfinniPlatform.Sdk",
+        "InfinniPlatform.ServiceHost",
+        "InfinniPlatform.Auth.Adfs",
+        "InfinniPlatform.Auth.Cookie",
+        "InfinniPlatform.Auth.Facebook",
+        "InfinniPlatform.Auth.Google",
+        "InfinniPlatform.Auth.Internal",
+        "InfinniPlatform.BlobStorage",
+        "InfinniPlatform.Caching",
+        "InfinniPlatform.DocumentStorage",
+        "InfinniPlatform.MessageQueue"
+    ],
     "sdk": {
         "version": "1.0.0-preview2-1-003177"
     }

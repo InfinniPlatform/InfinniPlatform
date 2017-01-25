@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Diagnostics;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Core.IoC
@@ -7,6 +7,7 @@ namespace InfinniPlatform.Core.IoC
     /// <summary>
     /// Информация о модуле регистрации зависимостей <see cref="IContainerModule"/>.
     /// </summary>
+    [DebuggerDisplay("{Location.TypeFullName}")]
     internal struct ContainerModuleInfo
     {
         public ContainerModuleInfo(ContainerModuleLocation location, Lazy<Type> type)
