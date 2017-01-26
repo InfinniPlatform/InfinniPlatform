@@ -49,11 +49,11 @@
   "printView": {
     "HtmlToPdfUtilCommand": "",
     "HtmlToPdfUtilArguments": "",
-    "HtmlToPdfTemp": ""
+    "HtmlToPdfTemp": "",
+    "TemplatePath": "content\\metadata\\PrintViews"
   },
   "metadata": {
-    "DocumentsPath": "content/metadata/Documents",
-    "PrintViewsPath": "content/metadata/PrintViews"
+    "DocumentsPath": "content\\metadata\\Documents"
   },
   "scheduler": {
     "ExpireHistoryAfter": null

@@ -9,7 +9,7 @@
 
         public MetadataSettings()
         {
-            DocumentsPath = "content/metadata/Documents";
+            DocumentsPath = "content\\metadata\\Documents";
         }
 
         /// <summary> 

@@ -6,24 +6,21 @@
   "type": "object",
   "properties": {
     "HtmlToPdfUtilCommand": {
-      "description":
-        "Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).",
+      "description": "Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).",
       "type": "string"
     },
     "HtmlToPdfUtilArguments": {
-      "description":
-        "Формат аргументов утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).",
+      "description": "Формат аргументов утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).",
       "type": "string"
     },
     "HtmlToPdfTemp": {
-      "description":
-        "Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя).",
+      "description": "Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя).",
       "type": "string"
     },
     "TemplatesPath": {
       "description": "Путь до каталога с шаблонами печатных представлений относительно рабочей папки.",
       "type": "string",
-      "default": "content/metadata/PrintViews"
+      "default": "content\\metadata\\PrintViews"
     }
   },
   "required": [
