@@ -50,7 +50,7 @@
     "HtmlToPdfUtilCommand": "",
     "HtmlToPdfUtilArguments": "",
     "HtmlToPdfTemp": "",
-    "TemplatePath": "content\\metadata\\PrintViews"
+    "TemplatesPath": "content\\metadata\\PrintViews"
   },
   "metadata": {
     "DocumentsPath": "content\\metadata\\Documents"
