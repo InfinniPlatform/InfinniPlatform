@@ -9,11 +9,6 @@
             "description": "Путь до подкаталога  с файлами метаданных документов.",
             "type": "string",
             "default": "content/metadata/Documents"
-        },
-        "PrintViewsPath": {
-            "description": "Путь до подкаталога  с файлами метаданных печатных представлений.",
-            "type": "string",
-            "default": "content/metadata/PrintViews"
         }
     },
     "required": [

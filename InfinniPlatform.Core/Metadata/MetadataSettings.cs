@@ -1,8 +1,8 @@
 ﻿namespace InfinniPlatform.Core.Metadata
 {
-    /// <summary>
-    /// Настройки хранения метаданных.
-    /// </summary>
+    /// <summary> 
+    /// Настройки хранения метаданных. 
+    /// </summary> 
     public class MetadataSettings
     {
         public const string SectionName = "metadata";
@@ -12,9 +12,9 @@
             DocumentsPath = "content/metadata/Documents";
         }
 
-        /// <summary>
-        /// Путь до подкаталога с файлами метаданных документов.
-        /// </summary>
+        /// <summary> 
+        /// Путь до подкаталога с файлами метаданных документов. 
+        /// </summary> 
         public string DocumentsPath { get; set; }
     }
 }
