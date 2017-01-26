@@ -8,11 +8,10 @@
         "DocumentsPath": {
             "description": "Путь до подкаталога  с файлами метаданных документов.",
             "type": "string",
-            "default": "content/metadata/Documents"
+            "default": "content\\metadata\\Documents"
         }
     },
     "required": [
-        "DocumentsPath",
-        "PrintViewsPath"
+        "DocumentsPath"
     ]
 }
