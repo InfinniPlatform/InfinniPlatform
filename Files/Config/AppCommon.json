@@ -46,14 +46,13 @@
   "cache": {
     "Type": "Memory"
   },
-  "printView": {
-    "HtmlToPdfUtilCommand": "",
-    "HtmlToPdfUtilArguments": "",
-    "HtmlToPdfTemp": ""
+  "HtmlToPdf": {
+    "UtilCommand": "",
+    "UtilArguments": "",
+    "TempDirectory": ""
   },
   "metadata": {
-    "DocumentsPath": "content/metadata/Documents",
-    "PrintViewsPath": "content/metadata/PrintViews"
+    "DocumentsPath": "content\\metadata\\Documents"
   },
   "scheduler": {
     "ExpireHistoryAfter": null

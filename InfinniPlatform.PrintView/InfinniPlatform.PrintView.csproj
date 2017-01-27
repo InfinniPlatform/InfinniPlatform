@@ -245,7 +245,7 @@
     <Compile Include="Model\PrintDocument.cs" />
     <Compile Include="Model\PrintStyle.cs" />
     <Compile Include="Contract\PrintDocumentMap.cs" />
-    <Compile Include="Contract\PrintViewSettings.cs" />
+    <Compile Include="Contract\HtmlToPdfSettings.cs" />
     <Compile Include="Writers\Pdf\ProcessHelper.cs" />
     <Compile Include="Contract\PrintViewWriter.cs" />
     <Compile Include="Contract\IPrintViewWriter.cs" />
