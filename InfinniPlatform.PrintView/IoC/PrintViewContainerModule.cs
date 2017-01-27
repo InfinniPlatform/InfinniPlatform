@@ -12,8 +12,8 @@ namespace InfinniPlatform.PrintView.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<PrintViewSettings>(PrintViewSettings.SectionName))
-                   .As<PrintViewSettings>()
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<HtmlToPdfSettings>(HtmlToPdfSettings.SectionName))
+                   .As<HtmlToPdfSettings>()
                    .SingleInstance();
 
             builder.RegisterType<PrintViewSerializer>()

@@ -46,11 +46,10 @@
   "cache": {
     "Type": "Memory"
   },
-  "printView": {
-    "HtmlToPdfUtilCommand": "",
-    "HtmlToPdfUtilArguments": "",
-    "HtmlToPdfTemp": "",
-    "TemplatesPath": "content\\metadata\\PrintViews"
+  "HtmlToPdf": {
+    "UtilCommand": "",
+    "UtilArguments": "",
+    "TempDirectory": ""
   },
   "metadata": {
     "DocumentsPath": "content\\metadata\\Documents"

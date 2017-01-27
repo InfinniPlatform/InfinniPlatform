@@ -1,0 +1,26 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/HtmlToPdf.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "HtmlToPdf",
+  "description": "Настройки утилиты wkhtmltopdf - http://wkhtmltopdf.org/.",
+  "type": "object",
+  "properties": {
+    "UtilCommand": {
+      "description": "Местоположение утилиты (по умолчанию - генерируется автоматически с учетом операционной системы).",
+      "type": "string"
+    },
+    "UtilArguments": {
+      "description": "Формат аргументов утилиты (по умолчанию - генерируется автоматически с учетом операционной системы).",
+      "type": "string"
+    },
+    "TempDirectory": {
+      "description": "Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя).",
+      "type": "string"
+    }
+  },
+  "required": [
+    "HtmlToPdfUtilCommand",
+    "HtmlToPdfUtilArguments",
+    "HtmlToPdfTemp"
+  ]
+}

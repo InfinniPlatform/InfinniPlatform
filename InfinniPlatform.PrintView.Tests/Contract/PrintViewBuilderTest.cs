@@ -70,7 +70,7 @@ namespace InfinniPlatform.PrintView.Tests.Contract
             var printDocumentBuilder = new PrintDocumentBuilder();
 
             var printViewWriter = new PrintViewWriter();
-            var printViewSettings = PrintViewSettings.Default;
+            var printViewSettings = HtmlToPdfSettings.Default;
             var htmlPrintDocumentWriter = new HtmlPrintDocumentWriter();
             var pdfPrintDocumentWriter = new PdfPrintDocumentWriter(printViewSettings, htmlPrintDocumentWriter);
             printViewWriter.RegisterWriter(PrintViewFileFormat.Html, htmlPrintDocumentWriter);
