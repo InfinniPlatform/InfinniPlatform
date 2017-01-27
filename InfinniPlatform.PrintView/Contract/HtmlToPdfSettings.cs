@@ -1,26 +1,26 @@
 ﻿namespace InfinniPlatform.PrintView.Contract
 {
     /// <summary>
-    /// Настройки печатных представлений.
+    /// Настройки утилиты wkhtmltopdf - http://wkhtmltopdf.org/. Поддерживаемая версия - 0.12.2.4.
     /// </summary>
-    public class PrintViewSettings
+    public class HtmlToPdfSettings
     {
         /// <summary>
         /// Имя секции в файле конфигурации.
         /// </summary>
-        public const string SectionName = "printView";
+        public const string SectionName = "htmlToPdf";
 
 
         /// <summary>
         /// Настройка планировщика заданий по умолчанию.
         /// </summary>
-        public static readonly PrintViewSettings Default = new PrintViewSettings();
+        public static readonly HtmlToPdfSettings Default = new HtmlToPdfSettings();
 
 
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public PrintViewSettings()
+        public HtmlToPdfSettings()
         {
         }
 
@@ -28,21 +28,16 @@
         /// <summary>
         /// Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).
         /// </summary>
-        public string HtmlToPdfUtilCommand { get; set; }
+        public string UtilCommand { get; set; }
 
         /// <summary>
         /// Формат аргументов утилиты wkhtmltopdf - http://wkhtmltopdf.org/ (по умолчанию - генерируется автоматически с учетом операционной системы).
         /// </summary>
-        public string HtmlToPdfUtilArguments { get; set; }
+        public string UtilArguments { get; set; }
 
         /// <summary>
         /// Каталог для хранения временных файлов при генерации HTML/PDF (по умолчанию - каталог временных файлов учетной записи пользователя).
         /// </summary>
-        public string HtmlToPdfTemp { get; set; }
-
-        /// <summary>
-        /// Путь до каталога с шаблонами печатных представлений относительно рабочей папки.
-        /// </summary>
-        public string TemplatesPath { get; set; }
+        public string TempDirectory { get; set; }
     }
 }

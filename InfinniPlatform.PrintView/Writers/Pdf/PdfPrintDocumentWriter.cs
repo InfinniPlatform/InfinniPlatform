@@ -15,9 +15,9 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public PdfPrintDocumentWriter(PrintViewSettings settings, HtmlPrintDocumentWriter htmlWriter)
+        public PdfPrintDocumentWriter(HtmlToPdfSettings settings, HtmlPrintDocumentWriter htmlWriter)
         {
-            _htmlToPdfUtil = new HtmlToPdfUtil(settings.HtmlToPdfUtilCommand, settings.HtmlToPdfUtilArguments, settings.HtmlToPdfTemp);
+            _htmlToPdfUtil = new HtmlToPdfUtil(settings.UtilCommand, settings.UtilArguments, settings.TempDirectory);
             _htmlWriter = htmlWriter;
         }
 
