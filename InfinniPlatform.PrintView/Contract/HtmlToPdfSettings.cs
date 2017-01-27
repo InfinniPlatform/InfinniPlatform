@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.PrintView.Contract
 {
     /// <summary>
-    /// Настройки утилиты wkhtmltopdf - http://wkhtmltopdf.org/.
+    /// Настройки утилиты wkhtmltopdf - http://wkhtmltopdf.org/. Поддерживаемая версия - 0.12.2.4.
     /// </summary>
     public class HtmlToPdfSettings
     {
