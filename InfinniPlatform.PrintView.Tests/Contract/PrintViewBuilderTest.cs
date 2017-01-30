@@ -37,9 +37,9 @@ namespace InfinniPlatform.PrintView.Tests.Contract
         }
 
         [Test]
-        [Ignore("Manual")]
+//        [Ignore("Manual")]
         [TestCase(PrintViewFileFormat.Pdf)]
-        [TestCase(PrintViewFileFormat.Html)]
+//        [TestCase(PrintViewFileFormat.Html)]
         public async Task ShouldBuildFileAndThenOpenIt(PrintViewFileFormat fileFormat)
         {
             // Given
