@@ -174,7 +174,7 @@ namespace InfinniPlatform.PrintView.Factories.Block
 
             var rowIndex = 0;
             var columnCount = table.Columns.Count;
-            var skippedCells = new List<int>();
+            var ignoredCells = new List<CellCoordinate>();
 
             foreach (var rowTemplate in rowTemplates)
             {
@@ -193,16 +193,16 @@ namespace InfinniPlatform.PrintView.Factories.Block
 
                 for (var columnIndex = 0; columnIndex < columnCount; ++columnIndex)
                 {
-                    var cellOffset = GetCellOffset(columnCount, rowIndex, columnIndex);
+                    var cellCoordinate = new CellCoordinate(rowIndex, columnIndex);
 
                     // Если ячейку не нужно отображать (из-за настроек RowSpan или ColumnSpan)
-                    if (!skippedCells.Contains(cellOffset))
+                    if (!ignoredCells.Contains(cellCoordinate))
                     {
                         var cellTemplate = rowTemplate.Cells?[columnIndex];
                         var cell = CreateCell(context, table, cellTemplate, columnIndex);
                         staticRow.Cells.Add(cell);
 
-                        AddSkippedCells(skippedCells, columnCount, rowIndex, columnIndex, cellTemplate);
+                        AddIgnoredCells(ignoredCells, cellCoordinate, cellTemplate);
                     }
                 }
 
@@ -301,36 +301,23 @@ namespace InfinniPlatform.PrintView.Factories.Block
             return cell;
         }
 
-        private static void AddSkippedCells(ICollection<int> skippedCells, int columnCount, int rowIndex, int columnIndex, PrintTableCell cellTemplate)
+        private static void AddIgnoredCells(ICollection<CellCoordinate> ignoredCells, CellCoordinate currentCellCoordinate, PrintTableCell cellTemplate)
         {
-            if (cellTemplate != null)
+            if (cellTemplate.RowSpan != null)
             {
-                var rowSpan = cellTemplate.RowSpan;
-                var columnSpan = cellTemplate.ColumnSpan;
-
-                if (rowSpan > 1 || columnSpan > 1)
+                for (var i = 1; i < cellTemplate.RowSpan; i++)
                 {
-                    var cellOffset = GetCellOffset(columnCount, rowIndex, columnIndex);
-
-                    for (var r = rowIndex; (r < rowIndex + rowSpan); ++r)
-                    {
-                        for (var c = columnIndex; (c < columnIndex + columnSpan) && (c < columnCount); ++c)
-                        {
-                            var skipCellOffset = GetCellOffset(columnCount, r, c);
-
-                            if (skipCellOffset != cellOffset)
-                            {
-                                skippedCells.Add(skipCellOffset);
-                            }
-                        }
-                    }
+                    ignoredCells.Add(new CellCoordinate(currentCellCoordinate.Row + i, currentCellCoordinate.Column));
                 }
             }
-        }
 
-        private static int GetCellOffset(int columnCount, int rowIndex, int columnIndex)
-        {
-            return columnCount * rowIndex + columnIndex;
+            if (cellTemplate.ColumnSpan != null)
+            {
+                for (var i = 1; i < cellTemplate.ColumnSpan; i++)
+                {
+                    ignoredCells.Add(new CellCoordinate(currentCellCoordinate.Row, currentCellCoordinate.Column + i));
+                }
+            }
         }
 
         private static bool HasCellTemplate(IEnumerable<PrintTableColumn> columns)

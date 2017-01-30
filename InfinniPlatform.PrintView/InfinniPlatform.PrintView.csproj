@@ -143,6 +143,7 @@
     <Compile Include="Expressions\Parser\ExpressionExecutor.cs" />
     <Compile Include="Expressions\Parser\ExpressionSyntaxVisitor.cs" />
     <Compile Include="Expressions\Parser\ParserHelpers.cs" />
+    <Compile Include="Factories\Block\CellCoordinate.cs" />
     <Compile Include="Factories\Block\PrintTableFactory.cs" />
     <Compile Include="Factories\Block\PrintListFactory.cs" />
     <Compile Include="Factories\Block\PrintParagraphFactory.cs" />
