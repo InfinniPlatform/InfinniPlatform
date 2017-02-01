@@ -30,11 +30,11 @@ namespace InfinniPlatform.ServiceHost
 
         private readonly string _assemblyDirectory;
 
-        private readonly ConcurrentDictionary<AssemblyName, Assembly> _assemblyResolutions
-            = new ConcurrentDictionary<AssemblyName, Assembly>(AssemblyNameComparer.Default);
+        private readonly ConcurrentDictionary<AssemblyName, Lazy<Assembly>> _assemblyResolutions
+            = new ConcurrentDictionary<AssemblyName, Lazy<Assembly>>(AssemblyNameComparer.Default);
 
-        private readonly ConcurrentDictionary<string, SortedDictionary<AssemblyName, Assembly>> _loadedAssemblies
-            = new ConcurrentDictionary<string, SortedDictionary<AssemblyName, Assembly>>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, SortedDictionary<AssemblyName, Lazy<Assembly>>> _loadedAssemblies
+            = new ConcurrentDictionary<string, SortedDictionary<AssemblyName, Lazy<Assembly>>>(StringComparer.OrdinalIgnoreCase);
 
 
         /// <summary>
@@ -49,61 +49,62 @@ namespace InfinniPlatform.ServiceHost
                 throw new ArgumentNullException(nameof(assemblyName));
             }
 
-            Assembly result;
+            Lazy<Assembly> result;
 
-            // Если сборка с указанным именем уже разрешена.
+            // Если сборка с указанным именем уже разрешена
             if (_assemblyResolutions.TryGetValue(assemblyName, out result))
             {
-                return result;
+                return result.Value;
             }
 
-            SortedDictionary<AssemblyName, Assembly> assemblies;
+            SortedDictionary<AssemblyName, Lazy<Assembly>> assemblies;
 
-            // Если сборки с указанным именем еще не загружены.
+            // Если сборки с указанным именем еще не загружены
             if (!_loadedAssemblies.TryGetValue(assemblyName.Name, out assemblies))
             {
-                assemblies = new SortedDictionary<AssemblyName, Assembly>(AssemblyNameComparer.Default);
+                assemblies = new SortedDictionary<AssemblyName, Lazy<Assembly>>(AssemblyNameComparer.Default);
                 assemblies = _loadedAssemblies.GetOrAdd(assemblyName.Name, assemblies);
 
                 try
                 {
-                    // Поиск всех файлов с указанным именем сборки.
+                    // Поиск всех файлов с указанным именем сборки
                     var assemblyFiles = Directory.EnumerateFiles(_assemblyDirectory, assemblyName.Name + ".dll", SearchOption.AllDirectories);
 
                     foreach (var assemblyFile in assemblyFiles)
                     {
                         try
                         {
-                            // Попытка загрузки сборки из найденного файла.
-                            var assembly = Assembly.LoadFile(Path.GetFullPath(assemblyFile));
+                            // Попытка загрузки сборки из найденного файла
+                            var assemblyFullPath = Path.GetFullPath(assemblyFile);
+                            var assembly = Assembly.ReflectionOnlyLoadFrom(assemblyFullPath);
 
                             var name = assembly.GetName();
 
-                            // При совпадении имен сборки, наибольший приоритет у сборки в корне проекта.
+                            // При совпадении имен сборки, наибольший приоритет у сборки в корне проекта. 
                             if (!assemblies.ContainsKey(name))
                             {
-                                assemblies.Add(name, assembly);
+                                assemblies.Add(name, new Lazy<Assembly>(() => Assembly.LoadFile(assemblyFullPath)));
                             }
                         }
                         catch
                         {
-                            // Игнорирование исключений загрузки сборки.
+                            // Игнорирование исключений загрузки сборки
                         }
                     }
                 }
                 catch
                 {
-                    // Игнорирование исключений файловой системы.
+                    // Игнорирование исключений файловой системы
                 }
             }
 
-            // Поиск совместимой сборки с указанным именем.
+            // Поиск совместимой сборки с указанным именем
             var lowestAssembly = assemblies.FirstOrDefault(i => AssemblyNameComparer.Default.Compare(i.Key, assemblyName) >= 0);
 
-            // Добавление сборки в список разрешенных.
+            // Добавление сборки в список разрешенных
             result = _assemblyResolutions.GetOrAdd(assemblyName, lowestAssembly.Value);
 
-            return result;
+            return result.Value;
         }
 
 
