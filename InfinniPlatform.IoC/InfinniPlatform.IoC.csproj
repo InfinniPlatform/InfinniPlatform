@@ -62,6 +62,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyNameComparer.cs" />
     <Compile Include="AutofacActivateInstanceModule.cs" />
     <Compile Include="AutofacContainerBuilder.cs" />
     <Compile Include="AutofacContainerModule.cs" />
@@ -71,8 +72,6 @@
     <Compile Include="BaseDirectoryContainerModuleScanner.cs" />
     <Compile Include="Http\AutofacHttpContainerModule.cs" />
     <Compile Include="Http\AutofacHttpContainerResolverFactory.cs" />
-    <Compile Include="ContainerModuleInfo.cs" />
-    <Compile Include="ContainerModuleLocation.cs" />
     <Compile Include="Http\AutofacHttpConstants.cs" />
     <Compile Include="Http\AutofacRequestLifetimeScopeOwinMiddleware.cs" />
     <Compile Include="Http\AutofacWrapperOwinMiddleware.cs" />

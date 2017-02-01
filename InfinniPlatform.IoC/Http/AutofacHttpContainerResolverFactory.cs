@@ -18,9 +18,9 @@ namespace InfinniPlatform.IoC.Http
             // Поиск всех доступных модулей
             var containerModules = containerModuleScanner.FindContainerModules();
 
-            foreach (var moduleInfo in containerModules)
+            foreach (var moduleType in containerModules)
             {
-                var containerModule = CreateContainerModule(moduleInfo);
+                var containerModule = CreateContainerModule(moduleType);
 
                 // Регистрация очередного модуля
                 autofacContainerBuilder.RegisterModule(new AutofacContainerModule(containerModule));
@@ -50,13 +50,10 @@ namespace InfinniPlatform.IoC.Http
         }
 
 
-        private static IContainerModule CreateContainerModule(ContainerModuleInfo moduleInfo)
+        private static IContainerModule CreateContainerModule(Type moduleType)
         {
             try
             {
-                // Загрузка типа модуля
-                var moduleType = moduleInfo.Type.Value;
-
                 // Создание экземпляра модуля
                 var moduleInstance = Activator.CreateInstance(moduleType);
 
@@ -65,8 +62,8 @@ namespace InfinniPlatform.IoC.Http
             catch (Exception error)
             {
                 var createModuleException = new InvalidOperationException(Resources.CannotCreateContainerModule, error);
-                createModuleException.Data.Add("AssemblyPath", moduleInfo.Location.AssemblyPath);
-                createModuleException.Data.Add("TypeFullName", moduleInfo.Location.TypeFullName);
+                createModuleException.Data.Add("AssemblyPath", moduleType.Assembly.Location);
+                createModuleException.Data.Add("TypeFullName", moduleType.FullName);
                 throw createModuleException;
             }
         }
