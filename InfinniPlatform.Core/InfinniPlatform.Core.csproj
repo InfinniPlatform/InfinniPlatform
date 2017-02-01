@@ -116,6 +116,7 @@
     <Compile Include="Http\Middlewares\ErrorHandlingOwinMiddleware.cs" />
     <Compile Include="Http\Middlewares\OwinContextProvider.cs" />
     <Compile Include="Http\StaticContentSettings.cs" />
+    <Compile Include="IoC\AssemblyNameComparer.cs" />
     <Compile Include="IoC\AutofacActivateInstanceModule.cs" />
     <Compile Include="IoC\AutofacContainerBuilder.cs" />
     <Compile Include="IoC\AutofacContainerModule.cs" />
@@ -123,8 +124,6 @@
     <Compile Include="IoC\AutofacContainerResolver.cs" />
     <Compile Include="IoC\AutofacCreateInstanceModule.cs" />
     <Compile Include="IoC\BaseDirectoryContainerModuleScanner.cs" />
-    <Compile Include="IoC\ContainerModuleInfo.cs" />
-    <Compile Include="IoC\ContainerModuleLocation.cs" />
     <Compile Include="IoC\Http\AutofacHttpConstants.cs" />
     <Compile Include="IoC\Http\AutofacHttpContainerModule.cs" />
     <Compile Include="IoC\Http\AutofacHttpContainerResolverFactory.cs" />
