@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "InfinniPlatform.Core": { "target": "project" },
-    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
     "System.Runtime.Loader": "4.3.0"
   },
 
