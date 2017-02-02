@@ -49,14 +49,14 @@ namespace InfinniPlatform.Core.IoC
                 {
                     // Попытка загрузки сборки из найденного файла
                     var assemblyFullPath = Path.GetFullPath(assemblyFile);
-                    var assembly = Assembly.ReflectionOnlyLoadFrom(assemblyFullPath);
+                    var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
 
                     var name = assembly.GetName();
 
                     // При совпадении имен сборки, наибольший приоритет у сборки в корне проекта
                     if (!assemblies.ContainsKey(name))
                     {
-                        var realAssembly = Assembly.LoadFile(assemblyFullPath);
+                        var realAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
 
                         assemblies.Add(name, name);
 
