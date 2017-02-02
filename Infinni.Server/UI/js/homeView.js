@@ -64,7 +64,8 @@ function GetNodeLog(context, args, name) {
  * @param {any} name Имя сценария
  */
 function GetLog(context, args, name) {
-    var app = context.dataSources.AppsDataSource.getSelectedItem();
+    var app = args.source.getTag();
+    
     if (app === null || app === undefined) {
         return;
     }

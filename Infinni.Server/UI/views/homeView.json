@@ -738,7 +738,7 @@
                                     "Name": "FullName",
                                     "Value": {
                                       "Source": "AppsDataSource",
-                                      "Property": "$.FullName"
+                                      "Property": "#.FullName"
                                     }
                                   }]
                                 }
@@ -768,6 +768,10 @@
                           "Items": [{
                             "Button": {
                               "Name": "EventsLogTabButton",
+                              "Tag":{
+                                "Source":"AppsDataSource",
+                                "Property":"#"
+                              },
                               "OnClick": "{ GetLog(context, args, 'eventsTab'); }",
                               "ContentTemplate": {
                                 "StackPanel": {
@@ -789,6 +793,10 @@
                           }, {
                             "Button": {
                               "Name": "EventsLogFileButton",
+                              "Tag":{
+                                "Source":"AppsDataSource",
+                                "Property":"#"
+                              },
                               "OnClick": "{ GetLog(context, args, 'eventsFile'); }",
                               "ContentTemplate": {
                                 "StackPanel": {
@@ -815,6 +823,10 @@
                           "Items": [{
                             "Button": {
                               "Name": "PerformanceLogTabButton",
+                              "Tag":{
+                                "Source":"AppsDataSource",
+                                "Property":"#"
+                              },
                               "OnClick": "{ GetLog(context, args, 'perfTab'); }",
                               "ContentTemplate": {
                                 "StackPanel": {
@@ -836,6 +848,10 @@
                           }, {
                             "Button": {
                               "Name": "PerformanceLogFileButton",
+                              "Tag":{
+                                "Source":"AppsDataSource",
+                                "Property":"#"
+                              },
                               "OnClick": "{ GetLog(context, args, 'perfFile'); }",
                               "ContentTemplate": {
                                 "StackPanel": {
@@ -859,6 +875,10 @@
                       }, {
                         "Button": {
                           "ToolTip": "Uninstall app",
+                          "Tag":{
+                                "Source":"AppsDataSource",
+                                "Property":"#"
+                              },
                           "Action": {
                             "ServerAction": {
                               "Path": "/server/uninstall?Address=<%agentAddress%>&Port=<%agentPort%>",
