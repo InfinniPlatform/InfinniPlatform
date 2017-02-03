@@ -116,7 +116,7 @@ namespace InfinniPlatform.Scheduler.Contract
             }
             else if (anyDayOfMonth)
             {
-                dayOfMonth = CronConstants.AllValues;
+                dayOfMonth = CronConstants.NoSpecificValue;
                 dayOfWeek = _dayOfWeek;
             }
             else if (anyDayOfWeek)
