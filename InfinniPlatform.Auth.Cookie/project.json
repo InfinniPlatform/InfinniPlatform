@@ -7,16 +7,15 @@
     "debugType": "portable"
   },
 
-  "dependencies": {
-    "InfinniPlatform.Http": { "target": "project" },
-    "InfinniPlatform.Sdk": { "target": "project" },
-    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
-    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0"
-  },
-
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "InfinniPlatform.Http": { "target": "project" },
+        "InfinniPlatform.Sdk": { "target": "project" },
+        "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
+        "Microsoft.AspNetCore.Http.Abstractions": "1.1.0"
+      }
     }
   },
 

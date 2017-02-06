@@ -7,14 +7,13 @@
     "debugType": "portable"
   },
 
-  "dependencies": {
-    "InfinniPlatform.Http": { "target": "project" },
-    "InfinniPlatform.Sdk": { "target": "project" }
-  },
-
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "InfinniPlatform.Http": { "target": "project" },
+        "InfinniPlatform.Sdk": { "target": "project" }
+      }
     }
   },
 

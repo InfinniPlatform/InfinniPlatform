@@ -7,15 +7,14 @@
     "debugType": "portable"
   },
 
-  "dependencies": {
-    "InfinniPlatform.Sdk": { "target": "project" },
-    "NETStandard.Library": "1.6.1",
-    "RabbitMQ.Client": "4.1.1"
-  },
-
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "InfinniPlatform.Sdk": { "target": "project" },
+        "NETStandard.Library": "1.6.1",
+        "RabbitMQ.Client": "4.1.1"
+      }
     }
   },
 

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.Core.Http.Hosting;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyModel;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -18,7 +19,7 @@ namespace InfinniPlatform.ServiceHost
              */
 
             // Устанавливает для приложения контекст загрузки сборок по умолчанию
-//            InitializeAssemblyLoadContext();
+            //InitializeAssemblyLoadContext();
 
             // Запускает хостинг приложения
             RunServiceHost(args);
@@ -35,8 +36,8 @@ namespace InfinniPlatform.ServiceHost
             try
             {
                 // Поиск компонента для хостинга приложения
-                //var serviceHost = CreateComponent<dynamic>("InfinniPlatformServiceHost");
-                var serviceHost = new Core.ServiceHost.ServiceHost();
+                var serviceHost = CreateComponent("InfinniPlatformServiceHost");
+                //var serviceHost = new Core.ServiceHost.ServiceHost();
 
                 // Запуск хостинга приложения
 
@@ -71,13 +72,106 @@ namespace InfinniPlatform.ServiceHost
             }
         }
 
-//        private static T CreateComponent<T>(string contractName) where T : class
+        private static dynamic CreateComponent(string contractName)
+        {
+            var depsReader = new DependencyContextJsonReader();
 
-//        {
-//            var aggregateCatalog = new DirectoryAssemblyCatalog();
-//            var compositionContainer = new CompositionContainer(aggregateCatalog);
-//            var lazyInstance = compositionContainer.GetExport<T>(contractName);
-//            return lazyInstance?.Value;
-//        }
+            var dlls = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll", SearchOption.AllDirectories);
+            var deps = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.deps.json", SearchOption.AllDirectories)
+                                .ToDictionary(dep => Path.GetFileNameWithoutExtension(dep).Replace(".deps", string.Empty), dep => depsReader.Read(new FileStream(dep, FileMode.Open)));
+
+            Log.Clear();
+            //Log.Add($"After merge: RuntimeLibraries: {DependencyContext.Default.RuntimeLibraries.Count}, CompileLibraries: {DependencyContext.Default.CompileLibraries.Count}, RuntimeGraph: {DependencyContext.Default.RuntimeGraph.Count}");
+
+            var commonDependencyContext = DependencyContext.Default;
+
+            foreach (var dep in deps)
+            {
+                //Log.Add($"{dep.Key}: RuntimeLibraries: {dep.Value.RuntimeLibraries.Count}, CompileLibraries: {dep.Value.CompileLibraries.Count}, RuntimeGraph: {dep.Value.RuntimeGraph.Count}");
+
+                commonDependencyContext = commonDependencyContext.Merge(dep.Value);
+            }
+
+            //Log.Add($"After merge: RuntimeLibraries: {commonDependencyContext.RuntimeLibraries.Count}, CompileLibraries: {commonDependencyContext.CompileLibraries.Count}, RuntimeGraph: {commonDependencyContext.RuntimeGraph.Count}");
+
+            Log.Add(commonDependencyContext.RuntimeLibraries.Count(s => !string.IsNullOrEmpty(s.Path)));
+            Log.Add(commonDependencyContext.CompileLibraries.Count(s => !string.IsNullOrEmpty(s.Path)));
+
+            var assemblyLoadContext = new CustomAssemblyLoadContext(commonDependencyContext);
+
+            foreach (var dll in dlls)
+            {
+                var assembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
+
+                try
+                {
+                    Log.Add(dll);
+                    var types = assembly.GetTypes();
+                    Log.Add(types.Length);
+                }
+                catch (ReflectionTypeLoadException e)
+                {
+                    foreach (var loaderException in e.LoaderExceptions)
+                    {
+                        if (loaderException is FileNotFoundException)
+                        {
+                            Log.Add(((FileNotFoundException) loaderException).FileName);
+                        }
+                        else
+                        {
+                            Log.Add(loaderException.Message);
+                        }
+                    }
+                }
+            }
+
+            return depsReader;
+        }
+
+        public class CustomAssemblyLoadContext : AssemblyLoadContext
+        {
+            private readonly DependencyContext _dependencyContext;
+
+
+            public CustomAssemblyLoadContext(DependencyContext dependencyContext)
+            {
+                _dependencyContext = dependencyContext;
+            }
+
+            // Not exactly sure about this
+            protected override Assembly Load(AssemblyName assemblyName)
+            {
+                var runtimeLib = _dependencyContext.RuntimeLibraries.FirstOrDefault(d => d.Name.Contains(assemblyName.Name));
+
+                if (runtimeLib == null)
+                {
+                    return null;
+                }
+
+                try
+                {
+                    AssemblyName name;
+
+                    if (runtimeLib.Name.StartsWith("Infinni"))
+                    {
+                        var path = $"{runtimeLib.Name}.dll";
+                        var exists = File.Exists(path);
+                        var assembly = LoadFromAssemblyPath(path);
+                        name = GetAssemblyName(path);
+                    }
+                    else
+                    {
+                        name = GetAssemblyName(runtimeLib.Path);
+                    }
+
+                    return Assembly.Load(name);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+        }
     }
 }

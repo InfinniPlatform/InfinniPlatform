@@ -7,15 +7,14 @@
     "debugType": "portable"
   },
 
-  "dependencies": {
-    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
-    "Microsoft.AspNetCore.Owin": "1.1.0",
-    "NETStandard.Library": "1.6.1"
-  },
-
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+        "Microsoft.AspNetCore.Owin": "1.1.0",
+        "NETStandard.Library": "1.6.1"
+      }
     }
   },
 

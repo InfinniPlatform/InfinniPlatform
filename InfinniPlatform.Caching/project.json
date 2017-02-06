@@ -7,16 +7,16 @@
     "debugType": "portable"
   },
 
-  "dependencies": {
-    "InfinniPlatform.MessageQueue": { "target": "project" },
-    "InfinniPlatform.Sdk": { "target": "project" },
-    "Microsoft.Extensions.Caching.Memory": "1.1.0",
-    "NETStandard.Library": "1.6.1",
-    "StackExchange.Redis": "1.2.0"
-  },
-
   "frameworks": {
-    "netstandard1.6": {}
+    "netstandard1.6": {
+      "dependencies": {
+        "InfinniPlatform.MessageQueue": { "target": "project" },
+        "InfinniPlatform.Sdk": { "target": "project" },
+        "Microsoft.Extensions.Caching.Memory": "1.1.0",
+        "NETStandard.Library": "1.6.1",
+        "StackExchange.Redis": "1.2.0"
+      }
+    }
   },
 
   "scripts": {

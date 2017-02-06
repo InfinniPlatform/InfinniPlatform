@@ -7,17 +7,16 @@
     "debugType": "portable"
   },
 
-  "dependencies": {
-    "InfinniPlatform.Http": { "target": "project" },
-    "InfinniPlatform.Sdk": { "target": "project" },
-    "Microsoft.AspNetCore.Authentication.Facebook": "1.1.0",
-    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
-    "NETStandard.Library": "1.6.1"
-  },
-
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "InfinniPlatform.Http": { "target": "project" },
+        "InfinniPlatform.Sdk": { "target": "project" },
+        "Microsoft.AspNetCore.Authentication.Facebook": "1.1.0",
+        "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+        "NETStandard.Library": "1.6.1"
+      }
     }
   },
 
