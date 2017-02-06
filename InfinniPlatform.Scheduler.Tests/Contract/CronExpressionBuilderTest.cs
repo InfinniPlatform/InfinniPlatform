@@ -67,13 +67,13 @@ namespace InfinniPlatform.Scheduler.Tests.Contract
                             .Seconds(i => i.Each(0))
                             .Month(i => i.Each(Month.March))
                             .DayOfWeek(i => i.Each(DayOfWeek.Wednesday)),
-                      "0 10,44 14 * 3 4"
+                      "0 10,44 14 ? 3 4"
                   },
                   // Каждый день с понедельника по пятницу в 10:15
                   {
                       b => b.AtHourAndMinuteDaily(10, 15)
                             .DayOfWeek(i => i.EachOfRange(DayOfWeek.Monday, DayOfWeek.Friday)),
-                      "0 15 10 * * 2-6"
+                      "0 15 10 ? * 2-6"
                   },
                   // 15 числа каждого месяца в 10:15
                   {
@@ -97,20 +97,20 @@ namespace InfinniPlatform.Scheduler.Tests.Contract
                   {
                       b => b.AtHourAndMinuteDaily(10, 15)
                             .DayOfWeek(i => i.EachLast(DayOfWeek.Friday)),
-                      "0 15 10 * * 6L"
+                      "0 15 10 ? * 6L"
                   },
                   // Каждую последнюю пятницу месяца в 10:15 с 2016 по 2020 год
                   {
                       b => b.AtHourAndMinuteDaily(10, 15)
                             .DayOfWeek(i => i.EachLast(DayOfWeek.Friday))
                             .Year(i => i.EachOfRange(2016, 2020)),
-                      "0 15 10 * * 6L 2016-2020"
+                      "0 15 10 ? * 6L 2016-2020"
                   },
                   // Каждую третью пятницу месяца в 10:15
                   {
                       b => b.AtHourAndMinuteDaily(10, 15)
                             .DayOfWeek(i => i.EachNth(DayOfWeek.Friday, 3)),
-                      "0 15 10 * * 6#3"
+                      "0 15 10 ? * 6#3"
                   },
                   // Через каждых 5 дней с 1 дня месяца в 12:00
                   {
@@ -133,12 +133,17 @@ namespace InfinniPlatform.Scheduler.Tests.Contract
                   // Каждый понедельник, среду и пятницу в 10:15
                   {
                       b => b.AtHourAndMinuteOnGivenDaysOfWeek(10, 15, DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday),
-                      "0 15 10 * * 2,4,6"
+                      "0 15 10 ? * 2,4,6"
                   },
                   // 1, 10 и 15 числа в 10:15
                   {
                       b => b.AtHourAndMinuteMonthly(10, 15, 1, 10, 15),
                       "0 15 10 1,10,15 * ?"
+                  },
+                  // Каждый понедельник в 00:00
+                  {
+                      b => b.AtHourAndMinuteDaily(0, 0).DayOfWeek(d => d.Each(DayOfWeek.Monday)),
+                      "0 0 0 ? * 2"
                   }
               };
 
