@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>InfinniPlatform.ServiceHost</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>InfinniPlatform.ServiceHost</PackageId>
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <OutputPath>..\Assemblies\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="AppCommon.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
@@ -25,6 +24,6 @@
     </None>
   </ItemGroup>
   <Target Name="PostcompileScript" AfterTargets="Build">
-    <Exec Command="..\copy.bat InfinniPlatform.ServiceHost netcoreapp1.0" />
+    <Exec Command="..\copy.bat InfinniPlatform.ServiceHost netcoreapp1.1" />
   </Target>
 </Project>
