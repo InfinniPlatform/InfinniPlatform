@@ -27,16 +27,12 @@ namespace InfinniPlatform.Caching.Memory
                 throw new ArgumentNullException(nameof(key));
             }
 
-            object value
-                ;
-            return _cache.TryGetValue(key,out value);
+            return _cache.TryGetValue(key, out object value);
         }
 
         public string Get(string key)
         {
-            string value;
-
-            TryGet(key, out value);
+            TryGet(key, out string value);
 
             return value;
         }
@@ -81,7 +77,7 @@ namespace InfinniPlatform.Caching.Memory
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

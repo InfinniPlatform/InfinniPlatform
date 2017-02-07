@@ -71,7 +71,7 @@ namespace InfinniPlatform.Core.IoC
                         }
                     }
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     // ReflectionTypeLoadException
                 }

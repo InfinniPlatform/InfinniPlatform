@@ -1,16 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26127.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.xproj", "{1996F172-BE5B-4999-A472-81C1E470D49B}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Core", "InfinniPlatform.Core\InfinniPlatform.Core.xproj", "{168A0089-AE82-4F8D-A124-DC31ED6561D0}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Sdk", "InfinniPlatform.Sdk\InfinniPlatform.Sdk.xproj", "{4B6B6B09-AF21-4746-B3D9-4FF3921BD9A0}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Http", "InfinniPlatform.Http\InfinniPlatform.Http.xproj", "{1D29338A-E798-4B18-8B28-5A8999AA2BC0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{5ABA6C6E-8A75-4A08-8F2F-FE5EC5DEF04B}"
@@ -23,23 +15,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4FB7CC46-2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{1808887E-7571-4676-A658-73124B206D83}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Auth.Adfs", "InfinniPlatform.Auth.Adfs\InfinniPlatform.Auth.Adfs.xproj", "{036553C0-ED83-449F-9F02-C8283AE35966}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.csproj", "{1996F172-BE5B-4999-A472-81C1E470D49B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Auth.Cookie", "InfinniPlatform.Auth.Cookie\InfinniPlatform.Auth.Cookie.xproj", "{5374C9BC-0B4B-40D3-AD2C-B2590C5F18A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Core", "InfinniPlatform.Core\InfinniPlatform.Core.csproj", "{168A0089-AE82-4F8D-A124-DC31ED6561D0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Auth.Facebook", "InfinniPlatform.Auth.Facebook\InfinniPlatform.Auth.Facebook.xproj", "{4A4C9FD7-4B81-4C29-B324-F7331FBC4A99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Sdk", "InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj", "{4B6B6B09-AF21-4746-B3D9-4FF3921BD9A0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Auth.Google", "InfinniPlatform.Auth.Google\InfinniPlatform.Auth.Google.xproj", "{1C9F57BF-DB07-442F-BD13-6624DDECA9BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Http", "InfinniPlatform.Http\InfinniPlatform.Http.csproj", "{1D29338A-E798-4B18-8B28-5A8999AA2BC0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Auth.Internal", "InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.xproj", "{B276F8B8-0D27-4637-80B8-4F1AAA7CF5BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.Adfs", "InfinniPlatform.Auth.Adfs\InfinniPlatform.Auth.Adfs.csproj", "{036553C0-ED83-449F-9F02-C8283AE35966}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.MessageQueue", "InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.xproj", "{7EBB54A0-69CB-49FC-A340-8527502F9C67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.Cookie", "InfinniPlatform.Auth.Cookie\InfinniPlatform.Auth.Cookie.csproj", "{5374C9BC-0B4B-40D3-AD2C-B2590C5F18A7}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.DocumentStorage", "InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.xproj", "{236BCAC7-A46A-4A40-B27B-BA48A13D8F79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.Facebook", "InfinniPlatform.Auth.Facebook\InfinniPlatform.Auth.Facebook.csproj", "{4A4C9FD7-4B81-4C29-B324-F7331FBC4A99}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.Caching", "InfinniPlatform.Caching\InfinniPlatform.Caching.xproj", "{2DA58625-0190-427D-A84E-3958CADDBA23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.Google", "InfinniPlatform.Auth.Google\InfinniPlatform.Auth.Google.csproj", "{1C9F57BF-DB07-442F-BD13-6624DDECA9BE}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InfinniPlatform.BlobStorage", "InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.xproj", "{C2C8D1E3-45BE-40DB-8053-E6A0E8BA66CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.Internal", "InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.csproj", "{B276F8B8-0D27-4637-80B8-4F1AAA7CF5BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueue", "InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj", "{7EBB54A0-69CB-49FC-A340-8527502F9C67}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.DocumentStorage", "InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj", "{236BCAC7-A46A-4A40-B27B-BA48A13D8F79}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Caching", "InfinniPlatform.Caching\InfinniPlatform.Caching.csproj", "{2DA58625-0190-427D-A84E-3958CADDBA23}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage", "InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj", "{C2C8D1E3-45BE-40DB-8053-E6A0E8BA66CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,10 +131,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{5ABA6C6E-8A75-4A08-8F2F-FE5EC5DEF04B} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{168A0089-AE82-4F8D-A124-DC31ED6561D0} = {4FB7CC46-2521-4E3A-A968-EA7E685BA3A3}
 		{4B6B6B09-AF21-4746-B3D9-4FF3921BD9A0} = {4FB7CC46-2521-4E3A-A968-EA7E685BA3A3}
 		{1D29338A-E798-4B18-8B28-5A8999AA2BC0} = {4FB7CC46-2521-4E3A-A968-EA7E685BA3A3}
-		{5ABA6C6E-8A75-4A08-8F2F-FE5EC5DEF04B} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{036553C0-ED83-449F-9F02-C8283AE35966} = {1808887E-7571-4676-A658-73124B206D83}
 		{5374C9BC-0B4B-40D3-AD2C-B2590C5F18A7} = {1808887E-7571-4676-A658-73124B206D83}
 		{4A4C9FD7-4B81-4C29-B324-F7331FBC4A99} = {1808887E-7571-4676-A658-73124B206D83}
