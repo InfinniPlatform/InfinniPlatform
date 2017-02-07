@@ -54,7 +54,7 @@ namespace InfinniPlatform.ServiceHost
             // Если сборка с указанным именем уже разрешена
             if (_assemblyResolutions.TryGetValue(assemblyName, out result))
             {
-                return result.Value;
+                return result?.Value;
             }
 
             SortedDictionary<AssemblyName, Lazy<Assembly>> assemblies;
@@ -104,7 +104,7 @@ namespace InfinniPlatform.ServiceHost
             // Добавление сборки в список разрешенных
             result = _assemblyResolutions.GetOrAdd(assemblyName, lowestAssembly.Value);
 
-            return result.Value;
+            return result?.Value;
         }
 
 
