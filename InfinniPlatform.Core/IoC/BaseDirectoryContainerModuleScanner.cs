@@ -5,25 +5,25 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using InfinniPlatform.Sdk.IoC;
+using AssemblyExtensions = System.Reflection.Metadata.AssemblyExtensions;
 
 namespace InfinniPlatform.Core.IoC
 {
     /// <summary>
-    /// Поисковик модулей регистрации зависимостей <see cref="IContainerModule"/> в базовом каталоге приложения.
+    ///     Поисковик модулей регистрации зависимостей <see cref="IContainerModule" /> в базовом каталоге приложения.
     /// </summary>
     internal sealed class BaseDirectoryContainerModuleScanner
     {
+        private readonly Lazy<IEnumerable<Type>> _containerModules;
+
         public BaseDirectoryContainerModuleScanner()
         {
             _containerModules = new Lazy<IEnumerable<Type>>(LoadContainerModules);
         }
 
 
-        private readonly Lazy<IEnumerable<Type>> _containerModules;
-
-
         /// <summary>
-        /// Возвращает список найденных модулей регистрации зависимостей.
+        ///     Возвращает список найденных модулей регистрации зависимостей.
         /// </summary>
         public IEnumerable<Type> FindContainerModules()
         {
@@ -56,11 +56,11 @@ namespace InfinniPlatform.Core.IoC
                     // При совпадении имен сборки, наибольший приоритет у сборки в корне проекта
                     if (!assemblies.ContainsKey(name))
                     {
-                        var realAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
+                        //var realAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
 
                         assemblies.Add(name, name);
 
-                        var types = realAssembly.GetTypes();
+                        var types = assembly.GetTypes();
 
                         foreach (var type in types)
                         {
@@ -71,8 +71,13 @@ namespace InfinniPlatform.Core.IoC
                         }
                     }
                 }
-                catch(Exception)
+                catch (ReflectionTypeLoadException e)
                 {
+                    Console.WriteLine($"{assemblyFile}.");
+                    foreach (var loaderException in e.LoaderExceptions)
+                    {
+                        Console.WriteLine($"{loaderException.Message}.");
+                    }
                     // ReflectionTypeLoadException
                 }
             }

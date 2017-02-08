@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyModel;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -19,25 +17,24 @@ namespace InfinniPlatform.ServiceHost
              */
 
             // Устанавливает для приложения контекст загрузки сборок по умолчанию
-            //InitializeAssemblyLoadContext();
+            var assemblyLoadContext = InitializeAssemblyLoadContext();
 
             // Запускает хостинг приложения
-            RunServiceHost(args);
+            RunServiceHost(args, assemblyLoadContext);
         }
 
-//        private static void InitializeAssemblyLoadContext()
-//        {
-//            var context = new DirectoryAssemblyLoadContext();
-//            DirectoryAssemblyLoadContext.InitializeDefaultContext(context);
-//        }
+        private static AssemblyLoadContext InitializeAssemblyLoadContext()
+        {
+            var context = new DirectoryAssemblyLoadContext();
+            return context;
+        }
 
-        private static void RunServiceHost(string[] args)
+        private static void RunServiceHost(string[] args, AssemblyLoadContext assemblyLoadContext)
         {
             try
             {
                 // Поиск компонента для хостинга приложения
-                var serviceHost = CreateComponent("InfinniPlatformServiceHost");
-                //var serviceHost = new Core.ServiceHost.ServiceHost();
+                var serviceHost = CreateComponent("InfinniPlatform.Core", assemblyLoadContext);
 
                 // Запуск хостинга приложения
 
@@ -72,106 +69,25 @@ namespace InfinniPlatform.ServiceHost
             }
         }
 
-        private static dynamic CreateComponent(string contractName)
+        private static dynamic CreateComponent(string assemblyName, AssemblyLoadContext assemblyLoadContext)
         {
-            var depsReader = new DependencyContextJsonReader();
+            var assemblyPath = Directory.EnumerateFiles(Directory.GetCurrentDirectory(), $"{assemblyName}.dll", SearchOption.AllDirectories).FirstOrDefault();
 
-            var dlls = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll", SearchOption.AllDirectories);
-            var deps = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.deps.json", SearchOption.AllDirectories)
-                                .ToDictionary(dep => Path.GetFileNameWithoutExtension(dep).Replace(".deps", string.Empty), dep => depsReader.Read(new FileStream(dep, FileMode.Open)));
-
-            Log.Clear();
-            //Log.Add($"After merge: RuntimeLibraries: {DependencyContext.Default.RuntimeLibraries.Count}, CompileLibraries: {DependencyContext.Default.CompileLibraries.Count}, RuntimeGraph: {DependencyContext.Default.RuntimeGraph.Count}");
-
-            var commonDependencyContext = DependencyContext.Default;
-
-            foreach (var dep in deps)
+            try
             {
-                //Log.Add($"{dep.Key}: RuntimeLibraries: {dep.Value.RuntimeLibraries.Count}, CompileLibraries: {dep.Value.CompileLibraries.Count}, RuntimeGraph: {dep.Value.RuntimeGraph.Count}");
-
-                commonDependencyContext = commonDependencyContext.Merge(dep.Value);
-            }
-
-            //Log.Add($"After merge: RuntimeLibraries: {commonDependencyContext.RuntimeLibraries.Count}, CompileLibraries: {commonDependencyContext.CompileLibraries.Count}, RuntimeGraph: {commonDependencyContext.RuntimeGraph.Count}");
-
-            Log.Add(commonDependencyContext.RuntimeLibraries.Count(s => !string.IsNullOrEmpty(s.Path)));
-            Log.Add(commonDependencyContext.CompileLibraries.Count(s => !string.IsNullOrEmpty(s.Path)));
-
-            var assemblyLoadContext = new CustomAssemblyLoadContext(commonDependencyContext);
-
-            foreach (var dll in dlls)
-            {
-                var assembly = assemblyLoadContext.LoadFromAssemblyPath(dll);
-
-                try
+                if (assemblyPath != null)
                 {
-                    Log.Add(dll);
-                    var types = assembly.GetTypes();
-                    Log.Add(types.Length);
-                }
-                catch (ReflectionTypeLoadException e)
-                {
-                    foreach (var loaderException in e.LoaderExceptions)
-                    {
-                        if (loaderException is FileNotFoundException)
-                        {
-                            Log.Add(((FileNotFoundException) loaderException).FileName);
-                        }
-                        else
-                        {
-                            Log.Add(loaderException.Message);
-                        }
-                    }
+                    var assembly = assemblyLoadContext.LoadFromAssemblyPath(assemblyPath);
+                    var type = assembly.GetType("InfinniPlatform.Core.ServiceHost.ServiceHost");
+                    return Activator.CreateInstance(type);
                 }
             }
-
-            return depsReader;
-        }
-
-        public class CustomAssemblyLoadContext : AssemblyLoadContext
-        {
-            private readonly DependencyContext _dependencyContext;
-
-
-            public CustomAssemblyLoadContext(DependencyContext dependencyContext)
+            catch (Exception error)
             {
-                _dependencyContext = dependencyContext;
+                Console.WriteLine(error);
             }
 
-            // Not exactly sure about this
-            protected override Assembly Load(AssemblyName assemblyName)
-            {
-                var runtimeLib = _dependencyContext.RuntimeLibraries.FirstOrDefault(d => d.Name.Contains(assemblyName.Name));
-
-                if (runtimeLib == null)
-                {
-                    return null;
-                }
-
-                try
-                {
-                    AssemblyName name;
-
-                    if (runtimeLib.Name.StartsWith("Infinni"))
-                    {
-                        var path = $"{runtimeLib.Name}.dll";
-                        var exists = File.Exists(path);
-                        var assembly = LoadFromAssemblyPath(path);
-                        name = GetAssemblyName(path);
-                    }
-                    else
-                    {
-                        name = GetAssemblyName(runtimeLib.Path);
-                    }
-
-                    return Assembly.Load(name);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            }
+            throw new DllNotFoundException($"{assemblyName}.dll not found.");
         }
     }
 }

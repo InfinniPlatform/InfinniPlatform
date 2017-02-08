@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using Microsoft.Extensions.DependencyModel;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -13,6 +14,8 @@ namespace InfinniPlatform.ServiceHost
     /// </summary>
     public class DirectoryAssemblyLoadContext : AssemblyLoadContext
     {
+        private const string NugetPackagesPath = "C:\\Users\\s.pevnev\\.nuget\\packages";
+
         /// <summary>
         /// Конструктор.
         /// </summary>
@@ -77,7 +80,7 @@ namespace InfinniPlatform.ServiceHost
                         {
                             // Попытка загрузки сборки из найденного файла
                             var assemblyFullPath = Path.GetFullPath(assemblyFile);
-                            var assembly = Assembly.Load(GetAssemblyName(assemblyFullPath));
+                            var assembly = LoadFromAssemblyPath(assemblyFullPath);
 
                             var name = assembly.GetName();
 
