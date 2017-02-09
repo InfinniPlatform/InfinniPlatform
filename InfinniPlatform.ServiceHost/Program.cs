@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +11,10 @@ namespace InfinniPlatform.ServiceHost
 {
     public class Program
     {
+        private const string NugetProbingPath = "C:\\Users\\s.pevnev\\.nuget\\packages";
+        private static readonly MergedDependencyContext MergedDependencyContext = new MergedDependencyContext();
+        private static readonly Lazy<Dictionary<string, string>> LocalAssembliesCache = new Lazy<Dictionary<string, string>>(BuildLocalAssembliesCache);
+
         public static void Main(string[] args)
         {
             /* Вся логика метода Main() находится в отдельных методах, чтобы JIT-компиляция Main()
@@ -17,24 +23,23 @@ namespace InfinniPlatform.ServiceHost
              */
 
             // Устанавливает для приложения контекст загрузки сборок по умолчанию
-            var assemblyLoadContext = InitializeAssemblyLoadContext();
+            InitializeAssemblyLoadContext();
 
             // Запускает хостинг приложения
-            RunServiceHost(args, assemblyLoadContext);
+            RunServiceHost(args);
         }
 
-        private static AssemblyLoadContext InitializeAssemblyLoadContext()
+        private static void InitializeAssemblyLoadContext()
         {
-            var context = new DirectoryAssemblyLoadContext();
-            return context;
+            AssemblyLoadContext.Default.Resolving += DefaultOnResolving;
         }
 
-        private static void RunServiceHost(string[] args, AssemblyLoadContext assemblyLoadContext)
+        private static void RunServiceHost(string[] args)
         {
             try
             {
                 // Поиск компонента для хостинга приложения
-                var serviceHost = CreateComponent("InfinniPlatform.Core", assemblyLoadContext);
+                var serviceHost = CreateComponent("netstandard1.6\\InfinniPlatform.Core.dll");
 
                 // Запуск хостинга приложения
 
@@ -69,25 +74,98 @@ namespace InfinniPlatform.ServiceHost
             }
         }
 
-        private static dynamic CreateComponent(string assemblyName, AssemblyLoadContext assemblyLoadContext)
+        private static dynamic CreateComponent(string path)
         {
-            var assemblyPath = Directory.EnumerateFiles(Directory.GetCurrentDirectory(), $"{assemblyName}.dll", SearchOption.AllDirectories).FirstOrDefault();
+            var assemblyPath = Path.GetFullPath(path);
 
             try
             {
-                if (assemblyPath != null)
+                var classLibraryAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
+                var type = classLibraryAssembly.GetType("InfinniPlatform.Core.ServiceHost.ServiceHost");
+                return Activator.CreateInstance(type);
+            }
+            catch (Exception e)
+            {
+                var exception = e as ReflectionTypeLoadException;
+
+                if (exception != null)
                 {
-                    var assembly = assemblyLoadContext.LoadFromAssemblyPath(assemblyPath);
-                    var type = assembly.GetType("InfinniPlatform.Core.ServiceHost.ServiceHost");
-                    return Activator.CreateInstance(type);
+                    foreach (var loaderException in exception.LoaderExceptions)
+                    {
+                        Console.WriteLine(loaderException);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(e);
                 }
             }
-            catch (Exception error)
+
+            return null;
+        }
+
+        private static Assembly DefaultOnResolving(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
+        {
+            var runtimeInformation = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+
+            if (LocalAssembliesCache.Value.ContainsKey(assemblyName.Name))
             {
-                Console.WriteLine(error);
+                var localAssemblyPath = LocalAssembliesCache.Value[assemblyName.Name];
+                return assemblyLoadContext.LoadFromAssemblyPath(localAssemblyPath);
             }
 
-            throw new DllNotFoundException($"{assemblyName}.dll not found.");
+            var runtimeLibrary = MergedDependencyContext.GetRuntimeLibrary(assemblyName);
+
+            var nugetPackagePath = runtimeLibrary?.Path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            var nugetAssemblyPath = runtimeLibrary?.RuntimeAssemblyGroups.FirstOrDefault()
+                                                  ?.AssetPaths.FirstOrDefault()
+                                                  ?.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+
+            var fullAssemblyPath = Path.Combine(NugetProbingPath, nugetPackagePath, nugetAssemblyPath ?? string.Empty);
+
+            if (File.Exists(fullAssemblyPath))
+            {
+                return assemblyLoadContext.LoadFromAssemblyPath(fullAssemblyPath);
+            }
+            else
+            {
+                if (Directory.Exists(fullAssemblyPath))
+                {
+                    var assemblyPathInLib = Directory.EnumerateFiles(Path.Combine(fullAssemblyPath, "lib"), $"*.dll", SearchOption.AllDirectories)
+                                              .Where(path=>path.Contains("netstandard"))
+                                              .FirstOrDefault();
+
+                    if (assemblyPathInLib!=null)
+                    {
+                        return assemblyLoadContext.LoadFromAssemblyPath(assemblyPathInLib);
+                    }
+
+                    var assemblyPathInRuntimes = Directory.EnumerateFiles(Path.Combine(fullAssemblyPath, "runtimes"), $"*.dll", SearchOption.AllDirectories)
+                                                        .Where(path => path.Contains("netstandard") && path.Contains("win"))
+                                                        .FirstOrDefault();
+
+                    if (assemblyPathInRuntimes != null)
+                    {
+                        return assemblyLoadContext.LoadFromAssemblyPath(assemblyPathInRuntimes);
+                    }
+                }
+
+                return null;
+            }
+
+            
+        }
+
+        private static Dictionary<string, string> BuildLocalAssembliesCache()
+        {
+            Dictionary<string, string> localAssemblies = new Dictionary<string, string>();
+            var path = Directory.GetFiles(".", "*.dll", SearchOption.AllDirectories);
+
+            foreach (var s in path)
+            {
+                localAssemblies.Add(Path.GetFileNameWithoutExtension(s), Path.GetFullPath(s));
+            }
+            return localAssemblies;
         }
     }
 }
