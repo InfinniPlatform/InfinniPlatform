@@ -29,11 +29,6 @@ namespace InfinniPlatform.Auth.Internal.IoC
                    .As<UserManager<IdentityUser>>()
                    .ExternallyOwned();
 
-            // Сервис хэширования паролей пользователей на уровне приложения
-            builder.RegisterType<DefaultAppUserPasswordHasher>()
-                   .As<IAppUserPasswordHasher>()
-                   .SingleInstance();
-
             // Менеджер работы с учетными записями пользователей на уровне приложения
             // TODO Use default AspNetCore UserManager?
             //            builder.RegisterType<IdentityAppUserManager>()

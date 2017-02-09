@@ -35,6 +35,7 @@ namespace InfinniPlatform.Core.Http.Hosting
             {
                 httpMiddleware.Configure(app);
             }
+
             //TODO Register OWIN layers.
             //TODO Register Nancy bootstrapper.
             //app.UseOwin(x => x.UseNancy(opt => opt.Bootstrapper = new HttpServiceNancyBootstrapper()));
