@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Sdk.Dynamic;
 
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
@@ -90,6 +91,15 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         protected object ReadValue(BsonDeserializationContext context)
         {
+            var reader = context.Reader;
+
+            var currentBsonType = reader.GetCurrentBsonType();
+
+            if (currentBsonType == BsonType.Decimal128)
+            {
+                return MongoDecimalBsonSerializer.Default.DeserializeValue(context);
+            }
+
             return ObjectSerializer.Deserialize(context);
         }
 
