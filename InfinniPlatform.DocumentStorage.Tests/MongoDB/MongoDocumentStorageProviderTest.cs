@@ -1486,6 +1486,29 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         }
 
         [Test]
+        public void ShouldInsertDocumentWithDecimalField()
+        {
+            // Given
+
+            const decimal value = 1234.56789m;
+
+            var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertDocumentWithDecimalField));
+
+            // When
+
+            storage.InsertOne(new DynamicWrapper
+                              {
+                                  { "_id", 1 },
+                                  { "value", value }
+                              });
+
+            var document = storage.Find(f => f.Eq("_id", 1)).FirstOrDefault();
+
+            // Then
+            Assert.AreEqual(value, document["value"]);
+        }
+
+        [Test]
         public void ShouldUpdateOne()
         {
             // Given
