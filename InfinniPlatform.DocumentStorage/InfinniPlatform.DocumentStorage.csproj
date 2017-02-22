@@ -151,6 +151,8 @@
     <Compile Include="MongoDB\MongoConnectionSettings.cs" />
     <Compile Include="MongoDB\MongoDateBsonSerializationProvider.cs" />
     <Compile Include="MongoDB\MongoDateBsonSerializer.cs" />
+    <Compile Include="MongoDB\MongoDecimalBsonSerializationProvider.cs" />
+    <Compile Include="MongoDB\MongoDecimalBsonSerializer.cs" />
     <Compile Include="MongoDB\MongoDocumentAggregateCursor.cs" />
     <Compile Include="MongoDB\MongoDocumentAggregateCursorGeneric.cs" />
     <Compile Include="MongoDB\MongoDocumentBulkBuilder.cs" />
