@@ -10,8 +10,10 @@ using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
 
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
@@ -51,9 +53,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             BsonSerializer.RegisterSerializer(MongoDateBsonSerializer.Default);
             BsonSerializer.RegisterSerializer(MongoTimeBsonSerializer.Default);
             BsonSerializer.RegisterSerializer(MongoDynamicWrapperBsonSerializer.Default);
+            BsonSerializer.RegisterSerializer(MongoDecimalBsonSerializer.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDateBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoTimeBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
+            BsonSerializer.RegisterSerializationProvider(MongoDecimalBsonSerializationProvider.Default);
         }
 
         public MongoConnection(IAppEnvironment appEnvironment,
