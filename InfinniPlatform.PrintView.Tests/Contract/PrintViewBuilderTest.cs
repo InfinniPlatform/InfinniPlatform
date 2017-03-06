@@ -81,9 +81,7 @@ namespace InfinniPlatform.PrintView.Tests.Contract
 
         private static Func<Stream> GetPrintViewExample()
         {
-            var test = typeof(PrintViewBuilderTest);
-
-            return () => test.Assembly.GetManifestResourceStream(test, "PrintViewExample.json");
+            return () => ResourceHelper.GetEmbeddedResource("Contract.PrintViewExample.json");
         }
 
         private static async Task OpenPrintView(Stream printView, PrintViewFileFormat fileFormat)
@@ -94,7 +92,6 @@ namespace InfinniPlatform.PrintView.Tests.Contract
             {
                 await printView.CopyToAsync(writer);
                 writer.Flush();
-                writer.Close();
             }
 
             Process.Start(fileName);

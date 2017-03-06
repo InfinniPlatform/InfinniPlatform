@@ -16,7 +16,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Inline
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildItalic)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildItalic)}.txt");
 
             var element = new PrintItalic
                           {

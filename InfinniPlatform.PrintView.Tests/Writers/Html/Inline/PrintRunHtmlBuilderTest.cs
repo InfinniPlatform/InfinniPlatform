@@ -14,7 +14,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Inline
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildRun)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildRun)}.txt");
 
             var element = new PrintRun
                           {

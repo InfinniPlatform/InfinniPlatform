@@ -1,4 +1,8 @@
-﻿using InfinniPlatform.PrintView.Model.Inline;
+﻿using ImageSharp;
+
+using InfinniPlatform.PrintView.Model.Inline;
+
+using ZXing.Common;
 
 namespace InfinniPlatform.PrintView.Factories.Inline
 {
@@ -13,6 +17,7 @@ namespace InfinniPlatform.PrintView.Factories.Inline
 
             return element;
         }
+
 
         private PrintImage CreateBarcodeImage(PrintElementFactoryContext context, TBarcode template)
         {
@@ -45,6 +50,26 @@ namespace InfinniPlatform.PrintView.Factories.Inline
                 }
             }
         }
+
+        protected static byte[] GetBarcodeImageData(BitMatrix barcode)
+        {
+            using (var image = new Image(barcode.Width, barcode.Height))
+            {
+                using (var pixels = image.Lock())
+                {
+                    for (var y = 0; y < barcode.Height; ++y)
+                    {
+                        for (var x = 0; x < barcode.Width; ++x)
+                        {
+                            pixels[x, y] = barcode[x, y] ? Color.Black : Color.White;
+                        }
+                    }
+                }
+
+                return FactoryHelper.GetBitmapBytes(image);
+            }
+        }
+
 
         protected abstract string PrepareBarcodeText(string barcodeText);
 

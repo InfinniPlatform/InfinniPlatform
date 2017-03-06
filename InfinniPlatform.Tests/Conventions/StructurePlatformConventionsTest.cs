@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Xml.Linq;
 
 using NUnit.Framework;
@@ -15,7 +16,9 @@ namespace InfinniPlatform.Conventions
     {
         static StructurePlatformConventionsTest()
         {
-            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath)) ?? ".";
+            var testAssemblyPath = new Uri(typeof(StructurePlatformConventionsTest).GetTypeInfo().Assembly.CodeBase).LocalPath;
+
+            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(testAssemblyPath)) ?? ".";
             PackagesDir = ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
 
             SolutionProjects = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*").ToArray();
@@ -58,7 +61,7 @@ namespace InfinniPlatform.Conventions
                          || project.EndsWith("Infinni.Agent")
                          || project.EndsWith("Infinni.Server")
                          || project.EndsWith("InfinniPlatform.Heartbeat")
-                         || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.InvariantCultureIgnoreCase));
+                         || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.OrdinalIgnoreCase));
 
             // Then
             Assert.IsTrue(result, @"Проект ""{0}"" должен иметь тестовый проект", project);
@@ -266,43 +269,46 @@ namespace InfinniPlatform.Conventions
             var testAssemblies = Directory.GetFiles(Path.Combine(SolutionDir, SolutionOutDir), "*.Tests.dll");
 
             // When
+
             var withoutCategory = testAssemblies
-                .SelectMany(a => Assembly.LoadFrom(a)
-                                         .GetTypes()
-                                         .Where(t =>
-                                                {
-                                                    if (t.IsClass && !t.IsAbstract)
-                                                    {
-                                                        var ignoreAttr = t.GetCustomAttribute<IgnoreAttribute>();
+                .SelectMany(a => AssemblyLoadContext.Default.LoadFromAssemblyPath(a)
+                                                    .GetTypes()
+                                                    .Where(t =>
+                                                           {
+                                                               var ti = t.GetTypeInfo();
 
-                                                        if (ignoreAttr != null)
-                                                        {
-                                                            return false;
-                                                        }
+                                                               if (ti.IsClass && !ti.IsAbstract)
+                                                               {
+                                                                   var ignoreAttr = ti.GetCustomAttribute<IgnoreAttribute>();
 
-                                                        var testFixtureAttr = t.GetCustomAttribute<TestFixtureAttribute>();
+                                                                   if (ignoreAttr != null)
+                                                                   {
+                                                                       return false;
+                                                                   }
 
-                                                        if (testFixtureAttr != null)
-                                                        {
-                                                            if (!string.IsNullOrEmpty(testFixtureAttr.Category))
-                                                            {
-                                                                return false;
-                                                            }
+                                                                   var testFixtureAttr = ti.GetCustomAttribute<TestFixtureAttribute>();
 
-                                                            var categoryAttr = t.GetCustomAttribute<CategoryAttribute>();
+                                                                   if (testFixtureAttr != null)
+                                                                   {
+                                                                       if (!string.IsNullOrEmpty(testFixtureAttr.Category))
+                                                                       {
+                                                                           return false;
+                                                                       }
 
-                                                            if (!string.IsNullOrEmpty(categoryAttr?.Name))
-                                                            {
-                                                                return false;
-                                                            }
+                                                                       var categoryAttr = ti.GetCustomAttribute<CategoryAttribute>();
 
-                                                            return true;
-                                                        }
-                                                    }
+                                                                       if (!string.IsNullOrEmpty(categoryAttr?.Name))
+                                                                       {
+                                                                           return false;
+                                                                       }
 
-                                                    return false;
-                                                })
-                                         .Select(t => t.FullName))
+                                                                       return true;
+                                                                   }
+                                                               }
+
+                                                               return false;
+                                                           })
+                                                    .Select(t => t.FullName))
                 .ToArray();
 
             // Then

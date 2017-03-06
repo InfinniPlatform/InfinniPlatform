@@ -1,14 +1,10 @@
-﻿using System.Drawing;
-
-using InfinniPlatform.PrintView.Model.Inline;
-using InfinniPlatform.PrintView.Tests.Properties;
+﻿using InfinniPlatform.PrintView.Model.Inline;
 
 using NUnit.Framework;
 
 namespace InfinniPlatform.PrintView.Tests.Factories.Inline
 {
     [TestFixture]
-    [Platform(Exclude = "Mono")]
     [Category(TestCategories.UnitTest)]
     public sealed class PrintBarcodeEan13FactoryTest
     {
@@ -19,7 +15,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var expectedImage = Resources.BarcodeEan13Rotate0;
+            var expectedImage = ResourceHelper.BarcodeEan13Rotate0;
 
             var template = new PrintBarcodeEan13
                            {
@@ -35,7 +31,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element.Size);
             Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
             Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
-            TestHelper.AssertImagesAreEqual(expectedImage, element);
+            ImageAssert.AreEqual(expectedImage, element);
         }
 
         [Test]
@@ -43,7 +39,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var expectedImage = Resources.BarcodeEan13Rotate0;
+            var expectedImage = ResourceHelper.BarcodeEan13Rotate0;
 
             var template = new PrintBarcodeEan13
                            {
@@ -59,7 +55,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element.Size);
             Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
             Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
-            TestHelper.AssertImagesAreEqual(expectedImage, element);
+            ImageAssert.AreEqual(expectedImage, element);
         }
 
         [Test]
@@ -67,7 +63,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var expectedImage = Resources.BarcodeEan13Rotate0;
+            var expectedImage = ResourceHelper.BarcodeEan13Rotate0;
 
             var template = new PrintBarcodeEan13
                            {
@@ -84,16 +80,15 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element.Size);
             Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
             Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
-            TestHelper.AssertImagesAreEqual(expectedImage, element);
+            ImageAssert.AreEqual(expectedImage, element);
         }
 
         [Test]
-        [Repeat(2)] // TODO
         public void ShouldApplyRotation90()
         {
             // Given
 
-            var expectedImage = Resources.BarcodeEan13Rotate90;
+            var expectedImage = ResourceHelper.BarcodeEan13Rotate90;
 
             var template = new PrintBarcodeEan13
                            {
@@ -110,7 +105,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element.Size);
             Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
             Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
-            TestHelper.AssertImagesAreEqual(expectedImage, element);
+            ImageAssert.AreEqual(expectedImage, element);
         }
 
         [Test]
@@ -118,7 +113,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var expectedImage = Resources.BarcodeEan13Rotate180;
+            var expectedImage = ResourceHelper.BarcodeEan13Rotate180;
 
             var template = new PrintBarcodeEan13
                            {
@@ -135,7 +130,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element.Size);
             Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
             Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
-            TestHelper.AssertImagesAreEqual(expectedImage, element);
+            ImageAssert.AreEqual(expectedImage, element);
         }
 
         [Test]
@@ -143,7 +138,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var expectedImage = Resources.BarcodeEan13Rotate270;
+            var expectedImage = ResourceHelper.BarcodeEan13Rotate270;
 
             var template = new PrintBarcodeEan13
                            {
@@ -160,7 +155,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element.Size);
             Assert.AreEqual(expectedImage.Width, element.Size.Width, 0.1);
             Assert.AreEqual(expectedImage.Height, element.Size.Height, 0.1);
-            TestHelper.AssertImagesAreEqual(expectedImage, element);
+            ImageAssert.AreEqual(expectedImage, element);
         }
     }
 }

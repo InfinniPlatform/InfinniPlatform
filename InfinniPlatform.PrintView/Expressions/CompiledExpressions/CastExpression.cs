@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -21,7 +22,7 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
 
             if (expression == null)
             {
-                if (_type.IsValueType)
+                if (_type.GetTypeInfo().IsValueType)
                 {
                     expression = ReflectionExtensions.GetDefaultValue(_type);
                 }

@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Model.Inline;
-using InfinniPlatform.PrintView.Tests.Properties;
 
 using NUnit.Framework;
 
@@ -15,9 +14,9 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var expectedImage = Resources.ImageRotate0;
+            var expectedImage = ResourceHelper.ImageRotate0;
 
-            var template = new PrintImage { Data = TestHelper.BitmapToBytes(expectedImage) };
+            var template = new PrintImage { Data = expectedImage.Data };
 
             // When
             var element = BuildTestHelper.BuildElement<PrintImage>(template);
@@ -26,7 +25,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element);
             Assert.IsNotNull(element.Data);
             Assert.IsNull(element.Size);
-            TestHelper.AssertImagesAreEqual(expectedImage, element);
+            ImageAssert.AreEqual(expectedImage, element);
         }
 
         [Test]
@@ -34,9 +33,9 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var expectedImage = Resources.ImageRotate0;
+            var expectedImage = ResourceHelper.ImageRotate0;
 
-            var dataSource = TestHelper.BitmapToBytes(expectedImage);
+            var dataSource = expectedImage.Data;
 
             var template = new PrintImage { Source = "$" };
 
@@ -47,7 +46,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element);
             Assert.IsNotNull(element.Data);
             Assert.IsNull(element.Size);
-            TestHelper.AssertImagesAreEqual(expectedImage, element);
+            ImageAssert.AreEqual(expectedImage, element);
         }
 
         [Test]
@@ -55,12 +54,12 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var original = Resources.ImageRotate0;
-            var expected = Resources.ImageRotate0;
+            var original = ResourceHelper.ImageRotate0;
+            var expected = ResourceHelper.ImageRotate0;
 
             var template = new PrintImage
                            {
-                               Data = TestHelper.BitmapToBytes(original),
+                               Data = original.Data,
                                Rotation = PrintImageRotation.Rotate0
                            };
 
@@ -71,7 +70,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element);
             Assert.IsNotNull(element.Data);
             Assert.IsNull(element.Size);
-            TestHelper.AssertImagesAreEqual(expected, element);
+            ImageAssert.AreEqual(expected, element);
         }
 
         [Test]
@@ -79,12 +78,12 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var original = Resources.ImageRotate0;
-            var expected = Resources.ImageRotate90;
+            var original = ResourceHelper.ImageRotate0;
+            var expected = ResourceHelper.ImageRotate90;
 
             var template = new PrintImage
                            {
-                               Data = TestHelper.BitmapToBytes(original),
+                               Data = original.Data,
                                Rotation = PrintImageRotation.Rotate90
                            };
 
@@ -95,7 +94,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element);
             Assert.IsNotNull(element.Data);
             Assert.IsNull(element.Size);
-            TestHelper.AssertImagesAreEqual(expected, element);
+            ImageAssert.AreEqual(expected, element);
         }
 
         [Test]
@@ -103,12 +102,12 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var original = Resources.ImageRotate0;
-            var expected = Resources.ImageRotate180;
+            var original = ResourceHelper.ImageRotate0;
+            var expected = ResourceHelper.ImageRotate180;
 
             var template = new PrintImage
                            {
-                               Data = TestHelper.BitmapToBytes(original),
+                               Data = original.Data,
                                Rotation = PrintImageRotation.Rotate180
                            };
 
@@ -119,7 +118,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element);
             Assert.IsNotNull(element.Data);
             Assert.IsNull(element.Size);
-            TestHelper.AssertImagesAreEqual(expected, element);
+            ImageAssert.AreEqual(expected, element);
         }
 
         [Test]
@@ -127,12 +126,12 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var original = Resources.ImageRotate0;
-            var expected = Resources.ImageRotate270;
+            var original = ResourceHelper.ImageRotate0;
+            var expected = ResourceHelper.ImageRotate270;
 
             var template = new PrintImage
                            {
-                               Data = TestHelper.BitmapToBytes(original),
+                               Data = original.Data,
                                Rotation = PrintImageRotation.Rotate270
                            };
 
@@ -143,7 +142,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
             Assert.IsNotNull(element);
             Assert.IsNotNull(element.Data);
             Assert.IsNull(element.Size);
-            TestHelper.AssertImagesAreEqual(expected, element);
+            ImageAssert.AreEqual(expected, element);
         }
 
         [Test]
@@ -151,7 +150,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var image = Resources.ImageRotate0;
+            var image = ResourceHelper.ImageRotate0;
 
             var template = new PrintImage
                            {
@@ -161,7 +160,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
                                           Height = 2 * image.Height,
                                           SizeUnit = PrintSizeUnit.Px
                                       },
-                               Data = TestHelper.BitmapToBytes(image)
+                               Data = image.Data
                            };
 
             // When
@@ -179,7 +178,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
         {
             // Given
 
-            var image = Resources.ImageRotate0;
+            var image = ResourceHelper.ImageRotate0;
 
             var template = new PrintImage
                            {
@@ -190,7 +189,7 @@ namespace InfinniPlatform.PrintView.Tests.Factories.Inline
                                           SizeUnit = PrintSizeUnit.Px
                                       },
                                Stretch = PrintImageStretch.Fill,
-                               Data = TestHelper.BitmapToBytes(image)
+                               Data = image.Data
                            };
 
             // When

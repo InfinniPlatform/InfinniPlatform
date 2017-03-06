@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Model.Defaults;
 using InfinniPlatform.PrintView.Model.Inline;
 
 using ZXing;
-using ZXing.Common;
+using ZXing.OneD;
 
 namespace InfinniPlatform.PrintView.Factories.Inline
 {
@@ -32,22 +33,16 @@ namespace InfinniPlatform.PrintView.Factories.Inline
             var height = (int)PrintSizeUnitConverter.ToUnifiedSize(barcodeImage.Size.Height, barcodeImage.Size.SizeUnit);
             var showText = template.ShowText ?? PrintViewDefaults.BarcodeEan13.ShowText;
 
-            var barcodeWriter = new BarcodeWriter
-            {
-                Format = BarcodeFormat.EAN_13,
-                Options = new EncodingOptions
-                {
-                    Width = width,
-                    Height = height,
-                    PureBarcode = !showText
-                }
-            };
+            var barcodeWriter = new EAN13Writer();
 
-            using (var barcodeBitmap = barcodeWriter.Write(barcodeText))
-            {
-                barcodeImage.Data = FactoryHelper.GetBitmapBytes(barcodeBitmap);
-            }
+            var barcodeHints = new Dictionary<EncodeHintType, object>
+                                 {
+                                     { EncodeHintType.PURE_BARCODE, !showText }
+                                 };
 
+            var barcode = barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, width, height, barcodeHints);
+
+            barcodeImage.Data = GetBarcodeImageData(barcode);
             barcodeImage.Size.Height = height;
             barcodeImage.Size.Width = width;
         }

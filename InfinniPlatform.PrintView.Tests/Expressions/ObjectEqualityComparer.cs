@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using InfinniPlatform.Sdk.Dynamic;
 
@@ -27,7 +28,7 @@ namespace InfinniPlatform.PrintView.Tests.Expressions
 
             if (!result
                 && expected != null && actual != null
-                && !expected.GetType().IsValueType && !actual.GetType().IsValueType)
+                && !expected.GetType().GetTypeInfo().IsValueType && !actual.GetType().GetTypeInfo().IsValueType)
             {
                 if (expected is Array && actual is Array)
                 {
@@ -99,7 +100,7 @@ namespace InfinniPlatform.PrintView.Tests.Expressions
         {
             var result = true;
 
-            var expectedProperties = expected.GetType().GetProperties();
+            var expectedProperties = expected.GetType().GetTypeInfo().GetProperties();
 
             foreach (var expectedProperty in expectedProperties)
             {

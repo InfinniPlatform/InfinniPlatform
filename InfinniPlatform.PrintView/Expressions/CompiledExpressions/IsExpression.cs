@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
 {
@@ -14,7 +15,7 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
             var left = Left.Execute(dataContext, scope);
             var right = (Type) Right.Execute(dataContext, scope);
 
-            return right.IsInstanceOfType(left);
+            return right.GetTypeInfo().IsInstanceOfType(left);
         }
     }
 }

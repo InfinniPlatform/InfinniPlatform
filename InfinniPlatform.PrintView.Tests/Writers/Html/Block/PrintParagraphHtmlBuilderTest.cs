@@ -19,7 +19,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Block
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildParagraphWithDefaultSettings)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildParagraphWithDefaultSettings)}.txt");
 
             var element = new PrintParagraph();
 
@@ -37,7 +37,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Block
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildParagraphWithSettings)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildParagraphWithSettings)}.txt");
 
             var run = new PrintRun
                       {

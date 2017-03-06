@@ -12,8 +12,7 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
             = {};
 
         private static readonly MethodInfo ExecuteLambdaExpressionMethod
-            = typeof (LambdaExpression).GetMethod("ExecuteLambdaExpression",
-                BindingFlags.Instance | BindingFlags.NonPublic);
+            = typeof(LambdaExpression).GetTypeInfo().GetMethod(nameof(ExecuteLambdaExpression), BindingFlags.Instance | BindingFlags.NonPublic);
 
         private readonly ICompiledExpression _body;
         private readonly IList<ParameterExpression> _parameters;

@@ -15,11 +15,11 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Inline
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildImage)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildImage)}.txt");
 
             var element = new PrintImage
                           {
-                              Data = TestHelper.BitmapToBytes(Resources.Image)
+                              Data = ResourceHelper.Image.Data
                           };
 
             // When
