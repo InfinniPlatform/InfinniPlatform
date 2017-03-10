@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using InfinniPlatform.Sdk.Properties;
@@ -9,13 +10,24 @@ namespace InfinniPlatform.Sdk.Serialization
     /// <summary>
     /// Контейнер известных типов для сериализации.
     /// </summary>
-    public sealed class KnownTypesContainer
+    public class KnownTypesContainer
     {
         private readonly Dictionary<string, Type> _names
             = new Dictionary<string, Type>();
 
         private readonly Dictionary<Type, string> _types
             = new Dictionary<Type, string>();
+
+
+        /// <summary>
+        /// Является известным типом.
+        /// </summary>
+        /// <param name="type">Тип.</param>
+        public bool IsKnownType(Type type)
+        {
+            return _types.Keys.Any(type.IsAssignableFrom);
+        }
+
 
         /// <summary>
         /// Содержит указанный тип.
@@ -24,15 +36,6 @@ namespace InfinniPlatform.Sdk.Serialization
         public bool HasType(Type type)
         {
             return _types.ContainsKey(type);
-        }
-
-        /// <summary>
-        /// Содержит тип с указанным именем.
-        /// </summary>
-        /// <param name="name">Имя типа.</param>
-        public bool HasName(string name)
-        {
-            return _names.ContainsKey(name);
         }
 
         /// <summary>
@@ -49,6 +52,16 @@ namespace InfinniPlatform.Sdk.Serialization
             return result;
         }
 
+
+        /// <summary>
+        /// Содержит тип с указанным именем.
+        /// </summary>
+        /// <param name="name">Имя типа.</param>
+        public bool HasName(string name)
+        {
+            return _names.ContainsKey(name);
+        }
+
         /// <summary>
         /// Получить имя типа по типу.
         /// </summary>
@@ -61,6 +74,19 @@ namespace InfinniPlatform.Sdk.Serialization
             _types.TryGetValue(type, out result);
 
             return result;
+        }
+
+
+        /// <summary>
+        /// Добавить тип.
+        /// </summary>
+        /// <typeparam name="T">Тип.</typeparam>
+        /// <param name="name">Имя типа.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public KnownTypesContainer Add<T>(string name)
+        {
+            return Add(typeof(T), name);
         }
 
         /// <summary>
@@ -97,9 +123,7 @@ namespace InfinniPlatform.Sdk.Serialization
                 throw new ArgumentException(Resources.TypeShouldNotBeAbstract, nameof(type));
             }
 
-            if (
-                type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null,
-                    Type.EmptyTypes, null) == null)
+            if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) == null)
             {
                 throw new ArgumentException(Resources.TypeShouldHaveDefaultConstructor, nameof(type));
             }
@@ -108,18 +132,6 @@ namespace InfinniPlatform.Sdk.Serialization
             _names.Add(name, type);
 
             return this;
-        }
-
-        /// <summary>
-        /// Добавить тип.
-        /// </summary>
-        /// <typeparam name="T">Тип.</typeparam>
-        /// <param name="name">Имя типа.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public KnownTypesContainer Add<T>(string name)
-        {
-            return Add(typeof(T), name);
         }
     }
 }

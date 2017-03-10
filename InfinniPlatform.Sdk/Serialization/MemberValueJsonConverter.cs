@@ -7,9 +7,9 @@ namespace InfinniPlatform.Sdk.Serialization
     /// <summary>
     /// Осуществляет преобразование объекта в JSON-представление и обратно на основе <see cref="IMemberValueConverter"/>.
     /// </summary>
-    internal sealed class JsonMemberValueConverter : JsonConverter
+    internal class MemberValueJsonConverter : JsonConverter
     {
-        public JsonMemberValueConverter(bool canRead, bool canWrite, IMemberValueConverter valueConverter)
+        public MemberValueJsonConverter(bool canRead, bool canWrite, IMemberValueConverter valueConverter)
         {
             CanRead = canRead;
             CanWrite = canWrite;

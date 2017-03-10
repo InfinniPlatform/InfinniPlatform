@@ -1,94 +1,83 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
 
 using InfinniPlatform.Sdk.Properties;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace InfinniPlatform.Sdk.Serialization
 {
     /// <summary>
     /// Осуществляет преобразование объекта в JSON-представление и обратно на основе списка известных типов.
     /// </summary>
-    internal sealed class KnownTypesJsonConverter : JsonConverter
+    internal class KnownTypesJsonConverter : JsonConverter
     {
         public KnownTypesJsonConverter(KnownTypesContainer knownTypes)
         {
-            _enumerableType = typeof(IEnumerable);
-            _knownTypes = knownTypes ?? new KnownTypesContainer();
+            _knownTypes = knownTypes;
         }
 
-        private readonly Type _enumerableType;
+
         private readonly KnownTypesContainer _knownTypes;
+
 
         public override bool CanRead => true;
 
         public override bool CanWrite => true;
 
+
         public override bool CanConvert(Type objectType)
         {
-            return _knownTypes.HasType(objectType) ||
-                   ((objectType.IsInterface || objectType.IsAbstract) && !_enumerableType.IsAssignableFrom(objectType));
+            return true;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var jObj = JToken.FromObject(value);
-
-            if (jObj.Type == JTokenType.Object)
+            if (value != null)
             {
-                var objType = value.GetType();
-                var objTypeName = _knownTypes.GetName(objType);
+                var valueType = value.GetType();
 
-                var jObjProperty = new JProperty(objTypeName, jObj);
-                var jObjWrapper = new JObject { jObjProperty };
+                var valueTypeName = _knownTypes.GetName(valueType);
 
-                WrapObjectProperties((JObject)jObj, value, serializer);
-
-                jObj = jObjWrapper;
-            }
-
-            jObj.WriteTo(writer);
-        }
-
-        private static void WrapObjectProperties(JObject jObj, object value, JsonSerializer serializer)
-        {
-            var objType = value.GetType();
-
-            foreach (var jProperty in jObj.Properties())
-            {
-                var objProperty = objType.GetProperty(jProperty.Name);
-
-                if (objProperty != null)
+                if (!string.IsNullOrEmpty(valueTypeName))
                 {
-                    var objPropertyValue = objProperty.GetValue(value);
-
-                    if (objPropertyValue != null)
-                    {
-                        jProperty.Value = JToken.FromObject(objPropertyValue, serializer);
-                    }
+                    writer.WriteStartObject();
+                    writer.WritePropertyName(valueTypeName);
+                    serializer.Serialize(writer, value);
+                    writer.WriteEndObject();
                 }
+                else
+                {
+                    writer.WriteValue(value);
+                }
+            }
+            else
+            {
+                writer.WriteNull();
             }
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var jObjWrapper = JObject.Load(reader);
-            var jObjProperty = jObjWrapper.Properties().FirstOrDefault();
+            // JsonToken.PropertyName
+            reader.Read();
 
-            if (jObjProperty != null)
+            var valueTypeName = reader.Value as string;
+
+            if (!string.IsNullOrEmpty(valueTypeName))
             {
-                var objTypeName = jObjProperty.Name;
-                var objType = _knownTypes.GetType(objTypeName);
+                var valueType = _knownTypes.GetType(valueTypeName);
 
-                if (objType != null)
+                if (valueType != null)
                 {
-                    var obj = Activator.CreateInstance(objType, true);
-                    serializer.Populate(jObjProperty.Value.CreateReader(), obj);
+                    // JsonToken.StartObject
+                    reader.Read();
 
-                    return obj;
+                    var value = serializer.Deserialize(reader, valueType);
+
+                    // JsonToken.EndObject
+                    reader.Read();
+
+                    return value;
                 }
             }
 
