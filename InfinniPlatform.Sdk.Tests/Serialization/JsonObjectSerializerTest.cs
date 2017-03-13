@@ -35,39 +35,15 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         }
 
         [Test]
-        public void ShouldSerializeAbstractClassArray()
-        {
-            // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<Employee>("employee").Add<Bum>("bum");
-            var employee = new Employee { FirstName = "Вася", JobTitle = "Аналитик" };
-            var bum = new Bum { FirstName = "Шнур", Address = "Ленинград" };
-            var target = new Person[] { employee, bum };
-
-            // When
-            Person[] result = SerializeAndDeserialize(target, knownTypes);
-
-            // Then
-            Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Length);
-            Assert.IsInstanceOf<Employee>(result[0]);
-            Assert.AreEqual(employee.FirstName, result[0].FirstName);
-            Assert.AreEqual(employee.JobTitle, ((Employee)result[0]).JobTitle);
-            Assert.IsInstanceOf<Bum>(result[1]);
-            Assert.AreEqual(bum.FirstName, result[1].FirstName);
-            Assert.AreEqual(bum.Address, ((Bum)result[1]).Address);
-        }
-
-        [Test]
         public void ShouldSerializeAbstractClassReference()
         {
             // Given
-            KnownTypesContainer knownTypes =
-                new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
-            var milk = new Milk { Caption = "Первый вкус", Protein = 2.9f };
-            var bread = new Bread { Caption = "Бородинский", Richness = 365 };
+            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
+            var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
+            var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var item1 = new OrderItem { Product = milk, Count = 1, Price = 45.5f };
             var item2 = new OrderItem { Product = bread, Count = 1, Price = 20.3f };
-            var client = new Employee { FirstName = "Вася", JobTitle = "Аналитик" };
+            var client = new Employee { FirstName = "FirstName1", JobTitle = "JobTitle1" };
             var target = new Order { Client = client, Items = new[] { item1, item2 } };
 
             // When
@@ -96,12 +72,12 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeCustomCollection()
         {
             // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
-            var milk = new Milk { Caption = "Первый вкус", Protein = 2.9f };
-            var bread = new Bread { Caption = "Бородинский", Richness = 365 };
+            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
+            var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
+            var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var item1 = new OrderItem { Product = milk, Count = 1, Price = 45.5f };
             var item2 = new OrderItem { Product = bread, Count = 1, Price = 20.3f };
-            var client = new Employee { FirstName = "Вася", JobTitle = "Аналитик" };
+            var client = new Employee { FirstName = "FirstName1", JobTitle = "JobTitle1" };
             var order1 = new Order { Client = client, Items = new[] { item1 } };
             var order2 = new Order { Client = client, Items = new[] { item2 } };
             var target = new OrderHistory();
@@ -135,12 +111,12 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeCustomCollectionReference()
         {
             // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
-            var milk = new Milk { Caption = "Первый вкус", Protein = 2.9f };
-            var bread = new Bread { Caption = "Бородинский", Richness = 365 };
+            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
+            var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
+            var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var item1 = new OrderItem { Product = milk, Count = 1, Price = 45.5f };
             var item2 = new OrderItem { Product = bread, Count = 1, Price = 20.3f };
-            var client = new Employee { FirstName = "Вася", JobTitle = "Аналитик" };
+            var client = new Employee { FirstName = "FirstName1", JobTitle = "JobTitle1" };
             var order1 = new Order { Client = client, Items = new[] { item1 } };
             var order2 = new Order { Client = client, Items = new[] { item2 } };
             var history = new OrderHistory();
@@ -173,35 +149,12 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         }
 
         [Test]
-        public void ShouldSerializeInterfaceArray()
-        {
-            // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread");
-            var milk = new Milk { Caption = "Первый вкус", Protein = 2.9f };
-            var bread = new Bread { Caption = "Бородинский", Richness = 365 };
-            var target = new IProduct[] { milk, bread };
-
-            // When
-            IProduct[] result = SerializeAndDeserialize(target, knownTypes);
-
-            // Then
-            Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Length);
-            Assert.IsInstanceOf<Milk>(result[0]);
-            Assert.AreEqual(milk.Caption, ((Milk)result[0]).Caption);
-            Assert.AreEqual(milk.Protein, ((Milk)result[0]).Protein);
-            Assert.IsInstanceOf<Bread>(result[1]);
-            Assert.AreEqual(bread.Caption, ((Bread)result[1]).Caption);
-            Assert.AreEqual(bread.Richness, ((Bread)result[1]).Richness);
-        }
-
-        [Test]
         public void ShouldSerializeInterfaceArrayReference()
         {
             // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread");
-            var milk = new Milk { Caption = "Первый вкус", Protein = 2.9f };
-            var bread = new Bread { Caption = "Бородинский", Richness = 365 };
+            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread");
+            var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
+            var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var target = new ProductCategory { Products = new IProduct[] { milk, bread } };
 
             // When
@@ -223,8 +176,8 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeInterfaceReference()
         {
             // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<Milk>("milk");
-            var milk = new Milk { Caption = "Первый вкус", Protein = 2.9f };
+            var knownTypes = new KnownTypesContainer().Add<Milk>("milk");
+            var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
             var target = new OrderItem { Product = milk, Count = 1, Price = 45.5f };
 
             // When
@@ -243,8 +196,8 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeKnownType()
         {
             // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<Bread>("bread");
-            var target = new Bread { Caption = "Бородинский", Richness = 365 };
+            var knownTypes = new KnownTypesContainer().Add<Bread>("bread");
+            var target = new Bread { Caption = "Bread1", Richness = 365 };
 
             // When
             Bread result = SerializeAndDeserialize(target, knownTypes);
@@ -259,8 +212,8 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeKnownTypeArray()
         {
             // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<Bread>("bread");
-            var target = new[] { new Bread { Caption = "Бородинский", Richness = 365 } };
+            var knownTypes = new KnownTypesContainer().Add<Bread>("bread");
+            var target = new[] { new Bread { Caption = "Bread1", Richness = 365 } };
 
             // When
             Bread[] result = SerializeAndDeserialize(target, knownTypes);
@@ -276,7 +229,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeUnknownType()
         {
             // Given
-            var target = new Bread { Caption = "Бородинский", Richness = 365 };
+            var target = new Bread { Caption = "Bread1", Richness = 365 };
 
             // When
             Bread result = SerializeAndDeserialize(target);
@@ -291,7 +244,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeUnknownTypeArray()
         {
             // Given
-            var target = new[] { new Bread { Caption = "Бородинский", Richness = 365 } };
+            var target = new[] { new Bread { Caption = "Bread1", Richness = 365 } };
 
             // When
             Bread[] result = SerializeAndDeserialize(target);
@@ -307,9 +260,9 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeWhenAbstractionRefersToAnotherAbstraction()
         {
             // Given
-            KnownTypesContainer knownTypes = new KnownTypesContainer().Add<ProductCategory>("Abstraction1").Add<Milk>("milk").Add<Bread>("bread");
-            var milk = new Milk { Caption = "Первый вкус", Protein = 2.9f };
-            var bread = new Bread { Caption = "Бородинский", Richness = 365 };
+            var knownTypes = new KnownTypesContainer().Add<ProductCategory>("category").Add<Milk>("milk").Add<Bread>("bread");
+            var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
+            var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var target = new ProductCategory { Products = new IProduct[] { milk, bread } };
 
             // When
@@ -325,6 +278,23 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
             Assert.IsInstanceOf<Bread>(result.Products.ElementAt(1));
             Assert.AreEqual(bread.Caption, ((Bread)result.Products.ElementAt(1)).Caption);
             Assert.AreEqual(bread.Richness, ((Bread)result.Products.ElementAt(1)).Richness);
+        }
+
+        [Test]
+        public void ShouldIgnoreNullablePropertiesWhenSerializingKnowTypes()
+        {
+            // Given
+            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread");
+            var milk = new Milk { Caption = null, Protein = 2.9f };
+            var bread = new Bread { Caption = null, Richness = 365 };
+            var target = new ProductCategory { Products = new IProduct[] { milk, bread } };
+            var serializer = new JsonObjectSerializer(knownTypes: knownTypes, withFormatting: false);
+
+            // When
+            var entityToJson = serializer.ConvertToString(target);
+
+            // Then
+            Assert.AreEqual(@"{""Products"":[{""milk"":{""Protein"":2.9}},{""bread"":{""Richness"":365}}]}", entityToJson);
         }
 
         [Test]

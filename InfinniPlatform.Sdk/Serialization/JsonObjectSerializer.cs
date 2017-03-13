@@ -9,7 +9,6 @@ using InfinniPlatform.Sdk.Dynamic;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace InfinniPlatform.Sdk.Serialization
 {
@@ -49,19 +48,24 @@ namespace InfinniPlatform.Sdk.Serialization
                              {
                                  NullValueHandling = NullValueHandling.Ignore,
                                  ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                                 Formatting = withFormatting
-                                                  ? Formatting.Indented
-                                                  : Formatting.None
+                                 Formatting = withFormatting ? Formatting.Indented : Formatting.None
                              };
 
-            IContractResolver contractResolver = null;
+            var propertyInitializers = new List<IJsonPropertyInitializer>();
 
             var valueConverterList = valueConverters?.ToList();
 
             if (valueConverterList != null && valueConverterList.Count > 0)
             {
-                contractResolver = new JsonMemberValueConverterResolver(valueConverterList);
+                propertyInitializers.Add(new MemberValueJsonConverterInitializer(valueConverterList));
             }
+
+            if (knownTypes != null)
+            {
+                propertyInitializers.Add(new KnownTypesJsonConverterInitializer(knownTypes));
+            }
+
+            serializer.ContractResolver = new JsonDefaultContractResolver(propertyInitializers);
 
             var errorHandlerList = errorHandlers?.ToList();
 
@@ -77,13 +81,6 @@ namespace InfinniPlatform.Sdk.Serialization
 
                                         context.Handled = errorHandlerList.Any(h => h.Handle(target, member, error));
                                     };
-            }
-
-            serializer.ContractResolver = contractResolver ?? new JsonDefaultContractResolver();
-
-            if (knownTypes != null)
-            {
-                serializer.Converters.Add(new KnownTypesJsonConverter(knownTypes));
             }
 
             _serializer = serializer;
