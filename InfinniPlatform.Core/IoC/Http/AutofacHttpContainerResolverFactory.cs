@@ -1,10 +1,9 @@
 ﻿using System;
-
+using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.IoC;
-using Nancy.Extensions;
 
 namespace InfinniPlatform.Core.IoC.Http
 {
@@ -68,7 +67,7 @@ namespace InfinniPlatform.Core.IoC.Http
             catch (Exception error)
             {
                 var createModuleException = new InvalidOperationException(Resources.CannotCreateContainerModule, error);
-                createModuleException.Data.Add("AssemblyPath", moduleType.GetAssembly().Location);
+                createModuleException.Data.Add("AssemblyPath", moduleType.GetTypeInfo().Assembly.Location);
                 createModuleException.Data.Add("TypeFullName", moduleType.FullName);
                 throw createModuleException;
             }

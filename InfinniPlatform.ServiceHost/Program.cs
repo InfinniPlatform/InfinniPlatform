@@ -11,7 +11,7 @@ namespace InfinniPlatform.ServiceHost
 {
     public class Program
     {
-        private const string NugetProbingPath = "C:\\Users\\s.pevnev\\.nuget\\packages";
+        private static string NugetProbingPath => Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), ".nuget", "packages");
         private static readonly MergedDependencyContext MergedDependencyContext = new MergedDependencyContext();
         private static readonly Lazy<Dictionary<string, string>> LocalAssembliesCache = new Lazy<Dictionary<string, string>>(BuildLocalAssembliesCache);
 

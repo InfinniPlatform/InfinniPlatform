@@ -27,10 +27,8 @@ namespace InfinniPlatform.Core.Http.Hosting
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, HttpMiddleware[] httpMiddlewares)
+        public void Configure(IApplicationBuilder app, HttpMiddleware[] httpMiddlewares)
         {
-            loggerFactory.AddProvider(new LoggingProvider());
-
             foreach (var httpMiddleware in httpMiddlewares)
             {
                 httpMiddleware.Configure(app);

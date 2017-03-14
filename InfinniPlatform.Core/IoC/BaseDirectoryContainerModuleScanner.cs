@@ -74,21 +74,14 @@ namespace InfinniPlatform.Core.IoC
                 catch (BadImageFormatException)
                 {
                     //ignore
-                    Console.WriteLine($"BadImageFormatException: {assemblyFile}.");
                 }
                 catch (FileLoadException)
                 {
                     //ignore
-                    Console.WriteLine($"FileLoadException: {assemblyFile}.");
                 }
-                catch (ReflectionTypeLoadException e)
+                catch (ReflectionTypeLoadException)
                 {
-                    Console.WriteLine($"{assemblyFile}.");
-                    foreach (var loaderException in e.LoaderExceptions)
-                    {
-                        Console.WriteLine($"{loaderException.Message}.");
-                    }
-                    // ReflectionTypeLoadException
+                    //ignore
                 }
             }
 
