@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj" />
-    <PackageReference Include="Autofac" Version="4.3.0" />
+    <PackageReference Include="Autofac" Version="4.4.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.0.0" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="1.1.0" />
