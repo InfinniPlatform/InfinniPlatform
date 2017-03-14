@@ -10,7 +10,7 @@ namespace InfinniPlatform.Sdk.Serialization
     /// <summary>
     /// Осуществляет преобразование объекта в JSON-представление и обратно для случаев, когда тип объекта заранее не известен <see cref="object"/>.
     /// </summary>
-    internal class JsonObjectMemberConverter : JsonConverter
+    internal class ObjectMemberJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -20,7 +20,7 @@ namespace InfinniPlatform.Sdk.Serialization
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            // Логика сериализации по умолчанию
+            // Does not change the serialization logic
             serializer.Serialize(writer, value);
         }
 
@@ -29,17 +29,17 @@ namespace InfinniPlatform.Sdk.Serialization
         {
             if (reader.TokenType == JsonToken.StartObject)
             {
-                // JObject интерпретируются, как DynamicWrapper
+                // JObject is interpreted as DynamicWrapper
                 return serializer.Deserialize(reader, typeof(DynamicWrapper));
             }
 
             if (reader.TokenType == JsonToken.StartArray)
             {
-                // JArray интерпретируются, как List<object>
+                // JArray is interpreted as List<object>
                 return serializer.Deserialize(reader, typeof(List<object>));
             }
 
-            // Значение по умолчанию
+            // Default value
             return reader.Value;
         }
     }

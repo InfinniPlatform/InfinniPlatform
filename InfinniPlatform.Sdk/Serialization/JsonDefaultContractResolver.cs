@@ -14,6 +14,15 @@ namespace InfinniPlatform.Sdk.Serialization
     /// </summary>
     internal class JsonDefaultContractResolver : DefaultContractResolver
     {
+        public JsonDefaultContractResolver(IEnumerable<IJsonPropertyInitializer> propertyInitializers)
+        {
+            _propertyInitializers = propertyInitializers;
+        }
+
+
+        private readonly IEnumerable<IJsonPropertyInitializer> _propertyInitializers;
+
+
         /// <summary>
         /// Возвращает список членов типа, которые будут обрабатываться сериализатором.
         /// </summary>
@@ -68,7 +77,7 @@ namespace InfinniPlatform.Sdk.Serialization
             if (property.PropertyType == typeof(object))
             {
                 // Используется дополнительная логика при десериализации значения свойства
-                property.MemberConverter = new JsonObjectMemberConverter();
+                property.MemberConverter = new ObjectMemberJsonConverter();
             }
 
             if ((!property.Readable || !property.Writable) && IsSerializerVisible(member))
@@ -79,8 +88,11 @@ namespace InfinniPlatform.Sdk.Serialization
 
             property.PropertyName = GetSerializerPropertyName(member, property.PropertyName);
 
+            InitializeProperty(property, member, memberSerialization);
+
             return property;
         }
+
 
         /// <summary>
         /// Проверяет, что член типа помечен атрибутом <see cref="SerializerVisibleAttribute"/>.
@@ -96,6 +108,21 @@ namespace InfinniPlatform.Sdk.Serialization
         private static string GetSerializerPropertyName(MemberInfo member, string name)
         {
             return member.GetAttributeValue<SerializerPropertyNameAttribute, string>(i => i.Name, name);
+        }
+
+
+        /// <summary>
+        /// Настраивает <see cref="JsonProperty" /> соответствующее указанному члену типа <see cref="MemberInfo" />.
+        /// </summary>
+        private void InitializeProperty(JsonProperty property, MemberInfo member, MemberSerialization memberSerialization)
+        {
+            if (_propertyInitializers != null)
+            {
+                foreach (var propertyInitializer in _propertyInitializers)
+                {
+                    propertyInitializer.InitializeProperty(property, member, memberSerialization);
+                }
+            }
         }
     }
 }
