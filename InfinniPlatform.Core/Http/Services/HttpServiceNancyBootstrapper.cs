@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-
+using System.Runtime.Loader;
 using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Http.Services;
@@ -158,14 +158,13 @@ namespace InfinniPlatform.Core.Http.Services
 
         private void RegisterEmbeddedResource()
         {
-            //TODO Update embedded resource logic.
-//            foreach (var mapping in _staticContentSettings.EmbeddedResourceMapping)
-//            {
-//                var requestedPath = mapping.Key;
-//                var assembly = Assembly.Load(mapping.Value);
-//
-//                Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
-//            }
+            foreach (var mapping in _staticContentSettings.EmbeddedResourceMapping)
+            {
+                var requestedPath = mapping.Key;
+                var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(requestedPath);
+
+                Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
+            }
         }
     }
 }

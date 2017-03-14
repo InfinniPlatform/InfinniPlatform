@@ -5,6 +5,7 @@ using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Auth.Internal.Middlewares;
 using InfinniPlatform.Auth.Internal.Services;
 using InfinniPlatform.Auth.Internal.UserStorage;
+using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
@@ -13,8 +14,10 @@ using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace InfinniPlatform.Auth.Internal.IoC
 {
@@ -23,6 +26,14 @@ namespace InfinniPlatform.Auth.Internal.IoC
         public void Load(IContainerBuilder builder)
         {
             // AspNet.Identity
+
+            builder.RegisterFactory(CreateUserStore)
+                   .As<UserStore<IdentityUser>>()
+                   .SingleInstance();
+
+            builder.RegisterFactory(CreateRoleStore)
+                   .As<RoleStore<IdentityRole>>()
+                   .SingleInstance();
 
             // Менеджер работы с учетными записями пользователей для AspNet.Identity
             builder.RegisterFactory(CreateUserManager)
@@ -95,15 +106,16 @@ namespace InfinniPlatform.Auth.Internal.IoC
             var identityPasswordHasher = new DefaultAppUserPasswordHasher();
 
             // TODO Refactor validators.
+
             var userManager = new UserManager<IdentityUser>(identityUserStore,
-                                                                       new OptionsWrapper<IdentityOptions>(new IdentityOptions()),
-                                                                       identityPasswordHasher,
-                                                                       new List<IUserValidator<IdentityUser>> {identityUserValidator},
-                                                                       new List<IPasswordValidator<IdentityUser>>(),
-                                                                       new UpperInvariantLookupNormalizer(),
-                                                                       new IdentityErrorDescriber(),
-                                                                       resolver.Resolve<IServiceProvider>(), 
-                                                                       resolver.Resolve<ILogger<UserManager<IdentityUser>>>());
+                                                            new OptionsWrapper<IdentityOptions>(new IdentityOptions()),
+                                                            identityPasswordHasher,
+                                                            new List<IUserValidator<IdentityUser>> {identityUserValidator},
+                                                            new List<IPasswordValidator<IdentityUser>>(),
+                                                            new UpperInvariantLookupNormalizer(),
+                                                            new IdentityErrorDescriber(),
+                                                            resolver.Resolve<IServiceProvider>(),
+                                                            null);
 
             return userManager;
         }
@@ -111,6 +123,20 @@ namespace InfinniPlatform.Auth.Internal.IoC
         private static UserStorageSettings GetUserStorageSettings(IContainerResolver resolver)
         {
             return resolver.Resolve<IAppConfiguration>().GetSection<UserStorageSettings>(UserStorageSettings.SectionName);
+        }
+
+        private static UserStore<IdentityUser> CreateUserStore(IContainerResolver resolver)
+        {
+            var documentStorage = resolver.Resolve<IDocumentStorage<IdentityUser>>();
+
+            return new UserStore<IdentityUser>(documentStorage);
+        }
+
+        private static RoleStore<IdentityRole> CreateRoleStore(IContainerResolver resolver)
+        {
+            var documentStorage = resolver.Resolve<IDocumentStorage<IdentityRole>>();
+
+            return new RoleStore<IdentityRole>(documentStorage);
         }
     }
 }

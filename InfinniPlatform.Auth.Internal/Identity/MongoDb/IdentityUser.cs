@@ -4,8 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using InfinniPlatform.DocumentStorage.Contract;
 using Microsoft.AspNetCore.Identity;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 {
@@ -14,15 +12,17 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
     {
         public IdentityUser()
         {
-            Id = ObjectId.GenerateNewId().ToString();
             Roles = new List<string>();
             Logins = new List<IdentityUserLogin>();
             Claims = new List<IdentityUserClaim>();
             Tokens = new List<IdentityUserToken>();
         }
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string Id
+        {
+            get { return _id?.ToString(); }
+            set { _id = value; }
+        }
 
         public string UserName { get; set; }
 
@@ -48,19 +48,14 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public int AccessFailedCount { get; set; }
 
-        [BsonIgnoreIfNull]
         public List<string> Roles { get; set; }
 
-        [BsonIgnoreIfNull]
         public string PasswordHash { get; set; }
 
-        [BsonIgnoreIfNull]
         public List<IdentityUserLogin> Logins { get; set; }
 
-        [BsonIgnoreIfNull]
         public List<IdentityUserClaim> Claims { get; set; }
 
-        [BsonIgnoreIfNull]
         public List<IdentityUserToken> Tokens { get; set; }
 
         public void AddRole(string role)

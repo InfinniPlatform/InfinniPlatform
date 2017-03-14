@@ -4,9 +4,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using InfinniPlatform.DocumentStorage.Contract;
 using Microsoft.AspNetCore.Identity;
-using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 {
@@ -19,18 +18,23 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
                                     IUserPhoneNumberStore<TUser>,
                                     IUserTwoFactorStore<TUser>,
                                     IUserLockoutStore<TUser>,
-                                    IQueryableUserStore<TUser>,
+                                    //IQueryableUserStore<TUser>,
                                     IUserAuthenticationTokenStore<TUser>
         where TUser : IdentityUser
     {
-        private readonly IMongoCollection<TUser> _users;
+        private readonly IDocumentStorage<TUser> _users;
 
-        public UserStore(IMongoCollection<TUser> users)
+//        public UserStore(IMongoCollection<TUser> users)
+//        {
+//            _users = users;
+//        }
+
+        public UserStore(IDocumentStorage<TUser> users)
         {
             _users = users;
         }
 
-        public virtual IQueryable<TUser> Users => _users.AsQueryable();
+        //public virtual IQueryable<TUser> Users => _users.AsQueryable();
 
         public virtual async Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
         {
@@ -77,7 +81,7 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual async Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await _users.Find(u => u.Claims.Any(c => c.Type == claim.Type && c.Value == claim.Value), null).ToListAsync(cancellationToken);
+            return await _users.Find(u => u.Claims.Any(c => c.Type == claim.Type && c.Value == claim.Value)).ToListAsync();
         }
 
         public virtual async Task<bool> GetEmailConfirmedAsync(TUser user, CancellationToken token)
@@ -112,7 +116,7 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken token)
         {
-            return _users.Find(u => u.NormalizedEmail == normalizedEmail, null).FirstOrDefaultAsync(token);
+            return _users.Find(u => u.NormalizedEmail == normalizedEmail).FirstOrDefaultAsync();
         }
 
         public virtual Task<DateTimeOffset?> GetLockoutEndDateAsync(TUser user, CancellationToken token)
@@ -171,7 +175,7 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _users.Find(u => u.Logins.Any(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey), null).FirstOrDefaultAsync(cancellationToken);
+            return _users.Find(u => u.Logins.Any(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey)).FirstOrDefaultAsync();
         }
 
         public virtual void Dispose()
@@ -180,19 +184,19 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual async Task<IdentityResult> CreateAsync(TUser user, CancellationToken token)
         {
-            await _users.InsertOneAsync(user, null, token);
+            await _users.InsertOneAsync(user);
             return IdentityResult.Success;
         }
 
         public virtual async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken token)
         {
-            var replaceOneResult = await _users.ReplaceOneAsync(u => u.Id == user.Id, user, null, token);
+            var replaceOneResult = await _users.ReplaceOneAsync(user, u => u.Id == user.Id);
             return IdentityResult.Success;
         }
 
         public virtual async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken token)
         {
-            var deleteResult = await _users.DeleteOneAsync(u => u.Id == user.Id, token);
+            var deleteResult = await _users.DeleteOneAsync(u => u.Id == user.Id);
             return IdentityResult.Success;
         }
 
@@ -223,16 +227,12 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual Task<TUser> FindByIdAsync(string userId, CancellationToken token)
         {
-            if (!IsObjectId(userId))
-            {
-                return Task.FromResult(default(TUser));
-            }
-            return _users.Find(u => u.Id == userId, null).FirstOrDefaultAsync(token);
+            return _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
         }
 
         public virtual Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)
         {
-            return _users.Find(u => u.NormalizedUserName == normalizedUserName).FirstOrDefaultAsync(token);
+            return _users.Find(u => u.NormalizedUserName == normalizedUserName).FirstOrDefaultAsync();
         }
 
         public virtual async Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken token)
@@ -294,7 +294,7 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual async Task<IList<TUser>> GetUsersInRoleAsync(string normalizedRoleName, CancellationToken token)
         {
-            return await _users.Find(u => u.Roles.Contains(normalizedRoleName), null).ToListAsync(token);
+            return await _users.Find(u => u.Roles.Contains(normalizedRoleName)).ToListAsync();
         }
 
         public virtual async Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken token)
@@ -316,12 +316,6 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
         public virtual Task<bool> GetTwoFactorEnabledAsync(TUser user, CancellationToken token)
         {
             return Task.FromResult(user.TwoFactorEnabled);
-        }
-
-        private bool IsObjectId(string id)
-        {
-            ObjectId objectId;
-            return ObjectId.TryParse(id, out objectId);
         }
     }
 }

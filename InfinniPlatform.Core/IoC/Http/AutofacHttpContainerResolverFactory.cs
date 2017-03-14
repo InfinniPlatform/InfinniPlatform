@@ -1,7 +1,7 @@
 ﻿using System;
 
 using Autofac;
-
+using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.IoC;
 using Nancy.Extensions;
@@ -10,10 +10,8 @@ namespace InfinniPlatform.Core.IoC.Http
 {
     public class AutofacHttpContainerResolverFactory
     {
-        public IContainerResolver CreateContainerResolver()
+        public IContainerResolver CreateContainerResolver(ContainerBuilder autofacContainerBuilder)
         {
-            var autofacContainerBuilder = new ContainerBuilder();
-
             var containerModuleScanner = new BaseDirectoryContainerModuleScanner();
 
             // Поиск всех доступных модулей
@@ -41,11 +39,18 @@ namespace InfinniPlatform.Core.IoC.Http
             autofacContainerBuilder.RegisterInstance(containerResolverFactory);
             autofacContainerBuilder.Register(r => r.Resolve<Func<IContainerResolver>>()()).As<IContainerResolver>().SingleInstance();
 
+            // Регистрация контейнера для Asp.Net
+            IServiceProvider serviceProvider = null;
+            Func<IServiceProvider> serviceProviderFactory = () => serviceProvider;
+            autofacContainerBuilder.RegisterInstance(serviceProviderFactory);
+            autofacContainerBuilder.Register(r => r.Resolve<Func<IServiceProvider>>()()).As<IServiceProvider>().SingleInstance();
+
             // ReSharper restore AccessToModifiedClosure
 
             // Построение контейнера зависимостей
             autofacRootContainer = autofacContainerBuilder.Build();
             containerResolver = new AutofacContainerResolver(autofacRootContainer, AutofacRequestLifetimeScopeOwinMiddleware.TryGetRequestContainer);
+            serviceProvider = new AutofacServiceProvider(autofacRootContainer);
 
             return containerResolver;
         }

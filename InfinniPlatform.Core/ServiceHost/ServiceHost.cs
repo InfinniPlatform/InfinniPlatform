@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-
+using Autofac;
 using InfinniPlatform.Core.Http.Hosting;
 using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Core.Logging;
@@ -150,7 +150,7 @@ namespace InfinniPlatform.Core.ServiceHost
         private static IContainerResolver GetContainerResolver()
         {
             var containerResolverFactory = new AutofacHttpContainerResolverFactory();
-            var containerResolver = containerResolverFactory.CreateContainerResolver();
+            var containerResolver = containerResolverFactory.CreateContainerResolver(new ContainerBuilder());
 
             return containerResolver;
         }

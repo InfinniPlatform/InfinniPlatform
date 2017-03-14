@@ -2,10 +2,12 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.Core.IoC.Http;
+using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Http.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Core.Http.Hosting
 {
@@ -17,10 +19,6 @@ namespace InfinniPlatform.Core.Http.Hosting
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var builder = new ContainerBuilder();
-            var containerResolverFactory = new AutofacHttpContainerResolverFactory();
-            var containerResolver = containerResolverFactory.CreateContainerResolver();
-            
-            //builder.RegisterModule(new AutofacContainerModule());
 
             builder.Populate(services);
 
@@ -29,8 +27,10 @@ namespace InfinniPlatform.Core.Http.Hosting
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
-        public void Configure(IApplicationBuilder app, HttpMiddleware[] httpMiddlewares)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, HttpMiddleware[] httpMiddlewares)
         {
+            loggerFactory.AddProvider(new LoggingProvider());
+
             foreach (var httpMiddleware in httpMiddlewares)
             {
                 httpMiddleware.Configure(app);

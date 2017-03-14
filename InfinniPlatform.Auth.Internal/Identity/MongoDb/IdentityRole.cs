@@ -1,23 +1,19 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using InfinniPlatform.DocumentStorage.Contract;
 
 namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 {
-    public class IdentityRole
+    public class IdentityRole : Document
     {
-        public IdentityRole()
-        {
-            Id = ObjectId.GenerateNewId().ToString();
-        }
-
         public IdentityRole(string roleName)
-            : this()
         {
             Name = roleName;
         }
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string Id
+        {
+            get { return _id?.ToString(); }
+            set { _id = value; }
+        }
 
         public string Name { get; set; }
 

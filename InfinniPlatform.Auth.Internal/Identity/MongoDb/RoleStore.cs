@@ -1,21 +1,26 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using InfinniPlatform.DocumentStorage.Contract;
 using Microsoft.AspNetCore.Identity;
-using MongoDB.Driver;
 
 namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 {
     public class RoleStore<TRole> : IQueryableRoleStore<TRole> where TRole : IdentityRole
     {
-        private readonly IMongoCollection<TRole> _roles;
+        private readonly IDocumentStorage<TRole> _roles;
 
-        public RoleStore(IMongoCollection<TRole> roles)
+        //        public RoleStore(IMongoCollection<TRole> roles)
+        //        {
+        //            _roles = roles;
+        //        }
+
+        public RoleStore(IDocumentStorage<TRole> roles)
         {
             _roles = roles;
         }
 
-        public virtual IQueryable<TRole> Roles => _roles.AsQueryable();
+        public virtual IQueryable<TRole> Roles => _roles.Find().ToList().AsQueryable();
 
         public virtual void Dispose()
         {
@@ -23,19 +28,19 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual async Task<IdentityResult> CreateAsync(TRole role, CancellationToken token)
         {
-            await _roles.InsertOneAsync(role, null, token);
+            await _roles.InsertOneAsync(role);
             return IdentityResult.Success;
         }
 
         public virtual async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken token)
         {
-            var replaceOneResult = await _roles.ReplaceOneAsync(r => r.Id == role.Id, role, null, token);
+            var replaceOneResult = await _roles.ReplaceOneAsync(role, r => r.Id == role.Id);
             return IdentityResult.Success;
         }
 
         public virtual async Task<IdentityResult> DeleteAsync(TRole role, CancellationToken token)
         {
-            var deleteResult = await _roles.DeleteOneAsync(r => r.Id == role.Id, token);
+            var deleteResult = await _roles.DeleteOneAsync(r => r.Id == role.Id);
             return IdentityResult.Success;
         }
 
@@ -66,12 +71,12 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual Task<TRole> FindByIdAsync(string roleId, CancellationToken token)
         {
-            return _roles.Find(r => r.Id == roleId, null).FirstOrDefaultAsync(token);
+            return _roles.Find(r => r.Id == roleId).FirstOrDefaultAsync();
         }
 
         public virtual Task<TRole> FindByNameAsync(string normalizedName, CancellationToken token)
         {
-            return _roles.Find(r => r.NormalizedName == normalizedName, null).FirstOrDefaultAsync(token);
+            return _roles.Find(r => r.NormalizedName == normalizedName).FirstOrDefaultAsync();
         }
     }
 }

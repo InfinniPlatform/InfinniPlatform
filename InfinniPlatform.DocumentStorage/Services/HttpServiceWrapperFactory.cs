@@ -68,7 +68,8 @@ namespace InfinniPlatform.DocumentStorage.Services
         private static ModuleBuilder DefineHttpServiceWrapperModule()
         {
             //TODO Check if it's work.
-            var assemblyName = AssemblyLoadContext.GetAssemblyName("HttpServiceWrapperTypes");
+            //var assemblyName = AssemblyLoadContext.GetAssemblyName("HttpServiceWrapperTypes");
+            var assemblyName = new AssemblyName("HttpServiceWrapperTypes");
             var assembly = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
             var module = assembly.DefineDynamicModule(assemblyName.Name);
 
