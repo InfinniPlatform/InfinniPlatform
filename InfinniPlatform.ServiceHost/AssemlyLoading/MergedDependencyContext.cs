@@ -10,7 +10,6 @@ namespace InfinniPlatform.ServiceHost
     public class MergedDependencyContext
     {
         private readonly Dictionary<string, CompilationLibrary> _compilationLibraries;
-
         private readonly Dictionary<string, RuntimeLibrary> _runtimeLibraries;
 
         public MergedDependencyContext()

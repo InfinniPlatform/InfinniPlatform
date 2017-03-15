@@ -1,13 +1,10 @@
 ﻿using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using InfinniPlatform.Core.IoC.Http;
-using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Http.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Core.Http.Hosting
 {
