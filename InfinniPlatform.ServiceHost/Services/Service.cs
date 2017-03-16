@@ -10,11 +10,11 @@ namespace InfinniPlatform.ServiceHost.Services
     {
         public string Get()
         {
-            var path = Path.Combine("C:\\Projects\\InfinniAspNet\\Assemblies\\netstandard1.6", "InfinniPlatform.MessageQueue.dll");
+            var enumerateFiles = Directory.EnumerateFiles(".", "*MessageQueue.dll", SearchOption.AllDirectories);
 
             try
             {
-                var loadFromAssemblyPath = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+                var loadFromAssemblyPath = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.GetFullPath(enumerateFiles.First()));
 
                 var types = loadFromAssemblyPath.GetTypes();
 
