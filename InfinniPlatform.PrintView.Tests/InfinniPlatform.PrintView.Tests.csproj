@@ -22,6 +22,7 @@
     <None Remove="Images\BarcodeQrRotate270.png" />
     <None Remove="Images\BarcodeQrRotate90.png" />
     <None Remove="Images\Image.jpg" />
+    <None Remove="Images\Image.png" />
     <None Remove="Images\ImageRotate0.png" />
     <None Remove="Images\ImageRotate180.png" />
     <None Remove="Images\ImageRotate270.png" />
@@ -56,7 +57,7 @@
     <EmbeddedResource Include="Images\BarcodeQrRotate180.png" />
     <EmbeddedResource Include="Images\BarcodeQrRotate270.png" />
     <EmbeddedResource Include="Images\BarcodeQrRotate90.png" />
-    <EmbeddedResource Include="Images\Image.jpg" />
+    <EmbeddedResource Include="Images\Image.png" />
     <EmbeddedResource Include="Images\ImageRotate0.png" />
     <EmbeddedResource Include="Images\ImageRotate180.png" />
     <EmbeddedResource Include="Images\ImageRotate270.png" />

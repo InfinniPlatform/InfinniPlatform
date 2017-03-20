@@ -40,7 +40,7 @@ namespace InfinniPlatform.PrintView.Factories.Inline
                                      { EncodeHintType.PURE_BARCODE, !showText }
                                  };
 
-            var barcode = barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, width, height, barcodeHints);
+            var barcode = barcodeWriter.encode(barcodeText, BarcodeFormat.EAN_13, width, height, barcodeHints);
 
             barcodeImage.Data = GetBarcodeImageData(barcode);
             barcodeImage.Size.Height = height;

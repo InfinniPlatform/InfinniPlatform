@@ -24,7 +24,9 @@ namespace InfinniPlatform.Sdk.Dynamic
         /// </summary>
         public static bool IsInstanceOfType(this object target, Type type)
         {
-            return (target == null && !type.GetTypeInfo().IsValueType) || target.IsInstanceOfType(type);
+            var typeInfo = type.GetTypeInfo();
+
+            return (target == null && !typeInfo.IsValueType) || typeInfo.IsInstanceOfType(target);
         }
 
         /// <summary>
