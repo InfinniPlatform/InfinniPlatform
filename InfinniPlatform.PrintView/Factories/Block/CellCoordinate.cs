@@ -30,6 +30,10 @@ namespace InfinniPlatform.PrintView.Factories.Block
         /// </summary>
         public int Column { get; set; }
 
+        /// <summary>
+        /// Проверяет равенство текущего значения с указанным.
+        /// </summary>
+        /// <param name="other">Значение для сравнение с текущим.</param>
         public bool Equals(CellCoordinate other)
         {
             if (ReferenceEquals(null, other))
