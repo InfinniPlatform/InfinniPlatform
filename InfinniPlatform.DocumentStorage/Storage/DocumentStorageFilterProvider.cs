@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 using InfinniPlatform.DocumentStorage.Contract;
@@ -20,30 +19,20 @@ namespace InfinniPlatform.DocumentStorage.Storage
 
         public Func<IDocumentFilterBuilder, object> AddSystemFilter(Func<IDocumentFilterBuilder, object> filter)
         {
-            var tenants = GetAvailableTenants();
-
             return f =>
                    {
                        var appFilter = filter?.Invoke(f);
-                       var systemFilter = f.And(f.In("_header._tenant", tenants), f.Exists("_header._deleted", false));
+                       var systemFilter = f.And(f.Eq("_header._tenant", _tenantProvider.GetTenantId()), f.Exists("_header._deleted", false));
 
-                       return (appFilter != null) ? f.And(appFilter, systemFilter) : systemFilter;
+                       return appFilter != null ? f.And(appFilter, systemFilter) : systemFilter;
                    };
         }
 
         public Expression<Func<TDocument, bool>> AddSystemFilter<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : Document
         {
-            var tenants = GetAvailableTenants();
-
-            Expression<Func<TDocument, bool>> systemFilter = i => tenants.Contains(i._header._tenant) && i._header._deleted == null;
+            Expression<Func<TDocument, bool>> systemFilter = i => _tenantProvider.GetTenantId() == i._header._tenant && i._header._deleted == null;
 
             return filter.And(systemFilter);
-        }
-
-
-        private string[] GetAvailableTenants()
-        {
-            return new[] { _tenantProvider.GetTenantId(), DocumentStorageHelpers.AnonymousUser };
         }
     }
 }
