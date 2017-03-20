@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
+using InfinniPlatform.Core.IoC.AssemlyLoading;
 using InfinniPlatform.Sdk.IoC;
-using AssemblyExtensions = System.Reflection.Metadata.AssemblyExtensions;
 
 namespace InfinniPlatform.Core.IoC
 {
@@ -43,21 +42,22 @@ namespace InfinniPlatform.Core.IoC
                                          .Concat(Directory.EnumerateFiles(".", "*.exe", SearchOption.AllDirectories))
                                          .Select(Path.GetFullPath);
 
+            var appContext = new CustomAssemblyLoader();
+
             foreach (var assemblyFile in assemblyFiles)
             {
                 try
                 {
                     // Попытка загрузки сборки из найденного файла
                     var assemblyFullPath = Path.GetFullPath(assemblyFile);
-                    var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
+
+                    var assembly = appContext.LoadFromAssemblyPath(assemblyFullPath);
 
                     var name = assembly.GetName();
 
                     // При совпадении имен сборки, наибольший приоритет у сборки в корне проекта
                     if (!assemblies.ContainsKey(name))
                     {
-                        //var realAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
-
                         assemblies.Add(name, name);
 
                         var types = assembly.GetTypes();

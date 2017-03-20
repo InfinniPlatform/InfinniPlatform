@@ -4,13 +4,19 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.IoC;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace InfinniPlatform.Core.IoC.Http
 {
-    public class AutofacHttpContainerResolverFactory
+    public static class AutofacHttpContainerResolverFactory
     {
-        public IContainerResolver CreateContainerResolver(ContainerBuilder autofacContainerBuilder)
+        public static IServiceProvider BuildInfinniServiceProvider(this IServiceCollection serviceCollection)
         {
+            //AssemblyLoadContext.Default.Resolving += CustomAssemblyLoader.DefaultOnResolving;
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.Populate(serviceCollection);
+
             var containerModuleScanner = new BaseDirectoryContainerModuleScanner();
 
             // Поиск всех доступных модулей
@@ -21,7 +27,7 @@ namespace InfinniPlatform.Core.IoC.Http
                 var containerModule = CreateContainerModule(moduleType);
 
                 // Регистрация очередного модуля
-                autofacContainerBuilder.RegisterModule(new AutofacContainerModule(containerModule));
+                containerBuilder.RegisterModule(new AutofacContainerModule(containerModule));
             }
 
             // ReSharper disable AccessToModifiedClosure
@@ -29,31 +35,30 @@ namespace InfinniPlatform.Core.IoC.Http
             // Регистрация самого Autofac-контейнера
             IContainer autofacRootContainer = null;
             Func<IContainer> autofacRootContainerFactory = () => autofacRootContainer;
-            autofacContainerBuilder.RegisterInstance(autofacRootContainerFactory);
-            autofacContainerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
+            containerBuilder.RegisterInstance(autofacRootContainerFactory);
+            containerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
 
             // Регистрация обертки над контейнером
             IContainerResolver containerResolver = null;
             Func<IContainerResolver> containerResolverFactory = () => containerResolver;
-            autofacContainerBuilder.RegisterInstance(containerResolverFactory);
-            autofacContainerBuilder.Register(r => r.Resolve<Func<IContainerResolver>>()()).As<IContainerResolver>().SingleInstance();
+            containerBuilder.RegisterInstance(containerResolverFactory);
+            containerBuilder.Register(r => r.Resolve<Func<IContainerResolver>>()()).As<IContainerResolver>().SingleInstance();
 
             // Регистрация контейнера для Asp.Net
             IServiceProvider serviceProvider = null;
             Func<IServiceProvider> serviceProviderFactory = () => serviceProvider;
-            autofacContainerBuilder.RegisterInstance(serviceProviderFactory);
-            autofacContainerBuilder.Register(r => r.Resolve<Func<IServiceProvider>>()()).As<IServiceProvider>().SingleInstance();
+            containerBuilder.RegisterInstance(serviceProviderFactory);
+            containerBuilder.Register(r => r.Resolve<Func<IServiceProvider>>()()).As<IServiceProvider>().SingleInstance();
 
             // ReSharper restore AccessToModifiedClosure
 
             // Построение контейнера зависимостей
-            autofacRootContainer = autofacContainerBuilder.Build();
+            autofacRootContainer = containerBuilder.Build();
             containerResolver = new AutofacContainerResolver(autofacRootContainer, AutofacRequestLifetimeScopeOwinMiddleware.TryGetRequestContainer);
             serviceProvider = new AutofacServiceProvider(autofacRootContainer);
 
-            return containerResolver;
+            return serviceProvider;
         }
-
 
         private static IContainerModule CreateContainerModule(Type moduleType)
         {

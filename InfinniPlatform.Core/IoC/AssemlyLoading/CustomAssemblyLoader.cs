@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Runtime.Loader;
 using Microsoft.AspNetCore.Hosting;
 
-namespace InfinniPlatform.ServiceHost.AssemlyLoading
+namespace InfinniPlatform.Core.IoC.AssemlyLoading
 {
-    public static class CustomAssemblyLoader
+    public class CustomAssemblyLoader : AssemblyLoadContext
     {
         private static readonly MergedDependencyContext MergedDependencyContext = new MergedDependencyContext();
         private static readonly Lazy<Dictionary<string, string>> LocalAssembliesCache = new Lazy<Dictionary<string, string>>(BuildLocalAssembliesCache);
@@ -16,19 +16,19 @@ namespace InfinniPlatform.ServiceHost.AssemlyLoading
         private static string NugetProbingPath => Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), ".nuget", "packages");
 
         /// <summary>
-        ///     Инициализирует дополнительную логику загрузки сборок.
+        /// Инициализирует дополнительную логику загрузки сборок.
         /// </summary>
-        public static void UseCustomAssemblyLoading(this IApplicationLifetime appLifetime)
+        public static void UseCustomAssemblyLoading(IApplicationLifetime appLifetime)
         {
-            appLifetime.ApplicationStarted.Register(() => AssemblyLoadContext.Default.Resolving += DefaultOnResolving);
+            //appLifetime.ApplicationStarted.Register(() => AssemblyLoadContext.Default.Resolving += DefaultOnResolving);
         }
 
-        private static Assembly DefaultOnResolving(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
+        protected override Assembly Load(AssemblyName assemblyName)
         {
             if (LocalAssembliesCache.Value.ContainsKey(assemblyName.Name))
             {
                 var localAssemblyPath = LocalAssembliesCache.Value[assemblyName.Name];
-                return assemblyLoadContext.LoadFromAssemblyPath(localAssemblyPath);
+                return LoadFromAssemblyPath(localAssemblyPath);
             }
 
             var runtimeLibrary = MergedDependencyContext.GetRuntimeLibrary(assemblyName);
@@ -42,7 +42,7 @@ namespace InfinniPlatform.ServiceHost.AssemlyLoading
 
             if (File.Exists(fullAssemblyPath))
             {
-                return assemblyLoadContext.LoadFromAssemblyPath(fullAssemblyPath);
+                return LoadFromAssemblyPath(fullAssemblyPath);
             }
             if (Directory.Exists(fullAssemblyPath))
             {
@@ -51,7 +51,7 @@ namespace InfinniPlatform.ServiceHost.AssemlyLoading
 
                 if (assemblyPathInLib != null)
                 {
-                    return assemblyLoadContext.LoadFromAssemblyPath(assemblyPathInLib);
+                    return LoadFromAssemblyPath(assemblyPathInLib);
                 }
 
                 var assemblyPathInRuntimes = Directory.EnumerateFiles(Path.Combine(fullAssemblyPath, "runtimes"), "*.dll", SearchOption.AllDirectories)
@@ -59,7 +59,7 @@ namespace InfinniPlatform.ServiceHost.AssemlyLoading
 
                 if (assemblyPathInRuntimes != null)
                 {
-                    return assemblyLoadContext.LoadFromAssemblyPath(assemblyPathInRuntimes);
+                    return LoadFromAssemblyPath(assemblyPathInRuntimes);
                 }
             }
 
@@ -73,8 +73,9 @@ namespace InfinniPlatform.ServiceHost.AssemlyLoading
 
             foreach (var s in path)
             {
-                localAssemblies.Add(Path.GetFileNameWithoutExtension(s), Path.GetFullPath(s));
+                localAssemblies[Path.GetFileNameWithoutExtension(s)] = Path.GetFullPath(s);
             }
+
             return localAssemblies;
         }
     }

@@ -8,6 +8,11 @@
     <OutputPath>..\Assemblies\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="ServiceHost\**" />
+    <EmbeddedResource Remove="ServiceHost\**" />
+    <None Remove="ServiceHost\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj" />
     <PackageReference Include="Autofac" Version="4.4.0" />
@@ -20,6 +25,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.1" />
     <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
     <PackageReference Include="System.Diagnostics.FileVersionInfo" Version="4.3.0" />
   </ItemGroup>

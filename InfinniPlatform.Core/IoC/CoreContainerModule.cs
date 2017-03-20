@@ -1,7 +1,7 @@
 ﻿using System.Text;
-
 using InfinniPlatform.Core.Metadata;
 using InfinniPlatform.Core.Session;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Serialization;
@@ -43,6 +43,16 @@ namespace InfinniPlatform.Core.IoC
 
             builder.RegisterType<TenantProvider>()
                    .As<ITenantProvider>()
+                   .SingleInstance();
+
+            // Setttings
+
+            builder.RegisterType<AppConfiguration>()
+                   .As<IAppConfiguration>()
+                   .SingleInstance();
+
+            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<AppEnvironment>(AppEnvironment.SectionName))
+                   .As<IAppEnvironment>()
                    .SingleInstance();
         }
     }

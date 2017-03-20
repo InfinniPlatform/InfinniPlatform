@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyModel;
 
-namespace InfinniPlatform.ServiceHost
+namespace InfinniPlatform.Core.IoC.AssemlyLoading
 {
     public class MergedDependencyContext
     {
