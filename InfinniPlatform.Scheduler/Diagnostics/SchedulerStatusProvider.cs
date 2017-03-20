@@ -45,15 +45,15 @@ namespace InfinniPlatform.Scheduler.Diagnostics
         {
             builder.ServicePath = Name;
 
-            builder.OnBefore = r =>
+            builder.OnBefore = async r =>
                                {
                                    // Запрос статуса разрешен только с локального узла
-                                   if (!_hostAddressParser.IsLocalAddress(r.UserHostAddress))
+                                   if (!await _hostAddressParser.IsLocalAddress(r.UserHostAddress))
                                    {
-                                       return Task.FromResult<object>(HttpResponse.Forbidden);
+                                       return HttpResponse.Forbidden;
                                    }
 
-                                   return Task.FromResult<object>(null);
+                                   return null;
                                };
 
             // Состояние планировщика заданий

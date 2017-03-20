@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 using InfinniPlatform.Scheduler.Contract;
@@ -35,10 +36,12 @@ namespace InfinniPlatform.Scheduler.Common
                 throw new ArgumentNullException(nameof(type));
             }
 
-            return type.IsClass
-                   && !type.IsAbstract
-                   && !type.IsGenericType
-                   && typeof(IJobHandler).IsAssignableFrom(type)
+            var typeInfo = type.GetTypeInfo();
+
+            return typeInfo.IsClass
+                   && !typeInfo.IsAbstract
+                   && !typeInfo.IsGenericType
+                   && typeof(IJobHandler).GetTypeInfo().IsAssignableFrom(type)
                    && _resolver.Services.Any(t => t == type);
         }
 
@@ -53,7 +56,7 @@ namespace InfinniPlatform.Scheduler.Common
             var typeName = type.FullName;
 
             // Только имя сборки (без версии и т.п.)
-            var assemblyName = type.Assembly.GetName().Name;
+            var assemblyName = type.GetTypeInfo().Assembly.GetName().Name;
 
             return $"{typeName},{assemblyName}";
         }
@@ -87,7 +90,7 @@ namespace InfinniPlatform.Scheduler.Common
 
             // Поиск типа обработчика заданий в контейнере зависимостей
             type = _resolver.Services.FirstOrDefault(t => string.Equals(t.FullName, typeName, StringComparison.Ordinal)
-                                                          && string.Equals(t.Assembly.GetName().Name, assemblyName, StringComparison.Ordinal));
+                                                          && string.Equals(t.GetTypeInfo().Assembly.GetName().Name, assemblyName, StringComparison.Ordinal));
 
             if (type == null)
             {

@@ -41,10 +41,10 @@ namespace InfinniPlatform.Core.Diagnostics
                                    // Запрос статуса разрешен только с локального узла
                                    if (!await _hostAddressParser.IsLocalAddress(r.UserHostAddress))
                                    {
-                                       return Task.FromResult<object>(HttpResponse.Forbidden);
+                                       return HttpResponse.Forbidden;
                                    }
 
-                                   return Task.FromResult<object>(null);
+                                   return null;
                                };
 
             // Краткая информация о статусе системы
