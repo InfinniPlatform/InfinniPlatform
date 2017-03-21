@@ -17,32 +17,51 @@ namespace InfinniPlatform.TestRunner
             var currentDirectory = Path.GetDirectoryName(executingAssembly.Location);
             Directory.SetCurrentDirectory(currentDirectory);
 
-            var nUnitLiteArgs = new List<string>();
+            var success = true;
 
-            // Defines test assemblies
-
+            // Finds test assemblies
             var testAssemblies = Directory.GetFiles(currentDirectory, "*.Tests.dll");
 
             foreach (var testAssembly in testAssemblies)
             {
-                nUnitLiteArgs.Add(Path.GetFileName(testAssembly));
+                var testAssemblyFile = Path.GetFileName(testAssembly);
+                var testAssemblyResult = Path.GetFileNameWithoutExtension(testAssemblyFile) + ".TestResult.xml";
+
+                var nUnitLiteArgs = new List<string>();
+
+                nUnitLiteArgs.Add(testAssemblyFile);
+
+                // Defines test scope by using https://github.com/nunit/docs/wiki/Test-Selection-Language
+                //nUnitLiteArgs.AddRange(new[] { "--where", "cat==UnitTest" });
+                //nUnitLiteArgs.AddRange(new[] { "--where", "method==UniqueTestMethod" });
+                //nUnitLiteArgs.AddRange(new[] { "--where", "test==Namespace.TestClass.TestMethod" });
+
+                // Defines the testing result file
+                nUnitLiteArgs.Add($"--result={testAssemblyResult}");
+
+                var result = new AutoRun(null).Execute(nUnitLiteArgs.ToArray());
+
+                success &= (result == 0);
             }
 
-            // Defines test scope by using https://github.com/nunit/docs/wiki/Test-Selection-Language
-            //nUnitLiteArgs.AddRange(new[] { "--where", "cat==UnitTest" });
-            //nUnitLiteArgs.AddRange(new[] { "--where", "method==UniqueTestMethod" });
-            //nUnitLiteArgs.AddRange(new[] { "--where", "test==Namespace.TestClass.TestMethod" });
-
-            // Defines the testing result file
-            nUnitLiteArgs.Add($"--result={Path.Combine(currentDirectory, "TestResult.xml")}");
-
-            var result = new AutoRun(null).Execute(nUnitLiteArgs.ToArray());
+            if (success)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("All tests successfully passed");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Some tests passed with errors");
+                Console.ResetColor();
+            }
 
 #if DEBUG
             Console.ReadLine();
 #endif
 
-            return result;
+            return success ? 0 : 1;
         }
     }
 }

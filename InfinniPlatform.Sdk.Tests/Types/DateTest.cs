@@ -237,7 +237,7 @@ namespace InfinniPlatform.Sdk.Tests.Types
         {
             // Given
             var date = Date.Now;
-            var expectedDateString = new DateTime(date.Year, date.Month, date.Day).ToShortDateString();
+            var expectedDateString = new DateTime(date.Year, date.Month, date.Day).ToString("d");
 
             // When
             var actualDateString = date.ToString();
@@ -251,7 +251,7 @@ namespace InfinniPlatform.Sdk.Tests.Types
         {
             // Given
             var date = Date.Now;
-            var expectedDateString = new DateTime(date.Year, date.Month, date.Day).ToShortDateString();
+            var expectedDateString = new DateTime(date.Year, date.Month, date.Day).ToString("d");
 
             // When
             var actualDateString = date.ToShortDateString();
@@ -265,7 +265,7 @@ namespace InfinniPlatform.Sdk.Tests.Types
         {
             // Given
             var date = Date.Now;
-            var expectedDateString = new DateTime(date.Year, date.Month, date.Day).ToLongDateString();
+            var expectedDateString = new DateTime(date.Year, date.Month, date.Day).ToString("D");
 
             // When
             var actualDateString = date.ToLongDateString();
