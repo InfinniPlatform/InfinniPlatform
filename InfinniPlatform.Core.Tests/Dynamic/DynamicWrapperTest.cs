@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
 
@@ -163,20 +162,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
         }
 
         [Test]
-        public void SholdCloneWhenContentIsSimple()
-        {
-            // Given
-            dynamic target = CreateTestEntity("123");
-
-            // When
-            dynamic clone = target.Clone();
-
-            // Then
-            Assert.IsFalse(target.Equals(clone));
-            Assert.IsTrue(target.Content.Equals(clone.Content));
-        }
-
-        [Test]
         public void ShouldAddDynamicMethodWhenSubscribe()
         {
             // Given
@@ -190,87 +175,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
 
             // Then
             Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void ShouldCloneWhenContentIsComplex()
-        {
-            // Given
-            dynamic content = CreateTestEntity("123");
-            dynamic target = CreateTestEntity(content);
-
-            // When
-            dynamic clone = target.Clone();
-
-            // Then
-            Assert.IsFalse(target.Equals(clone));
-            Assert.IsFalse(target.Content.Equals(clone.Content));
-            Assert.IsTrue(target.Content.Content.Equals(clone.Content.Content));
-        }
-
-        [Test]
-        public void ShouldCloneWhenContentIsComplexCollection()
-        {
-            // Given
-            var content = new List<object> {CreateTestEntity("1"), CreateTestEntity("2")};
-            dynamic target = CreateTestEntity(content);
-
-            // When
-            dynamic clone = target.Clone();
-
-            // Then
-            Assert.IsFalse(target.Equals(clone));
-            Assert.IsFalse(target.Content.Equals(clone.Content));
-            Assert.IsTrue(target.Content.Count.Equals(clone.Content.Count));
-            Assert.IsFalse(target.Content[0].Equals(clone.Content[0]));
-            Assert.IsFalse(target.Content[1].Equals(clone.Content[1]));
-            Assert.IsTrue(target.Content[0].Content.Equals(clone.Content[0].Content));
-            Assert.IsTrue(target.Content[1].Content.Equals(clone.Content[1].Content));
-        }
-
-        [Test]
-        public void ShouldCloneWhenContentIsSimpleCollection()
-        {
-            // Given
-            var content = new List<string> {"1", "2", "3"};
-            dynamic target = CreateTestEntity(content);
-
-            // When
-            dynamic clone = target.Clone();
-
-            // Then
-            Assert.IsFalse(target.Equals(clone));
-            Assert.IsFalse(target.Content.Equals(clone.Content));
-            Assert.IsTrue(target.Content.Count.Equals(clone.Content.Count));
-            Assert.IsTrue(target.Content[0].Equals(clone.Content[0]));
-            Assert.IsTrue(target.Content[1].Equals(clone.Content[1]));
-            Assert.IsTrue(target.Content[2].Equals(clone.Content[2]));
-        }
-
-        [Test]
-        public void ShouldCloneWhenCyclicReferences()
-        {
-            // Given
-            dynamic target1 = CreateTestEntity(1);
-            dynamic target2 = CreateTestEntity(2);
-            dynamic target3 = CreateTestEntity(3);
-            target1.Reference = target2;
-            target2.Reference = target3;
-            target3.Reference = target1;
-
-            // When
-            dynamic clone = target1.Clone();
-
-            // Then
-            Assert.IsFalse(clone.Equals(target1));
-            Assert.IsTrue(clone.Content.Equals(target1.Content));
-            Assert.IsFalse(clone.Reference.Equals(target2));
-            Assert.IsTrue(clone.Reference.Content.Equals(target2.Content));
-            Assert.IsFalse(clone.Reference.Reference.Equals(target3));
-            Assert.IsTrue(clone.Reference.Reference.Content.Equals(target3.Content));
-            Assert.IsFalse(clone.Reference.Reference.Reference.Equals(target1));
-            Assert.IsTrue(clone.Reference.Reference.Reference.Content.Equals(target1.Content));
-            Assert.IsTrue(clone.Reference.Reference.Reference.Equals(clone));
         }
 
 

@@ -216,49 +216,6 @@ namespace InfinniPlatform.Core.Tests.Dynamic
         }
 
         [Test]
-        public void ShouldFastAsJObjectNative()
-        {
-            var stopWatch = Stopwatch.StartNew();
-
-            dynamic dynamicWrapper = new DynamicWrapper();
-            var attachments = new List<string>
-                              {
-                                  "1",
-                                  "2",
-                                  "3"
-                              };
-
-            dynamicWrapper.Attachments = attachments;
-
-            Console.WriteLine(dynamicWrapper.Attachments[0]);
-            Console.WriteLine(dynamicWrapper.Attachments[1]);
-            Console.WriteLine(dynamicWrapper.Attachments[2]);
-
-            stopWatch.Stop();
-            Console.WriteLine(stopWatch.ElapsedMilliseconds);
-
-
-            stopWatch = Stopwatch.StartNew();
-
-            dynamic jobject = new DynamicWrapper();
-            dynamic jattachments = new[]
-                                   {
-                                       "1",
-                                       "2",
-                                       "3"
-                                   };
-
-            jobject.Attachments = jattachments;
-
-            Console.WriteLine(jobject.Attachments[0]);
-            Console.WriteLine(jobject.Attachments[1]);
-            Console.WriteLine(jobject.Attachments[2]);
-
-            stopWatch.Stop();
-            Console.WriteLine(stopWatch.ElapsedMilliseconds);
-        }
-
-        [Test]
         public void ShouldGetPropertiesList()
         {
             dynamic dynamicWrapper = new DynamicWrapper();

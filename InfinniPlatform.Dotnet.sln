@@ -59,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Caching.Tests", "InfinniPlatform.Caching.Tests\InfinniPlatform.Caching.Tests.csproj", "{1F888EA1-867E-42C4-BE8C-6ABFCB32DC56}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Core.Tests", "InfinniPlatform.Core.Tests\InfinniPlatform.Core.Tests.csproj", "{5A62E683-64B3-46F0-8857-E60276123698}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -468,6 +470,24 @@ Global
 		{1F888EA1-867E-42C4-BE8C-6ABFCB32DC56}.Release|x64.Build.0 = Release|Any CPU
 		{1F888EA1-867E-42C4-BE8C-6ABFCB32DC56}.Release|x86.ActiveCfg = Release|Any CPU
 		{1F888EA1-867E-42C4-BE8C-6ABFCB32DC56}.Release|x86.Build.0 = Release|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Debug|x86.Build.0 = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.DebugTools|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.DebugTools|Any CPU.Build.0 = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.DebugTools|x64.ActiveCfg = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.DebugTools|x64.Build.0 = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.DebugTools|x86.ActiveCfg = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.DebugTools|x86.Build.0 = Debug|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Release|x64.Build.0 = Release|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A62E683-64B3-46F0-8857-E60276123698}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -494,5 +514,6 @@ Global
 		{2E93C4C3-710C-4016-9E10-BBEB8C96F25B} = {4FB7CC46-2521-4E3A-A968-EA7E685BA3A3}
 		{67EFB476-E563-47CB-BE15-F8882C9108CF} = {1808887E-7571-4676-A658-73124B206D83}
 		{1F888EA1-867E-42C4-BE8C-6ABFCB32DC56} = {1808887E-7571-4676-A658-73124B206D83}
+		{5A62E683-64B3-46F0-8857-E60276123698} = {4FB7CC46-2521-4E3A-A968-EA7E685BA3A3}
 	EndGlobalSection
 EndGlobal
