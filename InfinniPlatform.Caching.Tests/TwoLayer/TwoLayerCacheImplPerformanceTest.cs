@@ -4,8 +4,8 @@ using System.Diagnostics;
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.MessageQueue.Contract.Producers;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
 
 using Moq;
@@ -25,8 +25,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         public void SetUp()
         {
             var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(env => env.Name)
-                              .Returns(nameof(TwoLayerCacheImplPerformanceTest));
+            appEnvironmentMock.SetupGet(env => env.Name).Returns(nameof(TwoLayerCacheImplPerformanceTest));
 
             var settings = new RedisConnectionSettings
             {
@@ -37,7 +36,7 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
-            var memoryCache = new MemoryCacheImpl(appEnvironmentMock.Object);
+            var memoryCache = new MemoryCacheImpl();
             var redisCache = new RedisCacheImpl(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
             var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, appEnvironmentMock.Object, new Mock<IBroadcastProducer>().Object, new Mock<ILog>().Object);
 

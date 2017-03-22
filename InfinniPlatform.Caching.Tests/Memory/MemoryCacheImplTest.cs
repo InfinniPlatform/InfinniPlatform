@@ -1,9 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Memory;
-using InfinniPlatform.Sdk.Settings;
-
-using Moq;
 
 using NUnit.Framework;
 
@@ -18,11 +15,7 @@ namespace InfinniPlatform.Caching.Tests.Memory
         [SetUp]
         public void SetUp()
         {
-            var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(env => env.Name)
-                              .Returns(nameof(MemoryCacheImplTest));
-
-            _cache = new MemoryCacheImpl(appEnvironmentMock.Object);
+            _cache = new MemoryCacheImpl();
         }
 
         [TearDown]
@@ -202,33 +195,6 @@ namespace InfinniPlatform.Caching.Tests.Memory
 
             // Then
             Assert.IsFalse(result);
-        }
-
-
-        [Test]
-        public void ClearShouldDeleteAllKeysFromCache()
-        {
-            // Given
-            const string key1 = "Clear_Key1";
-            const string key2 = "Clear_Key2";
-            const string key3 = "Clear_Key3";
-            const string value1 = "Clear_Value1";
-            const string value2 = "Clear_Value1";
-            const string value3 = "Clear_Value1";
-
-            // When
-            _cache.Set(key1, value1);
-            _cache.Set(key2, value2);
-            _cache.Set(key3, value3);
-            _cache.Clear();
-            var result1 = _cache.Contains(key1);
-            var result2 = _cache.Contains(key2);
-            var result3 = _cache.Contains(key3);
-
-            // Then
-            Assert.IsFalse(result1);
-            Assert.IsFalse(result2);
-            Assert.IsFalse(result3);
         }
     }
 }
