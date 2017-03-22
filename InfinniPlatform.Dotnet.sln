@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Scheduler.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Sdk.Tests", "InfinniPlatform.Sdk.Tests\InfinniPlatform.Sdk.Tests.csproj", "{2E93C4C3-710C-4016-9E10-BBEB8C96F25B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage.Tests", "InfinniPlatform.BlobStorage.Tests\InfinniPlatform.BlobStorage.Tests.csproj", "{67EFB476-E563-47CB-BE15-F8882C9108CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -428,6 +430,24 @@ Global
 		{2E93C4C3-710C-4016-9E10-BBEB8C96F25B}.Release|x64.Build.0 = Release|Any CPU
 		{2E93C4C3-710C-4016-9E10-BBEB8C96F25B}.Release|x86.ActiveCfg = Release|Any CPU
 		{2E93C4C3-710C-4016-9E10-BBEB8C96F25B}.Release|x86.Build.0 = Release|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Debug|x86.Build.0 = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.DebugTools|Any CPU.ActiveCfg = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.DebugTools|Any CPU.Build.0 = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.DebugTools|x64.ActiveCfg = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.DebugTools|x64.Build.0 = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.DebugTools|x86.ActiveCfg = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.DebugTools|x86.Build.0 = Debug|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Release|x64.Build.0 = Release|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Release|x86.ActiveCfg = Release|Any CPU
+		{67EFB476-E563-47CB-BE15-F8882C9108CF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -452,5 +472,6 @@ Global
 		{AE95E065-069F-42DE-B6BC-9EE32354BDC5} = {1808887E-7571-4676-A658-73124B206D83}
 		{A05B9CDD-9877-4AEF-A2F2-8D4F828141F6} = {1808887E-7571-4676-A658-73124B206D83}
 		{2E93C4C3-710C-4016-9E10-BBEB8C96F25B} = {4FB7CC46-2521-4E3A-A968-EA7E685BA3A3}
+		{67EFB476-E563-47CB-BE15-F8882C9108CF} = {1808887E-7571-4676-A658-73124B206D83}
 	EndGlobalSection
 EndGlobal

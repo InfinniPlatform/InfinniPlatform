@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.BlobStorage.Tests\InfinniPlatform.BlobStorage.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.PrintView.Tests\InfinniPlatform.PrintView.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Scheduler.Tests\InfinniPlatform.Scheduler.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Sdk.Tests\InfinniPlatform.Sdk.Tests.csproj" />

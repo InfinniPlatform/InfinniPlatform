@@ -90,8 +90,8 @@ namespace InfinniPlatform.BlobStorage.Tests
             Assert.AreEqual(blobNameV1, dataV1.Info.Name);
             Assert.AreEqual(blobTypeV1, infoV1.Type);
             Assert.AreEqual(blobTypeV1, dataV1.Info.Type);
-            Assert.AreEqual(blobDataV1.LongLength, infoV1.Size);
-            Assert.AreEqual(blobDataV1.LongLength, dataV1.Info.Size);
+            Assert.AreEqual(blobDataV1.Length, infoV1.Size);
+            Assert.AreEqual(blobDataV1.Length, dataV1.Info.Size);
             Assert.AreEqual(infoV1.Time, dataV1.Info.Time);
             AssertDateTime(timeV1, infoV1.Time);
             CollectionAssert.AreEqual(blobDataV1, dataV1Bytes);
@@ -106,8 +106,8 @@ namespace InfinniPlatform.BlobStorage.Tests
             Assert.AreEqual(blobNameV2, dataV2.Info.Name);
             Assert.AreEqual(blobTypeV2, infoV2.Type);
             Assert.AreEqual(blobTypeV2, dataV2.Info.Type);
-            Assert.AreEqual(blobDataV2.LongLength, infoV2.Size);
-            Assert.AreEqual(blobDataV2.LongLength, dataV2.Info.Size);
+            Assert.AreEqual(blobDataV2.Length, infoV2.Size);
+            Assert.AreEqual(blobDataV2.Length, dataV2.Info.Size);
             Assert.AreEqual(infoV2.Time, dataV2.Info.Time);
             AssertDateTime(timeV2, infoV2.Time);
             CollectionAssert.AreEqual(blobDataV2, dataV2Bytes);
