@@ -16,9 +16,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Auth.Adfs\InfinniPlatform.Auth.Adfs.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Auth.Cookie\InfinniPlatform.Auth.Cookie.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Auth.Facebook\InfinniPlatform.Auth.Facebook.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Auth.Google\InfinniPlatform.Auth.Google.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj" />
     <ProjectReference Include="..\InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj" />
   </ItemGroup>
 
 </Project>

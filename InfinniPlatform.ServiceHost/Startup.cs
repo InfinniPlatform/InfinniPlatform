@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Extensions;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.ServiceHost.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -16,35 +15,17 @@ namespace InfinniPlatform.ServiceHost
     {
         public IServiceProvider ConfigureServices(IServiceCollection serviceCollection)
         {
-            // #1
-            //var serviceProvider = new InfinniPlatformServiceProvider(serviceCollection);
-
-            //serviceProvider.AddDocumentStorage()
-            //               .AddAuthentication();
-
-            //return serviceProvider;
-
-            // #2
-            //var serviceProvider = new InfinniPlatformServiceProviderFactory(serviceCollection);
-
-            //serviceProvider.AddDocumentStorage()
-            //               .AddAuthentication();
-
-            //return serviceProvider.Create();
-
-            // #3
-            //return new InfinniPlatformServiceProviderFactory(serviceCollection)
-            //        .AddDocumentStorage()
-            //        .AddAuthentication()
-            //        .Create();
-
-            // #4
-            //return serviceCollection.AddDocumentStorage()
-            //                        .AddAuthentication()
-            //                        .Create();
-
-            var configureServices = serviceCollection.AddInfDocumentStorage()
-                                                     .AddInfAuthentication()
+            var configureServices = serviceCollection.AddInfAuthentication()
+                                                     .AddInfAdfsAuthentication()
+                                                     .AddInfCookieAuthentication()
+                                                     .AddInfGoogleAuthentication()
+                                                     .AddInfFacebookAuthentication()
+                                                     .AddInfBlobStorage()
+                                                     .AddInfCaching()
+                                                     .AddInfDocumentStorage()
+                                                     .AddInfMessageQueue()
+                                                     .AddInfPrintView()
+                                                     .AddInfScheduler()
                                                      .BuildProvider();
 
             return configureServices;
@@ -69,7 +50,7 @@ namespace InfinniPlatform.ServiceHost
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMiddleware<TestMiddleware>();
+            app.Run(context => context.Response.WriteAsync("InfinniPlatform app started."));
         }
     }
 }
