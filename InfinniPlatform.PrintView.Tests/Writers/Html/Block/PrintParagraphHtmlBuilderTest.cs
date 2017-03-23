@@ -4,7 +4,6 @@ using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Model.Block;
 using InfinniPlatform.PrintView.Model.Defaults;
 using InfinniPlatform.PrintView.Model.Inline;
-using InfinniPlatform.PrintView.Tests.Properties;
 
 using NUnit.Framework;
 

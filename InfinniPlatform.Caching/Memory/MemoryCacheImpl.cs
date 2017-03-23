@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Microsoft.Extensions.Caching.Memory;
 
 namespace InfinniPlatform.Caching.Memory
@@ -82,15 +83,6 @@ namespace InfinniPlatform.Caching.Memory
                 return false;
             }
         }
-
-        // TODO Cant get all items from cache Microsoft.Extensions.Caching.Memory.MemoryCache
-//        public void Clear()
-//        {
-//            foreach (var item in _cache.ToArray())
-//            {
-//                _cache.Remove(item.Key);
-//            }
-//        }
 
         public void Dispose()
         {

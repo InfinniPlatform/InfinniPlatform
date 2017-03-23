@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Scheduler.Common;
+﻿using System.Reflection;
+
+using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Diagnostics;
 using InfinniPlatform.Scheduler.Hosting;
@@ -25,6 +27,8 @@ namespace InfinniPlatform.Scheduler.IoC
     {
         public void Load(IContainerBuilder builder)
         {
+            var schedulerAssembly = GetType().GetTypeInfo().Assembly;
+
             // Common
 
             // Настройки планировщика заданий
@@ -85,7 +89,7 @@ namespace InfinniPlatform.Scheduler.IoC
             // Queues
 
             // Обработчики шины сообщений
-            builder.RegisterConsumers(GetType().Assembly);
+            builder.RegisterConsumers(schedulerAssembly);
 
             // Quartz
 
@@ -117,7 +121,7 @@ namespace InfinniPlatform.Scheduler.IoC
                    .As<IAppEventHandler>()
                    .SingleInstance();
 
-            builder.RegisterJobHandlers(GetType().Assembly);
+            builder.RegisterJobHandlers(schedulerAssembly);
         }
 
 

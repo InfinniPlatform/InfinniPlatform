@@ -7,7 +7,7 @@ namespace InfinniPlatform.PrintView.Tests
 {
     internal class ResourceHelper
     {
-        public static ImageInfo Image => GetEmbeddedResourceImage("Images.Image.jpg");
+        public static ImageInfo Image => GetEmbeddedResourceImage("Images.Image.png");
         public static ImageInfo ImageRotate0 => GetEmbeddedResourceImage("Images.ImageRotate0.png");
         public static ImageInfo ImageRotate180 => GetEmbeddedResourceImage("Images.ImageRotate180.png");
         public static ImageInfo ImageRotate270 => GetEmbeddedResourceImage("Images.ImageRotate270.png");

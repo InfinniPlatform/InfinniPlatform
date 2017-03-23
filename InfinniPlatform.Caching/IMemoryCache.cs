@@ -36,11 +36,5 @@
         /// </summary>
         /// <param name="key">Ключ.</param>
         bool Remove(string key);
-
-        /// <summary>
-        /// Очищает кэш.
-        /// </summary>
-        // TODO Cant get all items from cache Microsoft.Extensions.Caching.Memory.MemoryCache
-        //void Clear();
     }
 }

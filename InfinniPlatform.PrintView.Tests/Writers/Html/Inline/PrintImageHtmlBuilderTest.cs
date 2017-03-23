@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.PrintView.Model.Inline;
-using InfinniPlatform.PrintView.Tests.Properties;
 
 using NUnit.Framework;
 
@@ -7,7 +6,6 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Inline
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
-    [Ignore("Because ImageFormat.Png is not independent")]
     public sealed class PrintImageHtmlBuilderTest
     {
         [Test]

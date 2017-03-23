@@ -569,7 +569,6 @@ namespace InfinniPlatform.PrintView.Tests.Expressions
 
         [Test]
         [TestCaseSource(nameof(ArrayCreationExpressionCases))]
-        [Ignore("Can not create multidimensional array with reflection in Mono")]
         public void ArrayCreationExpression(KeyValuePair<string, Array> testCase)
         {
             AssertExecuteExpression(testCase.Key, testCase.Value);

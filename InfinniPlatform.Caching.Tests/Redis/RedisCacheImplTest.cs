@@ -20,8 +20,7 @@ namespace InfinniPlatform.Caching.Tests.Redis
         public void SetUp()
         {
             var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(env => env.Name)
-                              .Returns(nameof(RedisCacheImplTest));
+            appEnvironmentMock.SetupGet(env => env.Name).Returns(nameof(RedisCacheImplTest));
 
             var settings = new RedisConnectionSettings
             {

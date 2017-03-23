@@ -94,7 +94,7 @@ namespace InfinniPlatform.PrintView.Tests.Contract
                 writer.Flush();
             }
 
-            Process.Start(fileName);
+            Process.Start("explorer.exe", fileName);
         }
     }
 }

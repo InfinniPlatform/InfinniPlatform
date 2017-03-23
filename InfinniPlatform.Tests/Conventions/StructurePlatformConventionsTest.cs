@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Xml.Linq;
 
 using NUnit.Framework;
@@ -16,80 +15,37 @@ namespace InfinniPlatform.Conventions
     {
         static StructurePlatformConventionsTest()
         {
-            var testAssemblyPath = new Uri(typeof(StructurePlatformConventionsTest).GetTypeInfo().Assembly.CodeBase).LocalPath;
-
-            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(testAssemblyPath)) ?? ".";
-            PackagesDir = ".." + Path.DirectorySeparatorChar + "packages" + Path.DirectorySeparatorChar;
-
+            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
             SolutionProjects = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*").ToArray();
             SolutionCodeProjects = SolutionProjects.Where(p => !p.EndsWith(".Tests")).ToArray();
-            SolutionTestProjects = SolutionProjects.Where(p => p.EndsWith(".Tests")).ToArray();
-
-            ProjectNamespace = XNamespace.Get("http://schemas.microsoft.com/developer/msbuild/2003");
 
             Console.WriteLine(@"SolutionDir={0}", SolutionDir);
         }
 
 
         private const string SolutionName = "InfinniPlatform";
-        private const string SolutionOutDir = "Assemblies";
+        private const string SolutionOutDir = @"..\Assemblies\";
 
         private static readonly string SolutionDir;
-        private static readonly string PackagesDir;
         private static readonly string[] SolutionProjects;
         private static readonly string[] SolutionCodeProjects;
-        private static readonly string[] SolutionTestProjects;
-        private static readonly XNamespace ProjectNamespace;
 
 
         [Test]
         [TestCaseSource(nameof(SolutionCodeProjects))]
-        [Description(@"Проект должен иметь тестовый проект")]
-        public void CodeProjectShouldHaveTestProject(string project)
-        {
-            // Given
-            var expectedTestProject = project + ".Tests";
-
-            // When
-            var result = project.EndsWith("InfinniPlatform.ServiceHost")
-                         || project.EndsWith("InfinniPlatform.Auth.Adfs")
-                         || project.EndsWith("InfinniPlatform.Auth.Cookie")
-                         || project.EndsWith("InfinniPlatform.Auth.Facebook")
-                         || project.EndsWith("InfinniPlatform.Auth.Google")
-                         || project.EndsWith("InfinniPlatform.Auth.Vk")
-                         || project.EndsWith("InfinniPlatform.Watcher")
-                         || project.EndsWith("Infinni.Agent")
-                         || project.EndsWith("Infinni.Server")
-                         || project.EndsWith("InfinniPlatform.Heartbeat")
-                         || SolutionTestProjects.Any(testProject => string.Equals(testProject, expectedTestProject, StringComparison.OrdinalIgnoreCase));
-
-            // Then
-            Assert.IsTrue(result, @"Проект ""{0}"" должен иметь тестовый проект", project);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SolutionProjects))]
-        [Description(@"Проект должен иметь файл ""packages.config""")]
-        public void ProjectShouldHavePackages(string project)
-        {
-            // When
-            var result = File.Exists(Path.Combine(project, "packages.config"));
-
-            // Then
-            Assert.IsTrue(result, @"Проект ""{0}"" должен иметь файл ""packages.config""", project);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SolutionCodeProjects))]
-        [Description(@"Проект должен иметь файл ресурсов ""Properties\Resources""")]
+        [Description(@"Проект должен иметь файл ресурсов ""Properties/Resources.resx""")]
         public void CodeProjectShouldHaveResources(string project)
         {
             // When
-            var result = File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.resx"))
-                         && File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.Designer.cs"));
+            var hasResources = File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.resx"))
+                               && File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.Designer.cs"));
 
             // Then
-            Assert.IsTrue(result, @"Проект ""{0}"" должен иметь файл ресурсов ""Properties\Resources""", project);
+
+            if (!hasResources)
+            {
+                Assert.Fail($@"Проект ""{project}"" должен иметь файл ресурсов ""Properties/Resources.resx""");
+            }
         }
 
         [Test]
@@ -98,36 +54,44 @@ namespace InfinniPlatform.Conventions
         public void ProjectShouldHaveCommonOutputPath(string project)
         {
             // Given
-            var coreOutPath = $@"..\{SolutionOutDir}\";
+            var projectXml = LoadProjectXml(project);
 
             // When
-            var result = LoadProject(project)
-                .Elements(ProjectNamespace + "PropertyGroup")
-                .Where(i => i.Attribute("Condition") != null)
-                .Select(i => ToNormPath(i.Element(ProjectNamespace + "OutputPath")?.Value))
-                .All(i => i == coreOutPath);
+            var outputPaths = FindChildren(projectXml, "PropertyGroup")
+                .SelectMany(e => FindChildren(e, "OutputPath"))
+                .Select(e => e.Value)
+                .Distinct()
+                .ToArray();
 
             // Then
-            Assert.IsTrue(result, @"Проект ""{0}"" должен компилироваться в один каталог ""{1}"" (в Debug и Release)", project, coreOutPath);
+
+            if (outputPaths.Length != 1 || outputPaths[0] != SolutionOutDir)
+            {
+                Assert.Fail($@"Проект ""{project}"" должен компилироваться в один каталог ""{SolutionOutDir}"" (в Debug и Release)");
+            }
         }
 
         [Test]
         [TestCaseSource(nameof(SolutionProjects))]
-        [Description(@"Проект может ссылаться только на ""C:\Program Files"" или ""..\packages\""")]
+        [Description(@"Проект может ссылаться только на NuGet-пакеты")]
         public void ProjectShouldReferenceOnlyPackages(string project)
         {
+            // Given
+            var projectXml = LoadProjectXml(project);
+
             // When
-            var result = LoadProject(project)
-                .Elements(ProjectNamespace + "ItemGroup")
-                .Elements(ProjectNamespace + "Reference")
-                .Elements(ProjectNamespace + "HintPath")
-                .All(i => i == null
-                    || string.IsNullOrWhiteSpace(i.Value)
-                    || ToNormPath(i.Value).StartsWith(@"C:\Program Files")
-                    || ToNormPath(i.Value).StartsWith(ToNormPath(PackagesDir)));
+            var assemblyReferences = FindChildren(projectXml, "ItemGroup")
+                .SelectMany(e => FindChildren(e, "Reference"))
+                .SelectMany(e => FindChildren(e, "HintPath"))
+                .Where(e => !e.Value.StartsWith(@"..\packages\"))
+                .ToArray();
 
             // Then
-            Assert.IsTrue(result, @"Проект ""{0}"" может ссылаться только на ""C:\Program Files"" или ""..\packages\""", project);
+
+            if (assemblyReferences.Length > 0)
+            {
+                Assert.Fail($@"Проект ""{project}"" может ссылаться только на NuGet-пакеты");
+            }
         }
 
         [Test]
@@ -135,85 +99,25 @@ namespace InfinniPlatform.Conventions
         [Description(@"Проект может ссылаться только на проекты решения")]
         public void ProjectShouldReferenceOnlySolutionProjects(string project)
         {
-            // When
-            var result = LoadProject(project)
-                .Elements(ProjectNamespace + "ItemGroup")
-                .Elements(ProjectNamespace + "ProjectReference")
-                .Select(i => i.Attribute("Include"))
-                .All(i => i != null
-                    && string.IsNullOrWhiteSpace(i.Value) == false
-                    && i.Value.StartsWith(@"..\")
-                    && ToNormPath(i.Value.Replace(@"..\", SolutionDir + @"\"))
-                        .StartsWith(ToNormPath(SolutionDir)));
-
-            // Then
-            Assert.IsTrue(result, @"Проект ""{0}"" может ссылаться только на проекты решения ""{1}""", project, SolutionName);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SolutionProjects))]
-        [Description(@"Проект должен иметь файл ""packages.config"" со всеми используемыми пакетами")]
-        public void PackageReferencesShouldBeInPackageConfig(string project)
-        {
             // Given
-
-            var packageReferences = LoadProject(project)
-                .Elements(ProjectNamespace + "ItemGroup")
-                .Elements(ProjectNamespace + "Reference")
-                .Elements(ProjectNamespace + "HintPath")
-                .Where(i => i != null
-                            && string.IsNullOrWhiteSpace(i.Value) == false
-                            && i.Value.StartsWith(PackagesDir))
-                .Select(i => i.Value)
-                .ToArray();
-
-            var packageConfig = LoadPackageConfig(project)
-                .Elements("package")
-                .Select(i => string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value))
-                .ToArray();
+            var projectXml = LoadProjectXml(project);
 
             // When
-            var result = packageReferences.All(pr => packageConfig.Any(pr.StartsWith));
+
+            var projectReferences = FindChildren(projectXml, "ItemGroup")
+                .SelectMany(e => FindChildren(e, "ProjectReference"))
+                .Select(i => i.Attribute("Include").Value);
+
+            var externalProjectReferences = projectReferences
+                .Where(i => !GetFullPathFromRelative(project, i).StartsWith(SolutionDir))
+                .ToArray();
 
             // Then
-            Assert.IsTrue(result, @"Проект ""{0}"" должен иметь файл ""packages.config"" со всеми используемыми пакетами: {1}{2}", project, Environment.NewLine,
-                          string.Join(Environment.NewLine, packageReferences.Where(pr => !packageConfig.Any(pr.StartsWith))));
-        }
 
-        [Test]
-        [TestCaseSource(nameof(SolutionProjects))]
-        [Description(@"Проект должен иметь файл ""packages.config"" только с используемыми пакетами")]
-        public void PackageConfigShouldContainsOnlyUsedPackageReferences(string project)
-        {
-            // TODO: Новые пакеты Microsoft, используемые в InfinniPlatform.Expressions, не добавляют references.
-            if (project.Contains("InfinniPlatform.PrintView"))
+            if (externalProjectReferences.Length > 0)
             {
-                return;
+                Assert.Fail($@"Проект ""{project}"" может ссылаться только на проекты решения ""{SolutionName}""");
             }
-
-            // Given
-            var packageReferences = LoadProject(project)
-                .Elements(ProjectNamespace + "ItemGroup")
-                .Elements(ProjectNamespace + "Reference")
-                .Elements(ProjectNamespace + "HintPath")
-                .Where(i => i != null
-                            && string.IsNullOrWhiteSpace(i.Value) == false
-                            && i.Value.StartsWith(ToNormPath(PackagesDir)))
-                .Select(i => i.Value)
-                .ToArray();
-
-            var packageConfig = LoadPackageConfig(project)
-                .Elements("package")
-                .Where(i => i.Attribute("id").Value.Contains("OwinSelfHost") == false)
-                .Select(i => ToNormPath(string.Format(PackagesDir + "{0}.{1}" + Path.DirectorySeparatorChar, i.Attribute("id").Value, i.Attribute("version").Value)))
-                .ToArray();
-
-            // When
-            var result = packageConfig.All(pc => packageReferences.Any(pr => pr.StartsWith(pc)));
-
-            // Then
-            Assert.IsTrue(result, @"Проект ""{0}"" должен иметь файл ""packages.config"" только с используемыми пакетами:{1}{2}", project, Environment.NewLine,
-                          string.Join(Environment.NewLine, packageConfig.Where(pc => !packageReferences.Any(pr => pr.StartsWith(pc)))));
         }
 
         [Test]
@@ -223,15 +127,13 @@ namespace InfinniPlatform.Conventions
             // Given
 
             var usedPackages = SolutionProjects
-                .SelectMany(project =>
-                            LoadPackageConfig(project)
-                                .Elements("package")
+                .SelectMany(project => GetPackageReferences(LoadProjectXml(project))
                                 .Select(i => new
-                                {
-                                    Project = project,
-                                    Package = i.Attribute("id").Value,
-                                    Version = i.Attribute("version").Value
-                                }))
+                                             {
+                                                 Project = project,
+                                                 Package = i.Item1,
+                                                 Version = i.Item2
+                                             }))
                 .ToArray();
 
             // When
@@ -266,12 +168,14 @@ namespace InfinniPlatform.Conventions
         public void AllTestsShouldHaveCategory()
         {
             // Given
-            var testAssemblies = Directory.GetFiles(Path.Combine(SolutionDir, SolutionOutDir), "*.Tests.dll");
+            var testAssemblies = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Tests.dll");
 
             // When
 
+            var assemblyLoadContext = new ReflectionOnlyAssemblyLoadContext();
+
             var withoutCategory = testAssemblies
-                .SelectMany(a => AssemblyLoadContext.Default.LoadFromAssemblyPath(a)
+                .SelectMany(a => assemblyLoadContext.LoadFromAssemblyPath(a)
                                                     .GetTypes()
                                                     .Where(t =>
                                                            {
@@ -346,77 +250,39 @@ namespace InfinniPlatform.Conventions
             }
 
             // Then
-            Assert.IsTrue(result.Count == 0, @"Все файлы *.cs должны быть в кодировке UTF-8: {0}", string.Join("; ", result));
-        }
 
-        [Test]
-        [TestCaseSource(nameof(SolutionTestProjects))]
-        [Description(@"Проект должен ссылаться на общий файл конфигурации для тестов")]
-        public void TestProjectShouldReferenceOnCommonAppConfig(string project)
-        {
-            // Given
-            const string appConfig = @"..\Files\Config\App.config";
-
-            // When
-            var result = LoadProject(project)
-                .Elements(ProjectNamespace + "ItemGroup")
-                .SelectMany(e => e.Elements(ProjectNamespace + "None"))
-                .Where(e => e.Attribute("Include").Value.Contains("App.config"))
-                .Select(e => e.Attribute("Include").Value)
-                .FirstOrDefault() ?? appConfig;
-
-            // Then
-            Assert.AreEqual(ToNormPath(appConfig), ToNormPath(result), @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для тестов ""{1}""", project, appConfig);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SolutionCodeProjects))]
-        [Description(@"Проект должен ссылаться на общий файл конфигурации для платформы")]
-        public void CodeProjectShouldReferenceOnCommonAppConfig(string project)
-        {
-            if (project.EndsWith("InfinniPlatform.UserInterface")
-                || project.EndsWith("InfinniPlatform.QueryDesigner")
-                || project.EndsWith("InfinniPlatform.RestfulApi")
-                || project.EndsWith("InfinniPlatform.SystemConfig")
-                || project.EndsWith("InfinniPlatform.Update")
-                || project.EndsWith("InfinniPlatform.ReportDesigner")
-                || project.EndsWith("InfinniPlatform.PrintViewDesigner")
-                || project.EndsWith("InfinniPlatform.Utils")
-                )
+            if (result.Count != 0)
             {
-                return;
+                Assert.Fail($@"Все файлы *.cs должны быть в кодировке UTF-8: {string.Join("; ", result)}");
             }
-
-            // Given
-            const string appConfig = @"..\Files\Config\App.config";
-
-            // When
-            var result = LoadProject(project)
-                .Elements(ProjectNamespace + "ItemGroup")
-                .SelectMany(e => e.Elements(ProjectNamespace + "None"))
-                .Where(e => e.Attribute("Include").Value.Contains("App.config"))
-                .Select(e => e.Attribute("Include").Value)
-                .FirstOrDefault() ?? appConfig;
-
-            // Then
-            Assert.AreEqual(ToNormPath(appConfig), ToNormPath(result), @"Проект ""{0}"" должен ссылаться на общий файл конфигурации для платформы ""{1}""", project, appConfig);
         }
 
 
-        private static XElement LoadProject(string project)
+        private static XElement LoadProjectXml(string project)
         {
             return XDocument.Load(Path.Combine(project, $"{Path.GetFileName(project)}.csproj")).Root;
         }
 
-        private static XElement LoadPackageConfig(string project)
+        private static IEnumerable<XElement> FindChildren(XElement parent, string childName)
         {
-            return XDocument.Load(Path.Combine(project, "packages.config")).Root;
+            return parent.Elements().Where(i => string.Equals(i.Name.LocalName, childName, StringComparison.Ordinal));
         }
 
-
-        private static string ToNormPath(string path)
+        private static IEnumerable<Tuple<string, string>> GetPackageReferences(XElement projectXml)
         {
-            return path?.Replace('/', '\\');
+            var packages = FindChildren(projectXml, "ItemGroup")
+                .SelectMany(e => FindChildren(e, "PackageReference"))
+                .Select(e => Tuple.Create(e.Attribute("Include").Value, e.Attribute("Version").Value))
+                .ToArray();
+
+            return packages;
+        }
+
+        private static string GetFullPathFromRelative(string basePath, string relativePath)
+        {
+            var absolutePath = Path.Combine(basePath, relativePath);
+
+            return Path.GetFullPath(new Uri(absolutePath).LocalPath);
         }
     }
 }

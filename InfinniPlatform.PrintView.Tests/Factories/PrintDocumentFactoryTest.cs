@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Model.Block;
 using InfinniPlatform.PrintView.Model.Defaults;
