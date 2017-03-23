@@ -36,12 +36,12 @@ namespace InfinniPlatform.ServiceHost
             var env = resolver.Resolve<IHostingEnvironment>();
             var loggerFactory = resolver.Resolve<ILoggerFactory>();
 
-            var middlewares = resolver.Resolve<IEnumerable<IHttpMiddleware>>();
-
-            foreach (var middleware in middlewares)
-            {
-                middleware.Configure(app);
-            }
+//            var middlewares = resolver.Resolve<IEnumerable<IHttpMiddleware>>();
+//
+//            foreach (var middleware in middlewares)
+//            {
+//                middleware.Configure(app);
+//            }
 
             loggerFactory.AddConsole();
 
