@@ -16,7 +16,7 @@ namespace InfinniPlatform.Core.IoC.Http
     /// Данный слой необходим для работоспособности стратегии InstancePerRequest.
     /// </remarks>
     /// <seealso cref="AutofacWrapperOwinMiddleware{T}" />
-    internal sealed class AutofacRequestLifetimeScopeOwinMiddleware : OwinMiddleware
+    public sealed class AutofacRequestLifetimeScopeOwinMiddleware : OwinMiddleware
     {
         private static readonly AsyncLocal<NoSerializeAppDomain> NoSerializeAppDomainReference = new AsyncLocal<NoSerializeAppDomain>();
 

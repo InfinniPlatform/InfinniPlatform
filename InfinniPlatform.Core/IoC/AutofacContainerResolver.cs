@@ -9,7 +9,7 @@ using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Core.IoC
 {
-    internal sealed class AutofacContainerResolver : IContainerResolver
+    public sealed class AutofacContainerResolver : IContainerResolver
     {
         public AutofacContainerResolver(IComponentContext rootContainer) : this(rootContainer, () => rootContainer)
         {

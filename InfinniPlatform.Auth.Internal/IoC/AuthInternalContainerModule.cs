@@ -14,10 +14,7 @@ using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 
 namespace InfinniPlatform.Auth.Internal.IoC
 {

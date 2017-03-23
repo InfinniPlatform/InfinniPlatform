@@ -3,7 +3,7 @@
     /// <summary>
     /// Настройки подключения к MongoDB.
     /// </summary>
-    internal sealed class MongoConnectionSettings
+    public sealed class MongoConnectionSettings
     {
         public const string SectionName = "mongodb";
 

@@ -44,7 +44,8 @@ namespace InfinniPlatform.Core.IoC.AssemlyLoading
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
+                Console.WriteLine(assemblyName.Name);
                 return null;
             }
         }

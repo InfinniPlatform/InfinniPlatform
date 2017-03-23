@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Core.IoC.Http;
+using InfinniPlatform.Core.IoC;
+using InfinniPlatform.Extensions;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.ServiceHost.Middlewares;
@@ -13,9 +14,40 @@ namespace InfinniPlatform.ServiceHost
 {
     public class Startup
     {
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection serviceCollection)
         {
-            return services.BuildInfinniServiceProvider();
+            // #1
+            //var serviceProvider = new InfinniPlatformServiceProvider(serviceCollection);
+
+            //serviceProvider.AddDocumentStorage()
+            //               .AddAuthentication();
+
+            //return serviceProvider;
+
+            // #2
+            //var serviceProvider = new InfinniPlatformServiceProviderFactory(serviceCollection);
+
+            //serviceProvider.AddDocumentStorage()
+            //               .AddAuthentication();
+
+            //return serviceProvider.Create();
+
+            // #3
+            //return new InfinniPlatformServiceProviderFactory(serviceCollection)
+            //        .AddDocumentStorage()
+            //        .AddAuthentication()
+            //        .Create();
+
+            // #4
+            //return serviceCollection.AddDocumentStorage()
+            //                        .AddAuthentication()
+            //                        .Create();
+
+            var configureServices = serviceCollection.AddInfDocumentStorage()
+                                                     .AddInfAuthentication()
+                                                     .BuildProvider();
+
+            return configureServices;
         }
 
         public void Configure(IApplicationBuilder app, IContainerResolver resolver)

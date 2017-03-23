@@ -13,6 +13,7 @@
     <None Remove="ServiceHost\**" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj" />
     <PackageReference Include="Autofac" Version="4.4.0" />

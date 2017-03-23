@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using InfinniPlatform.Core.IoC.AssemlyLoading;
+using System.Runtime.Loader;
 using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Core.IoC
@@ -30,7 +30,7 @@ namespace InfinniPlatform.Core.IoC
         }
 
 
-        private static IEnumerable<Type> LoadContainerModules()
+        private IEnumerable<Type> LoadContainerModules()
         {
             var result = new List<Type>();
 
@@ -38,11 +38,8 @@ namespace InfinniPlatform.Core.IoC
             var assemblies = new Dictionary<AssemblyName, AssemblyName>(AssemblyNameComparer.Default);
 
             // Поиск всех исполняемых модулей в каталоге текущего домена приложения
-            var assemblyFiles = Directory.EnumerateFiles(".", "*.dll", SearchOption.AllDirectories)
-                                         .Concat(Directory.EnumerateFiles(".", "*.exe", SearchOption.AllDirectories))
+            var assemblyFiles = Directory.EnumerateFiles(".", "Infinni*.dll", SearchOption.AllDirectories)
                                          .Select(Path.GetFullPath);
-
-            var appContext = new CustomAssemblyLoader();
 
             foreach (var assemblyFile in assemblyFiles)
             {
@@ -51,7 +48,7 @@ namespace InfinniPlatform.Core.IoC
                     // Попытка загрузки сборки из найденного файла
                     var assemblyFullPath = Path.GetFullPath(assemblyFile);
 
-                    var assembly = appContext.LoadFromAssemblyPath(assemblyFullPath);
+                    var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
 
                     var name = assembly.GetName();
 
@@ -64,7 +61,12 @@ namespace InfinniPlatform.Core.IoC
 
                         foreach (var type in types)
                         {
-                            if (type.GetTypeInfo().IsClass && !type.GetTypeInfo().IsAbstract && !type.GetTypeInfo().IsGenericType && typeof(IContainerModule).IsAssignableFrom(type))
+                            var typeInfo = type.GetTypeInfo();
+
+                            if (typeInfo.IsClass
+                                && !typeInfo.IsAbstract
+                                && !typeInfo.IsGenericType
+                                && typeInfo.ImplementedInterfaces.Any(s => s.FullName.Equals(typeof(IContainerModule).FullName, StringComparison.Ordinal)))
                             {
                                 result.Add(type);
                             }

@@ -17,7 +17,7 @@ using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.DocumentStorage.IoC
 {
-    internal sealed class DocumentStorageContainerModule : IContainerModule
+    public sealed class DocumentStorageContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {

@@ -8,9 +8,9 @@ namespace InfinniPlatform.Core.IoC.Http
         public void Load(IContainerBuilder builder)
         {
             // Промежуточный слой для создания зависимостей на время обработки запроса
-            builder.RegisterType<AutofacHttpMiddleware>()
-                   .As<IHttpMiddleware>()
-                   .SingleInstance();
+//            builder.RegisterType<AutofacHttpMiddleware>()
+//                   .As<IHttpMiddleware>()
+//                   .SingleInstance();
 
             // Провайдер разрешения типа обработчика запросов OWIN
             builder.RegisterType<AutofacOwinMiddlewareResolver>()

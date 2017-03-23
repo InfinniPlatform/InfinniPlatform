@@ -1,34 +1,26 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using InfinniPlatform.Core.IoC.AssemlyLoading;
-using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Core.IoC;
+using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Sdk.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace InfinniPlatform.Core.IoC.Http
+// ReSharper disable once CheckNamespace
+
+namespace InfinniPlatform.Extensions
 {
-    public static class AutofacHttpContainerResolverFactory
+    public static class AspNetExtensions
     {
-        public static IServiceProvider BuildInfinniServiceProvider(this IServiceCollection serviceCollection)
+        public static IServiceProvider BuildProvider(this IServiceCollection serviceCollection)
         {
             var containerBuilder = new ContainerBuilder();
-
             containerBuilder.Populate(serviceCollection);
 
-            var containerModuleScanner = new BaseDirectoryContainerModuleScanner();
-
-            // Поиск всех доступных модулей
-            var containerModules = containerModuleScanner.FindContainerModules();
-
-            foreach (var moduleType in containerModules)
-            {
-                var containerModule = CreateContainerModule(moduleType);
-
-                // Регистрация очередного модуля
-                containerBuilder.RegisterModule(new AutofacContainerModule(containerModule));
-            }
+            containerBuilder.RegisterCoreModules();
+            containerBuilder.RegisterUserDefinedModules(serviceCollection);
 
             // ReSharper disable AccessToModifiedClosure
 
@@ -60,21 +52,28 @@ namespace InfinniPlatform.Core.IoC.Http
             return serviceProvider;
         }
 
-        private static IContainerModule CreateContainerModule(Type moduleType)
-        {
-            try
-            {
-                // Создание экземпляра модуля
-                var moduleInstance = Activator.CreateInstance(moduleType);
 
-                return (IContainerModule)moduleInstance;
-            }
-            catch (Exception error)
+        private static void RegisterCoreModules(this ContainerBuilder containerBuilder)
+        {
+            var coreModules = typeof(CoreContainerModule).GetTypeInfo().Assembly.GetTypes().Where(type => typeof(IContainerModule).IsAssignableFrom(type));
+
+            foreach (var module in coreModules)
             {
-                var createModuleException = new InvalidOperationException(Resources.CannotCreateContainerModule, error);
-                createModuleException.Data.Add("AssemblyPath", moduleType.GetTypeInfo().Assembly.Location);
-                createModuleException.Data.Add("TypeFullName", moduleType.FullName);
-                throw createModuleException;
+                var containerModule = (IContainerModule) Activator.CreateInstance(module);
+                var autofacContainerModule = new AutofacContainerModule(containerModule);
+                containerBuilder.RegisterModule(autofacContainerModule);
+            }
+        }
+
+        private static void RegisterUserDefinedModules(this ContainerBuilder containerBuilder, IServiceCollection serviceCollection)
+        {
+            var userModules = serviceCollection.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
+
+            foreach (var module in userModules)
+            {
+                var containerModule = (IContainerModule) module.ImplementationFactory.Invoke(null);
+                var autofacContainerModule = new AutofacContainerModule(containerModule);
+                containerBuilder.RegisterModule(autofacContainerModule);
             }
         }
     }
