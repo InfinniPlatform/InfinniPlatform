@@ -5,13 +5,15 @@
     <PackageId>InfinniPlatform.Sdk.Tests</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <OutputPath>..\Assemblies\</OutputPath>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.6.1" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Loader;
 
-namespace InfinniPlatform.Conventions
+namespace InfinniPlatform.Tests.Conventions
 {
     public class ReflectionOnlyAssemblyLoadContext : AssemblyLoadContext
     {

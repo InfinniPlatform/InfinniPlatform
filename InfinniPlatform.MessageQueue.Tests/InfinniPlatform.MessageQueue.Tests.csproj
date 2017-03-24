@@ -5,7 +5,6 @@
     <PackageId>InfinniPlatform.MessageQueue.Tests</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <OutputPath>..\Assemblies\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

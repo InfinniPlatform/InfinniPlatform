@@ -5,8 +5,8 @@
     <PackageId>InfinniPlatform.PrintView</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <OutputPath>..\Assemblies\</OutputPath>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="ImageSharp" Version="1.0.0-alpha2-00118" />
     <PackageReference Include="ImageSharp.Formats.Png" Version="1.0.0-alpha2-00114" />
@@ -15,9 +15,11 @@
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="ZXing.Net" Version="0.15.0" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -31,4 +33,5 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
 </Project>

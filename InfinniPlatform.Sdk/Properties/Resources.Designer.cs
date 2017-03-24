@@ -8,10 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace InfinniPlatform.Sdk.Properties {
     using System;
+    using System.Reflection;
     
     
     /// <summary>

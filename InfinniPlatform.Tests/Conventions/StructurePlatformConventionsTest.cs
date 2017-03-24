@@ -7,15 +7,19 @@ using System.Xml.Linq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Conventions
+namespace InfinniPlatform.Tests.Conventions
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
-    public sealed class StructurePlatformConventionsTest
+    public class StructurePlatformConventionsTest
     {
         static StructurePlatformConventionsTest()
         {
-            SolutionDir = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+            var currentDirectory = Directory.GetCurrentDirectory();
+
+            var solutionDirIndex = currentDirectory.IndexOf(Path.DirectorySeparatorChar + SolutionName + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase);
+
+            SolutionDir = currentDirectory.Substring(0, solutionDirIndex + SolutionName.Length + 2);
             SolutionProjects = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*").ToArray();
             SolutionCodeProjects = SolutionProjects.Where(p => !p.EndsWith(".Tests")).ToArray();
 
@@ -24,7 +28,6 @@ namespace InfinniPlatform.Conventions
 
 
         private const string SolutionName = "InfinniPlatform";
-        private const string SolutionOutDir = @"..\Assemblies\";
 
         private static readonly string SolutionDir;
         private static readonly string[] SolutionProjects;
@@ -45,29 +48,6 @@ namespace InfinniPlatform.Conventions
             if (!hasResources)
             {
                 Assert.Fail($@"Проект ""{project}"" должен иметь файл ресурсов ""Properties/Resources.resx""");
-            }
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SolutionProjects))]
-        [Description(@"Проект должен компилироваться в один каталог (в Debug и Release)")]
-        public void ProjectShouldHaveCommonOutputPath(string project)
-        {
-            // Given
-            var projectXml = LoadProjectXml(project);
-
-            // When
-            var outputPaths = FindChildren(projectXml, "PropertyGroup")
-                .SelectMany(e => FindChildren(e, "OutputPath"))
-                .Select(e => e.Value)
-                .Distinct()
-                .ToArray();
-
-            // Then
-
-            if (outputPaths.Length != 1 || outputPaths[0] != SolutionOutDir)
-            {
-                Assert.Fail($@"Проект ""{project}"" должен компилироваться в один каталог ""{SolutionOutDir}"" (в Debug и Release)");
             }
         }
 
@@ -141,10 +121,10 @@ namespace InfinniPlatform.Conventions
             var packageVersions = usedPackages
                 .GroupBy(p => p.Package,
                          (p, groups) => new
-                         {
-                             Package = p,
-                             Versions = groups.Select(i => i.Version).Distinct().ToArray()
-                         })
+                                        {
+                                            Package = p,
+                                            Versions = groups.Select(i => i.Version).Distinct().ToArray()
+                                        })
                 .Where(p => p.Versions.Length > 1)
                 .ToArray();
 
@@ -153,11 +133,11 @@ namespace InfinniPlatform.Conventions
             if (packageVersions.Length > 0)
             {
                 var errorMessage = string.Join(Environment.NewLine,
-                    packageVersions.Select(p => string.Format("{0}:{1}{2}{1}", p.Package, Environment.NewLine,
-                                                string.Join(Environment.NewLine,
-                                                            usedPackages.Where(i => i.Package == p.Package)
-                                                                        .OrderBy(i => i.Version)
-                                                                        .Select(i => $"   {i.Package}.{i.Version} - {i.Project}")))));
+                                               packageVersions.Select(p => string.Format("{0}:{1}{2}{1}", p.Package, Environment.NewLine,
+                                                                                         string.Join(Environment.NewLine,
+                                                                                                     usedPackages.Where(i => i.Package == p.Package)
+                                                                                                                 .OrderBy(i => i.Version)
+                                                                                                                 .Select(i => $"   {i.Package}.{i.Version} - {i.Project}")))));
 
                 Assert.Fail(@"Все проекты должны использовать пакеты одной версии:{0}{1}", Environment.NewLine, errorMessage);
             }
