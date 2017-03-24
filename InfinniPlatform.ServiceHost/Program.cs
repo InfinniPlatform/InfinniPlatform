@@ -7,8 +7,6 @@ namespace InfinniPlatform.ServiceHost
     {
         public static void Main(string[] args)
         {
-            Directory.SetCurrentDirectory("C:\\Projects\\InfinniAspNet\\Assemblies");
-
             var host = new WebHostBuilder()
                     .UseUrls("http://localhost:9900")
                     .UseKestrel()

@@ -6,7 +6,7 @@ using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.BlobStorage.IoC
 {
-    internal sealed class BlobStorageContainerModule : IContainerModule
+    internal class BlobStorageContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {

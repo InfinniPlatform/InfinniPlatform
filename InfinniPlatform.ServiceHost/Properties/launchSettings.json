@@ -10,7 +10,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "workingDirectory": "C:\\Projects\\InfinniPlatform\\Assemblies",
+      "workingDirectory": "..\\Assemblies",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -18,7 +18,8 @@
     },
     "InfinniPlatform.ServiceHost": {
       "commandName": "Project",
-      "workingDirectory": "C:\\Projects\\InfinniPlatform\\Assemblies"
+      "workingDirectory": "..\\Assemblies\\netcoreapp1.1",
+      "applicationUrl": "htttp://localhost:9900"
     }
   }
 }

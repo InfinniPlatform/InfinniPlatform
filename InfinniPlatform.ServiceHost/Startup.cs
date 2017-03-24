@@ -1,8 +1,11 @@
-﻿using InfinniPlatform.ServiceHost.AssemlyLoading;
-using InfinniPlatform.ServiceHost.Middlewares;
-using InfinniPlatform.ServiceHost.Services;
+﻿using System;
+using System.Collections.Generic;
+using InfinniPlatform.Extensions;
+using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Sdk.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -10,17 +13,35 @@ namespace InfinniPlatform.ServiceHost
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection serviceCollection)
         {
-            services.AddSingleton<Service>();
+            var configureServices = serviceCollection.AddInfAuthentication()
+                                                     .AddInfAdfsAuthentication()
+                                                     .AddInfCookieAuthentication()
+                                                     .AddInfGoogleAuthentication()
+                                                     .AddInfFacebookAuthentication()
+                                                     .AddInfBlobStorage()
+                                                     .AddInfCaching()
+                                                     .AddInfDocumentStorage()
+                                                     .AddInfMessageQueue()
+                                                     .AddInfPrintView()
+                                                     .AddInfScheduler()
+                                                     .BuildProvider();
+
+            return configureServices;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IContainerResolver resolver)
         {
-            appLifetime.UseCustomAssemblyLoading();
+            var env = resolver.Resolve<IHostingEnvironment>();
+            var loggerFactory = resolver.Resolve<ILoggerFactory>();
+
+//            var middlewares = resolver.Resolve<IEnumerable<IHttpMiddleware>>();
+//
+//            foreach (var middleware in middlewares)
+//            {
+//                middleware.Configure(app);
+//            }
 
             loggerFactory.AddConsole();
 
@@ -29,7 +50,7 @@ namespace InfinniPlatform.ServiceHost
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMiddleware<TestMiddleware>();
+            app.Run(context => context.Response.WriteAsync("InfinniPlatform app started."));
         }
     }
 }
