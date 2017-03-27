@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Log4NetAdapter
 {
     // ReSharper disable InconsistentNaming
     // ReSharper disable NotAccessedField.Global

@@ -19,7 +19,7 @@ namespace InfinniPlatform.Core.IoC.Http
 //        public override void Configure(IApplicationBuilder appBuilder)
 //        {
 //            //TODO Find way to extend OWIN pipelines in ASP.NET Core.
-//            //appBuilder.UseOwin(typeof(AutofacRequestLifetimeScopeOwinMiddleware), _container);
+//            appBuilder.UseOwin(typeof(AutofacRequestLifetimeScopeOwinMiddleware), _container);
 //        }
     }
 }

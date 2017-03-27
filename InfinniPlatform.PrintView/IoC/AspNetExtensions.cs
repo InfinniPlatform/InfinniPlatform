@@ -7,7 +7,7 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        public static IServiceCollection AddInfPrintView(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddPrintView(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new PrintViewContainerModule());
             return serviceCollection;

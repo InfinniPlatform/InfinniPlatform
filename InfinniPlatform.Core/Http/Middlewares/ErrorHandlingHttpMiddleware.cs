@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Sdk.Logging;
 using Microsoft.AspNetCore.Builder;
 
 namespace InfinniPlatform.Core.Http.Middlewares
@@ -8,14 +9,19 @@ namespace InfinniPlatform.Core.Http.Middlewares
     /// </summary>
     internal class ErrorHandlingHttpMiddleware : HttpMiddleware
     {
-        public ErrorHandlingHttpMiddleware() : base(HttpMiddlewareType.ErrorHandling)
+        private readonly ILog _log;
+        private readonly IPerformanceLog _performanceLog;
+
+        public ErrorHandlingHttpMiddleware(ILog log, IPerformanceLog performanceLog) : base(HttpMiddlewareType.ErrorHandling)
         {
+            _log = log;
+            _performanceLog = performanceLog;
         }
 
 
         public override void Configure(IApplicationBuilder appBuilder)
         {
-            appBuilder.UseMiddleware<ErrorHandlingOwinMiddleware>();
+            appBuilder.UseMiddleware<ErrorHandlingOwinMiddleware>(_log, _performanceLog);
         }
     }
 }

@@ -91,7 +91,7 @@ namespace InfinniPlatform.Core.Http.IoC
 
             builder.RegisterType<HttpServiceContext>()
                    .As<IHttpServiceContext>()
-                   .InstancePerRequest();
+                   .InstancePerDependency();
 
             builder.RegisterType<HttpServiceContextProvider>()
                    .As<IHttpServiceContextProvider>()

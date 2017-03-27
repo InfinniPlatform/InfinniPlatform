@@ -144,15 +144,6 @@ namespace InfinniPlatform.Core.Http.Hosting
                         {
                             _onBeforeStart?.Invoke();
 
-                            host = new WebHostBuilder()
-                                    .UseKestrel()
-                                    .UseContentRoot(Directory.GetCurrentDirectory())
-                                    .UseStartup<Startup>()
-                                    .UseUrls(_baseAddress)
-                                    .Build();
-
-                            host.Run();
-
                             //host = WebApp.Start(_baseAddress, Startup);
 
                             _onAfterStart?.Invoke();

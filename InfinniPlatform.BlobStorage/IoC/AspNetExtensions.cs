@@ -7,7 +7,7 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        public static IServiceCollection AddInfBlobStorage(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddBlobStorage(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new BlobStorageContainerModule());
             return serviceCollection;

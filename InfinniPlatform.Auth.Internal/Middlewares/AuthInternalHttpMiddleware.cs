@@ -40,16 +40,16 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
             //builder.CreatePerOwinContext(_userManagerFactory);
 
             // Прослойка для установки информации об идентификационных данных текущего пользователя
-            builder.Use((httpContext, nextOwinMiddleware) =>
-                        {
-                            var requestUser = httpContext.User;
-
-                            _identityProvider.SetUserIdentity(requestUser);
-
-                            _log.SetUserId(requestUser?.Identity);
-
-                            return nextOwinMiddleware.Invoke();
-                        });
+//            builder.Use((httpContext, nextOwinMiddleware) =>
+//                        {
+//                            var requestUser = httpContext.User;
+//
+//                            _identityProvider.SetUserIdentity(requestUser);
+//
+//                            _log.SetUserId(requestUser?.Identity);
+//
+//                            return nextOwinMiddleware.Invoke();
+//                        });
         }
     }
 }

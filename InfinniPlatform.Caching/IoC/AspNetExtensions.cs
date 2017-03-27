@@ -7,7 +7,7 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        public static IServiceCollection AddInfCaching(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddCaching(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new CachingContainerModule());
             return serviceCollection;

@@ -7,7 +7,7 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        public static IServiceCollection AddInfScheduler(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddScheduler(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new SchedulerContainerModule());
             return serviceCollection;

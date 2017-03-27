@@ -13,13 +13,12 @@ namespace InfinniPlatform.Auth.Google.Middlewares
     /// </remarks>
     internal class AuthGoogleHttpMiddleware : HttpMiddleware
     {
+        private readonly AuthGoogleHttpMiddlewareSettings _settings;
+
         public AuthGoogleHttpMiddleware(AuthGoogleHttpMiddlewareSettings settings) : base(HttpMiddlewareType.ExternalAuthentication)
         {
             _settings = settings;
         }
-
-
-        private readonly AuthGoogleHttpMiddlewareSettings _settings;
 
 
         public override void Configure(IApplicationBuilder builder)

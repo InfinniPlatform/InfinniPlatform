@@ -4,7 +4,7 @@ using System.Reflection;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Serialization;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Log4NetAdapter
 {
     internal sealed class LogContainerParameterResolver<T> : IContainerParameterResolver
     {

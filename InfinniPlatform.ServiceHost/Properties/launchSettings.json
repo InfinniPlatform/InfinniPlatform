@@ -18,7 +18,6 @@
     },
     "InfinniPlatform.ServiceHost": {
       "commandName": "Project",
-      "workingDirectory": "..\\Assemblies\\netcoreapp1.1",
       "applicationUrl": "htttp://localhost:9900"
     }
   }

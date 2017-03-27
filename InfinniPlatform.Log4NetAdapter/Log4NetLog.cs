@@ -6,15 +6,14 @@ using InfinniPlatform.Auth.Internal.Contract;
 using InfinniPlatform.Sdk.Serialization;
 
 using log4net;
-using Microsoft.Extensions.Logging;
 using ILog = InfinniPlatform.Sdk.Logging.ILog;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Log4NetAdapter
 {
     /// <summary>
     /// Сервис <see cref="Sdk.Logging.ILog" /> на базе log4net.
     /// </summary>
-    internal sealed class Log4NetLog : ILog, ILogger
+    internal sealed class Log4NetLog : ILog
     {
         private const string KeyRequestId = "app.RequestId";
         private const string KeyUserId = "app.UserId";
@@ -86,73 +85,6 @@ namespace InfinniPlatform.Core.Logging
                 ThreadContext.Properties[KeyUserId] = null;
                 ThreadContext.Properties[KeyUserName] = null;
             }
-        }
-
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-        {
-            if (!IsEnabled(logLevel))
-            {
-                return;
-            }
-            if (formatter == null)
-            {
-                throw new ArgumentNullException(nameof(formatter));
-            }
-
-            var message = formatter(state, exception);
-
-            switch (logLevel)
-            {
-                case LogLevel.Trace:
-                case LogLevel.Debug:
-                    _internalLog.Debug(message, exception);
-                    break;
-                case LogLevel.Information:
-                    _internalLog.Info(message, exception);
-                    break;
-                case LogLevel.Warning:
-                    _internalLog.Warn(message, exception);
-                    break;
-                case LogLevel.Error:
-                    _internalLog.Error(message, exception);
-                    break;
-                case LogLevel.Critical:
-                    _internalLog.Fatal(message, exception);
-                    break;
-                case LogLevel.None:
-                    break;
-                default:
-                    _internalLog.Warn($"Encountered unknown log level {logLevel}, writing out as Info.");
-                    _internalLog.Info(message, exception);
-                    break;
-            }
-        }
-
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            switch (logLevel)
-            {
-                case LogLevel.Trace:
-                case LogLevel.Debug:
-                    return _internalLog.IsDebugEnabled;
-                case LogLevel.Information:
-                    return _internalLog.IsInfoEnabled;
-                case LogLevel.Warning:
-                    return _internalLog.IsWarnEnabled;
-                case LogLevel.Error:
-                    return _internalLog.IsErrorEnabled;
-                case LogLevel.Critical:
-                    return _internalLog.IsFatalEnabled;
-                case LogLevel.None:
-                    return false;
-                default:
-                    throw new ArgumentException($"Unknown log level {logLevel}.", nameof(logLevel));
-            }
-        }
-
-        public IDisposable BeginScope<TState>(TState state)
-        {
-            return null;
         }
     }
 }

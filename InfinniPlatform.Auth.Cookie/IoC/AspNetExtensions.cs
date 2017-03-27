@@ -7,7 +7,7 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        public static IServiceCollection AddInfCookieAuthentication(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddAuthCookie(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new AuthCookieContainerModule());
             return serviceCollection;

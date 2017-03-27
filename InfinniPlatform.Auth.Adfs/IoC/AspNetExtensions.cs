@@ -7,7 +7,7 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        public static IServiceCollection AddInfAdfsAuthentication(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddAuthAdfs(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new AuthAdfsContainerModule());
             return serviceCollection;
