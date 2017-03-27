@@ -7,6 +7,10 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
+        /// <summary>
+        /// Регистрирует сервисы провайдера аутентификации Google.
+        /// </summary>
+        /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
         public static IServiceCollection AddAuthGoogle(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new AuthGoogleContainerModule());

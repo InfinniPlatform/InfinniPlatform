@@ -5,15 +5,12 @@
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Auth.Adfs\InfinniPlatform.Auth.Adfs.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Auth.Cookie\InfinniPlatform.Auth.Cookie.csproj" />
@@ -29,11 +26,12 @@
     <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="AppLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+  <ItemGroup>
+    <Folder Include="logs" />
+  </ItemGroup>
 </Project>

@@ -14,6 +14,10 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
+        /// <summary>
+        /// Создает провайдер на основе коллекции зарегистрированных сервисов.
+        /// </summary>
+        /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection serviceCollection)
         {
             var containerBuilder = new ContainerBuilder();
