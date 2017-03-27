@@ -67,6 +67,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Log4NetAdapter", "InfinniPlatform.Log4NetAdapter\InfinniPlatform.Log4NetAdapter.csproj", "{2345755E-34DF-402A-8B94-F1170C70335A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{B8D90B99-AAF9-4490-A39E-C1144A5B4CDE}"
+	ProjectSection(SolutionItems) = preProject
+		Files\Packaging\GlobalAssemblyInfo.cs = Files\Packaging\GlobalAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -578,5 +583,6 @@ Global
 		{864E9A11-12EB-4BB0-BE08-5FCB68F8CC00} = {1808887E-7571-4676-A658-73124B206D83}
 		{5BDEC31D-BA0E-497C-BE11-C88E52B2991F} = {1808887E-7571-4676-A658-73124B206D83}
 		{2345755E-34DF-402A-8B94-F1170C70335A} = {4FB7CC46-2521-4E3A-A968-EA7E685BA3A3}
+		{B8D90B99-AAF9-4490-A39E-C1144A5B4CDE} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 	EndGlobalSection
 EndGlobal
