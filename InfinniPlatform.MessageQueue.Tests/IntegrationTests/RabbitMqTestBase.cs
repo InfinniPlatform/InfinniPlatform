@@ -10,6 +10,7 @@ using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
@@ -103,7 +104,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
                                                                       RabbitMqManager,
                                                                       logMock.Object);
 
-            messageConsumersManager.OnAfterStart();
+            ((IAppStartedHandler) messageConsumersManager).Handle();
         }
     }
 }

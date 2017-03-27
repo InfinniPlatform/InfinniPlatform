@@ -12,7 +12,6 @@ using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Session;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.DocumentStorage.IoC
@@ -156,7 +155,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
             // Hosting
 
             builder.RegisterType<DocumentStorageInitializer>()
-                   .As<IAppEventHandler>()
+                   .As<IAppInitHandler>()
                    .SingleInstance();
 
             // Diagnostics

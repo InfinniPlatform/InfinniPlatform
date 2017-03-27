@@ -118,7 +118,8 @@ namespace InfinniPlatform.Scheduler.IoC
 
             // Инициализатор планировщика заданий
             builder.RegisterType<SchedulerInitializer>()
-                   .As<IAppEventHandler>()
+                   .As<IAppStartedHandler>()
+                   .As<IAppStoppedHandler>()
                    .SingleInstance();
 
             builder.RegisterJobHandlers(schedulerAssembly);

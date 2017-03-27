@@ -12,7 +12,7 @@ using InfinniPlatform.Sdk.Threading;
 
 namespace InfinniPlatform.DocumentStorage.Hosting
 {
-    internal class DocumentStorageInitializer : AppEventHandler
+    internal class DocumentStorageInitializer : IAppInitHandler
     {
         public DocumentStorageInitializer(IDocumentStorageManager documentStorageManager,
                                           IEnumerable<IDocumentMetadataSource> documentMetadataSources,
@@ -29,7 +29,7 @@ namespace InfinniPlatform.DocumentStorage.Hosting
         private readonly ILog _log;
 
 
-        public override void OnInit()
+        public void Handle()
         {
             _log.Info(Resources.CreatingDocumentStorageStarted);
 

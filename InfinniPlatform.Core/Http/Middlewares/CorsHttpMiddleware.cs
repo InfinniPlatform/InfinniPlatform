@@ -16,7 +16,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
 
         public override void Configure(IApplicationBuilder appBuilder)
         {
-            // TODO: Добавить правила CORS проверки из конфигурации
+//            // TODO: Добавить правила CORS проверки из конфигурации.
 //            var corsOptions = new CorsOptions();
 //            corsOptions.AddPolicy("AllowAllOrigins",
 //                                  builder => { builder.AllowAnyOrigin(); });

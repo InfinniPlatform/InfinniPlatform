@@ -20,7 +20,7 @@ namespace InfinniPlatform.Scheduler.Hosting
     /// <see cref="Task.Run(Func{Task})" />. Из этих же соображений остановка планировщика осуществляется
     /// в методе <see cref="OnBeforeStop" /> также асинхронно.
     /// </remarks>
-    internal class SchedulerInitializer : AppEventHandler
+    internal class SchedulerInitializer : IAppStartedHandler, IAppStoppedHandler
     {
         public SchedulerInitializer(IJobSchedulerDispatcher jobSchedulerDispatcher,
                                     IEnumerable<IJobInfoSource> jobInfoSources,
@@ -43,7 +43,7 @@ namespace InfinniPlatform.Scheduler.Hosting
         /// <summary>
         /// Вызывается после запуска основных компонентов приложения.
         /// </summary>
-        public override void OnAfterStart()
+        void IAppStartedHandler.Handle()
         {
             Task.Run(TryToStartJobScheduler);
         }
@@ -51,7 +51,7 @@ namespace InfinniPlatform.Scheduler.Hosting
         /// <summary>
         /// Вызывается перед остановкой основных компонентов приложения.
         /// </summary>
-        public override void OnBeforeStop()
+        void IAppStoppedHandler.Handle()
         {
             Task.Run(TryToStopJobScheduler);
         }
