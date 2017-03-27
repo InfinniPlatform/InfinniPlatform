@@ -34,7 +34,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
 
             try
             {
-                                var requestId = context.TraceIdentifier;
+                var requestId = context.TraceIdentifier;
 
                 // Установка контекста логирования ошибок текущего потока.
                 _log.SetRequestId(requestId);

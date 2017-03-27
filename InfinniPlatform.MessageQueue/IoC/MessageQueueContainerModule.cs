@@ -21,7 +21,8 @@ namespace InfinniPlatform.MessageQueue.IoC
             // Hosting
 
             builder.RegisterType<MessageQueueInitializer>()
-                   .As<IAppEventHandler>()
+                   .As<IAppStartedHandler>()
+                   .As<IAppStoppedHandler>()
                    .SingleInstance();
 
             builder.RegisterFactory(GetRabbitMqConnectionSettings)

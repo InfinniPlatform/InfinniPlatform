@@ -145,12 +145,12 @@ namespace InfinniPlatform.Auth.Internal.Identity
                 if (RequireUniquePhoneNumber)
                 {
                     // TODO FindByPhoneNumberAsync implementation.
-                    //                    var owner = await _store.FindByPhoneNumberAsync(phoneNumber);
-                    //
-                    //                    if (owner != null && !string.Equals(owner.Id, user.Id))
-                    //                    {
-                    //                        errors.Add(new IdentityError { Description = string.Format(Resources.DuplicatePhoneNumber, phoneNumber) });
-                    //                    }
+//                                        var owner = await _store.FindByPhoneNumberAsync(phoneNumber);
+//                    
+//                                        if (owner != null && !string.Equals(owner.Id, user.Id))
+//                                        {
+//                                            errors.Add(new IdentityError { Description = string.Format(Resources.DuplicatePhoneNumber, phoneNumber) });
+//                                        }
                 }
             }
         }

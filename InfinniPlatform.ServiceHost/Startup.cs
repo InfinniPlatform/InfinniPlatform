@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using InfinniPlatform.Extensions;
 using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -15,42 +14,44 @@ namespace InfinniPlatform.ServiceHost
     {
         public IServiceProvider ConfigureServices(IServiceCollection serviceCollection)
         {
-            var configureServices = serviceCollection.AddInfAuthentication()
-                                                     .AddInfAdfsAuthentication()
-                                                     .AddInfCookieAuthentication()
-                                                     .AddInfGoogleAuthentication()
-                                                     .AddInfFacebookAuthentication()
-                                                     .AddInfBlobStorage()
-                                                     .AddInfCaching()
-                                                     .AddInfDocumentStorage()
-                                                     .AddInfMessageQueue()
-                                                     .AddInfPrintView()
-                                                     .AddInfScheduler()
+            var configureServices = serviceCollection.AddAuth()
+                                                     .AddAuthAdfs()
+                                                     .AddAuthCookie()
+                                                     .AddAuthGoogle()
+                                                     .AddAuthFacebook()
+                                                     .AddBlobStorage()
+                                                     .AddCaching()
+                                                     .AddDocumentStorage()
+                                                     .AddLog4NetAdapter()
+                                                     .AddMessageQueue()
+                                                     .AddPrintView()
+                                                     .AddScheduler()
                                                      .BuildProvider();
 
             return configureServices;
         }
 
-        public void Configure(IApplicationBuilder app, IContainerResolver resolver)
+        public void Configure(IApplicationBuilder appBuilder, IContainerResolver resolver, IHostingEnvironment appEnv, IApplicationLifetime appLifetime)
         {
-            var env = resolver.Resolve<IHostingEnvironment>();
-            var loggerFactory = resolver.Resolve<ILoggerFactory>();
+            var appStartedHandlers = resolver.Resolve<IEnumerable<IAppStartedHandler>>();
+            var appStoppedHandlers = resolver.Resolve<IEnumerable<IAppStoppedHandler>>();
 
-//            var middlewares = resolver.Resolve<IEnumerable<IHttpMiddleware>>();
-//
-//            foreach (var middleware in middlewares)
-//            {
-//                middleware.Configure(app);
-//            }
-
-            loggerFactory.AddConsole();
-
-            if (env.IsDevelopment())
+            foreach (var handler in appStartedHandlers)
             {
-                app.UseDeveloperExceptionPage();
+                appLifetime.ApplicationStarted.Register(handler.Handle);
             }
 
-            app.Run(context => context.Response.WriteAsync("InfinniPlatform app started."));
+            foreach (var handler in appStoppedHandlers)
+            {
+                appLifetime.ApplicationStopped.Register(handler.Handle);
+            }
+
+            var middlewares = resolver.Resolve<IEnumerable<IHttpMiddleware>>();
+
+            foreach (var middleware in middlewares)
+            {
+                middleware.Configure(appBuilder);
+            }
         }
     }
 }

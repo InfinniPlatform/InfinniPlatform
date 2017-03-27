@@ -7,7 +7,7 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        public static IServiceCollection AddInfDocumentStorage(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddDocumentStorage(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new DocumentStorageContainerModule());
             return serviceCollection;

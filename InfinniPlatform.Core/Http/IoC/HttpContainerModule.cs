@@ -1,8 +1,6 @@
-﻿using InfinniPlatform.Core.Http.Hosting;
-using InfinniPlatform.Core.Http.Middlewares;
+﻿using InfinniPlatform.Core.Http.Middlewares;
 using InfinniPlatform.Core.Http.Services;
 using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
@@ -31,10 +29,6 @@ namespace InfinniPlatform.Core.Http.IoC
 
             builder.RegisterType<HostAddressParser>()
                    .As<IHostAddressParser>()
-                   .SingleInstance();
-
-            builder.RegisterType<OwinHostingService>()
-                   .As<IHostingService>()
                    .SingleInstance();
 
             // Middlewares
@@ -91,7 +85,7 @@ namespace InfinniPlatform.Core.Http.IoC
 
             builder.RegisterType<HttpServiceContext>()
                    .As<IHttpServiceContext>()
-                   .InstancePerRequest();
+                   .InstancePerDependency();
 
             builder.RegisterType<HttpServiceContextProvider>()
                    .As<IHttpServiceContextProvider>()

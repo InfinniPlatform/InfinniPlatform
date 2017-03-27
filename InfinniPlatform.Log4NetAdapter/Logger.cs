@@ -3,7 +3,7 @@
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Log4NetAdapter
 {
     /// <summary>
     /// Предоставляет статическую точку доступа к <see cref="ILog" />.

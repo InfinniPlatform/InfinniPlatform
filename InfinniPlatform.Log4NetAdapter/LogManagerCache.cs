@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Reflection;
 using InfinniPlatform.Sdk.Dynamic;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
+using log4net.Config;
+using log4net.Core;
+using log4net.Repository;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Log4NetAdapter
 {
     internal static class LogManagerCache
     {
+        private static ILoggerRepository _loggerRepository;
+
         static LogManagerCache()
         {
+            _loggerRepository = LoggerManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(_loggerRepository, new FileInfo("AppLog.config"));
+
             log4net.Util.SystemInfo.NullText = "null";
         }
 
@@ -66,10 +75,7 @@ namespace InfinniPlatform.Core.Logging
 
             if (!InternalLogs.TryGetValue(loggerName, out internalLog))
             {
-                //TODO Fix logging.
-                //internalLog = log4net.LogManager.GetLogger(loggerName);
-                internalLog = log4net.LogManager.GetLogger(type);
-
+                internalLog = new LogImpl(_loggerRepository.GetLogger(prefix));
                 InternalLogs.TryAdd(loggerName, internalLog);
             }
 

@@ -13,7 +13,7 @@ using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
 {
-    internal sealed class MessageQueueInitializer : AppEventHandler
+    internal sealed class MessageQueueInitializer : IAppStartedHandler, IAppStoppedHandler
     {
         /// <summary>
         /// Регистрирует потребителей сообщений.
@@ -31,7 +31,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             _taskConsumers = consumers.OfType<ITaskConsumer>().ToList();
             _broadcastConsumers = consumers.OfType<IBroadcastConsumer>().ToList();
 
-            manager.OnReconnect += (sender, args) => { OnAfterStart(); };
+            manager.OnReconnect += (sender, args) => { HandleStart(); };
 
             _consumersManager = consumersManager;
             _manager = manager;
@@ -45,7 +45,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
         private readonly RabbitMqManager _manager;
         private readonly List<ITaskConsumer> _taskConsumers;
 
-        public override void OnAfterStart()
+        void IAppStartedHandler.Handle()
+        {
+            HandleStart();
+        }
+
+        private void HandleStart()
         {
             try
             {
@@ -60,7 +65,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             }
         }
 
-        public override void OnAfterStop()
+        void IAppStoppedHandler.Handle()
         {
             _manager.Dispose();
         }

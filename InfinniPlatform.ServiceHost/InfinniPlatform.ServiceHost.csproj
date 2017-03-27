@@ -24,9 +24,16 @@
     <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj" />
     <ProjectReference Include="..\InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Log4NetAdapter\InfinniPlatform.Log4NetAdapter.csproj" />
     <ProjectReference Include="..\InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj" />
     <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AppLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

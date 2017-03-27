@@ -55,7 +55,9 @@ namespace InfinniPlatform.Extensions
 
         private static void RegisterCoreModules(this ContainerBuilder containerBuilder)
         {
-            var coreModules = typeof(CoreContainerModule).GetTypeInfo().Assembly.GetTypes().Where(type => typeof(IContainerModule).IsAssignableFrom(type));
+            var coreModules = typeof(CoreContainerModule).GetTypeInfo().Assembly
+                                                         .GetTypes()
+                                                         .Where(type => typeof(IContainerModule).IsAssignableFrom(type));
 
             foreach (var module in coreModules)
             {

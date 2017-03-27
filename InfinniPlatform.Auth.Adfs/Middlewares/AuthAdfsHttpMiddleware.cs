@@ -28,14 +28,14 @@ namespace InfinniPlatform.Auth.Adfs.Middlewares
             if (_settings.Enable)
             {
                 //TODO WsFederation middleware is blocked by https://github.com/dotnet/corefx/issues/1132.
-                //                builder.UseWsFederationAuthentication(new WsFederationAuthenticationOptions
-                //                                                      {
-                //                                                          Caption = WsFederationAuthenticationDefaults.Caption,
-                //                                                          AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
-                //                                                          AuthenticationMode = AuthenticationMode.Passive,
-                //                                                          MetadataAddress = string.Format(MetadataUri, _settings.Server),
-                //                                                          Wtrealm = _settings.ResourceUri
-                //                                                      });
+//                builder.UseWsFederationAuthentication(new WsFederationAuthenticationOptions
+//                                                        {
+//                                                            Caption = WsFederationAuthenticationDefaults.Caption,
+//                                                            AuthenticationType = WsFederationAuthenticationDefaults.AuthenticationType,
+//                                                            AuthenticationMode = AuthenticationMode.Passive,
+//                                                            MetadataAddress = string.Format(MetadataUri, _settings.Server),
+//                                                            Wtrealm = _settings.ResourceUri
+//                                                        });
             }
         }
     }

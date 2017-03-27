@@ -28,35 +28,36 @@ namespace InfinniPlatform.Auth.Cookie.Middlewares
 
         public override void Configure(IApplicationBuilder builder)
         {
-            // Домен для создания cookie
-            var cookieDomain = _settings.CookieDomain;
+            //TODO
+//            // Домен для создания cookie
+//            var cookieDomain = _settings.CookieDomain;
+//
+//            // Разрешение использования cookie для входа в систему через внутренний провайдер
+//            var cookieAuthOptions = new CookieAuthenticationOptions
+//                                    {
+//                                        AuthenticationScheme = "ApplicationCookie",
+//                                        LoginPath = new PathString(_settings.LoginPath),
+//                                        LogoutPath = new PathString(_settings.LogoutPath),
+//                                        ExpireTimeSpan = TimeSpan.FromDays(1),
+//                                        SlidingExpiration = true,
+//                                        DataProtectionProvider = new AesDataProtectionProvider()
+//                                    };
+//
+//            if (!string.IsNullOrWhiteSpace(cookieDomain))
+//            {
+//                cookieAuthOptions.CookieDomain = cookieDomain;
+//            }
+//
+//            if (UriSchemeHttps.Equals(_hostingConfig.Scheme, StringComparison.OrdinalIgnoreCase))
+//            {
+//                cookieAuthOptions.CookieSecure = CookieSecurePolicy.Always;
+//            }
+//
+//            builder.UseCookieAuthentication(cookieAuthOptions);
+//
+//            // Разрешение использования cookie для входа в систему через внешние провайдеры
 
-            // Разрешение использования cookie для входа в систему через внутренний провайдер
-            var cookieAuthOptions = new CookieAuthenticationOptions
-                                    {
-                                        AuthenticationScheme = "ApplicationCookie",
-                                        LoginPath = new PathString(_settings.LoginPath),
-                                        LogoutPath = new PathString(_settings.LogoutPath),
-                                        ExpireTimeSpan = TimeSpan.FromDays(1),
-                                        SlidingExpiration = true,
-                                        DataProtectionProvider = new AesDataProtectionProvider()
-                                    };
-
-            if (!string.IsNullOrWhiteSpace(cookieDomain))
-            {
-                cookieAuthOptions.CookieDomain = cookieDomain;
-            }
-
-            if (UriSchemeHttps.Equals(_hostingConfig.Scheme, StringComparison.OrdinalIgnoreCase))
-            {
-                cookieAuthOptions.CookieSecure = CookieSecurePolicy.Always;
-            }
-
-            builder.UseCookieAuthentication(cookieAuthOptions);
-
-            // Разрешение использования cookie для входа в систему через внешние провайдеры
-            //TODO 
-            //builder.UseExternalSignInCookie("ExternalCookie");
+//            //builder.UseExternalSignInCookie("ExternalCookie");
         }
     }
 }
