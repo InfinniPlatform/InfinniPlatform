@@ -189,4 +189,7 @@
   <data name="CannotSerializeJobHandlerType" xml:space="preserve">
     <value>Type '{0}' does not implement '{1}' or is not registered in IoC.</value>
   </data>
+  <data name="RESOURCE_KEY_FOR_DOTNET_BUILD" xml:space="preserve">
+    <value>https://github.com/Microsoft/msbuild/issues/1661</value>
+  </data>
 </root>

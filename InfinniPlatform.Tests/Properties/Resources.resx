@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="RESOURCE_KEY_FOR_DOTNET_BUILD" xml:space="preserve">
+    <value>https://github.com/Microsoft/msbuild/issues/1661</value>
+  </data>
 </root>

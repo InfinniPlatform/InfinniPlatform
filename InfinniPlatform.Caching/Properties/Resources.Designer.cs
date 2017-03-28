@@ -89,6 +89,15 @@ namespace InfinniPlatform.Caching.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://github.com/Microsoft/msbuild/issues/1661.
+        /// </summary>
+        internal static string RESOURCE_KEY_FOR_DOTNET_BUILD {
+            get {
+                return ResourceManager.GetString("RESOURCE_KEY_FOR_DOTNET_BUILD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not found..
         /// </summary>
         internal static string UserIdNotFound {

@@ -150,6 +150,9 @@
   <data name="RequestProcessedWithException" xml:space="preserve">
     <value>Запрос обработан с исключением.</value>
   </data>
+  <data name="RESOURCE_KEY_FOR_DOTNET_BUILD" xml:space="preserve">
+    <value>https://github.com/Microsoft/msbuild/issues/1661</value>
+  </data>
   <data name="TokenIsNotSupported" xml:space="preserve">
     <value>Элемент '{0}' не поддерживается.</value>
   </data>

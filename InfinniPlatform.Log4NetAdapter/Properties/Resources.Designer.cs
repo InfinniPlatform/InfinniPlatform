@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InfinniPlatform.PrintView.Tests.Properties {
+namespace InfinniPlatform.Log4NetAdapter.Properties {
     using System;
     using System.Reflection;
     
@@ -40,7 +40,7 @@ namespace InfinniPlatform.PrintView.Tests.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.PrintView.Tests.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Log4NetAdapter.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -58,6 +58,15 @@ namespace InfinniPlatform.PrintView.Tests.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/Microsoft/msbuild/issues/1661.
+        /// </summary>
+        internal static string RESOURCE_KEY_FOR_DOTNET_BUILD {
+            get {
+                return ResourceManager.GetString("RESOURCE_KEY_FOR_DOTNET_BUILD", resourceCulture);
             }
         }
     }

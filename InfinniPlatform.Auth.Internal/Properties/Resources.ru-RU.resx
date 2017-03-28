@@ -186,4 +186,7 @@
   <data name="HandlingUserEventCompletedWithException" xml:space="preserve">
     <value>Обработка события пользователя '{0}' завершилась с исключением.</value>
   </data>
+  <data name="RESOURCE_KEY_FOR_DOTNET_BUILD" xml:space="preserve">
+    <value>https://github.com/Microsoft/msbuild/issues/1661</value>
+  </data>
 </root>

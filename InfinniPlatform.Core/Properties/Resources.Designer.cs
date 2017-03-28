@@ -107,6 +107,15 @@ namespace InfinniPlatform.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://github.com/Microsoft/msbuild/issues/1661.
+        /// </summary>
+        internal static string RESOURCE_KEY_FOR_DOTNET_BUILD {
+            get {
+                return ResourceManager.GetString("RESOURCE_KEY_FOR_DOTNET_BUILD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server name cannot be null or whitespace..
         /// </summary>
         internal static string ServerNameCannotBeNullOrWhiteSpace {
