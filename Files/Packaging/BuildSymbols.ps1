@@ -6,8 +6,8 @@
     #>
     param
     (
-        [Parameter(HelpMessage = "Path to the solution directory.")]
-        [String] $solutionDir = '.',
+        [Parameter(HelpMessage = "The directory where pdb files exists.")]
+        [String] $pdbDirectory = '.',
 
         [Parameter(HelpMessage = "VCS repository URL.")]
         [String] $repositoryUrl = '',
@@ -51,6 +51,6 @@
             $repositoryUrl = $repositoryUrl -replace '\.git$', ''
         }
 
-        & "$gitLinkPath" $solutionDir -u $repositoryUrl -s $commitHash
+        & "$gitLinkPath" -d $pdbDirectory -u $repositoryUrl -s $commitHash
     }
 }
