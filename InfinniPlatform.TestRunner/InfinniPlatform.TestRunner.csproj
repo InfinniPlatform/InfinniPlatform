@@ -4,6 +4,7 @@
     <AssemblyName>InfinniPlatform.TestRunner</AssemblyName>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
