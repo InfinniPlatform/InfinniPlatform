@@ -1,11 +1,13 @@
 ﻿using System;
+
 using InfinniPlatform.Auth.Cookie.DataProtectors;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Http;
 
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth.Cookie.Middlewares
 {
@@ -28,36 +30,17 @@ namespace InfinniPlatform.Auth.Cookie.Middlewares
 
         public override void Configure(IApplicationBuilder builder)
         {
-            //TODO
-//            // Домен для создания cookie
-//            var cookieDomain = _settings.CookieDomain;
-//
-//            // Разрешение использования cookie для входа в систему через внутренний провайдер
-//            var cookieAuthOptions = new CookieAuthenticationOptions
-//                                    {
-//                                        AuthenticationScheme = "ApplicationCookie",
-//                                        LoginPath = new PathString(_settings.LoginPath),
-//                                        LogoutPath = new PathString(_settings.LogoutPath),
-//                                        ExpireTimeSpan = TimeSpan.FromDays(1),
-//                                        SlidingExpiration = true,
-//                                        DataProtectionProvider = new AesDataProtectionProvider()
-//                                    };
-//
-//            if (!string.IsNullOrWhiteSpace(cookieDomain))
-//            {
-//                cookieAuthOptions.CookieDomain = cookieDomain;
-//            }
-//
-//            if (UriSchemeHttps.Equals(_hostingConfig.Scheme, StringComparison.OrdinalIgnoreCase))
-//            {
-//                cookieAuthOptions.CookieSecure = CookieSecurePolicy.Always;
-//            }
-//
-//            builder.UseCookieAuthentication(cookieAuthOptions);
-//
-//            // Разрешение использования cookie для входа в систему через внешние провайдеры
+            // Разрешение использования cookie для входа в систему через внутренний провайдер
+            var cookieAuthOptions = new CookieAuthenticationOptions
+                                    {
+                                        AuthenticationScheme = "MyCookieMiddlewareInstance",
+                                        LoginPath = new PathString("/Account/Unauthorized/"),
+                                        AccessDeniedPath = new PathString("/Account/Forbidden/"),
+                                        AutomaticAuthenticate = true,
+                                        AutomaticChallenge = true
+                                    };
 
-//            //builder.UseExternalSignInCookie("ExternalCookie");
+            builder.UseCookieAuthentication(cookieAuthOptions);
         }
     }
 }

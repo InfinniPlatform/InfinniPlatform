@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Auth.Internal.IoC;
+﻿using InfinniPlatform.Auth.Internal.Identity.MongoDb;
+using InfinniPlatform.Auth.Internal.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
@@ -13,7 +14,9 @@ namespace InfinniPlatform.Extensions
         /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
         public static IServiceCollection AddAuth(this IServiceCollection serviceCollection)
         {
+            serviceCollection.AddIdentity<IdentityUser, IdentityRole>();
             serviceCollection.AddSingleton(provider => new AuthInternalContainerModule());
+
             return serviceCollection;
         }
     }

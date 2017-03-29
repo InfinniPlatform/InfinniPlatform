@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 {
+    [DocumentType("UserStore")]
     // Add profile data for application users by adding properties to the IdentityUser class
     public class IdentityUser : Document
     {
