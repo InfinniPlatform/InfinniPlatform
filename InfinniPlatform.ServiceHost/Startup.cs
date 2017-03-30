@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Extensions;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Hosting;
@@ -21,6 +20,7 @@ namespace InfinniPlatform.ServiceHost
                                             //.AddAuthCookie()
                                             //.AddAuthGoogle()
                                             //.AddAuthFacebook()
+                                            .AddInfinniCors()
                                             .AddBlobStorage()
                                             .AddCaching()
                                             .AddDocumentStorage()

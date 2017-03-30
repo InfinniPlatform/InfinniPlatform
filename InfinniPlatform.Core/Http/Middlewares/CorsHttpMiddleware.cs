@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.Http.Middlewares;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace InfinniPlatform.Core.Http.Middlewares
 {
@@ -16,12 +15,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
 
         public override void Configure(IApplicationBuilder appBuilder)
         {
-//            // TODO: Добавить правила CORS проверки из конфигурации.
-//            var corsOptions = new CorsOptions();
-//            corsOptions.AddPolicy("AllowAllOrigins",
-//                                  builder => { builder.AllowAnyOrigin(); });
-//
-//            appBuilder.UseCors("AllowAllOrigins");
+            appBuilder.UseCors("AllowAllOrigins");
         }
     }
 }
