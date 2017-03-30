@@ -18,9 +18,11 @@
 
     process
     {
+        $buildToolsDir = Join-Path $env:ProgramData 'BuildTools'
+
         # Install NuGet package manager
 
-        $nugetDir = Join-Path $env:ProgramData 'NuGet'
+        $nugetDir = Join-Path $buildToolsDir 'NuGet'
         $nugetPath = Join-Path $nugetDir 'nuget.exe'
 
         if (-not (Test-Path $nugetPath))
@@ -36,12 +38,12 @@
 
         # Install GitLink package
 
-        $gitLinkDir = Join-Path $env:ProgramData 'GitLink'
-        $gitLinkPath = Join-Path $gitLinkDir 'lib\net45\GitLink.exe'
+        $gitLinkDir = Join-Path $buildToolsDir 'GitLink'
+        $gitLinkPath = Join-Path $gitLinkDir 'build\GitLink.exe'
 
         if (-not (Test-Path $gitLinkPath))
         {
-            & "$nugetPath" install 'GitLink' -OutputDirectory $env:ProgramData -NonInteractive -Prerelease -ExcludeVersion
+            & "$nugetPath" install 'GitLink' -OutputDirectory $buildToolsDir -NonInteractive -Prerelease -ExcludeVersion
         }
 
         # Build symbol files
@@ -51,6 +53,8 @@
             $repositoryUrl = $repositoryUrl -replace '\.git$', ''
         }
 
-        & "$gitLinkPath" -d $pdbDirectory -u $repositoryUrl -s $commitHash
+        Get-ChildItem -Path $pdbDirectory -Filter '*.pdb' | ForEach-Object {
+            & "$gitLinkPath" --url $repositoryUrl --commit $commitHash $_.FullName
+        }
     }
 }
