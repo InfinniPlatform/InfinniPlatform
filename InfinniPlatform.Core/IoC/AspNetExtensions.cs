@@ -6,7 +6,6 @@ using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Sdk.IoC;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
@@ -25,7 +24,8 @@ namespace InfinniPlatform.Extensions
             containerBuilder.Populate(serviceCollection);
 
             containerBuilder.RegisterCoreModules();
-            containerBuilder.RegisterUserDefinedModules(serviceCollection);
+            containerBuilder.RegisterPlatformModules(serviceCollection);
+            containerBuilder.RegisterUserDefinedModules();
 
             // ReSharper disable AccessToModifiedClosure
 
@@ -84,7 +84,7 @@ namespace InfinniPlatform.Extensions
             }
         }
 
-        private static void RegisterUserDefinedModules(this ContainerBuilder containerBuilder, IServiceCollection serviceCollection)
+        private static void RegisterPlatformModules(this ContainerBuilder containerBuilder, IServiceCollection serviceCollection)
         {
             var userModules = serviceCollection.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
 
@@ -95,5 +95,20 @@ namespace InfinniPlatform.Extensions
                 containerBuilder.RegisterModule(autofacContainerModule);
             }
         }
+
+        private static void RegisterUserDefinedModules(this ContainerBuilder containerBuilder)
+        {
+            var userModules = Assembly.GetEntryAssembly()
+                                      .GetTypes()
+                                      .Where(type => typeof(IContainerModule).IsAssignableFrom(type));
+
+            foreach (var module in userModules)
+            {
+                var containerModule = (IContainerModule)Activator.CreateInstance(module);
+                var autofacContainerModule = new AutofacContainerModule(containerModule);
+                containerBuilder.RegisterModule(autofacContainerModule);
+            }
+        }
+
     }
 }
