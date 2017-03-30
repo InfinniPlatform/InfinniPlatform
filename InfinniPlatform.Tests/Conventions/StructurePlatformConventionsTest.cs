@@ -15,15 +15,31 @@ namespace InfinniPlatform.Tests.Conventions
     {
         static StructurePlatformConventionsTest()
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-
-            var solutionDirIndex = currentDirectory.IndexOf(Path.DirectorySeparatorChar + SolutionName + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase);
-
-            SolutionDir = currentDirectory.Substring(0, solutionDirIndex + SolutionName.Length + 2);
+            SolutionDir = FindSolutionDirectory();
             SolutionProjects = Directory.GetDirectories(SolutionDir, $"{SolutionName}.*").ToArray();
             SolutionCodeProjects = SolutionProjects.Where(p => !p.EndsWith(".Tests")).ToArray();
 
             Console.WriteLine(@"SolutionDir={0}", SolutionDir);
+        }
+
+        private static string FindSolutionDirectory()
+        {
+            string solutionDir = null;
+
+            var currentDirectory = Directory.GetCurrentDirectory();
+
+            while (!string.IsNullOrEmpty(currentDirectory) && Directory.Exists(currentDirectory))
+            {
+                if (File.Exists(Path.Combine(currentDirectory, "InfinniPlatform.sln")))
+                {
+                    solutionDir = currentDirectory;
+                    break;
+                }
+
+                currentDirectory = Path.GetDirectoryName(currentDirectory);
+            }
+
+            return solutionDir;
         }
 
 

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="NUnitLite" Version="3.6.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

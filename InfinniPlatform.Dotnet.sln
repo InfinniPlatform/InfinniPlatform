@@ -67,6 +67,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{B8D90B99-AAF9-4490-A39E-C1144A5B4CDE}"
 	ProjectSection(SolutionItems) = preProject
+		Files\Packaging\BuildSymbols.ps1 = Files\Packaging\BuildSymbols.ps1
 		Files\Packaging\GlobalAssemblyInfo.cs = Files\Packaging\GlobalAssemblyInfo.cs
 	EndProjectSection
 EndProject

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 using NUnitLite;
 
@@ -16,7 +17,7 @@ namespace InfinniPlatform.TestRunner
         {
             var result = 0;
 
-            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             var testCategory = GetTestCategory(args);
             var outDirectory = GetOutDirectory();
