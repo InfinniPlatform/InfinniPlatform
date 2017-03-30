@@ -1,6 +1,4 @@
 ﻿using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Sdk.Http;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -11,18 +9,10 @@ namespace InfinniPlatform.Auth.Cookie.Middlewares
     /// </summary>
     internal class AuthCookieHttpMiddleware : HttpMiddleware
     {
-        public AuthCookieHttpMiddleware(AuthCookieHttpMiddlewareSettings settings, HostingConfig hostingConfig) : base(HttpMiddlewareType.AuthenticationBarrier)
+        public AuthCookieHttpMiddleware() : base(HttpMiddlewareType.AuthenticationBarrier)
         {
-            _settings = settings;
-            _hostingConfig = hostingConfig;
         }
-
-
-        private readonly AuthCookieHttpMiddlewareSettings _settings;
-        private readonly HostingConfig _hostingConfig;
-        private const string UriSchemeHttps = "https";
-
-
+        
         public override void Configure(IApplicationBuilder builder)
         {
             // Разрешение использования cookie для входа в систему через внутренний провайдер
