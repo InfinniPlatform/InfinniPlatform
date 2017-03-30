@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace InfinniPlatform.Tests.Conventions
 {
     [TestFixture]
-    [Category(TestCategories.UnitTest)]
+    [Category(TestCategories.BuildTest)]
     public class StructurePlatformConventionsTest
     {
         static StructurePlatformConventionsTest()
