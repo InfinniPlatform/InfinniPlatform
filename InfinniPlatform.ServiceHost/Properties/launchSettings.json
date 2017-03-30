@@ -10,7 +10,7 @@
   "profiles": {
     "InfinniPlatform.ServiceHost": {
       "commandName": "Project",
-      "applicationUrl": "htttp://localhost:9900",
+      "applicationUrl": "http://localhost:9900",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -18,7 +18,7 @@
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "applicationUrl": "htttp://localhost:9900",
+      "applicationUrl": "http://localhost:9900",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

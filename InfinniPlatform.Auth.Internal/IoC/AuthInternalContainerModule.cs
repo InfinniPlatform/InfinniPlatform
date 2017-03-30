@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using InfinniPlatform.Auth.Internal.Identity;
 using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Auth.Internal.Middlewares;
@@ -14,6 +15,7 @@ using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth.Internal.IoC
@@ -86,29 +88,42 @@ namespace InfinniPlatform.Auth.Internal.IoC
 
         private static UserManager<IdentityUser> CreateUserManager(IContainerResolver resolver)
         {
-//            var appUserStore = resolver.Resolve<IAppUserStore>();
-//            var appPasswordHasher = resolver.Resolve<IAppUserPasswordHasher>();
-
             // Хранилище учетных записей пользователей для AspNet.Identity
             var identityUserStore = resolver.Resolve<UserStore<IdentityUser>>();
 
-            // Сервис проверки учетных записей пользователей для AspNet.Identity
-            var identityUserValidator = new IdentityApplicationUserValidator(identityUserStore);
+            // Провайдер настроек AspNet.Identity
+            var optionsAccessor = new OptionsWrapper<IdentityOptions>(new IdentityOptions());
 
-            // Сервис хэширования паролей пользователей для AspNet.Identity
+            // Сервис хэширования паролей
             var identityPasswordHasher = new DefaultAppUserPasswordHasher();
 
-            // TODO Refactor validators.
+            // Валидаторы данных о пользователях
+            var userValidators = new List<IUserValidator<IdentityUser>> {new IdentityApplicationUserValidator(identityUserStore)};
+
+            // Валидатор паролей пользователей
+            var passwordValidators = Enumerable.Empty<IPasswordValidator<IdentityUser>>();
+
+            // Нормализатор
+            var keyNormalizer = new UpperInvariantLookupNormalizer();
+
+            // Сервис обработки ошибок AspNet.Identity
+            var identityErrorDescriber = new IdentityErrorDescriber();
+
+            // Провайдер зарегистрированных в IoC сервисов
+            var serviceProvider = resolver.Resolve<IServiceProvider>();
+
+            // Логгер
+            ILogger<UserManager<IdentityUser>> logger = null;
 
             var userManager = new UserManager<IdentityUser>(identityUserStore,
-                                                            new OptionsWrapper<IdentityOptions>(new IdentityOptions()),
+                                                            optionsAccessor,
                                                             identityPasswordHasher,
-                                                            new List<IUserValidator<IdentityUser>> {identityUserValidator},
-                                                            new List<IPasswordValidator<IdentityUser>>(),
-                                                            new UpperInvariantLookupNormalizer(),
-                                                            new IdentityErrorDescriber(),
-                                                            resolver.Resolve<IServiceProvider>(),
-                                                            null);
+                                                            userValidators,
+                                                            passwordValidators,
+                                                            keyNormalizer,
+                                                            identityErrorDescriber,
+                                                            serviceProvider,
+                                                            logger);
 
             return userManager;
         }
