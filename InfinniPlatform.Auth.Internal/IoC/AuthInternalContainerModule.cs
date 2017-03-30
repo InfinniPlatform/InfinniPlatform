@@ -26,10 +26,12 @@ namespace InfinniPlatform.Auth.Internal.IoC
 
             builder.RegisterFactory(CreateUserStore)
                    .As<UserStore<IdentityUser>>()
+                   .As<IUserStore<IdentityUser>>()
                    .SingleInstance();
 
             builder.RegisterFactory(CreateRoleStore)
                    .As<RoleStore<IdentityRole>>()
+                   .As<IRoleStore<IdentityRole>>()
                    .SingleInstance();
 
             // Менеджер работы с учетными записями пользователей для AspNet.Identity
@@ -124,7 +126,7 @@ namespace InfinniPlatform.Auth.Internal.IoC
 
         private static UserStore<IdentityUser> CreateUserStore(IContainerResolver resolver)
         {
-            var documentStorage = resolver.Resolve<IDocumentStorage<IdentityUser>>();
+            var documentStorage = resolver.Resolve<ISystemDocumentStorage<IdentityUser>>();
 
             return new UserStore<IdentityUser>(documentStorage);
         }

@@ -1,7 +1,7 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Common.json",
   "app": {
-    "Name": "InfinniPlatform",
+    "Name": "reformagkh",
     "InstanceId": "",
     "IsInCluster": false
   },

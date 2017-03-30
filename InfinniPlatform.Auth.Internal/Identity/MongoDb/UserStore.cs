@@ -24,12 +24,7 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
     {
         private readonly IDocumentStorage<TUser> _users;
 
-//        public UserStore(IMongoCollection<TUser> users)
-//        {
-//            _users = users;
-//        }
-
-        public UserStore(IDocumentStorage<TUser> users)
+        public UserStore(ISystemDocumentStorage<TUser> users)
         {
             _users = users;
         }
@@ -232,7 +227,7 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)
         {
-            return _users.Find(u => u.NormalizedUserName == normalizedUserName).FirstOrDefaultAsync();
+            return _users.Find(u => u.UserName == normalizedUserName.ToLower()).FirstOrDefaultAsync();
         }
 
         public virtual async Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken token)

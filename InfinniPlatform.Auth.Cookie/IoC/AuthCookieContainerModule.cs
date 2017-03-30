@@ -1,7 +1,9 @@
-﻿using InfinniPlatform.Auth.Cookie.Middlewares;
+﻿using InfinniPlatform.Auth.Cookie.DataProtectors;
+using InfinniPlatform.Auth.Cookie.Middlewares;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.Sdk.Settings;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace InfinniPlatform.Auth.Cookie.IoC
 {
@@ -15,6 +17,10 @@ namespace InfinniPlatform.Auth.Cookie.IoC
 
             builder.RegisterType<AuthCookieHttpMiddleware>()
                    .As<IHttpMiddleware>()
+                   .SingleInstance();
+
+            builder.RegisterType<AesDataProtectionProvider>()
+                   .As<IDataProtectionProvider>()
                    .SingleInstance();
         }
 

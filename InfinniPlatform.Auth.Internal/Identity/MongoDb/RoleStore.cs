@@ -10,11 +10,6 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
     {
         private readonly IDocumentStorage<TRole> _roles;
 
-        //        public RoleStore(IMongoCollection<TRole> roles)
-        //        {
-        //            _roles = roles;
-        //        }
-
         public RoleStore(IDocumentStorage<TRole> roles)
         {
             _roles = roles;

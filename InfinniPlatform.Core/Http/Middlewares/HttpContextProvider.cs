@@ -17,9 +17,9 @@ namespace InfinniPlatform.Core.Http.Middlewares
 
         public HttpContext GetHttpContext()
         {
-            var owinContext = _containerResolver.ResolveOptional<HttpContext>();
+            var accessor = _containerResolver.ResolveOptional<IHttpContextAccessor>();
 
-            return owinContext;
+            return accessor.HttpContext;
         }
     }
 }
