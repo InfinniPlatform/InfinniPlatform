@@ -6,6 +6,9 @@
     #>
     param
     (
+        [Parameter(HelpMessage = "Path to the solution directory.")]
+        [String] $solutionDir = '.',
+
         [Parameter(HelpMessage = "The directory where pdb files exists.")]
         [String] $pdbDirectory = '.',
 
@@ -54,7 +57,7 @@
         }
 
         Get-ChildItem -Path $pdbDirectory -Filter '*.pdb' | ForEach-Object {
-            & "$gitLinkPath" --url $repositoryUrl --commit $commitHash $_.FullName
+            & "$gitLinkPath" --baseDir $solutionDir --url $repositoryUrl --commit $commitHash $_.FullName
         }
     }
 }
