@@ -1,14 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{5ABA6C6E-8A75-4A08-8F2F-FE5EC5DEF04B}"
 	ProjectSection(SolutionItems) = preProject
-		Files\Config\AppCommon.json = Files\Config\AppCommon.json
-		Files\Config\AppExtension.json = Files\Config\AppExtension.json
+		Files\Config\AppConfig.json = Files\Config\AppConfig.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4FB7CC46-2521-4E3A-A968-EA7E685BA3A3}"
@@ -67,11 +66,54 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{B8D90B99-AAF9-4490-A39E-C1144A5B4CDE}"
 	ProjectSection(SolutionItems) = preProject
+		Files\Packaging\BuildNupkg.bat = Files\Packaging\BuildNupkg.bat
+		Files\Packaging\BuildNupkg.ps1 = Files\Packaging\BuildNupkg.ps1
 		Files\Packaging\BuildSymbols.ps1 = Files\Packaging\BuildSymbols.ps1
+		Files\Packaging\CreateNuspec.ps1 = Files\Packaging\CreateNuspec.ps1
 		Files\Packaging\GlobalAssemblyInfo.cs = Files\Packaging\GlobalAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Log4NetAdapter", "InfinniPlatform.Log4NetAdapter\InfinniPlatform.Log4NetAdapter.csproj", "{27EC3648-A4AD-4648-B601-9AF815A740E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{296EF39D-F3DC-4AAF-946A-FC704D5BAF93}"
+	ProjectSection(SolutionItems) = preProject
+		Files\Monitoring\AppLog.config = Files\Monitoring\AppLog.config
+		Files\Monitoring\Inf.logstash.rb = Files\Monitoring\Inf.logstash.rb
+		Files\Monitoring\Inf.Monitor.kibana.json = Files\Monitoring\Inf.Monitor.kibana.json
+		Files\Monitoring\Inf.Performance.kibana.json = Files\Monitoring\Inf.Performance.kibana.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0D5B0FB7-A96A-443E-B202-DC7B03A33F5F}"
+	ProjectSection(SolutionItems) = preProject
+		Files\Tests\TestAssemblies.nunit = Files\Tests\TestAssemblies.nunit
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{BFF8197C-B04D-4E0F-9FCA-172A144E6592}"
+	ProjectSection(SolutionItems) = preProject
+		Files\Config\Schema\Agent.json = Files\Config\Schema\Agent.json
+		Files\Config\Schema\AgentInfo.json = Files\Config\Schema\AgentInfo.json
+		Files\Config\Schema\App.json = Files\Config\Schema\App.json
+		Files\Config\Schema\AuthAdfs.json = Files\Config\Schema\AuthAdfs.json
+		Files\Config\Schema\AuthCookie.json = Files\Config\Schema\AuthCookie.json
+		Files\Config\Schema\AuthFacebook.json = Files\Config\Schema\AuthFacebook.json
+		Files\Config\Schema\AuthGoogle.json = Files\Config\Schema\AuthGoogle.json
+		Files\Config\Schema\AuthVk.json = Files\Config\Schema\AuthVk.json
+		Files\Config\Schema\BlobStorage.json = Files\Config\Schema\BlobStorage.json
+		Files\Config\Schema\Cache.json = Files\Config\Schema\Cache.json
+		Files\Config\Schema\Common.json = Files\Config\Schema\Common.json
+		Files\Config\Schema\Heartbeat.json = Files\Config\Schema\Heartbeat.json
+		Files\Config\Schema\Host.json = Files\Config\Schema\Host.json
+		Files\Config\Schema\HtmlToPdf.json = Files\Config\Schema\HtmlToPdf.json
+		Files\Config\Schema\Metadata.json = Files\Config\Schema\Metadata.json
+		Files\Config\Schema\MongoDB.json = Files\Config\Schema\MongoDB.json
+		Files\Config\Schema\RabbitMQ.json = Files\Config\Schema\RabbitMQ.json
+		Files\Config\Schema\Redis.json = Files\Config\Schema\Redis.json
+		Files\Config\Schema\Scheduler.json = Files\Config\Schema\Scheduler.json
+		Files\Config\Schema\Server.json = Files\Config\Schema\Server.json
+		Files\Config\Schema\StaticContent.json = Files\Config\Schema\StaticContent.json
+		Files\Config\Schema\UserStorage.json = Files\Config\Schema\UserStorage.json
+		Files\Config\Schema\Watcher.json = Files\Config\Schema\Watcher.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -585,5 +627,8 @@ Global
 		{5BDEC31D-BA0E-497C-BE11-C88E52B2991F} = {1808887E-7571-4676-A658-73124B206D83}
 		{B8D90B99-AAF9-4490-A39E-C1144A5B4CDE} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{27EC3648-A4AD-4648-B601-9AF815A740E3} = {1808887E-7571-4676-A658-73124B206D83}
+		{296EF39D-F3DC-4AAF-946A-FC704D5BAF93} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
+		{0D5B0FB7-A96A-443E-B202-DC7B03A33F5F} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
+		{BFF8197C-B04D-4E0F-9FCA-172A144E6592} = {5ABA6C6E-8A75-4A08-8F2F-FE5EC5DEF04B}
 	EndGlobalSection
 EndGlobal
