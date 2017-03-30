@@ -22,7 +22,7 @@ namespace InfinniPlatform.Core.IoC.Http
         public override Task Invoke(HttpContext context)
         {
             // Получение контейнера зависимостей запроса из окружения OWIN
-            //TODO Check if this approach is correct.
+            //TODO Вероятно данный этап уже не нужен. См. http://docs.autofac.org/en/latest/integration/aspnetcore.html?highlight=core#differences-from-asp-net-classic
             //var requestContainer = context.Get<ILifetimeScope>(AutofacHttpConstants.LifetimeScopeKey);
             var requestContainer = context.Items[AutofacHttpConstants.LifetimeScopeKey] as ILifetimeScope;
 

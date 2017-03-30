@@ -6,6 +6,7 @@ using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Sdk.IoC;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
@@ -54,6 +55,18 @@ namespace InfinniPlatform.Extensions
             serviceProvider = new AutofacServiceProvider(autofacRootContainer);
 
             return serviceProvider;
+        }
+
+        /// <summary>
+        /// Регистрирует правила CORS проверки.
+        /// </summary>
+        /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
+        public static IServiceCollection AddInfinniCors(this IServiceCollection serviceCollection)
+        {
+            // TODO: Сделать правила CORS проверки конфигурируемыми.
+            serviceCollection.AddCors(options => { options.AddPolicy("AllowAllOrigins", builder => builder.AllowAnyOrigin()); });
+
+            return serviceCollection;
         }
 
 

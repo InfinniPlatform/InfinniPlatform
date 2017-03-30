@@ -36,7 +36,7 @@ namespace InfinniPlatform.Core.IoC.Http
             using (var requestContainer = _rootContainer.BeginLifetimeScope(MatchingScopeLifetimeTags.RequestLifetimeScopeTag, b => b.RegisterInstance(context).As<HttpContext>()))
             {
                 // Регистрация контейнера зависимостей запроса в окружении OWIN для создания через него последующих OWIN-слоев
-                //TODO Check if this approach is correct.
+                //TODO Вероятно данный этап уже не нужен. См. http://docs.autofac.org/en/latest/integration/aspnetcore.html?highlight=core#differences-from-asp-net-classic
                 //context.Set(AutofacHttpConstants.LifetimeScopeKey, requestContainer);
                 context.Items.Add(AutofacHttpConstants.LifetimeScopeKey, requestContainer);
 

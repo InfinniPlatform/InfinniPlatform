@@ -8,17 +8,21 @@
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "workingDirectory": "..\\Assemblies",
+    "InfinniPlatform.ServiceHost": {
+      "commandName": "Project",
+      "applicationUrl": "htttp://localhost:9900",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "InfinniPlatform.ServiceHost": {
-      "commandName": "Project",
-      "applicationUrl": "htttp://localhost:9900"
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "applicationUrl": "htttp://localhost:9900",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

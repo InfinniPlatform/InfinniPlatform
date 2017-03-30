@@ -39,12 +39,6 @@ namespace InfinniPlatform.Auth.Internal.IoC
                    .As<UserManager<IdentityUser>>()
                    .ExternallyOwned();
 
-            // Менеджер работы с учетными записями пользователей на уровне приложения
-            // TODO Use default AspNetCore UserManager?
-            //            builder.RegisterType<IdentityAppUserManager>()
-            //                   .As<IAppUserManager>()
-            //                   .SingleInstance();
-
             // Middlewares
 
             builder.RegisterType<AuthInternalHttpMiddleware>()
