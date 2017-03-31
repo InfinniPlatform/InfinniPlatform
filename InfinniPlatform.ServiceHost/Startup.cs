@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using InfinniPlatform.Extensions;
-using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,28 +29,9 @@ namespace InfinniPlatform.ServiceHost
             return configureServices;
         }
 
-        public void Configure(IApplicationBuilder builder, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)
         {
-            var appStartedHandlers = resolver.Resolve<IEnumerable<IAppStartedHandler>>();
-            var appStoppedHandlers = resolver.Resolve<IEnumerable<IAppStoppedHandler>>();
-
-            foreach (var handler in appStartedHandlers)
-            {
-                lifetime.ApplicationStarted.Register(handler.Handle);
-            }
-
-            foreach (var handler in appStoppedHandlers)
-            {
-                lifetime.ApplicationStopped.Register(handler.Handle);
-            }
-
-            var middlewares = resolver.Resolve<IEnumerable<IHttpMiddleware>>();
-            var httpMiddlewares = middlewares.OrderBy(middleware => middleware.Type).ToArray();
-
-            foreach (var middleware in httpMiddlewares)
-            {
-                middleware.Configure(builder);
-            }
+            app.UseInfinniMiddlewares(resolver, lifetime);
         }
     }
 }

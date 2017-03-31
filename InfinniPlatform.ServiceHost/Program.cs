@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -10,7 +9,6 @@ namespace InfinniPlatform.ServiceHost
             var host = new WebHostBuilder()
                     .UseUrls("http://localhost:9900")
                     .UseKestrel()
-                    .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
                     .UseStartup<Startup>()
                     .Build();

@@ -68,7 +68,8 @@
     "EmbeddedRazorViewsAssemblies": []
   },
   "authCookie": {
-    "CookieDomain": ""
+    "LoginPath": "/Auth/SignInInternal",
+    "LogoutPath": "/Auth/SignOut"
   },
   "authAdfs": {
     "Enable": false,

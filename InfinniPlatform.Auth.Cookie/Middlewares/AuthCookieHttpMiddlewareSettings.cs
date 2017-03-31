@@ -16,11 +16,6 @@
 
 
         /// <summary>
-        /// Домен для создания Cookie.
-        /// </summary>
-        public string CookieDomain { get; set; }
-
-        /// <summary>
         /// Путь для перенаправления при возврате 401 Unauthorized.
         /// </summary>
         public string LoginPath { get; set; }

@@ -10,17 +10,18 @@
   "profiles": {
     "InfinniPlatform.ServiceHost": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:9900",
+      "workingDirectory": "bin\\Debug\\netcoreapp1.1",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:9900"
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "applicationUrl": "http://localhost:9900",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:9900"
     }
   }
 }

@@ -9,18 +9,21 @@ namespace InfinniPlatform.Auth.Cookie.Middlewares
     /// </summary>
     internal class AuthCookieHttpMiddleware : HttpMiddleware
     {
-        public AuthCookieHttpMiddleware() : base(HttpMiddlewareType.AuthenticationBarrier)
+        private readonly AuthCookieHttpMiddlewareSettings _settings;
+
+        public AuthCookieHttpMiddleware(AuthCookieHttpMiddlewareSettings settings) : base(HttpMiddlewareType.AuthenticationBarrier)
         {
+            _settings = settings;
         }
-        
+
         public override void Configure(IApplicationBuilder builder)
         {
             // Разрешение использования cookie для входа в систему через внутренний провайдер
             var cookieAuthOptions = new CookieAuthenticationOptions
                                     {
-                                        AuthenticationScheme = "MyCookieMiddlewareInstance",
-                                        LoginPath = new PathString("/Account/Unauthorized/"),
-                                        AccessDeniedPath = new PathString("/Account/Forbidden/"),
+                                        AuthenticationScheme = "InfinniCookieMiddleware",
+                                        LoginPath = new PathString(_settings.LoginPath),
+                                        LogoutPath = new PathString(_settings.LogoutPath),
                                         AutomaticAuthenticate = true,
                                         AutomaticChallenge = true
                                     };
