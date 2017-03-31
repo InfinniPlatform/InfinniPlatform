@@ -17,7 +17,7 @@
 
         public const int DefaultWriteBufferSize = 512;
 
-        public const int DefaultConnectionTimeout = 10000;
+        public const int DefaultConnectionTimeout = 1000;
 
         public const int DefaultMaxReconnectRetries = 10;
 
