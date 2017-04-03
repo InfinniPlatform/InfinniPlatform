@@ -7,16 +7,13 @@
     param
     (
         [Parameter(HelpMessage = "Path to the solution directory.")]
-        [String] $solutionDir = '.',
-
-        [Parameter(HelpMessage = "The directory where pdb files exists.")]
-        [String] $pdbDirectory = '.',
+        [String] $solutionDir,
 
         [Parameter(HelpMessage = "VCS repository URL.")]
-        [String] $repositoryUrl = '',
+        [String] $repositoryUrl,
 
         [Parameter(HelpMessage = "VCS commit hash.")]
-        [String] $commitHash = ''
+        [String] $commitHash
     )
 
     process
@@ -56,7 +53,11 @@
             $repositoryUrl = $repositoryUrl -replace '\.git$', ''
         }
 
-        Get-ChildItem -Path $pdbDirectory -Filter '*.pdb' | ForEach-Object {
+        $pdbFiles = Get-ChildItem -Path $solutionDir -Filter '*.pdb' -Recurse `
+            | Where-Object { $_.FullName -notlike '*\obj\*' } `
+
+        foreach ($pdbFile in $pdbFiles)
+        {
             & "$gitLinkPath" --baseDir $solutionDir --url $repositoryUrl --commit $commitHash $_.FullName
         }
     }
