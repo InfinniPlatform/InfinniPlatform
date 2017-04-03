@@ -36,7 +36,7 @@
             {
                 $projectVersion = $semanticVersion
 
-                if ($isPrereleaseVersion -or (Project-IsPrerelease $project.FullName $projectPrereleaseList))
+                if ($isPrereleaseVersion -or (Project-IsPrerelease $projectFile.FullName $projectPrereleaseList))
                 {
                     $projectVersion = $projectVersion + '-' + $prereleaseSuffix
                 }
@@ -327,7 +327,7 @@ function Project-SetPackageInfo
 
     process
     {
-        $propertyGroup = $projectXml.$Project.PropertyGroup
+        $propertyGroup = $projectXml.Project.PropertyGroup
 
         Project-SetChildNode $projectXml $propertyGroup 'PackageVersion' $projectVersion
         Project-SetChildNode $projectXml $propertyGroup 'Authors' 'Infinnity Solutions Ltd'
@@ -366,12 +366,12 @@ function Project-SetChildNode
         if (-not $childNode)
         {
             $childNode = $projectXml.CreateElement($childNodeName)
-            $childNode.InnerText =$childNodeText
+            $childNode.InnerText = $childNodeText
             $parentNode.AppendChild($childNode)
         }
         else
         {
-            $childNode.InnerText =$childNodeText
+            $childNode.InnerText = $childNodeText
         }
     }
 }
