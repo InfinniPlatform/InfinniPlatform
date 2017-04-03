@@ -16,7 +16,7 @@
     "Password": "TeamCity",
     "ReadBufferSize": 512,
     "WriteBufferSize": 512,
-    "ConnectionTimeout": 0,
+    "ConnectionTimeout": 1000,
     "MaxReconnectRetries": 10,
     "PoolSize": 0
   },
@@ -68,7 +68,8 @@
     "EmbeddedRazorViewsAssemblies": []
   },
   "authCookie": {
-    "CookieDomain": ""
+    "LoginPath": "/Auth/SignInInternal",
+    "LogoutPath": "/Auth/SignOut"
   },
   "authAdfs": {
     "Enable": false,

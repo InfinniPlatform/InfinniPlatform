@@ -9,9 +9,11 @@ namespace InfinniPlatform.Core.Settings
 {
     public sealed class AppConfiguration : IAppConfiguration
     {
+        private const string AppConfigPath = "AppConfig.json";
+
         public AppConfiguration()
         {
-            _appConfig = new Lazy<JObject>(ReadAppConfig);
+            _appConfig = new Lazy<JObject>(() => TryReadConfig(AppConfigPath));
             _appConfigPlaceholder = new AppConfigurationPlaceholder();
         }
 
@@ -45,20 +47,6 @@ namespace InfinniPlatform.Core.Settings
         }
 
 
-        private JObject ReadAppConfig()
-        {
-            var appCommonConfigPath = AppSettings.GetValue("AppCommonConfig", "AppCommon.json");
-            var appExtensionConfigPath = AppSettings.GetValue("AppExtensionConfig", "AppExtension.json");
-
-            var appCommonConfig = TryReadConfig(appCommonConfigPath);
-            var appExtensionConfig = TryReadConfig(appExtensionConfigPath);
-
-            var appConfig = TryMergeConfig(appCommonConfig, appExtensionConfig);
-
-            return appConfig;
-        }
-
-
         /// <summary>
         /// Производит чтение конфигурационного файла.
         /// </summary>
@@ -74,24 +62,6 @@ namespace InfinniPlatform.Core.Settings
             }
 
             return null;
-        }
-
-
-        /// <summary>
-        /// Производит слияние общей и дополнительной конфигурации.
-        /// </summary>
-        private static JObject TryMergeConfig(JObject commonConfig, JObject extensionConfig)
-        {
-            if (commonConfig != null && extensionConfig != null)
-            {
-                var mergeSettings = new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace };
-
-                commonConfig.Merge(extensionConfig, mergeSettings);
-
-                return commonConfig;
-            }
-
-            return (commonConfig ?? extensionConfig) ?? new JObject();
         }
     }
 }

@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.IoC.Http;
+using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.IoC;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
@@ -25,7 +29,8 @@ namespace InfinniPlatform.Extensions
             containerBuilder.Populate(serviceCollection);
 
             containerBuilder.RegisterCoreModules();
-            containerBuilder.RegisterUserDefinedModules(serviceCollection);
+            containerBuilder.RegisterPlatformModules(serviceCollection);
+            containerBuilder.RegisterUserDefinedModules();
 
             // ReSharper disable AccessToModifiedClosure
 
@@ -69,6 +74,30 @@ namespace InfinniPlatform.Extensions
             return serviceCollection;
         }
 
+        public static void UseInfinniMiddlewares(this IApplicationBuilder builder, IContainerResolver resolver, IApplicationLifetime lifetime)
+        {
+            var appStartedHandlers = resolver.Resolve<IEnumerable<IAppStartedHandler>>();
+            var appStoppedHandlers = resolver.Resolve<IEnumerable<IAppStoppedHandler>>();
+
+            foreach (var handler in appStartedHandlers)
+            {
+                lifetime.ApplicationStarted.Register(handler.Handle);
+            }
+
+            foreach (var handler in appStoppedHandlers)
+            {
+                lifetime.ApplicationStopped.Register(handler.Handle);
+            }
+
+            var middlewares = resolver.Resolve<IEnumerable<IHttpMiddleware>>();
+            var httpMiddlewares = middlewares.OrderBy(middleware => middleware.Type).ToArray();
+
+            foreach (var middleware in httpMiddlewares)
+            {
+                middleware.Configure(builder);
+            }
+        }
+
 
         private static void RegisterCoreModules(this ContainerBuilder containerBuilder)
         {
@@ -84,13 +113,27 @@ namespace InfinniPlatform.Extensions
             }
         }
 
-        private static void RegisterUserDefinedModules(this ContainerBuilder containerBuilder, IServiceCollection serviceCollection)
+        private static void RegisterPlatformModules(this ContainerBuilder containerBuilder, IServiceCollection serviceCollection)
         {
             var userModules = serviceCollection.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
 
             foreach (var module in userModules)
             {
                 var containerModule = (IContainerModule) module.ImplementationFactory.Invoke(null);
+                var autofacContainerModule = new AutofacContainerModule(containerModule);
+                containerBuilder.RegisterModule(autofacContainerModule);
+            }
+        }
+
+        private static void RegisterUserDefinedModules(this ContainerBuilder containerBuilder)
+        {
+            var userModules = Assembly.GetEntryAssembly()
+                                      .GetTypes()
+                                      .Where(type => typeof(IContainerModule).IsAssignableFrom(type));
+
+            foreach (var module in userModules)
+            {
+                var containerModule = (IContainerModule)Activator.CreateInstance(module);
                 var autofacContainerModule = new AutofacContainerModule(containerModule);
                 containerBuilder.RegisterModule(autofacContainerModule);
             }
