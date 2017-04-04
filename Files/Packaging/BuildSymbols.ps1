@@ -58,7 +58,7 @@
 
         foreach ($pdbFile in $pdbFiles)
         {
-            & "$gitLinkPath" --baseDir $solutionDir --url $repositoryUrl --commit $commitHash $_.FullName
+            & "$gitLinkPath" --baseDir $solutionDir --url $repositoryUrl --commit $commitHash $pdbFile.FullName
         }
     }
 }
