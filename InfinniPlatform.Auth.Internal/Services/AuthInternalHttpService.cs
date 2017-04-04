@@ -339,8 +339,7 @@ namespace InfinniPlatform.Auth.Internal.Services
         /// </summary>
         private async Task<IHttpResponse> ChallengeExternalProvider(IHttpRequest request, string callbackPath)
         {
-            var challengeForm = request.Form;
-            string loginProvider = challengeForm.Provider;
+            string loginProvider = request.Form.Provider;
 
             if (string.IsNullOrWhiteSpace(loginProvider))
             {
@@ -348,9 +347,8 @@ namespace InfinniPlatform.Auth.Internal.Services
             }
 
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(loginProvider, callbackPath);
-            var externalAuthenticationSchemes = _signInManager.GetExternalAuthenticationSchemes();
 
-            await AuthenticationManager.ChallengeAsync(externalAuthenticationSchemes.First().AuthenticationScheme, properties);
+            await AuthenticationManager.ChallengeAsync(loginProvider, properties);
 
             var httpResponse = HttpContext.Response;
             var response = new HttpResponse(httpResponse.StatusCode, httpResponse.ContentType);
