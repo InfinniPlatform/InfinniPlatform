@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Auth.Internal.Contract
+﻿namespace InfinniPlatform.Sdk.Security
 {
     /// <summary>
     /// Типы утверждений системы.

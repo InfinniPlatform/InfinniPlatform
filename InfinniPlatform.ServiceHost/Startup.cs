@@ -12,11 +12,7 @@ namespace InfinniPlatform.ServiceHost
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddAuth()
-                                            .AddAuthAdfs()
                                             .AddAuthCookie()
-                                            .AddAuthGoogle()
-                                            .AddAuthFacebook()
-                                            .AddInfinniCors()
                                             .AddBlobStorage()
                                             .AddCaching()
                                             .AddDocumentStorage()
@@ -32,6 +28,25 @@ namespace InfinniPlatform.ServiceHost
         public void Configure(IApplicationBuilder app, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)
         {
             app.UseInfinniMiddlewares(resolver, lifetime);
+
+//            app.UseExternalAuth(() =>
+//                                {
+//                                    var facebookOptions = new FacebookOptions
+//                                                          {
+//                                                              AppId = Configuration["Authentication:Facebook:AppId"],
+//                                                              AppSecret = Configuration["Authentication:Facebook:AppSecret"]
+//                                                          };
+//
+//                                    var microsoftAccountOptions = new MicrosoftAccountOptions
+//                                                                  {
+//                                                                      ClientId = Configuration["Authentication:Microsoft:AppId"],
+//                                                                      ClientSecret = Configuration["Authentication:Microsoft:AppSecret"]
+//                                                                  };
+//
+//                                    app.UseFacebookAuthentication(facebookOptions)
+//                                       .UseMicrosoftAccountAuthentication(microsoftAccountOptions);
+//                                });
+//
         }
     }
 }
