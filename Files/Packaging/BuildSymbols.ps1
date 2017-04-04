@@ -54,7 +54,9 @@
         }
 
         $pdbFiles = Get-ChildItem -Path $solutionDir -Filter '*.pdb' -Recurse `
+            | Where-Object { $_.Name -notlike '*.Tests.pdb' } `
             | Where-Object { $_.FullName -notlike '*\obj\*' } `
+            | Where-Object { $_.FullName -like (Get-Item (Join-Path $solutionDir $_.BaseName)).FullName + '\*' }
 
         foreach ($pdbFile in $pdbFiles)
         {
