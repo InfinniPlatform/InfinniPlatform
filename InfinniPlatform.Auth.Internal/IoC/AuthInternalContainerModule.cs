@@ -83,6 +83,16 @@ namespace InfinniPlatform.Auth.Internal.IoC
             builder.RegisterType<AppUserStore>()
                    .As<IAppUserStore>()
                    .SingleInstance();
+
+            // Cookie
+
+            builder.RegisterFactory(GetSettings)
+                   .As<AuthCookieHttpMiddlewareSettings>()
+                   .SingleInstance();
+
+            builder.RegisterType<AuthCookieHttpMiddleware>()
+                   .As<IHttpMiddleware>()
+                   .SingleInstance();
         }
 
 
@@ -145,6 +155,11 @@ namespace InfinniPlatform.Auth.Internal.IoC
             var documentStorage = resolver.Resolve<IDocumentStorage<IdentityRole>>();
 
             return new RoleStore<IdentityRole>(documentStorage);
+        }
+
+        private static AuthCookieHttpMiddlewareSettings GetSettings(IContainerResolver resolver)
+        {
+            return resolver.Resolve<IAppConfiguration>().GetSection<AuthCookieHttpMiddlewareSettings>(AuthCookieHttpMiddlewareSettings.SectionName);
         }
     }
 }

@@ -1,12 +1,7 @@
-﻿using System;
-using InfinniPlatform.Auth.Internal.Properties;
-using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth.Internal.Middlewares
 {

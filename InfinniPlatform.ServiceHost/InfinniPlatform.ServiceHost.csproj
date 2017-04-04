@@ -34,7 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Auth.Cookie\InfinniPlatform.Auth.Cookie.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.csproj" />
     <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj" />
@@ -44,6 +43,12 @@
     <ProjectReference Include="..\InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj" />
     <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="content\www\AuthExternal.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

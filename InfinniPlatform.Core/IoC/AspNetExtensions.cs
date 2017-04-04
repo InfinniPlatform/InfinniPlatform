@@ -19,6 +19,8 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
+        private static readonly Dictionary<HttpMiddlewareType, Action> UserMiddlewareActions = new Dictionary<HttpMiddlewareType, Action>();
+
         /// <summary>
         /// Создает провайдер на основе коллекции зарегистрированных сервисов.
         /// </summary>
@@ -36,20 +38,17 @@ namespace InfinniPlatform.Extensions
 
             // Регистрация самого Autofac-контейнера
             IContainer autofacRootContainer = null;
-            Func<IContainer> autofacRootContainerFactory = () => autofacRootContainer;
-            containerBuilder.RegisterInstance(autofacRootContainerFactory);
+            containerBuilder.RegisterInstance((Func<IContainer>) (() => autofacRootContainer));
             containerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
 
             // Регистрация обертки над контейнером
             IContainerResolver containerResolver = null;
-            Func<IContainerResolver> containerResolverFactory = () => containerResolver;
-            containerBuilder.RegisterInstance(containerResolverFactory);
+            containerBuilder.RegisterInstance((Func<IContainerResolver>) (() => containerResolver));
             containerBuilder.Register(r => r.Resolve<Func<IContainerResolver>>()()).As<IContainerResolver>().SingleInstance();
 
             // Регистрация контейнера для Asp.Net
             IServiceProvider serviceProvider = null;
-            Func<IServiceProvider> serviceProviderFactory = () => serviceProvider;
-            containerBuilder.RegisterInstance(serviceProviderFactory);
+            containerBuilder.RegisterInstance((Func<IServiceProvider>) (() => serviceProvider));
             containerBuilder.Register(r => r.Resolve<Func<IServiceProvider>>()()).As<IServiceProvider>().SingleInstance();
 
             // ReSharper restore AccessToModifiedClosure
@@ -64,8 +63,8 @@ namespace InfinniPlatform.Extensions
 
         public static void UseInfinniMiddlewares(this IApplicationBuilder builder, IContainerResolver resolver, IApplicationLifetime lifetime)
         {
-            var appStartedHandlers = resolver.Resolve<IEnumerable<IAppStartedHandler>>();
-            var appStoppedHandlers = resolver.Resolve<IEnumerable<IAppStoppedHandler>>();
+            var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();
+            var appStoppedHandlers = resolver.Resolve<IAppStoppedHandler[]>();
 
             foreach (var handler in appStartedHandlers)
             {
@@ -77,19 +76,68 @@ namespace InfinniPlatform.Extensions
                 lifetime.ApplicationStopped.Register(handler.Handle);
             }
 
-            var middlewares = resolver.Resolve<IEnumerable<IHttpMiddleware>>();
-            var httpMiddlewares = middlewares.OrderBy(middleware => middleware.Type).ToArray();
+            var httpMiddlewares = resolver.Resolve<IHttpMiddleware[]>();
+            var httpMiddlewareTypes = (HttpMiddlewareType[]) Enum.GetValues(typeof(HttpMiddlewareType));
 
-            foreach (var middleware in httpMiddlewares)
+            foreach (var type in httpMiddlewareTypes)
             {
-                middleware.Configure(builder);
+                foreach (var middleware in httpMiddlewares.Where(m => m.Type == type))
+                {
+                    middleware.Configure(builder);
+                }
+
+                if (UserMiddlewareActions.ContainsKey(type))
+                {
+                    UserMiddlewareActions[type].Invoke();
+                }
             }
+        }
+
+        public static void AddGlobalHandlingMiddleware(this IApplicationBuilder app, Action action)
+        {
+            UserMiddlewareActions[HttpMiddlewareType.GlobalHandling] = action;
+        }
+
+        public static void AddErrorHandlingMiddleware(this IApplicationBuilder app, Action action)
+        {
+            UserMiddlewareActions[HttpMiddlewareType.ErrorHandling] = action;
+        }
+
+        public static void AddBeforeAuthenticationMiddleware(this IApplicationBuilder app, Action action)
+        {
+            UserMiddlewareActions[HttpMiddlewareType.BeforeAuthentication] = action;
+        }
+
+        public static void AddAuthenticationBarrierMiddleware(this IApplicationBuilder app, Action action)
+        {
+            UserMiddlewareActions[HttpMiddlewareType.AuthenticationBarrier] = action;
+        }
+
+        public static void AddExternalAuthenticationMiddleware(this IApplicationBuilder app, Action action)
+        {
+            UserMiddlewareActions[HttpMiddlewareType.ExternalAuthentication] = action;
+        }
+
+        public static void AddInternalAuthenticationMiddleware(this IApplicationBuilder app, Action action)
+        {
+            UserMiddlewareActions[HttpMiddlewareType.InternalAuthentication] = action;
+        }
+
+        public static void AddAfterAuthenticationMiddleware(this IApplicationBuilder app, Action action)
+        {
+            UserMiddlewareActions[HttpMiddlewareType.AfterAuthentication] = action;
+        }
+
+        public static void AddApplicationMiddleware(this IApplicationBuilder app, Action action)
+        {
+            UserMiddlewareActions[HttpMiddlewareType.Application] = action;
         }
 
 
         private static void RegisterCoreModules(this ContainerBuilder containerBuilder)
         {
-            var coreModules = typeof(CoreContainerModule).GetTypeInfo().Assembly
+            var coreModules = typeof(CoreContainerModule).GetTypeInfo()
+                                                         .Assembly
                                                          .GetTypes()
                                                          .Where(type => typeof(IContainerModule).IsAssignableFrom(type));
 
@@ -121,7 +169,7 @@ namespace InfinniPlatform.Extensions
 
             foreach (var module in userModules)
             {
-                var containerModule = (IContainerModule)Activator.CreateInstance(module);
+                var containerModule = (IContainerModule) Activator.CreateInstance(module);
                 var autofacContainerModule = new AutofacContainerModule(containerModule);
                 containerBuilder.RegisterModule(autofacContainerModule);
             }

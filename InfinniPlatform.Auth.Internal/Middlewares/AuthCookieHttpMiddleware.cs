@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace InfinniPlatform.Auth.Cookie.Middlewares
+namespace InfinniPlatform.Auth.Internal.Middlewares
 {
     /// <summary>
     /// Промежуточный слой обработки HTTP запросов приложения для аутентификации пользователя через Cookie.
@@ -40,21 +40,6 @@ namespace InfinniPlatform.Auth.Cookie.Middlewares
             externalCookieOptions.AutomaticChallenge = true;
 
             builder.UseCookieAuthentication(externalCookieOptions);
-
-            var facebookOptions = new FacebookOptions
-                                  {
-                                      AppId = "199994547162009",
-                                      AppSecret = "ffd317eb16b31540f42c3bbc406bedfa"
-                                  };
-
-            var microsoftAccountOptions = new MicrosoftAccountOptions
-                                          {
-                                              ClientId = "51ce0ff9-13d3-4d51-b6ee-d8f6a4c7061c",
-                                              ClientSecret = "bco1bSU7bX7cfprfBQrkCA8"
-                                          };
-
-            builder.UseFacebookAuthentication(facebookOptions)
-                   .UseMicrosoftAccountAuthentication(microsoftAccountOptions);
         }
     }
 }

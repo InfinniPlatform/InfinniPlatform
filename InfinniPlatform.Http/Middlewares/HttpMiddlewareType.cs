@@ -1,7 +1,10 @@
-﻿namespace InfinniPlatform.Http.Middlewares
+﻿using System;
+using Microsoft.AspNetCore.Builder;
+
+namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
-    /// Тип промежуточного слоя обработки HTTP запросов приложения <see cref="IHttpMiddleware"/>.
+    /// Тип промежуточного слоя обработки HTTP запросов приложения <see cref="IHttpMiddleware" />.
     /// </summary>
     public enum HttpMiddlewareType
     {
