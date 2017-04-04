@@ -62,18 +62,6 @@ namespace InfinniPlatform.Extensions
             return serviceProvider;
         }
 
-        /// <summary>
-        /// Регистрирует правила CORS проверки.
-        /// </summary>
-        /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
-        public static IServiceCollection AddInfinniCors(this IServiceCollection serviceCollection)
-        {
-            // TODO: Сделать правила CORS проверки конфигурируемыми.
-            serviceCollection.AddCors(options => { options.AddPolicy("AllowAllOrigins", builder => builder.AllowAnyOrigin()); });
-
-            return serviceCollection;
-        }
-
         public static void UseInfinniMiddlewares(this IApplicationBuilder builder, IContainerResolver resolver, IApplicationLifetime lifetime)
         {
             var appStartedHandlers = resolver.Resolve<IEnumerable<IAppStartedHandler>>();

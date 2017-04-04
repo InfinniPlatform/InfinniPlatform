@@ -3,7 +3,6 @@ using InfinniPlatform.Extensions;
 using InfinniPlatform.Sdk.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InfinniPlatform.ServiceHost
@@ -14,7 +13,6 @@ namespace InfinniPlatform.ServiceHost
         {
             var configureServices = services.AddAuth()
                                             .AddAuthCookie()
-                                            .AddInfinniCors()
                                             .AddBlobStorage()
                                             .AddCaching()
                                             .AddDocumentStorage()

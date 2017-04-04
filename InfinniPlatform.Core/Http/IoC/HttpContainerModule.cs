@@ -45,10 +45,6 @@ namespace InfinniPlatform.Core.Http.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<CorsHttpMiddleware>()
-                   .As<IHttpMiddleware>()
-                   .SingleInstance();
-
             builder.RegisterType<NancyHttpMiddleware>()
                    .As<IHttpMiddleware>()
                    .SingleInstance();
