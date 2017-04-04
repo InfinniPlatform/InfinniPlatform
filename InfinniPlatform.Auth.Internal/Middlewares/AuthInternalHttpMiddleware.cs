@@ -1,7 +1,12 @@
-﻿using InfinniPlatform.Http.Middlewares;
+﻿using System;
+using InfinniPlatform.Auth.Internal.Properties;
+using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Security;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth.Internal.Middlewares
 {
@@ -24,8 +29,6 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
 
         public override void Configure(IApplicationBuilder builder)
         {
-            builder.UseIdentity();
-
             // Прослойка для установки информации об идентификационных данных текущего пользователя
             builder.Use((httpContext, nextOwinMiddleware) =>
                         {

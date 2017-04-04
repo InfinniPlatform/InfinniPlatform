@@ -3,6 +3,7 @@ using InfinniPlatform.Extensions;
 using InfinniPlatform.Sdk.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InfinniPlatform.ServiceHost
@@ -12,10 +13,7 @@ namespace InfinniPlatform.ServiceHost
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddAuth()
-                                            .AddAuthAdfs()
                                             .AddAuthCookie()
-                                            .AddAuthGoogle()
-                                            .AddAuthFacebook()
                                             .AddInfinniCors()
                                             .AddBlobStorage()
                                             .AddCaching()
@@ -32,6 +30,25 @@ namespace InfinniPlatform.ServiceHost
         public void Configure(IApplicationBuilder app, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)
         {
             app.UseInfinniMiddlewares(resolver, lifetime);
+
+//            app.UseExternalAuth(() =>
+//                                {
+//                                    var facebookOptions = new FacebookOptions
+//                                                          {
+//                                                              AppId = Configuration["Authentication:Facebook:AppId"],
+//                                                              AppSecret = Configuration["Authentication:Facebook:AppSecret"]
+//                                                          };
+//
+//                                    var microsoftAccountOptions = new MicrosoftAccountOptions
+//                                                                  {
+//                                                                      ClientId = Configuration["Authentication:Microsoft:AppId"],
+//                                                                      ClientSecret = Configuration["Authentication:Microsoft:AppSecret"]
+//                                                                  };
+//
+//                                    app.UseFacebookAuthentication(facebookOptions)
+//                                       .UseMicrosoftAccountAuthentication(microsoftAccountOptions);
+//                                });
+//
         }
     }
 }

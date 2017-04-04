@@ -1,5 +1,7 @@
-﻿using InfinniPlatform.Auth.Internal.Identity.MongoDb;
+﻿using System;
+using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Auth.Internal.IoC;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
@@ -18,6 +20,11 @@ namespace InfinniPlatform.Extensions
             serviceCollection.AddSingleton(provider => new AuthInternalContainerModule());
 
             return serviceCollection;
+        }
+
+        public static void UseExternalAuth(this IApplicationBuilder app, Action action)
+        {
+            action.Invoke();
         }
     }
 }

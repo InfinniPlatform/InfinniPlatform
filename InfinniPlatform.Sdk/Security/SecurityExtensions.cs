@@ -5,10 +5,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.Auth.Internal.Contract
+namespace InfinniPlatform.Sdk.Security
 {
     public static class SecurityExtensions
     {
@@ -36,6 +35,7 @@ namespace InfinniPlatform.Auth.Internal.Contract
         /// Проверяет наличие заданного типа утверждения.
         /// </summary>
         /// <param name="identity">Объект идентификации.</param>
+        /// <param name="claimType">Тип утверждения (например, <see cref="ClaimTypes" />).</param>
         /// <param name="claimValue">Значение утверждения.</param>
         public static bool HasClaim(this IIdentity identity, string claimType, string claimValue)
         {
