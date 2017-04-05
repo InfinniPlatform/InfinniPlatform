@@ -270,6 +270,46 @@ namespace InfinniPlatform.Auth.Internal.Identity
             return await InvokeUserManagerAsync((m, u) => m.IsEmailConfirmedAsync(u.Id), userName);
         }
 
+        public string GenerateEmailConfirmationToken()
+        {
+            return InvokeUserManager((m, userId) => m.GenerateEmailConfirmationTokenAsync(userId));
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync()
+        {
+            return await InvokeUserManagerAsync((m, userId) => m.GenerateEmailConfirmationTokenAsync(userId));
+        }
+
+        public string GenerateEmailConfirmationToken(string userName)
+        {
+            return InvokeUserManager((m, u) => m.GenerateEmailConfirmationTokenAsync(u.Id), userName);
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(string userName)
+        {
+            return await InvokeUserManagerAsync((m, u) => m.GenerateEmailConfirmationTokenAsync(u.Id), userName);
+        }
+
+        public void ConfirmEmail(string token)
+        {
+            InvokeUserManager((m, userId) => m.ConfirmEmailAsync(userId, token));
+        }
+
+        public async Task ConfirmEmailAsync(string token)
+        {
+            await InvokeUserManagerAsync((m, userId) => m.ConfirmEmailAsync(userId, token));
+        }
+
+        public void ConfirmEmail(string userName, string token)
+        {
+            InvokeUserManager((m, u) => m.ConfirmEmailAsync(u.Id, token), userName);
+        }
+
+        public async Task ConfirmEmailAsync(string userName, string token)
+        {
+            await InvokeUserManagerAsync((m, u) => m.ConfirmEmailAsync(u.Id, token), userName);
+        }
+
         // PhoneNumber
 
         public string GetPhoneNumber()
