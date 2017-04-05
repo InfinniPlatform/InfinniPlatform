@@ -173,6 +173,36 @@ namespace InfinniPlatform.Auth.Internal.Contract
 
 
         /// <summary>
+        /// Создает токен для подтверждения электронной почты пользователя.
+        /// </summary>
+        string GenerateEmailConfirmationToken();
+        Task<string> GenerateEmailConfirmationTokenAsync();
+
+        /// <summary>
+        /// Создает токен для подтверждения электронной почты пользователя.
+        /// </summary>
+        /// <param name="userName">Имя пользователя.</param>
+        string GenerateEmailConfirmationToken(string userName);
+        Task<string> GenerateEmailConfirmationTokenAsync(string userName);
+
+
+        /// <summary>
+        /// Подтверждает электронную почту пользователя.
+        /// </summary>
+        /// <param name="token">Токен для подтверждения электронной почты.</param>
+        void ConfirmEmail(string token);
+        Task ConfirmEmailAsync(string token);
+
+        /// <summary>
+        /// Подтверждает электронную почту пользователя.
+        /// </summary>
+        /// <param name="userName">Имя пользователя.</param>
+        /// <param name="token">Токен для подтверждения электронной почты.</param>
+        void ConfirmEmail(string userName, string token);
+        Task ConfirmEmailAsync(string userName, string token);
+
+
+        /// <summary>
         /// Возвращает номер телефона пользователя.
         /// </summary>
         string GetPhoneNumber();
