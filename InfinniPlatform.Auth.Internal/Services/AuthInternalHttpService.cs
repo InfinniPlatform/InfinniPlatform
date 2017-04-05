@@ -146,8 +146,8 @@ namespace InfinniPlatform.Auth.Internal.Services
             _userEventHandlerInvoker.OnBeforeSignOut(request.User);
 
             // Выход из системы
-            //await AuthenticationManager.SignOutAsync(ApplicationCookieScheme);
-            await _signInManager.SignOutAsync();
+            await AuthenticationManager.SignOutAsync("Identity.Application");
+            await AuthenticationManager.SignOutAsync("Identity.External");
 
             var httpResponse = HttpContext.Response;
 

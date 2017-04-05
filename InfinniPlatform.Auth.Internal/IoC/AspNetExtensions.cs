@@ -21,10 +21,5 @@ namespace InfinniPlatform.Extensions
 
             return serviceCollection;
         }
-
-        public static void UseExternalAuth(this IApplicationBuilder app, Action action)
-        {
-            action.Invoke();
-        }
     }
 }

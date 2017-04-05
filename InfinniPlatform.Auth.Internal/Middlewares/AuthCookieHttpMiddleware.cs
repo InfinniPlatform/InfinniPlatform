@@ -20,26 +20,26 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
 
         public override void Configure(IApplicationBuilder builder)
         {
-            // Разрешение использования cookie для входа в систему через внутренний провайдер
-            var cookieOptions = new CookieAuthenticationOptions
-                                {
-                                    AuthenticationScheme = "Identity.Application",
-                                    LoginPath = new PathString(_settings.LoginPath),
-                                    LogoutPath = new PathString(_settings.LogoutPath),
-                                    AutomaticAuthenticate = true,
-                                    AutomaticChallenge = true
-                                };
+            var defaultCookiesOptions = builder.ApplicationServices
+                                               .GetRequiredService<IOptions<IdentityOptions>>()
+                                               .Value
+                                               .Cookies;
 
-            builder.UseCookieAuthentication(cookieOptions);
+            var applicationCookieOptions = defaultCookiesOptions.ApplicationCookie;
+            var externalCookieOptions = defaultCookiesOptions.ExternalCookie;
 
-            var externalCookieOptions = builder.ApplicationServices.GetRequiredService<IOptions<IdentityOptions>>().Value.Cookies.ExternalCookie;
+            applicationCookieOptions.LoginPath = new PathString(_settings.LoginPath);
+            applicationCookieOptions.LogoutPath = new PathString(_settings.LogoutPath);
+            applicationCookieOptions.AutomaticAuthenticate = true;
+            applicationCookieOptions.AutomaticChallenge = true;
 
             externalCookieOptions.LoginPath = new PathString(_settings.LoginPath);
             externalCookieOptions.LogoutPath = new PathString(_settings.LogoutPath);
             externalCookieOptions.AutomaticAuthenticate = true;
             externalCookieOptions.AutomaticChallenge = true;
 
-            builder.UseCookieAuthentication(externalCookieOptions);
+            builder.UseCookieAuthentication(applicationCookieOptions);
+            builder.UseCookieAuthentication(defaultCookiesOptions.ExternalCookie);
         }
     }
 }
