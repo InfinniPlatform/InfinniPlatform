@@ -11,6 +11,7 @@ using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
 using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Settings;
 using Microsoft.AspNetCore.Builder;
@@ -123,7 +124,7 @@ namespace InfinniPlatform.Auth.Internal.IoC
             var serviceProvider = resolver.Resolve<IServiceProvider>();
 
             // Логгер
-            ILogger<UserManager<IdentityUser>> logger = null;
+            var logger = resolver.Resolve<ILogger<UserManager<IdentityUser>>>();
 
             var userManager = new UserManager<IdentityUser>(identityUserStore,
                                                             optionsAccessor,

@@ -22,6 +22,8 @@ namespace InfinniPlatform.Auth.Internal.Services
     /// </summary>
     internal class AuthInternalHttpService : IHttpService
     {
+        private const string ApplicationAuthScheme = "Identity.Application";
+        private const string ExternalAuthScheme = "Identity.External";
         private readonly IHttpContextProvider _httpContextProvider;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
@@ -88,16 +90,25 @@ namespace InfinniPlatform.Auth.Internal.Services
                 return CreateErrorResponse(Resources.UserNameCannotBeNullOrWhiteSpace, 400);
             }
 
-            var user = await _userManager.FindByNameAsync(userName);
+            var result = await _signInManager.PasswordSignInAsync(userName, password, remember, false);
 
-            if (user == null)
+            if (result.Succeeded)
             {
+                var user = await _userManager.FindByNameAsync(userName);
+
+                return CreateSuccesResponse(user);
+            }
+            else
+            {
+                var user = await _userManager.FindByNameAsync(userName);
+
+                if (user == null)
+                {
+                    return CreateErrorResponse(Resources.UserNotFound, 400);
+                }
+
                 return CreateErrorResponse(Resources.InvalidUsernameOrPassword, 400);
             }
-
-            await _signInManager.PasswordSignInAsync(userName, password, remember, false);
-
-            return CreateSuccesResponse(user);
         }
 
         /// <summary>
@@ -146,8 +157,8 @@ namespace InfinniPlatform.Auth.Internal.Services
             _userEventHandlerInvoker.OnBeforeSignOut(request.User);
 
             // Выход из системы
-            await AuthenticationManager.SignOutAsync("Identity.Application");
-            await AuthenticationManager.SignOutAsync("Identity.External");
+            await AuthenticationManager.SignOutAsync(ApplicationAuthScheme);
+            await AuthenticationManager.SignOutAsync(ExternalAuthScheme);
 
             var httpResponse = HttpContext.Response;
 
@@ -232,17 +243,16 @@ namespace InfinniPlatform.Auth.Internal.Services
         /// <summary>
         /// Добавляет текущему пользователю имя входа у внешнего провайдера.
         /// </summary>
-        private Task<object> LinkExternalLogin(IHttpRequest request)
+        private async Task<object> LinkExternalLogin(IHttpRequest request)
         {
             if (!IsAuthenticated())
             {
-                var response = CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
-                return Task.FromResult<object>(response);
+                return CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
 
-            var challengeResult = ChallengeExternalProvider(request, "/Auth/LinkExternalLoginCallback");
+            var challengeResult = await ChallengeExternalProvider(request, "/Auth/LinkExternalLoginCallback");
 
-            return Task.FromResult<object>(challengeResult);
+            return challengeResult;
         }
 
         /// <summary>
@@ -252,10 +262,10 @@ namespace InfinniPlatform.Auth.Internal.Services
         {
             return ChallengeExternalProviderCallback(request, async loginInfo =>
                                                               {
-                                                                  var identityUser = await _userManager.GetUserAsync(ClaimsPrincipal.Current);
+                                                                  var identityUser = await _userManager.GetUserAsync(GetCurrentInternalClaimsPrincipal());
 
                                                                   // Добавление имени входа пользователя
-                                                                  var addLoginTask = await _userManager.AddLoginAsync(identityUser, new UserLoginInfo(loginInfo.LoginProvider, loginInfo.ProviderKey, loginInfo.ProviderDisplayName));
+                                                                  var addLoginTask = await _userManager.AddLoginAsync(identityUser, loginInfo);
 
                                                                   return !addLoginTask.Succeeded
                                                                              ? string.Join(Environment.NewLine, addLoginTask.Errors)
@@ -275,22 +285,16 @@ namespace InfinniPlatform.Auth.Internal.Services
 
             var unlinkExternalLoginForm = request.Form;
             string provider = unlinkExternalLoginForm.Provider;
-            string providerKey = unlinkExternalLoginForm.ProviderKey;
 
             if (string.IsNullOrWhiteSpace(provider))
             {
                 return CreateErrorResponse(Resources.ExternalProviderCannotBeNullOrWhiteSpace, 400);
             }
 
-            if (string.IsNullOrWhiteSpace(providerKey))
-            {
-                return CreateErrorResponse(Resources.ExternalProviderKeyCannotBeNullOrWhiteSpace, 400);
-            }
-
-            var identityUser = await _userManager.GetUserAsync(ClaimsPrincipal.Current);
-
+            var identityUser = await _userManager.GetUserAsync(GetCurrentInternalClaimsPrincipal());
+            var identityUserLogin = identityUser.Logins.Find(login => login.LoginProvider == provider);
             // Удаление имени входа пользователя
-            var removeLoginTask = await _userManager.RemoveLoginAsync(identityUser, provider, providerKey);
+            var removeLoginTask = await _userManager.RemoveLoginAsync(identityUser, identityUserLogin.LoginProvider, identityUserLogin.ProviderKey);
 
             if (!removeLoginTask.Succeeded)
             {
@@ -312,8 +316,6 @@ namespace InfinniPlatform.Auth.Internal.Services
         /// </summary>
         private static IdentityUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
         {
-            //var userName = loginInfo.DefaultUserName;
-
             var email = loginInfo.Principal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
             var user = new IdentityUser
                        {
@@ -368,12 +370,10 @@ namespace InfinniPlatform.Auth.Internal.Services
 
             try
             {
-                //var loginInfo = await AuthenticationManager.GetAuthenticateInfoAsync(ExternalCookieScheme);
                 var externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
                 // Если пользователь прошел аутентификацию через внешний провайдер
                 if (externalLoginInfo != null)
                 {
-                    // TODO Get correct external login info.
                     errorMessage = await callbackAction(externalLoginInfo);
                 }
                 else
@@ -460,6 +460,16 @@ namespace InfinniPlatform.Auth.Internal.Services
                        Type = claim.Type,
                        Value = claim.Value
                    };
+        }
+
+        private ClaimsIdentity GetCurrentInternalClaimsIdentity()
+        {
+            return HttpContext.User.Identities.First(identity => identity.AuthenticationType == ApplicationAuthScheme);
+        }
+
+        private ClaimsPrincipal GetCurrentInternalClaimsPrincipal()
+        {
+            return new ClaimsPrincipal(GetCurrentInternalClaimsIdentity());
         }
 
         // RESPONSE
