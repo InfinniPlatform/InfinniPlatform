@@ -11,6 +11,8 @@ using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Settings;
 
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace InfinniPlatform.Auth.Internal.IoC
 {
@@ -94,8 +96,14 @@ namespace InfinniPlatform.Auth.Internal.IoC
             // Сервис хэширования паролей пользователей для AspNet.Identity
             var identityPasswordHasher = new IdentityApplicationUserPasswordHasher(appPasswordHasher);
 
+            // Сервис генерации токенов безопасности для подтверждения действий
+            var dataProtectionProvider = new DpapiDataProtectionProvider("InfinniPlatform");
+            var dataProtector = dataProtectionProvider.Create("EmailConfirmation");
+            var tokenProvider = new DataProtectorTokenProvider<IdentityApplicationUser>(dataProtector);
+
             var userManager = new UserManager<IdentityApplicationUser>(identityUserStore)
                               {
+                                  UserTokenProvider = tokenProvider,
                                   UserValidator = identityUserValidator,
                                   PasswordHasher = identityPasswordHasher
                               };
