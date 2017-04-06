@@ -185,13 +185,13 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken token)
         {
-            var replaceOneResult = await _users.ReplaceOneAsync(user, u => u.Id == user.Id);
+            await _users.ReplaceOneAsync(user, u => u.Id == user.Id);
             return IdentityResult.Success;
         }
 
         public virtual async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken token)
         {
-            var deleteResult = await _users.DeleteOneAsync(u => u.Id == user.Id);
+            await _users.DeleteOneAsync(u => u.Id == user.Id);
             return IdentityResult.Success;
         }
 

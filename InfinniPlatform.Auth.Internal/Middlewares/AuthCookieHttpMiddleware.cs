@@ -18,9 +18,9 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
             _settings = settings;
         }
 
-        public override void Configure(IApplicationBuilder builder)
+        public override void Configure(IApplicationBuilder app)
         {
-            var defaultCookiesOptions = builder.ApplicationServices
+            var defaultCookiesOptions = app.ApplicationServices
                                                .GetRequiredService<IOptions<IdentityOptions>>()
                                                .Value
                                                .Cookies;
@@ -38,8 +38,8 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
             externalCookieOptions.AutomaticAuthenticate = true;
             externalCookieOptions.AutomaticChallenge = true;
 
-            builder.UseCookieAuthentication(applicationCookieOptions);
-            builder.UseCookieAuthentication(defaultCookiesOptions.ExternalCookie);
+            app.UseCookieAuthentication(applicationCookieOptions);
+            app.UseCookieAuthentication(defaultCookiesOptions.ExternalCookie);
         }
     }
 }

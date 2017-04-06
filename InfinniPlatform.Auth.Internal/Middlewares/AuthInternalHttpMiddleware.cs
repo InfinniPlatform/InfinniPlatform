@@ -22,10 +22,10 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
         }
 
 
-        public override void Configure(IApplicationBuilder builder)
+        public override void Configure(IApplicationBuilder app)
         {
             // Прослойка для установки информации об идентификационных данных текущего пользователя
-            builder.Use((httpContext, nextOwinMiddleware) =>
+            app.Use((httpContext, nextOwinMiddleware) =>
                         {
                             var requestUser = httpContext.User;
 

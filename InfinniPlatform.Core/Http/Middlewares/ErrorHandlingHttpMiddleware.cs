@@ -19,9 +19,9 @@ namespace InfinniPlatform.Core.Http.Middlewares
         }
 
 
-        public override void Configure(IApplicationBuilder appBuilder)
+        public override void Configure(IApplicationBuilder app)
         {
-            appBuilder.UseMiddleware<ErrorHandlingOwinMiddleware>(_log, _performanceLog);
+            app.UseMiddleware<ErrorHandlingOwinMiddleware>(_log, _performanceLog);
         }
     }
 }

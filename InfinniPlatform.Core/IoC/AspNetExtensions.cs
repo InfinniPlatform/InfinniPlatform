@@ -19,7 +19,7 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        private static readonly Dictionary<HttpMiddlewareType, Action> UserMiddlewareActions = new Dictionary<HttpMiddlewareType, Action>();
+        private static readonly Dictionary<HttpMiddlewareType, Action<IApplicationBuilder>> UserMiddlewareActions = new Dictionary<HttpMiddlewareType, Action<IApplicationBuilder>>();
 
         /// <summary>
         /// Создает провайдер на основе коллекции зарегистрированных сервисов.
@@ -61,7 +61,99 @@ namespace InfinniPlatform.Extensions
             return serviceProvider;
         }
 
-        public static void UseInfinniMiddlewares(this IApplicationBuilder builder, IContainerResolver resolver, IApplicationLifetime lifetime)
+        /// <summary>
+        /// Регистрирует middlewares обработки запросов к приложению.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="resolver">Провайдер разрешения зависимостей.</param>
+        /// <param name="lifetime">Конфигуратор поведения приложения при запуске/остановке.</param>
+        public static void UseInfinniMiddlewares(this IApplicationBuilder app, IContainerResolver resolver, IApplicationLifetime lifetime)
+        {
+            RegisterAppLifetimeHandlers(resolver, lifetime);
+            RegisterMiddlewares(app, resolver);
+        }
+
+        /// <summary>
+        /// Регистрирует middleware глобальной обработки запросов.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="action">Обработчик запроса.</param>
+        public static void AddGlobalHandlingMiddleware(this IApplicationBuilder app, Action<IApplicationBuilder> action)
+        {
+            AddUserMiddleware(HttpMiddlewareType.GlobalHandling, action);
+        }
+
+        /// <summary>
+        /// Регистрирует middleware обработки ошибок выполнения запросов.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="action">Обработчик запроса.</param>
+        public static void AddErrorHandlingMiddleware(this IApplicationBuilder app, Action<IApplicationBuilder> action)
+        {
+            AddUserMiddleware(HttpMiddlewareType.ErrorHandling, action);
+        }
+
+        /// <summary>
+        /// Регистрирует middleware обработки запросов до аутентификации пользователя.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="action">Обработчик запроса.</param>
+        public static void AddBeforeAuthenticationMiddleware(this IApplicationBuilder app, Action<IApplicationBuilder> action)
+        {
+            AddUserMiddleware(HttpMiddlewareType.BeforeAuthentication, action);
+        }
+
+        /// <summary>
+        /// Регистрирует middleware барьерной аутентификации пользователя.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="action">Обработчик запроса.</param>
+        public static void AddAuthenticationBarrierMiddleware(this IApplicationBuilder app, Action<IApplicationBuilder> action)
+        {
+            AddUserMiddleware(HttpMiddlewareType.AuthenticationBarrier, action);
+        }
+
+        /// <summary>
+        /// Регистрирует middleware аутентификации пользователя на основе внешнего провайдера.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="action">Обработчик запроса.</param>
+        public static void AddExternalAuthenticationMiddleware(this IApplicationBuilder app, Action<IApplicationBuilder> action)
+        {
+            AddUserMiddleware(HttpMiddlewareType.ExternalAuthentication, action);
+        }
+
+        /// <summary>
+        /// Регистрирует middleware аутентификации пользователя средствами приложения.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="action">Обработчик запроса.</param>
+        public static void AddInternalAuthenticationMiddleware(this IApplicationBuilder app, Action<IApplicationBuilder> action)
+        {
+            AddUserMiddleware(HttpMiddlewareType.InternalAuthentication, action);
+        }
+
+        /// <summary>
+        /// Регистрирует middleware обработки запросов после аутентификации пользователя.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="action">Обработчик запроса.</param>
+        public static void AddAfterAuthenticationMiddleware(this IApplicationBuilder app, Action<IApplicationBuilder> action)
+        {
+            AddUserMiddleware(HttpMiddlewareType.AfterAuthentication, action);
+        }
+
+        /// <summary>
+        /// Регистрирует middleware обработки прикладных запросов.
+        /// </summary>
+        /// <param name="app">Конфигуратор обработки запросов.</param>
+        /// <param name="action">Обработчик запроса.</param>
+        public static void AddApplicationMiddleware(this IApplicationBuilder app, Action<IApplicationBuilder> action)
+        {
+            AddUserMiddleware(HttpMiddlewareType.Application, action);
+        }
+
+        private static void RegisterAppLifetimeHandlers(IContainerResolver resolver, IApplicationLifetime lifetime)
         {
             var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();
             var appStoppedHandlers = resolver.Resolve<IAppStoppedHandler[]>();
@@ -75,64 +167,28 @@ namespace InfinniPlatform.Extensions
             {
                 lifetime.ApplicationStopped.Register(handler.Handle);
             }
+        }
 
+        private static void RegisterMiddlewares(IApplicationBuilder app, IContainerResolver resolver)
+        {
             var httpMiddlewares = resolver.Resolve<IHttpMiddleware[]>();
-            var httpMiddlewareTypes = (HttpMiddlewareType[]) Enum.GetValues(typeof(HttpMiddlewareType));
+            var httpMiddlewareTypes = (HttpMiddlewareType[])Enum.GetValues(typeof(HttpMiddlewareType));
 
             foreach (var type in httpMiddlewareTypes)
             {
+                // Регистрация системных middlewares.
                 foreach (var middleware in httpMiddlewares.Where(m => m.Type == type))
                 {
-                    middleware.Configure(builder);
+                    middleware.Configure(app);
                 }
 
+                // Регистрация пользовательских middlewares.
                 if (UserMiddlewareActions.ContainsKey(type))
                 {
-                    UserMiddlewareActions[type].Invoke();
+                    UserMiddlewareActions[type](app);
                 }
             }
         }
-
-        public static void AddGlobalHandlingMiddleware(this IApplicationBuilder app, Action action)
-        {
-            UserMiddlewareActions[HttpMiddlewareType.GlobalHandling] = action;
-        }
-
-        public static void AddErrorHandlingMiddleware(this IApplicationBuilder app, Action action)
-        {
-            UserMiddlewareActions[HttpMiddlewareType.ErrorHandling] = action;
-        }
-
-        public static void AddBeforeAuthenticationMiddleware(this IApplicationBuilder app, Action action)
-        {
-            UserMiddlewareActions[HttpMiddlewareType.BeforeAuthentication] = action;
-        }
-
-        public static void AddAuthenticationBarrierMiddleware(this IApplicationBuilder app, Action action)
-        {
-            UserMiddlewareActions[HttpMiddlewareType.AuthenticationBarrier] = action;
-        }
-
-        public static void AddExternalAuthenticationMiddleware(this IApplicationBuilder app, Action action)
-        {
-            UserMiddlewareActions[HttpMiddlewareType.ExternalAuthentication] = action;
-        }
-
-        public static void AddInternalAuthenticationMiddleware(this IApplicationBuilder app, Action action)
-        {
-            UserMiddlewareActions[HttpMiddlewareType.InternalAuthentication] = action;
-        }
-
-        public static void AddAfterAuthenticationMiddleware(this IApplicationBuilder app, Action action)
-        {
-            UserMiddlewareActions[HttpMiddlewareType.AfterAuthentication] = action;
-        }
-
-        public static void AddApplicationMiddleware(this IApplicationBuilder app, Action action)
-        {
-            UserMiddlewareActions[HttpMiddlewareType.Application] = action;
-        }
-
 
         private static void RegisterCoreModules(this ContainerBuilder containerBuilder)
         {
@@ -172,6 +228,18 @@ namespace InfinniPlatform.Extensions
                 var containerModule = (IContainerModule) Activator.CreateInstance(module);
                 var autofacContainerModule = new AutofacContainerModule(containerModule);
                 containerBuilder.RegisterModule(autofacContainerModule);
+            }
+        }
+
+        private static void AddUserMiddleware(HttpMiddlewareType key, Action<IApplicationBuilder> value)
+        {
+            if (UserMiddlewareActions.ContainsKey(key))
+            {
+                UserMiddlewareActions[key] += value;
+            }
+            else
+            {
+                UserMiddlewareActions.Add(key, value);
             }
         }
     }

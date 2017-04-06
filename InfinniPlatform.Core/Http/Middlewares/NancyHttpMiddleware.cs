@@ -19,9 +19,9 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private readonly INancyBootstrapper _nancyBootstrapper;
 
 
-        public override void Configure(IApplicationBuilder appBuilder)
+        public override void Configure(IApplicationBuilder app)
         {
-            appBuilder.UseOwin(x => x.UseNancy(new NancyOptions {Bootstrapper = _nancyBootstrapper}));
+            app.UseOwin(x => x.UseNancy(new NancyOptions {Bootstrapper = _nancyBootstrapper}));
         }
     }
 }
