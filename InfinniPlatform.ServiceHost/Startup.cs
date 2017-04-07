@@ -1,4 +1,5 @@
 ﻿using System;
+using InfinniPlatform.Core.Http.Middlewares;
 using InfinniPlatform.Extensions;
 using InfinniPlatform.Sdk.IoC;
 using Microsoft.AspNetCore.Builder;
@@ -26,7 +27,8 @@ namespace InfinniPlatform.ServiceHost
 
         public void Configure(IApplicationBuilder app, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)
         {
-            app.UseInfinniMiddlewares(resolver, lifetime);
+            app.AddApplicationMiddleware(new NancyMiddlewareOptions {PerformPassThrough = true});
+            app.UseInfinniMiddlewares(resolver);
         }
     }
 }

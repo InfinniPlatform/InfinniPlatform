@@ -7,7 +7,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
     /// <summary>
     ///     Модуль хостинга для обработки ошибок выполнения запросов.
     /// </summary>
-    internal class ErrorHandlingHttpMiddleware : HttpMiddleware
+    internal class ErrorHandlingHttpMiddleware : HttpMiddlewareBase<ErrorHandlingMiddlewareOptions>
     {
         private readonly ILog _log;
         private readonly IPerformanceLog _performanceLog;
@@ -19,7 +19,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
         }
 
 
-        public override void Configure(IApplicationBuilder app)
+        public override void Configure(IApplicationBuilder app, ErrorHandlingMiddlewareOptions options)
         {
             app.UseMiddleware<ErrorHandlingOwinMiddleware>(_log, _performanceLog);
         }

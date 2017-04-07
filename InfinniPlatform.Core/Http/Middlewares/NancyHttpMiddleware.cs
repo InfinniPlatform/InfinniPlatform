@@ -8,20 +8,23 @@ namespace InfinniPlatform.Core.Http.Middlewares
     /// <summary>
     /// Модуль хостинга для обработки прикладных запросов на базе Nancy.
     /// </summary>
-    internal class NancyHttpMiddleware : HttpMiddleware
+    internal class NancyHttpMiddleware : HttpMiddlewareBase<NancyMiddlewareOptions>
     {
+        private readonly INancyBootstrapper _nancyBootstrapper;
+
         public NancyHttpMiddleware(INancyBootstrapper nancyBootstrapper) : base(HttpMiddlewareType.Application)
         {
             _nancyBootstrapper = nancyBootstrapper;
         }
 
 
-        private readonly INancyBootstrapper _nancyBootstrapper;
-
-
-        public override void Configure(IApplicationBuilder app)
+        public override void Configure(IApplicationBuilder app, NancyMiddlewareOptions options)
         {
-            app.UseOwin(x => x.UseNancy(new NancyOptions {Bootstrapper = _nancyBootstrapper}));
+            app.UseOwin(x => x.UseNancy(new NancyOptions
+                                        {
+                                            Bootstrapper = _nancyBootstrapper,
+                                            PerformPassThrough = context => options.PerformPassThrough = true
+                                        }));
         }
     }
 }

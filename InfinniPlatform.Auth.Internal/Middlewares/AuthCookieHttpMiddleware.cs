@@ -9,7 +9,7 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
     /// <summary>
     /// Промежуточный слой обработки HTTP запросов приложения для аутентификации пользователя через Cookie.
     /// </summary>
-    internal class AuthCookieHttpMiddleware : HttpMiddleware
+    internal class AuthCookieHttpMiddleware : HttpMiddlewareBase<AuthCookieMiddlewareOptions>
     {
         private readonly AuthCookieHttpMiddlewareSettings _settings;
 
@@ -18,7 +18,7 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
             _settings = settings;
         }
 
-        public override void Configure(IApplicationBuilder app)
+        public override void Configure(IApplicationBuilder app, AuthCookieMiddlewareOptions options)
         {
             var defaultCookiesOptions = app.ApplicationServices
                                                .GetRequiredService<IOptions<IdentityOptions>>()
