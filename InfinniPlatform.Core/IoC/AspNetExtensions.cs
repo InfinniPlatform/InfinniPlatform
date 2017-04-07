@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using InfinniPlatform.Core.Http.Middlewares;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Http.Middlewares;
@@ -20,7 +19,14 @@ namespace InfinniPlatform.Extensions
 {
     public static class AspNetExtensions
     {
-        private static readonly Dictionary<HttpMiddlewareType, IMiddlewareOptions> MiddlewareOptions = new Dictionary<HttpMiddlewareType, IMiddlewareOptions>();
+        private static readonly Dictionary<HttpMiddlewareType, IMiddlewareOptions> MiddlewareOptions = BuildDefaultMiddlewareOptions();
+
+        private static Dictionary<HttpMiddlewareType, IMiddlewareOptions> BuildDefaultMiddlewareOptions()
+        {
+            var httpMiddlewareTypes = (HttpMiddlewareType[]) Enum.GetValues(typeof(HttpMiddlewareType));
+
+            return httpMiddlewareTypes.ToDictionary<HttpMiddlewareType, HttpMiddlewareType, IMiddlewareOptions>(type => type, type => new DefaultMiddlewareOptions());
+        }
 
         /// <summary>
         /// Создает провайдер на основе коллекции зарегистрированных сервисов.
@@ -152,7 +158,7 @@ namespace InfinniPlatform.Extensions
         {
             AddUserMiddleware(HttpMiddlewareType.Application, options);
         }
-        
+
         private static void RegisterAppLifetimeHandlers(IContainerResolver resolver)
         {
             var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();
@@ -173,22 +179,12 @@ namespace InfinniPlatform.Extensions
         private static void RegisterMiddlewares(IApplicationBuilder app, IContainerResolver resolver)
         {
             var httpMiddlewares = resolver.Resolve<IHttpMiddleware[]>();
-            var httpMiddlewareTypes = (HttpMiddlewareType[])Enum.GetValues(typeof(HttpMiddlewareType));
 
-            foreach (var type in httpMiddlewareTypes)
+            foreach (var options in MiddlewareOptions)
             {
-                var options = MiddlewareOptions[type];
-
-                // Регистрация системных middlewares.
-                foreach (var middleware in httpMiddlewares.Where(m => m.Type == type))
+                foreach (var middleware in httpMiddlewares.Where(m => m.Type == options.Key))
                 {
-                    middleware.Configure(app, options);
-                }
-
-                // Регистрация пользовательских middlewares.
-                if (MiddlewareOptions.ContainsKey(type))
-                {
-                    options.Configure(app);
+                    middleware.Configure(app, options.Value);
                 }
             }
         }

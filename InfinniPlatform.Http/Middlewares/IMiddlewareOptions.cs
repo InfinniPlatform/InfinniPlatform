@@ -9,7 +9,7 @@ namespace InfinniPlatform.Http.Middlewares
     public interface IMiddlewareOptions
     {
         /// <summary>
-        /// 
+        /// Функция конфигурирования этапа обработки запроса.
         /// </summary>
         Action<IApplicationBuilder> Configure { get; }
     }

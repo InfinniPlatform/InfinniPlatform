@@ -21,6 +21,7 @@ namespace InfinniPlatform.Http.Middlewares
         public void Configure(IApplicationBuilder app, IMiddlewareOptions options)
         {
             Configure(app, (TOptions) options);
+            options.Configure(app);
         }
 
         /// <summary>

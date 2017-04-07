@@ -16,7 +16,7 @@ namespace InfinniPlatform.Http.Middlewares
         /// Настраивает промежуточный слой.
         /// </summary>
         /// <param name="app">Объект для регистрации обработчиков запросов.</param>
-        /// <param name="options"></param>
+        /// <param name="options">Настройки.</param>
         void Configure(IApplicationBuilder app, IMiddlewareOptions options);
     }
 }
