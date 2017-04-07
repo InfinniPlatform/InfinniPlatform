@@ -19,20 +19,32 @@ namespace InfinniPlatform.Auth.Internal.Identity
 {
     internal class IdentityAppUserManager : IAppUserManager
     {
-        public IdentityAppUserManager(IOwinContextProvider owinContextProvider, IUserIdentityProvider userIdentityProvider)
+        public IdentityAppUserManager(IOwinContextProvider owinContextProvider,
+                                      IUserIdentityProvider userIdentityProvider,
+                                      Func<UserManager<IdentityApplicationUser>> userManagerFactory)
         {
             _owinContextProvider = owinContextProvider;
             _userIdentityProvider = userIdentityProvider;
+            _userManagerFactory = userManagerFactory;
         }
 
 
         private readonly IOwinContextProvider _owinContextProvider;
         private readonly IUserIdentityProvider _userIdentityProvider;
+        private readonly Func<UserManager<IdentityApplicationUser>> _userManagerFactory;
 
 
-        private IOwinContext OwinContext => _owinContextProvider.GetOwinContext();
+        private UserManager<IdentityApplicationUser> UserManager
+        {
+            get
+            {
+                var owinContext = _owinContextProvider.GetOwinContext();
 
-        private UserManager<IdentityApplicationUser> UserManager => OwinContext.GetUserManager<UserManager<IdentityApplicationUser>>();
+                return (owinContext != null)
+                           ? owinContext.GetUserManager<UserManager<IdentityApplicationUser>>()
+                           : _userManagerFactory();
+            }
+        }
 
 
         public ApplicationUser GetCurrentUser()
