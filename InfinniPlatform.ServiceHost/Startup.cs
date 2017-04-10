@@ -27,7 +27,6 @@ namespace InfinniPlatform.ServiceHost
 
         public void Configure(IApplicationBuilder app, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)
         {
-            app.AddApplicationMiddleware(new NancyMiddlewareOptions {PerformPassThrough = true});
             app.UseInfinniMiddlewares(resolver);
         }
     }

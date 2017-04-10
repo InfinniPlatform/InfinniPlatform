@@ -23,7 +23,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
             app.UseOwin(x => x.UseNancy(new NancyOptions
                                         {
                                             Bootstrapper = _nancyBootstrapper,
-                                            PerformPassThrough = context => options.PerformPassThrough = true
+                                            PerformPassThrough = context => options.PerformPassThrough
                                         }));
         }
     }
