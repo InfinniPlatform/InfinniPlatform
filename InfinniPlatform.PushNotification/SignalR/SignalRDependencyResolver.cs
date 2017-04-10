@@ -49,9 +49,7 @@ namespace InfinniPlatform.PushNotification.SignalR
         {
             var enumerableServiceType = typeof(IEnumerable<>).MakeGenericType(serviceType);
             var services = (IEnumerable<object>)_containerResolver.Resolve(enumerableServiceType);
-            return services.Any()
-                       ? services
-                       : base.GetServices(serviceType);
+            return services.Any() ? services : base.GetServices(serviceType);
         }
 
         protected override void Dispose(bool disposing)
@@ -60,20 +58,9 @@ namespace InfinniPlatform.PushNotification.SignalR
             {
                 base.Dispose(disposing);
             }
-            catch (NotSupportedException e)
+            catch
             {
-                if (!IsSignalRMessageBusException(e))
-                {
-                    throw;
-                }
             }
-        }
-
-        private static bool IsSignalRMessageBusException(Exception e)
-        {
-            //TODO Workaround. SignalR raise exception when disposing AckSubscriber due to EventList type. Check for newer version of SignalR.
-            return (e.Message == "Collection was of a fixed size.")
-                   && e.StackTrace.Contains("AckSubscriber");
         }
     }
 }
