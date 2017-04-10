@@ -25,7 +25,7 @@ namespace InfinniPlatform.Extensions
         {
             var httpMiddlewareTypes = (HttpMiddlewareType[]) Enum.GetValues(typeof(HttpMiddlewareType));
 
-            return httpMiddlewareTypes.ToDictionary<HttpMiddlewareType, HttpMiddlewareType, IMiddlewareOptions>(type => type, type => new DefaultMiddlewareOptions());
+            return httpMiddlewareTypes.ToDictionary<HttpMiddlewareType, HttpMiddlewareType, IMiddlewareOptions>(type => type, type => null);
         }
 
         /// <summary>
