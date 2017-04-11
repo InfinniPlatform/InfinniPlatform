@@ -222,7 +222,7 @@ namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 
         public virtual Task<TUser> FindByIdAsync(string userId, CancellationToken token)
         {
-            return _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
+            return _users.Find(u => u._id.Equals(userId)).FirstOrDefaultAsync();
         }
 
         public virtual Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)

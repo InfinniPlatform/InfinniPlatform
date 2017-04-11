@@ -408,11 +408,11 @@ namespace InfinniPlatform.Auth.Internal.Services
             return Identity != null && Identity.IsAuthenticated;
         }
 
-        private Task<IdentityUser> GetUserInfo()
+        private async Task<IdentityUser> GetUserInfo()
         {
             var userId = Identity.GetUserId();
 
-            var userInfo = _userManager.FindByIdAsync(userId);
+            var userInfo = await _userManager.FindByIdAsync(userId);
 
             return userInfo;
         }
