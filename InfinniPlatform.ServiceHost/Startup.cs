@@ -1,5 +1,4 @@
 ﻿using System;
-using InfinniPlatform.Core.Http.Middlewares;
 using InfinniPlatform.Extensions;
 using InfinniPlatform.Sdk.IoC;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +11,8 @@ namespace InfinniPlatform.ServiceHost
     {
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddDataProtection(options => options.ApplicationDiscriminator = "InfinniPlatform");
+
             var configureServices = services.AddAuth()
                                             .AddBlobStorage()
                                             .AddCaching()
