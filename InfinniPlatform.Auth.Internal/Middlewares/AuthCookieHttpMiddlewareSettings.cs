@@ -24,5 +24,10 @@
         /// Путь для перенаправления при выходе из системы.
         /// </summary>
         public string LogoutPath { get; set; }
+
+        /// <summary>
+        /// CookieDomain
+        /// </summary>
+        public string CookieDomain { get; set; }
     }
 }

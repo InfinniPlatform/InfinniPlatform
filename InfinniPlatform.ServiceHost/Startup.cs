@@ -11,8 +11,6 @@ namespace InfinniPlatform.ServiceHost
     {
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddDataProtection(options => options.ApplicationDiscriminator = "InfinniPlatform");
-
             var configureServices = services.AddAuth()
                                             .AddBlobStorage()
                                             .AddCaching()

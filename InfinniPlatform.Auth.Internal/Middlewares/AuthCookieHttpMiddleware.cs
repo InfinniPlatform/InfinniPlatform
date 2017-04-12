@@ -21,9 +21,9 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
         public override void Configure(IApplicationBuilder app, AuthCookieMiddlewareOptions options)
         {
             var defaultCookiesOptions = app.ApplicationServices
-                                               .GetRequiredService<IOptions<IdentityOptions>>()
-                                               .Value
-                                               .Cookies;
+                                           .GetRequiredService<IOptions<IdentityOptions>>()
+                                           .Value
+                                           .Cookies;
 
             var applicationCookieOptions = defaultCookiesOptions.ApplicationCookie;
             var externalCookieOptions = defaultCookiesOptions.ExternalCookie;
@@ -37,6 +37,12 @@ namespace InfinniPlatform.Auth.Internal.Middlewares
             externalCookieOptions.LogoutPath = new PathString(_settings.LogoutPath);
             externalCookieOptions.AutomaticAuthenticate = true;
             externalCookieOptions.AutomaticChallenge = true;
+
+            if (!string.IsNullOrEmpty(_settings.CookieDomain))
+            {
+                applicationCookieOptions.CookieDomain = _settings.CookieDomain;
+                externalCookieOptions.CookieDomain = _settings.CookieDomain;
+            }
 
             app.UseCookieAuthentication(applicationCookieOptions);
             app.UseCookieAuthentication(defaultCookiesOptions.ExternalCookie);
