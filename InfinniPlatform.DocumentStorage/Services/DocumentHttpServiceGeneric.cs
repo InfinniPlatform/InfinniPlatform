@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.BlobStorage.Contract;
+using InfinniPlatform.BlobStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.Sdk.Dynamic;

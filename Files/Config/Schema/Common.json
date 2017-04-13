@@ -25,9 +25,9 @@
       "description": "Настройки подключения к RabbitMQ.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RabbitMQ.json"
     },
-    "blobStorage": {
+    "fileSystemBlobStorage": {
       "description": "Настройки хранения BLOB и файлов.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/BlobStorage.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/FileSystemBlobStorage.json"
     },
     "userStorage": {
       "description": "Настройки хранения пользователей.",

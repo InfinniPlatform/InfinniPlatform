@@ -4,7 +4,7 @@ using InfinniPlatform.Sdk.Logging;
 
 using System.Collections.Generic;
 
-using InfinniPlatform.BlobStorage.Contract;
+using InfinniPlatform.BlobStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Contract;
 using InfinniPlatform.DocumentStorage.Contract.Services;
 using InfinniPlatform.Sdk.Dynamic;

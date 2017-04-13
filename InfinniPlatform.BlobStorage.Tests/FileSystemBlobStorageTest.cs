@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.BlobStorage.Contract;
+using InfinniPlatform.BlobStorage.Abstractions;
+using InfinniPlatform.BlobStorage.FileSystem;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
@@ -23,7 +24,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             var performanceLogMock = new Mock<IPerformanceLog>();
 
             _blobStorage = new FileSystemBlobStorage(
-                new FileSystemBlobStorageSettings(),
+                new FileSystemBlobStorageOptions(),
                 JsonObjectSerializer.Default,
                 mimeTypeResolverMock.Object,
                 performanceLogMock.Object);
@@ -54,7 +55,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             // WHEN
 
             // Create
-            var blobId = _blobStorage.CreateBlob(blobNameV1, blobTypeV1, blobDataV1).Id;
+            var blobId = BlobStorageExtensions.CreateBlob(_blobStorage, blobNameV1, blobTypeV1, blobDataV1).Id;
 
             // Read
             var timeV1 = DateTime.UtcNow;
@@ -63,7 +64,7 @@ namespace InfinniPlatform.BlobStorage.Tests
             var dataV1Bytes = GetBlobDataBytes(dataV1.Data);
 
             // Update
-            _blobStorage.UpdateBlob(blobId, blobNameV2, blobTypeV2, blobDataV2);
+            BlobStorageExtensions.UpdateBlob(_blobStorage, blobId, blobNameV2, blobTypeV2, blobDataV2);
 
             // Read
             var timeV2 = DateTime.UtcNow;

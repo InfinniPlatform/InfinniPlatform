@@ -2,12 +2,12 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.BlobStorage.Contract;
+using InfinniPlatform.BlobStorage.Abstractions;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;
 
-namespace InfinniPlatform.BlobStorage
+namespace InfinniPlatform.BlobStorage.FileSystem
 {
     /// <summary>
     /// Реализует сервис для работы хранилищем BLOB (Binary Large OBject) на основе файловой системы.
@@ -42,14 +42,21 @@ namespace InfinniPlatform.BlobStorage
     /// <see cref="System.Threading.ReaderWriterLockSlim"/>, но более простым.
     /// </remarks>
     [LoggerName("BlobStorage")]
-    internal sealed class FileSystemBlobStorage : IBlobStorage
+    public class FileSystemBlobStorage : IBlobStorage
     {
-        public FileSystemBlobStorage(FileSystemBlobStorageSettings settings,
+        public FileSystemBlobStorage(FileSystemBlobStorageOptions options,
                                      IObjectSerializer objectSerializer,
                                      IMimeTypeResolver mimeTypeResolver,
                                      IPerformanceLog performanceLog)
         {
-            _baseDirectory = settings.BaseDirectory;
+            var baseDirectory = Environment.ExpandEnvironmentVariables(options.BaseDirectory);
+
+            if (string.IsNullOrEmpty(baseDirectory))
+            {
+                baseDirectory = FileSystemBlobStorageOptions.DefaultBaseDirectory;
+            }
+
+            _baseDirectory = baseDirectory;
             _mimeTypeResolver = mimeTypeResolver;
             _objectSerializer = objectSerializer;
             _performanceLog = performanceLog;

@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace InfinniPlatform.BlobStorage.Contract
+namespace InfinniPlatform.BlobStorage.Abstractions
 {
     /// <summary>
     /// Информация о BLOB.
     /// </summary>
-    public sealed class BlobInfo
+    public class BlobInfo
     {
         /// <summary>
         /// Идентификатор.

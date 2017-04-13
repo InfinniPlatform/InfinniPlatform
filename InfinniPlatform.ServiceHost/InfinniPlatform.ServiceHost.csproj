@@ -35,7 +35,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.BlobStorage\InfinniPlatform.BlobStorage.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.BlobStorage.FileSystem\InfinniPlatform.BlobStorage.FileSystem.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.BlobStorage.HttpService\InfinniPlatform.BlobStorage.HttpService.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj" />
     <ProjectReference Include="..\InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj" />

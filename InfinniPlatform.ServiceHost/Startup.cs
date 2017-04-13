@@ -1,19 +1,39 @@
 ﻿using System;
+
 using InfinniPlatform.Extensions;
+using InfinniPlatform.AspNetCore;
 using InfinniPlatform.Sdk.IoC;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InfinniPlatform.ServiceHost
 {
     public class Startup
     {
+        public Startup(IHostingEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("AppConfig.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"AppConfig.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            _configuration = builder.Build();
+        }
+
+
+        private readonly IConfigurationRoot _configuration;
+
+
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddAuth()
-                                            .AddBlobStorage()
                                             .AddCaching()
+                                            .AddFileSystemBlobStorage(_configuration)
+                                            .AddBlobStorageHttpService()
                                             .AddDocumentStorage()
                                             .AddLog4NetAdapter()
                                             .AddMessageQueue()

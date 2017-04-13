@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.BlobStorage.Contract;
+using InfinniPlatform.BlobStorage.Abstractions;
 
 namespace InfinniPlatform.DocumentStorage.Contract.Services
 {

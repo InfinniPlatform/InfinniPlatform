@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 
-namespace InfinniPlatform.BlobStorage.Contract
+namespace InfinniPlatform.BlobStorage.Abstractions
 {
     /// <summary>
     /// Данные BLOB.
     /// </summary>
-    public sealed class BlobData
+    public class BlobData
     {
         /// <summary>
         /// Информация о BLOB.

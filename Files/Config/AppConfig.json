@@ -37,8 +37,8 @@
     "MaxConcurrentThreads": 200,
     "ReconnectTimeout": 5
   },
-  "blobStorage": {
-    "BaseDirectory": "${INFINNI_BLOBSTORAGE=BlobStorage}"
+  "fileSystemBlobStorage": {
+    "BaseDirectory": "%INFINNI_BLOBSTORAGE%"
   },
   "userStorage": {
     "UserCacheTimeout": 30

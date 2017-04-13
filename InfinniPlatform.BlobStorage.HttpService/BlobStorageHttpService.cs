@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.BlobStorage.Contract;
-using InfinniPlatform.BlobStorage.Properties;
+using InfinniPlatform.BlobStorage.Abstractions;
+using InfinniPlatform.BlobStorage.HttpService.Properties;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
 
-namespace InfinniPlatform.BlobStorage.Services
+namespace InfinniPlatform.BlobStorage.HttpService
 {
     /// <summary>
-    /// Сервис по работе с BLOB (Binary Large OBject).
+    /// Provides HTTP serivce to get data from <see cref="IBlobStorage"/>.
     /// </summary>
-    [LoggerName("BlobHttpService")]
-    internal sealed class BlobHttpService : IHttpService
+    /// <example>
+    /// <code>
+    /// GET /blob/{id}
+    /// </code>
+    /// </example>
+    public class BlobStorageHttpService : IHttpService
     {
-        public BlobHttpService(IBlobStorage blobStorage, IPerformanceLog performanceLog, ILog log)
+        public const string DefaultServicePath = "/blob";
+
+
+        public BlobStorageHttpService(IBlobStorage blobStorage, IPerformanceLog performanceLog, ILog log)
         {
             _blobStorage = blobStorage;
             _performanceLog = performanceLog;
@@ -28,16 +35,15 @@ namespace InfinniPlatform.BlobStorage.Services
         private readonly ILog _log;
 
 
-        public void Load(IHttpServiceBuilder builder)
+        public virtual void Load(IHttpServiceBuilder builder)
         {
-            builder.ServicePath = "/blob";
+            builder.ServicePath = DefaultServicePath;
 
             builder.Get["/{id}"] = GetFileContentAsync;
-            builder.Post["/{id}"] = GetFileContentAsync;
         }
 
 
-        private Task<object> GetFileContentAsync(IHttpRequest request)
+        protected virtual Task<object> GetFileContentAsync(IHttpRequest request)
         {
             var startTime = DateTime.Now;
 
