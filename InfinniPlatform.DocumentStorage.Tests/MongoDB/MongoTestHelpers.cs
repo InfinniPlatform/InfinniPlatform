@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.DocumentStorage.MongoDB.Conventions;
 using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Settings;
@@ -20,7 +19,7 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
         {
             var appEnvironmentMock = new Mock<IAppEnvironment>();
             appEnvironmentMock.SetupGet(e => e.Name).Returns(DatabaseName);
-            return new MongoConnection(appEnvironmentMock.Object, MongoConnectionSettings.Default, converters, source);
+            return new MongoConnection(appEnvironmentMock.Object, MongoDocumentStorageOptions.Default, converters, source);
         }
 
 

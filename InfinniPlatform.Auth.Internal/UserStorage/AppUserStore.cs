@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Auth.Internal.Properties;
-using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Abstractions;
 
 namespace InfinniPlatform.Auth.Internal.UserStorage
 {

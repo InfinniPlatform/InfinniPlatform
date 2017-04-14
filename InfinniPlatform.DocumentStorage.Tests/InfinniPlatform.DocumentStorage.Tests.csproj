@@ -17,7 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.DocumentStorage\InfinniPlatform.DocumentStorage.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage.Abstractions\InfinniPlatform.DocumentStorage.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage.HttpService\InfinniPlatform.DocumentStorage.HttpService.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage.MongoDB\InfinniPlatform.DocumentStorage.MongoDB.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>
 

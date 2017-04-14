@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using InfinniPlatform.DocumentStorage.Contract;
+
+using InfinniPlatform.DocumentStorage.Abstractions;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Internal.Identity.MongoDb

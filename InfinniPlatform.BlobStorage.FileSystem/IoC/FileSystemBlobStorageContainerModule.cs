@@ -14,7 +14,7 @@ namespace InfinniPlatform.BlobStorage.FileSystem.IoC
 
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_options).AsSelf().SingleInstance();
+            builder.RegisterInstance(_options).AsSelf();
 
             builder.RegisterType<FileSystemBlobStorage>().As<IBlobStorage>().SingleInstance();
         }

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.DocumentStorage.Contract;
+﻿using InfinniPlatform.DocumentStorage.Abstractions;
 
 namespace InfinniPlatform.DocumentStorage.Tests.TestEntities
 {

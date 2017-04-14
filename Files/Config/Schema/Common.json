@@ -17,16 +17,16 @@
       "description": "Настройки подключения к Redis.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Redis.json"
     },
-    "mongodb": {
-      "description": "Настройки подключения к MongoDB.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/MongoDB.json"
+    "mongodbDocumentStorage": {
+      "description": "Настройки хранилища документов MongoDB.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/MongoDbDocumentStorage.json"
     },
     "rabbitmq": {
       "description": "Настройки подключения к RabbitMQ.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RabbitMQ.json"
     },
     "fileSystemBlobStorage": {
-      "description": "Настройки хранения BLOB и файлов.",
+      "description": "Настройки хранилища BLOB в файловой системе.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/FileSystemBlobStorage.json"
     },
     "userStorage": {

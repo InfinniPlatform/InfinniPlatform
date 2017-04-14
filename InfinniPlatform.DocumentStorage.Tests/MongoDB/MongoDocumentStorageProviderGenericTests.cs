@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Tests.TestEntities;
 using InfinniPlatform.Sdk.Metadata;
 

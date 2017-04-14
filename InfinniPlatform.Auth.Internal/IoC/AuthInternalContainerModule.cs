@@ -6,7 +6,7 @@ using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Auth.Internal.Middlewares;
 using InfinniPlatform.Auth.Internal.Services;
 using InfinniPlatform.Auth.Internal.UserStorage;
-using InfinniPlatform.DocumentStorage.Contract;
+using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;

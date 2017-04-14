@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.DocumentStorage.Contract;
+﻿using InfinniPlatform.DocumentStorage.Abstractions;
 
 namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
 {

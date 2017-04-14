@@ -3,6 +3,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
+
 namespace InfinniPlatform.AspNetCore
 {
     public static class BlobStorageHttpServiceExtensions

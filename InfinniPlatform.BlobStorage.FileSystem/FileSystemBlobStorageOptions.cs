@@ -1,7 +1,7 @@
 ﻿namespace InfinniPlatform.BlobStorage.FileSystem
 {
     /// <summary>
-    /// Настройки сервиса для работы хранилищем BLOB.
+    /// Настройки хранилища BLOB в файловой системе.
     /// </summary>
     public class FileSystemBlobStorageOptions
     {

@@ -2,7 +2,7 @@
   "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/FileSystemBlobStorage.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "FileSystemBlobStorage",
-  "description": "Настройки хранения BLOB и файлов.",
+  "description": "Настройки хранилища BLOB в файловой системе.",
   "type": "object",
   "properties": {
     "BaseDirectory": {

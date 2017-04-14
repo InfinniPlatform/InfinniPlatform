@@ -1,7 +1,7 @@
 ﻿using System;
 
-using InfinniPlatform.DocumentStorage.Contract;
-using InfinniPlatform.DocumentStorage.Contract.Attributes;
+using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Attributes;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Sdk.Dynamic;
 
