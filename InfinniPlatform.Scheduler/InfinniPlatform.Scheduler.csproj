@@ -18,7 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.DocumentStorage.Abstractions\InfinniPlatform.DocumentStorage.Abstractions.csproj" />
     <ProjectReference Include="..\InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

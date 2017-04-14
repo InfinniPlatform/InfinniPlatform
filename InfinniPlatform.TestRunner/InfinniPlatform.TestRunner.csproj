@@ -24,7 +24,6 @@
     <ProjectReference Include="..\InfinniPlatform.MessageQueue.Tests\InfinniPlatform.MessageQueue.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.PrintView.Tests\InfinniPlatform.PrintView.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Scheduler.Tests\InfinniPlatform.Scheduler.Tests.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Sdk.Tests\InfinniPlatform.Sdk.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-using InfinniPlatform.DocumentStorage.Abstractions;
+﻿using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Specifications;
 using InfinniPlatform.Sdk.Dynamic;
 
