@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-
+using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.MessageQueue.Contract;
 
 namespace InfinniPlatform.Scheduler.Common
 {

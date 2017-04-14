@@ -1,6 +1,5 @@
 ﻿using System;
-
-using InfinniPlatform.MessageQueue.RabbitMq;
+using InfinniPlatform.MessageQueue.RabbitMQ;
 using InfinniPlatform.Sdk.Dynamic;
 
 using Moq;

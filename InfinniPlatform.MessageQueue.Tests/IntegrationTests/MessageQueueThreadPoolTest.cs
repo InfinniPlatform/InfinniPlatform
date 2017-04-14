@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
-using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
+using InfinniPlatform.MessageQueue.RabbitMQ;
+using InfinniPlatform.MessageQueue.RabbitMQ.Hosting;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 
 using NUnit.Framework;

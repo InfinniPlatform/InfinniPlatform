@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-
+using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Diagnostics;
@@ -10,7 +10,6 @@ using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.Sdk.Metadata;
 using InfinniPlatform.Sdk.Settings;
 

@@ -8,11 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InfinniPlatform.MessageQueue.Properties {
-    using System;
-    using System.Reflection;
-    
-    
+using System.Reflection;
+
+namespace InfinniPlatform.MessageQueue.Abstractions.Properties {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

@@ -1,8 +1,8 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.TwoLayer;
+using InfinniPlatform.MessageQueue.Abstractions.Producers;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.Sdk.Settings;
 
 using Moq;

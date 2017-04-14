@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.MessageQueue.IoC;
+﻿using InfinniPlatform.MessageQueue.RabbitMQ.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace

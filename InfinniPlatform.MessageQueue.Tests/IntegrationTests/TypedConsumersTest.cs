@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-
-using InfinniPlatform.MessageQueue.Contract.Consumers;
-using InfinniPlatform.MessageQueue.RabbitMq;
+using InfinniPlatform.MessageQueue.Abstractions.Consumers;
+using InfinniPlatform.MessageQueue.RabbitMQ;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Dynamic;
 

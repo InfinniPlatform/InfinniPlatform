@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Caching.Contract;
 using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.MessageQueue.Abstractions.Producers;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.MessageQueue.Contract;
-using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.TwoLayer

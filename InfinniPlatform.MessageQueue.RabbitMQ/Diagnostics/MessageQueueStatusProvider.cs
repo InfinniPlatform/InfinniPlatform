@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.MessageQueue.Diagnostics
+namespace InfinniPlatform.MessageQueue.RabbitMQ.Diagnostics
 {
     internal sealed class MessageQueueStatusProvider : ISubsystemStatusProvider
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using InfinniPlatform.MessageQueue.Contract;
-using InfinniPlatform.MessageQueue.Contract.Consumers;
+using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Properties;

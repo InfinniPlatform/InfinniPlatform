@@ -5,9 +5,9 @@ using InfinniPlatform.Caching.Diagnostics;
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.TwoLayer;
+using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.MessageQueue.Contract;
 using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Caching.IoC

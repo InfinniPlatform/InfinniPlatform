@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Caching.Contract;
-using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Abstractions;
 
 namespace InfinniPlatform.Caching.Tests.TwoLayer
 {

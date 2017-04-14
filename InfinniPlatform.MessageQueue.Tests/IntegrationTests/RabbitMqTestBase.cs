@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using InfinniPlatform.MessageQueue.Contract;
-using InfinniPlatform.MessageQueue.Contract.Consumers;
-using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
+using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
-using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
+using InfinniPlatform.MessageQueue.RabbitMQ;
+using InfinniPlatform.MessageQueue.RabbitMQ.Hosting;
+using InfinniPlatform.MessageQueue.RabbitMQ.Serialization;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Serialization;

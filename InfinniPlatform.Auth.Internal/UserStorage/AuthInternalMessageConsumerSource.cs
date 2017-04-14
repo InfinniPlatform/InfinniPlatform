@@ -2,8 +2,8 @@
 using System.Linq;
 
 using InfinniPlatform.Caching;
-using InfinniPlatform.MessageQueue.Contract;
-using InfinniPlatform.MessageQueue.Contract.Consumers;
+using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
 namespace InfinniPlatform.Auth.Internal.UserStorage
 {

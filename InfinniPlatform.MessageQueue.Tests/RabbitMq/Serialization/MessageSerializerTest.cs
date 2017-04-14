@@ -1,6 +1,5 @@
 ﻿using System;
-
-using InfinniPlatform.MessageQueue.RabbitMq.Serialization;
+using InfinniPlatform.MessageQueue.RabbitMQ.Serialization;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
 using InfinniPlatform.Sdk.Serialization;
 

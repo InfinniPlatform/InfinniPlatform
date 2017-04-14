@@ -4,7 +4,7 @@ using System.Diagnostics;
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.MessageQueue.Contract.Producers;
+using InfinniPlatform.MessageQueue.Abstractions.Producers;
 using InfinniPlatform.Sdk.Logging;
 using InfinniPlatform.Sdk.Settings;
 

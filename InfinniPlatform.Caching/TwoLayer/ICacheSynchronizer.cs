@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-
-using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Abstractions;
 
 namespace InfinniPlatform.Caching.TwoLayer
 {

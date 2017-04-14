@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Caching;
+using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.MessageQueue.Abstractions.Producers;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.MessageQueue.Contract;
-using InfinniPlatform.MessageQueue.Contract.Producers;
 using InfinniPlatform.Sdk.Settings;
 using Microsoft.Extensions.Caching.Memory;
 
