@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using InfinniPlatform.MessageQueue.Contract;
+using InfinniPlatform.MessageQueue.Contract.Consumers;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Properties;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.MessageQueue.Contract;
-using InfinniPlatform.MessageQueue.Contract.Consumers;
 
 namespace InfinniPlatform.Scheduler.Queues
 {

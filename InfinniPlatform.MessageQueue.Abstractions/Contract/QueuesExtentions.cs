@@ -21,7 +21,7 @@ namespace InfinniPlatform.MessageQueue.Contract
         public static void RegisterConsumers(this IContainerBuilder builder, Assembly assembly)
         {
             builder.RegisterAssemblyTypes(assembly,
-                                          t => typeof(IConsumer).IsAssignableFrom(t),
+                                          t => typeof(IConsumer).GetTypeInfo().IsAssignableFrom(t),
                                           r => r.AsImplementedInterfaces().SingleInstance());
         }
     }

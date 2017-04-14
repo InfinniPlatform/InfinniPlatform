@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>InfinniPlatform.MessageQueue.RabbitMQ</AssemblyName>
+    <AssemblyName>InfinniPlatform.MessageQueue.Abstractions</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
@@ -10,14 +10,12 @@
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="RabbitMQ.Client" Version="4.1.1" />
+  <ItemGroup>    
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

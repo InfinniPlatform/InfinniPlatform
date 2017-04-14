@@ -15,9 +15,9 @@
     <PackageReference Include="StackExchange.Redis" Version="1.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
+  <ItemGroup>    
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />    
+    <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

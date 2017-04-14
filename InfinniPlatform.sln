@@ -94,13 +94,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{BFF819
 		Files\Config\Schema\Watcher.json = Files\Config\Schema\Watcher.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.BlobStorage.Abstractions", "InfinniPlatform.BlobStorage.Abstractions\InfinniPlatform.BlobStorage.Abstractions.csproj", "{FEED9241-B996-4942-ABCC-5813C440C8BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage.Abstractions", "InfinniPlatform.BlobStorage.Abstractions\InfinniPlatform.BlobStorage.Abstractions.csproj", "{FEED9241-B996-4942-ABCC-5813C440C8BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.BlobStorage.HttpService", "InfinniPlatform.BlobStorage.HttpService\InfinniPlatform.BlobStorage.HttpService.csproj", "{EA839257-B940-4694-8275-45002F8B7B48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage.HttpService", "InfinniPlatform.BlobStorage.HttpService\InfinniPlatform.BlobStorage.HttpService.csproj", "{EA839257-B940-4694-8275-45002F8B7B48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentStorage.Abstractions", "InfinniPlatform.DocumentStorage.Abstractions\InfinniPlatform.DocumentStorage.Abstractions.csproj", "{D034C51B-8359-489D-B2CC-208875DDCFA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.DocumentStorage.Abstractions", "InfinniPlatform.DocumentStorage.Abstractions\InfinniPlatform.DocumentStorage.Abstractions.csproj", "{D034C51B-8359-489D-B2CC-208875DDCFA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.DocumentStorage.HttpService", "InfinniPlatform.DocumentStorage.HttpService\InfinniPlatform.DocumentStorage.HttpService.csproj", "{46D2967D-0562-44D3-996F-EF1E78CE1F54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.DocumentStorage.HttpService", "InfinniPlatform.DocumentStorage.HttpService\InfinniPlatform.DocumentStorage.HttpService.csproj", "{46D2967D-0562-44D3-996F-EF1E78CE1F54}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueue.Abstractions", "InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj", "{136B170D-FD47-4AA7-8BEA-B0C92B85959C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -565,6 +567,24 @@ Global
 		{46D2967D-0562-44D3-996F-EF1E78CE1F54}.Release|x64.Build.0 = Release|Any CPU
 		{46D2967D-0562-44D3-996F-EF1E78CE1F54}.Release|x86.ActiveCfg = Release|Any CPU
 		{46D2967D-0562-44D3-996F-EF1E78CE1F54}.Release|x86.Build.0 = Release|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Debug|x64.Build.0 = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Debug|x86.Build.0 = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.DebugTools|Any CPU.ActiveCfg = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.DebugTools|Any CPU.Build.0 = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.DebugTools|x64.ActiveCfg = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.DebugTools|x64.Build.0 = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.DebugTools|x86.ActiveCfg = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.DebugTools|x86.Build.0 = Debug|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Release|x64.ActiveCfg = Release|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Release|x64.Build.0 = Release|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Release|x86.ActiveCfg = Release|Any CPU
+		{136B170D-FD47-4AA7-8BEA-B0C92B85959C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
