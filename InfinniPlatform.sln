@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Http", "Inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.Internal", "InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.csproj", "{B276F8B8-0D27-4637-80B8-4F1AAA7CF5BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueue", "InfinniPlatform.MessageQueue\InfinniPlatform.MessageQueue.csproj", "{7EBB54A0-69CB-49FC-A340-8527502F9C67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueue.RabbitMQ", "InfinniPlatform.MessageQueue.RabbitMQ\InfinniPlatform.MessageQueue.RabbitMQ.csproj", "{7EBB54A0-69CB-49FC-A340-8527502F9C67}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.DocumentStorage.MongoDB", "InfinniPlatform.DocumentStorage.MongoDB\InfinniPlatform.DocumentStorage.MongoDB.csproj", "{236BCAC7-A46A-4A40-B27B-BA48A13D8F79}"
 EndProject
