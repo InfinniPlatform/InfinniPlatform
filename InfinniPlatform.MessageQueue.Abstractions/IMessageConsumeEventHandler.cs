@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using InfinniPlatform.MessageQueue.Abstractions;
 
-namespace InfinniPlatform.MessageQueue.RabbitMQ.Hosting
+namespace InfinniPlatform.MessageQueue.Abstractions
 {
     /// <summary>
     /// Обработчик событий процесса обработки сообщений.

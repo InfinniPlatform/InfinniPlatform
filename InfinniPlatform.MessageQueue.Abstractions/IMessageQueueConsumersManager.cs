@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
-namespace InfinniPlatform.MessageQueue.RabbitMQ.Hosting
+namespace InfinniPlatform.MessageQueue.Abstractions
 {
     /// <summary>
     /// Предоставляет метод регистрации получателей сообщений из очереди.

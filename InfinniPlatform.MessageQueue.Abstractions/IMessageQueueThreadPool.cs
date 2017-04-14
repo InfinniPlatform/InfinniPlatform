@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.MessageQueue.RabbitMQ.Hosting
+namespace InfinniPlatform.MessageQueue.Abstractions
 {
     /// <summary>
     /// Предоставляет абстракцию для ограничения количества одновреммено выполняемых операций.
