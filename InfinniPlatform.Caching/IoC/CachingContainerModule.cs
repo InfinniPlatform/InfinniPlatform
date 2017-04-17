@@ -1,6 +1,5 @@
 ﻿using System;
-
-using InfinniPlatform.Caching.Contract;
+using InfinniPlatform.Caching.Abstractions;
 using InfinniPlatform.Caching.Diagnostics;
 using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Caching.Redis;

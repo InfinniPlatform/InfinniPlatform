@@ -1,24 +1,28 @@
 ﻿using System;
-
 using Microsoft.Extensions.Caching.Memory;
+using IMemoryCache = InfinniPlatform.Caching.Abstractions.IMemoryCache;
 
 namespace InfinniPlatform.Caching.Memory
 {
     /// <summary>
-    /// Реализует интерфейс для управления кэшем в памяти.
+    ///     Реализует интерфейс для управления кэшем в памяти.
     /// </summary>
     internal sealed class MemoryCacheImpl : IMemoryCache, IDisposable
     {
+        private readonly MemoryCache _cache;
+
         /// <summary>
-        /// Конструктор.
+        ///     Конструктор.
         /// </summary>
         public MemoryCacheImpl()
         {
             _cache = new MemoryCache(new MemoryCacheOptions());
         }
 
-
-        private readonly MemoryCache _cache;
+        public void Dispose()
+        {
+            _cache.Dispose();
+        }
 
 
         public bool Contains(string key)
@@ -47,7 +51,7 @@ namespace InfinniPlatform.Caching.Memory
 
             value = _cache.Get<string>(key);
 
-            return (value != null);
+            return value != null;
         }
 
         public void Set(string key, string value)
@@ -82,11 +86,6 @@ namespace InfinniPlatform.Caching.Memory
             {
                 return false;
             }
-        }
-
-        public void Dispose()
-        {
-            _cache.Dispose();
         }
     }
 }

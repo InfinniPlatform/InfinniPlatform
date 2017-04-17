@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.Caching.Redis
+﻿using InfinniPlatform.Caching.Abstractions;
+
+namespace InfinniPlatform.Caching.Redis
 {
     /// <summary>
     /// Пустая реализация интерфейса для управления распределенным кэшем.

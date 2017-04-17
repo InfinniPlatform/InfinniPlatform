@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using InfinniPlatform.Caching.Abstractions;
 using InfinniPlatform.Caching.Properties;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-
-using InfinniPlatform.Caching.Contract;
+using InfinniPlatform.Caching.Abstractions;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
