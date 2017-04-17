@@ -5,7 +5,7 @@ namespace InfinniPlatform.Caching.Redis
     /// <summary>
     /// Пустая реализация интерфейса для управления распределенным кэшем.
     /// </summary>
-    internal sealed class NullSharedCacheImpl : ISharedCache
+    public class NullSharedCacheImpl : ISharedCache
     {
         public bool Contains(string key)
         {

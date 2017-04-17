@@ -7,7 +7,7 @@ namespace InfinniPlatform.Caching.Memory
     /// <summary>
     ///     Реализует интерфейс для управления кэшем в памяти.
     /// </summary>
-    internal sealed class MemoryCacheImpl : IMemoryCache, IDisposable
+    public class MemoryCacheImpl : IMemoryCache, IDisposable
     {
         private readonly MemoryCache _cache;
 

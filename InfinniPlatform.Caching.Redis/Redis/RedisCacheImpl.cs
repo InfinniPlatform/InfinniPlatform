@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using InfinniPlatform.Caching.Abstractions;
-using InfinniPlatform.Caching.Properties;
+using InfinniPlatform.Caching.Redis.Properties;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;
 
@@ -13,7 +13,7 @@ namespace InfinniPlatform.Caching.Redis
     /// Реализует интерфейс для управления распределенным кэшем на базе Redis.
     /// </summary>
     [LoggerName("Redis")]
-    internal sealed class RedisCacheImpl : ISharedCache
+    public class RedisCacheImpl : ISharedCache
     {
         /// <summary>
         /// Конструктор.

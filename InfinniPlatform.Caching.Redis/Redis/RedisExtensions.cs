@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Caching.Properties;
-
 using StackExchange.Redis;
 
 namespace InfinniPlatform.Caching.Redis

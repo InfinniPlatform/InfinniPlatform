@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using InfinniPlatform.Caching.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
@@ -11,21 +11,16 @@ namespace InfinniPlatform.Caching.TwoLayer
     /// </summary>
     public class CachingMessageConsumerSource : IMessageConsumerSource
     {
-        public CachingMessageConsumerSource(CacheSettings cacheSettings,
-                                            TwoLayerCacheConsumer twoLayerCacheConsumer)
+        public CachingMessageConsumerSource(TwoLayerCacheConsumer twoLayerCacheConsumer)
         {
-            _cacheSettings = cacheSettings;
             _twoLayerCacheConsumer = twoLayerCacheConsumer;
         }
 
-        private readonly CacheSettings _cacheSettings;
         private readonly TwoLayerCacheConsumer _twoLayerCacheConsumer;
 
         public IEnumerable<IConsumer> GetConsumers()
         {
-            return _cacheSettings.Type == CacheSettings.SharedCacheKey
-                       ? new[] { _twoLayerCacheConsumer }
-                       : Enumerable.Empty<IConsumer>();
+            return new[] { _twoLayerCacheConsumer };
         }
     }
 }

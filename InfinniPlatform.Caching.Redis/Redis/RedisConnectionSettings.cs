@@ -3,7 +3,7 @@
     /// <summary>
     /// Настройки подключения к Redis.
     /// </summary>
-    internal sealed class RedisConnectionSettings
+    public class RedisConnectionSettings
     {
         public const string SectionName = "redis";
 

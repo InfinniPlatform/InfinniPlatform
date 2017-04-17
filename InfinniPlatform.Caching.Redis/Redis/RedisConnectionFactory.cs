@@ -5,7 +5,7 @@ namespace InfinniPlatform.Caching.Redis
     /// <summary>
     ///     Фабрика подключений к Redis.
     /// </summary>
-    internal sealed class RedisConnectionFactory
+    public class RedisConnectionFactory
     {
         public ConnectionMultiplexer RedisClient { get; }
 

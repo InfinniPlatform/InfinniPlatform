@@ -1,9 +1,5 @@
 ﻿using System;
 using InfinniPlatform.Caching.Abstractions;
-using InfinniPlatform.Caching.Diagnostics;
-using InfinniPlatform.Caching.Memory;
-using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Caching.TwoLayer;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.Core.Abstractions.Diagnostics;
 using InfinniPlatform.Core.Abstractions.IoC;
@@ -15,12 +11,6 @@ namespace InfinniPlatform.Caching.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            // Settings
-
-            builder.RegisterFactory(GetCacheSettings)
-                   .As<CacheSettings>()
-                   .SingleInstance();
-
             builder.RegisterFactory(GetRedisConnectionSettings)
                    .As<RedisConnectionSettings>()
                    .SingleInstance();

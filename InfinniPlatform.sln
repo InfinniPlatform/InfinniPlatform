@@ -24,8 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.DocumentStorage.MongoDB", "InfinniPlatform.DocumentStorage.MongoDB\InfinniPlatform.DocumentStorage.MongoDB.csproj", "{236BCAC7-A46A-4A40-B27B-BA48A13D8F79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Caching", "InfinniPlatform.Caching\InfinniPlatform.Caching.csproj", "{2DA58625-0190-427D-A84E-3958CADDBA23}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage.FileSystem", "InfinniPlatform.BlobStorage.FileSystem\InfinniPlatform.BlobStorage.FileSystem.csproj", "{C2C8D1E3-45BE-40DB-8053-E6A0E8BA66CE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.PrintView", "InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj", "{D046AF4C-5EBE-4322-8ECD-D69848402A29}"
@@ -246,24 +244,6 @@ Global
 		{236BCAC7-A46A-4A40-B27B-BA48A13D8F79}.Release|x64.Build.0 = Release|Any CPU
 		{236BCAC7-A46A-4A40-B27B-BA48A13D8F79}.Release|x86.ActiveCfg = Release|Any CPU
 		{236BCAC7-A46A-4A40-B27B-BA48A13D8F79}.Release|x86.Build.0 = Release|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Debug|x64.Build.0 = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Debug|x86.Build.0 = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.DebugTools|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.DebugTools|Any CPU.Build.0 = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.DebugTools|x64.ActiveCfg = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.DebugTools|x64.Build.0 = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.DebugTools|x86.ActiveCfg = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.DebugTools|x86.Build.0 = Debug|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Release|x64.ActiveCfg = Release|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Release|x64.Build.0 = Release|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Release|x86.ActiveCfg = Release|Any CPU
-		{2DA58625-0190-427D-A84E-3958CADDBA23}.Release|x86.Build.0 = Release|Any CPU
 		{C2C8D1E3-45BE-40DB-8053-E6A0E8BA66CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C2C8D1E3-45BE-40DB-8053-E6A0E8BA66CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2C8D1E3-45BE-40DB-8053-E6A0E8BA66CE}.Debug|x64.ActiveCfg = Debug|Any CPU

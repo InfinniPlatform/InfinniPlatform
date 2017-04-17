@@ -31,7 +31,7 @@ namespace InfinniPlatform.ServiceHost
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddAuth()
-                                            .AddCaching()
+                                            //.AddCaching()
                                             .AddFileSystemBlobStorage(_configuration)
                                             .AddBlobStorageHttpService()
                                             .AddMongoDocumentStorage(_configuration)
