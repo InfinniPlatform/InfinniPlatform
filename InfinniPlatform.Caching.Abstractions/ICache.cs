@@ -1,6 +1,9 @@
-﻿namespace InfinniPlatform.Caching
+﻿namespace InfinniPlatform.Caching.Abstractions
 {
-    public interface IMemoryCache
+    /// <summary>
+    /// Предоставляет интерфейс для управления кэшем.
+    /// </summary>
+    public interface ICache
     {
         /// <summary>
         /// Проверяет наличие ключа в кэше.

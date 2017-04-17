@@ -1,12 +1,9 @@
-﻿namespace InfinniPlatform.Caching
+﻿namespace InfinniPlatform.Caching.Abstractions
 {
     /// <summary>
-    /// Распределленый кэш.
+    /// Кэш в памяти.
     /// </summary>
-    /// <remarks>
-    /// Предоставляет возможность разделить кэш между несколькими приложениями.
-    /// </remarks>
-    public interface ISharedCache
+    public interface IMemoryCache
     {
         /// <summary>
         /// Проверяет наличие ключа в кэше.
