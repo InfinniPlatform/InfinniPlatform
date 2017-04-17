@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.Sdk.Metadata;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 
 namespace InfinniPlatform.DocumentStorage.Abstractions
 {

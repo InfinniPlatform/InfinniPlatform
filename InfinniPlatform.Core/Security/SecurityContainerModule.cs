@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Security;
+﻿using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.Abstractions.Security;
 
 namespace InfinniPlatform.Core.Security
 {

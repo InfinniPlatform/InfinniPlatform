@@ -1,17 +1,17 @@
 ﻿using System.Reflection;
 using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.Core.Abstractions.Diagnostics;
+using InfinniPlatform.Core.Abstractions.Hosting;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Diagnostics;
 using InfinniPlatform.Scheduler.Hosting;
 using InfinniPlatform.Scheduler.Quartz;
 using InfinniPlatform.Scheduler.Storage;
-using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Metadata;
-using InfinniPlatform.Sdk.Settings;
 
 using Quartz;
 using Quartz.Logging;

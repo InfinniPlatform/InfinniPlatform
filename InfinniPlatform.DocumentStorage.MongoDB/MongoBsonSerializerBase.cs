@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using InfinniPlatform.Sdk.Dynamic;
+
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;

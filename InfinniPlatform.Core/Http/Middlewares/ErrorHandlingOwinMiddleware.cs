@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Sdk.Logging;
+
 using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Core.Http.Middlewares

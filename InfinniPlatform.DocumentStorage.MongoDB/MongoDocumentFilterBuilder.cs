@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.Metadata;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 
 using MongoDB.Bson;
 using MongoDB.Driver;

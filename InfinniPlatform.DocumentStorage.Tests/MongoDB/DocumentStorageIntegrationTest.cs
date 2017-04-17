@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.Dynamic;
 
 using NUnit.Framework;
 

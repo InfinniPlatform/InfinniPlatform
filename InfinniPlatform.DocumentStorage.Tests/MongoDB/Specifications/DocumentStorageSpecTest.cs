@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions;
+﻿using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Specifications;
-using InfinniPlatform.Sdk.Dynamic;
 
 using Moq;
 

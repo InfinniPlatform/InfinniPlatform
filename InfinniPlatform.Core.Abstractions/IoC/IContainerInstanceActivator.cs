@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.IoC
+﻿namespace InfinniPlatform.Core.Abstractions.IoC
 {
     /// <summary>
     /// Обработчик инициализации экземпляра зависимости.

@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Linq.Expressions;
 
+using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.DocumentStorage.HttpService;
 using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Tests.TestEntities;
-using InfinniPlatform.Sdk.Http.Services;
 
 using Moq;
 

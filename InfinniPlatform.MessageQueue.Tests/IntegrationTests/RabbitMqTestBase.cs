@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
+using InfinniPlatform.Core.Abstractions.Hosting;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMQ;
 using InfinniPlatform.MessageQueue.RabbitMQ.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMQ.Serialization;
-using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Settings;
 
 using Moq;
 
@@ -43,7 +43,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
 
             RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object, logMock.Object);
-            RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqConnectionSettings.Default);
+            RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqConnectionSettings.Default, JsonObjectSerializer.Default);
 
             MessageSerializer = new MessageSerializer(new JsonObjectSerializer());
 

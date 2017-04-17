@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace InfinniPlatform.Sdk.Dynamic
+namespace InfinniPlatform.Core.Abstractions.Dynamic
 {
     internal static class ReflectionCache
     {

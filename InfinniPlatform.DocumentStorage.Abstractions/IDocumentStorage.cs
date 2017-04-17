@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Abstractions
 {

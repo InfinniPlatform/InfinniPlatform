@@ -71,6 +71,15 @@ namespace InfinniPlatform.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot deserialize type &apos;{0}&apos;..
+        /// </summary>
+        internal static string CannotDeserializeTypeError {
+            get {
+                return ResourceManager.GetString("CannotDeserializeTypeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot initialize service correctly..
         /// </summary>
         internal static string CannotInitializeServiceCorrectly {

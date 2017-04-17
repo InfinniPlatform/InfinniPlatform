@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-using Newtonsoft.Json;
-
-namespace InfinniPlatform.Sdk.Types
+namespace InfinniPlatform.Core.Abstractions.Types
 {
     /// <summary>
     /// Дата.
@@ -16,7 +14,6 @@ namespace InfinniPlatform.Sdk.Types
     /// в которых не нужно учитывать временную зону, а важна только календарная дата.
     /// </remarks>
     [Serializable]
-    [JsonConverter(typeof(DateJsonConverter))]
     public struct Date : IComparable, IComparable<Date>, IEquatable<Date>, IFormattable
     {
         /// <summary>

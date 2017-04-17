@@ -5,13 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-using InfinniPlatform.Sdk.Properties;
+using InfinniPlatform.Core.Abstractions.Properties;
 
 using Microsoft.CSharp.RuntimeBinder;
 
 using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
-namespace InfinniPlatform.Sdk.Dynamic
+namespace InfinniPlatform.Core.Abstractions.Dynamic
 {
     public static class ObjectHelper
     {

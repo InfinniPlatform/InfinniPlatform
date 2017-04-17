@@ -4,11 +4,13 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+
+using InfinniPlatform.Core.Abstractions.Hosting;
+using InfinniPlatform.Core.Abstractions.IoC;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.IoC;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

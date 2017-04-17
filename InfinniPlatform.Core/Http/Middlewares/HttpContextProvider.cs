@@ -1,5 +1,6 @@
-﻿using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Sdk.IoC;
+﻿using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Http.Middlewares;
+
 using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Core.Http.Middlewares

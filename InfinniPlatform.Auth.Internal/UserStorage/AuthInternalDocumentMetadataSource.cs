@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Metadata;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 
 namespace InfinniPlatform.Auth.Internal.UserStorage
 {

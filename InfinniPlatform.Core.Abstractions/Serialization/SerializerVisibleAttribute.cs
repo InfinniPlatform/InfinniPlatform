@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Sdk.Serialization
+namespace InfinniPlatform.Core.Abstractions.Serialization
 {
     /// <summary>
     /// Определяет, что свойство класса видимо для сериализатора <see cref="IObjectSerializer" />.

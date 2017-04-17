@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Abstractions
 {

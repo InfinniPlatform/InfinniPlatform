@@ -1,7 +1,7 @@
-﻿using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
+﻿using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.DocumentStorage.HttpService.IoC
 {

@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.BlobStorage.Abstractions;
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.DocumentStorage.HttpService
 {

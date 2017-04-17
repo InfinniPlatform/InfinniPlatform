@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
 {

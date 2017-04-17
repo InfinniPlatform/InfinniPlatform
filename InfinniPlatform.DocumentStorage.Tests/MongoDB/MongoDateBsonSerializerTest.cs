@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Types;
+﻿using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Types;
 
 using NUnit.Framework;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 using Microsoft.CSharp.RuntimeBinder;
 

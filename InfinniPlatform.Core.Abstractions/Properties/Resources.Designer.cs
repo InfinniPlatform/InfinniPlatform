@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InfinniPlatform.Sdk.Properties {
+namespace InfinniPlatform.Core.Abstractions.Properties {
     using System;
     using System.Reflection;
     
@@ -40,7 +40,7 @@ namespace InfinniPlatform.Sdk.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Sdk.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Core.Abstractions.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -58,15 +58,6 @@ namespace InfinniPlatform.Sdk.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot deserialize type &apos;{0}&apos;..
-        /// </summary>
-        internal static string CannotDeserializeTypeError {
-            get {
-                return ResourceManager.GetString("CannotDeserializeTypeError", resourceCulture);
             }
         }
         

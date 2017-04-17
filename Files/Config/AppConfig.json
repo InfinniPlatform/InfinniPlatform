@@ -51,10 +51,6 @@
     "HtmlToPdfUtilArguments": "",
     "HtmlToPdfTemp": ""
   },
-  "metadata": {
-    "DocumentsPath": "content/metadata/Documents",
-    "PrintViewsPath": "content/metadata/PrintViews"
-  },
   "scheduler": {
     "ExpireHistoryAfter": null
   },
@@ -70,25 +66,5 @@
   "authCookie": {
     "LoginPath": "/Auth/SignInInternal",
     "LogoutPath": "/Auth/SignOut"
-  },
-  "authAdfs": {
-    "Enable": false,
-    "Server": "Adfs-Server",
-    "ResourceUri": ""
-  },
-  "authGoogle": {
-    "Enable": false,
-    "ClientId": "Google-Client-Id",
-    "ClientSecret": "Google-Client-Secret"
-  },
-  "authFacebook": {
-    "Enable": false,
-    "ClientId": "Facebook-Client-Id",
-    "ClientSecret": "Facebook-Client-Secret"
-  },
-  "authVk": {
-    "Enable": false,
-    "ClientId": "Vk-Client-Id",
-    "ClientSecret": "Vk-Client-Secret"
   }
 }

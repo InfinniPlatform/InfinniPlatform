@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 using MongoDB.Bson;
 using MongoDB.Bson.IO;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Sdk.Tests.TestEntities
+namespace InfinniPlatform.Core.Tests.TestEntities
 {
     internal class ProductCategory
     {

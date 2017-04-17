@@ -1,5 +1,5 @@
 ﻿using InfinniPlatform.BlobStorage.Abstractions;
-using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Core.Abstractions.IoC;
 
 namespace InfinniPlatform.BlobStorage.FileSystem.IoC
 {

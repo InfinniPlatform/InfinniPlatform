@@ -3,9 +3,9 @@ using System.IO;
 using System.Threading.Tasks;
 
 using InfinniPlatform.BlobStorage.Abstractions;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Serialization;
 
 namespace InfinniPlatform.BlobStorage.FileSystem
 {

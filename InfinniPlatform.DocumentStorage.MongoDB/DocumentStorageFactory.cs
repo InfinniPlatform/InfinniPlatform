@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
+using InfinniPlatform.Core.Abstractions.IoC;
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Threading;
 using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Threading;
 
 namespace InfinniPlatform.PrintView.Contract
 {

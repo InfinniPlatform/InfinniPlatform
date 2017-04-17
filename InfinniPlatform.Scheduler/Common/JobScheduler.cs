@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Properties;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Scheduler.Common
 {

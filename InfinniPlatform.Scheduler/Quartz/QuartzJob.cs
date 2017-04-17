@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.Scheduler.Common;
-using InfinniPlatform.Sdk.Dynamic;
+
 using Quartz;
 
 namespace InfinniPlatform.Scheduler.Quartz

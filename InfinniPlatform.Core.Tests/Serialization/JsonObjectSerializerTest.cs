@@ -1,23 +1,27 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Tests.TestEntities;
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Core.Tests.TestEntities;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Sdk.Tests.Serialization
+namespace InfinniPlatform.Core.Tests.Serialization
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
     public sealed class JsonObjectSerializerTest
     {
-        private static T SerializeAndDeserialize<T>(T value, KnownTypesContainer knownTypes = null)
+        private static T SerializeAndDeserialize<T>(T value, Action<KnownTypesContainer> addKnownTypes = null)
         {
-            var serializer = new JsonObjectSerializer(true, knownTypes: knownTypes);
+            IEnumerable<IKnownTypesSource> knowTypes = (addKnownTypes != null) ? new[] { new KnownTypesSourceStub(addKnownTypes) } : null;
+
+            var serializer = new JsonObjectSerializer(true, knownTypes: knowTypes);
 
             byte[] data = serializer.Serialize(value);
 
@@ -38,7 +42,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeAbstractClassReference()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
             var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
             var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var item1 = new OrderItem { Product = milk, Count = 1, Price = 45.5f };
@@ -72,7 +76,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeCustomCollection()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
             var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
             var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var item1 = new OrderItem { Product = milk, Count = 1, Price = 45.5f };
@@ -111,7 +115,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeCustomCollectionReference()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<Milk>("milk").Add<Bread>("bread").Add<Employee>("employee");
             var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
             var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var item1 = new OrderItem { Product = milk, Count = 1, Price = 45.5f };
@@ -152,7 +156,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeInterfaceArrayReference()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<Milk>("milk").Add<Bread>("bread");
             var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
             var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var target = new ProductCategory { Products = new IProduct[] { milk, bread } };
@@ -176,7 +180,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeInterfaceReference()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<Milk>("milk");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<Milk>("milk");
             var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
             var target = new OrderItem { Product = milk, Count = 1, Price = 45.5f };
 
@@ -196,7 +200,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeKnownType()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<Bread>("bread");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<Bread>("bread");
             var target = new Bread { Caption = "Bread1", Richness = 365 };
 
             // When
@@ -212,7 +216,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeKnownTypeArray()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<Bread>("bread");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<Bread>("bread");
             var target = new[] { new Bread { Caption = "Bread1", Richness = 365 } };
 
             // When
@@ -260,7 +264,7 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldSerializeWhenAbstractionRefersToAnotherAbstraction()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<ProductCategory>("category").Add<Milk>("milk").Add<Bread>("bread");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<ProductCategory>("category").Add<Milk>("milk").Add<Bread>("bread");
             var milk = new Milk { Caption = "Milk1", Protein = 2.9f };
             var bread = new Bread { Caption = "Bread1", Richness = 365 };
             var target = new ProductCategory { Products = new IProduct[] { milk, bread } };
@@ -284,11 +288,11 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         public void ShouldIgnoreNullablePropertiesWhenSerializingKnowTypes()
         {
             // Given
-            var knownTypes = new KnownTypesContainer().Add<Milk>("milk").Add<Bread>("bread");
+            Action<KnownTypesContainer> knownTypes = c => c.Add<Milk>("milk").Add<Bread>("bread");
             var milk = new Milk { Caption = null, Protein = 2.9f };
             var bread = new Bread { Caption = null, Richness = 365 };
             var target = new ProductCategory { Products = new IProduct[] { milk, bread } };
-            var serializer = new JsonObjectSerializer(knownTypes: knownTypes, withFormatting: false);
+            var serializer = new JsonObjectSerializer(knownTypes: new[] { new KnownTypesSourceStub(knownTypes) }, withFormatting: false);
 
             // When
             var entityToJson = serializer.ConvertToString(target);
@@ -421,5 +425,21 @@ namespace InfinniPlatform.Sdk.Tests.Serialization
         }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local
+
+
+        private class KnownTypesSourceStub : IKnownTypesSource
+        {
+            private readonly Action<KnownTypesContainer> _addKnownTypes;
+
+            public KnownTypesSourceStub(Action<KnownTypesContainer> addKnownTypes)
+            {
+                _addKnownTypes = addKnownTypes;
+            }
+
+            public void AddKnownTypes(KnownTypesContainer knownTypesContainer)
+            {
+                _addKnownTypes(knownTypesContainer);
+            }
+        }
     }
 }

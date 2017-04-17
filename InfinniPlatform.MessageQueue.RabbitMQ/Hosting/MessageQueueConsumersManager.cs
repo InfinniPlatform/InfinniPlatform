@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMQ.Properties;
 using InfinniPlatform.MessageQueue.RabbitMQ.Serialization;
-using InfinniPlatform.Sdk.Logging;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 

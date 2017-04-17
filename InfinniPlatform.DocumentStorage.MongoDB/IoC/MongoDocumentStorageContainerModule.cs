@@ -1,11 +1,11 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions;
+﻿using InfinniPlatform.Core.Abstractions.Diagnostics;
+using InfinniPlatform.Core.Abstractions.Hosting;
+using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
 using InfinniPlatform.DocumentStorage.MongoDB.Diagnostics;
 using InfinniPlatform.DocumentStorage.MongoDB.Hosting;
 using InfinniPlatform.DocumentStorage.MongoDB.Transactions;
-using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB.IoC
 {

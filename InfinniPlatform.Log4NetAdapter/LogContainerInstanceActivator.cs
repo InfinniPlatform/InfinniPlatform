@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.Abstractions.Serialization;
 
 namespace InfinniPlatform.Log4NetAdapter
 {

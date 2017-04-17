@@ -5,8 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Serialization;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
 {
@@ -20,12 +20,14 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
         /// </summary>
         private const string DefaultVhost = "%2f";
 
-        public RabbitMqManagementHttpClient(RabbitMqConnectionSettings connectionSettings)
+        public RabbitMqManagementHttpClient(RabbitMqConnectionSettings connectionSettings, IJsonObjectSerializer serializer)
         {
             _httpClient = new Lazy<HttpClient>(() => GetHttpClient(connectionSettings));
+            _serializer = serializer;
         }
 
         private readonly Lazy<HttpClient> _httpClient;
+        private readonly IJsonObjectSerializer _serializer;
 
         private static HttpClient GetHttpClient(RabbitMqConnectionSettings connectionSettings)
         {
@@ -106,14 +108,14 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
         {
             var httpResponseMessage = await _httpClient.Value.GetAsync(new Uri(relativeUrl, UriKind.Relative));
             var content = await httpResponseMessage.Content.ReadAsStringAsync();
-            return JsonObjectSerializer.Default.Deserialize<DynamicWrapper>(content);
+            return _serializer.Deserialize<DynamicWrapper>(content);
         }
 
         private async Task<IEnumerable<T>> Get<T>(string relativeUrl)
         {
             var httpResponseMessage = await _httpClient.Value.GetAsync(new Uri(relativeUrl, UriKind.Relative));
             var content = await httpResponseMessage.Content.ReadAsStringAsync();
-            return JsonObjectSerializer.Default.Deserialize<IEnumerable<T>>(content);
+            return _serializer.Deserialize<IEnumerable<T>>(content);
         }
 
         private async Task Delete(string relativeUrl)

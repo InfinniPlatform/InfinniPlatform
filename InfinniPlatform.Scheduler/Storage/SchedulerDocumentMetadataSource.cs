@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.Scheduler.Storage
 {

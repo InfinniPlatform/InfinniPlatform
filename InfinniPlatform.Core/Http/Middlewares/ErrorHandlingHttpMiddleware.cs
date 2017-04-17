@@ -1,5 +1,6 @@
-﻿using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Sdk.Logging;
+﻿using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Http.Middlewares;
+
 using Microsoft.AspNetCore.Builder;
 
 namespace InfinniPlatform.Core.Http.Middlewares

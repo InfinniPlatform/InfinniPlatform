@@ -5,8 +5,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.Tests.TestEntities;
-using InfinniPlatform.Sdk.Metadata;
 
 using NUnit.Framework;
 

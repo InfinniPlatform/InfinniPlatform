@@ -2,9 +2,11 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Serialization;
+
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Serialization;
+
 using log4net.Config;
 using log4net.Core;
 using log4net.Repository;

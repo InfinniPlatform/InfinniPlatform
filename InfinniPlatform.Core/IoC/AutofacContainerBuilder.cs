@@ -3,7 +3,7 @@
 using Autofac;
 using Autofac.Builder;
 
-using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Core.Abstractions.IoC;
 
 namespace InfinniPlatform.Core.IoC
 {

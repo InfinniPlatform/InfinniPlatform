@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Hosting;
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Properties;
-using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Scheduler.Hosting
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Types;
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Abstractions.Types;
 
 using NUnit.Framework;
 

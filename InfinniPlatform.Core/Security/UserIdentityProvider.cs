@@ -2,7 +2,7 @@
 using System.Security.Principal;
 using System.Threading;
 
-using InfinniPlatform.Sdk.Security;
+using InfinniPlatform.Core.Abstractions.Security;
 
 namespace InfinniPlatform.Core.Security
 {

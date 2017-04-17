@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Caching.Contract;
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Core.Abstractions.Diagnostics;
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Http;
 
 namespace InfinniPlatform.Caching.Diagnostics
 {

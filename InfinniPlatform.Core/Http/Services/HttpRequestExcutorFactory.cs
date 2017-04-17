@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Core.Http.Services
 {

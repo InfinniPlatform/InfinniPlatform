@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Settings
+﻿namespace InfinniPlatform.Core.Abstractions.Settings
 {
     /// <summary>
     /// Общие настройки приложения.

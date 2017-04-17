@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.PrintView.Expressions.CompiledExpressions;
 using InfinniPlatform.PrintView.Properties;
-using InfinniPlatform.Sdk.Dynamic;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;

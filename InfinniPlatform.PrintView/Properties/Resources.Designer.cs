@@ -80,6 +80,15 @@ namespace InfinniPlatform.PrintView.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot deserialize type &apos;{0}&apos;..
+        /// </summary>
+        internal static string CannotDeserializeTypeError {
+            get {
+                return ResourceManager.GetString("CannotDeserializeTypeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can not execute command &apos;{0}&apos; with arguments &apos;{1}&apos;. Error: &apos;{2}&apos;..
         /// </summary>
         internal static string CannotExecuteCommand {

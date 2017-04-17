@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Security.Claims;
 
+using InfinniPlatform.Core.Abstractions.Security;
+using InfinniPlatform.Core.Abstractions.Session;
 using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.Sdk.Metadata;
-using InfinniPlatform.Sdk.Security;
-using InfinniPlatform.Sdk.Session;
 
 using Moq;
 

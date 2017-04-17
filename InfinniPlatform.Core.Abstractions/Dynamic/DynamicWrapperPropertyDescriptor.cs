@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace InfinniPlatform.Sdk.Dynamic
+namespace InfinniPlatform.Core.Abstractions.Dynamic
 {
     /// <summary>
     /// Описание свойства динамического объекта <see cref="DynamicWrapper"/>.

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using InfinniPlatform.Sdk.Settings;
+
+using InfinniPlatform.Core.Abstractions.Settings;
 
 namespace InfinniPlatform.Core.Settings
 {

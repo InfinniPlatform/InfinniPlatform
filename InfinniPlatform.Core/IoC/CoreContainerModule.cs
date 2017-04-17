@@ -1,12 +1,12 @@
 ﻿using System.Text;
-using InfinniPlatform.Core.Metadata;
+
+using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Abstractions.Session;
+using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Core.Session;
 using InfinniPlatform.Core.Settings;
-using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Metadata;
-using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Session;
-using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Core.IoC
 {
@@ -23,16 +23,6 @@ namespace InfinniPlatform.Core.IoC
             builder.RegisterType<JsonObjectSerializer>()
                    .As<IObjectSerializer>()
                    .As<IJsonObjectSerializer>()
-                   .SingleInstance();
-
-            // Metadata
-
-            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<MetadataSettings>(MetadataSettings.SectionName))
-                   .As<MetadataSettings>()
-                   .SingleInstance();
-
-            builder.RegisterType<JsonDocumentMetadataSource>()
-                   .As<IDocumentMetadataSource>()
                    .SingleInstance();
 
             // Session

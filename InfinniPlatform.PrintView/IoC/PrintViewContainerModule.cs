@@ -1,10 +1,11 @@
-﻿using InfinniPlatform.PrintView.Contract;
+﻿using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.PrintView.Contract;
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
-using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.PrintView.IoC
 {
@@ -16,8 +17,8 @@ namespace InfinniPlatform.PrintView.IoC
                    .As<HtmlToPdfSettings>()
                    .SingleInstance();
 
-            builder.RegisterType<PrintViewSerializer>()
-                   .As<IPrintViewSerializer>()
+            builder.RegisterType<PrintViewKnownTypesSource>()
+                   .As<IKnownTypesSource>()
                    .SingleInstance();
 
             builder.RegisterType<HtmlPrintDocumentWriter>()

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Caching.Properties;
-using InfinniPlatform.Sdk.Dynamic;
+
 using StackExchange.Redis;
 
 namespace InfinniPlatform.Caching.Redis

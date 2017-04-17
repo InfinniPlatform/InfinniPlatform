@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Abstractions
 {

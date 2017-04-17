@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Serialization;
 using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.HttpService.Properties;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Serialization;
 
 namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 {

@@ -2,6 +2,8 @@
 
 using Quartz.Logging;
 
+using ILog = InfinniPlatform.Core.Abstractions.Logging.ILog;
+
 namespace InfinniPlatform.Scheduler.Quartz
 {
     /// <summary>
@@ -9,13 +11,13 @@ namespace InfinniPlatform.Scheduler.Quartz
     /// </summary>
     internal class QuartzJobLogProvider : ILogProvider
     {
-        public QuartzJobLogProvider(Sdk.Logging.ILog log)
+        public QuartzJobLogProvider(ILog log)
         {
             _log = log;
         }
 
 
-        private readonly Sdk.Logging.ILog _log;
+        private readonly ILog _log;
 
 
         public Logger GetLogger(string name)

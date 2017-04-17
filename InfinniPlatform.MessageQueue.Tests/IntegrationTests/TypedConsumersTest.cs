@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 using InfinniPlatform.MessageQueue.RabbitMQ;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
-using InfinniPlatform.Sdk.Dynamic;
 
 using Moq;
 

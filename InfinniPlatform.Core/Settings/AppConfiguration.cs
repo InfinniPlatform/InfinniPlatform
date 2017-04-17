@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.Core.Abstractions.Settings;
 
 using Newtonsoft.Json.Linq;
 

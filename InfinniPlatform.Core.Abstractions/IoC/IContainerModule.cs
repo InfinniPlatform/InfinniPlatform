@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.IoC
+﻿namespace InfinniPlatform.Core.Abstractions.IoC
 {
     /// <summary>
     /// Модуль регистрации зависимостей.

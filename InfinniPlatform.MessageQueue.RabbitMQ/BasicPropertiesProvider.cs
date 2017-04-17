@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.MessageQueue.Abstractions;
-using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Settings;
+
 using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQ

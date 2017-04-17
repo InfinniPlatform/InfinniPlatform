@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.Dynamic;
 
 using MongoDB.Bson;
 using MongoDB.Driver;

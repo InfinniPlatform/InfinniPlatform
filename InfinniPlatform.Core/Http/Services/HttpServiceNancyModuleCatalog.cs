@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.IoC;
 
 using Nancy;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Core.Abstractions.IoC;
 
 using Quartz;
 using Quartz.Spi;

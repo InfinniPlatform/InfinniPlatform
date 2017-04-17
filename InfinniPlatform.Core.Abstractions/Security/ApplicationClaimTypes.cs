@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Sdk.Security
+﻿namespace InfinniPlatform.Core.Abstractions.Security
 {
     /// <summary>
     /// Типы утверждений системы.

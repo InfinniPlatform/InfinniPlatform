@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Caching;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Settings;
+
 using Microsoft.Extensions.Caching.Memory;
 
 namespace InfinniPlatform.Auth.Internal.UserStorage

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Interceptors;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {

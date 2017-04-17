@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.IoC;
+﻿using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.IoC;
 
 namespace InfinniPlatform.BlobStorage.HttpService.IoC
 {

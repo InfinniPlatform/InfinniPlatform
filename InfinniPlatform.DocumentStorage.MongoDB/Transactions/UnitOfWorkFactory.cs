@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
-using InfinniPlatform.Sdk.IoC;
+﻿using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
 {

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.BlobStorage.Abstractions;
 using InfinniPlatform.BlobStorage.HttpService.Properties;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Logging;
 
 namespace InfinniPlatform.BlobStorage.HttpService
 {

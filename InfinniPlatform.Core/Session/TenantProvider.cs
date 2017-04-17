@@ -1,6 +1,7 @@
 ﻿using System.Security.Principal;
-using InfinniPlatform.Sdk.Security;
-using InfinniPlatform.Sdk.Session;
+
+using InfinniPlatform.Core.Abstractions.Security;
+using InfinniPlatform.Core.Abstractions.Session;
 
 namespace InfinniPlatform.Core.Session
 {

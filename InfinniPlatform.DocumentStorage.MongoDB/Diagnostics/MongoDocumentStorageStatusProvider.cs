@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Core.Abstractions.Diagnostics;
+using InfinniPlatform.Core.Abstractions.Http;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB.Diagnostics
 {

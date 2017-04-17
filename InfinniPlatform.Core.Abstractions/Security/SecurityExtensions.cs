@@ -5,9 +5,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.Sdk.Security
+using InfinniPlatform.Core.Abstractions.Http;
+
+namespace InfinniPlatform.Core.Abstractions.Security
 {
     public static class SecurityExtensions
     {

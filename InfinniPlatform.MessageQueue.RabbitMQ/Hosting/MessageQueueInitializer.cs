@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using InfinniPlatform.Core.Abstractions.Hosting;
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMQ.Properties;
-using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.Logging;
+
 using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQ.Hosting

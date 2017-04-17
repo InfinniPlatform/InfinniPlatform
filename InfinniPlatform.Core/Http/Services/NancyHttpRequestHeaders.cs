@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Core.Abstractions.Http;
 
 using Nancy;
 

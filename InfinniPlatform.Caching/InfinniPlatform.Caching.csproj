@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>    
+    <ProjectReference Include="..\InfinniPlatform.Caching.Abstractions\InfinniPlatform.Caching.Abstractions.csproj" />    
     <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />    
     <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
   </ItemGroup>

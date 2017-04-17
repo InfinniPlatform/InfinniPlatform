@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Sdk.IoC
+namespace InfinniPlatform.Core.Abstractions.IoC
 {
     /// <summary>
     /// Регистратор зависимостей и правил их разрешения.

@@ -3,9 +3,9 @@ using System.IO;
 
 using InfinniPlatform.BlobStorage.Abstractions;
 using InfinniPlatform.BlobStorage.FileSystem;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Serialization;
 
 using Moq;
 

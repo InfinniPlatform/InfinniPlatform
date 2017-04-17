@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using InfinniPlatform.Sdk.Http;
+
+using InfinniPlatform.Core.Abstractions.Http;
 
 namespace InfinniPlatform.Core.Http
 {

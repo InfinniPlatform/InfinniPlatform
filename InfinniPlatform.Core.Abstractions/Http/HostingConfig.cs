@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace InfinniPlatform.Sdk.Http
+﻿namespace InfinniPlatform.Core.Abstractions.Http
 {
     /// <summary>
     /// Настройки подсистемы хостинга.

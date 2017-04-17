@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
-using InfinniPlatform.Sdk.Metadata;
 
 namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Serialization;
 
 namespace InfinniPlatform.Log4NetAdapter
 {

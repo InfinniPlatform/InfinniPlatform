@@ -3,14 +3,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
-using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Core.Abstractions.Logging;
 
 namespace InfinniPlatform.Log4NetAdapter
 {
     /// <summary>
     /// Пробрасывает сообщения из <see cref="Trace"/> в <see cref="ILog"/>.
     /// </summary>
-    internal sealed class LogTraceListener : TraceListener
+    public class LogTraceListener : TraceListener
     {
         public LogTraceListener(ILog log)
         {

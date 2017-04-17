@@ -4,11 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.ViewEngine;
 
 using Nancy;
 using Nancy.Bootstrapper;

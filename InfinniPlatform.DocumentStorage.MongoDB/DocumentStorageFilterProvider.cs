@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
 
+using InfinniPlatform.Core.Abstractions.Session;
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.Session;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {

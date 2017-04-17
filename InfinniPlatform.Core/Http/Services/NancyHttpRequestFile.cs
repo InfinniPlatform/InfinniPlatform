@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Core.Abstractions.Http;
 
 using Nancy;
 

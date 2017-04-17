@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
+
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQ
 {

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Properties;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Settings;
 
 namespace InfinniPlatform.Scheduler.Queues
 {

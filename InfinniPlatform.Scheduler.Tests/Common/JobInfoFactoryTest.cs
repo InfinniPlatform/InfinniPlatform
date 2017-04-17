@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.Dynamic;
 
 using Moq;
 

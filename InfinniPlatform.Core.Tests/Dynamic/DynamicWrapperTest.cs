@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Dynamic;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 using NUnit.Framework;
 

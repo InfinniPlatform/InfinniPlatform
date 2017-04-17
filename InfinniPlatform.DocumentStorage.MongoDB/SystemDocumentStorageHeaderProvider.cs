@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Security;
+﻿using InfinniPlatform.Core.Abstractions.Security;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {

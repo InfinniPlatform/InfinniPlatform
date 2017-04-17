@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Http;
 
 namespace InfinniPlatform.DocumentStorage.HttpService
 {

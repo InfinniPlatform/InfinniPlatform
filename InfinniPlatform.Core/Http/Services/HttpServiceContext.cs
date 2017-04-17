@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Sdk.Http.Services;
+﻿using InfinniPlatform.Core.Abstractions.Http;
 
 namespace InfinniPlatform.Core.Http.Services
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {

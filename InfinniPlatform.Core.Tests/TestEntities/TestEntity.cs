@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Sdk.Serialization;
+﻿using InfinniPlatform.Core.Abstractions.Serialization;
 
-namespace InfinniPlatform.Sdk.Tests.TestEntities
+namespace InfinniPlatform.Core.Tests.TestEntities
 {
     public class TestEntity
     {

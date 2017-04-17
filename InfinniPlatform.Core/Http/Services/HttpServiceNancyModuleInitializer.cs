@@ -5,10 +5,10 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Security;
-using InfinniPlatform.Sdk.Serialization;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Security;
+using InfinniPlatform.Core.Abstractions.Serialization;
 
 using Nancy;
 using Nancy.Helpers;

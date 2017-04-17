@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace InfinniPlatform.Sdk.Dynamic
+namespace InfinniPlatform.Core.Abstractions.Dynamic
 {
     /// <summary>
     /// Предоставляет методы перехвата обращений к динамическому объекту типа <see cref="DynamicWrapper"/>.

@@ -13,7 +13,6 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.4.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.0.0" />
-    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="1.1.1" />
@@ -24,17 +23,12 @@
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.1" />
     <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
     <PackageReference Include="System.Diagnostics.FileVersionInfo" Version="4.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <DotNetCliToolReference Include="dotnet-sourcelink" Version="2.0.2" />
-    <DotNetCliToolReference Include="dotnet-sourcelink-git" Version="2.0.2" />
-    <PackageReference Include="SourceLink.Create.GitHub" Version="2.0.2" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +43,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Serialization\" />
   </ItemGroup>
 
 </Project>

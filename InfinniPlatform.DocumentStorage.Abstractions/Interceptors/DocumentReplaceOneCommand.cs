@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
 {

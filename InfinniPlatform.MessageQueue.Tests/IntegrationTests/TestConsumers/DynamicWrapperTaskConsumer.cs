@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers
 {

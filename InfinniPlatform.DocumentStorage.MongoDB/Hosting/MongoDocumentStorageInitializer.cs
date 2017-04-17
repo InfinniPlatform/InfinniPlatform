@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Hosting;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Threading;
 using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.MongoDB.Properties;
-using InfinniPlatform.Sdk.Hosting;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Metadata;
-using InfinniPlatform.Sdk.Threading;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB.Hosting
 {

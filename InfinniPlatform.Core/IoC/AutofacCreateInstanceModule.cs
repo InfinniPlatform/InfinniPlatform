@@ -4,7 +4,7 @@ using System.Linq;
 using Autofac;
 using Autofac.Core;
 
-using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.Core.Abstractions.IoC;
 
 namespace InfinniPlatform.Core.IoC
 {

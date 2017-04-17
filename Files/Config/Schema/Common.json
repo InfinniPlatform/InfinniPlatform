@@ -41,10 +41,6 @@
       "description": "Настройки утилиты wkhtmltopdf - http://wkhtmltopdf.org/. Поддерживаемая версия - 0.12.2.4.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/HtmlToPdf.json"
     },
-    "metadata": {
-      "description": "Настройки хранения метаданных.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Metadata.json"
-    },
     "scheduler": {
       "description": "Планировщик заданий.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Scheduler.json"
@@ -56,22 +52,6 @@
     "authCookie": {
       "description": "Настройки аутентификации через Cookie.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthCookie.json"
-    },
-    "authAdfs": {
-      "description": "Настройки аутентификации через ADFS.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthAdfs.json"
-    },
-    "authGoogle": {
-      "description": "Настройки аутентификации через Google+.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthGoogle.json"
-    },
-    "authFacebook": {
-      "description": "Настройки аутентификации через Facebook.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthFacebook.json"
-    },
-    "authVk": {
-      "description": "Настройки аутентификации через ВКонтакте.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthVk.json"
     },
     "watcher": {
       "description": "Настройки приложения InfinniPlatform.Watcher.",

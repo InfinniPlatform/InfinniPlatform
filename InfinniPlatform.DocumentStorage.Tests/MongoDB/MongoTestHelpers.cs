@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.Sdk.Metadata;
-using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Settings;
 
 using Moq;
 

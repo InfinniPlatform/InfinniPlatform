@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
+using InfinniPlatform.Core.Abstractions.IoC;
 using InfinniPlatform.Scheduler.Contract;
 using InfinniPlatform.Scheduler.Properties;
-using InfinniPlatform.Sdk.IoC;
 
 namespace InfinniPlatform.Scheduler.Common
 {

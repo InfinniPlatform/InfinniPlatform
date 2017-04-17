@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Serialization;
 using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Model.Defaults;
 
@@ -19,7 +20,7 @@ namespace InfinniPlatform.PrintView.Contract
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public PrintViewBuilder(IPrintViewSerializer printViewSerializer,
+        public PrintViewBuilder(IJsonObjectSerializer printViewSerializer,
                                 IPrintDocumentBuilder printDocumentBuilder,
                                 IPrintViewWriter printViewWriter)
         {
@@ -29,7 +30,7 @@ namespace InfinniPlatform.PrintView.Contract
         }
 
 
-        private readonly IPrintViewSerializer _printViewSerializer;
+        private readonly IJsonObjectSerializer _printViewSerializer;
         private readonly IPrintDocumentBuilder _printDocumentBuilder;
         private readonly IPrintViewWriter _printViewWriter;
 
@@ -52,7 +53,7 @@ namespace InfinniPlatform.PrintView.Contract
 
             using (var templateStream = template())
             {
-                documentTemplate = _printViewSerializer.Deserialize(templateStream);
+                documentTemplate = _printViewSerializer.Deserialize<PrintDocument>(templateStream);
             }
 
             return Build(stream, documentTemplate, dataSource, fileFormat);

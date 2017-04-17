@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Sdk.Http.Services;
+using InfinniPlatform.Core.Abstractions.Http;
 
-namespace InfinniPlatform.Sdk.Diagnostics
+namespace InfinniPlatform.Core.Abstractions.Diagnostics
 {
     /// <summary>
     /// Предоставляет информацию о состоянии подсистемы.

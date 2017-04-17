@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using InfinniPlatform.Auth.Internal.Identity;
 using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 using InfinniPlatform.Auth.Internal.Middlewares;
 using InfinniPlatform.Auth.Internal.Services;
 using InfinniPlatform.Auth.Internal.UserStorage;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.MessageQueue.Abstractions;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Metadata;
-using InfinniPlatform.Sdk.Settings;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

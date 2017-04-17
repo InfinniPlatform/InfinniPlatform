@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Sdk.Logging
+namespace InfinniPlatform.Core.Abstractions.Logging
 {
     /// <summary>
     /// Сервис регистрации длительности выполнения методов.

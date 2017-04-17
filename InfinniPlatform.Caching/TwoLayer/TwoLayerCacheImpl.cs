@@ -5,8 +5,8 @@ using InfinniPlatform.Caching.Contract;
 using InfinniPlatform.Caching.Redis;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Settings;
 
 namespace InfinniPlatform.Caching.TwoLayer
 {

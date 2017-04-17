@@ -5,10 +5,7 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Linq.Expressions;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-namespace InfinniPlatform.Sdk.Dynamic
+namespace InfinniPlatform.Core.Abstractions.Dynamic
 {
     /// <summary>
     /// Динамический объект.
@@ -18,7 +15,6 @@ namespace InfinniPlatform.Sdk.Dynamic
     /// Прототип может быть определен, как наследник <see cref="DynamicWrapper"/> с определенными в нем прототипными членами, которые
     /// можно будет подменить у конкретного экземпляра - наследника прототипа.
     /// </remarks>
-    [JsonConverter(typeof(DynamicWrapperJsonConverter))]
     public class DynamicWrapper : IDynamicMetaObjectProvider, IEnumerable, ICustomTypeDescriptor
     {
         public DynamicWrapper()
@@ -147,12 +143,6 @@ namespace InfinniPlatform.Sdk.Dynamic
         public IDictionary<string, object> ToDictionary()
         {
             return _properties;
-        }
-
-
-        public override string ToString()
-        {
-            return JToken.FromObject(_properties).ToString();
         }
 
 

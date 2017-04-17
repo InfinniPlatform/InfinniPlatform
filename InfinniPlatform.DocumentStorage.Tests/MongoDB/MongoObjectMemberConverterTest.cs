@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Core.Abstractions.Dynamic;
 
 using NUnit.Framework;
 

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Tests.MongoDB;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Metadata;
 
 using NUnit.Framework;
 

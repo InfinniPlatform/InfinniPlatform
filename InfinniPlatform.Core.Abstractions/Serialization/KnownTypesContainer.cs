@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Sdk.Properties;
+using InfinniPlatform.Core.Abstractions.Properties;
 
-namespace InfinniPlatform.Sdk.Serialization
+namespace InfinniPlatform.Core.Abstractions.Serialization
 {
     /// <summary>
     /// Контейнер известных типов для сериализации.
     /// </summary>
-    public class KnownTypesContainer
+    public class KnownTypesContainer : IEnumerable<KeyValuePair<Type, string>>
     {
         private readonly Dictionary<string, Type> _names
             = new Dictionary<string, Type>();
@@ -132,6 +133,17 @@ namespace InfinniPlatform.Sdk.Serialization
             _names.Add(name, type);
 
             return this;
+        }
+
+
+        public IEnumerator<KeyValuePair<Type, string>> GetEnumerator()
+        {
+            return _types.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

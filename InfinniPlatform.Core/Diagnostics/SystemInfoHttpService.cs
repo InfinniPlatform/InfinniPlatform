@@ -4,12 +4,11 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Diagnostics;
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Http;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
 
 namespace InfinniPlatform.Core.Diagnostics
 {

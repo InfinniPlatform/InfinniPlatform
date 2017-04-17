@@ -1,8 +1,8 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Settings;
 
 using Moq;
 

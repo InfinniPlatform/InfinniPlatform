@@ -3,11 +3,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.PrintView.Contract;
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
-using InfinniPlatform.Sdk.Dynamic;
 
 using NUnit.Framework;
 
@@ -65,7 +66,7 @@ namespace InfinniPlatform.PrintView.Tests.Contract
 
         private static PrintViewBuilder CreatePrintViewBuilder()
         {
-            var printViewSerializer = new PrintViewSerializer();
+            var printViewSerializer = new JsonObjectSerializer(knownTypes: new[] { new PrintViewKnownTypesSource() });
 
             var printDocumentBuilder = new PrintDocumentBuilder();
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
-using InfinniPlatform.Sdk.Session;
+
+using InfinniPlatform.Core.Abstractions.Session;
 
 namespace InfinniPlatform.Core.Session
 {

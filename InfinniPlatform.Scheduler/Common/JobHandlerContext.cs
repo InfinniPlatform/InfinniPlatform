@@ -1,7 +1,7 @@
 ﻿using System;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.Dynamic;
 
 namespace InfinniPlatform.Scheduler.Common
 {

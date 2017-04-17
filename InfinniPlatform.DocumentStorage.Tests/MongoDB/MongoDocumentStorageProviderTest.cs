@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Metadata;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 
 using NUnit.Framework;
 

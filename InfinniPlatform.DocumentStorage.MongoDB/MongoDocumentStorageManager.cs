@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.Sdk.Metadata;
+using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
