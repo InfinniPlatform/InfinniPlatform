@@ -1,8 +1,7 @@
 ﻿using InfinniPlatform.Caching.Abstractions;
-using InfinniPlatform.Caching.Memory;
 using InfinniPlatform.Core.Abstractions.IoC;
 
-namespace InfinniPlatform.Caching.IoC
+namespace InfinniPlatform.Caching.Memory.IoC
 {
     internal sealed class CachingContainerModule : IContainerModule
     {
