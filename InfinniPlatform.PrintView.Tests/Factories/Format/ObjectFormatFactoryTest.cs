@@ -1,7 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.PrintView.Model.Format;
+using InfinniPlatform.PrintView.Abstractions.Format;
 
 using NUnit.Framework;
 

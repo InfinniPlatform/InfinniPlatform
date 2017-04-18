@@ -1,8 +1,7 @@
-﻿using InfinniPlatform.PrintView.Contract;
+﻿using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories.Block;
 using InfinniPlatform.PrintView.Factories.Format;
 using InfinniPlatform.PrintView.Factories.Inline;
-using InfinniPlatform.PrintView.Model;
 
 namespace InfinniPlatform.PrintView.Factories
 {

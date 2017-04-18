@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
-using InfinniPlatform.PrintView.Model.Defaults;
-using InfinniPlatform.PrintView.Model.Inline;
+using InfinniPlatform.PrintView.Abstractions;
+using InfinniPlatform.PrintView.Abstractions.Block;
+using InfinniPlatform.PrintView.Abstractions.Defaults;
+using InfinniPlatform.PrintView.Abstractions.Inline;
 
 using NUnit.Framework;
 

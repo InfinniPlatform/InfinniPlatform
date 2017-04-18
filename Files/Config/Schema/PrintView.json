@@ -1,0 +1,26 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/PrintView.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "PrintView",
+  "description": "Настройки печатных представлений.",
+  "type": "object",
+  "properties": {
+    "TempDirectory": {
+      "description": "Каталог для хранения временных файлов при генерации HTML/PDF.",
+      "type": "string"
+    },
+    "WkHtmlToPdfPath": {
+      "description": "Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/.",
+      "type": "string"
+    },
+    "WkHtmlToPdfArguments": {
+      "description": "Формат аргументов утилиты wkhtmltopdf - http://wkhtmltopdf.org/.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "TempDirectory",
+    "WkHtmlToPdfPath",
+    "WkHtmlToPdfArguments"
+  ]
+}

@@ -75,8 +75,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{BFF819
 		Files\Config\Schema\Common.json = Files\Config\Schema\Common.json
 		Files\Config\Schema\FileSystemBlobStorage.json = Files\Config\Schema\FileSystemBlobStorage.json
 		Files\Config\Schema\Heartbeat.json = Files\Config\Schema\Heartbeat.json
-		Files\Config\Schema\HtmlToPdf.json = Files\Config\Schema\HtmlToPdf.json
 		Files\Config\Schema\MongoDbDocumentStorage.json = Files\Config\Schema\MongoDbDocumentStorage.json
+		Files\Config\Schema\PrintView.json = Files\Config\Schema\PrintView.json
 		Files\Config\Schema\RabbitMQ.json = Files\Config\Schema\RabbitMQ.json
 		Files\Config\Schema\Redis.json = Files\Config\Schema\Redis.json
 		Files\Config\Schema\Scheduler.json = Files\Config\Schema\Scheduler.json
@@ -102,6 +102,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Caching.Redis", "InfinniPlatform.Caching.Redis\InfinniPlatform.Caching.Redis.csproj", "{84A58DCB-4A14-4079-8483-53946E4F9AAF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Caching.TwoLayer", "InfinniPlatform.Caching.TwoLayer\InfinniPlatform.Caching.TwoLayer.csproj", "{FE0CA386-8A1D-44D1-88AF-278C1837F95D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.PrintView.Abstractions", "InfinniPlatform.PrintView.Abstractions\InfinniPlatform.PrintView.Abstractions.csproj", "{07699A73-2C99-4213-9482-F2EF213F9AD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -638,6 +640,24 @@ Global
 		{FE0CA386-8A1D-44D1-88AF-278C1837F95D}.Release|x64.Build.0 = Release|Any CPU
 		{FE0CA386-8A1D-44D1-88AF-278C1837F95D}.Release|x86.ActiveCfg = Release|Any CPU
 		{FE0CA386-8A1D-44D1-88AF-278C1837F95D}.Release|x86.Build.0 = Release|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Debug|x64.Build.0 = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Debug|x86.Build.0 = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.DebugTools|Any CPU.ActiveCfg = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.DebugTools|Any CPU.Build.0 = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.DebugTools|x64.ActiveCfg = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.DebugTools|x64.Build.0 = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.DebugTools|x86.ActiveCfg = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.DebugTools|x86.Build.0 = Debug|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Release|x64.ActiveCfg = Release|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Release|x64.Build.0 = Release|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Release|x86.ActiveCfg = Release|Any CPU
+		{07699A73-2C99-4213-9482-F2EF213F9AD9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

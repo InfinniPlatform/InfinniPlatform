@@ -33,9 +33,9 @@
       "description": "Настройки кэширования данных.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Cache.json"
     },
-    "htmlToPdf": {
-      "description": "Настройки утилиты wkhtmltopdf - http://wkhtmltopdf.org/. Поддерживаемая версия - 0.12.2.4.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/HtmlToPdf.json"
+    "printView": {
+      "description": "Настройки печатных представлений.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/PrintView.json"
     },
     "scheduler": {
       "description": "Планировщик заданий.",

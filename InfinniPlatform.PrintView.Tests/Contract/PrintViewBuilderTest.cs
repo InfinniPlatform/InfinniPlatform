@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.PrintView.Contract;
+using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
@@ -71,7 +71,7 @@ namespace InfinniPlatform.PrintView.Tests.Contract
             var printDocumentBuilder = new PrintDocumentBuilder();
 
             var printViewWriter = new PrintViewWriter();
-            var printViewSettings = HtmlToPdfSettings.Default;
+            var printViewSettings = PrintViewOptions.Default;
             var htmlPrintDocumentWriter = new HtmlPrintDocumentWriter();
             var pdfPrintDocumentWriter = new PdfPrintDocumentWriter(printViewSettings, htmlPrintDocumentWriter);
             printViewWriter.RegisterWriter(PrintViewFileFormat.Html, htmlPrintDocumentWriter);

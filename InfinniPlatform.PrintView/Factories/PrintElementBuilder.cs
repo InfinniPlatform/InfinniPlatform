@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.PrintView.Abstractions;
+using InfinniPlatform.PrintView.Abstractions.Defaults;
 using InfinniPlatform.PrintView.Expressions;
 using InfinniPlatform.PrintView.Expressions.Parser;
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Defaults;
 
 namespace InfinniPlatform.PrintView.Factories
 {

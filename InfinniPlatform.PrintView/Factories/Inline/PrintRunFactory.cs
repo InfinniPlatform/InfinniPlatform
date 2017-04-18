@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.PrintView.Model.Inline;
+﻿using InfinniPlatform.PrintView.Abstractions.Inline;
 
 namespace InfinniPlatform.PrintView.Factories.Inline
 {

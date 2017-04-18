@@ -1,21 +1,24 @@
 ﻿using InfinniPlatform.Core.Abstractions.IoC;
 using InfinniPlatform.Core.Abstractions.Serialization;
-using InfinniPlatform.Core.Abstractions.Settings;
-using InfinniPlatform.PrintView.Contract;
+using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories;
-using InfinniPlatform.PrintView.Writers;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
 
 namespace InfinniPlatform.PrintView.IoC
 {
-    internal class PrintViewContainerModule : IContainerModule
+    public class PrintViewContainerModule : IContainerModule
     {
+        public PrintViewContainerModule(PrintViewOptions options)
+        {
+            _options = options;
+        }
+
+        private readonly PrintViewOptions _options;
+
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<HtmlToPdfSettings>(HtmlToPdfSettings.SectionName))
-                   .As<HtmlToPdfSettings>()
-                   .SingleInstance();
+            builder.RegisterInstance(_options).AsSelf().SingleInstance();
 
             builder.RegisterType<PrintViewKnownTypesSource>()
                    .As<IKnownTypesSource>()

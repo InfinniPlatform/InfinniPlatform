@@ -50,9 +50,9 @@
     "Type": "Memory"
   },
   "printView": {
-    "HtmlToPdfUtilCommand": "",
-    "HtmlToPdfUtilArguments": "",
-    "HtmlToPdfTemp": ""
+    "TempDirectory": "",
+    "WkHtmlToPdfPath": "",
+    "WkHtmlToPdfArguments": ""
   },
   "scheduler": {
     "ExpireHistoryAfter": null

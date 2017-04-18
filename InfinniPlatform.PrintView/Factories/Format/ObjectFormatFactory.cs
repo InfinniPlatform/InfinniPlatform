@@ -2,8 +2,8 @@
 using System.Text;
 
 using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.PrintView.Abstractions.Format;
 using InfinniPlatform.PrintView.Expressions;
-using InfinniPlatform.PrintView.Model.Format;
 
 namespace InfinniPlatform.PrintView.Factories.Format
 {

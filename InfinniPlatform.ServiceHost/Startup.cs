@@ -38,7 +38,7 @@ namespace InfinniPlatform.ServiceHost
                                             .AddDocumentStorageHttpService()
                                             .AddLog4NetAdapter()
                                             .AddMessageQueue()
-                                            .AddPrintView()
+                                            .AddPrintView(_configuration)
                                             .AddScheduler()
                                             .BuildProvider(_configuration);
 

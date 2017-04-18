@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.PrintView.Model.Block;
+﻿using InfinniPlatform.PrintView.Abstractions.Block;
 
 using NUnit.Framework;
 

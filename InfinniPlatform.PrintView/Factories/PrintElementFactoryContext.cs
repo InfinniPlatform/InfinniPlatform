@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.PrintView.Contract;
-using InfinniPlatform.PrintView.Model;
+using InfinniPlatform.PrintView.Abstractions;
 
 namespace InfinniPlatform.PrintView.Factories
 {

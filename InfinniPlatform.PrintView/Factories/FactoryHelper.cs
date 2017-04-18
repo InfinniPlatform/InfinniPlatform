@@ -7,10 +7,10 @@ using System.Text;
 using ImageSharp;
 using ImageSharp.Processing;
 
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
-using InfinniPlatform.PrintView.Model.Format;
-using InfinniPlatform.PrintView.Model.Inline;
+using InfinniPlatform.PrintView.Abstractions;
+using InfinniPlatform.PrintView.Abstractions.Block;
+using InfinniPlatform.PrintView.Abstractions.Format;
+using InfinniPlatform.PrintView.Abstractions.Inline;
 
 namespace InfinniPlatform.PrintView.Factories
 {
