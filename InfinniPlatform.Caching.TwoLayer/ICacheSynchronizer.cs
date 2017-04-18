@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using InfinniPlatform.MessageQueue.Abstractions;
 
-namespace InfinniPlatform.Caching.TwoLayer
+namespace InfinniPlatform.Cache.TwoLayer
 {
     /// <summary>
     /// Интерфейс синхронизации кэша через очередь сообщений.

@@ -3,7 +3,7 @@ using InfinniPlatform.Core.Abstractions.Diagnostics;
 using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.Core.Abstractions.Http;
 
-namespace InfinniPlatform.Caching.Redis.Diagnostics
+namespace InfinniPlatform.Cache.Redis.Diagnostics
 {
     /// <summary>
     /// Предоставляет информацию о состоянии подсистемы кэширования данных.

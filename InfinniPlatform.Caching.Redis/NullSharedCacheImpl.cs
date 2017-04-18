@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Caching.Abstractions;
+﻿using InfinniPlatform.Cache.Abstractions;
 
-namespace InfinniPlatform.Caching.Redis
+namespace InfinniPlatform.Cache.Redis
 {
     /// <summary>
     /// Пустая реализация интерфейса для управления распределенным кэшем.

@@ -1,11 +1,11 @@
 ﻿using System;
-using InfinniPlatform.Caching.Abstractions;
-using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.Cache.Abstractions;
+using InfinniPlatform.Cache.Redis;
 using InfinniPlatform.Core.Abstractions.IoC;
 using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.MessageQueue.Abstractions;
 
-namespace InfinniPlatform.Caching.TwoLayer.IoC
+namespace InfinniPlatform.Cache.TwoLayer.IoC
 {
     internal sealed class TwoLayerCachingContainerModule : IContainerModule
     {

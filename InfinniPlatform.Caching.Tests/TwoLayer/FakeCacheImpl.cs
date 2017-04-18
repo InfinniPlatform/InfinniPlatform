@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using InfinniPlatform.Caching.Abstractions;
+using InfinniPlatform.Cache.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions;
 
-namespace InfinniPlatform.Caching.Tests.TwoLayer
+namespace InfinniPlatform.Cache.Tests.TwoLayer
 {
     internal sealed class FakeCacheImpl : IMemoryCache, ISharedCache, ICache
     {

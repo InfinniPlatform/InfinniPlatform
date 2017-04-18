@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using InfinniPlatform.Caching.Abstractions;
-using InfinniPlatform.Caching.Redis.Properties;
+using InfinniPlatform.Cache.Abstractions;
+using InfinniPlatform.Cache.Redis.Properties;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;
-
 using StackExchange.Redis;
 
-namespace InfinniPlatform.Caching.Redis
+namespace InfinniPlatform.Cache.Redis
 {
     /// <summary>
     /// Реализует интерфейс для управления распределенным кэшем на базе Redis.

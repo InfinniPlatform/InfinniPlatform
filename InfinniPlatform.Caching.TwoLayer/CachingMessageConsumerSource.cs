@@ -2,7 +2,7 @@
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
-namespace InfinniPlatform.Caching.TwoLayer
+namespace InfinniPlatform.Cache.TwoLayer
 {
     /// <summary>
     /// Источник потребителей сообщений сборки InfinniPlatform.Caching.

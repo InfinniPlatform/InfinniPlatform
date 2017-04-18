@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
 using StackExchange.Redis;
 
-namespace InfinniPlatform.Caching.Redis
+namespace InfinniPlatform.Cache.Redis
 {
     internal static class RedisExtensions
     {

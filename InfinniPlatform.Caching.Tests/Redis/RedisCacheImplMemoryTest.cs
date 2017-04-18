@@ -1,14 +1,11 @@
 ﻿using System;
-
-using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.Cache.Redis;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;
-
 using Moq;
-
 using NUnit.Framework;
 
-namespace InfinniPlatform.Caching.Tests.Redis
+namespace InfinniPlatform.Cache.Tests.Redis
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]

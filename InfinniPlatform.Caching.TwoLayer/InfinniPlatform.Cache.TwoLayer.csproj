@@ -1,13 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>InfinniPlatform.Caching.Abstractions</AssemblyName>
+    <AssemblyName>InfinniPlatform.Cache.TwoLayer</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
+    <RootNamespace>InfinniPlatform.Cache.TwoLayer</RootNamespace>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Caching.Abstractions\InfinniPlatform.Cache.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Caching.Memory\InfinniPlatform.Cache.Memory.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Caching.Redis\InfinniPlatform.Cache.Redis.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,11 +26,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>

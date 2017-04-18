@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using InfinniPlatform.Caching.Abstractions;
-using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.MessageQueue.Abstractions;
-using InfinniPlatform.MessageQueue.Abstractions.Producers;
+using InfinniPlatform.Cache.Abstractions;
+using InfinniPlatform.Cache.Redis;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.MessageQueue.Abstractions.Producers;
 
-namespace InfinniPlatform.Caching.TwoLayer
+namespace InfinniPlatform.Cache.TwoLayer
 {
     /// <summary>
     /// Реализует интерфейс для управления двухуровневым кэшем.

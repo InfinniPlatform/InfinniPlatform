@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
-namespace InfinniPlatform.Caching.TwoLayer
+namespace InfinniPlatform.Cache.TwoLayer
 {
     /// <summary>
     /// Обработчик сообщений синхронизации кэша.

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Caching.Redis
+﻿namespace InfinniPlatform.Cache.Redis
 {
     /// <summary>
     /// Настройки подключения к Redis.

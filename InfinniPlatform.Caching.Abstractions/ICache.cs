@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Caching.Abstractions
+﻿namespace InfinniPlatform.Cache.Abstractions
 {
     /// <summary>
     /// Предоставляет интерфейс для управления кэшем.

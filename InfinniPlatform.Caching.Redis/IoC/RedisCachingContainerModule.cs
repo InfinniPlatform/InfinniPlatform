@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.Caching.Redis.Diagnostics;
+﻿using InfinniPlatform.Cache.Redis.Diagnostics;
 using InfinniPlatform.Core.Abstractions.Diagnostics;
 using InfinniPlatform.Core.Abstractions.IoC;
 
-namespace InfinniPlatform.Caching.Redis.IoC
+namespace InfinniPlatform.Cache.Redis.IoC
 {
     internal sealed class RedisCachingContainerModule : IContainerModule
     {

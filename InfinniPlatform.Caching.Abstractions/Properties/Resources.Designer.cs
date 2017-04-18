@@ -8,11 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InfinniPlatform.Caching.Abstractions.Properties {
-    using System;
-    using System.Reflection;
-    
-    
+using System.Reflection;
+
+namespace InfinniPlatform.Cache.Abstractions.Properties {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

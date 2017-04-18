@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.Caching.Memory;
-using IMemoryCache = InfinniPlatform.Caching.Abstractions.IMemoryCache;
+using IMemoryCache = InfinniPlatform.Cache.Abstractions.IMemoryCache;
 
-namespace InfinniPlatform.Caching.Memory
+namespace InfinniPlatform.Cache.Memory
 {
     /// <summary>
     ///     Реализует интерфейс для управления кэшем в памяти.

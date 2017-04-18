@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Caching.Redis
+﻿namespace InfinniPlatform.Cache.Redis
 {
     internal static class CachingHelpers
     {

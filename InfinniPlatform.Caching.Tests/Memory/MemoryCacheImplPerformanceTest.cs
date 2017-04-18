@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-
-using InfinniPlatform.Caching.Memory;
-
+using InfinniPlatform.Cache.Memory;
 using NUnit.Framework;
 
-namespace InfinniPlatform.Caching.Tests.Memory
+namespace InfinniPlatform.Cache.Tests.Memory
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]

@@ -1,6 +1,5 @@
-﻿using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Caching.Redis.IoC;
-
+﻿using InfinniPlatform.Cache.Redis;
+using InfinniPlatform.Cache.Redis.IoC;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

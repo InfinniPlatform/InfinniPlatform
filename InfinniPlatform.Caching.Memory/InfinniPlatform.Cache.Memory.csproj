@@ -1,23 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>InfinniPlatform.Caching</AssemblyName>
+    <AssemblyName>InfinniPlatform.Cache.Memory</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
+    <RootNamespace>InfinniPlatform.Cache.Memory</RootNamespace>
   </PropertyGroup>
-  
   <ItemGroup>
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Caching.Abstractions\InfinniPlatform.Caching.Abstractions.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Caching.Memory\InfinniPlatform.Caching.Memory.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Caching.Redis\InfinniPlatform.Caching.Redis.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.1" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Caching.Abstractions\InfinniPlatform.Cache.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -25,7 +23,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

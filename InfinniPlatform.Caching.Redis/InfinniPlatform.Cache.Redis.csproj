@@ -1,18 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>InfinniPlatform.Caching.Memory</AssemblyName>
+    <AssemblyName>InfinniPlatform.Cache.Redis</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
+    <RootNamespace>InfinniPlatform.Cache.Redis</RootNamespace>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.1" />
+    <PackageReference Include="StackExchange.Redis" Version="1.2.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Caching.Abstractions\InfinniPlatform.Caching.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Caching.Abstractions\InfinniPlatform.Cache.Abstractions.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>

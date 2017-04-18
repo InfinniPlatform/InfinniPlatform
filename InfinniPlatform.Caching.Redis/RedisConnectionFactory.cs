@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace InfinniPlatform.Caching.Redis
+namespace InfinniPlatform.Cache.Redis
 {
     /// <summary>
     ///     Фабрика подключений к Redis.

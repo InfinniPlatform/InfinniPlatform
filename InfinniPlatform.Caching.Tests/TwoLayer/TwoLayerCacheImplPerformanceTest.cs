@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
-
-using InfinniPlatform.Caching.Memory;
-using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Caching.TwoLayer;
-using InfinniPlatform.MessageQueue.Abstractions.Producers;
+using InfinniPlatform.Cache.Memory;
+using InfinniPlatform.Cache.Redis;
+using InfinniPlatform.Cache.TwoLayer;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;
-
+using InfinniPlatform.MessageQueue.Abstractions.Producers;
 using Moq;
-
 using NUnit.Framework;
 
-namespace InfinniPlatform.Caching.Tests.TwoLayer
+namespace InfinniPlatform.Cache.Tests.TwoLayer
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]

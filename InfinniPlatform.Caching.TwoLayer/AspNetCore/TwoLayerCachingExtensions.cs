@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Caching.TwoLayer.IoC;
+﻿using InfinniPlatform.Cache.TwoLayer.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
