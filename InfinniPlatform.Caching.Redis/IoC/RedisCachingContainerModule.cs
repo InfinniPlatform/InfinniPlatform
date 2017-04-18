@@ -5,7 +5,7 @@ using InfinniPlatform.Core.Abstractions.Settings;
 
 namespace InfinniPlatform.Caching.Redis.IoC
 {
-    internal sealed class CachingContainerModule : IContainerModule
+    internal sealed class RedisCachingContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {

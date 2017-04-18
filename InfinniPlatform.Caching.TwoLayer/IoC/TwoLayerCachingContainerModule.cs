@@ -7,7 +7,7 @@ using InfinniPlatform.MessageQueue.Abstractions;
 
 namespace InfinniPlatform.Caching.TwoLayer.IoC
 {
-    internal sealed class CachingContainerModule : IContainerModule
+    internal sealed class TwoLayerCachingContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {

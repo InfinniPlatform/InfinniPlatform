@@ -3,7 +3,7 @@ using InfinniPlatform.Core.Abstractions.IoC;
 
 namespace InfinniPlatform.Caching.Memory.IoC
 {
-    internal sealed class CachingContainerModule : IContainerModule
+    internal sealed class MemoryCachingContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {
