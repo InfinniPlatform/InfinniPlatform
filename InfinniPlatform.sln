@@ -77,14 +77,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{BFF819
 		Files\Config\Schema\Common.json = Files\Config\Schema\Common.json
 		Files\Config\Schema\FileSystemBlobStorage.json = Files\Config\Schema\FileSystemBlobStorage.json
 		Files\Config\Schema\Heartbeat.json = Files\Config\Schema\Heartbeat.json
-		Files\Config\Schema\Host.json = Files\Config\Schema\Host.json
 		Files\Config\Schema\HtmlToPdf.json = Files\Config\Schema\HtmlToPdf.json
 		Files\Config\Schema\MongoDbDocumentStorage.json = Files\Config\Schema\MongoDbDocumentStorage.json
 		Files\Config\Schema\RabbitMQ.json = Files\Config\Schema\RabbitMQ.json
 		Files\Config\Schema\Redis.json = Files\Config\Schema\Redis.json
 		Files\Config\Schema\Scheduler.json = Files\Config\Schema\Scheduler.json
 		Files\Config\Schema\Server.json = Files\Config\Schema\Server.json
-		Files\Config\Schema\StaticContent.json = Files\Config\Schema\StaticContent.json
 		Files\Config\Schema\UserStorage.json = Files\Config\Schema\UserStorage.json
 		Files\Config\Schema\Watcher.json = Files\Config\Schema\Watcher.json
 	EndProjectSection

@@ -9,10 +9,6 @@
       "description": "Настройки приложения.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/App.json"
     },
-    "host": {
-      "description": "Настройки хостинга приложения",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Host.json"
-    },
     "redis": {
       "description": "Настройки подключения к Redis.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Redis.json"
@@ -44,10 +40,6 @@
     "scheduler": {
       "description": "Планировщик заданий.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Scheduler.json"
-    },
-    "staticContent": {
-      "description": "Настройки хостинга статических файлов.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/StaticContent.json"
     },
     "authCookie": {
       "description": "Настройки аутентификации через Cookie.",

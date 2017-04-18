@@ -1,13 +1,16 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Common.json",
   "app": {
-    "Name": "InfinniPlatform",
-    "InstanceId": "",
-    "IsInCluster": false
-  },
-  "host": {
-    "Name": "localhost",
-    "Port": 9900
+    "AppName": "InfinniPlatform",
+    "AppInstance": "",
+    "ServerName": "localhost",
+    "ServerPort": 9900,
+    "StaticFilesMapping": {
+      "/metadata": "content/metadata",
+      "/": "content/www"
+    },
+    "EmbeddedResourceMapping": {
+    }
   },
   "redis": {
     "Host": "localhost",
@@ -53,15 +56,6 @@
   },
   "scheduler": {
     "ExpireHistoryAfter": null
-  },
-  "staticContent": {
-    "StaticFilesMapping": {
-      "/metadata": "content/metadata",
-      "/": "content/www"
-    },
-    "EmbeddedResourceMapping": {},
-    "RazorViewsPath": "content/www/RazorViews",
-    "EmbeddedRazorViewsAssemblies": []
   },
   "authCookie": {
     "LoginPath": "/Auth/SignInInternal",
