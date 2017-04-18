@@ -20,25 +20,25 @@ namespace InfinniPlatform.Caching.TwoLayer
         /// </summary>
         /// <param name="memoryCache">Локальный кэш.</param>
         /// <param name="sharedCache">Распределенный кэш.</param>
-        /// <param name="appEnvironment">Настройки приложения.</param>
+        /// <param name="appOptions">Настройки приложения.</param>
         /// <param name="broadcastProducer">Шина для синхронизации кэша.</param>
         /// <param name="log">Лог.</param>
         public TwoLayerCacheImpl(IMemoryCache memoryCache,
                                  ISharedCache sharedCache,
-                                 IAppEnvironment appEnvironment,
+                                 AppOptions appOptions,
                                  IBroadcastProducer broadcastProducer,
                                  ILog log)
         {
             _memoryCache = memoryCache;
             _sharedCache = sharedCache;
-            _appEnvironment = appEnvironment;
+            _appOptions = appOptions;
             _broadcastProducer = broadcastProducer;
             _log = log;
 
             _isSharedCacheEnabled = !(_sharedCache is NullSharedCacheImpl);
         }
 
-        private readonly IAppEnvironment _appEnvironment;
+        private readonly AppOptions _appOptions;
         private readonly IBroadcastProducer _broadcastProducer;
         private readonly ILog _log;
 
@@ -156,7 +156,7 @@ namespace InfinniPlatform.Caching.TwoLayer
                                 {
                                     try
                                     {
-                                        if (message.AppId == _appEnvironment.InstanceId)
+                                        if (message.AppId == _appOptions.AppInstance)
                                         {
                                             //ignore own message
                                         }

@@ -20,7 +20,7 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
         public AppUserStoreCache(UserStorageSettings userStorageSettings,
                                  ILog log,
                                  IBroadcastProducer broadcastProducer,
-                                 IAppEnvironment appEnvironment,
+                                 AppOptions appOptions,
                                  CacheSettings cacheSettings)
         {
             var cacheTimeout = userStorageSettings.UserCacheTimeout <= 0
@@ -30,7 +30,7 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
             _log = log;
             _broadcastProducer = broadcastProducer;
-            _appEnvironment = appEnvironment;
+            _appOptions = appOptions;
             _cacheSettings = cacheSettings;
 
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
@@ -43,7 +43,7 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
         }
 
 
-        private readonly IAppEnvironment _appEnvironment;
+        private readonly AppOptions _appOptions;
         private readonly CacheSettings _cacheSettings;
         private readonly IBroadcastProducer _broadcastProducer;
 
@@ -169,7 +169,7 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
             {
                 try
                 {
-                    if (message.AppId == _appEnvironment.InstanceId)
+                    if (message.AppId == _appOptions.AppInstance)
                     {
                         //ignore own message
                     }

@@ -35,14 +35,12 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [SetUp]
         public async Task SetUp()
         {
-            var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(env => env.Name).Returns(TestConstants.AppName);
-            appEnvironmentMock.SetupGet(env => env.InstanceId).Returns(TestConstants.AppInstanceId);
+            var appOptions = new AppOptions { AppName = TestConstants.AppName, AppInstance = TestConstants.AppInstanceId };
 
             var logMock = new Mock<ILog>();
             logMock.Setup(log => log.Error(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
 
-            RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appEnvironmentMock.Object, logMock.Object);
+            RabbitMqManager = new RabbitMqManager(RabbitMqConnectionSettings.Default, appOptions, logMock.Object);
             RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqConnectionSettings.Default, JsonObjectSerializer.Default);
 
             MessageSerializer = new MessageSerializer(new JsonObjectSerializer());

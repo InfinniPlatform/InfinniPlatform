@@ -17,7 +17,7 @@ namespace InfinniPlatform.Core.Http.IoC
             // Settings
 
             builder.RegisterFactory(GetHostingConfig)
-                   .As<HostingConfig>()
+                   .As<AppOptions>()
                    .SingleInstance();
 
             builder.RegisterFactory(GetStaticContentSettings)
@@ -88,9 +88,9 @@ namespace InfinniPlatform.Core.Http.IoC
         }
 
 
-        private static HostingConfig GetHostingConfig(IContainerResolver resolver)
+        private static AppOptions GetHostingConfig(IContainerResolver resolver)
         {
-            return resolver.Resolve<IAppConfiguration>().GetSection<HostingConfig>(HostingConfig.SectionName);
+            return resolver.Resolve<IAppConfiguration>().GetSection<AppOptions>(AppOptions.SectionName);
         }
 
         private static StaticContentSettings GetStaticContentSettings(IContainerResolver resolver)

@@ -1,7 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.Caching.Redis;
-using InfinniPlatform.Caching.Tests.TwoLayer;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;
 
@@ -24,20 +23,14 @@ namespace InfinniPlatform.Caching.Tests.Redis
         {
             // Given
 
-            var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(env => env.Name)
-                              .Returns(nameof(RedisCacheImplMemoryTest));
+            var appOptions = new AppOptions { AppName = nameof(RedisCacheImplMemoryTest) };
 
-            var settings = new RedisConnectionSettings
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
+            var settings = new RedisConnectionSettings { Host = "localhost", Password = "TeamCity" };
 
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
-            var redisCache = new RedisCacheImpl(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisCache = new RedisCacheImpl(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
 
             const string key = "GetMemoryTest_Key";
 

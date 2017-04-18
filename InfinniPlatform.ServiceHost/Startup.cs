@@ -40,7 +40,7 @@ namespace InfinniPlatform.ServiceHost
                                             .AddMessageQueue()
                                             .AddPrintView()
                                             .AddScheduler()
-                                            .BuildProvider();
+                                            .BuildProvider(_configuration);
 
             return configureServices;
         }

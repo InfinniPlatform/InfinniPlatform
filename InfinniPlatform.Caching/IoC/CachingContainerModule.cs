@@ -93,8 +93,8 @@ namespace InfinniPlatform.Caching.IoC
                 return new NullSharedCacheImpl();
             }
 
-            var redisCacheFactory = resolver.Resolve<Func<IAppEnvironment, RedisCacheImpl>>();
-            ISharedCache cache = redisCacheFactory(resolver.Resolve<IAppEnvironment>());
+            var redisCacheFactory = resolver.Resolve<Func<AppOptions, RedisCacheImpl>>();
+            ISharedCache cache = redisCacheFactory(resolver.Resolve<AppOptions>());
 
             return cache;
         }

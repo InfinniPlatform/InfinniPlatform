@@ -57,7 +57,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             BsonSerializer.RegisterSerializationProvider(MongoDecimalBsonSerializationProvider.Default);
         }
 
-        public MongoConnection(IAppEnvironment appEnvironment,
+        public MongoConnection(AppOptions appOptions,
                                MongoDocumentStorageOptions options,
                                IEnumerable<IMemberValueConverter> converters = null,
                                IDocumentKnownTypeSource knownTypeSource = null)
@@ -65,7 +65,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             ApplyConverters(converters);
             RegisterKnownTypes(knownTypeSource);
 
-            _database = new Lazy<IMongoDatabase>(() => CreateMongoDatabase(appEnvironment.Name, options));
+            _database = new Lazy<IMongoDatabase>(() => CreateMongoDatabase(appOptions.AppName, options));
         }
 
         private readonly Lazy<IMongoDatabase> _database;

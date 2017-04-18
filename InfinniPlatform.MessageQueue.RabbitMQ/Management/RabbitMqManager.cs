@@ -15,12 +15,12 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
     internal sealed class RabbitMqManager : IDisposable
     {
         public RabbitMqManager(RabbitMqConnectionSettings rabbitMqConnectionSettings,
-                               IAppEnvironment appEnvironment,
+                               AppOptions appOptions,
                                ILog log)
         {
-            BroadcastExchangeName = $"{appEnvironment.Name}.{Defaults.Exchange.Type.Direct}";
+            BroadcastExchangeName = $"{appOptions.AppName}.{Defaults.Exchange.Type.Direct}";
 
-            _appEnvironment = appEnvironment;
+            _appOptions = appOptions;
             _rabbitMqConnectionSettings = rabbitMqConnectionSettings;
             _log = log;
 
@@ -36,7 +36,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             }
         }
 
-        private readonly IAppEnvironment _appEnvironment;
+        private readonly AppOptions _appOptions;
         private readonly ILog _log;
         private readonly RabbitMqConnectionSettings _rabbitMqConnectionSettings;
 
@@ -153,7 +153,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         /// <param name="key">Ключ.</param>
         public string GetTaskKey(string key)
         {
-            return $"{_appEnvironment.Name}.{key}";
+            return $"{_appOptions.AppName}.{key}";
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         /// <param name="key">Ключ.</param>
         public string GetBroadcastKey(string key)
         {
-            return $"{_appEnvironment.Name}.{key}.{_appEnvironment.InstanceId}";
+            return $"{_appOptions.AppName}.{key}.{_appOptions.AppInstance}";
         }
 
         private IConnection CreateConnection(RabbitMqConnectionSettings settings)

@@ -18,13 +18,13 @@ namespace InfinniPlatform.Caching.Redis
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="appEnvironment">Пространство имен для ключей.</param>
+        /// <param name="appOptions">Пространство имен для ключей.</param>
         /// <param name="connectionFactory">Фабрика подключений к Redis.</param>
         /// <param name="log">Сервис регистрации событий.</param>
         /// <param name="performanceLog">Сервис регистрации длительности выполнения методов.</param>
-        public RedisCacheImpl(IAppEnvironment appEnvironment, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
+        public RedisCacheImpl(AppOptions appOptions, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
         {
-            _keyspace = appEnvironment.Name;
+            _keyspace = appOptions.AppName;
             _connectionFactory = connectionFactory;
 
             _log = log;

@@ -19,10 +19,9 @@ namespace InfinniPlatform.MessageQueue.Tests.RabbitMq.Hosting
             var jsonObjSerializerMock = new Mock<IJsonObjectSerializer>();
 
             var appId = Guid.NewGuid().ToString();
-            var appEnvMock = new Mock<IAppEnvironment>();
-            appEnvMock.Setup(env => env.InstanceId).Returns(appId);
+            var appOptions = new AppOptions { AppInstance = appId };
 
-            var basicPropertiesProvider = new BasicPropertiesProvider(appEnvMock.Object, jsonObjSerializerMock.Object);
+            var basicPropertiesProvider = new BasicPropertiesProvider(appOptions, jsonObjSerializerMock.Object);
 
             var basicProperties = basicPropertiesProvider.Get();
 
@@ -32,11 +31,11 @@ namespace InfinniPlatform.MessageQueue.Tests.RabbitMq.Hosting
         [Test]
         public void BasicPropertiesProviderHandleEmptyValues()
         {
-            var appEnvMock = new Mock<IAppEnvironment>();
+            var appOptions = new AppOptions();
 
             var jsonObjectSerializer = new JsonObjectSerializer();
 
-            var basicPropertiesProvider = new BasicPropertiesProvider(appEnvMock.Object, jsonObjectSerializer);
+            var basicPropertiesProvider = new BasicPropertiesProvider(appOptions, jsonObjectSerializer);
 
             var basicProperties = basicPropertiesProvider.Get();
 

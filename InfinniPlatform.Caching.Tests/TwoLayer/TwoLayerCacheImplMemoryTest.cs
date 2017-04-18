@@ -26,22 +26,17 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         {
             // Given
 
-            var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(env => env.Name).Returns(nameof(TwoLayerCacheImplMemoryTest));
+            var appOptions = new AppOptions { AppName = nameof(TwoLayerCacheImplMemoryTest) };
 
-            var settings = new RedisConnectionSettings
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
+            var settings = new RedisConnectionSettings { Host = "localhost", Password = "TeamCity" };
 
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
             var memoryCache = new MemoryCacheImpl();
-            var redisCache = new RedisCacheImpl(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
+            var redisCache = new RedisCacheImpl(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
 
-            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, appEnvironmentMock.Object, new Mock<IBroadcastProducer>().Object, new Mock<ILog>().Object);
+            var twoLayerCache = new TwoLayerCacheImpl(memoryCache, redisCache, appOptions, new Mock<IBroadcastProducer>().Object, new Mock<ILog>().Object);
 
             const string key = "GetMemoryTest_Key";
 

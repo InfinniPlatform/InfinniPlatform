@@ -12,21 +12,21 @@ namespace InfinniPlatform.MessageQueue.RabbitMQ
 {
     internal sealed class BasicPropertiesProvider : IBasicPropertiesProvider
     {
-        public BasicPropertiesProvider(IAppEnvironment appEnvironment,
+        public BasicPropertiesProvider(AppOptions appOptions,
                                        IJsonObjectSerializer serializer)
         {
-            _appEnvironment = appEnvironment;
+            _appOptions = appOptions;
             _serializer = serializer;
         }
 
-        private readonly IAppEnvironment _appEnvironment;
+        private readonly AppOptions _appOptions;
         private readonly IJsonObjectSerializer _serializer;
 
         public BasicProperties Get()
         {
             return new BasicProperties
                    {
-                       AppId = _appEnvironment.InstanceId,
+                       AppId = _appOptions.AppInstance,
                        Headers = new Dictionary<string, object>()
                    };
         }
@@ -35,7 +35,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQ
         {
             return new BasicProperties
                    {
-                       AppId = _appEnvironment.InstanceId,
+                       AppId = _appOptions.AppInstance,
                        Headers = new Dictionary<string, object>(),
                        Persistent = true
                    };

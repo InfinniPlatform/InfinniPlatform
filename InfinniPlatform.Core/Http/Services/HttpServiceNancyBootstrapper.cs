@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Loader;
 
 using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Properties;
 
@@ -23,12 +23,12 @@ namespace InfinniPlatform.Core.Http.Services
     public class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
         public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
-                                            StaticContentSettings staticContentSettings,
+                                            AppOptions appOptions,
                                             ILog log,
                                             IViewEngineBootstrapperExtension viewEngineBootstrapperExtension = null)
         {
             _nancyModuleCatalog = nancyModuleCatalog;
-            _staticContentSettings = staticContentSettings;
+            _appOptions = appOptions;
             _log = log;
             _viewEngineBootstrapperExtension = viewEngineBootstrapperExtension;
         }
@@ -36,7 +36,7 @@ namespace InfinniPlatform.Core.Http.Services
         private readonly ILog _log;
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
-        private readonly StaticContentSettings _staticContentSettings;
+        private readonly AppOptions _appOptions;
         private readonly IViewEngineBootstrapperExtension _viewEngineBootstrapperExtension;
 
         protected override Func<ITypeCatalog, NancyInternalConfiguration> InternalConfiguration
@@ -106,6 +106,7 @@ namespace InfinniPlatform.Core.Http.Services
             var response = context.Response;
 
             string responseLastModified;
+
             if (!response.Headers.TryGetValue("Last-Modified", out responseLastModified))
             {
                 return;
@@ -145,7 +146,7 @@ namespace InfinniPlatform.Core.Http.Services
 
         private void RegisterStaticFiles()
         {
-            foreach (var mapping in _staticContentSettings.StaticFilesMapping)
+            foreach (var mapping in _appOptions.StaticFilesMapping)
             {
                 var requestedPath = mapping.Key;
                 var contentPath = mapping.Value.ToWebPath();
@@ -158,7 +159,7 @@ namespace InfinniPlatform.Core.Http.Services
 
         private void RegisterEmbeddedResource()
         {
-            foreach (var mapping in _staticContentSettings.EmbeddedResourceMapping)
+            foreach (var mapping in _appOptions.EmbeddedResourceMapping)
             {
                 var requestedPath = mapping.Key;
                 var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(requestedPath);

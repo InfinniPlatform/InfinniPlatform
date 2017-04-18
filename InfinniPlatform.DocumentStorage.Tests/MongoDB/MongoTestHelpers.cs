@@ -6,8 +6,6 @@ using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.MongoDB;
 
-using Moq;
-
 namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 {
     internal static class MongoTestHelpers
@@ -17,9 +15,9 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
         public static MongoConnection GetConnection(IEnumerable<IMemberValueConverter> converters = null, IDocumentKnownTypeSource source = null)
         {
-            var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(e => e.Name).Returns(DatabaseName);
-            return new MongoConnection(appEnvironmentMock.Object, MongoDocumentStorageOptions.Default, converters, source);
+            var appOptions = new AppOptions { AppName = DatabaseName };
+
+            return new MongoConnection(appOptions, MongoDocumentStorageOptions.Default, converters, source);
         }
 
 

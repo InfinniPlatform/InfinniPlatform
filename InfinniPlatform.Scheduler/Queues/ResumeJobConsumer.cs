@@ -16,19 +16,19 @@ namespace InfinniPlatform.Scheduler.Queues
     internal class ResumeJobConsumer : BroadcastConsumerBase<ResumeJobEvent>
     {
         public ResumeJobConsumer(IJobSchedulerDispatcher jobSchedulerDispatcher,
-                                 IAppEnvironment appEnvironment,
+                                 AppOptions appOptions,
                                  IPerformanceLog performanceLog,
                                  ILog log)
         {
             _jobSchedulerDispatcher = jobSchedulerDispatcher;
-            _appEnvironment = appEnvironment;
+            _appOptions = appOptions;
             _performanceLog = performanceLog;
             _log = log;
         }
 
 
         private readonly IJobSchedulerDispatcher _jobSchedulerDispatcher;
-        private readonly IAppEnvironment _appEnvironment;
+        private readonly AppOptions _appOptions;
         private readonly IPerformanceLog _performanceLog;
         private readonly ILog _log;
 
@@ -42,7 +42,7 @@ namespace InfinniPlatform.Scheduler.Queues
             try
             {
                 // События, посланные с одного и того же узла, не обрабатываются
-                if (string.Equals(_appEnvironment.InstanceId, message.AppId, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(_appOptions.AppInstance, message.AppId, StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }

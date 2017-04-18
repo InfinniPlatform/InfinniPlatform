@@ -21,20 +21,14 @@ namespace InfinniPlatform.Caching.Tests.Redis
         [SetUp]
         public void SetUp()
         {
-            var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(env => env.Name)
-                              .Returns(nameof(RedisCacheImplPerformanceTest));
+            var appOptions = new AppOptions { AppName = nameof(RedisCacheImplPerformanceTest) };
 
-            var settings = new RedisConnectionSettings
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
+            var settings = new RedisConnectionSettings { Host = "localhost", Password = "TeamCity" };
 
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;
 
-            _cache = new RedisCacheImpl(appEnvironmentMock.Object, new RedisConnectionFactory(settings), log, performanceLog);
+            _cache = new RedisCacheImpl(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
         }
 
         [Test]

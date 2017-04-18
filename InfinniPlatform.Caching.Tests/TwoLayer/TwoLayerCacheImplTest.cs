@@ -23,13 +23,13 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         [SetUp]
         public void SetUp()
         {
-            var appEnvironment = new Mock<IAppEnvironment>();
+            var appOptions = new AppOptions();
 
             _memoryCache = new FakeCacheImpl();
             _sharedCache = new FakeCacheImpl();
             _broadcastProducerMock = new Mock<IBroadcastProducer>();
             
-            _cache = new TwoLayerCacheImpl(_memoryCache, _sharedCache, appEnvironment.Object, _broadcastProducerMock.Object, new Mock<ILog>().Object);
+            _cache = new TwoLayerCacheImpl(_memoryCache, _sharedCache, appOptions, _broadcastProducerMock.Object, new Mock<ILog>().Object);
         }
 
         [Test]

@@ -2,62 +2,75 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 
 using InfinniPlatform.Core.Abstractions.Hosting;
 using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Http.Middlewares;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
 
-namespace InfinniPlatform.Extensions
+namespace InfinniPlatform.AspNetCore
 {
-    public static class AspNetExtensions
+    public static class CoreExtensions
     {
-        private static readonly Dictionary<HttpMiddlewareType, IMiddlewareOptions> MiddlewareOptions = BuildDefaultMiddlewareOptions();
-
-        private static Dictionary<HttpMiddlewareType, IMiddlewareOptions> BuildDefaultMiddlewareOptions()
+        public static IServiceProvider BuildProvider(this IServiceCollection services, IEnumerable<IContainerModule> containerModules = null)
         {
-            var httpMiddlewareTypes = (HttpMiddlewareType[]) Enum.GetValues(typeof(HttpMiddlewareType));
+            var options = AppOptions.Default;
 
-            return httpMiddlewareTypes.ToDictionary<HttpMiddlewareType, HttpMiddlewareType, IMiddlewareOptions>(type => type, type => null);
+            return BuildProvider(services, options);
         }
 
-        /// <summary>
-        /// Создает провайдер на основе коллекции зарегистрированных сервисов.
-        /// </summary>
-        /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
-        public static IServiceProvider BuildProvider(this IServiceCollection serviceCollection)
+        public static IServiceProvider BuildProvider(this IServiceCollection services, IConfigurationRoot configuration, IEnumerable<IContainerModule> containerModules = null)
         {
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.Populate(serviceCollection);
+            var options = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();
 
-            containerBuilder.RegisterCoreModules();
-            containerBuilder.RegisterPlatformModules(serviceCollection);
-            containerBuilder.RegisterUserDefinedModules();
+            return BuildProvider(services, options);
+        }
+
+        public static IServiceProvider BuildProvider(this IServiceCollection services, AppOptions options, IEnumerable<IContainerModule> containerModules = null)
+        {
+            services.AddSingleton(provider => new CoreContainerModule(options ?? AppOptions.Default));
+
+            if (containerModules != null)
+            {
+                foreach (var containerModule in containerModules)
+                {
+                    services.AddSingleton(provider => containerModule);
+                }
+            }
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.Populate(services);
+
+            RegisterDefinedModules(containerBuilder, services);
+            RegisterUserModules(containerBuilder);
 
             // ReSharper disable AccessToModifiedClosure
 
             // Регистрация самого Autofac-контейнера
             IContainer autofacRootContainer = null;
-            containerBuilder.RegisterInstance((Func<IContainer>) (() => autofacRootContainer));
+            containerBuilder.RegisterInstance((Func<IContainer>)(() => autofacRootContainer));
             containerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
 
             // Регистрация обертки над контейнером
             IContainerResolver containerResolver = null;
-            containerBuilder.RegisterInstance((Func<IContainerResolver>) (() => containerResolver));
+            containerBuilder.RegisterInstance((Func<IContainerResolver>)(() => containerResolver));
             containerBuilder.Register(r => r.Resolve<Func<IContainerResolver>>()()).As<IContainerResolver>().SingleInstance();
 
             // Регистрация контейнера для Asp.Net
             IServiceProvider serviceProvider = null;
-            containerBuilder.RegisterInstance((Func<IServiceProvider>) (() => serviceProvider));
+            containerBuilder.RegisterInstance((Func<IServiceProvider>)(() => serviceProvider));
             containerBuilder.Register(r => r.Resolve<Func<IServiceProvider>>()()).As<IServiceProvider>().SingleInstance();
 
             // ReSharper restore AccessToModifiedClosure
@@ -68,6 +81,40 @@ namespace InfinniPlatform.Extensions
             serviceProvider = new AutofacServiceProvider(autofacRootContainer);
 
             return serviceProvider;
+        }
+
+        private static void RegisterDefinedModules(ContainerBuilder containerBuilder, IServiceCollection services)
+        {
+            var modules = services.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
+
+            foreach (var module in modules)
+            {
+                var containerModule = (IContainerModule)module.ImplementationFactory.Invoke(null);
+                var autofacContainerModule = new AutofacContainerModule(containerModule);
+                containerBuilder.RegisterModule(autofacContainerModule);
+            }
+        }
+
+        private static void RegisterUserModules(ContainerBuilder containerBuilder)
+        {
+            var modules = Assembly.GetEntryAssembly().GetTypes().Where(type => typeof(IContainerModule).IsAssignableFrom(type));
+
+            foreach (var module in modules)
+            {
+                var containerModule = (IContainerModule)Activator.CreateInstance(module);
+                var autofacContainerModule = new AutofacContainerModule(containerModule);
+                containerBuilder.RegisterModule(autofacContainerModule);
+            }
+        }
+
+
+        private static readonly Dictionary<HttpMiddlewareType, IMiddlewareOptions> MiddlewareOptions = BuildDefaultMiddlewareOptions();
+
+        private static Dictionary<HttpMiddlewareType, IMiddlewareOptions> BuildDefaultMiddlewareOptions()
+        {
+            var httpMiddlewareTypes = (HttpMiddlewareType[])Enum.GetValues(typeof(HttpMiddlewareType));
+
+            return httpMiddlewareTypes.ToDictionary<HttpMiddlewareType, HttpMiddlewareType, IMiddlewareOptions>(type => type, type => null);
         }
 
         /// <summary>
@@ -188,47 +235,6 @@ namespace InfinniPlatform.Extensions
                 {
                     middleware.Configure(app, options.Value);
                 }
-            }
-        }
-
-        private static void RegisterCoreModules(this ContainerBuilder containerBuilder)
-        {
-            var coreModules = typeof(CoreContainerModule).GetTypeInfo()
-                                                         .Assembly
-                                                         .GetTypes()
-                                                         .Where(type => typeof(IContainerModule).IsAssignableFrom(type));
-
-            foreach (var module in coreModules)
-            {
-                var containerModule = (IContainerModule) Activator.CreateInstance(module);
-                var autofacContainerModule = new AutofacContainerModule(containerModule);
-                containerBuilder.RegisterModule(autofacContainerModule);
-            }
-        }
-
-        private static void RegisterPlatformModules(this ContainerBuilder containerBuilder, IServiceCollection serviceCollection)
-        {
-            var userModules = serviceCollection.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
-
-            foreach (var module in userModules)
-            {
-                var containerModule = (IContainerModule) module.ImplementationFactory.Invoke(null);
-                var autofacContainerModule = new AutofacContainerModule(containerModule);
-                containerBuilder.RegisterModule(autofacContainerModule);
-            }
-        }
-
-        private static void RegisterUserDefinedModules(this ContainerBuilder containerBuilder)
-        {
-            var userModules = Assembly.GetEntryAssembly()
-                                      .GetTypes()
-                                      .Where(type => typeof(IContainerModule).IsAssignableFrom(type));
-
-            foreach (var module in userModules)
-            {
-                var containerModule = (IContainerModule) Activator.CreateInstance(module);
-                var autofacContainerModule = new AutofacContainerModule(containerModule);
-                containerBuilder.RegisterModule(autofacContainerModule);
             }
         }
 
