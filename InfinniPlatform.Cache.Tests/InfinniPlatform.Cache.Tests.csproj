@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>    
-    <ProjectReference Include="..\InfinniPlatform.Caching.Memory\InfinniPlatform.Cache.Memory.csproj" />    
-    <ProjectReference Include="..\InfinniPlatform.Caching.Redis\InfinniPlatform.Cache.Redis.csproj" />    
-    <ProjectReference Include="..\InfinniPlatform.Caching.TwoLayer\InfinniPlatform.Cache.TwoLayer.csproj" />    
+    <ProjectReference Include="..\InfinniPlatform.Cache.Memory\InfinniPlatform.Cache.Memory.csproj" />    
+    <ProjectReference Include="..\InfinniPlatform.Cache.Redis\InfinniPlatform.Cache.Redis.csproj" />    
+    <ProjectReference Include="..\InfinniPlatform.Cache.TwoLayer\InfinniPlatform.Cache.TwoLayer.csproj" />    
     <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />    
     <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />

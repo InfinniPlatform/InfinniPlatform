@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.BlobStorage.Tests\InfinniPlatform.BlobStorage.Tests.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Caching.Tests\InfinniPlatform.Cache.Tests.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Cache.Tests\InfinniPlatform.Cache.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core.Tests\InfinniPlatform.Core.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.DocumentStorage.Tests\InfinniPlatform.DocumentStorage.Tests.csproj" />
     <ProjectReference Include="..\InfinniPlatform.PrintView.Tests\InfinniPlatform.PrintView.Tests.csproj" />

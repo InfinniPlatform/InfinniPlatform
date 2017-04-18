@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Caching.Abstractions\InfinniPlatform.Cache.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Cache.Abstractions\InfinniPlatform.Cache.Abstractions.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
