@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Cache.Abstractions;
-using InfinniPlatform.Cache.Redis.Diagnostics;
+﻿using InfinniPlatform.Cache.Redis.Diagnostics;
 using InfinniPlatform.Core.Abstractions.Diagnostics;
 using InfinniPlatform.Core.Abstractions.IoC;
 
@@ -26,7 +25,6 @@ namespace InfinniPlatform.Cache.Redis.IoC
 
             builder.RegisterType<RedisCacheImpl>()
                    .AsSelf()
-                   .As<ISharedCache>()
                    .SingleInstance();
 
             builder.RegisterType<CachingStatusProvider>()

@@ -10,6 +10,11 @@
   <ItemGroup>
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="IoC\TwoLayerCachingContainerModule.cs" />
+    <None Include="TwoLayerCacheImpl.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Cache.Abstractions\InfinniPlatform.Cache.Abstractions.csproj" />

@@ -1,6 +1,5 @@
-﻿using InfinniPlatform.Core.Abstractions.IoC;
-
-using Microsoft.Extensions.Caching.Memory;
+﻿using InfinniPlatform.Cache.Abstractions;
+using InfinniPlatform.Core.Abstractions.IoC;
 
 namespace InfinniPlatform.Cache.Memory.IoC
 {
