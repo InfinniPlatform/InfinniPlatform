@@ -15,9 +15,12 @@
     <PackageReference Include="NUnit" Version="3.6.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Caching\InfinniPlatform.Caching.csproj" />    
-    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
+  <ItemGroup>    
+    <ProjectReference Include="..\InfinniPlatform.Caching.Memory\InfinniPlatform.Caching.Memory.csproj" />    
+    <ProjectReference Include="..\InfinniPlatform.Caching.Redis\InfinniPlatform.Caching.Redis.csproj" />    
+    <ProjectReference Include="..\InfinniPlatform.Caching.TwoLayer\InfinniPlatform.Caching.TwoLayer.csproj" />    
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />    
+    <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>
 

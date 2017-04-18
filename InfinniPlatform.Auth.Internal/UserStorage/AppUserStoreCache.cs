@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Auth.Internal.Identity.MongoDb;
-using InfinniPlatform.Caching;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.MessageQueue.Abstractions;
@@ -20,8 +19,7 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
         public AppUserStoreCache(UserStorageSettings userStorageSettings,
                                  ILog log,
                                  IBroadcastProducer broadcastProducer,
-                                 AppOptions appOptions,
-                                 CacheSettings cacheSettings)
+                                 AppOptions appOptions)
         {
             var cacheTimeout = userStorageSettings.UserCacheTimeout <= 0
                                    ? UserStorageSettings.DefaultUserCacheTimeout
@@ -31,7 +29,6 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
             _log = log;
             _broadcastProducer = broadcastProducer;
             _appOptions = appOptions;
-            _cacheSettings = cacheSettings;
 
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
@@ -44,7 +41,6 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
 
 
         private readonly AppOptions _appOptions;
-        private readonly CacheSettings _cacheSettings;
         private readonly IBroadcastProducer _broadcastProducer;
 
         private readonly ReaderWriterLockSlim _cacheLockSlim;
@@ -192,11 +188,7 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
 
         private async void NotifyOnUserChanged(string userId)
         {
-            // Оповещаем другие узлы об изменении сведений пользователя при работе с распределенным кэшем.
-            if (_cacheSettings.Type == CacheSettings.SharedCacheKey)
-            {
-                await _broadcastProducer.PublishAsync(userId);
-            }
+            await _broadcastProducer.PublishAsync(userId);
         }
 
         private static string GetUserLoginKey(IdentityUserLogin userLogin)

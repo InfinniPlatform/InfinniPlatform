@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Caching.Contract;
+using InfinniPlatform.Caching.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions;
 
 namespace InfinniPlatform.Caching.Tests.TwoLayer
