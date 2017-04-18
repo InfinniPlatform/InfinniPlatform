@@ -40,7 +40,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Scheduler.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage.Tests", "InfinniPlatform.BlobStorage.Tests\InfinniPlatform.BlobStorage.Tests.csproj", "{67EFB476-E563-47CB-BE15-F8882C9108CF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Tests", "InfinniPlatform.Caching.Tests\InfinniPlatform.Cache.Tests.csproj", "{1F888EA1-867E-42C4-BE8C-6ABFCB32DC56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Tests", "InfinniPlatform.Cache.Tests\InfinniPlatform.Cache.Tests.csproj", "{1F888EA1-867E-42C4-BE8C-6ABFCB32DC56}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Core.Tests", "InfinniPlatform.Core.Tests\InfinniPlatform.Core.Tests.csproj", "{5A62E683-64B3-46F0-8857-E60276123698}"
 EndProject
@@ -95,13 +95,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.DocumentSto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueue.Abstractions", "InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj", "{136B170D-FD47-4AA7-8BEA-B0C92B85959C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Abstractions", "InfinniPlatform.Caching.Abstractions\InfinniPlatform.Cache.Abstractions.csproj", "{D42266B7-5141-45C4-B54E-6A5514C8344F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Abstractions", "InfinniPlatform.Cache.Abstractions\InfinniPlatform.Cache.Abstractions.csproj", "{D42266B7-5141-45C4-B54E-6A5514C8344F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Memory", "InfinniPlatform.Caching.Memory\InfinniPlatform.Cache.Memory.csproj", "{93255636-D430-4C01-9422-105E9F817B97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Memory", "InfinniPlatform.Cache.Memory\InfinniPlatform.Cache.Memory.csproj", "{93255636-D430-4C01-9422-105E9F817B97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Redis", "InfinniPlatform.Caching.Redis\InfinniPlatform.Cache.Redis.csproj", "{84A58DCB-4A14-4079-8483-53946E4F9AAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Redis", "InfinniPlatform.Cache.Redis\InfinniPlatform.Cache.Redis.csproj", "{84A58DCB-4A14-4079-8483-53946E4F9AAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.TwoLayer", "InfinniPlatform.Caching.TwoLayer\InfinniPlatform.Cache.TwoLayer.csproj", "{FE0CA386-8A1D-44D1-88AF-278C1837F95D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.TwoLayer", "InfinniPlatform.Cache.TwoLayer\InfinniPlatform.Cache.TwoLayer.csproj", "{FE0CA386-8A1D-44D1-88AF-278C1837F95D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
