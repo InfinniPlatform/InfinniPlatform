@@ -32,8 +32,8 @@ namespace InfinniPlatform.Caching.TwoLayer.IoC
  
         private static ISharedCache GetSharedCache(IContainerResolver resolver)
         {
-            ISharedCache cache = redisCacheFactory(resolver.Resolve<AppOptions>());
             var redisCacheFactory = resolver.Resolve<Func<AppOptions, RedisCacheImpl>>();
+            ISharedCache cache = redisCacheFactory(resolver.Resolve<AppOptions>());
 
             return cache;
         }
