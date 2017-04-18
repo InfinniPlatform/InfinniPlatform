@@ -26,7 +26,11 @@ namespace InfinniPlatform.Caching.Tests.TwoLayer
         {
             var appOptions = new AppOptions { AppName = nameof(TwoLayerCacheImplPerformanceTest) };
 
-            var settings = new RedisConnectionSettings { Host = "localhost", Password = "TeamCity" };
+            var settings = new RedisCacheOptions
+            {
+                Host = "localhost",
+                Password = "TeamCity"
+            };
 
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;

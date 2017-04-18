@@ -8,10 +8,10 @@ namespace InfinniPlatform.Extensions
     public static class TwoLayerCachingExtensions
     {
         /// <summary>
-        /// Регистрирует сервисы кэширования.
+        /// Регистрирует сервисы двухуровневого кэша.
         /// </summary>
         /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
-        public static IServiceCollection AddCaching(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddTwoLayerCache(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new TwoLayerCachingContainerModule());
             return serviceCollection;

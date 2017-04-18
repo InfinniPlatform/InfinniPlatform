@@ -1,16 +1,22 @@
 ﻿using InfinniPlatform.Caching.Redis.Diagnostics;
 using InfinniPlatform.Core.Abstractions.Diagnostics;
 using InfinniPlatform.Core.Abstractions.IoC;
-using InfinniPlatform.Core.Abstractions.Settings;
 
 namespace InfinniPlatform.Caching.Redis.IoC
 {
     internal sealed class RedisCachingContainerModule : IContainerModule
     {
+        private readonly RedisCacheOptions _redisOptions;
+
+        public RedisCachingContainerModule(RedisCacheOptions redisOptions)
+        {
+            _redisOptions = redisOptions;
+        }
+
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterFactory(GetRedisConnectionSettings)
-                   .As<RedisConnectionSettings>()
+            builder.RegisterInstance(_redisOptions)
+                   .AsSelf()
                    .SingleInstance();
 
             builder.RegisterType<RedisConnectionFactory>()
@@ -21,18 +27,9 @@ namespace InfinniPlatform.Caching.Redis.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            // Diagnostic
-
             builder.RegisterType<CachingStatusProvider>()
                    .As<ISubsystemStatusProvider>()
                    .SingleInstance();
-        }
-
-
-        private static RedisConnectionSettings GetRedisConnectionSettings(IContainerResolver resolver)
-        {
-            return resolver.Resolve<IAppConfiguration>()
-                           .GetSection<RedisConnectionSettings>(RedisConnectionSettings.SectionName);
         }
     }
 }

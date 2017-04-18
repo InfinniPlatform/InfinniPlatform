@@ -1,4 +1,7 @@
-﻿using InfinniPlatform.Caching.Redis.IoC;
+﻿using InfinniPlatform.Caching.Redis;
+using InfinniPlatform.Caching.Redis.IoC;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
@@ -8,13 +11,26 @@ namespace InfinniPlatform.Extensions
     public static class RedisCachingExtensions
     {
         /// <summary>
-        /// Регистрирует сервисы кэширования.
+        /// Регистрирует сервисы кэша Redis.
         /// </summary>
-        /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
-        public static IServiceCollection AddCaching(this IServiceCollection serviceCollection)
+        /// <param name="services">Коллекция зарегистрированных сервисов.</param>
+        public static IServiceCollection AddRedisCache(this IServiceCollection services)
         {
-            serviceCollection.AddSingleton(provider => new RedisCachingContainerModule());
-            return serviceCollection;
+            var options = RedisCacheOptions.Default;
+
+            return AddRedisCache(services, options);
+        }
+
+        public static IServiceCollection AddRedisCache(this IServiceCollection services, IConfigurationRoot configuration)
+        {
+            var options = configuration.GetSection(RedisCacheOptions.SectionName).Get<RedisCacheOptions>();
+
+            return AddRedisCache(services, options);
+        }
+
+        public static IServiceCollection AddRedisCache(this IServiceCollection services, RedisCacheOptions redisOptions)
+        {
+            return services.AddSingleton(provider => new RedisCachingContainerModule(redisOptions ?? RedisCacheOptions.Default));
         }
     }
 }

@@ -25,7 +25,11 @@ namespace InfinniPlatform.Caching.Tests.Redis
 
             var appOptions = new AppOptions { AppName = nameof(RedisCacheImplMemoryTest) };
 
-            var settings = new RedisConnectionSettings { Host = "localhost", Password = "TeamCity" };
+            var settings = new RedisCacheOptions
+            {
+                Host = "localhost",
+                Password = "TeamCity"
+            };
 
             var log = new Mock<ILog>().Object;
             var performanceLog = new Mock<IPerformanceLog>().Object;

@@ -8,10 +8,10 @@ namespace InfinniPlatform.Extensions
     public static class MemoryCachingExtensions
     {
         /// <summary>
-        /// Регистрирует сервисы кэширования.
+        /// Регистрирует сервисы кэша в памяти.
         /// </summary>
         /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
-        public static IServiceCollection AddCaching(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddInMemoryCache(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(provider => new MemoryCachingContainerModule());
             return serviceCollection;

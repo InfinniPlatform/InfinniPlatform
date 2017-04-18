@@ -3,37 +3,23 @@
     /// <summary>
     /// Настройки подключения к Redis.
     /// </summary>
-    public class RedisConnectionSettings
+    public class RedisCacheOptions
     {
         public const string SectionName = "redis";
 
-        public const string DefaultHost = "localhost";
-
-        public const int DefaultPort = 6379;
-
-        public const int DefaultDatabase = 0;
-
-        public const int DefaultReadBufferSize = 512;
-
-        public const int DefaultWriteBufferSize = 512;
-
-        public const int DefaultConnectionTimeout = 1000;
-
-        public const int DefaultMaxReconnectRetries = 10;
-
-        public const int DefaultPoolSize = 0;
+        public static RedisCacheOptions Default = new RedisCacheOptions();
 
 
-        public RedisConnectionSettings()
+        public RedisCacheOptions()
         {
-            Host = DefaultHost;
-            Port = DefaultPort;
-            Database = DefaultDatabase;
-            ReadBufferSize = DefaultReadBufferSize;
-            WriteBufferSize = DefaultWriteBufferSize;
-            ConnectionTimeout = DefaultConnectionTimeout;
-            MaxReconnectRetries = DefaultMaxReconnectRetries;
-            PoolSize = DefaultPoolSize;
+            Host = "localhost";
+            Port = 6379;
+            Database = 0;
+            ReadBufferSize = 512;
+            WriteBufferSize = 512;
+            ConnectionTimeout = 1000;
+            MaxReconnectRetries = 10;
+            PoolSize = 0;
         }
 
 

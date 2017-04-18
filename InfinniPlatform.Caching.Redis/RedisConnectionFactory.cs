@@ -9,27 +9,27 @@ namespace InfinniPlatform.Caching.Redis
     {
         public ConnectionMultiplexer RedisClient { get; }
 
-        public RedisConnectionFactory(RedisConnectionSettings connectionSettings)
+        public RedisConnectionFactory(RedisCacheOptions cacheOptions)
         {
-            var redisHost = string.IsNullOrEmpty(connectionSettings.Host)
-                                ? RedisConnectionSettings.DefaultHost
-                                : connectionSettings.Host;
+            var redisHost = string.IsNullOrEmpty(cacheOptions.Host)
+                                ? RedisCacheOptions.Default.Host
+                                : cacheOptions.Host;
 
-            var redisPort = connectionSettings.Port <= 0
-                                ? RedisConnectionSettings.DefaultPort
-                                : connectionSettings.Port;
+            var redisPort = cacheOptions.Port <= 0
+                                ? RedisCacheOptions.Default.Port
+                                : cacheOptions.Port;
 
-            var writeBufferSize = connectionSettings.WriteBufferSize <= 0
-                                      ? RedisConnectionSettings.DefaultWriteBufferSize
-                                      : connectionSettings.WriteBufferSize;
+            var writeBufferSize = cacheOptions.WriteBufferSize <= 0
+                                      ? RedisCacheOptions.Default.WriteBufferSize
+                                      : cacheOptions.WriteBufferSize;
 
-            var connectionTimeout = connectionSettings.ConnectionTimeout < 0
-                                        ? RedisConnectionSettings.DefaultConnectionTimeout
-                                        : connectionSettings.ConnectionTimeout;
+            var connectionTimeout = cacheOptions.ConnectionTimeout < 0
+                                        ? RedisCacheOptions.Default.ConnectionTimeout
+                                        : cacheOptions.ConnectionTimeout;
 
-            var maxReconnectRetries = connectionSettings.MaxReconnectRetries <= 0
-                                          ? RedisConnectionSettings.DefaultMaxReconnectRetries
-                                          : connectionSettings.MaxReconnectRetries;
+            var maxReconnectRetries = cacheOptions.MaxReconnectRetries <= 0
+                                          ? RedisCacheOptions.Default.MaxReconnectRetries
+                                          : cacheOptions.MaxReconnectRetries;
 
             var configurationOptions = new ConfigurationOptions
                                        {
@@ -38,7 +38,7 @@ namespace InfinniPlatform.Caching.Redis
                                            ConnectRetry = maxReconnectRetries,
                                            AbortOnConnectFail = false,
                                            WriteBuffer = writeBufferSize,
-                                           Password = connectionSettings.Password,
+                                           Password = cacheOptions.Password,
                                            AllowAdmin = true
                                        };
 
