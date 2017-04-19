@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Abstractions.IoC
+namespace InfinniPlatform.Core.IoC
 {
     /// <summary>
     /// Правила регистрации компонента.

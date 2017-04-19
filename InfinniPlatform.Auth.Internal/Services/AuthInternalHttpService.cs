@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Auth.Identity.MongoDb;
 using InfinniPlatform.Auth.Properties;
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Security;
+using InfinniPlatform.Core.Http;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Http.Middlewares;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-using HttpResponse = InfinniPlatform.Core.Abstractions.Http.HttpResponse;
+using HttpResponse = InfinniPlatform.Core.Http.HttpResponse;
 
 namespace InfinniPlatform.Auth.Services
 {

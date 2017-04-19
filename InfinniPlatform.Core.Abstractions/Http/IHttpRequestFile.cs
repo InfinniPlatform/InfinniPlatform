@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace InfinniPlatform.Core.Abstractions.Http
+namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Информация о файле запроса.

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading;
 
-using InfinniPlatform.Core.Abstractions.Session;
-
 namespace InfinniPlatform.Core.Session
 {
     internal class TenantScopeProvider : ITenantScopeProvider

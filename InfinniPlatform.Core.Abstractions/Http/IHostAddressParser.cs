@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Abstractions.Http
+namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Интерфейс для разбора адресов узлов.

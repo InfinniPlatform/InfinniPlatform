@@ -1,10 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Types;
-
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Types
+namespace InfinniPlatform.Core.Types
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

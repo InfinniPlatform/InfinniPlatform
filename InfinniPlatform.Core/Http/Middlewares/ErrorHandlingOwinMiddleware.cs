@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Http.Middlewares;
 

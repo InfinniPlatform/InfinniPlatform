@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
 
 namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories

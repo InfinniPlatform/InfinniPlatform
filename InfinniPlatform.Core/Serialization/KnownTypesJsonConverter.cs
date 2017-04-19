@@ -1,6 +1,5 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Serialization;
 using InfinniPlatform.Core.Properties;
 
 using Newtonsoft.Json;

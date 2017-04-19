@@ -1,10 +1,8 @@
 ﻿using System.IO;
 
-using InfinniPlatform.Core.Compression;
-
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Compression
+namespace InfinniPlatform.Core.Compression
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

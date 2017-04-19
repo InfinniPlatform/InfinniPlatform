@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Abstractions.Settings
+namespace InfinniPlatform.Core.Settings
 {
     /// <summary>
     /// Конфигурация приложения.

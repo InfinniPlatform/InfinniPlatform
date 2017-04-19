@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace InfinniPlatform.Core.Abstractions.IoC
+namespace InfinniPlatform.Core.IoC
 {
     /// <summary>
     /// Обработчик разрешения зависимостей, передаваемых через параметры конструкторов.

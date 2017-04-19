@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories;

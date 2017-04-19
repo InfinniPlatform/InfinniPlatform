@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Security.Claims;
 
-using InfinniPlatform.Core.Abstractions.Security;
-using InfinniPlatform.Core.Abstractions.Session;
+using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core.Session;
 using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.MongoDB;

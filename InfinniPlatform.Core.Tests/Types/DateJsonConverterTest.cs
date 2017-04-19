@@ -1,11 +1,9 @@
-﻿using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Serialization;
-using InfinniPlatform.Core.Abstractions.Types;
+﻿using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.Core.Serialization;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Types
+namespace InfinniPlatform.Core.Types
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

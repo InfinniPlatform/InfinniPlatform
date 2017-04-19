@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.Core.Abstractions.Http
+namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Источник модулей регистрации обработчиков запросов сервиса.

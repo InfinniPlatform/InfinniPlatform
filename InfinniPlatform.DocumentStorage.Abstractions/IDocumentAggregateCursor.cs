@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Abstractions.Dynamic;
+﻿using InfinniPlatform.Core.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Abstractions
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Dynamic;
 
 namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
 {

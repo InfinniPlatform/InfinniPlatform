@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Linq.Expressions;
 
-namespace InfinniPlatform.Core.Abstractions.Dynamic
+namespace InfinniPlatform.Core.Dynamic
 {
     /// <summary>
     /// Динамический объект.

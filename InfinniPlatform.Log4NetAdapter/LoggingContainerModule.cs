@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Core.Abstractions.IoC;
-using InfinniPlatform.Core.Abstractions.Logging;
+﻿using InfinniPlatform.Core.IoC;
+using InfinniPlatform.Core.Logging;
 
 namespace InfinniPlatform.Log4NetAdapter
 {

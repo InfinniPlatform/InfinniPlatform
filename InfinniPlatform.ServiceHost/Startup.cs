@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Extensions;
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.IoC;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

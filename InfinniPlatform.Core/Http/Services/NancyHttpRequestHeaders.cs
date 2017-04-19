@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Abstractions.Http;
-
 using Nancy;
 
 namespace InfinniPlatform.Core.Http.Services

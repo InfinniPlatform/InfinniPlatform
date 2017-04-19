@@ -1,7 +1,7 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
 
 using Moq;

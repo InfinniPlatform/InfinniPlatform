@@ -1,11 +1,5 @@
 ﻿using System.Text;
 
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.IoC;
-using InfinniPlatform.Core.Abstractions.Security;
-using InfinniPlatform.Core.Abstractions.Serialization;
-using InfinniPlatform.Core.Abstractions.Session;
-using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Core.Http;
 using InfinniPlatform.Core.Http.Middlewares;
@@ -14,6 +8,7 @@ using InfinniPlatform.Core.IoC.Http;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Core.Session;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Http.Middlewares;
 
 namespace InfinniPlatform.Core.IoC

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Dynamic;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-
 using Microsoft.CSharp.RuntimeBinder;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Dynamic
+namespace InfinniPlatform.Core.Dynamic
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

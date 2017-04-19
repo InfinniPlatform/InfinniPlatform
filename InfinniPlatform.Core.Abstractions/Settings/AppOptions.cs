@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Core.Abstractions.Settings
+namespace InfinniPlatform.Core.Settings
 {
     /// <summary>
     /// Настройки приложения.

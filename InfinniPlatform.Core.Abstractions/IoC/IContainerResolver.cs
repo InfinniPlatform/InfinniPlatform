@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Core.Abstractions.IoC
+namespace InfinniPlatform.Core.IoC
 {
     /// <summary>
     /// Провайдер разрешения зависимостей.

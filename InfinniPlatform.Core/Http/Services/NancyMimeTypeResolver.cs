@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Core.Abstractions.Http;
-
-using Nancy;
+﻿using Nancy;
 
 namespace InfinniPlatform.Core.Http.Services
 {

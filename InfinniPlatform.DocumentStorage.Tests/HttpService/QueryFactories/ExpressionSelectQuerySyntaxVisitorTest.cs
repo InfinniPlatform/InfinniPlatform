@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
+using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
 using InfinniPlatform.DocumentStorage.Tests.TestEntities;

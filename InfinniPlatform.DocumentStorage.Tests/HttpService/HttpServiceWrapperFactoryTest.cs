@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Abstractions.Http;
+﻿using InfinniPlatform.Core.Http;
 using InfinniPlatform.DocumentStorage.HttpService;
 
 using Moq;

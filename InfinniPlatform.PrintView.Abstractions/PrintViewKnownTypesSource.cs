@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Abstractions.Serialization;
+﻿using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.PrintView.Abstractions.Block;
 using InfinniPlatform.PrintView.Abstractions.Format;
 using InfinniPlatform.PrintView.Abstractions.Inline;

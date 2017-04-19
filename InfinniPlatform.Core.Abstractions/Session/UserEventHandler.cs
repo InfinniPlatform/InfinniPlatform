@@ -1,7 +1,7 @@
 ﻿using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Abstractions.Session
+namespace InfinniPlatform.Core.Session
 {
     /// <summary>
     /// Базовый класс обработчика событий пользователя.

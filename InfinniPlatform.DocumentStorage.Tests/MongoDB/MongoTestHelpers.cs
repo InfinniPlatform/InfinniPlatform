@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Core.Abstractions.Serialization;
-using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.DocumentStorage.MongoDB;

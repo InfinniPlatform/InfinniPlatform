@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace InfinniPlatform.Core.Abstractions.Types
+namespace InfinniPlatform.Core.Types
 {
     /// <summary>
     /// Дата.

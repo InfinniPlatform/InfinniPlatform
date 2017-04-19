@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
-using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Logging;
 
 namespace InfinniPlatform.Log4NetAdapter
 {

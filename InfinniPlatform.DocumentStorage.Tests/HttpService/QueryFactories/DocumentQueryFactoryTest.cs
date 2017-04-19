@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Http;
 using InfinniPlatform.DocumentStorage.HttpService;
 using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;

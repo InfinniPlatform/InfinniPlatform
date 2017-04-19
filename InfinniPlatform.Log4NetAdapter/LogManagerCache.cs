@@ -3,9 +3,9 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Serialization;
 
 using log4net.Config;
 using log4net.Core;

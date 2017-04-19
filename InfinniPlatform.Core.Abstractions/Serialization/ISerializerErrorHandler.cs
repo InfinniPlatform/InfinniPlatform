@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Abstractions.Serialization
+namespace InfinniPlatform.Core.Serialization
 {
     /// <summary>
     /// Обработчик ошибок сериализации и десериализации.

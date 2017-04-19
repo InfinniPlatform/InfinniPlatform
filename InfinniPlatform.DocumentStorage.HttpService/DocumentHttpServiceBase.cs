@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Http;
+using InfinniPlatform.Core.Logging;
 using InfinniPlatform.DocumentStorage.HttpService.Properties;
 
 namespace InfinniPlatform.DocumentStorage.HttpService

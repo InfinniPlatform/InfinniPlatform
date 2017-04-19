@@ -5,8 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Dynamic;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

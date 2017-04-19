@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Security;
+﻿using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Security;
 using InfinniPlatform.Http.Middlewares;
 
 using Microsoft.AspNetCore.Builder;

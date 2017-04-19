@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Cache.Properties;
-using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Settings;
 
 using StackExchange.Redis;
 

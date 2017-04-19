@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Diagnostics;
-using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Diagnostics;
+using InfinniPlatform.Core.Http;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQ.Diagnostics

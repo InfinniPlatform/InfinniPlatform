@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Abstractions.Http
+namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Глобальный обработчик запросов.

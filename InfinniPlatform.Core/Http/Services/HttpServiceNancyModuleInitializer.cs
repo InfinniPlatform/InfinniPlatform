@@ -5,10 +5,9 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Security;
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core.Serialization;
 
 using Nancy;
 using Nancy.Helpers;

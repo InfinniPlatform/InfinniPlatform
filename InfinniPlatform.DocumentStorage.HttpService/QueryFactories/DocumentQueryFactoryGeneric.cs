@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Http;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.DocumentStorage.HttpService.Properties;
 using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
 

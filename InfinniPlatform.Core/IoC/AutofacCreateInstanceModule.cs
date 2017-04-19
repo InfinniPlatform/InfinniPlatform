@@ -4,8 +4,6 @@ using System.Linq;
 using Autofac;
 using Autofac.Core;
 
-using InfinniPlatform.Core.Abstractions.IoC;
-
 namespace InfinniPlatform.Core.IoC
 {
     internal sealed class AutofacCreateInstanceModule : Module

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Abstractions.Logging;
+﻿using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Http.Middlewares;
 
 using Microsoft.AspNetCore.Builder;

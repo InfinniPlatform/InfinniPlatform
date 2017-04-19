@@ -6,11 +6,10 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 
-using InfinniPlatform.Core.Abstractions.Hosting;
-using InfinniPlatform.Core.Abstractions.IoC;
-using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.IoC.Http;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.Http.Middlewares;
 
 using Microsoft.AspNetCore.Builder;

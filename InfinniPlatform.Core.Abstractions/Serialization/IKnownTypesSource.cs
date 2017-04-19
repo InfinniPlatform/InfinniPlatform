@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Abstractions.Serialization
+﻿namespace InfinniPlatform.Core.Serialization
 {
     /// <summary>
     /// Источник известных типов для сериализации.

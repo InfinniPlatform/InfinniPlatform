@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Abstractions.Serialization;
-using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.MessageQueue.Abstractions;
 
 using RabbitMQ.Client.Framing;

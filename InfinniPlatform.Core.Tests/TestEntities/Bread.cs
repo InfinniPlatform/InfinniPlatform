@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Tests.TestEntities
+﻿namespace InfinniPlatform.Core.TestEntities
 {
     internal class Bread : IProduct
     {

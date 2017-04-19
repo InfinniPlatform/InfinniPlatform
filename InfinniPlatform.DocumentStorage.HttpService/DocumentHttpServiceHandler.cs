@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Http;
 using InfinniPlatform.DocumentStorage.Abstractions;
 
 namespace InfinniPlatform.DocumentStorage.HttpService

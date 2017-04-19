@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Serialization;
-using InfinniPlatform.Core.Abstractions.Settings;
+using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.DocumentStorage.Abstractions;
 
 using MongoDB.Bson.Serialization;

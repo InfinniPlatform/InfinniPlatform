@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Abstractions.Types
+namespace InfinniPlatform.Core.Types
 {
     /// <summary>
     /// Время.

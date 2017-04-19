@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.PrintView.Abstractions.Defaults;
 
 namespace InfinniPlatform.PrintView.Abstractions

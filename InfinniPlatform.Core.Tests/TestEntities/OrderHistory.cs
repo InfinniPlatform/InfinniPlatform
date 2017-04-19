@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Core.Tests.TestEntities
+namespace InfinniPlatform.Core.TestEntities
 {
     internal class OrderHistory : IEnumerable<Order>
     {

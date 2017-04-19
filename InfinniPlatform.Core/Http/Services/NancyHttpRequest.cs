@@ -5,9 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Core.Serialization;
 
 using Nancy;
 using Nancy.Responses.Negotiation;

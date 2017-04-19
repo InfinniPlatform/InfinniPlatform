@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.MessageQueue.Abstractions;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;

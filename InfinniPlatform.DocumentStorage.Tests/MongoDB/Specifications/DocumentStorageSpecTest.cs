@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Abstractions.Dynamic;
+﻿using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Specifications;
 

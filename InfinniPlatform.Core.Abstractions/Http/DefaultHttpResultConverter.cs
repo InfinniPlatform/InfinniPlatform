@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Core.Logging;
 
-namespace InfinniPlatform.Core.Abstractions.Http
+namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Конвертер результата выполнения запроса по умолчанию.

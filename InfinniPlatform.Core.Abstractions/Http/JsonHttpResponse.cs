@@ -1,8 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Serialization;
 
-namespace InfinniPlatform.Core.Abstractions.Http
+namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Ответ в виде JSON-объекта.

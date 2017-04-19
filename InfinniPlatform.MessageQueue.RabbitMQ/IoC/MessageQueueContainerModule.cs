@@ -1,7 +1,7 @@
-﻿using InfinniPlatform.Core.Abstractions.Diagnostics;
-using InfinniPlatform.Core.Abstractions.Hosting;
-using InfinniPlatform.Core.Abstractions.IoC;
-using InfinniPlatform.Core.Abstractions.Settings;
+﻿using InfinniPlatform.Core.Diagnostics;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.IoC;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;

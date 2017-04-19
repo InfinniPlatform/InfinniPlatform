@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Dynamic;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

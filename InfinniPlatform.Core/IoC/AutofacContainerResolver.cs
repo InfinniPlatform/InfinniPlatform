@@ -5,8 +5,6 @@ using System.Linq;
 using Autofac;
 using Autofac.Core;
 
-using InfinniPlatform.Core.Abstractions.IoC;
-
 namespace InfinniPlatform.Core.IoC
 {
     public sealed class AutofacContainerResolver : IContainerResolver

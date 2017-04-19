@@ -2,13 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-
 using Newtonsoft.Json.Linq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Dynamic
+namespace InfinniPlatform.Core.Dynamic
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

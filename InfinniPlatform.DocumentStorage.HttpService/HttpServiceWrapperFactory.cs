@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 
-using InfinniPlatform.Core.Abstractions.Http;
+using InfinniPlatform.Core.Http;
 
 namespace InfinniPlatform.DocumentStorage.HttpService
 {

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Abstractions.Http
+﻿namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Предоставляет метод для определения MIME-типа.

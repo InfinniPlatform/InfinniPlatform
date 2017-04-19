@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-using InfinniPlatform.Core.Abstractions.IoC;
+using InfinniPlatform.Core.IoC;
 
-namespace InfinniPlatform.Core.Abstractions.Http
+namespace InfinniPlatform.Core.Http
 {
     public static class ServiceExtentions
     {

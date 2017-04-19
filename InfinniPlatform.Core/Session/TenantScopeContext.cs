@@ -1,7 +1,5 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Session;
-
 namespace InfinniPlatform.Core.Session
 {
     [Serializable]

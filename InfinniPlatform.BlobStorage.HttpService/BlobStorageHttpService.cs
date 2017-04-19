@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.BlobStorage.Properties;
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Http;
+using InfinniPlatform.Core.Logging;
 
 namespace InfinniPlatform.BlobStorage
 {

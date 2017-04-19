@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Core.Abstractions.Diagnostics;
-using InfinniPlatform.Core.Abstractions.Hosting;
-using InfinniPlatform.Core.Abstractions.IoC;
+﻿using InfinniPlatform.Core.Diagnostics;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.IoC;
 using InfinniPlatform.DocumentStorage.Abstractions;
 using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
 using InfinniPlatform.DocumentStorage.MongoDB.Diagnostics;

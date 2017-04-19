@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Diagnostics;
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Logging;
+using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Core.Http;
+using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Properties;
 
 namespace InfinniPlatform.Core.Diagnostics

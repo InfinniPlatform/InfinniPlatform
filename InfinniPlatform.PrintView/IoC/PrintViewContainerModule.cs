@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Core.Abstractions.IoC;
-using InfinniPlatform.Core.Abstractions.Serialization;
+﻿using InfinniPlatform.Core.IoC;
+using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers.Html;

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Abstractions.IoC;
+﻿using InfinniPlatform.Core.IoC;
 using InfinniPlatform.MessageQueue.Abstractions;
 
 namespace InfinniPlatform.Cache.IoC

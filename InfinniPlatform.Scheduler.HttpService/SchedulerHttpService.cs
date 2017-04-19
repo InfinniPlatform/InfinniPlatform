@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Core.Http;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Serialization;
 
 namespace InfinniPlatform.Scheduler
 {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Core.Logging;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler.Common

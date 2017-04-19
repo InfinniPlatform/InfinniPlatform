@@ -2,9 +2,9 @@
 using System.Reflection;
 using System.Xml.Serialization;
 
-using InfinniPlatform.Core.Abstractions.Types;
+using InfinniPlatform.Core.Types;
 
-namespace InfinniPlatform.Core.Abstractions.Serialization
+namespace InfinniPlatform.Core.Serialization
 {
     /// <summary>
     /// Определяет правила преобразования для свойств типа <see cref="DateTime" />,

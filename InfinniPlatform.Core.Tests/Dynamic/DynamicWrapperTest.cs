@@ -2,11 +2,9 @@
 using System.Diagnostics;
 using System.Dynamic;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Dynamic
+namespace InfinniPlatform.Core.Dynamic
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

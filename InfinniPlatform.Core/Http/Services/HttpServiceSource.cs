@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Core.Abstractions.Http;
-
 namespace InfinniPlatform.Core.Http.Services
 {
     /// <summary>

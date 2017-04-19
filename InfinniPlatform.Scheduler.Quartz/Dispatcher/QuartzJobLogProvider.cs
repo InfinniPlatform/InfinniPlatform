@@ -2,7 +2,7 @@
 
 using Quartz.Logging;
 
-using ILog = InfinniPlatform.Core.Abstractions.Logging.ILog;
+using ILog = InfinniPlatform.Core.Logging.ILog;
 
 namespace InfinniPlatform.Scheduler.Dispatcher
 {

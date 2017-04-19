@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Types;
+using InfinniPlatform.Core.Types;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;

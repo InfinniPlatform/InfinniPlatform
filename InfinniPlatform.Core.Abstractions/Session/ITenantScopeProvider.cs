@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Abstractions.Session
+﻿namespace InfinniPlatform.Core.Session
 {
     /// <summary>
     /// Предоставляет методы для создания экземпляров <see cref="ITenantScope" />.

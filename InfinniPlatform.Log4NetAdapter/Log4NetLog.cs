@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 
-using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Security;
-using InfinniPlatform.Core.Abstractions.Serialization;
+using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core.Serialization;
 
 using log4net;
-using ILog = InfinniPlatform.Core.Abstractions.Logging.ILog;
+using ILog = InfinniPlatform.Core.Logging.ILog;
 
 namespace InfinniPlatform.Log4NetAdapter
 {
     /// <summary>
     /// Сервис <see cref="ILog" /> на базе log4net.
     /// </summary>
-    internal sealed class Log4NetLog : Core.Abstractions.Logging.ILog
+    internal sealed class Log4NetLog : Core.Logging.ILog
     {
         private const string KeyRequestId = "app.RequestId";
         private const string KeyUserId = "app.UserId";

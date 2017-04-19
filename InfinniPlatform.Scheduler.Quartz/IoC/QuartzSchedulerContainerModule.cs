@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 
+using InfinniPlatform.Core.Diagnostics;
+using InfinniPlatform.Core.Hosting;
+using InfinniPlatform.Core.Http;
+using InfinniPlatform.Core.IoC;
+using InfinniPlatform.Core.Settings;
 using InfinniPlatform.MessageQueue.Abstractions;
-using InfinniPlatform.Core.Abstractions.Diagnostics;
-using InfinniPlatform.Core.Abstractions.Hosting;
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.IoC;
-using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Diagnostics;

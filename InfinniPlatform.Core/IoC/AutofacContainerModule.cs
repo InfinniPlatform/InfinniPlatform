@@ -1,7 +1,5 @@
 ﻿using Autofac;
 
-using InfinniPlatform.Core.Abstractions.IoC;
-
 namespace InfinniPlatform.Core.IoC
 {
     public sealed class AutofacContainerModule : Module

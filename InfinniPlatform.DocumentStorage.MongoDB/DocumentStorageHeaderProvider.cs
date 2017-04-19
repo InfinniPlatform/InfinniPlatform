@@ -1,8 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Dynamic;
-using InfinniPlatform.Core.Abstractions.Security;
-using InfinniPlatform.Core.Abstractions.Session;
+using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Core.Security;
+using InfinniPlatform.Core.Session;
 using InfinniPlatform.DocumentStorage.Abstractions;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB

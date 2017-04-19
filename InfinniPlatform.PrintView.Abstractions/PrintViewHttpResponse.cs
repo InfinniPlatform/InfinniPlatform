@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Core.Abstractions.Http;
-using InfinniPlatform.Core.Abstractions.Threading;
+using InfinniPlatform.Core.Http;
+using InfinniPlatform.Core.Threading;
 
 namespace InfinniPlatform.PrintView.Abstractions
 {

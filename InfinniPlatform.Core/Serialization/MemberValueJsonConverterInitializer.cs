@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Core.Abstractions.Serialization;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 

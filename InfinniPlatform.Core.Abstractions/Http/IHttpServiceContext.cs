@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Abstractions.Http
+﻿namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Контекст выполнения запроса к сервису <see cref="IHttpService" />.

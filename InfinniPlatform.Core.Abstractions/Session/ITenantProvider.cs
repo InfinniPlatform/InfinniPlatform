@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace InfinniPlatform.Core.Abstractions.Session
+namespace InfinniPlatform.Core.Session
 {
     /// <summary>
     /// Предоставляет методы определения идентификатора организации пользователя системы.

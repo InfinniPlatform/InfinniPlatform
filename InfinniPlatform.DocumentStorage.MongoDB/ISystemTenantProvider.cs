@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Abstractions.Session;
+﻿using InfinniPlatform.Core.Session;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {

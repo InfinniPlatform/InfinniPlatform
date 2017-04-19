@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace InfinniPlatform.Core.Abstractions.Http
+namespace InfinniPlatform.Core.Http
 {
     /// <summary>
     /// Ответ в виде текста.

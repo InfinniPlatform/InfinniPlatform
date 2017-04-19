@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Security.Principal;
 
 using InfinniPlatform.Auth.Properties;
-using InfinniPlatform.Core.Abstractions.Logging;
-using InfinniPlatform.Core.Abstractions.Session;
+using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Core.Session;
 
 namespace InfinniPlatform.Auth.Services
 {

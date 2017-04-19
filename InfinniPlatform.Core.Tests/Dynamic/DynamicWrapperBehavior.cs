@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-
-using InfinniPlatform.Core.Abstractions.Dynamic;
 
 using Microsoft.CSharp.RuntimeBinder;
 
@@ -11,7 +8,7 @@ using Newtonsoft.Json;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Dynamic
+namespace InfinniPlatform.Core.Dynamic
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Abstractions.Session
+namespace InfinniPlatform.Core.Session
 {
     /// <summary>
     /// Область для выполнения запросов от имени определенной организации.

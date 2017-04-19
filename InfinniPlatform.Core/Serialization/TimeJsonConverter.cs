@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Abstractions.Types;
+using InfinniPlatform.Core.Types;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

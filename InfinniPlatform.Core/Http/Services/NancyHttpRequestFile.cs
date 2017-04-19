@@ -1,7 +1,5 @@
 ﻿using System.IO;
 
-using InfinniPlatform.Core.Abstractions.Http;
-
 using Nancy;
 
 namespace InfinniPlatform.Core.Http.Services
