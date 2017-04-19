@@ -1,0 +1,58 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RedisSharedCache.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "RedisSharedCache",
+  "description": "Настройки распределенного кэша на основе Redis.",
+  "type": "object",
+  "properties": {
+    "Host": {
+      "description": "Адрес или доменное имя.",
+      "type": "string",
+      "default": "localhost"
+    },
+    "Port": {
+      "description": "Номер порта.",
+      "type": "integer",
+      "default": 6379
+    },
+    "Database": {
+      "description": "Номер базы данных.",
+      "type": "integer",
+      "default": 0
+    },
+    "Password": {
+      "description": "Пароль подключения.",
+      "type": "string",
+      "default": null
+    },
+    "ReadBufferSize": {
+      "description": "Размер буфера чтения.",
+      "type": "integer",
+      "default": 512
+    },
+    "WriteBufferSize": {
+      "description": "Размер буфера записи.",
+      "type": "integer",
+      "default": 512
+    },
+    "ConnectionTimeout": {
+      "description": "Таймаут подключения в миллисекундах (0 - отсутствие таймаута).",
+      "type": "integer",
+      "default": 0
+    },
+    "MaxReconnectRetries": {
+      "description": "Количество попыток подключения.",
+      "type": "integer",
+      "default": 10
+    },
+    "PoolSize": {
+      "description": "Размер пула подключений (0 - неограничен).",
+      "type": "integer",
+      "default": 0
+    }
+  },
+  "required": [
+    "Host",
+    "Port"
+  ]
+}

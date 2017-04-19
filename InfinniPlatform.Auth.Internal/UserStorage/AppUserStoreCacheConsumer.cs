@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
-namespace InfinniPlatform.Auth.Internal.UserStorage
+namespace InfinniPlatform.Auth.UserStorage
 {
     /// <summary>
     /// Обработчик сообщений синхронизации кэша пользователей.

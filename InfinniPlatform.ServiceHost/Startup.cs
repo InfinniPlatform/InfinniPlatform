@@ -32,7 +32,7 @@ namespace InfinniPlatform.ServiceHost
         {
             var configureServices = services.AddAuth()
                                             .AddInMemoryCache()
-                                            .AddRedisCache()
+                                            .AddRedisSharedCache()
                                             .AddTwoLayerCache()
                                             .AddFileSystemBlobStorage(_configuration)
                                             .AddBlobStorageHttpService()

@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Cache.Abstractions;
-
-namespace InfinniPlatform.Cache.TwoLayer
+﻿namespace InfinniPlatform.Cache
 {
     /// <summary>
     /// Пустая реализация интерфейса для управления распределенным кэшем.

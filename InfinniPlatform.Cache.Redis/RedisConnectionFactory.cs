@@ -1,35 +1,33 @@
 ﻿using StackExchange.Redis;
 
-namespace InfinniPlatform.Cache.Redis
+namespace InfinniPlatform.Cache
 {
     /// <summary>
-    ///     Фабрика подключений к Redis.
+    /// Фабрика подключений к Redis.
     /// </summary>
     public class RedisConnectionFactory
     {
-        public ConnectionMultiplexer RedisClient { get; }
-
-        public RedisConnectionFactory(RedisCacheOptions cacheOptions)
+        public RedisConnectionFactory(RedisSharedCacheOptions options)
         {
-            var redisHost = string.IsNullOrEmpty(cacheOptions.Host)
-                                ? RedisCacheOptions.Default.Host
-                                : cacheOptions.Host;
+            var redisHost = string.IsNullOrEmpty(options.Host)
+                                ? RedisSharedCacheOptions.Default.Host
+                                : options.Host;
 
-            var redisPort = cacheOptions.Port <= 0
-                                ? RedisCacheOptions.Default.Port
-                                : cacheOptions.Port;
+            var redisPort = options.Port <= 0
+                                ? RedisSharedCacheOptions.Default.Port
+                                : options.Port;
 
-            var writeBufferSize = cacheOptions.WriteBufferSize <= 0
-                                      ? RedisCacheOptions.Default.WriteBufferSize
-                                      : cacheOptions.WriteBufferSize;
+            var writeBufferSize = options.WriteBufferSize <= 0
+                                      ? RedisSharedCacheOptions.Default.WriteBufferSize
+                                      : options.WriteBufferSize;
 
-            var connectionTimeout = cacheOptions.ConnectionTimeout < 0
-                                        ? RedisCacheOptions.Default.ConnectionTimeout
-                                        : cacheOptions.ConnectionTimeout;
+            var connectionTimeout = options.ConnectionTimeout < 0
+                                        ? RedisSharedCacheOptions.Default.ConnectionTimeout
+                                        : options.ConnectionTimeout;
 
-            var maxReconnectRetries = cacheOptions.MaxReconnectRetries <= 0
-                                          ? RedisCacheOptions.Default.MaxReconnectRetries
-                                          : cacheOptions.MaxReconnectRetries;
+            var maxReconnectRetries = options.MaxReconnectRetries <= 0
+                                          ? RedisSharedCacheOptions.Default.MaxReconnectRetries
+                                          : options.MaxReconnectRetries;
 
             var configurationOptions = new ConfigurationOptions
                                        {
@@ -38,11 +36,14 @@ namespace InfinniPlatform.Cache.Redis
                                            ConnectRetry = maxReconnectRetries,
                                            AbortOnConnectFail = false,
                                            WriteBuffer = writeBufferSize,
-                                           Password = cacheOptions.Password,
+                                           Password = options.Password,
                                            AllowAdmin = true
                                        };
 
             RedisClient = ConnectionMultiplexer.Connect(configurationOptions);
         }
+
+
+        public ConnectionMultiplexer RedisClient { get; }
     }
 }

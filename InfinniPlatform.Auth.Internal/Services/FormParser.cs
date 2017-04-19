@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
-namespace InfinniPlatform.Auth.Internal.Services
+namespace InfinniPlatform.Auth.Services
 {
     /// <summary>
     /// Parser for HTTP request form, copied from Microsoft.Owin.Infrastructure.OwinHelpers.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace InfinniPlatform.BlobStorage.Abstractions
+namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
     /// Данные BLOB.

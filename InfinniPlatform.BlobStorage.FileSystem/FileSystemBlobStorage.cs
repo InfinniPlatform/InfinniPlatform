@@ -2,12 +2,11 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.BlobStorage.Abstractions;
 using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Serialization;
 
-namespace InfinniPlatform.BlobStorage.FileSystem
+namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
     /// Реализует сервис для работы хранилищем BLOB (Binary Large OBject) на основе файловой системы.

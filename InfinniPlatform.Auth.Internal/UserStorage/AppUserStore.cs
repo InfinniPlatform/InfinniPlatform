@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Auth.Internal.Identity.MongoDb;
-using InfinniPlatform.Auth.Internal.Properties;
+using InfinniPlatform.Auth.Identity.MongoDb;
+using InfinniPlatform.Auth.Properties;
 using InfinniPlatform.DocumentStorage.Abstractions;
 
-namespace InfinniPlatform.Auth.Internal.UserStorage
+namespace InfinniPlatform.Auth.UserStorage
 {
     internal class AppUserStore : IAppUserStore
     {

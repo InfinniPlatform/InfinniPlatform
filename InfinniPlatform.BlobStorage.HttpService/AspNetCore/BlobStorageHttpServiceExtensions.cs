@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.BlobStorage.HttpService.IoC;
+﻿using InfinniPlatform.BlobStorage.IoC;
 
 using Microsoft.Extensions.DependencyInjection;
 

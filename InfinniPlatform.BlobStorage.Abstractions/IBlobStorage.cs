@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.BlobStorage.Abstractions
+namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
     /// Сервис для работы хранилищем BLOB (Binary Large OBject).

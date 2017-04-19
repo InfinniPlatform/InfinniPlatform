@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.Core.Abstractions.IoC;
 
-namespace InfinniPlatform.BlobStorage.HttpService.IoC
+namespace InfinniPlatform.BlobStorage.IoC
 {
     public class BlobStorageHttpServiceContainerModule : IContainerModule
     {

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.BlobStorage.FileSystem
+﻿namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
     /// Настройки хранилища BLOB в файловой системе.

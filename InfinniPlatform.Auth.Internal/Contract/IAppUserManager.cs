@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.Internal.Identity.MongoDb;
 
-namespace InfinniPlatform.Auth.Internal.Contract
+using InfinniPlatform.Auth.Identity.MongoDb;
+
+namespace InfinniPlatform.Auth.Contract
 {
     /// <summary>
     /// Предоставляет методы управления информацией текущего пользователя.

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>InfinniPlatform.Log4NetAdapter</AssemblyName>
+    <RootNamespace>InfinniPlatform.Log4NetAdapter</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>

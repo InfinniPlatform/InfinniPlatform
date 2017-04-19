@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.BlobStorage.Abstractions
+namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
     /// Информация о BLOB.

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>InfinniPlatform.DocumentStorage.Abstractions</AssemblyName>
+    <RootNamespace>InfinniPlatform.DocumentStorage</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>

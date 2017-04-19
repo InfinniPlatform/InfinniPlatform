@@ -1,8 +1,10 @@
 ﻿using System;
+
 using InfinniPlatform.Http.Middlewares;
+
 using Microsoft.AspNetCore.Builder;
 
-namespace InfinniPlatform.Auth.Internal.Middlewares
+namespace InfinniPlatform.Auth.Middlewares
 {
     /// <summary>
     /// Настройки для <see cref="AuthInternalHttpMiddleware"/>.

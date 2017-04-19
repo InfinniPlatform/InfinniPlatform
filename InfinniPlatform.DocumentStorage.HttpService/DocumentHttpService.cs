@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.BlobStorage.Abstractions;
+using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Core.Abstractions.Dynamic;
 using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.Core.Abstractions.Logging;

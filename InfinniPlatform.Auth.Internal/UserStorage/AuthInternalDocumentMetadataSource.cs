@@ -2,7 +2,7 @@
 
 using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
 
-namespace InfinniPlatform.Auth.Internal.UserStorage
+namespace InfinniPlatform.Auth.UserStorage
 {
     internal class AuthInternalDocumentMetadataSource : IDocumentMetadataSource
     {

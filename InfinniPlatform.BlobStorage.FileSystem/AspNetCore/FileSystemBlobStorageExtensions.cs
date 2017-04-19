@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.BlobStorage.FileSystem;
-using InfinniPlatform.BlobStorage.FileSystem.IoC;
+﻿using InfinniPlatform.BlobStorage;
+using InfinniPlatform.BlobStorage.IoC;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Auth.Internal.Identity.MongoDb;
+using InfinniPlatform.Auth.Identity.MongoDb;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Settings;
 using InfinniPlatform.MessageQueue.Abstractions;
@@ -12,7 +12,7 @@ using InfinniPlatform.MessageQueue.Abstractions.Producers;
 
 using Microsoft.Extensions.Caching.Memory;
 
-namespace InfinniPlatform.Auth.Internal.UserStorage
+namespace InfinniPlatform.Auth.UserStorage
 {
     internal class AppUserStoreCache : IUserCacheSynchronizer
     {

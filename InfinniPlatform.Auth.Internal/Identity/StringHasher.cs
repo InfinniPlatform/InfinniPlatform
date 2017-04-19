@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-namespace InfinniPlatform.Auth.Internal.Identity
+namespace InfinniPlatform.Auth.Identity
 {
     /// <summary>
     /// Предоставляет методы хэширования.

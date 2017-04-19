@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
-namespace InfinniPlatform.Cache.TwoLayer
+namespace InfinniPlatform.Cache
 {
     /// <summary>
     /// Обработчик сообщений синхронизации кэша.
     /// </summary>
-    [QueueName(nameof(TwoLayerCacheImpl))]
+    [QueueName(nameof(TwoLayerCache))]
     public class TwoLayerCacheConsumer : BroadcastConsumerBase<string>
     {
-        public TwoLayerCacheConsumer(ICacheSynchronizer cache)
+        public TwoLayerCacheConsumer(ITwoLayerCacheSynchronizer cache)
         {
             _cache = cache;
         }
 
-        private readonly ICacheSynchronizer _cache;
+        private readonly ITwoLayerCacheSynchronizer _cache;
 
         protected override async Task Consume(Message<string> message)
         {

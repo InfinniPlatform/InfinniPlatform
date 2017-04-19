@@ -2,9 +2,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>InfinniPlatform.Cache.Tests</AssemblyName>
+    <RootNamespace>InfinniPlatform.Cache</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
-    <RootNamespace>InfinniPlatform.Cache.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,11 +16,11 @@
     <PackageReference Include="NUnit" Version="3.6.1" />
   </ItemGroup>
 
-  <ItemGroup>    
-    <ProjectReference Include="..\InfinniPlatform.Cache.Memory\InfinniPlatform.Cache.Memory.csproj" />    
-    <ProjectReference Include="..\InfinniPlatform.Cache.Redis\InfinniPlatform.Cache.Redis.csproj" />    
-    <ProjectReference Include="..\InfinniPlatform.Cache.TwoLayer\InfinniPlatform.Cache.TwoLayer.csproj" />    
-    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />    
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Cache.Memory\InfinniPlatform.Cache.Memory.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Cache.Redis\InfinniPlatform.Cache.Redis.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Cache.TwoLayer\InfinniPlatform.Cache.TwoLayer.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
     <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>

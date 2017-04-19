@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.BlobStorage.Abstractions;
-using InfinniPlatform.BlobStorage.HttpService.Properties;
+using InfinniPlatform.BlobStorage.Properties;
 using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.Core.Abstractions.Logging;
 
-namespace InfinniPlatform.BlobStorage.HttpService
+namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
     /// Provides HTTP serivce to get data from <see cref="IBlobStorage"/>.

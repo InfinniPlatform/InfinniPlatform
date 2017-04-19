@@ -1,7 +1,8 @@
-﻿using InfinniPlatform.Auth.Internal.Identity.MongoDb;
+﻿using InfinniPlatform.Auth.Identity.MongoDb;
+
 using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.Internal.Identity
+namespace InfinniPlatform.Auth.Identity
 {
     /// <summary>
     ///     Предоставляет методы хэширования пароля.

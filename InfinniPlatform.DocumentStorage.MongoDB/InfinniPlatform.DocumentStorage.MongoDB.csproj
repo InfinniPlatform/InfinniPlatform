@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>InfinniPlatform.DocumentStorage</AssemblyName>
+    <AssemblyName>InfinniPlatform.DocumentStorage.MongoDB</AssemblyName>
+    <RootNamespace>InfinniPlatform.DocumentStorage</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>

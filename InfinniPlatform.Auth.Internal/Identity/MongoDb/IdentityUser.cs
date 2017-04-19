@@ -7,7 +7,7 @@ using InfinniPlatform.DocumentStorage.Abstractions;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
+namespace InfinniPlatform.Auth.Identity.MongoDb
 {
     [DocumentType("UserStore")]
     // Add profile data for application users by adding properties to the IdentityUser class

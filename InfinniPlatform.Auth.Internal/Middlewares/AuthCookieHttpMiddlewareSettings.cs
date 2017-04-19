@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Auth.Internal.Middlewares
+﻿namespace InfinniPlatform.Auth.Middlewares
 {
     /// <summary>
     /// Настройки для <see cref="AuthCookieHttpMiddleware"/>.

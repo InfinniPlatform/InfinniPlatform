@@ -1,7 +1,6 @@
-﻿using InfinniPlatform.BlobStorage.Abstractions;
-using InfinniPlatform.Core.Abstractions.IoC;
+﻿using InfinniPlatform.Core.Abstractions.IoC;
 
-namespace InfinniPlatform.BlobStorage.FileSystem.IoC
+namespace InfinniPlatform.BlobStorage.IoC
 {
     public class FileSystemBlobStorageContainerModule : IContainerModule
     {

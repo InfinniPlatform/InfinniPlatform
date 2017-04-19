@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace InfinniPlatform.BlobStorage.Abstractions
+namespace InfinniPlatform.BlobStorage
 {
     public static class BlobStorageExtensions
     {

@@ -4,7 +4,7 @@ using InfinniPlatform.Http.Middlewares;
 
 using Microsoft.AspNetCore.Builder;
 
-namespace InfinniPlatform.Auth.Internal.Middlewares
+namespace InfinniPlatform.Auth.Middlewares
 {
     /// <summary>
     /// Промежуточный слой обработки HTTP запросов приложения для аутентификации пользователя на основе базы данных пользователей.

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>InfinniPlatform.Core.Abstractions</AssemblyName>
+    <RootNamespace>InfinniPlatform.Core</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>

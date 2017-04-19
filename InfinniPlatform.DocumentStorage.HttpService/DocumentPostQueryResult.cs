@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.BlobStorage.Abstractions;
+using InfinniPlatform.BlobStorage;
 using InfinniPlatform.DocumentStorage.Abstractions;
 
 namespace InfinniPlatform.DocumentStorage.HttpService

@@ -1,10 +1,11 @@
 ﻿using InfinniPlatform.Http.Middlewares;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace InfinniPlatform.Auth.Internal.Middlewares
+namespace InfinniPlatform.Auth.Middlewares
 {
     /// <summary>
     /// Промежуточный слой обработки HTTP запросов приложения для аутентификации пользователя через Cookie.

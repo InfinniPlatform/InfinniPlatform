@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>InfinniPlatform.MessageQueue.Abstractions</AssemblyName>
+    <RootNamespace>InfinniPlatform.MessageQueue</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>

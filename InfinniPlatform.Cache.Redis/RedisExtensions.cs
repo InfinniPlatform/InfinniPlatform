@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using StackExchange.Redis;
 
-namespace InfinniPlatform.Cache.Redis
+namespace InfinniPlatform.Cache
 {
     internal static class RedisExtensions
     {
@@ -25,7 +26,7 @@ namespace InfinniPlatform.Cache.Redis
         /// <returns>Информация о состоянии сервера Redis.</returns>
         public static async Task<IGrouping<string, KeyValuePair<string, string>>[]> GetStatusAsync(this ConnectionMultiplexer client, RedisSectionStatus sections = RedisSectionStatus.Stats | RedisSectionStatus.Clients | RedisSectionStatus.Keyspace)
         {
-            //TODO Multiple server status.
+            // TODO Multiple server status.
             var endPoint = client.GetEndPoints().First();
 
             return await client.GetServer(endPoint).InfoAsync();

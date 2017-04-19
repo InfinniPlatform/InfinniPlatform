@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Auth.Internal.Identity;
-using InfinniPlatform.Auth.Internal.Identity.MongoDb;
-using InfinniPlatform.Auth.Internal.Middlewares;
-using InfinniPlatform.Auth.Internal.Services;
-using InfinniPlatform.Auth.Internal.UserStorage;
+using InfinniPlatform.Auth.Identity;
+using InfinniPlatform.Auth.Identity.MongoDb;
+using InfinniPlatform.Auth.Middlewares;
+using InfinniPlatform.Auth.Services;
+using InfinniPlatform.Auth.UserStorage;
 using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.Core.Abstractions.IoC;
 using InfinniPlatform.Core.Abstractions.Settings;
@@ -20,9 +20,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace InfinniPlatform.Auth.Internal.IoC
+namespace InfinniPlatform.Auth.IoC
 {
-    internal class AuthInternalContainerModule : IContainerModule
+    public class AuthInternalContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {

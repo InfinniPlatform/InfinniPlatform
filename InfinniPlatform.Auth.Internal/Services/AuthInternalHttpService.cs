@@ -4,8 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.Internal.Identity.MongoDb;
-using InfinniPlatform.Auth.Internal.Properties;
+
+using InfinniPlatform.Auth.Identity.MongoDb;
+using InfinniPlatform.Auth.Properties;
 using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Abstractions.Security;
@@ -14,9 +15,10 @@ using InfinniPlatform.Http.Middlewares;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
+
 using HttpResponse = InfinniPlatform.Core.Abstractions.Http.HttpResponse;
 
-namespace InfinniPlatform.Auth.Internal.Services
+namespace InfinniPlatform.Auth.Services
 {
     /// <summary>
     /// Сервис аутентификации пользователей системы.

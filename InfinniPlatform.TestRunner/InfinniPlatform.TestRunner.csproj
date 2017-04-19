@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>InfinniPlatform.TestRunner</AssemblyName>
+    <RootNamespace>InfinniPlatform.TestRunner</RootNamespace>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>

@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Auth.Internal.Identity.MongoDb;
+﻿using InfinniPlatform.Auth.Identity.MongoDb;
 
-namespace InfinniPlatform.Auth.Internal.UserStorage
+namespace InfinniPlatform.Auth.UserStorage
 {
     /// <summary>
     ///     Хранилище сведений о пользователях системы <see cref="IdentityUser" />.

@@ -9,7 +9,7 @@ using InfinniPlatform.DocumentStorage.Abstractions;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.Internal.Identity.MongoDb
+namespace InfinniPlatform.Auth.Identity.MongoDb
 {
     public class UserStore<TUser> : IUserPasswordStore<TUser>,
                                     IUserRoleStore<TUser>,

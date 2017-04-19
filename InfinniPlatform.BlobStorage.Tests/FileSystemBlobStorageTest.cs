@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.BlobStorage.Abstractions;
-using InfinniPlatform.BlobStorage.FileSystem;
 using InfinniPlatform.Core.Abstractions.Http;
 using InfinniPlatform.Core.Abstractions.Logging;
 using InfinniPlatform.Core.Serialization;
@@ -11,7 +9,7 @@ using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.BlobStorage.Tests
+namespace InfinniPlatform.BlobStorage
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

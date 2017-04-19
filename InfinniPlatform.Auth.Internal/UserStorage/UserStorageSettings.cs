@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Auth.Internal.UserStorage
+﻿namespace InfinniPlatform.Auth.UserStorage
 {
     /// <summary>
     /// Настройки хранилища пользователей.

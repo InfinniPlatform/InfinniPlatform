@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>InfinniPlatform.ServiceHost</AssemblyName>
+    <RootNamespace>InfinniPlatform.ServiceHost</RootNamespace>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>

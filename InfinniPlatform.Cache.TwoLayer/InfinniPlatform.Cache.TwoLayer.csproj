@@ -2,18 +2,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>InfinniPlatform.Cache.TwoLayer</AssemblyName>
+    <RootNamespace>InfinniPlatform.Cache</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
-    <RootNamespace>InfinniPlatform.Cache.TwoLayer</RootNamespace>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Include="IoC\TwoLayerCachingContainerModule.cs" />
-    <None Include="TwoLayerCacheImpl.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,11 +24,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
 </Project>
