@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Microsoft.AspNetCore.Builder;
 
 namespace InfinniPlatform.Http.Middlewares

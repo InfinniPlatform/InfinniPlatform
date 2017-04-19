@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Core", "Inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Core.Abstractions", "InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj", "{4B6B6B09-AF21-4746-B3D9-4FF3921BD9A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Http", "InfinniPlatform.Http\InfinniPlatform.Http.csproj", "{1D29338A-E798-4B18-8B28-5A8999AA2BC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Http.Abstractions", "InfinniPlatform.Http.Abstractions\InfinniPlatform.Http.Abstractions.csproj", "{1D29338A-E798-4B18-8B28-5A8999AA2BC0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.Internal", "InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.csproj", "{B276F8B8-0D27-4637-80B8-4F1AAA7CF5BD}"
 EndProject

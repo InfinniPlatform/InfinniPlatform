@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Http.Middlewares
 {
@@ -8,20 +9,24 @@ namespace InfinniPlatform.Http.Middlewares
     /// </summary>
     public abstract class OwinMiddleware
     {
-        protected RequestDelegate Next { get; set; }
-
         /// <summary>
         /// Instantiates the middleware with an optional pointer to the next component.
         /// </summary>
-        /// <param name="next"></param>
         protected OwinMiddleware(RequestDelegate next)
         {
-            this.Next = next;
+            Next = next;
         }
 
-        /// <summary>Process an individual request.</summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+
+        /// <summary>
+        /// A function that can process an HTTP request after this middleware.
+        /// </summary>
+        protected RequestDelegate Next { get; set; }
+
+
+        /// <summary>
+        /// Process an individual request.
+        /// </summary>
         public abstract Task Invoke(HttpContext context);
     }
 }
