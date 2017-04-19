@@ -46,7 +46,8 @@
     <ProjectReference Include="..\InfinniPlatform.Log4NetAdapter\InfinniPlatform.Log4NetAdapter.csproj" />
     <ProjectReference Include="..\InfinniPlatform.MessageQueue.RabbitMQ\InfinniPlatform.MessageQueue.RabbitMQ.csproj" />
     <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Scheduler.HttpService\InfinniPlatform.Scheduler.HttpService.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Scheduler.Quartz\InfinniPlatform.Scheduler.Quartz.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -41,7 +41,8 @@ namespace InfinniPlatform.ServiceHost
                                             .AddLog4NetAdapter()
                                             .AddMessageQueue()
                                             .AddPrintView(_configuration)
-                                            .AddScheduler()
+                                            .AddQuartzScheduler(_configuration)
+                                            .AddSchedulerHttpService()
                                             .BuildProvider(_configuration);
 
             return configureServices;

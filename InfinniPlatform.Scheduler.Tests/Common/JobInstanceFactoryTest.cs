@@ -1,10 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Scheduler.Common;
-
 using NUnit.Framework;
 
-namespace InfinniPlatform.Scheduler.Tests.Common
+namespace InfinniPlatform.Scheduler.Common
 {
     [TestFixture(Category = TestCategories.UnitTest)]
     public class JobInstanceFactoryTest

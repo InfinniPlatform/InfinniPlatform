@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Scheduler.Contract;
-
 using NUnit.Framework;
 
-namespace InfinniPlatform.Scheduler.Tests.Contract
+namespace InfinniPlatform.Scheduler.Contract
 {
     [TestFixture(Category = TestCategories.UnitTest)]
     public class CronExpressionYearBuilderTest

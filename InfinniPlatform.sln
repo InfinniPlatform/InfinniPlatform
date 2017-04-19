@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Tests", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.TestRunner", "InfinniPlatform.TestRunner\InfinniPlatform.TestRunner.csproj", "{5A9958DE-1394-4361-BC93-DA2E4053F823}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Scheduler", "InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj", "{AE95E065-069F-42DE-B6BC-9EE32354BDC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Scheduler.Quartz", "InfinniPlatform.Scheduler.Quartz\InfinniPlatform.Scheduler.Quartz.csproj", "{AE95E065-069F-42DE-B6BC-9EE32354BDC5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Scheduler.Tests", "InfinniPlatform.Scheduler.Tests\InfinniPlatform.Scheduler.Tests.csproj", "{A05B9CDD-9877-4AEF-A2F2-8D4F828141F6}"
 EndProject
@@ -75,9 +75,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{BFF819
 		Files\Config\Schema\Heartbeat.json = Files\Config\Schema\Heartbeat.json
 		Files\Config\Schema\MongoDbDocumentStorage.json = Files\Config\Schema\MongoDbDocumentStorage.json
 		Files\Config\Schema\PrintView.json = Files\Config\Schema\PrintView.json
+		Files\Config\Schema\QuartzScheduler.json = Files\Config\Schema\QuartzScheduler.json
 		Files\Config\Schema\RabbitMQ.json = Files\Config\Schema\RabbitMQ.json
 		Files\Config\Schema\Redis.json = Files\Config\Schema\Redis.json
-		Files\Config\Schema\Scheduler.json = Files\Config\Schema\Scheduler.json
 		Files\Config\Schema\Server.json = Files\Config\Schema\Server.json
 		Files\Config\Schema\UserStorage.json = Files\Config\Schema\UserStorage.json
 		Files\Config\Schema\Watcher.json = Files\Config\Schema\Watcher.json
@@ -104,6 +104,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Tests", "InfinniPlatform.Cache.Tests\InfinniPlatform.Cache.Tests.csproj", "{68CB186E-F959-4956-98F1-441D9F043C1E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.TwoLayer", "InfinniPlatform.Cache.TwoLayer\InfinniPlatform.Cache.TwoLayer.csproj", "{F80CF9EA-B95B-4B12-81D4-CF67CBFDB855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Scheduler.Abstractions", "InfinniPlatform.Scheduler.Abstractions\InfinniPlatform.Scheduler.Abstractions.csproj", "{609CE6BE-881A-496C-9C7F-A91C52DA61B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Scheduler.HttpService", "InfinniPlatform.Scheduler.HttpService\InfinniPlatform.Scheduler.HttpService.csproj", "{8F7233F2-86A2-446D-AEF0-29659AF77C1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -658,6 +662,42 @@ Global
 		{F80CF9EA-B95B-4B12-81D4-CF67CBFDB855}.Release|x64.Build.0 = Release|Any CPU
 		{F80CF9EA-B95B-4B12-81D4-CF67CBFDB855}.Release|x86.ActiveCfg = Release|Any CPU
 		{F80CF9EA-B95B-4B12-81D4-CF67CBFDB855}.Release|x86.Build.0 = Release|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Debug|x64.Build.0 = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Debug|x86.Build.0 = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.DebugTools|Any CPU.ActiveCfg = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.DebugTools|Any CPU.Build.0 = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.DebugTools|x64.ActiveCfg = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.DebugTools|x64.Build.0 = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.DebugTools|x86.ActiveCfg = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.DebugTools|x86.Build.0 = Debug|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Release|x64.ActiveCfg = Release|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Release|x64.Build.0 = Release|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Release|x86.ActiveCfg = Release|Any CPU
+		{609CE6BE-881A-496C-9C7F-A91C52DA61B0}.Release|x86.Build.0 = Release|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Debug|x64.Build.0 = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Debug|x86.Build.0 = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.DebugTools|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.DebugTools|Any CPU.Build.0 = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.DebugTools|x64.ActiveCfg = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.DebugTools|x64.Build.0 = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.DebugTools|x86.ActiveCfg = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.DebugTools|x86.Build.0 = Debug|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Release|x64.ActiveCfg = Release|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Release|x64.Build.0 = Release|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Release|x86.ActiveCfg = Release|Any CPU
+		{8F7233F2-86A2-446D-AEF0-29659AF77C1A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

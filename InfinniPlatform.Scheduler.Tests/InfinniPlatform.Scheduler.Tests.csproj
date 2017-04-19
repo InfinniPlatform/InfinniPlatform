@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>InfinniPlatform.Scheduler.Tests</AssemblyName>
+    <RootNamespace>InfinniPlatform.Scheduler</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
@@ -17,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Scheduler\InfinniPlatform.Scheduler.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Scheduler.Abstractions\InfinniPlatform.Scheduler.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Scheduler.HttpService\InfinniPlatform.Scheduler.HttpService.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Scheduler.Quartz\InfinniPlatform.Scheduler.Quartz.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>
 

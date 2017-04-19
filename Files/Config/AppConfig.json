@@ -54,7 +54,7 @@
     "WkHtmlToPdfPath": "",
     "WkHtmlToPdfArguments": ""
   },
-  "scheduler": {
+  "quartzScheduler": {
     "ExpireHistoryAfter": null
   },
   "authCookie": {

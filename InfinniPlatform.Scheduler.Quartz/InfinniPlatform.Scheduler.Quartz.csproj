@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>InfinniPlatform.Scheduler.Quartz</AssemblyName>
+    <RootNamespace>InfinniPlatform.Scheduler</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Quartz" Version="3.0.0-alpha2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage.Abstractions\InfinniPlatform.DocumentStorage.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Scheduler.Abstractions\InfinniPlatform.Scheduler.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
