@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Core.IoC;
+﻿using InfinniPlatform.IoC;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     internal class HttpServiceContextProvider : IHttpServiceContextProvider
     {

@@ -2,7 +2,7 @@
 
 using Nancy;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     /// <summary>
     /// Реализация <see cref="IHttpRequestFile"/> на базе Nancy.

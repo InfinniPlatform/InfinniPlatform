@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 using InfinniPlatform.PrintView.Abstractions.Format;
 using InfinniPlatform.PrintView.Expressions;
 

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Hosting;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Properties;
 

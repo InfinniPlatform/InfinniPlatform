@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Hosting
+﻿namespace InfinniPlatform.Hosting
 {
     /// <summary>
     /// TODO Реализовать точку вызова этого интерфейса.

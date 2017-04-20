@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Compression
+namespace InfinniPlatform.Compression
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

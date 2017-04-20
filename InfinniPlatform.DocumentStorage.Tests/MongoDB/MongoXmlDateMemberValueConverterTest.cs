@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.Core.Types;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Serialization;
+using InfinniPlatform.Types;
 
 using NUnit.Framework;
 

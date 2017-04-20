@@ -1,7 +1,7 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Settings;
 
 using Moq;
 

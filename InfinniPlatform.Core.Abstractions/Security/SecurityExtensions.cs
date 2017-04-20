@@ -6,9 +6,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Http;
+using InfinniPlatform.Http;
 
-namespace InfinniPlatform.Core.Security
+namespace InfinniPlatform.Security
 {
     public static class SecurityExtensions
     {

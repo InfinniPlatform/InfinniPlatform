@@ -5,8 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI
 {

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Security
+﻿namespace InfinniPlatform.Security
 {
     /// <summary>
     /// Типы утверждений системы.

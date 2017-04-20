@@ -2,7 +2,7 @@
 using System.Security.Principal;
 using System.Threading;
 
-namespace InfinniPlatform.Core.Security
+namespace InfinniPlatform.Security
 {
     internal class UserIdentityProvider : IUserIdentityProvider
     {

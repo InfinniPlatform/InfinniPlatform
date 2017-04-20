@@ -1,7 +1,6 @@
-﻿using InfinniPlatform.Core.Diagnostics;
-using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.IoC;
-using InfinniPlatform.Core.Settings;
+﻿using InfinniPlatform.Diagnostics;
+using InfinniPlatform.Hosting;
+using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
@@ -10,6 +9,7 @@ using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMQ.Diagnostics;
 using InfinniPlatform.MessageQueue.RabbitMQ.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMQ.Serialization;
+using InfinniPlatform.Settings;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQ.IoC
 {

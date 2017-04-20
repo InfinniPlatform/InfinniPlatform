@@ -3,7 +3,7 @@
 using Autofac;
 using Autofac.Builder;
 
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
     internal sealed class AutofacContainerBuilder : IContainerBuilder
     {

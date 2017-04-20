@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 
 using Autofac;
-using Autofac.Core;
+
 using InfinniPlatform.Http.Middlewares;
+
 using Microsoft.AspNetCore.Http;
 
-namespace InfinniPlatform.Core.IoC.Http
+namespace InfinniPlatform.IoC.Http
 {
     /// <summary>
     /// Представляет фиктивный класс-обертку над реальным слоем OWIN для возможности его создания через контейнер зависимостей.

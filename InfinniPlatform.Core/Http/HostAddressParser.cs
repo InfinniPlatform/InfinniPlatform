@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     internal class HostAddressParser : IHostAddressParser
     {

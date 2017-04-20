@@ -1,9 +1,8 @@
-﻿using InfinniPlatform.Core.IoC;
-using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.IoC;
 
 using Microsoft.AspNetCore.Http;
 
-namespace InfinniPlatform.Core.Http.Middlewares
+namespace InfinniPlatform.Http.Middlewares
 {
     internal class HttpContextProvider : IHttpContextProvider
     {

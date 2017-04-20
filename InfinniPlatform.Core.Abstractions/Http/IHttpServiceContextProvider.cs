@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Http
+﻿namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Предоставляет доступ к контексту выполнения текущего запроса к сервису <see cref="IHttpServiceContext" />.

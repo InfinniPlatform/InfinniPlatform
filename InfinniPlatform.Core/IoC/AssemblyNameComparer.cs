@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
     /// <summary>
     /// Реализует интерфейсы сравнения экземпляров класса <see cref="AssemblyName"/>.

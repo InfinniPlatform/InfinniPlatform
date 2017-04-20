@@ -4,17 +4,17 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Loader;
 
-using InfinniPlatform.Core.Extensions;
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Extensions;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Properties;
+using InfinniPlatform.Settings;
 
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Conventions;
 using Nancy.TinyIoc;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     /// <summary>
     /// Настройки Nancy для <see cref="IHttpService" />

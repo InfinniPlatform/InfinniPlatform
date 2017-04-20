@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
-using InfinniPlatform.Core.Logging;
-
 namespace InfinniPlatform.Logging
 {
     /// <summary>

@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Types;
+﻿using InfinniPlatform.Dynamic;
+using InfinniPlatform.Types;
 
 using NUnit.Framework;
 

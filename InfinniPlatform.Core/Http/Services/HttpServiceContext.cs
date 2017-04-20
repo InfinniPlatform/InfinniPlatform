@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Http.Services
+﻿namespace InfinniPlatform.Http.Services
 {
     internal class HttpServiceContext : IHttpServiceContext
     {

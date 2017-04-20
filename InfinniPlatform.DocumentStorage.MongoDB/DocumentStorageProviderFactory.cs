@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-using InfinniPlatform.Core.IoC;
+using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.DocumentStorage
 {

@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Security;
+﻿using InfinniPlatform.Security;
 
 namespace InfinniPlatform.DocumentStorage
 {

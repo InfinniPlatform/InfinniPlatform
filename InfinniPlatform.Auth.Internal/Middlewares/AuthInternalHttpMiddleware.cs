@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Security;
-using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Security;
 
 using Microsoft.AspNetCore.Builder;
 

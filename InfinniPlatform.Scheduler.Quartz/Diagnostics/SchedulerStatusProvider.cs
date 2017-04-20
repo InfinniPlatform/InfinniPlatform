@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Diagnostics;
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Diagnostics;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Http;
+using InfinniPlatform.Logging;
 
 namespace InfinniPlatform.Scheduler.Diagnostics
 {

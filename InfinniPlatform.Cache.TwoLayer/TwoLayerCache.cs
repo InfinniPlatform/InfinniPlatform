@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Producers;
+using InfinniPlatform.Settings;
 
 namespace InfinniPlatform.Cache
 {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.IoC;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Http;
+using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.DocumentStorage
 {

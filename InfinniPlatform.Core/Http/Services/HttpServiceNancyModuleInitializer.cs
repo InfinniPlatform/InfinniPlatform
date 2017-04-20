@@ -5,14 +5,14 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Security;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Security;
+using InfinniPlatform.Serialization;
 
 using Nancy;
 using Nancy.Helpers;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     /// <summary>
     /// Инициализатор модулей Nancy для <see cref="IHttpService"/>.

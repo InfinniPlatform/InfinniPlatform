@@ -3,12 +3,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Dynamic;
 using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
+using InfinniPlatform.Serialization;
 
 using NUnit.Framework;
 

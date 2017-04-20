@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// JSON-сериализатор объектов.

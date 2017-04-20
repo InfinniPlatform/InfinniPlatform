@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// JSON-сериализатор объектов.

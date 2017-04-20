@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 using InfinniPlatform.PrintView.Expressions.CompiledExpressions;
 using InfinniPlatform.PrintView.Properties;
 

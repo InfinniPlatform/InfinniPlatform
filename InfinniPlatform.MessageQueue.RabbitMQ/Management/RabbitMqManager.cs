@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Settings;
 
 using RabbitMQ.Client;
 

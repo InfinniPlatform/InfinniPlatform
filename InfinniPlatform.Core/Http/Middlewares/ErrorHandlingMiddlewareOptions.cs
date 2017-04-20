@@ -1,8 +1,8 @@
 ﻿using System;
-using InfinniPlatform.Http.Middlewares;
+
 using Microsoft.AspNetCore.Builder;
 
-namespace InfinniPlatform.Core.Http.Middlewares
+namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
     /// Настройки для <see cref="ErrorHandlingHttpMiddleware"/>.

@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Specifications;
+﻿using InfinniPlatform.DocumentStorage.Specifications;
+using InfinniPlatform.Dynamic;
 
 using Moq;
 

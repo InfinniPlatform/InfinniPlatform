@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;

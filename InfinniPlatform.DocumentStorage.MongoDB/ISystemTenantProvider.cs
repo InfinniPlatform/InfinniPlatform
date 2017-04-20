@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.Session;
+﻿using InfinniPlatform.Session;
 
 namespace InfinniPlatform.DocumentStorage
 {

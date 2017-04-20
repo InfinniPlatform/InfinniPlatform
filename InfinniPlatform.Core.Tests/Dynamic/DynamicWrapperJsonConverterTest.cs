@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Dynamic
+namespace InfinniPlatform.Dynamic
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Cache.Diagnostics;
-using InfinniPlatform.Core.Diagnostics;
-using InfinniPlatform.Core.IoC;
+using InfinniPlatform.Diagnostics;
+using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Cache.IoC
 {

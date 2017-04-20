@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Linq.Expressions;
 
-namespace InfinniPlatform.Core.Dynamic
+namespace InfinniPlatform.Dynamic
 {
     /// <summary>
     /// Динамический объект.

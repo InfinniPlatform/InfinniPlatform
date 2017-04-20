@@ -1,7 +1,7 @@
 ﻿using System;
 using InfinniPlatform.MessageQueue.RabbitMQ;
-using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Serialization;
+using InfinniPlatform.Settings;
 
 using Moq;
 

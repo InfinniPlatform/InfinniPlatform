@@ -1,7 +1,7 @@
-﻿using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.IoC;
-using InfinniPlatform.DocumentStorage.QueryFactories;
+﻿using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
+using InfinniPlatform.Http;
+using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.DocumentStorage.IoC
 {

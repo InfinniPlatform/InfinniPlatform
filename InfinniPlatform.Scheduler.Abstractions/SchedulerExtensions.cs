@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-using InfinniPlatform.Core.IoC;
+using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Scheduler
 {

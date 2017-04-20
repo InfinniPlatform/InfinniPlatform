@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 using InfinniPlatform.Scheduler.Common;
 
 using Quartz;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.IoC;
+using InfinniPlatform.IoC;
 
 using Moq;
 

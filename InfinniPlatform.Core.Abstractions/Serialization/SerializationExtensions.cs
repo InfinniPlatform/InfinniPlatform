@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     public static class SerializationExtensions
     {

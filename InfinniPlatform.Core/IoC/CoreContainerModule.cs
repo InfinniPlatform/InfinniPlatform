@@ -1,17 +1,16 @@
 ﻿using System.Text;
 
-using InfinniPlatform.Core.Diagnostics;
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.Http.Middlewares;
-using InfinniPlatform.Core.Http.Services;
-using InfinniPlatform.Core.IoC.Http;
-using InfinniPlatform.Core.Security;
-using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.Core.Session;
-using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Diagnostics;
+using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Http.Services;
+using InfinniPlatform.IoC.Http;
+using InfinniPlatform.Security;
+using InfinniPlatform.Serialization;
+using InfinniPlatform.Session;
+using InfinniPlatform.Settings;
 
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
     public class CoreContainerModule : IContainerModule
     {

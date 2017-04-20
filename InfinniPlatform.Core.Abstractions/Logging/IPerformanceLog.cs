@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Logging
 {
     /// <summary>
     /// Сервис регистрации длительности выполнения методов.

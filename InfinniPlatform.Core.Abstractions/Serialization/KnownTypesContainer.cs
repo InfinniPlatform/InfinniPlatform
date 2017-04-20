@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Properties;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// Контейнер известных типов для сериализации.

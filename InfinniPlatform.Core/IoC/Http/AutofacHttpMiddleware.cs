@@ -1,7 +1,6 @@
 ﻿using Autofac;
-using Microsoft.AspNetCore.Builder;
 
-namespace InfinniPlatform.Core.IoC.Http
+namespace InfinniPlatform.IoC.Http
 {
     internal sealed class AutofacHttpMiddleware //: HttpMiddleware
     {

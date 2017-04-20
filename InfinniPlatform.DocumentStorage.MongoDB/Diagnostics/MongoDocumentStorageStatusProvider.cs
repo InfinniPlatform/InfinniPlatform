@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Diagnostics;
-using InfinniPlatform.Core.Http;
+using InfinniPlatform.Diagnostics;
+using InfinniPlatform.Http;
 
 namespace InfinniPlatform.DocumentStorage.Diagnostics
 {

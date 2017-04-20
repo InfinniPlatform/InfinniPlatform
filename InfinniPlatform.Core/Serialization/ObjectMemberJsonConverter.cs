@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 
 using Newtonsoft.Json;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// Осуществляет преобразование объекта в JSON-представление и обратно для случаев, когда тип объекта заранее не известен <see cref="object"/>.

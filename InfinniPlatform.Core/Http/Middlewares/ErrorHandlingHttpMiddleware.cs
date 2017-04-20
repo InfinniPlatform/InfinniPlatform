@@ -1,9 +1,8 @@
-﻿using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.Logging;
 
 using Microsoft.AspNetCore.Builder;
 
-namespace InfinniPlatform.Core.Http.Middlewares
+namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
     /// Модуль хостинга для обработки ошибок выполнения запросов.

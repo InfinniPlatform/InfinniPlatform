@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Types
+namespace InfinniPlatform.Types
 {
     /// <summary>
     /// Время.

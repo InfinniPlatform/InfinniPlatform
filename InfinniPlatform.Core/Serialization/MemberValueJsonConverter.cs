@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// Осуществляет преобразование объекта в JSON-представление и обратно на основе <see cref="IMemberValueConverter"/>.

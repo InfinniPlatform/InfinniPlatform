@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Properties;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Http;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Properties;
 
-namespace InfinniPlatform.Core.Diagnostics
+namespace InfinniPlatform.Diagnostics
 {
     /// <summary>
     /// Реализует REST-сервис для получения информации о системе.

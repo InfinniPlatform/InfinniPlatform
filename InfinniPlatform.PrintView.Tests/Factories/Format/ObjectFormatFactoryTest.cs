@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 using InfinniPlatform.PrintView.Abstractions.Format;
 
 using NUnit.Framework;

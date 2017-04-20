@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Правило маршрутизации запросов.

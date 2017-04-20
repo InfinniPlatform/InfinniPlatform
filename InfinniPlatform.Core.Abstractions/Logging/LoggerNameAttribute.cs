@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Logging
 {
     /// <summary>
     /// Атрибут для определения имени источника событий.

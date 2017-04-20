@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace InfinniPlatform.Core.Security
+namespace InfinniPlatform.Security
 {
     /// <summary>
     /// Предоставляет метод для получения идентификационных данных текущего пользователя.

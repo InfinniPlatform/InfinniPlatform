@@ -1,6 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Http;
+using InfinniPlatform.Http;
 
 namespace InfinniPlatform.DocumentStorage
 {

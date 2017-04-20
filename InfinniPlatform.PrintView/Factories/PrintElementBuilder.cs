@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Abstractions.Defaults;
 using InfinniPlatform.PrintView.Expressions;

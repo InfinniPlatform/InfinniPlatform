@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Serialization;
 
 using Nancy;
 using Nancy.Responses.Negotiation;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     /// <summary>
     /// Реализация <see cref="IHttpRequest"/> на базе Nancy.

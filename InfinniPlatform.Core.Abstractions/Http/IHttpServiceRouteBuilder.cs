@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Регистратор правил маршрутизации запросов сервиса.

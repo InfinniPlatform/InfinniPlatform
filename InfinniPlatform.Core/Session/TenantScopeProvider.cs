@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace InfinniPlatform.Core.Session
+namespace InfinniPlatform.Session
 {
     public class TenantScopeProvider : ITenantScopeProvider
     {

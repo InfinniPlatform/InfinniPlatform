@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Hosting
+﻿namespace InfinniPlatform.Hosting
 {
     /// <summary>
     /// Обработчик события остановки приложения.

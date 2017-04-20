@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
+using InfinniPlatform.Dynamic;
 
 using NUnit.Framework;
 

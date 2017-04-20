@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Threading
+namespace InfinniPlatform.Threading
 {
     public static class AsyncHelper
     {

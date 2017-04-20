@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Threading;
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.DocumentStorage.Properties;
+using InfinniPlatform.Hosting;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Threading;
 
 namespace InfinniPlatform.DocumentStorage.Hosting
 {

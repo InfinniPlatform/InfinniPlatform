@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Properties;
 
 using Microsoft.AspNetCore.Http;
 
-namespace InfinniPlatform.Core.Http.Middlewares
+namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
     /// Обработчик HTTP-запросов для обработки ошибок выполнения запросов.

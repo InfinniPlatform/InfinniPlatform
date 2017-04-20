@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Extensions
+namespace InfinniPlatform.Extensions
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

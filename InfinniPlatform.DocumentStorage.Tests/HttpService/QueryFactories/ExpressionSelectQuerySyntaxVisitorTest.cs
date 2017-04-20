@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
 using InfinniPlatform.DocumentStorage.TestEntities;
+using InfinniPlatform.Dynamic;
 
 using NUnit.Framework;
 

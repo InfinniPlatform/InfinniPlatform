@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Logging;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Конвертер результата выполнения запроса по умолчанию.

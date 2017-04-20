@@ -7,13 +7,13 @@ using InfinniPlatform.Auth.Identity.MongoDb;
 using InfinniPlatform.Auth.Middlewares;
 using InfinniPlatform.Auth.Services;
 using InfinniPlatform.Auth.UserStorage;
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.IoC;
-using InfinniPlatform.Core.Settings;
 using InfinniPlatform.DocumentStorage;
 using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.Settings;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;

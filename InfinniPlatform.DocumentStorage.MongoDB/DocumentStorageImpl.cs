@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.Interceptors;
+using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage
 {

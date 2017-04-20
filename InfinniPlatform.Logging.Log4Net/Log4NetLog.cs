@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Security;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Security;
+using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.Logging
 {

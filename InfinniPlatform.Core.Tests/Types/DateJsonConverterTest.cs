@@ -1,9 +1,9 @@
-﻿using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Serialization;
+﻿using InfinniPlatform.Dynamic;
+using InfinniPlatform.Serialization;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Types
+namespace InfinniPlatform.Types
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

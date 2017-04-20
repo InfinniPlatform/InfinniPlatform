@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.Core.IoC;
+using InfinniPlatform.IoC;
 using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler.Common

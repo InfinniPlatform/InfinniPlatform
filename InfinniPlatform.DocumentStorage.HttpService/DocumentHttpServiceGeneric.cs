@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.BlobStorage;
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.Logging;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Http;
+using InfinniPlatform.Logging;
 
 namespace InfinniPlatform.DocumentStorage
 {

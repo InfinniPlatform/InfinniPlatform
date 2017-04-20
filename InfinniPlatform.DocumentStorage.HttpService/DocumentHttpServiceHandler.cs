@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Http;
+using InfinniPlatform.Http;
 
 namespace InfinniPlatform.DocumentStorage
 {

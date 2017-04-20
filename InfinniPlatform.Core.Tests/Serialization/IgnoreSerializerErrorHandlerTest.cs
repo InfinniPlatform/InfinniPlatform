@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

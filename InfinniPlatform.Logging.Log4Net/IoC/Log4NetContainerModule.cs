@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Core.IoC;
-using InfinniPlatform.Core.Logging;
+﻿using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Logging.IoC
 {

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Security
+﻿namespace InfinniPlatform.Security
 {
     /// <summary>
     /// Константы пространства имен <see cref="InfinniPlatform.Sdk.Security"/>.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.Interceptors
 {

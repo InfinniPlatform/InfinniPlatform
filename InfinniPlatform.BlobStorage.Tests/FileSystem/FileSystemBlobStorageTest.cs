@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Http;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Serialization;
 
 using Moq;
 

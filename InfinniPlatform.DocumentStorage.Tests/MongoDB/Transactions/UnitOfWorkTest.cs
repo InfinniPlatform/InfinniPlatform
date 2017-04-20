@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.Transactions;
+using InfinniPlatform.Dynamic;
 
 using Moq;
 

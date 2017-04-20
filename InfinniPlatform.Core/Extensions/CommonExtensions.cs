@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace InfinniPlatform.Core.Extensions
+namespace InfinniPlatform.Extensions
 {
     /// <summary>
     /// Содержит общие и часто используемые методы расширения.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Ответ в виде потока байт.

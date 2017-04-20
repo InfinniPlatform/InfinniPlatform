@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Nancy;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     /// <summary>
     /// Реализация <see cref="IHttpRequestHeaders"/> на базе Nancy.

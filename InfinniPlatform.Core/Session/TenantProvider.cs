@@ -1,8 +1,8 @@
 ﻿using System.Security.Principal;
 
-using InfinniPlatform.Core.Security;
+using InfinniPlatform.Security;
 
-namespace InfinniPlatform.Core.Session
+namespace InfinniPlatform.Session
 {
     /// <summary>
     /// Предоставляет методы определения пользователя системы по модели SaaS.

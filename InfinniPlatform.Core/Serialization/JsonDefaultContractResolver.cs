@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// Настройки сериализации <see cref="JsonObjectSerializer"/> по умолчанию.

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.IoC
+﻿namespace InfinniPlatform.IoC
 {
     /// <summary>
     /// Модуль регистрации зависимостей.

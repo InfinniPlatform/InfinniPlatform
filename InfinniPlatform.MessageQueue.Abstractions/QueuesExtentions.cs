@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-using InfinniPlatform.Core.IoC;
+using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
 namespace InfinniPlatform.MessageQueue.Abstractions

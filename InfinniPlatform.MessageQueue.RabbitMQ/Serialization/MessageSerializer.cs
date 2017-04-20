@@ -1,7 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.Serialization;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 

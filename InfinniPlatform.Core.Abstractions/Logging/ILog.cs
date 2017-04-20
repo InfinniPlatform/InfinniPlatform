@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Logging
 {
     /// <summary>
     /// Сервис регистрации событий.

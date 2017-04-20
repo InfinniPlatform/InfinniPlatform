@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Reflection;
 
-using InfinniPlatform.Core.IoC;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.IoC;
+using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.Logging.IoC
 {

@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Types
+namespace InfinniPlatform.Types
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

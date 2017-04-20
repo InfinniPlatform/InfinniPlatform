@@ -1,11 +1,11 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Types;
+using InfinniPlatform.Types;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// Осуществляет преобразование <see cref="Date"/> в JSON-представление и обратно.

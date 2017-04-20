@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
+using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage.QueryFactories
 {

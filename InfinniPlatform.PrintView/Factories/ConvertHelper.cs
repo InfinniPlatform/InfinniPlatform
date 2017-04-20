@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.PrintView.Factories
 {

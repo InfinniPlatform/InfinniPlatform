@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Settings
+namespace InfinniPlatform.Settings
 {
     /// <summary>
     /// Конфигурация приложения.

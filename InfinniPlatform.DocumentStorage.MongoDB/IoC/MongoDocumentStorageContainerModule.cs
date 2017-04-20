@@ -1,9 +1,9 @@
-﻿using InfinniPlatform.Core.Diagnostics;
-using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.IoC;
+﻿using InfinniPlatform.Diagnostics;
 using InfinniPlatform.DocumentStorage.Diagnostics;
 using InfinniPlatform.DocumentStorage.Hosting;
 using InfinniPlatform.DocumentStorage.Transactions;
+using InfinniPlatform.Hosting;
+using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.DocumentStorage.IoC
 {

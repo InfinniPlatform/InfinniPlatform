@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Core.Http;
 using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
 using InfinniPlatform.DocumentStorage.TestEntities;
+using InfinniPlatform.Http;
 
 using Moq;
 

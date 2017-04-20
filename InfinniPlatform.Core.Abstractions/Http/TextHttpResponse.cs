@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Ответ в виде текста.

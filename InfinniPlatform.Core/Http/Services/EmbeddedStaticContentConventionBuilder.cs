@@ -9,7 +9,7 @@ using Nancy;
 using Nancy.Helpers;
 using Nancy.Responses;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     internal static class EmbeddedStaticContentConventionBuilder
     {

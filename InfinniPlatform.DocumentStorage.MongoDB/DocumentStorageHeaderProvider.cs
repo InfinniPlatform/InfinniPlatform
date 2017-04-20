@@ -1,8 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Security;
-using InfinniPlatform.Core.Session;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Security;
+using InfinniPlatform.Session;
 
 namespace InfinniPlatform.DocumentStorage
 {

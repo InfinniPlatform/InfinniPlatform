@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Security.Principal;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Запрос.

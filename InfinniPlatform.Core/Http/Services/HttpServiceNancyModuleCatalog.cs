@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.IoC;
+using InfinniPlatform.IoC;
 
 using Nancy;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     /// <summary>
     /// Каталог модулей Nancy для сервисов <see cref="IHttpService" />.

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security.Claims;
 
-using InfinniPlatform.Core.Security;
-using InfinniPlatform.Core.Session;
 using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.Security;
+using InfinniPlatform.Session;
 
 using Moq;
 

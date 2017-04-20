@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.Core.IoC;
+﻿using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Cache.IoC
 {

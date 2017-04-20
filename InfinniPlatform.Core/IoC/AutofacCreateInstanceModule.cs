@@ -4,7 +4,7 @@ using System.Linq;
 using Autofac;
 using Autofac.Core;
 
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
     internal sealed class AutofacCreateInstanceModule : Module
     {

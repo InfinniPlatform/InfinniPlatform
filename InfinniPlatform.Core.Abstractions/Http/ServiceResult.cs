@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.Http
+﻿namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Результат обработки запроса.

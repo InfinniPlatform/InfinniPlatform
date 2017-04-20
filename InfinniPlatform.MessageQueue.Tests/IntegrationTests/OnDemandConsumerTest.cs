@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 using InfinniPlatform.MessageQueue.RabbitMQ;
 
 using Moq;

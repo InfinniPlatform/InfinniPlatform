@@ -1,11 +1,9 @@
-﻿using InfinniPlatform.Http.Middlewares;
-
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
 using Nancy.Bootstrapper;
 using Nancy.Owin;
 
-namespace InfinniPlatform.Core.Http.Middlewares
+namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
     /// Модуль хостинга для обработки прикладных запросов на базе Nancy.

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.Dynamic;
 
 using NUnit.Framework;
 

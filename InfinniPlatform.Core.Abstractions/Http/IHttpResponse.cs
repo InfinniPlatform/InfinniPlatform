@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Ответ.

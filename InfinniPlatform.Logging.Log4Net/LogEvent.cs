@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.Logging
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace InfinniPlatform.Core.Logging
+namespace InfinniPlatform.Logging
 {
     public static class LogExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
     public sealed class AutofacContainerModule : Module
     {

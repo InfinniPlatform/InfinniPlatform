@@ -1,8 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Serialization;
 
-namespace InfinniPlatform.Core.Http
+namespace InfinniPlatform.Http
 {
     /// <summary>
     /// Ответ в виде JSON-объекта.

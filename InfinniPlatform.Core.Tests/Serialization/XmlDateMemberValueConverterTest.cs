@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-using InfinniPlatform.Core.Types;
+using InfinniPlatform.Types;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

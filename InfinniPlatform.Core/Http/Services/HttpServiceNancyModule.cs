@@ -1,6 +1,6 @@
 ﻿using Nancy;
 
-namespace InfinniPlatform.Core.Http.Services
+namespace InfinniPlatform.Http.Services
 {
     /// <summary>
     /// Модуль Nancy для сервиса <see cref="IHttpService"/>.

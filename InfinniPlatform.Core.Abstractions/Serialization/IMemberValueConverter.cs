@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// Определяет правила преобразования значения свойства при выполнении сериализации и десериализации.

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.Dynamic;
 
 using MongoDB.Driver;
 

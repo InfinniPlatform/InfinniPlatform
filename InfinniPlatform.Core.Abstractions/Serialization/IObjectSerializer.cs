@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// Сериализатор объектов.

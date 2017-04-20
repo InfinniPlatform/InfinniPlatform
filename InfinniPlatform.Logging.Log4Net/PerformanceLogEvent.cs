@@ -1,7 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.Logging
 {

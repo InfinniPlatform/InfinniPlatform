@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.Core.Dynamic;
+using InfinniPlatform.Dynamic;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     /// <summary>
     /// Осуществляет преобразование <see cref="DynamicWrapper"/> в JSON-представление и обратно.

@@ -2,8 +2,8 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.PrintView.Abstractions.Defaults;
+using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.PrintView.Abstractions
 {

@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Hosting;
-using InfinniPlatform.Core.Logging;
 using InfinniPlatform.MessageQueue.Abstractions;
 using InfinniPlatform.MessageQueue.Abstractions.Consumers;
-using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.Core.Settings;
+using InfinniPlatform.Hosting;
+using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.RabbitMq.Management;
 using InfinniPlatform.MessageQueue.RabbitMq.Management.HttpAPI;
 using InfinniPlatform.MessageQueue.RabbitMQ;
 using InfinniPlatform.MessageQueue.RabbitMQ.Hosting;
 using InfinniPlatform.MessageQueue.RabbitMQ.Serialization;
+using InfinniPlatform.Serialization;
+using InfinniPlatform.Settings;
 
 using Moq;
 

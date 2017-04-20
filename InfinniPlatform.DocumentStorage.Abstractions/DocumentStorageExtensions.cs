@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.DocumentStorage.Transactions;
+using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage
 {

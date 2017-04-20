@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 
 using Autofac;
 using Autofac.Core.Lifetime;
+
 using InfinniPlatform.Http.Middlewares;
+
 using Microsoft.AspNetCore.Http;
 
-namespace InfinniPlatform.Core.IoC.Http
+namespace InfinniPlatform.IoC.Http
 {
     /// <summary>
     /// Слой OWIN для регистрации контейнера зависимостей запроса.

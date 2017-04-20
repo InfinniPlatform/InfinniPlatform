@@ -1,7 +1,7 @@
 ﻿using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.Core.Session
+namespace InfinniPlatform.Session
 {
     /// <summary>
     /// Обработчик событий пользователя.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using InfinniPlatform.Core.Session;
+using InfinniPlatform.Session;
 
 namespace InfinniPlatform.DocumentStorage
 {

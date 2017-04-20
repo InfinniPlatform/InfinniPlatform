@@ -3,9 +3,8 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Serialization;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Serialization;
 
 using log4net.Config;
 using log4net.Core;

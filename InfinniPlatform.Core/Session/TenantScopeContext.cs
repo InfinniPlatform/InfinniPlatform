@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.Core.Session
+namespace InfinniPlatform.Session
 {
     [Serializable]
     internal class TenantScopeContext : IDisposable

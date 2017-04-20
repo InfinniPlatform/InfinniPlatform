@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.Http;
-using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Http;
+using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.DocumentStorage.QueryFactories
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
     public static class ContainerExtensions
     {

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.TestEntities
+﻿namespace InfinniPlatform.TestEntities
 {
     internal class Employee : Person
     {

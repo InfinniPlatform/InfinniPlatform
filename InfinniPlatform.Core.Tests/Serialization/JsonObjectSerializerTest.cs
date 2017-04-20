@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.Core.TestEntities;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.TestEntities;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Serialization
+namespace InfinniPlatform.Serialization
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
