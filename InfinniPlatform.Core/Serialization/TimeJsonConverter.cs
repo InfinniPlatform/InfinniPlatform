@@ -12,12 +12,9 @@ namespace InfinniPlatform.Serialization
     /// </summary>
     internal class TimeJsonConverter : JsonConverter
     {
-        private static readonly Type ConvertType = typeof(Time);
-
-
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == ConvertType);
+            return (objectType == typeof(Time) || objectType == typeof(Time?));
         }
 
 

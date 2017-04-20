@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using ImageSharp;
@@ -76,9 +77,11 @@ namespace InfinniPlatform.PrintView
         {
             var assembly = typeof(ResourceHelper).GetTypeInfo().Assembly;
 
-            var resource = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{resourceName}");
+            var fullResourceName = assembly.GetManifestResourceNames().FirstOrDefault(i => i.EndsWith(resourceName));
 
-            return resource;
+            var resourceStream = assembly.GetManifestResourceStream(fullResourceName);
+
+            return resourceStream;
         }
     }
 }

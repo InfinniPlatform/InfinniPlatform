@@ -57,7 +57,7 @@ namespace InfinniPlatform.Dynamic
         public void AddItemShouldThrowExceptionWhenReadOnlyCollection()
         {
             // Given
-            var target = new int[] {};
+            var target = new int[] { };
 
             // When
             TestDelegate test = () => target.AddItem(11);
@@ -70,7 +70,7 @@ namespace InfinniPlatform.Dynamic
         public void GetPropertyShouldReturnCollectionItemWhenTargetIsCollection()
         {
             // Given
-            var target = new List<int> {11, 22, 33};
+            var target = new List<int> { 11, 22, 33 };
 
             // When
             var result = target.GetProperty("1");
@@ -132,7 +132,7 @@ namespace InfinniPlatform.Dynamic
         public void InsertItemShouldThrowExceptionWhenReadOnlyCollection()
         {
             // Given
-            var target = new int[] {};
+            var target = new int[] { };
 
             // When
             TestDelegate test = () => target.InsertItem(0, 11);
@@ -171,7 +171,7 @@ namespace InfinniPlatform.Dynamic
         public void RemoveItemAtShouldThrowExceptionWhenReadOnlyCollection()
         {
             // Given
-            var target = new[] {11};
+            var target = new[] { 11 };
 
             // When
             TestDelegate test = () => target.RemoveItemAt(0);
@@ -194,7 +194,7 @@ namespace InfinniPlatform.Dynamic
         public void RemoveItemShouldThrowExceptionWhenReadOnlyCollection()
         {
             // Given
-            var target = new int[] {};
+            var target = new int[] { };
 
             // When
             TestDelegate test = () => target.RemoveItem(11);
@@ -257,13 +257,13 @@ namespace InfinniPlatform.Dynamic
         public void SetPropertyShouldReplaceCollectionItemWhenTargetIsCollection()
         {
             // Given
-            var target = new List<int> {11, 00, 33};
+            var target = new List<int> { 11, 00, 33 };
 
             // When
             target.SetProperty("1", 22);
 
             // Then
-            Assert.AreEqual(new[] {11, 22, 33}, target);
+            Assert.AreEqual(new[] { 11, 22, 33 }, target);
         }
 
         [Test]
@@ -313,53 +313,53 @@ namespace InfinniPlatform.Dynamic
             target.AddItem(33);
 
             // Then
-            CollectionAssert.AreEqual(new[] {11, 22, 33}, target);
+            CollectionAssert.AreEqual(new[] { 11, 22, 33 }, target);
         }
 
         [Test]
         public void SholdInsertItemToList()
         {
             // Given
-            var target = new List<int> {11, 33};
+            var target = new List<int> { 11, 33 };
 
             // When
             target.InsertItem(1, 22);
 
             // Then
-            CollectionAssert.AreEqual(new[] {11, 22, 33}, target);
+            CollectionAssert.AreEqual(new[] { 11, 22, 33 }, target);
         }
 
         [Test]
         public void SholdRemoveItemAtFromList()
         {
             // Given
-            var target = new List<int> {11, 22, 33};
+            var target = new List<int> { 11, 22, 33 };
 
             // When
             target.RemoveAt(1);
 
             // Then
-            CollectionAssert.AreEqual(new[] {11, 33}, target);
+            CollectionAssert.AreEqual(new[] { 11, 33 }, target);
         }
 
         [Test]
         public void SholdRemoveItemFromList()
         {
             // Given
-            var target = new List<int> {11, 22, 33};
+            var target = new List<int> { 11, 22, 33 };
 
             // When
             target.RemoveItem(22);
 
             // Then
-            CollectionAssert.AreEqual(new[] {11, 33}, target);
+            CollectionAssert.AreEqual(new[] { 11, 33 }, target);
         }
 
         [Test]
         public void ShouldGetItemFromArray()
         {
             // Given
-            var target = new[] {11, 22, 33};
+            var target = new[] { 11, 22, 33 };
 
             // When
             var item0 = target.GetItem(0);
@@ -376,7 +376,7 @@ namespace InfinniPlatform.Dynamic
         public void ShouldGetItemFromList()
         {
             // Given
-            var target = new List<int> {11, 22, 33};
+            var target = new List<int> { 11, 22, 33 };
 
             // When
             var item0 = target.GetItem(0);
@@ -394,7 +394,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             var value = new object();
-            var target = new {Property2 = new {NestedProperty1 = value}};
+            var target = new { Property2 = new { NestedProperty1 = value } };
 
             // When
             var result = target.GetProperty("Property2.NestedProperty1");
@@ -442,7 +442,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             var value = new object();
-            var target = new SomeClass1 {Property2 = new SomeClass2 {NestedProperty1 = value}};
+            var target = new SomeClass1 { Property2 = new SomeClass2 { NestedProperty1 = value } };
 
             // When
             var result = target.GetProperty("Property2.NestedProperty1");
@@ -456,7 +456,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             var value = new object();
-            var target = new {Property1 = value};
+            var target = new { Property1 = value };
 
             // When
             var result = target.GetProperty("Property1");
@@ -500,7 +500,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             var value = new object();
-            var target = new SomeClass1 {Property1 = value};
+            var target = new SomeClass1 { Property1 = value };
 
             // When
             var result = target.GetProperty("Property1");
@@ -541,26 +541,26 @@ namespace InfinniPlatform.Dynamic
         public void ShouldSetItemItemToArray()
         {
             // Given
-            var target = new[] {11, 00, 33};
+            var target = new[] { 11, 00, 33 };
 
             // When
             target.SetItem(1, 22);
 
             // Then
-            CollectionAssert.AreEqual(new[] {11, 22, 33}, target);
+            CollectionAssert.AreEqual(new[] { 11, 22, 33 }, target);
         }
 
         [Test]
         public void ShouldSetItemItemToList()
         {
             // Given
-            var target = new List<int> {11, 00, 33};
+            var target = new List<int> { 11, 00, 33 };
 
             // When
             target.SetItem(1, 22);
 
             // Then
-            CollectionAssert.AreEqual(new[] {11, 22, 33}, target);
+            CollectionAssert.AreEqual(new[] { 11, 22, 33 }, target);
         }
 
         [Test]
@@ -600,7 +600,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             var value = new object();
-            var target = new SomeClass1 {Property2 = new SomeClass2()};
+            var target = new SomeClass1 { Property2 = new SomeClass2() };
 
             // When
             target.SetProperty("Property2.NestedProperty1", value);

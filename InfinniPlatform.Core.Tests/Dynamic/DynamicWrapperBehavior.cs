@@ -6,15 +6,13 @@ using InfinniPlatform.Tests;
 
 using Microsoft.CSharp.RuntimeBinder;
 
-using Newtonsoft.Json;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.Dynamic
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
-    public sealed class DynamicWrapperBehavior
+    public class DynamicWrapperBehavior
     {
         [TestCase(1)]
         [TestCase("test")]
@@ -28,13 +26,6 @@ namespace InfinniPlatform.Dynamic
 
             Assert.AreEqual(dynamicWrapper.Property, value);
         }
-
-
-        private class TestClass
-        {
-            public string SomeProperty { get; set; }
-        }
-
 
         [Test]
         public void ShouldAddProperty()
@@ -82,74 +73,6 @@ namespace InfinniPlatform.Dynamic
 
             Assert.IsNotNull(someInstance.WrapperProperty.Property1);
             Assert.AreEqual(someInstance.WrapperProperty.Property1, "test");
-        }
-
-        [Test]
-        public void ShouldConvertJObjectToJObject()
-        {
-            // Given
-
-            dynamic obj = new DynamicWrapper();
-            obj.SomeValue = 1;
-
-            // When
-            dynamic result = JsonConvert.SerializeObject(obj);
-            // Then
-            Assert.AreEqual("{\"SomeValue\":1}", result);
-        }
-
-        [Test]
-        public void ShouldConvertOwnedArrayToJObject()
-        {
-            var ownedArray = new List<dynamic>();
-            dynamic instance1 = new DynamicWrapper();
-            instance1.TestProperty = 1;
-
-            dynamic instance2 = new DynamicWrapper();
-            instance2.TestProperty = 2;
-
-            ownedArray.Add(instance1);
-            ownedArray.Add(instance2);
-
-            dynamic hostInstance = new DynamicWrapper();
-
-            hostInstance.Result = ownedArray;
-            Assert.AreEqual(string.Format("{{{0}  \"Result\": [{0}    {{{0}      \"TestProperty\": 1{0}    }},{0}    {{{0}      \"TestProperty\": 2{0}    }}{0}  ]{0}}}", Environment.NewLine), hostInstance.ToString());
-        }
-
-        [Test]
-        public void ShouldConvertSimpleObjectToJObject()
-        {
-            // Given
-
-            var obj = new TestClass { SomeProperty = "1" };
-
-            // When
-            var result = JsonConvert.SerializeObject(obj);
-
-            // Then
-            Assert.AreEqual("{\"SomeProperty\":\"1\"}", result);
-        }
-
-        [Test]
-        public void ShouldConvertToJObject()
-        {
-            // Given
-            dynamic dynamicWrapper = new DynamicWrapper();
-            dynamic obj = new DynamicWrapper();
-            obj.SomeValue = 1;
-
-            dynamic jarray = new[] { "3" };
-
-            dynamicWrapper.SomeObj = obj;
-            dynamicWrapper.SomeValue = 2;
-            dynamicWrapper.SomeArray = jarray;
-
-            // When
-            dynamic jobject = JsonConvert.SerializeObject(dynamicWrapper);
-
-            // Then
-            Assert.AreEqual("{\"SomeObj\":{\"SomeValue\":1},\"SomeValue\":2,\"SomeArray\":[\"3\"]}", jobject);
         }
 
         [Test]

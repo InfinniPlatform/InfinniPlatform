@@ -12,15 +12,6 @@ namespace InfinniPlatform.Dynamic
     [Category(TestCategories.UnitTest)]
     public sealed class DynamicWrapperTest
     {
-        // Clone()
-
-        private static dynamic CreateTestEntity(object content)
-        {
-            dynamic result = new DynamicWrapper();
-            result.Content = content;
-            return result;
-        }
-
         private class SomePrototype : DynamicWrapper
         {
             public string PrototypeField;
