@@ -1,9 +1,9 @@
 ﻿using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.Logging;
 
-namespace InfinniPlatform.Log4NetAdapter
+namespace InfinniPlatform.Logging.IoC
 {
-    internal class LoggingContainerModule : IContainerModule
+    public class Log4NetContainerModule : IContainerModule
     {
         public void Load(IContainerBuilder builder)
         {

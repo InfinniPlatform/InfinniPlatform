@@ -3,12 +3,12 @@
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Serialization;
 
-namespace InfinniPlatform.Log4NetAdapter
+namespace InfinniPlatform.Logging
 {
     /// <summary>
     /// Сервис <see cref="IPerformanceLog" /> на базе log4net.
     /// </summary>
-    internal sealed class Log4NetPerformanceLog : IPerformanceLog
+    public class Log4NetPerformanceLog : IPerformanceLog
     {
         public Log4NetPerformanceLog(log4net.ILog internalLog, IJsonObjectSerializer serializer)
         {

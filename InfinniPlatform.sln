@@ -53,7 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{
 		Files\Packaging\SetPackageInfo.ps1 = Files\Packaging\SetPackageInfo.ps1
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Log4NetAdapter", "InfinniPlatform.Log4NetAdapter\InfinniPlatform.Log4NetAdapter.csproj", "{27EC3648-A4AD-4648-B601-9AF815A740E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Logging.Log4Net", "InfinniPlatform.Logging.Log4Net\InfinniPlatform.Logging.Log4Net.csproj", "{27EC3648-A4AD-4648-B601-9AF815A740E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{296EF39D-F3DC-4AAF-946A-FC704D5BAF93}"
 	ProjectSection(SolutionItems) = preProject

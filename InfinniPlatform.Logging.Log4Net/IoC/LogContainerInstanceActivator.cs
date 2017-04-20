@@ -5,9 +5,9 @@ using System.Reflection;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.Serialization;
 
-namespace InfinniPlatform.Log4NetAdapter
+namespace InfinniPlatform.Logging.IoC
 {
-    internal sealed class LogContainerInstanceActivator<T> : IContainerInstanceActivator
+    public class LogContainerInstanceActivator<T> : IContainerInstanceActivator
     {
         public LogContainerInstanceActivator(Func<Type, IJsonObjectSerializer, T> logFactory)
         {

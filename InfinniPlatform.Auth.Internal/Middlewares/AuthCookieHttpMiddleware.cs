@@ -12,12 +12,12 @@ namespace InfinniPlatform.Auth.Middlewares
     /// </summary>
     internal class AuthCookieHttpMiddleware : HttpMiddlewareBase<AuthCookieMiddlewareOptions>
     {
-        private readonly AuthCookieHttpMiddlewareSettings _settings;
-
         public AuthCookieHttpMiddleware(AuthCookieHttpMiddlewareSettings settings) : base(HttpMiddlewareType.AuthenticationBarrier)
         {
             _settings = settings;
         }
+
+        private readonly AuthCookieHttpMiddlewareSettings _settings;
 
         public override void Configure(IApplicationBuilder app, AuthCookieMiddlewareOptions options)
         {

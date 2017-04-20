@@ -1,11 +1,12 @@
-﻿using InfinniPlatform.Log4NetAdapter;
+﻿using InfinniPlatform.Logging.IoC;
+
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
 
-namespace InfinniPlatform.Extensions
+namespace InfinniPlatform.AspNetCore
 {
-    public static class AspNetExtensions
+    public static class Log4NetExtensions
     {
         /// <summary>
         /// Регистрирует сервисы для log4net.
@@ -13,9 +14,7 @@ namespace InfinniPlatform.Extensions
         /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
         public static IServiceCollection AddLog4NetAdapter(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton(provider => new LoggingContainerModule());
-
-            return serviceCollection;
+            return serviceCollection.AddSingleton(provider => new Log4NetContainerModule());
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>InfinniPlatform.Http</AssemblyName>
+    <AssemblyName>InfinniPlatform.Http.Abstractions</AssemblyName>
     <RootNamespace>InfinniPlatform.Http</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>

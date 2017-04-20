@@ -11,16 +11,16 @@ using log4net.Config;
 using log4net.Core;
 using log4net.Repository;
 
-namespace InfinniPlatform.Log4NetAdapter
+namespace InfinniPlatform.Logging
 {
-    internal static class LogManagerCache
+    public static class LogManagerCache
     {
-        private static ILoggerRepository _loggerRepository;
+        private static readonly ILoggerRepository LoggerRepository;
 
         static LogManagerCache()
         {
-            _loggerRepository = LoggerManager.GetRepository(Assembly.GetEntryAssembly());
-            XmlConfigurator.Configure(_loggerRepository, new FileInfo("AppLog.config"));
+            LoggerRepository = LoggerManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(LoggerRepository, new FileInfo("AppLog.config"));
 
             log4net.Util.SystemInfo.NullText = "null";
         }
@@ -77,7 +77,7 @@ namespace InfinniPlatform.Log4NetAdapter
 
             if (!InternalLogs.TryGetValue(loggerName, out internalLog))
             {
-                internalLog = new LogImpl(_loggerRepository.GetLogger(prefix));
+                internalLog = new LogImpl(LoggerRepository.GetLogger(prefix));
                 InternalLogs.TryAdd(loggerName, internalLog);
             }
 

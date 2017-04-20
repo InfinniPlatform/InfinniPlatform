@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>InfinniPlatform.Log4NetAdapter</AssemblyName>
-    <RootNamespace>InfinniPlatform.Log4NetAdapter</RootNamespace>
+    <AssemblyName>InfinniPlatform.Logging.Log4Net</AssemblyName>
+    <RootNamespace>InfinniPlatform.Logging</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>

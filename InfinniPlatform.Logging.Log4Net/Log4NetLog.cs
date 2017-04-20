@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 
+using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Serialization;
 
-using log4net;
-using ILog = InfinniPlatform.Core.Logging.ILog;
-
-namespace InfinniPlatform.Log4NetAdapter
+namespace InfinniPlatform.Logging
 {
     /// <summary>
     /// Сервис <see cref="ILog" /> на базе log4net.
     /// </summary>
-    internal sealed class Log4NetLog : Core.Logging.ILog
+    public class Log4NetLog : ILog
     {
-        private const string KeyRequestId = "app.RequestId";
         private const string KeyUserId = "app.UserId";
         private const string KeyUserName = "app.UserName";
+        private const string KeyRequestId = "app.RequestId";
 
 
         public Log4NetLog(log4net.ILog internalLog, IJsonObjectSerializer serializer)
@@ -70,20 +68,20 @@ namespace InfinniPlatform.Log4NetAdapter
 
         public void SetRequestId(object requestId)
         {
-            ThreadContext.Properties[KeyRequestId] = requestId;
+            log4net.ThreadContext.Properties[KeyRequestId] = requestId;
         }
 
         public void SetUserId(IIdentity user)
         {
             if (user != null)
             {
-                ThreadContext.Properties[KeyUserId] = user.GetUserId();
-                ThreadContext.Properties[KeyUserName] = user.Name;
+                log4net.ThreadContext.Properties[KeyUserId] = user.GetUserId();
+                log4net.ThreadContext.Properties[KeyUserName] = user.Name;
             }
             else
             {
-                ThreadContext.Properties[KeyUserId] = null;
-                ThreadContext.Properties[KeyUserName] = null;
+                log4net.ThreadContext.Properties[KeyUserId] = null;
+                log4net.ThreadContext.Properties[KeyUserName] = null;
             }
         }
     }

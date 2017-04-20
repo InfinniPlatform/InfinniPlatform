@@ -11,31 +11,30 @@ namespace InfinniPlatform.Auth.Middlewares
     /// </summary>
     internal class AuthInternalHttpMiddleware : HttpMiddlewareBase<AuthInternalMiddlewareOptions>
     {
-        private readonly IUserIdentityProvider _identityProvider;
-        private readonly ILog _log;
-
-        public AuthInternalHttpMiddleware(IUserIdentityProvider identityProvider,
-                                          ILog log)
-            : base(HttpMiddlewareType.InternalAuthentication)
+        public AuthInternalHttpMiddleware(IUserIdentityProvider identityProvider, ILog log) : base(HttpMiddlewareType.InternalAuthentication)
         {
             _identityProvider = identityProvider;
             _log = log;
         }
 
 
+        private readonly IUserIdentityProvider _identityProvider;
+        private readonly ILog _log;
+
+
         public override void Configure(IApplicationBuilder app, AuthInternalMiddlewareOptions options)
         {
             // Прослойка для установки информации об идентификационных данных текущего пользователя
             app.Use((httpContext, nextOwinMiddleware) =>
-                        {
-                            var requestUser = httpContext.User;
+                    {
+                        var requestUser = httpContext.User;
 
-                            _identityProvider.SetUserIdentity(requestUser);
+                        _identityProvider.SetUserIdentity(requestUser);
 
-                            _log.SetUserId(requestUser?.Identity);
+                        _log.SetUserId(requestUser?.Identity);
 
-                            return nextOwinMiddleware.Invoke();
-                        });
+                        return nextOwinMiddleware.Invoke();
+                    });
         }
     }
 }

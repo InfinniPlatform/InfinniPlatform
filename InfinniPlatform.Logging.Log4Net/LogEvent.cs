@@ -1,53 +1,59 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Serialization;
 
-namespace InfinniPlatform.Log4NetAdapter
+namespace InfinniPlatform.Logging
 {
     // ReSharper disable InconsistentNaming
     // ReSharper disable NotAccessedField.Global
     // ReSharper disable MemberCanBePrivate.Global
 
     /// <summary>
-    /// Представляет запись события журнала сообщений для <see cref="IPerformanceLog"/>.
+    /// Представляет запись события журнала сообщений для <see cref="ILog"/>.
     /// </summary>
     [Serializable]
-    internal sealed class PerformanceLogEvent
+    public class LogEvent
     {
-        public PerformanceLogEvent(string method, long duration, Exception exception, IJsonObjectSerializer serializer)
+        public LogEvent(string message, Exception exception, Func<Dictionary<string, object>> context, IJsonObjectSerializer serializer)
         {
-            _method = method;
-            _duration = duration;
+            _message = message;
             _exception = exception;
+            _context = context;
             _serializer = serializer;
         }
 
 
         [NonSerialized]
-        private readonly string _method;
-        [NonSerialized]
-        private readonly long _duration;
+        private readonly string _message;
         [NonSerialized]
         private readonly Exception _exception;
+        [NonSerialized]
+        private readonly Func<Dictionary<string, object>> _context;
         [NonSerialized]
         private readonly IJsonObjectSerializer _serializer;
 
 
         /// <summary>
-        /// Метод компонента.
+        /// Сообщение события.
         /// </summary>
-        public string m;
+        public string msg;
 
         /// <summary>
-        /// Длительность выполнения метода.
-        /// </summary>
-        public long d;
-
-        /// <summary>
-        /// Сообщение исключения при выполнении метода.
+        /// Сообщение исключения.
         /// </summary>
         public string ex;
+
+        /// <summary>
+        /// Стек вызова исключения.
+        /// </summary>
+        public string stack;
+
+        /// <summary>
+        /// Контекст возникновения события.
+        /// </summary>
+        public Dictionary<string, object> ctx;
 
 
         /// <summary>
@@ -61,12 +67,17 @@ namespace InfinniPlatform.Log4NetAdapter
         {
             if (_toString == null)
             {
-                m = _method;
-                d = _duration;
+                msg = _message;
 
                 if (_exception != null)
                 {
                     ex = ExecuteSilent(() => _exception.GetFullMessage());
+                    stack = ExecuteSilent(() => _exception.GetFullStackTrace());
+                }
+
+                if (_context != null)
+                {
+                    ctx = ExecuteSilent(() => _context());
                 }
 
                 _toString = ExecuteSilent(() => _serializer.ConvertToString(this)) ?? string.Empty;

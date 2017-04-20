@@ -5,7 +5,7 @@ using System.Text;
 
 using InfinniPlatform.Core.Logging;
 
-namespace InfinniPlatform.Log4NetAdapter
+namespace InfinniPlatform.Logging
 {
     /// <summary>
     /// Пробрасывает сообщения из <see cref="Trace"/> в <see cref="ILog"/>.
