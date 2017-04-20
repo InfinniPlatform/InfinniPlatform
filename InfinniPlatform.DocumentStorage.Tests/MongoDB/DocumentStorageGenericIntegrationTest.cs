@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.TestEntities;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

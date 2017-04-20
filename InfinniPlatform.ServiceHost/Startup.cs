@@ -1,6 +1,5 @@
 ﻿using System;
 
-using InfinniPlatform.Extensions;
 using InfinniPlatform.AspNetCore;
 using InfinniPlatform.IoC;
 
@@ -31,6 +30,7 @@ namespace InfinniPlatform.ServiceHost
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddAuth()
+                                            .AddLog4NetLogging()
                                             .AddInMemoryCache()
                                             .AddRedisSharedCache()
                                             .AddTwoLayerCache()
@@ -38,11 +38,10 @@ namespace InfinniPlatform.ServiceHost
                                             .AddBlobStorageHttpService()
                                             .AddMongoDocumentStorage(_configuration)
                                             .AddDocumentStorageHttpService()
-                                            .AddLog4NetLogging()
                                             .AddRabbitMqMessageQueue(_configuration)
-                                            .AddPrintView(_configuration)
                                             .AddQuartzScheduler(_configuration)
                                             .AddSchedulerHttpService()
+                                            .AddPrintView(_configuration)
                                             .BuildProvider(_configuration);
 
             return configureServices;

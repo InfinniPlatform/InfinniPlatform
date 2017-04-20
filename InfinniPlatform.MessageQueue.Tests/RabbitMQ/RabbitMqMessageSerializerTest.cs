@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Serialization;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

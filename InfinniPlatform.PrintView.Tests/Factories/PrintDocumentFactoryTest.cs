@@ -2,6 +2,7 @@
 
 using InfinniPlatform.PrintView.Block;
 using InfinniPlatform.PrintView.Defaults;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Scheduler.Common;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

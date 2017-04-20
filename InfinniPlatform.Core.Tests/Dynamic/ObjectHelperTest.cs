@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
 
+using InfinniPlatform.Tests;
+
 using Microsoft.CSharp.RuntimeBinder;
 
 using NUnit.Framework;

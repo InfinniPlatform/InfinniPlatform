@@ -1,5 +1,6 @@
 ﻿using InfinniPlatform.DocumentStorage.Specifications;
 using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using Moq;
 

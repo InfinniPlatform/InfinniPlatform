@@ -4,6 +4,7 @@ using System.IO;
 using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Serialization;
+using InfinniPlatform.Tests;
 
 using Moq;
 

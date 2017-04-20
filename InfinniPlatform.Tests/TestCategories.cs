@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform
+﻿namespace InfinniPlatform.Tests
 {
     /// <summary>
     /// Категории тестов.

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

@@ -3,6 +3,7 @@
 using InfinniPlatform.PrintView.Defaults;
 using InfinniPlatform.PrintView.Format;
 using InfinniPlatform.PrintView.Inline;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

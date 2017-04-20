@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

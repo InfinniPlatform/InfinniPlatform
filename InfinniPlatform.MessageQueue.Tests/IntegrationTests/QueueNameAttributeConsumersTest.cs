@@ -2,6 +2,7 @@
 using System.Threading;
 
 using InfinniPlatform.MessageQueue.TestConsumers;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

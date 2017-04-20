@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using InfinniPlatform.Tests;
+
+using NUnit.Framework;
 
 namespace InfinniPlatform.Extensions
 {

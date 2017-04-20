@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.PrintView.Format;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

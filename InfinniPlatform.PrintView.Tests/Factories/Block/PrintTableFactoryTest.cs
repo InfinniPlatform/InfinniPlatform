@@ -3,6 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.PrintView.Block;
 using InfinniPlatform.PrintView.Inline;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

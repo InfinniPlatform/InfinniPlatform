@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.IoC;
+using InfinniPlatform.Tests;
 
 using Moq;
 

@@ -6,6 +6,7 @@ using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
 using InfinniPlatform.DocumentStorage.TestEntities;
 using InfinniPlatform.Http;
+using InfinniPlatform.Tests;
 
 using Moq;
 

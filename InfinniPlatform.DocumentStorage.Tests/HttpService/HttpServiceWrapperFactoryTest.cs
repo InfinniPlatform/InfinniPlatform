@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.Http;
+using InfinniPlatform.Tests;
 
 using Moq;
 

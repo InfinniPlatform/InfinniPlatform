@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 
 using InfinniPlatform.PrintView.Expressions.Parser;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

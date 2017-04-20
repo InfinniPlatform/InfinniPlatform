@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Dynamic;
 
+using InfinniPlatform.Tests;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Dynamic

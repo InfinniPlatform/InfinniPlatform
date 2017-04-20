@@ -8,6 +8,7 @@ using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
 using InfinniPlatform.Serialization;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

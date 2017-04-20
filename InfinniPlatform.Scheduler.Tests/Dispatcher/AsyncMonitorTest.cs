@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 
+using InfinniPlatform.Tests;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Scheduler.Dispatcher

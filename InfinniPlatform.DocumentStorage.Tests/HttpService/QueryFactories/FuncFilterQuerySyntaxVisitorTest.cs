@@ -8,6 +8,7 @@ using InfinniPlatform.DocumentStorage.MongoDB;
 using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
 using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

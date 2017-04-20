@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.DocumentStorage.QuerySyntax;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

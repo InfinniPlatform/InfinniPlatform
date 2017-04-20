@@ -1,4 +1,5 @@
 ﻿using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

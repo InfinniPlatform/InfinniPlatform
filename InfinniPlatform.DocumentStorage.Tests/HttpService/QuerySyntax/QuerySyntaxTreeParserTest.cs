@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 
 using InfinniPlatform.DocumentStorage.QuerySyntax;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

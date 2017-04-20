@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
+using InfinniPlatform.Tests;
 using InfinniPlatform.Types;
 
 using NUnit.Framework;

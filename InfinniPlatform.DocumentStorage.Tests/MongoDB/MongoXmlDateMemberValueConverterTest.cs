@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Serialization;
+using InfinniPlatform.Tests;
 using InfinniPlatform.Types;
 
 using NUnit.Framework;

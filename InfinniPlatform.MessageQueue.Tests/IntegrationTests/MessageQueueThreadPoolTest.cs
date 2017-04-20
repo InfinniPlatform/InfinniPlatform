@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.MessageQueue.Hosting;
 using InfinniPlatform.MessageQueue.TestConsumers;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

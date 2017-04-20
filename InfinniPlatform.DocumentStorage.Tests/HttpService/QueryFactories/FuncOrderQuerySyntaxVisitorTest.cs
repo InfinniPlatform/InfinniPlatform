@@ -4,6 +4,7 @@ using System.Linq;
 
 using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

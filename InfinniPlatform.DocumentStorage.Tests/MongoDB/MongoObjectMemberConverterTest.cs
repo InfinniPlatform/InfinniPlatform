@@ -2,6 +2,7 @@
 using System.Linq;
 
 using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

@@ -1,5 +1,7 @@
 using System;
 
+using InfinniPlatform.Tests;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Cache.Memory

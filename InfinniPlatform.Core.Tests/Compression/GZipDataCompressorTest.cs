@@ -1,5 +1,7 @@
 ﻿using System.IO;
 
+using InfinniPlatform.Tests;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Compression

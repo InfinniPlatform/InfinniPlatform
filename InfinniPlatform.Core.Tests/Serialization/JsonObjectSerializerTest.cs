@@ -6,6 +6,7 @@ using System.Linq;
 
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.TestEntities;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

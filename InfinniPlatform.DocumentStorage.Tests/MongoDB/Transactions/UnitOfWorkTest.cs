@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Transactions;
 using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using Moq;
 

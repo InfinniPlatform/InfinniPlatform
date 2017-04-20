@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

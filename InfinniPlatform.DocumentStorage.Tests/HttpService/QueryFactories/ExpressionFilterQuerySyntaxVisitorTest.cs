@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
 using InfinniPlatform.DocumentStorage.TestEntities;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

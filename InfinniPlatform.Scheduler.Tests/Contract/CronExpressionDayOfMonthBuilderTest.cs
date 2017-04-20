@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using InfinniPlatform.Tests;
+
 using NUnit.Framework;
 
 namespace InfinniPlatform.Scheduler.Contract

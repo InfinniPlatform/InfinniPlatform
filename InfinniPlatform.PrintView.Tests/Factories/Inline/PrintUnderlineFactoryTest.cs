@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
 using InfinniPlatform.PrintView.Inline;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 

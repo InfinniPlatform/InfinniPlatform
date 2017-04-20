@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using InfinniPlatform.Tests;
+
 using Newtonsoft.Json.Linq;
 
 using NUnit.Framework;
