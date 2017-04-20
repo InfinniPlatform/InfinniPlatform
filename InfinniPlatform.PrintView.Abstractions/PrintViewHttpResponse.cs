@@ -4,7 +4,7 @@ using System.IO;
 using InfinniPlatform.Http;
 using InfinniPlatform.Threading;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Ответ в виде печатного представления.

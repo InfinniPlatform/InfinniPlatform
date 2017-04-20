@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.PrintView.Abstractions;
+﻿using InfinniPlatform.PrintView;
 using InfinniPlatform.PrintView.IoC;
 
 using Microsoft.Extensions.Configuration;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
 
-namespace InfinniPlatform.Extensions
+namespace InfinniPlatform.AspNetCore
 {
     public static class PrintViewExtensions
     {

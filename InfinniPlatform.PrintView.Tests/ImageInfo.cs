@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.PrintView.Tests
+﻿namespace InfinniPlatform.PrintView
 {
     internal class ImageInfo
     {

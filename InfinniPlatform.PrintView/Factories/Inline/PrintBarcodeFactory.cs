@@ -1,6 +1,6 @@
 ﻿using ImageSharp;
 
-using InfinniPlatform.PrintView.Abstractions.Inline;
+using InfinniPlatform.PrintView.Inline;
 
 using ZXing.Common;
 

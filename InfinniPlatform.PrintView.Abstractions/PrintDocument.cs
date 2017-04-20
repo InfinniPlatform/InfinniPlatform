@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.PrintView.Abstractions.Properties;
+using InfinniPlatform.PrintView.Properties;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Документ печатного представления.

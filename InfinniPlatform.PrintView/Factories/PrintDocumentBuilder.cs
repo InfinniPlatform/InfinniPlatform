@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.PrintView.Abstractions;
-using InfinniPlatform.PrintView.Factories.Block;
+﻿using InfinniPlatform.PrintView.Factories.Block;
 using InfinniPlatform.PrintView.Factories.Format;
 using InfinniPlatform.PrintView.Factories.Inline;
 

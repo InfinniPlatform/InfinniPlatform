@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Хранит соответствие между элементами документа печатного представления <see cref="PrintDocument"/> и их шаблонами.

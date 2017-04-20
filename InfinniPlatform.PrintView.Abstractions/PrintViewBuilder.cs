@@ -2,10 +2,10 @@
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Abstractions.Defaults;
+using InfinniPlatform.PrintView.Defaults;
 using InfinniPlatform.Serialization;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Построитель печатного представления.

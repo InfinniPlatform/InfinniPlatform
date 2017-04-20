@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Abstractions.Properties;
+using InfinniPlatform.PrintView.Properties;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Реализует <see cref="IPrintViewWriter" />.

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.PrintView.Abstractions
+﻿namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Предоставляет методы для создания документа печатного представления на основе шаблона и данных.

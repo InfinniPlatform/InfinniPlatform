@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.PrintView.Abstractions.Block
+namespace InfinniPlatform.PrintView.Block
 {
     /// <summary>
     /// Стиль маркера элементов списка.

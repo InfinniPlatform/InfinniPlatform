@@ -1,8 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.PrintView.Abstractions.Format;
+using InfinniPlatform.PrintView.Format;
 
-namespace InfinniPlatform.PrintView.Abstractions.Inline
+namespace InfinniPlatform.PrintView.Inline
 {
     /// <summary>
     /// Элемент для создания штрих-кода.

@@ -3,8 +3,8 @@ using System.IO;
 
 using ImageSharp;
 
-using InfinniPlatform.PrintView.Abstractions.Defaults;
-using InfinniPlatform.PrintView.Abstractions.Inline;
+using InfinniPlatform.PrintView.Defaults;
+using InfinniPlatform.PrintView.Inline;
 
 namespace InfinniPlatform.PrintView.Factories.Inline
 {

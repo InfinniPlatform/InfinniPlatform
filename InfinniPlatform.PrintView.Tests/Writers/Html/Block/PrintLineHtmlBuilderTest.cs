@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.PrintView.Abstractions.Block;
+﻿using InfinniPlatform.PrintView.Block;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Writers.Html.Block
+namespace InfinniPlatform.PrintView.Writers.Html.Block
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

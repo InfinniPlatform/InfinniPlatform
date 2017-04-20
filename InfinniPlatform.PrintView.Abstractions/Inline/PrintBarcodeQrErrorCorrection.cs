@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.PrintView.Abstractions.Inline
+namespace InfinniPlatform.PrintView.Inline
 {
     /// <summary>
     /// Уровень защиты от ошибок штрих-кода в формате QR.

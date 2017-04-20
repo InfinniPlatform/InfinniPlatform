@@ -2,7 +2,6 @@
 using System.Text;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Writers.Html.Block;
 using InfinniPlatform.PrintView.Writers.Html.Inline;
 

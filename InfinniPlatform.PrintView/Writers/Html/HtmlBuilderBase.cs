@@ -1,7 +1,5 @@
 ﻿using System.IO;
 
-using InfinniPlatform.PrintView.Abstractions;
-
 namespace InfinniPlatform.PrintView.Writers.Html
 {
     internal abstract class HtmlBuilderBase<TElement> : IHtmlBuilder where TElement : PrintElement

@@ -1,10 +1,10 @@
 ﻿using System;
 
-using InfinniPlatform.PrintView.Abstractions.Block;
-using InfinniPlatform.PrintView.Abstractions.Format;
-using InfinniPlatform.PrintView.Abstractions.Inline;
+using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.PrintView.Format;
+using InfinniPlatform.PrintView.Inline;
 
-namespace InfinniPlatform.PrintView.Abstractions.Defaults
+namespace InfinniPlatform.PrintView.Defaults
 {
     /// <summary>
     /// Значения по умолчанию.

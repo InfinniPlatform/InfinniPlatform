@@ -1,5 +1,4 @@
 ﻿using InfinniPlatform.IoC;
-using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;

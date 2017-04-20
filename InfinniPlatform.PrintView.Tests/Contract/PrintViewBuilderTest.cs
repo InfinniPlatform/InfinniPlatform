@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
@@ -12,7 +11,7 @@ using InfinniPlatform.Serialization;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Contract
+namespace InfinniPlatform.PrintView.Contract
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

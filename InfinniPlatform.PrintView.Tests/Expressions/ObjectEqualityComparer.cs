@@ -5,9 +5,8 @@ using System.Linq;
 using System.Reflection;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.PrintView.Expressions;
 
-namespace InfinniPlatform.PrintView.Tests.Expressions
+namespace InfinniPlatform.PrintView.Expressions
 {
     internal sealed class ObjectEqualityComparer : IEqualityComparer<object>
     {

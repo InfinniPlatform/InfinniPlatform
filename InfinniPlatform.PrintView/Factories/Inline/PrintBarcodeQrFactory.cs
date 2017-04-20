@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.PrintView.Abstractions;
-using InfinniPlatform.PrintView.Abstractions.Defaults;
-using InfinniPlatform.PrintView.Abstractions.Inline;
+using InfinniPlatform.PrintView.Defaults;
+using InfinniPlatform.PrintView.Inline;
 
 using ZXing;
 using ZXing.QrCode;

@@ -1,8 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.PrintView.Abstractions.Properties;
+using InfinniPlatform.PrintView.Properties;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Стиль печатного представления.

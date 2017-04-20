@@ -10,7 +10,7 @@ using InfinniPlatform.PrintView.Expressions.Parser;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Expressions
+namespace InfinniPlatform.PrintView.Expressions
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

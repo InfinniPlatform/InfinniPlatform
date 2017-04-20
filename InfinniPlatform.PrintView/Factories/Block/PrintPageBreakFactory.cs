@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.PrintView.Abstractions.Block;
+﻿using InfinniPlatform.PrintView.Block;
 
 namespace InfinniPlatform.PrintView.Factories.Block
 {

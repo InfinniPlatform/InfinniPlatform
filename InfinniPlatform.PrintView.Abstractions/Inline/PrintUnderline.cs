@@ -1,8 +1,8 @@
 ﻿using System;
 
-using InfinniPlatform.PrintView.Abstractions.Properties;
+using InfinniPlatform.PrintView.Properties;
 
-namespace InfinniPlatform.PrintView.Abstractions.Inline
+namespace InfinniPlatform.PrintView.Inline
 {
     /// <summary>
     /// Элемент для отображения содержимого с эффектом подчеркивания.

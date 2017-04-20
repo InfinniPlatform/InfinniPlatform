@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Единицы измерения размера.

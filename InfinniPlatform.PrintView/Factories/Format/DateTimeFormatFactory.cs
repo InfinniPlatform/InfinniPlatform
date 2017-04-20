@@ -1,7 +1,7 @@
 ﻿using System;
 
-using InfinniPlatform.PrintView.Abstractions.Defaults;
-using InfinniPlatform.PrintView.Abstractions.Format;
+using InfinniPlatform.PrintView.Defaults;
+using InfinniPlatform.PrintView.Format;
 
 namespace InfinniPlatform.PrintView.Factories.Format
 {

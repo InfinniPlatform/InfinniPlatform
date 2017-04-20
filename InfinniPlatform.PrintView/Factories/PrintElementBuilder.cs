@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.PrintView.Abstractions;
-using InfinniPlatform.PrintView.Abstractions.Defaults;
+using InfinniPlatform.PrintView.Defaults;
 using InfinniPlatform.PrintView.Expressions;
 using InfinniPlatform.PrintView.Expressions.Parser;
 

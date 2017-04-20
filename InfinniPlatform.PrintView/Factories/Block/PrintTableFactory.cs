@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.PrintView.Abstractions;
-using InfinniPlatform.PrintView.Abstractions.Block;
-using InfinniPlatform.PrintView.Abstractions.Defaults;
+using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.PrintView.Defaults;
 
 namespace InfinniPlatform.PrintView.Factories.Block
 {

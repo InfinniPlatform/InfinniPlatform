@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Factories;
 
 namespace InfinniPlatform.PrintView.Writers.Html

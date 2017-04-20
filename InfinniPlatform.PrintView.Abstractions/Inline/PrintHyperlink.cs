@@ -1,9 +1,9 @@
 ﻿using System;
 
-using InfinniPlatform.PrintView.Abstractions.Format;
-using InfinniPlatform.PrintView.Abstractions.Properties;
+using InfinniPlatform.PrintView.Format;
+using InfinniPlatform.PrintView.Properties;
 
-namespace InfinniPlatform.PrintView.Abstractions.Inline
+namespace InfinniPlatform.PrintView.Inline
 {
     /// <summary>
     /// Элемент для выделения содержимого в виде гиперссылки.

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 
-using InfinniPlatform.PrintView.Abstractions.Format;
-using InfinniPlatform.PrintView.Abstractions.Inline;
+using InfinniPlatform.PrintView.Format;
+using InfinniPlatform.PrintView.Inline;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Factories.Inline
+namespace InfinniPlatform.PrintView.Factories.Inline
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

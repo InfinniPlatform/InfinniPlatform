@@ -12,6 +12,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ImageSharp" Version="1.0.0-alpha2-00118" />
+    <PackageReference Include="ImageSharp.Formats.Png" Version="1.0.0-alpha2-00114" />
+    <PackageReference Include="NUnit" Version="3.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.PrintView.Abstractions\InfinniPlatform.PrintView.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Contract\PrintViewExample.json" />
     <None Remove="Images\BarcodeEan13Rotate0.png" />
     <None Remove="Images\BarcodeEan13Rotate180.png" />
@@ -82,20 +96,6 @@
     <EmbeddedResource Include="Writers\Html\Resources\ShouldBuildSpan.txt" />
     <EmbeddedResource Include="Writers\Html\Resources\ShouldBuildTable.txt" />
     <EmbeddedResource Include="Writers\Html\Resources\ShouldBuildUnderline.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="ImageSharp" Version="1.0.0-alpha2-00118" />
-    <PackageReference Include="ImageSharp.Formats.Png" Version="1.0.0-alpha2-00114" />
-    <PackageReference Include="NUnit" Version="3.6.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.PrintView.Abstractions\InfinniPlatform.PrintView.Abstractions.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>
 
 </Project>

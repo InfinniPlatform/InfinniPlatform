@@ -3,7 +3,7 @@ using System.Reflection;
 
 using ImageSharp;
 
-namespace InfinniPlatform.PrintView.Tests
+namespace InfinniPlatform.PrintView
 {
     internal class ResourceHelper
     {

@@ -3,7 +3,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Writers.Pdf

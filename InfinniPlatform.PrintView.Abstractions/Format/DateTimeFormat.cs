@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.PrintView.Abstractions.Format
+namespace InfinniPlatform.PrintView.Format
 {
     /// <summary>
     /// Формат отображения значения даты и времени.

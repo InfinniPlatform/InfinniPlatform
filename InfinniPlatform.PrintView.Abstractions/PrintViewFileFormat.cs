@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.PrintView.Abstractions
+﻿namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Формат файла печатного представления.

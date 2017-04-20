@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace InfinniPlatform.PrintView.Tests.Writers.Html
+namespace InfinniPlatform.PrintView.Writers.Html
 {
     internal sealed class TextWriterWrapper
     {

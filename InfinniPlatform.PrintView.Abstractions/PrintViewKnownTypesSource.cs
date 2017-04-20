@@ -1,9 +1,9 @@
-﻿using InfinniPlatform.PrintView.Abstractions.Block;
-using InfinniPlatform.PrintView.Abstractions.Format;
-using InfinniPlatform.PrintView.Abstractions.Inline;
+﻿using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.PrintView.Format;
+using InfinniPlatform.PrintView.Inline;
 using InfinniPlatform.Serialization;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Источник известных типов для <see cref="PrintDocument" />.

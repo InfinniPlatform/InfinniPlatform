@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.PrintView.Abstractions
+namespace InfinniPlatform.PrintView
 {
     /// <summary>
     /// Предоставляет метод для преобразования размеров из разных единиц измерения в унифицированный формат.

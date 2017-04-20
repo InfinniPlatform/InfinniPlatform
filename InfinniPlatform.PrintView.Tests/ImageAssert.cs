@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.PrintView.Abstractions.Inline;
+﻿using InfinniPlatform.PrintView.Inline;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests
+namespace InfinniPlatform.PrintView
 {
     internal static class ImageAssert
     {

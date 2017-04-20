@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Abstractions;
 using InfinniPlatform.PrintView.Writers.Html;
 
 namespace InfinniPlatform.PrintView.Writers.Pdf
