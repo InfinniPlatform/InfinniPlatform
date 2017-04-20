@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
 using InfinniPlatform.BlobStorage;
-using InfinniPlatform.DocumentStorage.Abstractions;
 
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Результат выполнения запроса на сохранение документа.

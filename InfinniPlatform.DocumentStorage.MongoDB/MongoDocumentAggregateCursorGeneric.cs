@@ -2,11 +2,9 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
 using MongoDB.Driver;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal class MongoDocumentAggregateCursor<TResult> : MongoDocumentCursor<TResult>, IDocumentAggregateSortedCursor<TResult>
     {

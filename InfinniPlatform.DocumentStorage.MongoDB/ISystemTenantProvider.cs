@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Core.Session;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     public interface ISystemTenantProvider : ITenantProvider
     {

@@ -2,33 +2,34 @@
 
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Settings;
-using InfinniPlatform.MessageQueue.Abstractions.Producers;
 
 using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Cache
+namespace InfinniPlatform.Cache.Redis
 {
     [TestFixture]
-    [Category(TestCategories.UnitTest)]
-    public sealed class TwoLayerCacheImplTest
+    [Category(TestCategories.IntegrationTest)]
+    public sealed class RedisCacheImplTest
     {
-        private TwoLayerCache _cache;
-        private FakeCacheImpl _memoryCache;
-        private FakeCacheImpl _sharedCache;
-        private Mock<IBroadcastProducer> _broadcastProducerMock;
+        private RedisSharedCache _cache;
 
         [SetUp]
         public void SetUp()
         {
-            var appOptions = new AppOptions();
+            var appOptions = new AppOptions { AppName = nameof(RedisCacheImplTest) };
 
-            _memoryCache = new FakeCacheImpl();
-            _sharedCache = new FakeCacheImpl();
-            _broadcastProducerMock = new Mock<IBroadcastProducer>();
-            
-            _cache = new TwoLayerCache(_memoryCache, _sharedCache, appOptions, _broadcastProducerMock.Object, new Mock<ILog>().Object);
+            var settings = new RedisSharedCacheOptions
+            {
+                Host = "localhost",
+                Password = "TeamCity"
+            };
+
+            var log = new Mock<ILog>().Object;
+            var performanceLog = new Mock<IPerformanceLog>().Object;
+
+            _cache = new RedisSharedCache(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
         }
 
         [Test]
@@ -56,9 +57,8 @@ namespace InfinniPlatform.Cache
             const string key = "Contains_ExistingKey";
             const string value = "Contains_ExistingValue";
 
-            _cache.Set(key, value);
-
             // When
+            _cache.Set(key, value);
             var result = _cache.Contains(key);
 
             // Then
@@ -78,22 +78,6 @@ namespace InfinniPlatform.Cache
             Assert.IsFalse(result);
         }
 
-        [Test]
-        public void ContainsShouldReturnTrueWhenKeyExistsInSharedCacheOnly()
-        {
-            // Given
-            const string key = "Contains_SharedKey";
-            const string value = "Contains_SharedValue";
-
-            _sharedCache.Set(key, value);
-
-            // When
-            var result = _cache.Contains(key);
-
-            // Then
-            Assert.IsTrue(result);
-        }
-
 
         [Test]
         public void GetShouldReturnValueWhenKeyExists()
@@ -102,9 +86,8 @@ namespace InfinniPlatform.Cache
             const string key = "Get_ExistingKey";
             const string value = "Get_ExistingValue";
 
-            _cache.Set(key, value);
-
             // When
+            _cache.Set(key, value);
             var result = _cache.Get(key);
 
             // Then
@@ -124,22 +107,6 @@ namespace InfinniPlatform.Cache
             Assert.IsNull(result);
         }
 
-        [Test]
-        public void GetShouldReturnValueWhenKeyExistsInSharedCacheOnly()
-        {
-            // Given
-            const string key = "Get_SharedKey";
-            const string value = "Get_SharedValue";
-
-            _sharedCache.Set(key, value);
-
-            // When
-            var result = _cache.Get(key);
-
-            // Then
-            Assert.AreEqual(value, result);
-        }
-
 
         [Test]
         public void TryGetShouldReturnValueWhenKeyExists()
@@ -148,9 +115,8 @@ namespace InfinniPlatform.Cache
             const string key = "TryGet_ExistingKey";
             const string value = "TryGet_ExistingValue";
 
-            _cache.Set(key, value);
-
             // When
+            _cache.Set(key, value);
             string result;
             var exists = _cache.TryGet(key, out result);
 
@@ -174,24 +140,6 @@ namespace InfinniPlatform.Cache
             Assert.IsNull(result);
         }
 
-        [Test]
-        public void TryGetShouldReturnValueWhenKeyExistsInSharedCacheOnly()
-        {
-            // Given
-            const string key = "TryGet_SharedKey";
-            const string value = "TryGet_SharedValue";
-
-            _sharedCache.Set(key, value);
-
-            // When
-            string result;
-            var exists = _cache.TryGet(key, out result);
-
-            // Then
-            Assert.IsTrue(exists);
-            Assert.AreEqual(value, result);
-        }
-
 
         [Test]
         public void SetShouldSaveValue()
@@ -201,17 +149,11 @@ namespace InfinniPlatform.Cache
             const string value = "Set_SomeValue";
 
             // When
-
             _cache.Set(key, value);
-
             var result = _cache.Get(key);
-            var resultMemory = _memoryCache.Get(key);
-            var resultShared = _sharedCache.Get(key);
 
             // Then
             Assert.AreEqual(value, result);
-            Assert.AreEqual(value, resultMemory);
-            Assert.AreEqual(value, resultShared);
         }
 
         [Test]
@@ -223,33 +165,12 @@ namespace InfinniPlatform.Cache
             const string value2 = "Set_ReplaceValue2";
 
             // When
-
             _cache.Set(key, value1);
             _cache.Set(key, value2);
-
             var result = _cache.Get(key);
-            var resultMemory = _memoryCache.Get(key);
-            var resultShared = _sharedCache.Get(key);
 
             // Then
             Assert.AreEqual(value2, result);
-            Assert.AreEqual(value2, resultMemory);
-            Assert.AreEqual(value2, resultShared);
-        }
-
-        [Test]
-        public void SetShoudPublishMessage()
-        {
-            // Given
-
-            const string key = "Set_PublishKey";
-            const string value = "Set_PublishValue";
-
-            // When
-            _cache.Set(key, value);
-
-            // Then
-            _broadcastProducerMock.Verify(producer => producer.PublishAsync(key, nameof(TwoLayerCache)), Times.Once);
         }
 
 
@@ -260,20 +181,13 @@ namespace InfinniPlatform.Cache
             const string key = "Remove_ExistingKey";
             const string value = "Remove_ExistingValue";
 
-            _cache.Set(key, value);
-
             // When
-
+            _cache.Set(key, value);
             _cache.Remove(key);
-
             var result = _cache.Contains(key);
-            var resultMemory = _memoryCache.Contains(key);
-            var resultShared = _sharedCache.Contains(key);
 
             // Then
             Assert.IsFalse(result);
-            Assert.IsFalse(resultShared);
-            Assert.IsFalse(resultMemory);
         }
 
         [Test]
@@ -283,30 +197,39 @@ namespace InfinniPlatform.Cache
             const string key = "Remove_NonExistingKey";
 
             // When
-
             _cache.Remove(key);
-
             var result = _cache.Contains(key);
 
             // Then
             Assert.IsFalse(result);
         }
 
+
         [Test]
-        public void RemoveShoudPublishMessage()
+        [Ignore("TODO: It not works")]
+        public void ClearShouldDeleteAllKeysFromCache()
         {
             // Given
-
-            const string key = "Remove_PublishKey";
-            const string value = "Remove_PublishValue";
-
-            _cache.Set(key, value);
+            const string key1 = "Clear_Key1";
+            const string key2 = "Clear_Key2";
+            const string key3 = "Clear_Key3";
+            const string value1 = "Clear_Value1";
+            const string value2 = "Clear_Value1";
+            const string value3 = "Clear_Value1";
 
             // When
-            _cache.Remove(key);
+            _cache.Set(key1, value1);
+            _cache.Set(key2, value2);
+            _cache.Set(key3, value3);
+            _cache.Clear();
+            var result1 = _cache.Contains(key1);
+            var result2 = _cache.Contains(key2);
+            var result3 = _cache.Contains(key3);
 
             // Then
-            _broadcastProducerMock.Verify(producer => producer.PublishAsync(key, nameof(TwoLayerCache)), Times.Exactly(2));
+            Assert.IsFalse(result1);
+            Assert.IsFalse(result2);
+            Assert.IsFalse(result3);
         }
     }
 }

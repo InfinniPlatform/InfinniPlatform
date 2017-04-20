@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QuerySyntax
+namespace InfinniPlatform.DocumentStorage.QuerySyntax
 {
     /// <summary>
     /// Вызов метода.

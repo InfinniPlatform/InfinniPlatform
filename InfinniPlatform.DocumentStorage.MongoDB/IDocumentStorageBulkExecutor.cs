@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     public interface IDocumentStorageBulkExecutor
     {

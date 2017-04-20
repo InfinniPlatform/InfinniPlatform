@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет методы создания проекции данных документов.

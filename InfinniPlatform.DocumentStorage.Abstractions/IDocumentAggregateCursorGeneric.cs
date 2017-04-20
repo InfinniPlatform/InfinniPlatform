@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Указатель на список документов для агрегации.

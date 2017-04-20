@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
+namespace InfinniPlatform.DocumentStorage.Interceptors
 {
     /// <summary>
     /// Обработчик событий изменения документов в хранилище.

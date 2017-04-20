@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.DocumentStorage.HttpService.IoC;
+﻿using InfinniPlatform.DocumentStorage.IoC;
 
 using Microsoft.Extensions.DependencyInjection;
 

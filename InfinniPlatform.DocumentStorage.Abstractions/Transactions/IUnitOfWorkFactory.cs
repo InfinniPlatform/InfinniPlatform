@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Abstractions.Transactions
+﻿namespace InfinniPlatform.DocumentStorage.Transactions
 {
     /// <summary>
     /// Предоставляет интерфейс для создания экземпляров <see cref="IUnitOfWork"/>.

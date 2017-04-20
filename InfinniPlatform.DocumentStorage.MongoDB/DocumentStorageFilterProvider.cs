@@ -2,9 +2,8 @@
 using System.Linq.Expressions;
 
 using InfinniPlatform.Core.Session;
-using InfinniPlatform.DocumentStorage.Abstractions;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal class DocumentStorageFilterProvider : IDocumentStorageFilterProvider
     {

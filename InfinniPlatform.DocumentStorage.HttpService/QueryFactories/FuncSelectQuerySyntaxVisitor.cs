@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     /// <summary>
     /// Выполняет синтаксический разбор для получения правила отображения документа <see cref="DocumentGetQuery{TDocument}.Select"/>.

@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     /// <summary>
     /// Выполняет синтаксический разбор для получения правила отображения документа <see cref="DocumentGetQuery{TDocument}.Select"/>.

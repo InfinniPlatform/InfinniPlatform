@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.DocumentStorage.HttpService.Properties;
+using InfinniPlatform.DocumentStorage.Properties;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QuerySyntax
+namespace InfinniPlatform.DocumentStorage.QuerySyntax
 {
     /// <summary>
     /// Предоставляет интерфейс для чтения токенов строки запроса.

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.MongoDB
+﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Настройки хранилища документов MongoDB.

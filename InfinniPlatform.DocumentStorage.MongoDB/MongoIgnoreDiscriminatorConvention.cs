@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal class MongoIgnoreDiscriminatorConvention : ConventionBase, IClassMapConvention
     {

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.Logging;
 using InfinniPlatform.Core.Threading;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
-using InfinniPlatform.DocumentStorage.MongoDB.Properties;
+using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.DocumentStorage.Properties;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB.Hosting
+namespace InfinniPlatform.DocumentStorage.Hosting
 {
     internal class MongoDocumentStorageInitializer : IAppInitHandler
     {

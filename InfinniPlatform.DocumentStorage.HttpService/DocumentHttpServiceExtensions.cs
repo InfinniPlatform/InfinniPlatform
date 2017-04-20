@@ -2,9 +2,8 @@
 using System.Reflection;
 
 using InfinniPlatform.Core.IoC;
-using InfinniPlatform.DocumentStorage.Abstractions;
 
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     public static class DocumentHttpServiceExtensions
     {

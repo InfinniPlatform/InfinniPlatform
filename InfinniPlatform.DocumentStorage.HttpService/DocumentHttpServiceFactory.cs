@@ -7,7 +7,7 @@ using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.Core.Http;
 using InfinniPlatform.Core.IoC;
 
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет интерфейс для создания сервисов по работе с документами.

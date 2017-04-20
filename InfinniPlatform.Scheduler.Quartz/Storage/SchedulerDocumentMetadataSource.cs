@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
+using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Scheduler.Common;
 
 namespace InfinniPlatform.Scheduler.Storage

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage;
 using InfinniPlatform.Scheduler.Common;
 
 namespace InfinniPlatform.Scheduler.Storage

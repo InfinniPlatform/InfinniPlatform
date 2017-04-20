@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Abstractions
+﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Фабрика для получения экземпляров <see cref="IDocumentStorageProvider" /> и

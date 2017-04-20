@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InfinniPlatform.DocumentStorage.HttpService.Properties {
+namespace InfinniPlatform.DocumentStorage.Properties {
     using System;
     using System.Reflection;
     
@@ -40,7 +40,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.DocumentStorage.HttpService.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.DocumentStorage.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

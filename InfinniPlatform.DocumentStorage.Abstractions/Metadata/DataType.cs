@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Abstractions.Metadata
+﻿namespace InfinniPlatform.DocumentStorage.Metadata
 {
     /// <summary>
     /// Типы данных свойств документа.

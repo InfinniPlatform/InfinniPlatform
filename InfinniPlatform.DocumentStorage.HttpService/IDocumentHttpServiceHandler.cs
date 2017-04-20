@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Обработчик для сервиса по работе с документами.

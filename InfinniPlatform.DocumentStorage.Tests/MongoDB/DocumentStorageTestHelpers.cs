@@ -3,13 +3,11 @@ using System.Security.Claims;
 
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Session;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
-using InfinniPlatform.DocumentStorage.MongoDB;
+using InfinniPlatform.DocumentStorage.Metadata;
 
 using Moq;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     internal static class DocumentStorageTestHelpers
     {

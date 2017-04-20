@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
+namespace InfinniPlatform.DocumentStorage.Interceptors
 {
     /// <summary>
     /// Команда удаления набора документов из хранилища.

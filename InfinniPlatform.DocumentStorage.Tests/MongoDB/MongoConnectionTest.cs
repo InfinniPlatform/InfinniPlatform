@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

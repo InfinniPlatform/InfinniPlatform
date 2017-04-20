@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage;
 
 using Microsoft.AspNetCore.Identity;
 

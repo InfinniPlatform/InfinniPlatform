@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 using InfinniPlatform.Core.Dynamic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
+namespace InfinniPlatform.DocumentStorage.Interceptors
 {
     /// <summary>
     /// Команда замены одного документа в хранилище.

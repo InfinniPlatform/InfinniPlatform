@@ -5,11 +5,10 @@ using System.Linq;
 using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.Core.Http;
 using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.HttpService.Properties;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.Properties;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     public class DocumentQueryFactory : DocumentQueryFactoryBase, IDocumentQueryFactory
     {

@@ -4,15 +4,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
+using InfinniPlatform.DocumentStorage.Metadata;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 using RegexClass = System.Text.RegularExpressions.Regex;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет методы создания фильтров для поиска документов в MongoDB.

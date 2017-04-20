@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions.Attributes;
+﻿using InfinniPlatform.DocumentStorage.Attributes;
 
 using MongoDB.Bson.Serialization;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal class MongoIgnorePropertyConvention : MongoAttributePropertyConvention<DocumentIgnoreAttribute>
     {

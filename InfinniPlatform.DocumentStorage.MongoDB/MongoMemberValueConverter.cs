@@ -4,7 +4,7 @@ using InfinniPlatform.Core.Serialization;
 
 using MongoDB.Bson.Serialization;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Реализует логику сериализации и десериализации для MongoDB на основе <see cref="IMemberValueConverter"/>.

@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Abstractions
+﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет интерфейс для генерации уникального идентификатора документа.

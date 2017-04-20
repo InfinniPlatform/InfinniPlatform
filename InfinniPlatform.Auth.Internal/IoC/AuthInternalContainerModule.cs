@@ -10,8 +10,8 @@ using InfinniPlatform.Auth.UserStorage;
 using InfinniPlatform.Core.Http;
 using InfinniPlatform.Core.IoC;
 using InfinniPlatform.Core.Settings;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
+using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.MessageQueue.Abstractions;
 

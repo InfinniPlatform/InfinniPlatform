@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Указатель на список документов для поиска.

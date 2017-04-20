@@ -1,9 +1,9 @@
 ﻿using InfinniPlatform.Core.Http;
 using InfinniPlatform.Core.IoC;
-using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.QueryFactories;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.IoC
+namespace InfinniPlatform.DocumentStorage.IoC
 {
     public class DocumentStorageHttpServiceContainerModule : IContainerModule
     {

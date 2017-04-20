@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
+namespace InfinniPlatform.DocumentStorage.Transactions
 {
     /// <summary>
     /// Действие по изменению документов в рамках <see cref="UnitOfWork"/>.

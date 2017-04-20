@@ -1,11 +1,10 @@
 ﻿using InfinniPlatform.Core.Http;
-using InfinniPlatform.DocumentStorage.HttpService;
 
 using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.HttpService
+namespace InfinniPlatform.DocumentStorage.HttpService
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

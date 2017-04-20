@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Tests.TestEntities
+﻿namespace InfinniPlatform.DocumentStorage.TestEntities
 {
     internal class ArticleProjection
     {

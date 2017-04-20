@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
-using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
-using InfinniPlatform.DocumentStorage.Tests.MongoDB;
+using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.DocumentStorage.MongoDB;
+using InfinniPlatform.DocumentStorage.QueryFactories;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

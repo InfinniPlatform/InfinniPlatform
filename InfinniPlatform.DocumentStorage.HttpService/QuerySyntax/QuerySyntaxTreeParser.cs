@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.HttpService.Properties;
+using InfinniPlatform.DocumentStorage.Properties;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QuerySyntax
+namespace InfinniPlatform.DocumentStorage.QuerySyntax
 {
     /// <summary>
     /// Синтаксический анализатора строки запроса.

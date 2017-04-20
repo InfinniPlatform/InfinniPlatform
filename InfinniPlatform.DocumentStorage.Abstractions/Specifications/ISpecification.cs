@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Specifications
+namespace InfinniPlatform.DocumentStorage.Specifications
 {
     /// <summary>
     /// Спецификация условия фильтрации данных.

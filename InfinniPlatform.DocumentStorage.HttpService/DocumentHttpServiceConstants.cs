@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.HttpService
+﻿namespace InfinniPlatform.DocumentStorage
 {
     public static class DocumentHttpServiceConstants
     {

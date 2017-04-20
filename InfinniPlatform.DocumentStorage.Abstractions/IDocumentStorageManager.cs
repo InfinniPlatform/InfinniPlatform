@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
+using InfinniPlatform.DocumentStorage.Metadata;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет методы для управления хранилищем документов.

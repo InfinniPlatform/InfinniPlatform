@@ -9,7 +9,7 @@ using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.BlobStorage
+namespace InfinniPlatform.BlobStorage.FileSystem
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

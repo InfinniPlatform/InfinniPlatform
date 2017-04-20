@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     internal static class QuerySyntaxHelper
     {

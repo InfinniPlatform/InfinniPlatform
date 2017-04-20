@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     /// <summary>
     /// Выполняет синтаксический разбор для получения правила фильтрации документов <see cref="DocumentGetQuery{TDocument}.Filter"/>.

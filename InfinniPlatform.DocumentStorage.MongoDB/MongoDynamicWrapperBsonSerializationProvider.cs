@@ -4,7 +4,7 @@ using InfinniPlatform.Core.Dynamic;
 
 using MongoDB.Bson.Serialization;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет интерфейс сериализации и десериализации <see cref="DynamicWrapper"/> для MongoDB.

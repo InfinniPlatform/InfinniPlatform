@@ -3,7 +3,7 @@
 using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.Core.Http;
 
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Запрос на сохранение документа.

@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Core.Http;
 
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет интерфейс для создания сервисов по работе с документами.

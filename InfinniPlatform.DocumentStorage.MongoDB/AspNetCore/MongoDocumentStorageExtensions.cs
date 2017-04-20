@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.DocumentStorage.MongoDB.IoC;
+﻿using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.DocumentStorage.IoC;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

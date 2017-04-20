@@ -1,8 +1,8 @@
-﻿using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+﻿using InfinniPlatform.DocumentStorage.QuerySyntax;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.HttpService.QuerySyntax
+namespace InfinniPlatform.DocumentStorage.HttpService.QuerySyntax
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

@@ -5,9 +5,8 @@ using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.Core.Http;
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.DocumentStorage.Abstractions;
 
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}"/>.

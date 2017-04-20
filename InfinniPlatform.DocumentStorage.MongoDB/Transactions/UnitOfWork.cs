@@ -6,10 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
+namespace InfinniPlatform.DocumentStorage.Transactions
 {
     internal class UnitOfWork : IUnitOfWork
     {

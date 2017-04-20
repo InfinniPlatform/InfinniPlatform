@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
 using MongoDB.Driver;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет низкоуровневые методы для работы с данными хранилища документов в MongoDB.

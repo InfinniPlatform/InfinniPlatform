@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     [DebuggerDisplay("DocumentType = {" + nameof(DocumentType) + "}")]
     internal class SystemDocumentStorageImpl<TDocument> : DocumentStorageImpl<TDocument>, ISystemDocumentStorage<TDocument> where TDocument : Document

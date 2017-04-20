@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     /// <summary>
     /// Выполняет синтаксический разбор для получения правила сортировки документов <see cref="DocumentGetQuery.Order"/>.

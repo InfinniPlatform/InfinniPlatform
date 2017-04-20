@@ -2,15 +2,13 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.DocumentStorage.MongoDB.Transactions;
+using InfinniPlatform.DocumentStorage.Transactions;
 
 using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB.Transactions
+namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

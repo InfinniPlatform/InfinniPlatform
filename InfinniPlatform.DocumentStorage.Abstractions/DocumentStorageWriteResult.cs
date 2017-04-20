@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Abstractions
+﻿namespace InfinniPlatform.DocumentStorage
 {
     public abstract class DocumentStorageWriteResult
     {

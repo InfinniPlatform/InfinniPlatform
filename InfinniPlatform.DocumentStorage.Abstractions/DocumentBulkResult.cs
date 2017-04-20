@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Abstractions
+﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Результат выполнения операции массового изменения документов.

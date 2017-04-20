@@ -1,13 +1,11 @@
 ﻿using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Core.Hosting;
 using InfinniPlatform.Core.IoC;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
-using InfinniPlatform.DocumentStorage.MongoDB.Diagnostics;
-using InfinniPlatform.DocumentStorage.MongoDB.Hosting;
-using InfinniPlatform.DocumentStorage.MongoDB.Transactions;
+using InfinniPlatform.DocumentStorage.Diagnostics;
+using InfinniPlatform.DocumentStorage.Hosting;
+using InfinniPlatform.DocumentStorage.Transactions;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB.IoC
+namespace InfinniPlatform.DocumentStorage.IoC
 {
     public class MongoDocumentStorageContainerModule : IContainerModule
     {

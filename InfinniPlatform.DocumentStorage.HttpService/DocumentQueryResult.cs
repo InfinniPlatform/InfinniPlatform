@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions;
-
-namespace InfinniPlatform.DocumentStorage.HttpService
+﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Базовый класс результата выполнения запроса.

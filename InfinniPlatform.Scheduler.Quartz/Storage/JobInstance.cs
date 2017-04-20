@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions;
+﻿using InfinniPlatform.DocumentStorage;
 
 namespace InfinniPlatform.Scheduler.Storage
 {

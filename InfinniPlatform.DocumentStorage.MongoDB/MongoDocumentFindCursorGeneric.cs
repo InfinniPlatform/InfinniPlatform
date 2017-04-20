@@ -2,12 +2,10 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Указатель на список документов для поиска в MongoDB.

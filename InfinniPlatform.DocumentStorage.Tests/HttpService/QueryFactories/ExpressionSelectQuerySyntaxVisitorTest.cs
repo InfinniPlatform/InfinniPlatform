@@ -4,13 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
-using InfinniPlatform.DocumentStorage.Tests.TestEntities;
+using InfinniPlatform.DocumentStorage.QueryFactories;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
+using InfinniPlatform.DocumentStorage.TestEntities;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

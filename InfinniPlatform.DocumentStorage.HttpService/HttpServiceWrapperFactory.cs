@@ -4,7 +4,7 @@ using System.Reflection.Emit;
 
 using InfinniPlatform.Core.Http;
 
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет интерфейс для создания типизированных декораторов для экземпляров <see cref="IHttpService"/>.

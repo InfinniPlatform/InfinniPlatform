@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
+namespace InfinniPlatform.DocumentStorage.Interceptors
 {
     /// <summary>
     /// Набор команд изменения документов в рамках одного запроса к хранилищу.

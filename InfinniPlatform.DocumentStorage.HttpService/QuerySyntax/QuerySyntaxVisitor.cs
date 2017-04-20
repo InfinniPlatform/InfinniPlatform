@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.HttpService.QuerySyntax
+﻿namespace InfinniPlatform.DocumentStorage.QuerySyntax
 {
     /// <summary>
     /// Предоставляет интерфейс для проведения синтаксического анализа строки запроса.

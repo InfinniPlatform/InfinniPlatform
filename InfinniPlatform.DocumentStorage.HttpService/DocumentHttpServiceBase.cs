@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Http;
 using InfinniPlatform.Core.Logging;
-using InfinniPlatform.DocumentStorage.HttpService.Properties;
+using InfinniPlatform.DocumentStorage.Properties;
 
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Базовый класс сервисов по работе с документами.

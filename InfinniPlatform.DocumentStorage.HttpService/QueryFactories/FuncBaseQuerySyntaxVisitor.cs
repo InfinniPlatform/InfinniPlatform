@@ -1,9 +1,9 @@
 ﻿using System;
 
-using InfinniPlatform.DocumentStorage.HttpService.Properties;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.Properties;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     public abstract class FuncBaseQuerySyntaxVisitor<TResult> : QuerySyntaxVisitor<TResult>
     {

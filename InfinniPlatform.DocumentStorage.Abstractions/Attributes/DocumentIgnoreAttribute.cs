@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Attributes
+namespace InfinniPlatform.DocumentStorage.Attributes
 {
     /// <summary>
     /// Определяет, что свойство или член документа должен игнорироваться хранилищем документов.

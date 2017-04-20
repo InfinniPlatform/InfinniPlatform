@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Abstractions;
 
 using MongoDB.Driver;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет методы создания набора операций изменения документов в MongoDB.

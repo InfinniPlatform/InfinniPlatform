@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Dynamic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет методы для работы с данными хранилища документов.

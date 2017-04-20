@@ -8,7 +8,7 @@ using InfinniPlatform.Core.Dynamic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Реализует базовую логику сериализации и десериализации для MongoDB.

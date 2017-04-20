@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QuerySyntax
+namespace InfinniPlatform.DocumentStorage.QuerySyntax
 {
     /// <summary>
     /// Интерфейс синтаксического анализатора строки запроса.

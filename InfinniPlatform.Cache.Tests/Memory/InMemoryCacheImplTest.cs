@@ -1,36 +1,27 @@
 ﻿using System;
 
-using InfinniPlatform.Core.Logging;
-using InfinniPlatform.Core.Settings;
-
-using Moq;
-
 using NUnit.Framework;
 
-namespace InfinniPlatform.Cache
+namespace InfinniPlatform.Cache.Memory
 {
     [TestFixture]
-    [Category(TestCategories.IntegrationTest)]
-    public sealed class RedisCacheImplTest
+    [Category(TestCategories.UnitTest)]
+    public sealed class InMemoryCacheImplTest
     {
-        private RedisSharedCache _cache;
+        private InMemoryCacheImpl _cache;
 
         [SetUp]
         public void SetUp()
         {
-            var appOptions = new AppOptions { AppName = nameof(RedisCacheImplTest) };
-
-            var settings = new RedisSharedCacheOptions
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
-
-            var log = new Mock<ILog>().Object;
-            var performanceLog = new Mock<IPerformanceLog>().Object;
-
-            _cache = new RedisSharedCache(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
+            _cache = new InMemoryCacheImpl();
         }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _cache.Dispose();
+        }
+
 
         [Test]
         [TestCase("")]
@@ -202,34 +193,6 @@ namespace InfinniPlatform.Cache
 
             // Then
             Assert.IsFalse(result);
-        }
-
-
-        [Test]
-        [Ignore("TODO: It not works")]
-        public void ClearShouldDeleteAllKeysFromCache()
-        {
-            // Given
-            const string key1 = "Clear_Key1";
-            const string key2 = "Clear_Key2";
-            const string key3 = "Clear_Key3";
-            const string value1 = "Clear_Value1";
-            const string value2 = "Clear_Value1";
-            const string value3 = "Clear_Value1";
-
-            // When
-            _cache.Set(key1, value1);
-            _cache.Set(key2, value2);
-            _cache.Set(key3, value3);
-            _cache.Clear();
-            var result1 = _cache.Contains(key1);
-            var result2 = _cache.Contains(key2);
-            var result3 = _cache.Contains(key3);
-
-            // Then
-            Assert.IsFalse(result1);
-            Assert.IsFalse(result2);
-            Assert.IsFalse(result3);
         }
     }
 }

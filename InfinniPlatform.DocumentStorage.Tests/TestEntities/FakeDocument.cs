@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions;
-
-namespace InfinniPlatform.DocumentStorage.Tests.TestEntities
+﻿namespace InfinniPlatform.DocumentStorage.TestEntities
 {
     [DocumentType("FakeDocumentCollection")]
     public class FakeDocument : Document

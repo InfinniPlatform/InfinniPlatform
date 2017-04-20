@@ -8,7 +8,7 @@ using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Cache
+namespace InfinniPlatform.Cache.TwoLayer
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]

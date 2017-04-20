@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal static class MongoHelpers
     {

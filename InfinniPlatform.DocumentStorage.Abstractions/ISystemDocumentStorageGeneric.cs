@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Abstractions
+﻿namespace InfinniPlatform.DocumentStorage
 {
     public interface ISystemDocumentStorage<TDocument> : IDocumentStorage<TDocument> where TDocument : Document
     {

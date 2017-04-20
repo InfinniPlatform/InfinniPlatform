@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
 using MongoDB.Driver;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет методы создания операторов обновления документов в MongoDB.

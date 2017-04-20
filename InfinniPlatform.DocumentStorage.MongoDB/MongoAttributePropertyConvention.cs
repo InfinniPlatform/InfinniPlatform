@@ -4,7 +4,7 @@ using System.Reflection;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal abstract class MongoAttributePropertyConvention<TAttribute> : ConventionBase, IClassMapConvention
     {

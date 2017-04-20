@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Dynamic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Указатель на список документов для поиска.

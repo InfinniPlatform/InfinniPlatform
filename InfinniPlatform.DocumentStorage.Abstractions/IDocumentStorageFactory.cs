@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Фабрика для получения экземпляров <see cref="IDocumentStorage" /> и <see cref="IDocumentStorage{TDocument}" />.

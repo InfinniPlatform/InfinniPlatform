@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
+using InfinniPlatform.DocumentStorage;
 
 using Microsoft.AspNetCore.Identity;
 

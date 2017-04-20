@@ -2,7 +2,7 @@
 
 using MongoDB.Bson.Serialization;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal class MongoDecimalBsonSerializationProvider : IBsonSerializationProvider
     {

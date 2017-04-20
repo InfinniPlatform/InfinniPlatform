@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace InfinniPlatform.Core.Session
 {
-    internal class TenantScopeProvider : ITenantScopeProvider
+    public class TenantScopeProvider : ITenantScopeProvider
     {
         private static readonly AsyncLocal<TenantScopeContext> TenantScopeContext = new AsyncLocal<TenantScopeContext>();
 

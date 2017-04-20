@@ -2,11 +2,9 @@
 
 using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Core.Settings;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
-using InfinniPlatform.DocumentStorage.MongoDB;
+using InfinniPlatform.DocumentStorage.Metadata;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     internal static class MongoTestHelpers
     {

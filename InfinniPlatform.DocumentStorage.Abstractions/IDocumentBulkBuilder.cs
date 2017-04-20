@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Core.Dynamic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет методы создания набора команд изменения документов.

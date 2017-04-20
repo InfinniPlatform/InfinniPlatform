@@ -4,7 +4,7 @@ using System.Reflection;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Определяет правила преобразования объекта для MongoDB в случаях, когда тип объекта заранее не известен <see cref="object"/>.

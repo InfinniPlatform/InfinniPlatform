@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
-namespace InfinniPlatform.DocumentStorage.HttpService
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Запрос на удаление документа.

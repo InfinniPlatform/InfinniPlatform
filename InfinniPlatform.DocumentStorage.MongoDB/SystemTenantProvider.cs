@@ -2,7 +2,7 @@
 
 using InfinniPlatform.Core.Security;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal class SystemTenantProvider : ISystemTenantProvider
     {

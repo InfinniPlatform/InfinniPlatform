@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.HttpService
+﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Направление сортировки документов.

@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
+using InfinniPlatform.DocumentStorage.Transactions;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     public static class DocumentStorageExtensions
     {

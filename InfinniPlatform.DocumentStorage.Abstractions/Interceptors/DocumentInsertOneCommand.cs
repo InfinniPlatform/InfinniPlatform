@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.Core.Dynamic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
+namespace InfinniPlatform.DocumentStorage.Interceptors
 {
     /// <summary>
     /// Команда вставки одного документа в хранилище.

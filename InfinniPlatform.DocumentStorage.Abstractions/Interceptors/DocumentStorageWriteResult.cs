@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
+﻿namespace InfinniPlatform.DocumentStorage.Interceptors
 {
     /// <summary>
     /// Результат выполнения команды изменения документа в хранилище.

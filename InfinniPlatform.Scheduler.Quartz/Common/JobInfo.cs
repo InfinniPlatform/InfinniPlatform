@@ -1,8 +1,8 @@
 ﻿using System;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Attributes;
+using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.DocumentStorage.Attributes;
 
 namespace InfinniPlatform.Scheduler.Common
 {

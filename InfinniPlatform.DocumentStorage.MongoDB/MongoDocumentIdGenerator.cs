@@ -1,8 +1,6 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions;
+﻿using MongoDB.Bson;
 
-using MongoDB.Bson;
-
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет интерфейс для генерации уникального идентификатора документа MongoDB.

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
+using InfinniPlatform.DocumentStorage.Metadata;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Предоставляет методы создания фильтров для поиска документов.

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     internal class Doc : Document
     {

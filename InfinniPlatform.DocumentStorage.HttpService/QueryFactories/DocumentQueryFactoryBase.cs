@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Core.Http;
 using InfinniPlatform.Core.Serialization;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     public abstract class DocumentQueryFactoryBase
     {

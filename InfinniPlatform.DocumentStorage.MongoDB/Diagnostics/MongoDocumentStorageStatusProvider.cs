@@ -3,7 +3,7 @@
 using InfinniPlatform.Core.Diagnostics;
 using InfinniPlatform.Core.Http;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB.Diagnostics
+namespace InfinniPlatform.DocumentStorage.Diagnostics
 {
     /// <summary>
     /// Предоставляет информацию о состоянии подсистемы хранения документов.

@@ -3,7 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Core.Dynamic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Interceptors
+namespace InfinniPlatform.DocumentStorage.Interceptors
 {
     /// <summary>
     /// Команда вставки набора документов в хранилище.

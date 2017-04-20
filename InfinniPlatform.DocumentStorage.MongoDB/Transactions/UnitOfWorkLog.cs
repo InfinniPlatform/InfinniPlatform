@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-
-namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
+namespace InfinniPlatform.DocumentStorage.Transactions
 {
     /// <summary>
     /// Журнал действий по изменению документов в рамках <see cref="UnitOfWork"/>.

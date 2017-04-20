@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Abstractions.Metadata;
-using InfinniPlatform.DocumentStorage.MongoDB;
+using InfinniPlatform.DocumentStorage.Metadata;
 
 using MongoDB.Driver;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

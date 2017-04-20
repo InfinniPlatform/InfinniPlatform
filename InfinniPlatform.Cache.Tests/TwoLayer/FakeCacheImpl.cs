@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Cache
+namespace InfinniPlatform.Cache.TwoLayer
 {
     internal sealed class FakeCacheImpl : IInMemoryCache, ISharedCache
     {

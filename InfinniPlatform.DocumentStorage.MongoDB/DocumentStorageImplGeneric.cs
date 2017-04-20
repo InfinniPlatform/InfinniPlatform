@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Interceptors;
+using InfinniPlatform.DocumentStorage.Interceptors;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     [DebuggerDisplay("DocumentType = {" + nameof(DocumentType) + "}")]
     internal class DocumentStorageImpl<TDocument> : IDocumentStorage<TDocument>, IDocumentStorageBulkExecutor where TDocument : Document

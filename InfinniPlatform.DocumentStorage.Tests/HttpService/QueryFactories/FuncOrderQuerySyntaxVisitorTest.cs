@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.HttpService;
-using InfinniPlatform.DocumentStorage.HttpService.QueryFactories;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.QueryFactories;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

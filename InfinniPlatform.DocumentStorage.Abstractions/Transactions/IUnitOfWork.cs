@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Core.Dynamic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Transactions
+namespace InfinniPlatform.DocumentStorage.Transactions
 {
     /// <summary>
     /// Предоставляет интерфейс, реализующий шаблон "Единица работы" ("Unit of Work").

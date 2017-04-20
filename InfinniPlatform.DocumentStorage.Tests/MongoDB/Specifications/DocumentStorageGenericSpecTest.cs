@@ -1,12 +1,11 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions;
-using InfinniPlatform.DocumentStorage.Abstractions.Specifications;
-using InfinniPlatform.DocumentStorage.Tests.TestEntities;
+﻿using InfinniPlatform.DocumentStorage.Specifications;
+using InfinniPlatform.DocumentStorage.TestEntities;
 
 using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB.Specifications
+namespace InfinniPlatform.DocumentStorage.MongoDB.Specifications
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

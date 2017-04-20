@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.Core.Serialization;
 using InfinniPlatform.Core.Settings;
-using InfinniPlatform.DocumentStorage.Abstractions;
 
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Подключение к MongoDB.

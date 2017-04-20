@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Core.Dynamic;
-using InfinniPlatform.DocumentStorage.Abstractions;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Указатель на список документов для агрегации MongoDB.

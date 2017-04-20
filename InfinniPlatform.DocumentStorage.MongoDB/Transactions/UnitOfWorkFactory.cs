@@ -1,7 +1,6 @@
 ﻿using InfinniPlatform.Core.IoC;
-using InfinniPlatform.DocumentStorage.Abstractions.Transactions;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
+namespace InfinniPlatform.DocumentStorage.Transactions
 {
     internal class UnitOfWorkFactory : IUnitOfWorkFactory
     {

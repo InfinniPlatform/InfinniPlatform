@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Metadata
+namespace InfinniPlatform.DocumentStorage.Metadata
 {
     /// <summary>
     /// Источник метаданных документов.

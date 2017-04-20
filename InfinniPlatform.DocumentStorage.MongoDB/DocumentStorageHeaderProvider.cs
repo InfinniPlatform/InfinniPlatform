@@ -3,9 +3,8 @@
 using InfinniPlatform.Core.Dynamic;
 using InfinniPlatform.Core.Security;
 using InfinniPlatform.Core.Session;
-using InfinniPlatform.DocumentStorage.Abstractions;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal class DocumentStorageHeaderProvider : IDocumentStorageHeaderProvider
     {

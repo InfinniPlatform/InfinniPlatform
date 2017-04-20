@@ -1,6 +1,6 @@
-﻿using InfinniPlatform.DocumentStorage.Abstractions.Attributes;
+﻿using InfinniPlatform.DocumentStorage.Attributes;
 
-namespace InfinniPlatform.DocumentStorage.Tests.TestEntities
+namespace InfinniPlatform.DocumentStorage.TestEntities
 {
     public class DocumentWithIgnore
     {

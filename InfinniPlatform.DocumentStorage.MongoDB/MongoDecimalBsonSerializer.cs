@@ -3,7 +3,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     internal class MongoDecimalBsonSerializer : MongoBsonSerializerBase<decimal>
     {

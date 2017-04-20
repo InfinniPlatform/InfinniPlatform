@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.DocumentStorage.HttpService
+﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Результат выполнения запроса на удаление документа.

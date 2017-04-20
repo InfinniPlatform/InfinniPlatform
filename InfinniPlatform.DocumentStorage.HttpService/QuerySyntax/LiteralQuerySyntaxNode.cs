@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QuerySyntax
+namespace InfinniPlatform.DocumentStorage.QuerySyntax
 {
     /// <summary>
     /// Литерал.

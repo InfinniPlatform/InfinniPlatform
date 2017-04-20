@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace InfinniPlatform.DocumentStorage.Abstractions.Specifications
+namespace InfinniPlatform.DocumentStorage.Specifications
 {
     /// <summary>
     /// Спецификация условия фильтрации данных.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InfinniPlatform.DocumentStorage.Tests.TestEntities
+namespace InfinniPlatform.DocumentStorage.TestEntities
 {
     internal class Inventory
     {

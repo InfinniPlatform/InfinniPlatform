@@ -5,7 +5,7 @@ using InfinniPlatform.Core.Types;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-namespace InfinniPlatform.DocumentStorage.MongoDB
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Реализует логику сериализации и десериализации <see cref="Date"/> для MongoDB.

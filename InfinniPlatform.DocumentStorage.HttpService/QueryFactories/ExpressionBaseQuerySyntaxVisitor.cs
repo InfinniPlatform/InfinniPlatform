@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-using InfinniPlatform.DocumentStorage.HttpService.Properties;
-using InfinniPlatform.DocumentStorage.HttpService.QuerySyntax;
+using InfinniPlatform.DocumentStorage.Properties;
+using InfinniPlatform.DocumentStorage.QuerySyntax;
 
-namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
+namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     public abstract class ExpressionBaseQuerySyntaxVisitor : QuerySyntaxVisitor<Expression>
     {
