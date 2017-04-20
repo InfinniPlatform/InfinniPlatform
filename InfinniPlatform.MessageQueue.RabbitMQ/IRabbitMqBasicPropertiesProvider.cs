@@ -8,7 +8,7 @@ namespace InfinniPlatform.MessageQueue
     /// <summary>
     /// Предоставляет методы для работы с базовыми свойствами сообщений в очереди.
     /// </summary>
-    internal interface IRabbitMqBasicPropertiesProvider
+    public interface IRabbitMqBasicPropertiesProvider
     {
         /// <summary>
         /// Заполняет базовые свойства сообщения служебной информацией.

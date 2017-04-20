@@ -9,7 +9,7 @@ using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue
 {
-    internal class RabbitMqBasicPropertiesProvider : IRabbitMqBasicPropertiesProvider
+    public class RabbitMqBasicPropertiesProvider : IRabbitMqBasicPropertiesProvider
     {
         public RabbitMqBasicPropertiesProvider(AppOptions appOptions, IJsonObjectSerializer serializer)
         {
