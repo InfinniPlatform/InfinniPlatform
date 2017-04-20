@@ -13,7 +13,7 @@ namespace InfinniPlatform.Scheduler.Common
     [TestFixture(Category = TestCategories.UnitTest)]
     public class JobHandlerTypeSerializerTest
     {
-        private const string HandlerType = "InfinniPlatform.SchedulerCommon.JobHandlerTypeSerializerTest+MyJobHandler,InfinniPlatform.Scheduler.Tests";
+        private const string HandlerType = "InfinniPlatform.Scheduler.Common.JobHandlerTypeSerializerTest+MyJobHandler,InfinniPlatform.Scheduler.Tests";
 
 
         [Test]
