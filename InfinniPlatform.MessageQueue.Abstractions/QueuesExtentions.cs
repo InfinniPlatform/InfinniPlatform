@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
 
 using InfinniPlatform.IoC;
-using InfinniPlatform.MessageQueue.Abstractions.Consumers;
 
-namespace InfinniPlatform.MessageQueue.Abstractions
+namespace InfinniPlatform.MessageQueue
 {
     public static class QueuesExtentions
     {

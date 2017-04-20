@@ -12,7 +12,7 @@ using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
-using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Settings;
 
 using Microsoft.AspNetCore.Builder;

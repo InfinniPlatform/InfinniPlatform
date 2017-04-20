@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.MessageQueue.Abstractions.Consumers;
-using InfinniPlatform.MessageQueue.RabbitMQ;
-using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
+
+using InfinniPlatform.MessageQueue.TestConsumers;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
+namespace InfinniPlatform.MessageQueue.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
@@ -36,7 +35,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(null, broadcastConsumers);
 
-            var producerBase = new BroadcastProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
+            var producerBase = new RabbitMqBroadcastProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 await producerBase.PublishAsync(message);

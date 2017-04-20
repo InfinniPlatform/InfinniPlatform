@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Logging;
-using InfinniPlatform.MessageQueue.Abstractions;
-using InfinniPlatform.MessageQueue.Abstractions.Consumers;
+using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Properties;
 using InfinniPlatform.Settings;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.MessageQueue.Abstractions
+namespace InfinniPlatform.MessageQueue
 {
     /// <summary>
     /// Сообщение в очереди.
@@ -13,6 +13,7 @@ namespace InfinniPlatform.MessageQueue.Abstractions
         /// </summary>
         /// <param name="body">Тело сообщения.</param>
         /// <param name="appId">Идентификатор отправителя сообщения.</param>
+        /// <param name="headers">Заголовки сообщения.</param>
         public Message(T body, string appId = null, IDictionary<string, object> headers = null)
         {
             Body = body;

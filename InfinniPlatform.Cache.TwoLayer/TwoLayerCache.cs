@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 
 using InfinniPlatform.Logging;
-using InfinniPlatform.MessageQueue.Abstractions;
-using InfinniPlatform.MessageQueue.Abstractions.Producers;
+using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Settings;
 
 namespace InfinniPlatform.Cache

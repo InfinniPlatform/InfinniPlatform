@@ -3,7 +3,6 @@
 using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Http.Services;
 using InfinniPlatform.IoC.Http;
 using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;

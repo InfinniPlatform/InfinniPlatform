@@ -8,7 +8,7 @@ namespace InfinniPlatform.Cache.Diagnostics
     /// <summary>
     /// Предоставляет информацию о состоянии подсистемы кэширования данных.
     /// </summary>
-    public class RedisSharedCacheStatusProvider : ISubsystemStatusProvider
+    internal class RedisSharedCacheStatusProvider : ISubsystemStatusProvider
     {
         public RedisSharedCacheStatusProvider(RedisConnectionFactory connectionFactory)
         {

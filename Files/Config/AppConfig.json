@@ -30,7 +30,7 @@
     "UserName": "",
     "Password": ""
   },
-  "rabbitmq": {
+  "rabbitmqMessageQueue": {
     "HostName": "localhost",
     "Port": 5672,
     "UserName": "guest",

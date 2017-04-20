@@ -9,21 +9,21 @@
       "description": "Настройки приложения.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/App.json"
     },
-    "redisSharedCache": {
-      "description": "Настройки распределенного кэша на основе Redis.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RedisSharedCache.json"
-    },
     "mongodbDocumentStorage": {
       "description": "Настройки хранилища документов MongoDB.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/MongoDbDocumentStorage.json"
     },
-    "rabbitmq": {
-      "description": "Настройки подключения к RabbitMQ.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RabbitMQ.json"
-    },
     "fileSystemBlobStorage": {
       "description": "Настройки хранилища BLOB в файловой системе.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/FileSystemBlobStorage.json"
+    },
+    "rabbitmqMessageQueue": {
+      "description": "Настройки очереди сообщений на основе RabbitMQ.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RabbitMqMessageQueue.json"
+    },
+    "redisSharedCache": {
+      "description": "Настройки распределенного кэша на основе Redis.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RedisSharedCache.json"
     },
     "userStorage": {
       "description": "Настройки хранения пользователей.",

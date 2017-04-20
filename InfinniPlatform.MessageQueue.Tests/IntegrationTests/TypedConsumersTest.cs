@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.MessageQueue.Abstractions.Consumers;
-using InfinniPlatform.MessageQueue.RabbitMQ;
-using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
-
-using Moq;
+using InfinniPlatform.MessageQueue.TestConsumers;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
+namespace InfinniPlatform.MessageQueue.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
@@ -38,7 +34,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
+            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);
@@ -70,7 +66,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
+            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);
@@ -102,7 +98,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
+            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

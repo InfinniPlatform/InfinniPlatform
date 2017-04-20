@@ -5,7 +5,7 @@ using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Http;
 using InfinniPlatform.IoC;
-using InfinniPlatform.MessageQueue.Abstractions;
+using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Diagnostics;
 using InfinniPlatform.Scheduler.Dispatcher;

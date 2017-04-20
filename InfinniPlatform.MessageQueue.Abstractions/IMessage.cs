@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.MessageQueue.Abstractions
+namespace InfinniPlatform.MessageQueue
 {
     /// <summary>
     /// Сообщение в очереди.

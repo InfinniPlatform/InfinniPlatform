@@ -8,11 +8,7 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class Log4NetExtensions
     {
-        /// <summary>
-        /// Регистрирует сервисы для log4net.
-        /// </summary>
-        /// <param name="serviceCollection">Коллекция зарегистрированных сервисов.</param>
-        public static IServiceCollection AddLog4NetAdapter(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddLog4NetLogging(this IServiceCollection serviceCollection)
         {
             return serviceCollection.AddSingleton(provider => new Log4NetContainerModule());
         }

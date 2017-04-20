@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.MessageQueue.Abstractions;
-using InfinniPlatform.MessageQueue.RabbitMq.Management;
 
-namespace InfinniPlatform.MessageQueue.RabbitMQ.Hosting
+namespace InfinniPlatform.MessageQueue.Hosting
 {
-    public class MessageQueueThreadPool : IMessageQueueThreadPool
+    internal class MessageQueueThreadPool
     {
-        public MessageQueueThreadPool(RabbitMqConnectionSettings settings)
+        public MessageQueueThreadPool(RabbitMqMessageQueueOptions settings)
         {
             _semaphore = new SemaphoreSlim(settings.MaxConcurrentThreads);
         }

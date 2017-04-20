@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Logging;
-using InfinniPlatform.MessageQueue.Abstractions.Producers;
+using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler.Common

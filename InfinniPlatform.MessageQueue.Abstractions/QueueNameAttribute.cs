@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace InfinniPlatform.MessageQueue.Abstractions
+namespace InfinniPlatform.MessageQueue
 {
     /// <summary>
     /// Атрибут для определения имени очереди для сообщения.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class QueueNameAttribute : Attribute
+    public class QueueNameAttribute : Attribute
     {
         /// <summary>
         /// Конструктор.

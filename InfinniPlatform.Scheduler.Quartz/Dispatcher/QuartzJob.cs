@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.MessageQueue.Abstractions.Producers;
+using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Scheduler.Common;
 
 using Quartz;

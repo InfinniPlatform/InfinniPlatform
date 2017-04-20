@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.MessageQueue.Abstractions;
-using InfinniPlatform.MessageQueue.Abstractions.Consumers;
+using InfinniPlatform.MessageQueue;
 
 namespace InfinniPlatform.Cache
 {

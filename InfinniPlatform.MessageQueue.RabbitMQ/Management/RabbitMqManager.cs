@@ -7,28 +7,28 @@ using InfinniPlatform.Settings;
 
 using RabbitMQ.Client;
 
-namespace InfinniPlatform.MessageQueue.RabbitMq.Management
+namespace InfinniPlatform.MessageQueue.Management
 {
     /// <summary>
     /// Менеджер соединения с RabbitMQ.
     /// </summary>
-    internal sealed class RabbitMqManager : IDisposable
+    internal class RabbitMqManager : IDisposable
     {
-        public RabbitMqManager(RabbitMqConnectionSettings rabbitMqConnectionSettings,
+        public RabbitMqManager(RabbitMqMessageQueueOptions options,
                                AppOptions appOptions,
                                ILog log)
         {
-            BroadcastExchangeName = $"{appOptions.AppName}.{Defaults.Exchange.Type.Direct}";
+            BroadcastExchangeName = $"{appOptions.AppName}.{RabbitMqDefaults.Exchange.Type.Direct}";
 
             _appOptions = appOptions;
-            _rabbitMqConnectionSettings = rabbitMqConnectionSettings;
+            _options = options;
             _log = log;
 
-            var connection = CreateConnection(rabbitMqConnectionSettings);
+            var connection = CreateConnection(options);
 
             if (connection == null)
             {
-                StartRabbitMqListener(rabbitMqConnectionSettings);
+                StartRabbitMqListener(options);
             }
             else
             {
@@ -36,9 +36,11 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             }
         }
 
+
+        private readonly RabbitMqMessageQueueOptions _options;
         private readonly AppOptions _appOptions;
         private readonly ILog _log;
-        private readonly RabbitMqConnectionSettings _rabbitMqConnectionSettings;
+
 
         public string BroadcastExchangeName { get; }
 
@@ -54,7 +56,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         /// </summary>
         public event ReconnectEventHandler OnReconnect;
 
-        private void StartRabbitMqListener(RabbitMqConnectionSettings settings)
+        private void StartRabbitMqListener(RabbitMqMessageQueueOptions settings)
         {
             Task.Run(() =>
                      {
@@ -80,9 +82,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             {
                 var channel = Connection.CreateModel();
 
-                if (_rabbitMqConnectionSettings.PrefetchCount != 0)
+                if (_options.PrefetchCount != 0)
                 {
-                    channel.BasicQos(0, _rabbitMqConnectionSettings.PrefetchCount, false);
+                    channel.BasicQos(0, _options.PrefetchCount, false);
                 }
 
                 return channel;
@@ -124,7 +126,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             {
                 var declaredQueueName = GetTaskKey(queueName);
 
-                channel?.QueueDeclare(declaredQueueName, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete);
+                channel?.QueueDeclare(declaredQueueName, RabbitMqDefaults.Queue.Durable, RabbitMqDefaults.Queue.Exclusive, RabbitMqDefaults.Queue.AutoDelete);
 
                 return declaredQueueName;
             }
@@ -140,7 +142,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             {
                 var declaredQueueName = GetBroadcastKey(routingKey);
 
-                channel?.QueueDeclare(declaredQueueName, Defaults.Queue.Durable, Defaults.Queue.Exclusive, Defaults.Queue.AutoDelete);
+                channel?.QueueDeclare(declaredQueueName, RabbitMqDefaults.Queue.Durable, RabbitMqDefaults.Queue.Exclusive, RabbitMqDefaults.Queue.AutoDelete);
                 channel?.QueueBind(declaredQueueName, BroadcastExchangeName, routingKey);
 
                 return declaredQueueName;
@@ -165,7 +167,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             return $"{_appOptions.AppName}.{key}.{_appOptions.AppInstance}";
         }
 
-        private IConnection CreateConnection(RabbitMqConnectionSettings settings)
+        private IConnection CreateConnection(RabbitMqMessageQueueOptions settings)
         {
             try
             {
@@ -175,7 +177,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
                                             Port = settings.Port,
                                             UserName = settings.UserName,
                                             Password = settings.Password,
-                                            AutomaticRecoveryEnabled = Defaults.Connection.AutomaticRecoveryEnabled
+                                            AutomaticRecoveryEnabled = RabbitMqDefaults.Connection.AutomaticRecoveryEnabled
                                         };
 
                 var connection = connectionFactory.CreateConnection();
@@ -184,7 +186,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
 
                 using (var channel = connection.CreateModel())
                 {
-                    channel.ExchangeDeclare(BroadcastExchangeName, Defaults.Exchange.Type.Direct, Defaults.Exchange.Durable, Defaults.Exchange.AutoDelete, null);
+                    channel.ExchangeDeclare(BroadcastExchangeName, RabbitMqDefaults.Exchange.Type.Direct, RabbitMqDefaults.Exchange.Durable, RabbitMqDefaults.Exchange.AutoDelete, null);
                 }
 
                 return connection;

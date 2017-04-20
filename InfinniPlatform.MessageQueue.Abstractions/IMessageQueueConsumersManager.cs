@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.MessageQueue.Abstractions.Consumers;
-
-namespace InfinniPlatform.MessageQueue.Abstractions
+﻿namespace InfinniPlatform.MessageQueue
 {
     /// <summary>
     /// Предоставляет метод регистрации получателей сообщений из очереди.

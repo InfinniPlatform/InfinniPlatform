@@ -1,4 +1,4 @@
-﻿using InfinniPlatform.MessageQueue.Abstractions;
+﻿using InfinniPlatform.MessageQueue;
 
 namespace InfinniPlatform.Scheduler.Common
 {

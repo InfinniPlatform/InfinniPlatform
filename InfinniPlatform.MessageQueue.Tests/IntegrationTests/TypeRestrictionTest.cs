@@ -1,13 +1,10 @@
 ﻿using System;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.MessageQueue.RabbitMQ;
-
-using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
+namespace InfinniPlatform.MessageQueue.IntegrationTests
 {
     [Category(TestCategories.UnitTest)]
     public class TypeRestrictionTest : RabbitMqTestBase
@@ -15,7 +12,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void BroadcastProducerThrowsExceptionIfDynamicWrapperSendViaPublishMethod()
         {
-            var broadcastProducer = new BroadcastProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
+            var broadcastProducer = new RabbitMqBroadcastProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
 
             Assert.Throws<ArgumentException>(() => broadcastProducer.Publish(new DynamicWrapper()));
             Assert.ThrowsAsync<ArgumentException>(() => broadcastProducer.PublishAsync(new DynamicWrapper()));
@@ -24,7 +21,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Test]
         public void TaskProducerThrowsExceptionIfDynamicWrapperSendViaPublishMethod()
         {
-            var taskProducer = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
+            var taskProducer = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
 
             Assert.Throws<ArgumentException>(() => taskProducer.Publish(new DynamicWrapper()));
             Assert.ThrowsAsync<ArgumentException>(() => taskProducer.PublishAsync(new DynamicWrapper()));
