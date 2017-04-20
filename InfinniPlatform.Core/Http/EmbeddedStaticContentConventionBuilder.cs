@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -25,13 +25,13 @@ namespace InfinniPlatform.Http
 
 
         /// <summary>
-        /// Добавляет соглашение по путям к файлам встроенных ресурсов.
+        /// Р”РѕР±Р°РІР»СЏРµС‚ СЃРѕРіР»Р°С€РµРЅРёРµ РїРѕ РїСѓС‚СЏРј Рє С„Р°Р№Р»Р°Рј РІСЃС‚СЂРѕРµРЅРЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ.
         /// </summary>
-        /// <param name="conventions">Соглашения по путям к статическому контенту.</param>
+        /// <param name="conventions">РЎРѕРіР»Р°С€РµРЅРёСЏ РїРѕ РїСѓС‚СЏРј Рє СЃС‚Р°С‚РёС‡РµСЃРєРѕРјСѓ РєРѕРЅС‚РµРЅС‚Сѓ.</param>
         /// <param name="requestedPath">The path that should be matched with the request.</param>
-        /// <param name="assembly">Сборка, содержащая ресурсы.</param>
-        /// <param name="contentPath">Локальный путь до файлов.</param>
-        /// <param name="allowedExtensions">Список разрешенных разрешений.</param>
+        /// <param name="assembly">РЎР±РѕСЂРєР°, СЃРѕРґРµСЂР¶Р°С‰Р°СЏ СЂРµСЃСѓСЂСЃС‹.</param>
+        /// <param name="contentPath">Р›РѕРєР°Р»СЊРЅС‹Р№ РїСѓС‚СЊ РґРѕ С„Р°Р№Р»РѕРІ.</param>
+        /// <param name="allowedExtensions">РЎРїРёСЃРѕРє СЂР°Р·СЂРµС€РµРЅРЅС‹С… СЂР°Р·СЂРµС€РµРЅРёР№.</param>
         public static void AddDirectory(this IList<Func<NancyContext, string, Response>> conventions, string requestedPath, Assembly assembly, string contentPath = null, params string[] allowedExtensions)
         {
             conventions.Add(AddDirectory(requestedPath, assembly, contentPath, allowedExtensions));

@@ -42,6 +42,7 @@ namespace InfinniPlatform.ServiceHost
                                             .AddQuartzScheduler(_configuration)
                                             .AddSchedulerHttpService()
                                             .AddPrintView(_configuration)
+                                            .AddHeartbeatHttpService()
                                             .BuildProvider(_configuration);
 
             return configureServices;

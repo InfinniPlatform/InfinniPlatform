@@ -1,12 +1,12 @@
-using System;
+п»їusing System;
 using System.Threading.Tasks;
 
 namespace InfinniPlatform.MessageQueue
 {
     /// <summary>
-    /// Базовый потребитель сообщений широковещательной очереди.
+    /// Р‘Р°Р·РѕРІС‹Р№ РїРѕС‚СЂРµР±РёС‚РµР»СЊ СЃРѕРѕР±С‰РµРЅРёР№ С€РёСЂРѕРєРѕРІРµС‰Р°С‚РµР»СЊРЅРѕР№ РѕС‡РµСЂРµРґРё.
     /// </summary>
-    /// <typeparam name="T">Тип тела сообщения.</typeparam>
+    /// <typeparam name="T">РўРёРї С‚РµР»Р° СЃРѕРѕР±С‰РµРЅРёСЏ.</typeparam>
     public abstract class BroadcastConsumerBase<T> : IBroadcastConsumer where T : class
     {
         public Type MessageType => typeof(T);
