@@ -1,167 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A8285E35-48F8-45CC-961C-282678230221}</ProjectGuid>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InfinniPlatform.Core.Tests</RootNamespace>
+    <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>InfinniPlatform.Core.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>false</RestorePackages>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\Assemblies\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <RootNamespace>InfinniPlatform</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\Assemblies\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_TeamCity|AnyCPU'">
-    <OutputPath>..\Assemblies\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugTools|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\Assemblies\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
+    <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Compression\GZipDataCompressorMemoryTest.cs" />
-    <Compile Include="Compression\GZipDataCompressorPerformanceTest.cs" />
-    <Compile Include="Compression\GZipDataCompressorTest.cs" />
-    <Compile Include="Dynamic\DynamicWrapperJsonConverterTest.cs" />
-    <Compile Include="Dynamic\DynamicWrapperTest.cs" />
-    <Compile Include="Dynamic\ObjectHelperTest.cs" />
-    <Compile Include="Events\Builders\Entities\FieldMetadataRecord.cs" />
-    <Compile Include="Events\Builders\Entities\FieldRecord.cs" />
-    <Compile Include="Events\Builders\Entities\IndexMetadataRecord.cs" />
-    <Compile Include="Events\Builders\Entities\MetadataDataType.cs" />
-    <Compile Include="Events\Builders\Entities\ObjectMetadataRecord.cs" />
-    <Compile Include="Events\Builders\Entities\TemplateParam.cs" />
-    <Compile Include="Events\Builders\Entities\VisualTemplate.cs" />
-    <Compile Include="Events\Builders\Extensibility\Actions\ActionMetadata.cs" />
-    <Compile Include="Events\Builders\Extensibility\ChoicesMetadata\ChoiceMetadata.cs" />
-    <Compile Include="Events\Builders\Extensibility\FormsMetadata\ControlMetadata.cs" />
-    <Compile Include="Events\Builders\Extensibility\FormsMetadata\FormMetadata.cs" />
-    <Compile Include="Events\Builders\Extensibility\FormsMetadata\GridColumnMetadata.cs" />
-    <Compile Include="Events\Builders\Extensibility\FormsMetadata\TabMetadata.cs" />
-    <Compile Include="Events\Builders\Extensibility\LayoutMetadata\LayoutScheme.cs" />
-    <Compile Include="Events\Builders\Extensibility\LayoutMetadata\LayoutZone.cs" />
-    <Compile Include="Events\Builders\Extensibility\MetadataIdentifiers.cs" />
-    <Compile Include="Events\Builders\Extensibility\MetadataPath.cs" />
-    <Compile Include="Events\Builders\Extensibility\RestMetadata\IRestService.cs" />
-    <Compile Include="Events\Builders\Extensibility\RestMetadata\RestContainer.cs" />
-    <Compile Include="Events\Builders\Extensibility\RestMetadata\RestMethodDefinition.cs" />
-    <Compile Include="Events\Builders\Extensibility\RestMetadata\RestTypeDefinition.cs" />
-    <Compile Include="Events\Builders\FakeVidalMetadata.cs" />
-    <Compile Include="Events\Builders\Models\DrugCategoryUsing.cs" />
-    <Compile Include="Events\Builders\Models\ProductUsingType.cs" />
-    <Compile Include="Events\Builders\VidalExtension.cs" />
-    <Compile Include="Extensions\CommonExtensionsTest.cs" />
-    <Compile Include="Extensions\ReflectionExtensionsTest.cs" />
-    <Compile Include="Http\Middlewares\CorsOwinHostingModuleIntegrationTest.cs" />
-    <Compile Include="IoC\ApiTestsContainerModule.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Dynamic\DynamicWrapperBehavior.cs" />
-    <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Session\TenantScopeProviderTest.cs" />
+    <PackageReference Include="Moq" Version="4.7.1" />
+    <PackageReference Include="NUnit" Version="3.6.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj">
-      <Project>{EBC684B7-B72A-475F-BBC1-B6293B607B9B}</Project>
-      <Name>InfinniPlatform.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Http\InfinniPlatform.Http.csproj">
-      <Project>{deadc17e-4c51-48d7-9aea-f8dae3090c74}</Project>
-      <Name>InfinniPlatform.Http</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Sdk\InfinniPlatform.Sdk.csproj">
-      <Project>{2322469D-7D54-4C76-97E2-EF40F15645F5}</Project>
-      <Name>InfinniPlatform.Sdk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj">
-      <Project>{a46f638c-c9c5-49be-bc8d-8144e8c8f87a}</Project>
-      <Name>InfinniPlatform.Tests</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="TestData\UploadBinaryContent.zip" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Serialization\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <MetadataFiles Include=".metadata\**\*.*">
-      <Visible>false</Visible>
-    </MetadataFiles>
-  </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

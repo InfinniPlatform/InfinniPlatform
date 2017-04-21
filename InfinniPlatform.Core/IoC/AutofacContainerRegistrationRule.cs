@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 
 using Autofac;
 using Autofac.Builder;
 
-using InfinniPlatform.Sdk.IoC;
-
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
     internal sealed class AutofacContainerRegistrationRule<TLimit, TActivatorData, TRegistrationStyle> : IContainerRegistrationRule
     {

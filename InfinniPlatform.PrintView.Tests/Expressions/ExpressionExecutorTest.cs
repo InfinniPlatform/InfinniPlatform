@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 
 using InfinniPlatform.PrintView.Expressions.Parser;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Expressions
+namespace InfinniPlatform.PrintView.Expressions
 {
     [TestFixture]
-    [Platform(Exclude = "Mono")]
     [Category(TestCategories.UnitTest)]
     public sealed class ExpressionExecutorTest
     {
@@ -23,7 +23,6 @@ namespace InfinniPlatform.PrintView.Tests.Expressions
                   { "new int()", new int() },
                   { "new System.Int32()", new int() },
                   { "new System.DateTime(2015, 1, 2)", new DateTime(2015, 1, 2) },
-                  { "new System.AppDomainSetup() { ApplicationName = \"Application1\" }", new AppDomainSetup { ApplicationName = "Application1" } },
                   { "new System.Collections.Generic.List<int> { 1, 2, 3 }", new List<int> { 1, 2, 3 } },
                   { "new System.Collections.Generic.Dictionary<int, char> { { 1, 'A' }, { 2, 'B' } }", new Dictionary<int, char> { { 1, 'A' }, { 2, 'B' } } }
               };
@@ -571,7 +570,6 @@ namespace InfinniPlatform.PrintView.Tests.Expressions
 
         [Test]
         [TestCaseSource(nameof(ArrayCreationExpressionCases))]
-        [Ignore("Can not create multidimensional array with reflection in Mono")]
         public void ArrayCreationExpression(KeyValuePair<string, Array> testCase)
         {
             AssertExecuteExpression(testCase.Key, testCase.Value);
@@ -1401,39 +1399,22 @@ namespace InfinniPlatform.PrintView.Tests.Expressions
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            Trace.Listeners.Add(NUnitTraceListener.Default);
-            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+            AssemblyLoadContext.Default.Resolving += OnAssemblyResolving;
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            Trace.Listeners.Remove(NUnitTraceListener.Default);
-            AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
+            AssemblyLoadContext.Default.Resolving -= OnAssemblyResolving;
         }
 
-        private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
+        private static Assembly OnAssemblyResolving(AssemblyLoadContext context, AssemblyName assemblyName)
         {
-            var assemblyFileName = new AssemblyName(args.Name).Name + ".dll";
-            var currentDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath) ?? ".";
+            var assemblyFileName = assemblyName.Name + ".dll";
+            var currentAssembly = new Uri(typeof(ExpressionExecutorTest).GetTypeInfo().Assembly.CodeBase).LocalPath;
+            var currentDirectory = Path.GetDirectoryName(currentAssembly) ?? ".";
             var assemblyFilePath = Directory.EnumerateFiles(currentDirectory, assemblyFileName, SearchOption.AllDirectories).FirstOrDefault();
-            return !string.IsNullOrEmpty(assemblyFilePath) ? Assembly.LoadFile(assemblyFilePath) : null;
-        }
-
-
-        public class NUnitTraceListener : TraceListener
-        {
-            public static readonly NUnitTraceListener Default = new NUnitTraceListener();
-
-            public override void Write(string message)
-            {
-                Console.Write(message);
-            }
-
-            public override void WriteLine(string message)
-            {
-                Console.WriteLine(message);
-            }
+            return !string.IsNullOrEmpty(assemblyFilePath) ? AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath) : null;
         }
     }
 }

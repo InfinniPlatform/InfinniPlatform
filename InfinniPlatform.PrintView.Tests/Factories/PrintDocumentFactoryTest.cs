@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 
-using InfinniPlatform.PrintView.Factories;
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
-using InfinniPlatform.PrintView.Model.Defaults;
+using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.PrintView.Defaults;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Factories
+namespace InfinniPlatform.PrintView.Factories
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

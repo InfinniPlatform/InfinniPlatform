@@ -1,8 +1,6 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Session;
-
-namespace InfinniPlatform.Core.Session
+namespace InfinniPlatform.Session
 {
     [Serializable]
     internal class TenantScopeContext : IDisposable

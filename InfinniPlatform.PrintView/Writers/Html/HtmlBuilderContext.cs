@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 
-using InfinniPlatform.PrintView.Model;
-
 namespace InfinniPlatform.PrintView.Writers.Html
 {
     internal class HtmlBuilderContext

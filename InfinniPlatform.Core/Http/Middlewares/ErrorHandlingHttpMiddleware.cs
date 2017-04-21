@@ -1,26 +1,28 @@
-﻿using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.Logging;
 
-using Owin;
+using Microsoft.AspNetCore.Builder;
 
-namespace InfinniPlatform.Core.Http.Middlewares
+namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
     /// Модуль хостинга для обработки ошибок выполнения запросов.
     /// </summary>
-    internal class ErrorHandlingHttpMiddleware : HttpMiddleware
+    internal class ErrorHandlingHttpMiddleware : HttpMiddlewareBase<ErrorHandlingMiddlewareOptions>
     {
-        public ErrorHandlingHttpMiddleware(IOwinMiddlewareTypeResolver typeResolver) : base(HttpMiddlewareType.ErrorHandling)
+        public ErrorHandlingHttpMiddleware(ILog log, IPerformanceLog performanceLog) : base(HttpMiddlewareType.ErrorHandling)
         {
-            _typeResolver = typeResolver;
+            _log = log;
+            _performanceLog = performanceLog;
         }
 
 
-        private readonly IOwinMiddlewareTypeResolver _typeResolver;
+        private readonly ILog _log;
+        private readonly IPerformanceLog _performanceLog;
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder app, ErrorHandlingMiddlewareOptions options)
         {
-            builder.Use(_typeResolver.ResolveType<ErrorHandlingOwinMiddleware>());
+            app.UseMiddleware<ErrorHandlingOwinMiddleware>(_log, _performanceLog);
         }
     }
 }

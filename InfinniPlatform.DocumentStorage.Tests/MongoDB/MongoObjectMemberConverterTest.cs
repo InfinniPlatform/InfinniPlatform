@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Linq;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

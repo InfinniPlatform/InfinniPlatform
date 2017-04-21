@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Scheduler.Common;
-using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.IoC;
+using InfinniPlatform.IoC;
+using InfinniPlatform.Tests;
 
 using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Scheduler.Tests.Common
+namespace InfinniPlatform.Scheduler.Common
 {
     [TestFixture(Category = TestCategories.UnitTest)]
     public class JobHandlerTypeSerializerTest
     {
-        private const string HandlerType = "InfinniPlatform.Scheduler.Tests.Common.JobHandlerTypeSerializerTest+MyJobHandler,InfinniPlatform.Scheduler.Tests";
+        private const string HandlerType = "InfinniPlatform.Scheduler.Common.JobHandlerTypeSerializerTest+MyJobHandler,InfinniPlatform.Scheduler.Tests";
 
 
         [Test]

@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.PrintView.Contract;
-using InfinniPlatform.PrintView.Model;
-
 namespace InfinniPlatform.PrintView.Factories
 {
     /// <summary>

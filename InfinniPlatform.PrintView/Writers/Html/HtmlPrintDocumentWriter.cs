@@ -2,8 +2,6 @@
 using System.Text;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Contract;
-using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Writers.Html.Block;
 using InfinniPlatform.PrintView.Writers.Html.Inline;
 

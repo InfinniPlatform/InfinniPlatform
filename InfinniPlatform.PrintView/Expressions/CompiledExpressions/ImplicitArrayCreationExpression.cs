@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
 {
@@ -72,7 +73,7 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
                     initializers.Add(elementIndexes, elementValue);
                 }
 
-                if (!hasDiffTypes && type != null && (!hasNullItems || !type.IsValueType))
+                if (!hasDiffTypes && type != null && (!hasNullItems || !type.GetTypeInfo().IsValueType))
                 {
                     elementType = type;
                 }

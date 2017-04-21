@@ -1,9 +1,10 @@
-﻿using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Types;
+﻿using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
+using InfinniPlatform.Types;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
-using InfinniPlatform.MessageQueue.Contract.Consumers;
-using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.MessageQueue.TestConsumers;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
+namespace InfinniPlatform.MessageQueue.IntegrationTests
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
@@ -49,7 +48,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
+            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);

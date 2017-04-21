@@ -3,15 +3,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Contract;
+using InfinniPlatform.Dynamic;
 using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Serialization;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Contract
+namespace InfinniPlatform.PrintView.Contract
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
@@ -65,12 +66,12 @@ namespace InfinniPlatform.PrintView.Tests.Contract
 
         private static PrintViewBuilder CreatePrintViewBuilder()
         {
-            var printViewSerializer = new PrintViewSerializer();
+            var printViewSerializer = new JsonObjectSerializer(knownTypes: new[] { new PrintViewKnownTypesSource() });
 
             var printDocumentBuilder = new PrintDocumentBuilder();
 
             var printViewWriter = new PrintViewWriter();
-            var printViewSettings = HtmlToPdfSettings.Default;
+            var printViewSettings = PrintViewOptions.Default;
             var htmlPrintDocumentWriter = new HtmlPrintDocumentWriter();
             var pdfPrintDocumentWriter = new PdfPrintDocumentWriter(printViewSettings, htmlPrintDocumentWriter);
             printViewWriter.RegisterWriter(PrintViewFileFormat.Html, htmlPrintDocumentWriter);
@@ -81,9 +82,7 @@ namespace InfinniPlatform.PrintView.Tests.Contract
 
         private static Func<Stream> GetPrintViewExample()
         {
-            var test = typeof(PrintViewBuilderTest);
-
-            return () => test.Assembly.GetManifestResourceStream(test, "PrintViewExample.json");
+            return () => ResourceHelper.GetEmbeddedResource("Contract.PrintViewExample.json");
         }
 
         private static async Task OpenPrintView(Stream printView, PrintViewFileFormat fileFormat)
@@ -94,10 +93,9 @@ namespace InfinniPlatform.PrintView.Tests.Contract
             {
                 await printView.CopyToAsync(writer);
                 writer.Flush();
-                writer.Close();
             }
 
-            Process.Start(fileName);
+            Process.Start("explorer.exe", fileName);
         }
     }
 }

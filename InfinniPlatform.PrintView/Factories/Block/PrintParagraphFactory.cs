@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
+﻿using InfinniPlatform.PrintView.Block;
 
 namespace InfinniPlatform.PrintView.Factories.Block
 {

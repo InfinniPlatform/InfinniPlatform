@@ -4,14 +4,12 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Sdk.Diagnostics;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Http;
-using InfinniPlatform.Sdk.Http.Services;
-using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Http;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Properties;
 
-namespace InfinniPlatform.Core.Diagnostics
+namespace InfinniPlatform.Diagnostics
 {
     /// <summary>
     /// Реализует REST-сервис для получения информации о системе.
@@ -36,15 +34,15 @@ namespace InfinniPlatform.Core.Diagnostics
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.OnBefore = r =>
+            builder.OnBefore = async r =>
                                {
                                    // Запрос статуса разрешен только с локального узла
-                                   if (!_hostAddressParser.IsLocalAddress(r.UserHostAddress))
+                                   if (!await _hostAddressParser.IsLocalAddress(r.UserHostAddress))
                                    {
-                                       return Task.FromResult<object>(HttpResponse.Forbidden);
+                                       return HttpResponse.Forbidden;
                                    }
 
-                                   return Task.FromResult<object>(null);
+                                   return null;
                                };
 
             // Краткая информация о статусе системы
@@ -172,7 +170,7 @@ namespace InfinniPlatform.Core.Diagnostics
         /// </summary>
         private static Tuple<string, string> GetSystemVersion()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = typeof(SystemInfoHttpService).GetTypeInfo().Assembly;
             var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             return new Tuple<string, string>(versionInfo.FileVersion, versionInfo.ProductVersion);
         }

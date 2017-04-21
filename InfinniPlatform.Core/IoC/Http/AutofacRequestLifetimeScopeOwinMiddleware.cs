@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Autofac;
 using Autofac.Core.Lifetime;
 
-using Microsoft.Owin;
+using InfinniPlatform.Http.Middlewares;
 
-namespace InfinniPlatform.Core.IoC.Http
+using Microsoft.AspNetCore.Http;
+
+namespace InfinniPlatform.IoC.Http
 {
     /// <summary>
     /// Слой OWIN для регистрации контейнера зависимостей запроса.
@@ -16,12 +18,12 @@ namespace InfinniPlatform.Core.IoC.Http
     /// Данный слой необходим для работоспособности стратегии InstancePerRequest.
     /// </remarks>
     /// <seealso cref="AutofacWrapperOwinMiddleware{T}" />
-    internal sealed class AutofacRequestLifetimeScopeOwinMiddleware : OwinMiddleware
+    public sealed class AutofacRequestLifetimeScopeOwinMiddleware : OwinMiddleware
     {
-        private const string RequestContainerKey = "RequestContainer";
+        private static readonly AsyncLocal<NoSerializeAppDomain> NoSerializeAppDomainReference = new AsyncLocal<NoSerializeAppDomain>();
 
 
-        public AutofacRequestLifetimeScopeOwinMiddleware(OwinMiddleware next, ILifetimeScope rootContainer) : base(next)
+        public AutofacRequestLifetimeScopeOwinMiddleware(RequestDelegate next, ILifetimeScope rootContainer) : base(next)
         {
             _rootContainer = rootContainer;
         }
@@ -30,13 +32,15 @@ namespace InfinniPlatform.Core.IoC.Http
         private readonly ILifetimeScope _rootContainer;
 
 
-        public override async Task Invoke(IOwinContext context)
+        public override async Task Invoke(HttpContext context)
         {
             // Создание контейнера зависимостей запроса на время его обработки
-            using (var requestContainer = _rootContainer.BeginLifetimeScope(MatchingScopeLifetimeTags.RequestLifetimeScopeTag, b => b.RegisterInstance(context).As<IOwinContext>()))
+            using (var requestContainer = _rootContainer.BeginLifetimeScope(MatchingScopeLifetimeTags.RequestLifetimeScopeTag, b => b.RegisterInstance(context).As<HttpContext>()))
             {
                 // Регистрация контейнера зависимостей запроса в окружении OWIN для создания через него последующих OWIN-слоев
-                context.Set(AutofacHttpConstants.LifetimeScopeKey, requestContainer);
+                //TODO Вероятно данный этап уже не нужен. См. http://docs.autofac.org/en/latest/integration/aspnetcore.html?highlight=core#differences-from-asp-net-classic
+                //context.Set(AutofacHttpConstants.LifetimeScopeKey, requestContainer);
+                context.Items.Add(AutofacHttpConstants.LifetimeScopeKey, requestContainer);
 
                 // Регистрация контейнера зависимостей запроса в статическом контексте для возможности доступа к нему извне
                 SetRequestContainer(requestContainer);
@@ -61,9 +65,8 @@ namespace InfinniPlatform.Core.IoC.Http
         private static void SetRequestContainer(ILifetimeScope requestContainer)
         {
             var requestContainerReference = new WeakReference<ILifetimeScope>(requestContainer);
-            var noSerializeAppDomain = new NoSerializeAppDomain { LifetimeScope = requestContainerReference };
-            requestContainer.Disposer.AddInstanceForDisposal(noSerializeAppDomain);
-            CallContext.LogicalSetData(RequestContainerKey, noSerializeAppDomain);
+            NoSerializeAppDomainReference.Value = new NoSerializeAppDomain { LifetimeScope = requestContainerReference };
+            requestContainer.Disposer.AddInstanceForDisposal(NoSerializeAppDomainReference.Value);
         }
 
         /// <summary>
@@ -72,8 +75,7 @@ namespace InfinniPlatform.Core.IoC.Http
         public static ILifetimeScope TryGetRequestContainer()
         {
             ILifetimeScope requestContainer;
-            var noSerializeAppDomain = CallContext.LogicalGetData(RequestContainerKey) as NoSerializeAppDomain;
-            var requestContainerReference = noSerializeAppDomain?.LifetimeScope;
+            var requestContainerReference = NoSerializeAppDomainReference.Value?.LifetimeScope;
             return (requestContainerReference != null && requestContainerReference.TryGetTarget(out requestContainer)) ? requestContainer : null;
         }
 

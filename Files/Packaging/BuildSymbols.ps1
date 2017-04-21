@@ -7,20 +7,22 @@
     param
     (
         [Parameter(HelpMessage = "Path to the solution directory.")]
-        [String] $solutionDir = '.',
+        [String] $solutionDir,
 
         [Parameter(HelpMessage = "VCS repository URL.")]
-        [String] $repositoryUrl = '',
+        [String] $repositoryUrl,
 
         [Parameter(HelpMessage = "VCS commit hash.")]
-        [String] $commitHash = ''
+        [String] $commitHash
     )
 
     process
     {
+        $buildToolsDir = Join-Path $env:ProgramData 'BuildTools'
+
         # Install NuGet package manager
 
-        $nugetDir = Join-Path $env:ProgramData 'NuGet'
+        $nugetDir = Join-Path $buildToolsDir 'NuGet'
         $nugetPath = Join-Path $nugetDir 'nuget.exe'
 
         if (-not (Test-Path $nugetPath))
@@ -36,12 +38,12 @@
 
         # Install GitLink package
 
-        $gitLinkDir = Join-Path $env:ProgramData 'GitLink'
-        $gitLinkPath = Join-Path $gitLinkDir 'lib\net45\GitLink.exe'
+        $gitLinkDir = Join-Path $buildToolsDir 'GitLink'
+        $gitLinkPath = Join-Path $gitLinkDir 'build\GitLink.exe'
 
         if (-not (Test-Path $gitLinkPath))
         {
-            & "$nugetPath" install 'GitLink' -OutputDirectory $env:ProgramData -NonInteractive -Prerelease -ExcludeVersion
+            & "$nugetPath" install 'GitLink' -OutputDirectory $buildToolsDir -NonInteractive -Prerelease -ExcludeVersion
         }
 
         # Build symbol files
@@ -51,6 +53,14 @@
             $repositoryUrl = $repositoryUrl -replace '\.git$', ''
         }
 
-        & "$gitLinkPath" $solutionDir -u $repositoryUrl -s $commitHash
+        $pdbFiles = Get-ChildItem -Path $solutionDir -Filter '*.pdb' -Recurse `
+            | Where-Object { $_.Name -notlike '*.Tests.pdb' } `
+            | Where-Object { $_.FullName -notlike '*\obj\*' } `
+            | Where-Object { $_.FullName -like (Get-Item (Join-Path $solutionDir $_.BaseName)).FullName + '\*' }
+
+        foreach ($pdbFile in $pdbFiles)
+        {
+            & "$gitLinkPath" --baseDir $solutionDir --url $repositoryUrl --commit $commitHash $pdbFile.FullName
+        }
     }
 }

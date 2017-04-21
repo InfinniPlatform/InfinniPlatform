@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
-using InfinniPlatform.PrintView.Model.Inline;
+using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.PrintView.Inline;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Writers.Html.Inline
+namespace InfinniPlatform.PrintView.Writers.Html.Inline
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
@@ -17,7 +17,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Inline
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildLineBreak)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildLineBreak)}.txt");
 
             var element = new PrintParagraph
                           {

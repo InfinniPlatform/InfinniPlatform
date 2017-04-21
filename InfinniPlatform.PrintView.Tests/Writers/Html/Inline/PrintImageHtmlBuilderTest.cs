@@ -1,25 +1,25 @@
-﻿using InfinniPlatform.PrintView.Model.Inline;
-using InfinniPlatform.PrintView.Tests.Properties;
+﻿using InfinniPlatform.PrintView.Inline;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Writers.Html.Inline
+namespace InfinniPlatform.PrintView.Writers.Html.Inline
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
-    [Ignore("Because ImageFormat.Png is not independent")]
     public sealed class PrintImageHtmlBuilderTest
     {
         [Test]
+        [Ignore("Because on Linux this code makes correct but a bit different output")]
         public void ShouldBuildImage()
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildImage)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildImage)}.txt");
 
             var element = new PrintImage
                           {
-                              Data = TestHelper.BitmapToBytes(Resources.Image)
+                              Data = ResourceHelper.Image.Data
                           };
 
             // When

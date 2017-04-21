@@ -476,7 +476,7 @@ namespace InfinniPlatform.PrintView.Expressions.BuiltInTypes
 
         private static int GetParameterCount(Delegate value)
         {
-            return value.Method.GetParameters().Length;
+            return value.GetMethodInfo().GetParameters().Length;
         }
 
         private static Func<T1, TResult> ToFunc<T1, TResult>(Delegate value)

@@ -1,10 +1,8 @@
 ﻿using Autofac;
 
-using InfinniPlatform.Sdk.IoC;
-
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
-    internal sealed class AutofacContainerModule : Module
+    public sealed class AutofacContainerModule : Module
     {
         public AutofacContainerModule(IContainerModule containerModule)
         {

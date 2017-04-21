@@ -1,8 +1,9 @@
-﻿using InfinniPlatform.PrintView.Model.Inline;
+﻿using InfinniPlatform.PrintView.Inline;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Factories.Inline
+namespace InfinniPlatform.PrintView.Factories.Inline
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

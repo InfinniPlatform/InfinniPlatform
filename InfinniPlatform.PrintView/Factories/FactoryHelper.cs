@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
-using InfinniPlatform.PrintView.Model.Format;
-using InfinniPlatform.PrintView.Model.Inline;
+using ImageSharp;
+using ImageSharp.Processing;
+
+using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.PrintView.Format;
+using InfinniPlatform.PrintView.Inline;
 
 namespace InfinniPlatform.PrintView.Factories
 {
@@ -197,56 +197,58 @@ namespace InfinniPlatform.PrintView.Factories
                 imageElement.Rotation = PrintImageRotation.Rotate0;
             }
 
-            RotateFlipType rotateFlipType;
+            var rotateType = RotateType.None;
 
             // Определение способа поворота изображения
             switch (imageElement.Rotation.Value)
             {
                 case PrintImageRotation.Rotate0:
-                    rotateFlipType = RotateFlipType.RotateNoneFlipNone;
+                    rotateType = RotateType.None;
                     break;
                 case PrintImageRotation.Rotate90:
-                    rotateFlipType = RotateFlipType.Rotate90FlipNone;
+                    rotateType = RotateType.Rotate90;
                     break;
                 case PrintImageRotation.Rotate180:
-                    rotateFlipType = RotateFlipType.Rotate180FlipNone;
+                    rotateType = RotateType.Rotate180;
                     break;
                 case PrintImageRotation.Rotate270:
-                    rotateFlipType = RotateFlipType.Rotate270FlipNone;
-                    break;
-                default:
-                    rotateFlipType = RotateFlipType.RotateNoneFlipNone;
+                    rotateType = RotateType.Rotate270;
                     break;
             }
 
             // Если нужно определить размер изображения или повернуть его
-            if (updateImageSize || rotateFlipType != RotateFlipType.RotateNoneFlipNone)
+            if (updateImageSize || rotateType != RotateType.None)
             {
                 try
                 {
                     // Чтение изображение из потока байт
+
                     using (var imageStream = new MemoryStream(imageElement.Data))
-                    using (var imageBitmap = new Bitmap(imageStream))
+                    using (var image = new Image(imageStream))
                     {
+                        Image<Color> rotatedImage = null;
+
                         // Если изображение нужно повернуть
-                        if (rotateFlipType != RotateFlipType.RotateNoneFlipNone)
+                        if (rotateType != RotateType.None)
                         {
                             // Поворот изображения и сброс угла поворота в ноль
-                            imageBitmap.RotateFlip(rotateFlipType);
+                            rotatedImage = image.Rotate(rotateType);
                             imageElement.Rotation = PrintImageRotation.Rotate0;
                         }
 
                         // Если нужно определить размер изображения
                         if (updateImageSize)
                         {
-                            imageElement.Size = new PrintSize(imageBitmap.Width, imageBitmap.Height, PrintSizeUnit.Px);
+                            imageElement.Size = (rotatedImage == null)
+                                ? new PrintSize(image.Width, image.Height, PrintSizeUnit.Px)
+                                : new PrintSize(rotatedImage.Width, rotatedImage.Height, PrintSizeUnit.Px);
                         }
 
                         // Если изображение было повернуто
-                        if (rotateFlipType != RotateFlipType.RotateNoneFlipNone)
+                        if (rotatedImage != null)
                         {
                             // Обновление данных изображения
-                            imageElement.Data = GetBitmapBytes(imageBitmap);
+                            imageElement.Data = GetBitmapBytes(rotatedImage);
                         }
                     }
                 }
@@ -256,11 +258,11 @@ namespace InfinniPlatform.PrintView.Factories
             }
         }
 
-        public static byte[] GetBitmapBytes(Bitmap bitmap)
+        public static byte[] GetBitmapBytes(Image<Color> image)
         {
             using (var imageStream = new MemoryStream())
             {
-                bitmap.Save(imageStream, ImageFormat.Png);
+                image.SaveAsPng(imageStream);
                 imageStream.Seek(0, SeekOrigin.Begin);
                 return imageStream.ToArray();
             }

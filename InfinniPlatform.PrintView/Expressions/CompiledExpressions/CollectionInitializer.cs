@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
 {
@@ -32,22 +33,28 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
                 {
                     var collectionType =
                         instance.GetType()
-                            .GetInterfaces()
-                            .FirstOrDefault(
-                                i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof (ICollection<>));
+                                .GetTypeInfo()
+                                .GetInterfaces()
+                                .FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(ICollection<>))
+                                ?.GetTypeInfo();
 
                     if (collectionType != null)
                     {
                         var addMethod = collectionType.GetMethod("Add");
                         var elementType = collectionType.GetGenericArguments().FirstOrDefault();
 
-                        if (addMethod != null && elementType != null && (elementType.IsClass || elementType.IsValueType))
+                        if (addMethod != null && elementType != null)
                         {
-                            foreach (var item in _items)
+                            var elementTypeInfo = elementType.GetTypeInfo();
+
+                            if (elementTypeInfo != null && (elementTypeInfo.IsClass || elementTypeInfo.IsValueType))
                             {
-                                var itemValue = Activator.CreateInstance(elementType,
-                                    item.Execute(dataContext, scope) as object[]);
-                                addMethod.Invoke(instance, new[] {itemValue});
+                                foreach (var item in _items)
+                                {
+                                    var itemValue = Activator.CreateInstance(elementType, item.Execute(dataContext, scope) as object[]);
+
+                                    addMethod.Invoke(instance, new[] { itemValue });
+                                }
                             }
                         }
                     }

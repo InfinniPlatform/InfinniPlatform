@@ -9,25 +9,21 @@
       "description": "Настройки приложения.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/App.json"
     },
-    "host": {
-      "description": "Настройки хостинга приложения",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Host.json"
+    "mongodbDocumentStorage": {
+      "description": "Настройки хранилища документов MongoDB.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/MongoDbDocumentStorage.json"
     },
-    "redis": {
-      "description": "Настройки подключения к Redis.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Redis.json"
+    "fileSystemBlobStorage": {
+      "description": "Настройки хранилища BLOB в файловой системе.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/FileSystemBlobStorage.json"
     },
-    "mongodb": {
-      "description": "Настройки подключения к MongoDB.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/MongoDB.json"
+    "rabbitmqMessageQueue": {
+      "description": "Настройки очереди сообщений на основе RabbitMQ.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RabbitMqMessageQueue.json"
     },
-    "rabbitmq": {
-      "description": "Настройки подключения к RabbitMQ.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RabbitMQ.json"
-    },
-    "blobStorage": {
-      "description": "Настройки хранения BLOB и файлов.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/BlobStorage.json"
+    "redisSharedCache": {
+      "description": "Настройки распределенного кэша на основе Redis.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RedisSharedCache.json"
     },
     "userStorage": {
       "description": "Настройки хранения пользователей.",
@@ -37,57 +33,17 @@
       "description": "Настройки кэширования данных.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Cache.json"
     },
-    "htmlToPdf": {
-      "description": "Настройки утилиты wkhtmltopdf - http://wkhtmltopdf.org/. Поддерживаемая версия - 0.12.2.4.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/HtmlToPdf.json"
+    "printView": {
+      "description": "Настройки печатных представлений.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/PrintView.json"
     },
-    "metadata": {
-      "description": "Настройки хранения метаданных.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Metadata.json"
-    },
-    "scheduler": {
-      "description": "Планировщик заданий.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Scheduler.json"
-    },
-    "staticContent": {
-      "description": "Настройки хостинга статических файлов.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/StaticContent.json"
+    "quartzScheduler": {
+      "description": "Настройки планировщика заданий Quartz.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/QuartzScheduler.json"
     },
     "authCookie": {
       "description": "Настройки аутентификации через Cookie.",
       "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthCookie.json"
-    },
-    "authAdfs": {
-      "description": "Настройки аутентификации через ADFS.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthAdfs.json"
-    },
-    "authGoogle": {
-      "description": "Настройки аутентификации через Google+.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthGoogle.json"
-    },
-    "authFacebook": {
-      "description": "Настройки аутентификации через Facebook.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthFacebook.json"
-    },
-    "authVk": {
-      "description": "Настройки аутентификации через ВКонтакте.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/AuthVk.json"
-    },
-    "watcher": {
-      "description": "Настройки приложения InfinniPlatform.Watcher.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Watcher.json"
-    },
-    "agent": {
-      "description": "Настройки приложения Infinni.Agent.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Agent.json"
-    },
-    "server": {
-      "description": "Настройки приложения Infinni.Server.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Server.json"
-    },
-    "heartbeat": {
-      "description": "Настройки приложения InfinniPlatform.Heartbeat.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Heartbeat.json"
     }
   }
 }

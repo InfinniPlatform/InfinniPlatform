@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 
-namespace InfinniPlatform.Core.Compression
+namespace InfinniPlatform.Compression
 {
     /// <summary>
     /// Компрессор данных на базе GZIP.

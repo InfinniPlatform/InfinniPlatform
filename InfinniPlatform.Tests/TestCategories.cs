@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform
+﻿namespace InfinniPlatform.Tests
 {
     /// <summary>
     /// Категории тестов.
@@ -9,6 +9,11 @@
         /// Модульные тесты.
         /// </summary>
         public const string UnitTest = "UnitTest";
+
+        /// <summary>
+        /// Тест на корректность сборки.
+        /// </summary>
+        public const string BuildTest = "BuildTest";
 
         /// <summary>
         /// Тесты на проверку утечек памяти.

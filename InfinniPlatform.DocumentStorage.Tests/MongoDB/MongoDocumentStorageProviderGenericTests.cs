@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.Contract;
-using InfinniPlatform.DocumentStorage.Tests.TestEntities;
-using InfinniPlatform.Sdk.Metadata;
+using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.DocumentStorage.TestEntities;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

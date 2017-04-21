@@ -1,10 +1,11 @@
 ﻿using System;
 
-using InfinniPlatform.PrintView.Model.Format;
+using InfinniPlatform.PrintView.Format;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Factories.Format
+namespace InfinniPlatform.PrintView.Factories.Format
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

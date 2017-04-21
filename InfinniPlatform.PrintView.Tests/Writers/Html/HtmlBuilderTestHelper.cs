@@ -1,8 +1,7 @@
-﻿using InfinniPlatform.PrintView.Writers.Html;
-using InfinniPlatform.PrintView.Writers.Html.Block;
+﻿using InfinniPlatform.PrintView.Writers.Html.Block;
 using InfinniPlatform.PrintView.Writers.Html.Inline;
 
-namespace InfinniPlatform.PrintView.Tests.Writers.Html
+namespace InfinniPlatform.PrintView.Writers.Html
 {
     internal static class HtmlBuilderTestHelper
     {

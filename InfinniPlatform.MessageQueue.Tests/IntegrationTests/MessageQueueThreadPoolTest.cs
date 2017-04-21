@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using InfinniPlatform.MessageQueue.RabbitMq;
-using InfinniPlatform.MessageQueue.RabbitMq.Hosting;
-using InfinniPlatform.MessageQueue.RabbitMq.Management;
-using InfinniPlatform.MessageQueue.Tests.IntegrationTests.TestConsumers;
+using InfinniPlatform.MessageQueue.Hosting;
+using InfinniPlatform.MessageQueue.TestConsumers;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
+namespace InfinniPlatform.MessageQueue.IntegrationTests
 {
     [Category(TestCategories.IntegrationTest)]
     public class MessageQueueThreadPoolTest : RabbitMqTestBase
@@ -19,7 +18,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
         [Category(TestCategories.UnitTest)]
         public async Task ThreadPoolMustLimitNumberOfConcurrentTasks()
         {
-            var semaphoreProvider = new MessageQueueThreadPool(new RabbitMqConnectionSettings { MaxConcurrentThreads = 1 });
+            var semaphoreProvider = new MessageQueueThreadPool(new RabbitMqMessageQueueOptions { MaxConcurrentThreads = 1 });
 
             var result = "";
 
@@ -61,7 +60,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             for (var i = 0; i < length; i++)
                 messages.Add(i.ToString());
 
-            var customSettings = RabbitMqConnectionSettings.Default;
+            var customSettings = RabbitMqMessageQueueOptions.Default;
             customSettings.MaxConcurrentThreads = 1;
             customSettings.PrefetchCount = 0;
 
@@ -69,7 +68,7 @@ namespace InfinniPlatform.MessageQueue.Tests.IntegrationTests
             var actualMessages = new ConcurrentBag<string>();
             RegisterConsumers(new[] { new MessageQueueThreadPoolConsumer(actualMessages, countdownEvent, timeout) }, null, customSettings);
 
-            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
+            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in messages)
                 await producerBase.PublishAsync(message, "MessageQueueThreadPoolTest");
 

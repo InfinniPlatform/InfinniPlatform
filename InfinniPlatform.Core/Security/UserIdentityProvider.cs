@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
 using System.Security.Principal;
 using System.Threading;
 
-using InfinniPlatform.Sdk.Security;
-
-namespace InfinniPlatform.Core.Security
+namespace InfinniPlatform.Security
 {
     internal class UserIdentityProvider : IUserIdentityProvider
     {
+        private static readonly AsyncLocal<WeakReference<IPrincipal>> RequestUserReference = new AsyncLocal<WeakReference<IPrincipal>>();
+
         public IIdentity GetUserIdentity()
         {
             var requestUser = TryGetRequestUser();
@@ -22,16 +21,14 @@ namespace InfinniPlatform.Core.Security
         }
 
 
-        private const string RequestUserKey = "RequestUser";
-
         /// <summary>
         /// Возвращает идентификационные данные текущего пользователя.
         /// </summary>
         private static IPrincipal TryGetRequestUser()
         {
             IPrincipal requestUser;
-            var requestUserReference = CallContext.LogicalGetData(RequestUserKey) as WeakReference<IPrincipal>;
-            return (requestUserReference != null && requestUserReference.TryGetTarget(out requestUser)) ? requestUser : null;
+
+            return RequestUserReference.Value != null && RequestUserReference.Value.TryGetTarget(out requestUser) ? requestUser : null;
         }
 
         /// <summary>
@@ -45,9 +42,7 @@ namespace InfinniPlatform.Core.Security
         /// </remarks>
         private static void SetRequestUser(IPrincipal requestUser)
         {
-            var requestUserReference = new WeakReference<IPrincipal>(requestUser);
-            CallContext.LogicalSetData(RequestUserKey, requestUserReference);
-            Thread.CurrentPrincipal = requestUser;
+            RequestUserReference.Value=new WeakReference<IPrincipal>(requestUser);
         }
     }
 }

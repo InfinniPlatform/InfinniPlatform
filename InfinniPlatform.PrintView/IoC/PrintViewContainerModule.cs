@@ -1,23 +1,26 @@
-﻿using InfinniPlatform.PrintView.Contract;
+﻿using InfinniPlatform.IoC;
 using InfinniPlatform.PrintView.Factories;
-using InfinniPlatform.PrintView.Writers;
 using InfinniPlatform.PrintView.Writers.Html;
 using InfinniPlatform.PrintView.Writers.Pdf;
-using InfinniPlatform.Sdk.IoC;
-using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.PrintView.IoC
 {
-    internal class PrintViewContainerModule : IContainerModule
+    public class PrintViewContainerModule : IContainerModule
     {
+        public PrintViewContainerModule(PrintViewOptions options)
+        {
+            _options = options;
+        }
+
+        private readonly PrintViewOptions _options;
+
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterFactory(r => r.Resolve<IAppConfiguration>().GetSection<HtmlToPdfSettings>(HtmlToPdfSettings.SectionName))
-                   .As<HtmlToPdfSettings>()
-                   .SingleInstance();
+            builder.RegisterInstance(_options).AsSelf().SingleInstance();
 
-            builder.RegisterType<PrintViewSerializer>()
-                   .As<IPrintViewSerializer>()
+            builder.RegisterType<PrintViewKnownTypesSource>()
+                   .As<IKnownTypesSource>()
                    .SingleInstance();
 
             builder.RegisterType<HtmlPrintDocumentWriter>()

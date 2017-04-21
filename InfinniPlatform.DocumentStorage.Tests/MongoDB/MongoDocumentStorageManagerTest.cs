@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.Sdk.Dynamic;
-using InfinniPlatform.Sdk.Metadata;
+using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using MongoDB.Driver;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]

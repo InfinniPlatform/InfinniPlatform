@@ -1,0 +1,13 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/QuartzScheduler.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "QuartzScheduler",
+  "description": "Настройки планировщика заданий Quartz.",
+  "type": "object",
+  "properties": {
+    "ExpireHistoryAfter": {
+      "description": "Время хранения информации о вызове обработчиков заданий (в секундах, по умолчанию - время хранения не ограничено)",
+      "type": "integer"
+    }
+  }
+}

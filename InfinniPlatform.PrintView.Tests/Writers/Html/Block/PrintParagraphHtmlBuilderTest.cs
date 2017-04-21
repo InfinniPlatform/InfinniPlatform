@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
-using InfinniPlatform.PrintView.Model.Defaults;
-using InfinniPlatform.PrintView.Model.Inline;
-using InfinniPlatform.PrintView.Tests.Properties;
+using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.PrintView.Defaults;
+using InfinniPlatform.PrintView.Inline;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Writers.Html.Block
+namespace InfinniPlatform.PrintView.Writers.Html.Block
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
@@ -19,7 +18,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Block
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildParagraphWithDefaultSettings)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildParagraphWithDefaultSettings)}.txt");
 
             var element = new PrintParagraph();
 
@@ -37,7 +36,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Block
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildParagraphWithSettings)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildParagraphWithSettings)}.txt");
 
             var run = new PrintRun
                       {

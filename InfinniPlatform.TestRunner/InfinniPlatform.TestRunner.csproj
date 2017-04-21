@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <AssemblyName>InfinniPlatform.TestRunner</AssemblyName>
+    <RootNamespace>InfinniPlatform.TestRunner</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnitLite" Version="3.6.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InfinniPlatform.BlobStorage.Tests\InfinniPlatform.BlobStorage.Tests.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Cache.Tests\InfinniPlatform.Cache.Tests.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Core.Tests\InfinniPlatform.Core.Tests.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.DocumentStorage.Tests\InfinniPlatform.DocumentStorage.Tests.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.MessageQueue.Tests\InfinniPlatform.MessageQueue.Tests.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.PrintView.Tests\InfinniPlatform.PrintView.Tests.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Scheduler.Tests\InfinniPlatform.Scheduler.Tests.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

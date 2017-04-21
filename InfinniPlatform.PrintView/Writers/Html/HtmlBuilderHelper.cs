@@ -3,8 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
+using InfinniPlatform.PrintView.Block;
 
 namespace InfinniPlatform.PrintView.Writers.Html
 {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Text;
 
-using InfinniPlatform.PrintView.Model.Format;
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.PrintView.Expressions;
+using InfinniPlatform.PrintView.Format;
 
 namespace InfinniPlatform.PrintView.Factories.Format
 {

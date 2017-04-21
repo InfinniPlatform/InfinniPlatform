@@ -5,11 +5,9 @@ using System.Linq;
 using Autofac;
 using Autofac.Core;
 
-using InfinniPlatform.Sdk.IoC;
-
-namespace InfinniPlatform.Core.IoC
+namespace InfinniPlatform.IoC
 {
-    internal sealed class AutofacContainerResolver : IContainerResolver
+    public sealed class AutofacContainerResolver : IContainerResolver
     {
         public AutofacContainerResolver(IComponentContext rootContainer) : this(rootContainer, () => rootContainer)
         {

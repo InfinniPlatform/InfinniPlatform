@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Factories;
-using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Writers.Pdf
@@ -107,7 +106,7 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
                 // местоположение ProgramFiles определяется явно по значениям переменных окружения
 
                 // x64
-                if (Environment.Is64BitOperatingSystem)
+                if (Is64BitOperatingSystem())
                 {
                     // "C:\Program Files"
                     var programFiles = Environment.GetEnvironmentVariable("ProgramW6432");
@@ -155,9 +154,13 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
 
         private static bool IsRunningOnLinux()
         {
-            var p = (int)Environment.OSVersion.Platform;
+            return !RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        }
 
-            return ((p == 4) || (p == 128));
+        private static bool Is64BitOperatingSystem()
+        {
+            return (RuntimeInformation.OSArchitecture == Architecture.X64)
+                   || (RuntimeInformation.OSArchitecture == Architecture.Arm64);
         }
 
 

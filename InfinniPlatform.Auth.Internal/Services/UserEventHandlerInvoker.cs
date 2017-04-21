@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 
-using InfinniPlatform.Auth.Internal.Properties;
-using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.Session;
+using InfinniPlatform.Auth.Properties;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Session;
 
-namespace InfinniPlatform.Auth.Internal.Services
+namespace InfinniPlatform.Auth.Services
 {
     /// <summary>
     /// Предоставляет методы для вызова зарегистрированных обработчиков событий пользователя.

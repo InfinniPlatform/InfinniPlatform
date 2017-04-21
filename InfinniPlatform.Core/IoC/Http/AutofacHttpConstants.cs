@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Core.IoC.Http
+﻿namespace InfinniPlatform.IoC.Http
 {
     internal static class AutofacHttpConstants
     {

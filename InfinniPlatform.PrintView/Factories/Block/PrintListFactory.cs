@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 
-using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Block;
-using InfinniPlatform.PrintView.Model.Defaults;
+using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.PrintView.Defaults;
 
 namespace InfinniPlatform.PrintView.Factories.Block
 {

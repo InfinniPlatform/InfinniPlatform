@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.MessageQueue.Tests
+﻿namespace InfinniPlatform.MessageQueue
 {
     public static class TestConstants
     {

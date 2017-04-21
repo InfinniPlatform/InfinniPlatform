@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.DocumentStorage.Contract;
-using InfinniPlatform.DocumentStorage.MongoDB;
-using InfinniPlatform.DocumentStorage.MongoDB.Conventions;
-using InfinniPlatform.Sdk.Metadata;
-using InfinniPlatform.Sdk.Serialization;
-using InfinniPlatform.Sdk.Settings;
+using InfinniPlatform.DocumentStorage.Metadata;
+using InfinniPlatform.Serialization;
+using InfinniPlatform.Settings;
 
-using Moq;
-
-namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
+namespace InfinniPlatform.DocumentStorage.MongoDB
 {
     internal static class MongoTestHelpers
     {
@@ -18,9 +13,9 @@ namespace InfinniPlatform.DocumentStorage.Tests.MongoDB
 
         public static MongoConnection GetConnection(IEnumerable<IMemberValueConverter> converters = null, IDocumentKnownTypeSource source = null)
         {
-            var appEnvironmentMock = new Mock<IAppEnvironment>();
-            appEnvironmentMock.SetupGet(e => e.Name).Returns(DatabaseName);
-            return new MongoConnection(appEnvironmentMock.Object, MongoConnectionSettings.Default, converters, source);
+            var appOptions = new AppOptions { AppName = DatabaseName };
+
+            return new MongoConnection(appOptions, MongoDocumentStorageOptions.Default, converters, source);
         }
 
 

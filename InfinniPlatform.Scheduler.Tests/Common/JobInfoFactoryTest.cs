@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Scheduler.Common;
-using InfinniPlatform.Scheduler.Contract;
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Scheduler.Tests.Common
+namespace InfinniPlatform.Scheduler.Common
 {
     [TestFixture(Category = TestCategories.UnitTest)]
     public class JobInfoFactoryTest

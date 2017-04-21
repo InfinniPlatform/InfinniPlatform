@@ -1,8 +1,9 @@
-﻿using InfinniPlatform.PrintView.Model.Block;
+﻿using InfinniPlatform.PrintView.Block;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.PrintView.Tests.Writers.Html.Block
+namespace InfinniPlatform.PrintView.Writers.Html.Block
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
@@ -13,7 +14,7 @@ namespace InfinniPlatform.PrintView.Tests.Writers.Html.Block
         {
             // Given
 
-            var expectedResult = TestHelper.GetEmbeddedResource($"Writers.Html.Resources.{nameof(ShouldBuildLine)}.txt");
+            var expectedResult = ResourceHelper.GetEmbeddedResourceText($"Writers.Html.Resources.{nameof(ShouldBuildLine)}.txt");
 
             var element = new PrintLine();
 

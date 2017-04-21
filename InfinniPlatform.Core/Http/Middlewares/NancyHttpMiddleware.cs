@@ -1,16 +1,14 @@
-﻿using InfinniPlatform.Http.Middlewares;
+﻿using Microsoft.AspNetCore.Builder;
 
 using Nancy.Bootstrapper;
 using Nancy.Owin;
 
-using Owin;
-
-namespace InfinniPlatform.Core.Http.Middlewares
+namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
     /// Модуль хостинга для обработки прикладных запросов на базе Nancy.
     /// </summary>
-    internal class NancyHttpMiddleware : HttpMiddleware
+    internal class NancyHttpMiddleware : HttpMiddlewareBase<NancyMiddlewareOptions>
     {
         public NancyHttpMiddleware(INancyBootstrapper nancyBootstrapper) : base(HttpMiddlewareType.Application)
         {
@@ -21,9 +19,12 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private readonly INancyBootstrapper _nancyBootstrapper;
 
 
-        public override void Configure(IAppBuilder builder)
+        public override void Configure(IApplicationBuilder app, NancyMiddlewareOptions options)
         {
-            builder.UseNancy(new NancyOptions { Bootstrapper = _nancyBootstrapper });
+            app.UseOwin(x => x.UseNancy(new NancyOptions
+                                        {
+                                            Bootstrapper = _nancyBootstrapper
+                                        }));
         }
     }
 }

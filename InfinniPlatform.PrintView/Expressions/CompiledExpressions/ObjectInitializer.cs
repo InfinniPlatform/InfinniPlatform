@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
 {

@@ -40,7 +40,7 @@ namespace InfinniPlatform.PrintView.Expressions.Parser
                         // Пока просто игнорируем ошибки компиляции
                         compiledExpression = null;
 
-                        Trace.TraceWarning(Resources.CompilationError, expression, exception);
+                        // TODO: Trace.TraceWarning(Resources.CompilationError, expression, exception);
                     }
 
                     compiledExpression = Expressions.GetOrAdd(expression, compiledExpression);

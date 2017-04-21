@@ -1,26 +1,45 @@
 {
-    "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/App.json",
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "App",
-    "description": "Настройки приложения.",
-    "type": "object",
-    "properties": {
-        "Name": {
-            "description": "Уникальное имя приложения, используется для изоляции данных между приложениями.",
-            "type": "string",
-            "default": "InfinniPlatform"
-        },
-        "InstanceId": {
-            "description": "Идентификатор текущего экземпляра приложения (по умолчанию - NetBIOS имя машины + имя рабочей директории).",
-            "type": "string"
-        },
-        "IsInCluster": {
-            "description": "Идентификатор принадлежности экземпляра к кластеру.",
-            "type": "boolean",
-            "default" : false
-        }
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/App.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "App",
+  "description": "Настройки приложения.",
+  "type": "object",
+  "properties": {
+    "AppName": {
+      "description": "Имя приложения. Используется для изоляции данных между приложениями.",
+      "type": "string",
+      "default": "InfinniPlatform"
     },
-    "required": [
-        "Name"
-    ]
+    "AppInstance": {
+      "description": "Имя текущего экземпляра приложения. Используется для идентификации экземпляра приложения в кластере.",
+      "type": "string"
+    },
+    "ServerName": {
+      "description": "Адрес или имя сервера.",
+      "type": "string",
+      "default": "localhost"
+    },
+    "ServerPort": {
+      "description": "Номер порта сервера.",
+      "type": "integer",
+      "default": 9900
+    },
+    "StaticFilesMapping": {
+      "description": "Соответствие виртуальных и физических путей до статических файлов.",
+      "type": "object",
+      "properties": {},
+      "default": {
+        "/metadata": "content/metadata",
+        "/": "content/www"
+      }
+    },
+    "EmbeddedResourceMapping": {
+      "description": "Соответствие виртуальных путей и сборок с файлами ресурсов.",
+      "type": "object",
+      "properties": {}
+    }
+  },
+  "required": [
+    "AppName"
+  ]
 }

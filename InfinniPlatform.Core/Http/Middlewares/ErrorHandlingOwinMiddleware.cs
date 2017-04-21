@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Properties;
-using InfinniPlatform.Sdk.Logging;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Properties;
 
-using Microsoft.Owin;
+using Microsoft.AspNetCore.Http;
 
-namespace InfinniPlatform.Core.Http.Middlewares
+namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
     /// Обработчик HTTP-запросов для обработки ошибок выполнения запросов.
@@ -17,7 +17,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private static readonly Task EmptyTask = Task.FromResult<object>(null);
 
 
-        public ErrorHandlingOwinMiddleware(OwinMiddleware next, ILog log, IPerformanceLog performanceLog) : base(next)
+        public ErrorHandlingOwinMiddleware(RequestDelegate next, ILog log, IPerformanceLog performanceLog) : base(next)
         {
             _log = log;
             _performanceLog = performanceLog;
@@ -28,13 +28,13 @@ namespace InfinniPlatform.Core.Http.Middlewares
         private readonly IPerformanceLog _performanceLog;
 
 
-        public override Task Invoke(IOwinContext context)
+        public override Task Invoke(HttpContext context)
         {
             var start = DateTime.Now;
 
             try
             {
-                var requestId = context.Environment?["owin.RequestId"];
+                var requestId = context.TraceIdentifier;
 
                 // Установка контекста логирования ошибок текущего потока.
                 _log.SetRequestId(requestId);
@@ -45,7 +45,7 @@ namespace InfinniPlatform.Core.Http.Middlewares
                                              // Повторная установка контекста логирования ошибок текущего потока,
                                              // так как ContinueWith работает не в потоке обработки запроса.
                                              _log.SetRequestId(requestId);
-                                             _log.SetUserId(context.Request.User?.Identity);
+                                             _log.SetUserId(context.User?.Identity);
 
                                              if (task.IsFaulted)
                                              {

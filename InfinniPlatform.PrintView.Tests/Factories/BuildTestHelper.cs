@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using InfinniPlatform.PrintView.Contract;
-using InfinniPlatform.PrintView.Factories;
 using InfinniPlatform.PrintView.Factories.Block;
 using InfinniPlatform.PrintView.Factories.Format;
 using InfinniPlatform.PrintView.Factories.Inline;
-using InfinniPlatform.PrintView.Model;
 
-namespace InfinniPlatform.PrintView.Tests.Factories
+namespace InfinniPlatform.PrintView.Factories
 {
     internal static class BuildTestHelper
     {

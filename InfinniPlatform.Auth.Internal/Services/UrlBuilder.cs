@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-using Microsoft.Owin.Helpers;
-
-namespace InfinniPlatform.Auth.Internal.Services
+namespace InfinniPlatform.Auth.Services
 {
     /// <summary>
     /// Предоставляет методы для формирования URI.
@@ -41,9 +39,9 @@ namespace InfinniPlatform.Auth.Internal.Services
 
                 if (!string.IsNullOrEmpty(queryText))
                 {
-                    foreach (var item in WebHelpers.ParseForm(queryText.TrimStart('?')))
+                    foreach (var item in FormParser.ParseForm(queryText.TrimStart('?')))
                     {
-                        if (item.Value != null && item.Value.Length > 0)
+                        if (item.Value.Count> 0)
                         {
                             _query[item.Key] = item.Value[0];
                         }

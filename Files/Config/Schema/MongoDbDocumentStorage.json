@@ -1,0 +1,32 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/MongoDbDocumentStorage.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "MongoDbDocumentStorage",
+  "description": "Настройки хранилища документов MongoDB.",
+  "type": "object",
+  "properties": {
+    "Nodes": {
+      "description": "Список узлов кластера. Каждый узел должен быть представлен в формате 'host:port'.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "localhost:27017"
+      ]
+    },
+    "UserName": {
+      "description": "Имя пользователя в механизме аутентификации. Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR).",
+      "type": "string",
+      "default": null
+    },
+    "Password": {
+      "description": "Пароль пользователя в механизме аутентификации. Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR)",
+      "type": "string",
+      "default": null
+    }
+  },
+  "required": [
+    "Nodes"
+  ]
+}

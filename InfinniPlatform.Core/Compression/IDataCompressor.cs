@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace InfinniPlatform.Core.Compression
+namespace InfinniPlatform.Compression
 {
     /// <summary>
     /// Компрессор данных.

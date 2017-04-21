@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-using InfinniPlatform.PrintView.Contract;
-using InfinniPlatform.PrintView.Model;
 using InfinniPlatform.PrintView.Writers.Html;
 
 namespace InfinniPlatform.PrintView.Writers.Pdf
@@ -15,9 +13,9 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public PdfPrintDocumentWriter(HtmlToPdfSettings settings, HtmlPrintDocumentWriter htmlWriter)
+        public PdfPrintDocumentWriter(PrintViewOptions options, HtmlPrintDocumentWriter htmlWriter)
         {
-            _htmlToPdfUtil = new HtmlToPdfUtil(settings.UtilCommand, settings.UtilArguments, settings.TempDirectory);
+            _htmlToPdfUtil = new HtmlToPdfUtil(options.WkHtmlToPdfPath, options.WkHtmlToPdfArguments, options.TempDirectory);
             _htmlWriter = htmlWriter;
         }
 

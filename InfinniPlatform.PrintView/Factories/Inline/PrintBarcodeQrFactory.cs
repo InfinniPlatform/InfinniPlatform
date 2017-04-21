@@ -1,9 +1,10 @@
-﻿using InfinniPlatform.PrintView.Model;
-using InfinniPlatform.PrintView.Model.Defaults;
-using InfinniPlatform.PrintView.Model.Inline;
+﻿using System.Collections.Generic;
+
+using InfinniPlatform.PrintView.Defaults;
+using InfinniPlatform.PrintView.Inline;
 
 using ZXing;
-using ZXing.Common;
+using ZXing.QrCode;
 using ZXing.QrCode.Internal;
 
 namespace InfinniPlatform.PrintView.Factories.Inline
@@ -25,41 +26,35 @@ namespace InfinniPlatform.PrintView.Factories.Inline
             var showText = template.ShowText ?? PrintViewDefaults.BarcodeQr.ShowText;
             var errorCorrection = template.ErrorCorrection ?? PrintViewDefaults.BarcodeQr.ErrorCorrection;
 
-            var barcodeWriter = new BarcodeWriter
-            {
-                Format = BarcodeFormat.QR_CODE,
-                Options = new EncodingOptions
-                {
-                    Width = width,
-                    Height = height,
-                    PureBarcode = !showText
-                }
-            };
+            var barcodeWriter = new QRCodeWriter();
+
+            var barcodeHints = new Dictionary<EncodeHintType, object>
+                                 {
+                                     { EncodeHintType.PURE_BARCODE, !showText }
+                                 };
 
             switch (errorCorrection)
             {
                 case PrintBarcodeQrErrorCorrection.Low:
-                    barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+                    barcodeHints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
                     break;
                 case PrintBarcodeQrErrorCorrection.Medium:
-                    barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+                    barcodeHints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
                     break;
                 case PrintBarcodeQrErrorCorrection.Quartile:
-                    barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.Q);
+                    barcodeHints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.Q);
                     break;
                 case PrintBarcodeQrErrorCorrection.High:
-                    barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+                    barcodeHints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
                     break;
                 default:
-                    barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+                    barcodeHints.Add(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
                     break;
             }
 
-            using (var barcodeBitmap = barcodeWriter.Write(barcodeText))
-            {
-                barcodeImage.Data = FactoryHelper.GetBitmapBytes(barcodeBitmap);
-            }
+            var barcode = barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, width, height, barcodeHints);
 
+            barcodeImage.Data = GetBarcodeImageData(barcode);
             barcodeImage.Size.Height = height;
             barcodeImage.Size.Width = width;
         }

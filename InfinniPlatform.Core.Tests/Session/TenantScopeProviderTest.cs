@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-using InfinniPlatform.Core.Session;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Session
+namespace InfinniPlatform.Session
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]

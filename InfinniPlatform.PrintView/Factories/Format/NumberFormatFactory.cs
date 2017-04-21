@@ -1,7 +1,7 @@
 ﻿using System;
 
-using InfinniPlatform.PrintView.Model.Defaults;
-using InfinniPlatform.PrintView.Model.Format;
+using InfinniPlatform.PrintView.Defaults;
+using InfinniPlatform.PrintView.Format;
 
 namespace InfinniPlatform.PrintView.Factories.Format
 {

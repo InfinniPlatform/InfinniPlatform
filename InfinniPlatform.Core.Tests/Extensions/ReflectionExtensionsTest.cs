@@ -1,10 +1,11 @@
 ﻿using System;
 
-using InfinniPlatform.Sdk.Dynamic;
+using InfinniPlatform.Dynamic;
+using InfinniPlatform.Tests;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Core.Tests.Extensions
+namespace InfinniPlatform.Extensions
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
