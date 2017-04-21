@@ -1,4 +1,8 @@
-﻿using StackExchange.Redis;
+﻿using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
+
+using StackExchange.Redis;
 
 namespace InfinniPlatform.Cache
 {
@@ -31,7 +35,7 @@ namespace InfinniPlatform.Cache
 
             var configurationOptions = new ConfigurationOptions
                                        {
-                                           EndPoints = {{redisHost, redisPort}},
+                                           EndPoints = { { TryResolveIPv4(redisHost), redisPort } },
                                            ConnectTimeout = connectionTimeout,
                                            ConnectRetry = maxReconnectRetries,
                                            AbortOnConnectFail = false,
@@ -41,6 +45,25 @@ namespace InfinniPlatform.Cache
                                        };
 
             RedisClient = ConnectionMultiplexer.Connect(configurationOptions);
+        }
+
+        private static string TryResolveIPv4(string host)
+        {
+            IPAddress hostIPv4 = null;
+
+            if (!IsIPv4Address(host))
+            {
+                var hostEntry = Dns.GetHostEntryAsync(host).GetAwaiter().GetResult();
+
+                hostIPv4 = hostEntry.AddressList.FirstOrDefault(i => IsIPv4Address(i.ToString()));
+            }
+
+            return (hostIPv4 != null) ? hostIPv4.ToString() : host;
+        }
+
+        private static bool IsIPv4Address(string address)
+        {
+            return Regex.IsMatch(address, @"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
         }
 
 
