@@ -52,119 +52,156 @@ namespace InfinniPlatform.Tests.Conventions
 
         [Test]
         [TestCaseSource(nameof(SolutionCodeProjects))]
-        [Description(@"Проект должен иметь файл ресурсов ""Properties/Resources.resx""")]
+        [Description(@"The project should have the resource file")]
         public void CodeProjectShouldHaveResources(string project)
         {
             // When
-            var hasResources = File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.resx"))
-                               && File.Exists(Path.Combine(project, @"Properties" + Path.DirectorySeparatorChar + "Resources.Designer.cs"));
+            var hasResources = File.Exists(Path.Combine(project, @"Properties", "Resources.resx"))
+                               && File.Exists(Path.Combine(project, @"Properties", "Resources.Designer.cs"));
 
             // Then
-
-            if (!hasResources)
-            {
-                Assert.Fail($@"Проект ""{project}"" должен иметь файл ресурсов ""Properties/Resources.resx""");
-            }
+            AssertCondition(hasResources, @"The project should have the resource file ""Properties/Resources.resx""");
         }
 
         [Test]
-        [TestCaseSource(nameof(SolutionProjects))]
-        [Description(@"Проект может ссылаться только на NuGet-пакеты")]
-        public void ProjectShouldReferenceOnlyPackages(string project)
+        [TestCaseSource(nameof(SolutionCodeProjects))]
+        [Description(@"The project should have <AssemblyName> property")]
+        public void ProjectShouldHaveAssemblyNameProperty(string project)
         {
             // Given
             var projectXml = LoadProjectXml(project);
 
             // When
-            var assemblyReferences = FindChildren(projectXml, "ItemGroup")
-                .SelectMany(e => FindChildren(e, "Reference"))
-                .SelectMany(e => FindChildren(e, "HintPath"))
-                .Where(e => !e.Value.StartsWith(@"..\packages\"))
-                .ToArray();
+            var assemblyName = FindChildren(projectXml, "PropertyGroup")
+                .SelectMany(e => FindChildren(e, "AssemblyName"))
+                .FirstOrDefault();
 
             // Then
-
-            if (assemblyReferences.Length > 0)
-            {
-                Assert.Fail($@"Проект ""{project}"" может ссылаться только на NuGet-пакеты");
-            }
+            AssertCondition(!string.IsNullOrWhiteSpace(assemblyName?.Value), @"The project should have <AssemblyName> property");
         }
 
         [Test]
-        [TestCaseSource(nameof(SolutionProjects))]
-        [Description(@"Проект может ссылаться только на проекты решения")]
-        public void ProjectShouldReferenceOnlySolutionProjects(string project)
+        [TestCaseSource(nameof(SolutionCodeProjects))]
+        [Description(@"The project should have <RootNamespace> property")]
+        public void ProjectShouldHaveRootNamespaceProperty(string project)
         {
             // Given
             var projectXml = LoadProjectXml(project);
 
             // When
-
-            var projectReferences = FindChildren(projectXml, "ItemGroup")
-                .SelectMany(e => FindChildren(e, "ProjectReference"))
-                .Select(i => i.Attribute("Include").Value);
-
-            var externalProjectReferences = projectReferences
-                .Where(i => !GetFullPathFromRelative(project, i).StartsWith(SolutionDir))
-                .ToArray();
+            var rootNamespace = FindChildren(projectXml, "PropertyGroup")
+                .SelectMany(e => FindChildren(e, "RootNamespace"))
+                .FirstOrDefault();
 
             // Then
-
-            if (externalProjectReferences.Length > 0)
-            {
-                Assert.Fail($@"Проект ""{project}"" может ссылаться только на проекты решения ""{SolutionName}""");
-            }
+            AssertCondition(!string.IsNullOrWhiteSpace(rootNamespace?.Value), @"The project should have <RootNamespace> property");
         }
 
         [Test]
-        [Description(@"Все проекты должны использовать пакеты одной версии")]
-        public void AllProjectsShouldUsedSamePackages()
+        [TestCaseSource(nameof(SolutionCodeProjects))]
+        [Description(@"The project should have <GenerateAssemblyInfo> property which equals false")]
+        public void ProjectShouldHaveGenerateAssemblyInfoProperty(string project)
         {
             // Given
-
-            var usedPackages = SolutionProjects
-                .SelectMany(project => GetPackageReferences(LoadProjectXml(project))
-                                .Select(i => new
-                                             {
-                                                 Project = project,
-                                                 Package = i.Item1,
-                                                 Version = i.Item2
-                                             }))
-                .ToArray();
+            var projectXml = LoadProjectXml(project);
 
             // When
-
-            var packageVersions = usedPackages
-                .GroupBy(p => p.Package,
-                         (p, groups) => new
-                                        {
-                                            Package = p,
-                                            Versions = groups.Select(i => i.Version).Distinct().ToArray()
-                                        })
-                .Where(p => p.Versions.Length > 1)
-                .ToArray();
+            var generateAssemblyInfo = FindChildren(projectXml, "PropertyGroup")
+                .SelectMany(e => FindChildren(e, "GenerateAssemblyInfo"))
+                .FirstOrDefault();
 
             // Then
-
-            if (packageVersions.Length > 0)
-            {
-                var errorMessage = string.Join(Environment.NewLine,
-                                               packageVersions.Select(p => string.Format("{0}:{1}{2}{1}", p.Package, Environment.NewLine,
-                                                                                         string.Join(Environment.NewLine,
-                                                                                                     usedPackages.Where(i => i.Package == p.Package)
-                                                                                                                 .OrderBy(i => i.Version)
-                                                                                                                 .Select(i => $"   {i.Package}.{i.Version} - {i.Project}")))));
-
-                Assert.Fail(@"Все проекты должны использовать пакеты одной версии:{0}{1}", Environment.NewLine, errorMessage);
-            }
+            AssertCondition("false".Equals(generateAssemblyInfo?.Value, StringComparison.OrdinalIgnoreCase), @"The project should have <GenerateAssemblyInfo> property which equals false");
         }
 
         [Test]
-        [Description(@"Все тесты должны иметь категорию")]
+        [TestCaseSource(nameof(SolutionCodeProjects))]
+        [Description(@"The project should have <DebugType> property which equals pdbonly")]
+        public void ProjectShouldHaveDebugTypeProperty(string project)
+        {
+            // Given
+            var projectXml = LoadProjectXml(project);
+
+            // When
+            var debugType = FindChildren(projectXml, "PropertyGroup")
+                .SelectMany(e => FindChildren(e, "DebugType"))
+                .FirstOrDefault();
+
+            // Then
+            AssertCondition("pdbonly".Equals(debugType?.Value, StringComparison.OrdinalIgnoreCase), @"The project should have <DebugType> property which equals pdbonly");
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SolutionCodeProjects))]
+        [Description(@"The project should have reference on GlobalAssemblyInfo.cs")]
+        public void ProjectShouldHaveReferenceOnGlobalAssemblyInfo(string project)
+        {
+            // Given
+            var projectXml = LoadProjectXml(project);
+
+            // When
+            var globalAssemblyInfo = FindChildren(projectXml, "ItemGroup")
+                .SelectMany(e => FindChildren(e, "Compile"))
+                .Where(e => @"Properties\GlobalAssemblyInfo.cs".Equals(e.Attribute("Link")?.Value, StringComparison.Ordinal)
+                            && @"..\Files\Packaging\GlobalAssemblyInfo.cs".Equals(e.Attribute("Include")?.Value, StringComparison.Ordinal))
+                .FirstOrDefault();
+
+            // Then
+            AssertCondition(globalAssemblyInfo != null, @"The project should have reference on GlobalAssemblyInfo.cs");
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SolutionProjects))]
+        [Description(@"The project should depend on packages only")]
+        public void ProjectShouldDependOnPackagesOnly(string project)
+        {
+            // Given
+            var projectXml = LoadProjectXml(project);
+
+            // When
+            var assemblyReferences = GetAssemblyReferences(projectXml);
+
+            // Then
+            AssertCondition(assemblyReferences.Count == 0, @"The project should depend on packages only but contains assembly references", assemblyReferences);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SolutionProjects))]
+        [Description(@"The project should depend on the solution projects only")]
+        public void ProjectShouldDependOnSolutionProjectsOnly(string project)
+        {
+            // Given
+            var projectXml = LoadProjectXml(project);
+
+            // When
+            var projectReferences = GetProjectReferences(projectXml);
+            var externalProjectReferences = projectReferences.Where(i => !GetFullPathFromRelative(project, i).StartsWith(SolutionDir)).ToList();
+
+            // Then
+            AssertCondition(externalProjectReferences.Count == 0, @"The project should depend on the solution projects only but contains external references", externalProjectReferences);
+        }
+
+        [Test]
+        [Description(@"Projects should use the same versions of packages")]
+        public void ProjectsShouldUseTheSameVersionsOfPackages()
+        {
+            // Given
+            var packages = SolutionProjects.SelectMany(project => GetPackageReferences(LoadProjectXml(project))).ToList();
+
+            // When
+            var unconsolidatedPackages = packages.GroupBy(p => p.Item1, (p, g) => new { Name = p, Versions = g.Select(i => i.Item2).Distinct().ToList() })
+                .Where(p => p.Versions.Count > 1).Select(p => $"{p.Name} {string.Join(", ", p.Versions.OrderBy(i => i))}").ToList();
+
+            // Then
+            AssertCondition(unconsolidatedPackages.Count == 0, @"Projects should use the same versions of packages but there are some unconsolidated packages", unconsolidatedPackages);
+        }
+
+        [Test]
+        [Description(@"All tests should have a category")]
         public void AllTestsShouldHaveCategory()
         {
             // Given
-            var testAssemblies = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.Tests.dll");
+            var testAssemblies = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "*.Tests.dll");
 
             // When
 
@@ -209,48 +246,67 @@ namespace InfinniPlatform.Tests.Conventions
                                                                return false;
                                                            })
                                                     .Select(t => t.FullName))
-                .ToArray();
+                .ToList();
 
             // Then
-
-            if (withoutCategory.Length > 0)
-            {
-                Assert.Fail(@"Все тесты должны иметь категорию:{0}{1}", Environment.NewLine, string.Join(Environment.NewLine, withoutCategory));
-            }
+            AssertCondition(withoutCategory.Count == 0, @"All tests should have a category but there are some tests without category", withoutCategory);
         }
 
         [Test]
-        [Description(@"Все файлы *.cs должны быть в кодировке UTF-8")]
+        [Description(@"All *.cs files should be UTF-8 with BOM")]
         public void AllFilesShouldBeEncodedInUtf8()
         {
             // Given
-            var result = new List<string>();
             var objPath = Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar;
             var codeFiles = Directory.GetFiles(SolutionDir, "*.cs", SearchOption.AllDirectories).Where(f => !f.Contains(objPath));
 
             // When
 
+            var nonUtf8Files = new List<string>();
+
             foreach (var codeFile in codeFiles)
             {
                 using (var codeFileStream = new FileStream(codeFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var byteOrderMark = new byte[4];
-                    codeFileStream.Read(byteOrderMark, 0, 4);
+                    var byteOrderMark = new byte[3];
+                    codeFileStream.Read(byteOrderMark, 0, 3);
 
-                    // Если файл представлен не UTF-8
+                    // Determines UTF-8 BOM
                     if ((byteOrderMark[0] == 0xEF && byteOrderMark[1] == 0xBB && byteOrderMark[2] == 0xBF) == false)
                     {
-                        result.Add(codeFile);
+                        nonUtf8Files.Add(codeFile);
                     }
                 }
             }
 
             // Then
+            AssertCondition(nonUtf8Files.Count == 0, @"All *.cs files should be UTF-8 with BOM", nonUtf8Files);
+        }
 
-            if (result.Count != 0)
-            {
-                Assert.Fail($@"Все файлы *.cs должны быть в кодировке UTF-8: {string.Join("; ", result)}");
-            }
+
+        private static IList<Tuple<string, string>> GetPackageReferences(XElement projectXml)
+        {
+            return FindChildren(projectXml, "ItemGroup")
+                .SelectMany(e => FindChildren(e, "PackageReference"))
+                .Select(e => Tuple.Create(e.Attribute("Include").Value, e.Attribute("Version").Value))
+                .ToList();
+        }
+
+        private static IList<string> GetProjectReferences(XElement projectXml)
+        {
+            return FindChildren(projectXml, "ItemGroup")
+                .SelectMany(e => FindChildren(e, "ProjectReference"))
+                .Select(e => e.Attribute("Include").Value)
+                .ToList();
+        }
+
+        private static IList<string> GetAssemblyReferences(XElement projectXml)
+        {
+            return FindChildren(projectXml, "ItemGroup")
+                .SelectMany(e => FindChildren(e, "Reference"))
+                .SelectMany(e => FindChildren(e, "HintPath"))
+                .Select(e => e.Value)
+                .ToList();
         }
 
 
@@ -264,21 +320,21 @@ namespace InfinniPlatform.Tests.Conventions
             return parent.Elements().Where(i => string.Equals(i.Name.LocalName, childName, StringComparison.Ordinal));
         }
 
-        private static IEnumerable<Tuple<string, string>> GetPackageReferences(XElement projectXml)
-        {
-            var packages = FindChildren(projectXml, "ItemGroup")
-                .SelectMany(e => FindChildren(e, "PackageReference"))
-                .Select(e => Tuple.Create(e.Attribute("Include").Value, e.Attribute("Version").Value))
-                .ToArray();
-
-            return packages;
-        }
 
         private static string GetFullPathFromRelative(string basePath, string relativePath)
         {
             var absolutePath = Path.Combine(basePath, relativePath);
 
             return Path.GetFullPath(new Uri(absolutePath).LocalPath);
+        }
+
+
+        private static void AssertCondition(bool expected, string message, IEnumerable<string> messageItems = null)
+        {
+            if (!expected)
+            {
+                Assert.Fail(message + (messageItems.Any() ? $": {Environment.NewLine}{string.Join("; " + Environment.NewLine, messageItems)}" : ""));
+            }
         }
     }
 }
