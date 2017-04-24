@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using InfinniPlatform.Dynamic;
 
@@ -16,7 +17,7 @@ namespace InfinniPlatform.DocumentStorage
 
         public IBsonSerializer GetSerializer(Type type)
         {
-            if (type == typeof(DynamicWrapper))
+            if (typeof(DynamicWrapper).GetTypeInfo().IsAssignableFrom(type))
             {
                 return MongoDynamicWrapperBsonSerializer.Default;
             }

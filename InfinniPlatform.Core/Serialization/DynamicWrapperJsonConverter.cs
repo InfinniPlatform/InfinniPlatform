@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using InfinniPlatform.Dynamic;
 
@@ -13,12 +14,12 @@ namespace InfinniPlatform.Serialization
     /// </summary>
     internal class DynamicWrapperJsonConverter : JsonConverter
     {
-        private static readonly Type ConvertType = typeof(DynamicWrapper);
+        private static readonly TypeInfo ConvertType = typeof(DynamicWrapper).GetTypeInfo();
 
 
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == ConvertType);
+            return ConvertType.IsAssignableFrom(objectType);
         }
 
 

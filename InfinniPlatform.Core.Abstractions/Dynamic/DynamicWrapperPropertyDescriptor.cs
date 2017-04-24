@@ -6,7 +6,7 @@ namespace InfinniPlatform.Dynamic
     /// <summary>
     /// Описание свойства динамического объекта <see cref="DynamicWrapper"/>.
     /// </summary>
-    public sealed class DynamicWrapperPropertyDescriptor : PropertyDescriptor
+    public class DynamicWrapperPropertyDescriptor : PropertyDescriptor
     {
         public DynamicWrapperPropertyDescriptor(string name)
             : base(name, null)

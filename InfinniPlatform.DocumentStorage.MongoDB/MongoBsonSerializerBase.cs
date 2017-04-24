@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Reflection;
-
-using InfinniPlatform.Dynamic;
 
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -59,7 +58,8 @@ namespace InfinniPlatform.DocumentStorage
 
         private static void ConfigureSerializationContext(BsonSerializationContext.Builder builder)
         {
-            builder.IsDynamicType = t => (t == typeof(DynamicWrapper)) || (t != typeof(string) && typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(t));
+            builder.IsDynamicType = t => (typeof(IDynamicMetaObjectProvider).GetTypeInfo().IsAssignableFrom(t))
+                                         || (t != typeof(string) && typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(t));
         }
 
         protected void WriteValue(BsonSerializationContext context, object value)

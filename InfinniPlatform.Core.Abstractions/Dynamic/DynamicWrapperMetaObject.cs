@@ -13,7 +13,7 @@ namespace InfinniPlatform.Dynamic
     /// <remarks>
     /// По факту методы перехвата формируют <see cref="Expression"/>, который представляет собой реальную реакцию динамического объекта на перехваченное обращение.
     /// </remarks>
-    sealed class DynamicWrapperMetaObject : DynamicMetaObject
+    public class DynamicWrapperMetaObject : DynamicMetaObject
     {
         private static readonly Type ObjectType = typeof(object);
         private static readonly MethodInfo TryGetMemberMethod;
