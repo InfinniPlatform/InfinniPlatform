@@ -141,4 +141,10 @@
   <data name="TargetObjectCannotBeNull" xml:space="preserve">
     <value>Target object cannot be null.</value>
   </data>
+  <data name="MemberIsUndefined" xml:space="preserve">
+    <value>Member '{0}' is undefined.</value>
+  </data>
+  <data name="MemberIsNotDelegate" xml:space="preserve">
+    <value>Member '{0}' is not a Delegate.</value>
+  </data>
 </root>

@@ -8,9 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace InfinniPlatform.Properties {
+    using System;
+    using System.Reflection;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -65,6 +67,24 @@ namespace InfinniPlatform.Properties {
         internal static string CollectionCanNotBeModified {
             get {
                 return ResourceManager.GetString("CollectionCanNotBeModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member &apos;{0}&apos; is not a Delegate..
+        /// </summary>
+        internal static string MemberIsNotDelegate {
+            get {
+                return ResourceManager.GetString("MemberIsNotDelegate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member &apos;{0}&apos; is undefined..
+        /// </summary>
+        internal static string MemberIsUndefined {
+            get {
+                return ResourceManager.GetString("MemberIsUndefined", resourceCulture);
             }
         }
         

@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Linq.Expressions;
 
+using InfinniPlatform.Properties;
+
 namespace InfinniPlatform.Dynamic
 {
     /// <summary>
@@ -17,13 +19,6 @@ namespace InfinniPlatform.Dynamic
     /// </remarks>
     public class DynamicWrapper : IDynamicMetaObjectProvider, IEnumerable, ICustomTypeDescriptor
     {
-        public DynamicWrapper()
-        {
-            _isBaseClass = GetType() == typeof(DynamicWrapper);
-        }
-
-
-        private readonly bool _isBaseClass;
         private readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
 
@@ -34,10 +29,18 @@ namespace InfinniPlatform.Dynamic
         /// <returns>Значение члена.</returns>
         public object this[string memberName]
         {
-            get { return TryGetMember(memberName); }
-            set { TrySetMember(memberName, value); }
+            get => TryGetMember(memberName);
+            set => TrySetMember(memberName, value);
         }
 
+
+        /// <summary>
+        /// Возвращает значение свойств объекта в виде словаря.
+        /// </summary>
+        public IDictionary<string, object> ToDictionary()
+        {
+            return _properties;
+        }
 
         /// <summary>
         /// Устанавливает значение члена с заданным именем.
@@ -61,6 +64,14 @@ namespace InfinniPlatform.Dynamic
             this[memberName] = memberValue;
         }
 
+        /// <summary>
+        /// Удаляет динамические свойства объекта.
+        /// </summary>
+        public void Clear()
+        {
+            _properties.Clear();
+        }
+
 
         /// <summary>
         /// Возвращает значение члена с заданным именем.
@@ -69,12 +80,7 @@ namespace InfinniPlatform.Dynamic
         /// <returns>Значение члена.</returns>
         public virtual object TryGetMember(string memberName)
         {
-            object memberValue;
-
-            if (!_properties.TryGetValue(memberName, out memberValue) && !_isBaseClass)
-            {
-                memberValue = this.GetMemberValue(memberName);
-            }
+            _properties.TryGetValue(memberName, out object memberValue);
 
             return memberValue;
         }
@@ -87,16 +93,13 @@ namespace InfinniPlatform.Dynamic
         /// <returns>Значение члена.</returns>
         public virtual object TrySetMember(string memberName, object memberValue)
         {
-            if (_isBaseClass || !this.SetMemberValue(memberName, memberValue))
+            if (memberValue == null)
             {
-                if (memberValue == null)
-                {
-                    _properties.Remove(memberName);
-                }
-                else
-                {
-                    _properties[memberName] = memberValue;
-                }
+                _properties.Remove(memberName);
+            }
+            else
+            {
+                _properties[memberName] = memberValue;
             }
 
             return memberValue;
@@ -110,41 +113,25 @@ namespace InfinniPlatform.Dynamic
         /// <returns>Результат вызова.</returns>
         public virtual object TryInvokeMember(string memberName, object[] invokeArguments)
         {
-            var success = false;
-            object invokeResult = null;
-
-            object memberValue;
-
-            if (_properties.TryGetValue(memberName, out memberValue))
+            if (!_properties.TryGetValue(memberName, out object memberValue))
             {
-                if (memberValue is Delegate)
-                {
-                    invokeResult = ((Delegate)memberValue).FastDynamicInvoke(invokeArguments);
-                    success = true;
-                }
-            }
-            else
-            {
-                success = this.InvokeMember(memberName, invokeArguments, out invokeResult);
+                throw new ArgumentException(string.Format(Resources.MemberIsUndefined, memberName), nameof(memberName));
             }
 
-            if (!success)
+            var memberValueAsDelegate = memberValue as Delegate;
+
+            if (memberValueAsDelegate == null)
             {
-                throw new InvalidOperationException(memberName);
+                throw new ArgumentException(string.Format(Resources.MemberIsNotDelegate, memberName), nameof(memberName));
             }
+
+            var invokeResult = ReflectionExtensions.FastDynamicInvoke(memberValueAsDelegate, invokeArguments);
 
             return invokeResult;
         }
 
 
-        /// <summary>
-        /// Возвращает значение свойств объекта в виде словаря.
-        /// </summary>
-        public IDictionary<string, object> ToDictionary()
-        {
-            return _properties;
-        }
-
+        // IDynamicMetaObjectProvider
 
         DynamicMetaObject IDynamicMetaObjectProvider.GetMetaObject(Expression parameter)
         {
@@ -152,21 +139,15 @@ namespace InfinniPlatform.Dynamic
         }
 
 
+        // IEnumerable
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _properties.GetEnumerator();
         }
 
 
-        /// <summary>
-        /// Удаляет динамические свойства объекта.
-        /// </summary>
-        public void Clear()
-        {
-            _properties.Clear();
-        }
-
-        #region ICustomTypeDescriptor
+        // ICustomTypeDescriptor
 
         AttributeCollection ICustomTypeDescriptor.GetAttributes()
         {
@@ -234,7 +215,5 @@ namespace InfinniPlatform.Dynamic
         {
             return this;
         }
-
-        #endregion ICustomTypeDescriptor
     }
 }
