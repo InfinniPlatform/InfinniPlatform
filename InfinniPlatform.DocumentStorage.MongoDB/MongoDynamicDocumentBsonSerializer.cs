@@ -10,16 +10,16 @@ using MongoDB.Bson.Serialization;
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Реализует логику сериализации и десериализации <see cref="DynamicWrapper"/> для MongoDB.
+    /// Реализует логику сериализации и десериализации <see cref="DynamicDocument"/> для MongoDB.
     /// </summary>
-    internal class MongoDynamicWrapperBsonSerializer : MongoBsonSerializerBase<DynamicWrapper>
+    internal class MongoDynamicDocumentBsonSerializer : MongoBsonSerializerBase<DynamicDocument>
     {
-        public static readonly MongoDynamicWrapperBsonSerializer Default = new MongoDynamicWrapperBsonSerializer();
+        public static readonly MongoDynamicDocumentBsonSerializer Default = new MongoDynamicDocumentBsonSerializer();
 
 
         protected override void SerializeValue(BsonSerializationContext context, object value)
         {
-            var document = (DynamicWrapper)value;
+            var document = (DynamicDocument)value;
 
             var writer = context.Writer;
 
@@ -51,7 +51,7 @@ namespace InfinniPlatform.DocumentStorage
 
             reader.ReadStartDocument();
 
-            var document = new DynamicWrapper();
+            var document = new DynamicDocument();
 
             while (reader.ReadBsonType() != BsonType.EndOfDocument)
             {

@@ -63,7 +63,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             await storageManager.CreateStorageAsync(documentMetadata);
             await storageManager.CreateStorageAsync(documentMetadata); // No effect
 
-            var collection = connection.GetDatabase().GetCollection<DynamicWrapper>(collectionName);
+            var collection = connection.GetDatabase().GetCollection<DynamicDocument>(collectionName);
 
             // When - Using Indexes
 
@@ -77,7 +77,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                       CreateTestObject(6, "Name3", DateTime.Today.AddHours(6), "Some description 6 for Name3")
                                   });
 
-            var filterBuilder = Builders<DynamicWrapper>.Filter;
+            var filterBuilder = Builders<DynamicDocument>.Filter;
             var resultIndex1 = collection.FindSync(filterBuilder.Eq("Id", 3)).ToList();
             var resultIndex2 = collection.FindSync(filterBuilder.And(filterBuilder.Eq("Name", "Name2"), filterBuilder.Lt("Birthday", DateTime.Today.AddHours(5)))).ToList();
             var resultIndex3 = collection.FindSync(filterBuilder.Text("some name2")).ToList();
@@ -127,18 +127,18 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storageManager = new MongoDocumentStorageManager(connection);
             await storageManager.CreateStorageAsync(documentMetadata);
 
-            var collection = database.GetCollection<DynamicWrapper>(collectionName);
-            var collectionNew = database.GetCollection<DynamicWrapper>(collectionNameNew);
-            var collectionContent = new[] { new DynamicWrapper(), new DynamicWrapper(), new DynamicWrapper() };
+            var collection = database.GetCollection<DynamicDocument>(collectionName);
+            var collectionNew = database.GetCollection<DynamicDocument>(collectionNameNew);
+            var collectionContent = new[] { new DynamicDocument(), new DynamicDocument(), new DynamicDocument() };
             collection.InsertMany(collectionContent);
 
-            var collectionCountBeforeRename = collection.Count(Builders<DynamicWrapper>.Filter.Empty);
-            var collectionNewCountBeforeRename = collectionNew.Count(Builders<DynamicWrapper>.Filter.Empty);
+            var collectionCountBeforeRename = collection.Count(Builders<DynamicDocument>.Filter.Empty);
+            var collectionNewCountBeforeRename = collectionNew.Count(Builders<DynamicDocument>.Filter.Empty);
 
             await storageManager.RenameStorageAsync(collectionName, collectionNameNew);
 
-            var collectionCountAfterRename = collection.Count(Builders<DynamicWrapper>.Filter.Empty);
-            var collectionNewCountAfterRename = collectionNew.Count(Builders<DynamicWrapper>.Filter.Empty);
+            var collectionCountAfterRename = collection.Count(Builders<DynamicDocument>.Filter.Empty);
+            var collectionNewCountAfterRename = collectionNew.Count(Builders<DynamicDocument>.Filter.Empty);
 
             // Then
             Assert.AreEqual(collectionContent.Length, collectionCountBeforeRename);
@@ -165,24 +165,24 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storageManager = new MongoDocumentStorageManager(connection);
             await storageManager.CreateStorageAsync(documentMetadata);
 
-            var collection = database.GetCollection<DynamicWrapper>(collectionName);
-            var collectionContent = new[] { new DynamicWrapper(), new DynamicWrapper(), new DynamicWrapper() };
+            var collection = database.GetCollection<DynamicDocument>(collectionName);
+            var collectionContent = new[] { new DynamicDocument(), new DynamicDocument(), new DynamicDocument() };
             collection.InsertMany(collectionContent);
 
-            var collectionCountBeforeDrop = collection.Count(Builders<DynamicWrapper>.Filter.Empty);
+            var collectionCountBeforeDrop = collection.Count(Builders<DynamicDocument>.Filter.Empty);
 
             await storageManager.DropStorageAsync(collectionName);
 
-            var collectionCountAfterDrop = collection.Count(Builders<DynamicWrapper>.Filter.Empty);
+            var collectionCountAfterDrop = collection.Count(Builders<DynamicDocument>.Filter.Empty);
 
             // Then
             Assert.AreEqual(collectionContent.Length, collectionCountBeforeDrop);
             Assert.AreEqual(0, collectionCountAfterDrop);
         }
 
-        private static DynamicWrapper CreateTestObject(int id, string name, DateTime birthday, string description)
+        private static DynamicDocument CreateTestObject(int id, string name, DateTime birthday, string description)
         {
-            return new DynamicWrapper
+            return new DynamicDocument
                    {
                        { "Id", id },
                        { "Name", name },

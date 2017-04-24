@@ -209,7 +209,7 @@ namespace InfinniPlatform.Scheduler.Common
         }
 
 
-        public Task TriggerJob(string jobId, DynamicWrapper data = null)
+        public Task TriggerJob(string jobId, DynamicDocument data = null)
         {
             return ExecuteAction(async () =>
                                        {
@@ -220,7 +220,7 @@ namespace InfinniPlatform.Scheduler.Common
                                  nameof(TriggerJob));
         }
 
-        public Task TriggerJobs(IEnumerable<string> jobIds, DynamicWrapper data = null)
+        public Task TriggerJobs(IEnumerable<string> jobIds, DynamicDocument data = null)
         {
             return ExecuteAction(async () =>
                                        {
@@ -236,7 +236,7 @@ namespace InfinniPlatform.Scheduler.Common
                                  nameof(TriggerJobs));
         }
 
-        public Task TriggerAllJob(DynamicWrapper data = null)
+        public Task TriggerAllJob(DynamicDocument data = null)
         {
             return ExecuteAction(async () =>
                                        {

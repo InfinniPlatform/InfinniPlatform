@@ -21,11 +21,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB.Specifications
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 44 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 55 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 44 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 55 } }
                                });
 
             var specification = new Specification(f => f.Gt("prop1", 33));
@@ -49,11 +49,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB.Specifications
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 44 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 55 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 44 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 55 } }
                                });
 
             var specification = new MySpecification(33);

@@ -81,7 +81,7 @@ namespace InfinniPlatform.Types
         }
 
         [Test]
-        public void ShouldSerializeDynamicWrapper()
+        public void ShouldSerializeDynamicDocument()
         {
             // Given
 
@@ -91,12 +91,12 @@ namespace InfinniPlatform.Types
 
             var serializer = JsonObjectSerializer.Default;
 
-            var instance = new DynamicWrapper
+            var instance = new DynamicDocument
                            {
                                { "DateProperty", date1 },
                                { "NullableDateProperty", date2 },
                                {
-                                   "ComplexProperty", new DynamicWrapper
+                                   "ComplexProperty", new DynamicDocument
                                                       {
                                                           { "DateProperty", date3 }
                                                       }
@@ -120,7 +120,7 @@ namespace InfinniPlatform.Types
         }
 
         [Test]
-        public void ShouldDeserializeDynamicWrapper()
+        public void ShouldDeserializeDynamicDocument()
         {
             // Given
 
@@ -141,15 +141,15 @@ namespace InfinniPlatform.Types
 
             // When
 
-            var instance = serializer.Deserialize<DynamicWrapper>(instanceJson);
+            var instance = serializer.Deserialize<DynamicDocument>(instanceJson);
 
             // Then
             Assert.IsNotNull(instance);
             Assert.AreEqual(date1.UnixTime, instance["DateProperty"]);
             Assert.AreEqual(date2.UnixTime, instance["NullableDateProperty"]);
             Assert.IsNotNull(instance["ComplexProperty"]);
-            Assert.AreEqual(date3.UnixTime, ((DynamicWrapper)instance["ComplexProperty"])["DateProperty"]);
-            Assert.IsNull(((DynamicWrapper)instance["ComplexProperty"])["NullableDateProperty"]);
+            Assert.AreEqual(date3.UnixTime, ((DynamicDocument)instance["ComplexProperty"])["DateProperty"]);
+            Assert.IsNull(((DynamicDocument)instance["ComplexProperty"])["NullableDateProperty"]);
         }
 
 

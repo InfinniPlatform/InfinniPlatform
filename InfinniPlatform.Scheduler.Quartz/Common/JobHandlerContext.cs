@@ -16,6 +16,6 @@ namespace InfinniPlatform.Scheduler.Common
 
         public DateTimeOffset? NextFireTimeUtc { get; set; }
 
-        public DynamicWrapper Data { get; set; }
+        public DynamicDocument Data { get; set; }
     }
 }

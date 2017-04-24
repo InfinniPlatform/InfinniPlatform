@@ -360,7 +360,7 @@ namespace InfinniPlatform.Serialization
         }
 
         [Test]
-        public void ShouldDeserializeObjectPropertiesAsDynamicWrapper()
+        public void ShouldDeserializeObjectPropertiesAsDynamicDocument()
         {
             // Given
 
@@ -395,8 +395,8 @@ namespace InfinniPlatform.Serialization
             Assert.AreEqual(222, result.PropertyScalar);
 
             // Object type
-            Assert.IsInstanceOf<DynamicWrapper>(result.PropertyObject);
-            var propertyObject = (DynamicWrapper)result.PropertyObject;
+            Assert.IsInstanceOf<DynamicDocument>(result.PropertyObject);
+            var propertyObject = (DynamicDocument)result.PropertyObject;
             Assert.AreEqual(333, propertyObject["Property1"]);
             Assert.AreEqual("Hello!", propertyObject["Property2"]);
 

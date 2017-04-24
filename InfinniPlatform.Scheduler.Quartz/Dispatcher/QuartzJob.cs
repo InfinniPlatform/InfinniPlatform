@@ -73,7 +73,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
 
             // Создание контекста выполнения задания
 
-            var triggerData = context.MergedJobDataMap.Get(TriggerDataKey) as DynamicWrapper;
+            var triggerData = context.MergedJobDataMap.Get(TriggerDataKey) as DynamicDocument;
 
             var jobHandlerContext = new JobHandlerContext
             {

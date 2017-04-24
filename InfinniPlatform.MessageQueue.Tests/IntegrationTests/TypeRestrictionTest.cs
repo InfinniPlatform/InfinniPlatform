@@ -11,21 +11,21 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
     public class TypeRestrictionTest : RabbitMqTestBase
     {
         [Test]
-        public void BroadcastProducerThrowsExceptionIfDynamicWrapperSendViaPublishMethod()
+        public void BroadcastProducerThrowsExceptionIfDynamicDocumentSendViaPublishMethod()
         {
             var broadcastProducer = new RabbitMqBroadcastProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
 
-            Assert.Throws<ArgumentException>(() => broadcastProducer.Publish(new DynamicWrapper()));
-            Assert.ThrowsAsync<ArgumentException>(() => broadcastProducer.PublishAsync(new DynamicWrapper()));
+            Assert.Throws<ArgumentException>(() => broadcastProducer.Publish(new DynamicDocument()));
+            Assert.ThrowsAsync<ArgumentException>(() => broadcastProducer.PublishAsync(new DynamicDocument()));
         }
 
         [Test]
-        public void TaskProducerThrowsExceptionIfDynamicWrapperSendViaPublishMethod()
+        public void TaskProducerThrowsExceptionIfDynamicDocumentSendViaPublishMethod()
         {
             var taskProducer = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
 
-            Assert.Throws<ArgumentException>(() => taskProducer.Publish(new DynamicWrapper()));
-            Assert.ThrowsAsync<ArgumentException>(() => taskProducer.PublishAsync(new DynamicWrapper()));
+            Assert.Throws<ArgumentException>(() => taskProducer.Publish(new DynamicDocument()));
+            Assert.ThrowsAsync<ArgumentException>(() => taskProducer.PublishAsync(new DynamicDocument()));
         }
     }
 }

@@ -27,8 +27,8 @@ namespace InfinniPlatform.DocumentStorage
         {
             if (context.Reader.CurrentBsonType == BsonType.Document)
             {
-                // В случае BsonType.Document тип object интерпретируется, как DynamicWrapper
-                return ReadValue(context, typeof(DynamicWrapper));
+                // В случае BsonType.Document тип object интерпретируется, как DynamicDocument
+                return ReadValue(context, typeof(DynamicDocument));
             }
 
             if (context.Reader.CurrentBsonType == BsonType.Array)

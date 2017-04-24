@@ -84,7 +84,7 @@ namespace InfinniPlatform.DocumentStorage
         }
 
 
-        public void InsertOne(DynamicWrapper document)
+        public void InsertOne(DynamicDocument document)
         {
             _storageInterceptor.ExecuteCommand(
                 new DocumentInsertOneCommand(document),
@@ -99,7 +99,7 @@ namespace InfinniPlatform.DocumentStorage
                 (command, result, error) => _storageInterceptor.OnAfterInsertOne(command, result, error));
         }
 
-        public Task InsertOneAsync(DynamicWrapper document)
+        public Task InsertOneAsync(DynamicDocument document)
         {
             return _storageInterceptor.ExecuteCommandAsync(
                 new DocumentInsertOneCommand(document),
@@ -115,7 +115,7 @@ namespace InfinniPlatform.DocumentStorage
         }
 
 
-        public void InsertMany(IEnumerable<DynamicWrapper> documents)
+        public void InsertMany(IEnumerable<DynamicDocument> documents)
         {
             _storageInterceptor.ExecuteCommand(
                 new DocumentInsertManyCommand(documents),
@@ -133,7 +133,7 @@ namespace InfinniPlatform.DocumentStorage
                 (command, result, error) => _storageInterceptor.OnAfterInsertMany(command, result, error));
         }
 
-        public Task InsertManyAsync(IEnumerable<DynamicWrapper> documents)
+        public Task InsertManyAsync(IEnumerable<DynamicDocument> documents)
         {
             return _storageInterceptor.ExecuteCommandAsync(
                 new DocumentInsertManyCommand(documents),
@@ -214,7 +214,7 @@ namespace InfinniPlatform.DocumentStorage
         }
 
 
-        public DocumentUpdateResult ReplaceOne(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public DocumentUpdateResult ReplaceOne(DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
         {
             return _storageInterceptor.ExecuteCommand(
                 new DocumentReplaceOneCommand(replacement, filter, insertIfNotExists),
@@ -230,7 +230,7 @@ namespace InfinniPlatform.DocumentStorage
                 (command, result, error) => _storageInterceptor.OnAfterReplaceOne(command, result, error));
         }
 
-        public Task<DocumentUpdateResult> ReplaceOneAsync(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public Task<DocumentUpdateResult> ReplaceOneAsync(DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
         {
             return _storageInterceptor.ExecuteCommandAsync(
                 new DocumentReplaceOneCommand(replacement, filter, insertIfNotExists),
@@ -370,7 +370,7 @@ namespace InfinniPlatform.DocumentStorage
                 = new Dictionary<IDocumentWriteCommand, Action<IDocumentBulkBuilder>>();
 
 
-            IDocumentBulkBuilder IDocumentBulkBuilder.InsertOne(DynamicWrapper document)
+            IDocumentBulkBuilder IDocumentBulkBuilder.InsertOne(DynamicDocument document)
             {
                 var command = new DocumentInsertOneCommand(document);
 
@@ -415,7 +415,7 @@ namespace InfinniPlatform.DocumentStorage
                 return this;
             }
 
-            IDocumentBulkBuilder IDocumentBulkBuilder.ReplaceOne(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter, bool insertIfNotExists)
+            IDocumentBulkBuilder IDocumentBulkBuilder.ReplaceOne(DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter, bool insertIfNotExists)
             {
                 var command = new DocumentReplaceOneCommand(replacement, filter, insertIfNotExists);
 

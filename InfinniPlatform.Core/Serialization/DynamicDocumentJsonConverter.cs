@@ -10,11 +10,11 @@ using Newtonsoft.Json.Linq;
 namespace InfinniPlatform.Serialization
 {
     /// <summary>
-    /// Осуществляет преобразование <see cref="DynamicWrapper"/> в JSON-представление и обратно.
+    /// Осуществляет преобразование <see cref="DynamicDocument"/> в JSON-представление и обратно.
     /// </summary>
-    internal class DynamicWrapperJsonConverter : JsonConverter
+    internal class DynamicDocumentJsonConverter : JsonConverter
     {
-        private static readonly TypeInfo ConvertType = typeof(DynamicWrapper).GetTypeInfo();
+        private static readonly TypeInfo ConvertType = typeof(DynamicDocument).GetTypeInfo();
 
 
         public override bool CanConvert(Type objectType)
@@ -25,13 +25,13 @@ namespace InfinniPlatform.Serialization
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var dynamicWrapper = value as DynamicWrapper;
+            var dynamicDocument = value as DynamicDocument;
 
-            if (dynamicWrapper != null)
+            if (dynamicDocument != null)
             {
                 writer.WriteStartObject();
 
-                foreach (KeyValuePair<string, object> property in dynamicWrapper)
+                foreach (KeyValuePair<string, object> property in dynamicDocument)
                 {
                     writer.WritePropertyName(property.Key);
                     serializer.Serialize(writer, property.Value);
@@ -56,11 +56,11 @@ namespace InfinniPlatform.Serialization
 
         private static object ConvertFromJsonObject(JObject value)
         {
-            DynamicWrapper result = null;
+            DynamicDocument result = null;
 
             if (value != null)
             {
-                result = new DynamicWrapper();
+                result = new DynamicDocument();
 
                 foreach (var property in value)
                 {

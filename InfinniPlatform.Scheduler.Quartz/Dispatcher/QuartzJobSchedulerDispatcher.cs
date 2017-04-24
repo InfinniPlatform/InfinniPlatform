@@ -261,7 +261,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
         }
 
 
-        public async Task TriggerJob(string jobId, DynamicWrapper data = null)
+        public async Task TriggerJob(string jobId, DynamicDocument data = null)
         {
             var jobItem = GetJobItem(jobId);
 
@@ -282,7 +282,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
             }
         }
 
-        public async Task TriggerJobs(IEnumerable<string> jobIds, DynamicWrapper data = null)
+        public async Task TriggerJobs(IEnumerable<string> jobIds, DynamicDocument data = null)
         {
             if (jobIds == null)
             {
@@ -295,7 +295,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
             }
         }
 
-        public Task TriggerAllJob(DynamicWrapper data = null)
+        public Task TriggerAllJob(DynamicDocument data = null)
         {
             var allJobIds = _jobs.Keys.ToList();
 

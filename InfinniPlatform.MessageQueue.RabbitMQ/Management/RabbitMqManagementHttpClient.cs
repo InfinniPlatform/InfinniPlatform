@@ -53,7 +53,7 @@ namespace InfinniPlatform.MessageQueue.Management
             return httpClient;
         }
 
-        public async Task<DynamicWrapper> GetOverview()
+        public async Task<DynamicDocument> GetOverview()
         {
             return await Get("/api/overview");
         }
@@ -104,11 +104,11 @@ namespace InfinniPlatform.MessageQueue.Management
             await Delete($"/api/queues/{DefaultVhost}/{queue.Name}/contents");
         }
 
-        private async Task<DynamicWrapper> Get(string relativeUrl)
+        private async Task<DynamicDocument> Get(string relativeUrl)
         {
             var httpResponseMessage = await _httpClient.Value.GetAsync(new Uri(relativeUrl, UriKind.Relative));
             var content = await httpResponseMessage.Content.ReadAsStringAsync();
-            return _serializer.Deserialize<DynamicWrapper>(content);
+            return _serializer.Deserialize<DynamicDocument>(content);
         }
 
         private async Task<IEnumerable<T>> Get<T>(string relativeUrl)

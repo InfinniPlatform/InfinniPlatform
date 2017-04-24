@@ -19,7 +19,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "_id", 1 }, { "prop1", 123 }, { "prop2", "abc" } });
+            storage.InsertOne(new DynamicDocument { { "_id", 1 }, { "prop1", 123 }, { "prop2", "abc" } });
             var afterInsert = storage.Find().ToList();
 
             storage.UpdateOne(u => u.Set("prop3", 456), f => f.Eq("_id", 1));
@@ -29,7 +29,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             doc1["prop1"] = 321;
             doc1["prop2"] = "cba";
             doc1["prop3"] = 654;
-            var doc2 = new DynamicWrapper();
+            var doc2 = new DynamicDocument();
             doc2["_id"] = 2;
             doc2["_header"] = null;
             doc2["prop1"] = 789;

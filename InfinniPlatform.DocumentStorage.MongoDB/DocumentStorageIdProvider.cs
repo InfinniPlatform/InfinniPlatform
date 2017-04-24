@@ -13,7 +13,7 @@ namespace InfinniPlatform.DocumentStorage
         private readonly IDocumentIdGenerator _idGenerator;
 
 
-        public void SetDocumentId(DynamicWrapper document)
+        public void SetDocumentId(DynamicDocument document)
         {
             if (document["_id"] == null)
             {

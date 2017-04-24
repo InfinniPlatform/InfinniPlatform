@@ -97,19 +97,19 @@ namespace InfinniPlatform.Scheduler
         /// </summary>
         /// <param name="jobId">Уникальный идентификатор задания.</param>
         /// <param name="data">Данные для выполнения задания.</param>
-        Task TriggerJob(string jobId, DynamicWrapper data = null);
+        Task TriggerJob(string jobId, DynamicDocument data = null);
 
         /// <summary>
         /// Вызывает досрочное выполнение указанных заданий.
         /// </summary>
         /// <param name="jobIds">Список с уникальными идентификаторами заданий.</param>
         /// <param name="data">Данные для выполнения заданий.</param>
-        Task TriggerJobs(IEnumerable<string> jobIds, DynamicWrapper data = null);
+        Task TriggerJobs(IEnumerable<string> jobIds, DynamicDocument data = null);
 
         /// <summary>
         /// Вызывает досрочное выполнение всех заданий.
         /// </summary>
         /// <param name="data">Данные для выполнения заданий.</param>
-        Task TriggerAllJob(DynamicWrapper data = null);
+        Task TriggerAllJob(DynamicDocument data = null);
     }
 }

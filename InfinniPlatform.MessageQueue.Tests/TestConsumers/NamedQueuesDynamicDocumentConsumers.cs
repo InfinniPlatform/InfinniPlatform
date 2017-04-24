@@ -7,9 +7,9 @@ using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.MessageQueue.TestConsumers
 {
-    public class BaseNamedQueueDynamicWrapperTaskConsumer : TaskConsumerBase<DynamicWrapper>
+    public class BaseNamedQueueDynamicDocumentTaskConsumer : TaskConsumerBase<DynamicDocument>
     {
-        public BaseNamedQueueDynamicWrapperTaskConsumer(List<DynamicWrapper> messages,
+        public BaseNamedQueueDynamicDocumentTaskConsumer(List<DynamicDocument> messages,
                                                         CountdownEvent completeEvent,
                                                         int taskWorkTime = 0)
         {
@@ -19,10 +19,10 @@ namespace InfinniPlatform.MessageQueue.TestConsumers
         }
 
         private readonly CountdownEvent _completeEvent;
-        private readonly List<DynamicWrapper> _messages;
+        private readonly List<DynamicDocument> _messages;
         private readonly int _taskWorkTime;
 
-        protected override Task Consume(Message<DynamicWrapper> message)
+        protected override Task Consume(Message<DynamicDocument> message)
         {
             return Task.Run(async () =>
                             {
@@ -40,9 +40,9 @@ namespace InfinniPlatform.MessageQueue.TestConsumers
 
 
     [QueueName("Queue1")]
-    public class Queue1DynamicWrapperTaskConsumer : BaseNamedQueueDynamicWrapperTaskConsumer
+    public class Queue1DynamicDocumentTaskConsumer : BaseNamedQueueDynamicDocumentTaskConsumer
     {
-        public Queue1DynamicWrapperTaskConsumer(List<DynamicWrapper> messages,
+        public Queue1DynamicDocumentTaskConsumer(List<DynamicDocument> messages,
                                                 CountdownEvent completeEvent,
                                                 int taskWorkTime = 0)
             : base(messages, completeEvent, taskWorkTime)
@@ -52,9 +52,9 @@ namespace InfinniPlatform.MessageQueue.TestConsumers
 
 
     [QueueName("Queue2")]
-    public class Queue2DynamicWrapperTaskConsumer : BaseNamedQueueDynamicWrapperTaskConsumer
+    public class Queue2DynamicDocumentTaskConsumer : BaseNamedQueueDynamicDocumentTaskConsumer
     {
-        public Queue2DynamicWrapperTaskConsumer(List<DynamicWrapper> messages,
+        public Queue2DynamicDocumentTaskConsumer(List<DynamicDocument> messages,
                                                 CountdownEvent completeEvent,
                                                 int taskWorkTime = 0)
             : base(messages, completeEvent, taskWorkTime)
@@ -64,9 +64,9 @@ namespace InfinniPlatform.MessageQueue.TestConsumers
 
 
     [QueueName("Queue3")]
-    public class Queue3DynamicWrapperTaskConsumer : BaseNamedQueueDynamicWrapperTaskConsumer
+    public class Queue3DynamicDocumentTaskConsumer : BaseNamedQueueDynamicDocumentTaskConsumer
     {
-        public Queue3DynamicWrapperTaskConsumer(List<DynamicWrapper> messages,
+        public Queue3DynamicDocumentTaskConsumer(List<DynamicDocument> messages,
                                                 CountdownEvent completeEvent,
                                                 int taskWorkTime = 0)
             : base(messages, completeEvent, taskWorkTime)

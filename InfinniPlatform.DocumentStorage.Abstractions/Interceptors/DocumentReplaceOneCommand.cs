@@ -16,7 +16,7 @@ namespace InfinniPlatform.DocumentStorage.Interceptors
         /// <param name="replacement">Документ замены.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
-        public DocumentReplaceOneCommand(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public DocumentReplaceOneCommand(DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
         {
             Replacement = replacement;
             Filter = filter;
@@ -26,7 +26,7 @@ namespace InfinniPlatform.DocumentStorage.Interceptors
         /// <summary>
         /// Документ замены.
         /// </summary>
-        public DynamicWrapper Replacement { get; set; }
+        public DynamicDocument Replacement { get; set; }
 
         /// <summary>
         /// Фильтр для поиска документов.

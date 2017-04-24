@@ -19,7 +19,7 @@ namespace InfinniPlatform.PrintView.Factories
         {
             return (value is IEnumerable)
                    && !(value is string)
-                   && !(value is DynamicWrapper);
+                   && !(value is DynamicDocument);
         }
 
         public static bool TryToDateTime(object value, out DateTime result)

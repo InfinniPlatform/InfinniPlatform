@@ -13,7 +13,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Экземпляр документа.
         /// </summary>
-        public DynamicWrapper Document { get; set; }
+        public DynamicDocument Document { get; set; }
 
         /// <summary>
         /// Список файлов документа.

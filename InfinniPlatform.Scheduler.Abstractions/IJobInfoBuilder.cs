@@ -42,6 +42,6 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Устанавливает данные для выполнения задания.
         /// </summary>
-        IJobInfoBuilder Data(DynamicWrapper data);
+        IJobInfoBuilder Data(DynamicDocument data);
     }
 }

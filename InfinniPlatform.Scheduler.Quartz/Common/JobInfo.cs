@@ -34,6 +34,6 @@ namespace InfinniPlatform.Scheduler.Common
 
         public JobMisfirePolicy MisfirePolicy { get; set; }
 
-        public DynamicWrapper Data { get; set; }
+        public DynamicDocument Data { get; set; }
     }
 }

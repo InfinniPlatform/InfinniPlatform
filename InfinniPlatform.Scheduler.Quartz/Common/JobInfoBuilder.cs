@@ -51,7 +51,7 @@ namespace InfinniPlatform.Scheduler.Common
             return this;
         }
 
-        public IJobInfoBuilder Data(DynamicWrapper data)
+        public IJobInfoBuilder Data(DynamicDocument data)
         {
             _jobInfo.Data = data;
             return this;

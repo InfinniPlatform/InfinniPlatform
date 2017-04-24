@@ -165,7 +165,7 @@ namespace InfinniPlatform.PrintView.Factories.Format
         {
             // Given
 
-            var value = new DynamicWrapper
+            var value = new DynamicDocument
                         {
                             { "FirstName", "Ivan" },
                             { "LastName", "Ivanov" },
@@ -188,7 +188,7 @@ namespace InfinniPlatform.PrintView.Factories.Format
         {
             // Given
 
-            var value = new DynamicWrapper
+            var value = new DynamicDocument
                         {
                             { "FirstName", "Ivan" },
                             { "LastName", "Ivanov" },

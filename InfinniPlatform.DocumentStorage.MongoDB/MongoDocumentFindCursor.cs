@@ -10,26 +10,26 @@ namespace InfinniPlatform.DocumentStorage
     /// <summary>
     /// Указатель на список документов MongoDB.
     /// </summary>
-    internal class MongoDocumentFindCursor : MongoDocumentCursor<DynamicWrapper>, IDocumentFindSortedCursor
+    internal class MongoDocumentFindCursor : MongoDocumentCursor<DynamicDocument>, IDocumentFindSortedCursor
     {
-        public MongoDocumentFindCursor(Lazy<IMongoCollection<DynamicWrapper>> collection, MongoDocumentFilterBuilder<DynamicWrapper> filterBuilder)
+        public MongoDocumentFindCursor(Lazy<IMongoCollection<DynamicDocument>> collection, MongoDocumentFilterBuilder<DynamicDocument> filterBuilder)
         {
             _collection = collection;
             _filterBuilder = filterBuilder;
         }
 
 
-        private readonly Lazy<IMongoCollection<DynamicWrapper>> _collection;
-        private readonly MongoDocumentFilterBuilder<DynamicWrapper> _filterBuilder;
+        private readonly Lazy<IMongoCollection<DynamicDocument>> _collection;
+        private readonly MongoDocumentFilterBuilder<DynamicDocument> _filterBuilder;
 
-        private FilterDefinition<DynamicWrapper> _filter;
-        private ProjectionDefinition<DynamicWrapper> _projection;
-        private SortDefinition<DynamicWrapper> _sort;
+        private FilterDefinition<DynamicDocument> _filter;
+        private ProjectionDefinition<DynamicDocument> _projection;
+        private SortDefinition<DynamicDocument> _sort;
         private int? _skip;
         private int? _limit;
 
 
-        protected override IAsyncCursor<DynamicWrapper> Cursor => CreateCursor();
+        protected override IAsyncCursor<DynamicDocument> Cursor => CreateCursor();
 
 
         public IDocumentFindCursor Where(Func<IDocumentFilterBuilder, object> filter)
@@ -41,46 +41,46 @@ namespace InfinniPlatform.DocumentStorage
 
         public IDocumentFindCursor Project(Action<IDocumentProjectionBuilder> projection)
         {
-            _projection = MongoDocumentProjectionBuilder<DynamicWrapper>.CreateMongoProjection(projection);
+            _projection = MongoDocumentProjectionBuilder<DynamicDocument>.CreateMongoProjection(projection);
             return this;
         }
 
         public IDocumentFindSortedCursor SortBy(string property)
         {
-            _sort = Builders<DynamicWrapper>.Sort.Ascending(property);
+            _sort = Builders<DynamicDocument>.Sort.Ascending(property);
             return this;
         }
 
         public IDocumentFindSortedCursor SortByDescending(string property)
         {
-            _sort = Builders<DynamicWrapper>.Sort.Descending(property);
+            _sort = Builders<DynamicDocument>.Sort.Descending(property);
             return this;
         }
 
         public IDocumentFindSortedCursor SortByTextScore(string textScoreProperty = DocumentStorageExtensions.DefaultTextScoreProperty)
         {
-            _sort = Builders<DynamicWrapper>.Sort.MetaTextScore(textScoreProperty);
+            _sort = Builders<DynamicDocument>.Sort.MetaTextScore(textScoreProperty);
             return this;
         }
 
         public IDocumentFindSortedCursor ThenBy(string property)
         {
-            var thenSort = Builders<DynamicWrapper>.Sort.Ascending(property);
-            _sort = Builders<DynamicWrapper>.Sort.Combine(_sort, thenSort);
+            var thenSort = Builders<DynamicDocument>.Sort.Ascending(property);
+            _sort = Builders<DynamicDocument>.Sort.Combine(_sort, thenSort);
             return this;
         }
 
         public IDocumentFindSortedCursor ThenByDescending(string property)
         {
-            var thenSort = Builders<DynamicWrapper>.Sort.Descending(property);
-            _sort = Builders<DynamicWrapper>.Sort.Combine(_sort, thenSort);
+            var thenSort = Builders<DynamicDocument>.Sort.Descending(property);
+            _sort = Builders<DynamicDocument>.Sort.Combine(_sort, thenSort);
             return this;
         }
 
         public IDocumentFindSortedCursor ThenByTextScore(string textScoreProperty = DocumentStorageExtensions.DefaultTextScoreProperty)
         {
-            var thenSort = Builders<DynamicWrapper>.Sort.MetaTextScore(textScoreProperty);
-            _sort = Builders<DynamicWrapper>.Sort.Combine(_sort, thenSort);
+            var thenSort = Builders<DynamicDocument>.Sort.MetaTextScore(textScoreProperty);
+            _sort = Builders<DynamicDocument>.Sort.Combine(_sort, thenSort);
             return this;
         }
 
@@ -107,9 +107,9 @@ namespace InfinniPlatform.DocumentStorage
         }
 
 
-        private IAsyncCursor<DynamicWrapper> CreateCursor()
+        private IAsyncCursor<DynamicDocument> CreateCursor()
         {
-            var findOptions = new FindOptions<DynamicWrapper, DynamicWrapper> { Skip = _skip, Limit = _limit };
+            var findOptions = new FindOptions<DynamicDocument, DynamicDocument> { Skip = _skip, Limit = _limit };
 
             if (_projection != null)
             {

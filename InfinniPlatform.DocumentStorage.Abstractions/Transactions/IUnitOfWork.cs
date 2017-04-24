@@ -20,7 +20,7 @@ namespace InfinniPlatform.DocumentStorage.Transactions
         /// </summary>
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="document">Документ для вставки.</param>
-        void InsertOne(string documentType, DynamicWrapper document);
+        void InsertOne(string documentType, DynamicDocument document);
 
         /// <summary>
         /// Вставляет один документ в хранилище или возвращает исключение, если хранилище уже содержит указанный документ.
@@ -44,7 +44,7 @@ namespace InfinniPlatform.DocumentStorage.Transactions
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="documents">Список документов для вставки.</param>
         /// <exception cref="DocumentStorageWriteException"></exception>
-        void InsertMany(string documentType, IEnumerable<DynamicWrapper> documents);
+        void InsertMany(string documentType, IEnumerable<DynamicDocument> documents);
 
         /// <summary>
         /// Вставляет набор документов хранилище или возвращает исключение, если хранилище уже содержит один из указанных документов.
@@ -129,7 +129,7 @@ namespace InfinniPlatform.DocumentStorage.Transactions
         /// <param name="replacement">Документ замены.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
-        void ReplaceOne(string documentType, DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false);
+        void ReplaceOne(string documentType, DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false);
 
         /// <summary>
         /// Заменяет первый найденный документ, удовлетворяющий указанному фильтру.

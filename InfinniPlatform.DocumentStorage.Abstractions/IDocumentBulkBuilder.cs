@@ -13,7 +13,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или возвращает исключение, если хранилище уже содержит указанный документ.
         /// </summary>
         /// <param name="document">Документ для вставки.</param>
-        IDocumentBulkBuilder InsertOne(DynamicWrapper document);
+        IDocumentBulkBuilder InsertOne(DynamicDocument document);
 
         /// <summary>
         /// Обновляет первый найденный документ, удовлетворяющий указанному фильтру.
@@ -37,7 +37,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <param name="replacement">Документ замены.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
-        IDocumentBulkBuilder ReplaceOne(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false);
+        IDocumentBulkBuilder ReplaceOne(DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false);
 
         /// <summary>
         /// Удаляет первый найденный документ, удовлетворяющий указанному фильтру.

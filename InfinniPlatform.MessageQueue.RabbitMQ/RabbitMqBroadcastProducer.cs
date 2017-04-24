@@ -29,7 +29,7 @@ namespace InfinniPlatform.MessageQueue
             BasicPublish(messageBody, queueName);
         }
 
-        public void PublishDynamic(DynamicWrapper messageBody, string queueName)
+        public void PublishDynamic(DynamicDocument messageBody, string queueName)
         {
             BasicPublish(messageBody, queueName);
         }
@@ -41,7 +41,7 @@ namespace InfinniPlatform.MessageQueue
             await Task.Run(() => { BasicPublish(messageBody, queueName); });
         }
 
-        public async Task PublishDynamicAsync(DynamicWrapper messageBody, string queueName)
+        public async Task PublishDynamicAsync(DynamicDocument messageBody, string queueName)
         {
             await Task.Run(() => { BasicPublish(messageBody, queueName); });
         }

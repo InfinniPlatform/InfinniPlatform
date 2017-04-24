@@ -9,9 +9,9 @@ namespace InfinniPlatform.MessageQueue
     {
         public static void CheckTypeRestrictions<T>()
         {
-            if (typeof(T) == typeof(DynamicWrapper))
+            if (typeof(T) == typeof(DynamicDocument))
             {
-                throw new ArgumentException("Use PublishDynamic or PublishDynamicAsync methods to send DynamicWrapper messages.");
+                throw new ArgumentException("Use PublishDynamic or PublishDynamicAsync methods to send DynamicDocument messages.");
             }
         }
 

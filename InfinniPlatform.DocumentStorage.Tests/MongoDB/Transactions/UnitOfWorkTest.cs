@@ -72,10 +72,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
             Mock<IDocumentBulkBuilder> bulkBuilder;
             var parentUnit = CreateUnitOfWork(out bulkBuilder);
 
-            var document1 = new DynamicWrapper();
-            var document2 = new DynamicWrapper();
-            var document3 = new DynamicWrapper();
-            var document4 = new DynamicWrapper();
+            var document1 = new DynamicDocument();
+            var document2 = new DynamicDocument();
+            var document3 = new DynamicDocument();
+            var document4 = new DynamicDocument();
 
             // When
 
@@ -92,16 +92,16 @@ namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
             childWork1.Commit(); // commit to parent
             childWork2.Commit(); // commit to parent
 
-            bulkBuilder.Verify(i => i.InsertOne(It.IsAny<DynamicWrapper>()), Times.Never());
+            bulkBuilder.Verify(i => i.InsertOne(It.IsAny<DynamicDocument>()), Times.Never());
 
             parentUnit.Commit(); // commit to storage
 
             // Then
 
-            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicWrapper>(it => ReferenceEquals(it, document1))), Times.Once);
-            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicWrapper>(it => ReferenceEquals(it, document2))), Times.Once);
-            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicWrapper>(it => ReferenceEquals(it, document3))), Times.Once);
-            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicWrapper>(it => ReferenceEquals(it, document4))), Times.Once);
+            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicDocument>(it => ReferenceEquals(it, document1))), Times.Once);
+            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicDocument>(it => ReferenceEquals(it, document2))), Times.Once);
+            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicDocument>(it => ReferenceEquals(it, document3))), Times.Once);
+            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicDocument>(it => ReferenceEquals(it, document4))), Times.Once);
         }
 
         [Test]
@@ -112,10 +112,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
             Mock<IDocumentBulkBuilder> bulkBuilder;
             var parentUnit = CreateUnitOfWork(out bulkBuilder);
 
-            var document1 = new DynamicWrapper();
-            var document2 = new DynamicWrapper();
-            var document3 = new DynamicWrapper();
-            var document4 = new DynamicWrapper();
+            var document1 = new DynamicDocument();
+            var document2 = new DynamicDocument();
+            var document3 = new DynamicDocument();
+            var document4 = new DynamicDocument();
 
             // When
 
@@ -132,16 +132,16 @@ namespace InfinniPlatform.DocumentStorage.MongoDB.Transactions
             childWork1.Commit(); // commit to parent
             childWork2.Commit(); // commit to parent
 
-            bulkBuilder.Verify(i => i.InsertOne(It.IsAny<DynamicWrapper>()), Times.Never());
+            bulkBuilder.Verify(i => i.InsertOne(It.IsAny<DynamicDocument>()), Times.Never());
 
             await parentUnit.CommitAsync(); // commit to storage
 
             // Then
 
-            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicWrapper>(it => ReferenceEquals(it, document1))), Times.Once);
-            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicWrapper>(it => ReferenceEquals(it, document2))), Times.Once);
-            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicWrapper>(it => ReferenceEquals(it, document3))), Times.Once);
-            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicWrapper>(it => ReferenceEquals(it, document4))), Times.Once);
+            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicDocument>(it => ReferenceEquals(it, document1))), Times.Once);
+            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicDocument>(it => ReferenceEquals(it, document2))), Times.Once);
+            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicDocument>(it => ReferenceEquals(it, document3))), Times.Once);
+            bulkBuilder.Verify(i => i.InsertOne(It.Is<DynamicDocument>(it => ReferenceEquals(it, document4))), Times.Once);
         }
 
 

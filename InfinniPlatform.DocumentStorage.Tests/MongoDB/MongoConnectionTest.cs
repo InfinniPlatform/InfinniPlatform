@@ -35,19 +35,19 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             // When
 
             var database = connection.GetDatabase();
-            var collection1 = database.GetCollection<DynamicWrapper>("DropDatabaseCollection1");
-            var collection2 = database.GetCollection<DynamicWrapper>("DropDatabaseCollection2");
+            var collection1 = database.GetCollection<DynamicDocument>("DropDatabaseCollection1");
+            var collection2 = database.GetCollection<DynamicDocument>("DropDatabaseCollection2");
 
-            collection1.InsertMany(new[] { new DynamicWrapper(), new DynamicWrapper() });
-            collection2.InsertMany(new[] { new DynamicWrapper(), new DynamicWrapper(), new DynamicWrapper() });
+            collection1.InsertMany(new[] { new DynamicDocument(), new DynamicDocument() });
+            collection2.InsertMany(new[] { new DynamicDocument(), new DynamicDocument(), new DynamicDocument() });
 
-            var collectionSizeBeforeDrop1 = collection1.Count(Builders<DynamicWrapper>.Filter.Empty);
-            var collectionSizeBeforeDrop2 = collection2.Count(Builders<DynamicWrapper>.Filter.Empty);
+            var collectionSizeBeforeDrop1 = collection1.Count(Builders<DynamicDocument>.Filter.Empty);
+            var collectionSizeBeforeDrop2 = collection2.Count(Builders<DynamicDocument>.Filter.Empty);
 
             await connection.DropDatabaseAsync();
 
-            var collectionSizeAfterDrop1 = collection1.Count(Builders<DynamicWrapper>.Filter.Empty);
-            var collectionSizeAfterDrop2 = collection2.Count(Builders<DynamicWrapper>.Filter.Empty);
+            var collectionSizeAfterDrop1 = collection1.Count(Builders<DynamicDocument>.Filter.Empty);
+            var collectionSizeAfterDrop2 = collection2.Count(Builders<DynamicDocument>.Filter.Empty);
 
             // Then
             Assert.AreEqual(2, collectionSizeBeforeDrop1);

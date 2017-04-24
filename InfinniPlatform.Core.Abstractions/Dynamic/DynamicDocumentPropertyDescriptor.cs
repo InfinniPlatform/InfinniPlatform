@@ -4,11 +4,11 @@ using System.ComponentModel;
 namespace InfinniPlatform.Dynamic
 {
     /// <summary>
-    /// Описание свойства динамического объекта <see cref="DynamicWrapper"/>.
+    /// Описание свойства динамического объекта <see cref="DynamicDocument"/>.
     /// </summary>
-    public class DynamicWrapperPropertyDescriptor : PropertyDescriptor
+    public class DynamicDocumentPropertyDescriptor : PropertyDescriptor
     {
-        public DynamicWrapperPropertyDescriptor(string name)
+        public DynamicDocumentPropertyDescriptor(string name)
             : base(name, null)
         {
         }
@@ -42,7 +42,7 @@ namespace InfinniPlatform.Dynamic
 
         public override Type ComponentType
         {
-            get { return typeof(DynamicWrapper); }
+            get { return typeof(DynamicDocument); }
         }
 
         public override bool IsReadOnly
@@ -56,9 +56,9 @@ namespace InfinniPlatform.Dynamic
         }
 
 
-        private static DynamicWrapper CastInstance(object component)
+        private static DynamicDocument CastInstance(object component)
         {
-            return (DynamicWrapper)component;
+            return (DynamicDocument)component;
         }
     }
 }

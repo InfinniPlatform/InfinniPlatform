@@ -18,32 +18,32 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         [Test]
         public void AllMessagesRoutedToCorrespondedNamedQueues()
         {
-            var queue1Messages = new List<DynamicWrapper>();
-            var queue1AssertMessages = new List<DynamicWrapper>
+            var queue1Messages = new List<DynamicDocument>();
+            var queue1AssertMessages = new List<DynamicDocument>
                                        {
-                                           new DynamicWrapper { { "SomeField", "Message1" } },
-                                           new DynamicWrapper { { "SomeField", "Message2" } },
-                                           new DynamicWrapper { { "SomeField", "Message3" } }
+                                           new DynamicDocument { { "SomeField", "Message1" } },
+                                           new DynamicDocument { { "SomeField", "Message2" } },
+                                           new DynamicDocument { { "SomeField", "Message3" } }
                                        };
             var queue1CountdownEvent = new CountdownEvent(3);
-            var queue1TaskConsumer = new Queue1DynamicWrapperTaskConsumer(queue1Messages, queue1CountdownEvent);
+            var queue1TaskConsumer = new Queue1DynamicDocumentTaskConsumer(queue1Messages, queue1CountdownEvent);
 
-            var queue2Messages = new List<DynamicWrapper>();
-            var queue2AssertMessages = new List<DynamicWrapper>
+            var queue2Messages = new List<DynamicDocument>();
+            var queue2AssertMessages = new List<DynamicDocument>
                                        {
-                                           new DynamicWrapper { { "SomeField", "Message4" } },
-                                           new DynamicWrapper { { "SomeField", "Message5" } }
+                                           new DynamicDocument { { "SomeField", "Message4" } },
+                                           new DynamicDocument { { "SomeField", "Message5" } }
                                        };
             var queue2CountdownEvent = new CountdownEvent(2);
-            var queue2TaskConsumer = new Queue2DynamicWrapperTaskConsumer(queue2Messages, queue2CountdownEvent);
+            var queue2TaskConsumer = new Queue2DynamicDocumentTaskConsumer(queue2Messages, queue2CountdownEvent);
 
-            var queue3Messages = new List<DynamicWrapper>();
-            var queue3AssertMessages = new List<DynamicWrapper>
+            var queue3Messages = new List<DynamicDocument>();
+            var queue3AssertMessages = new List<DynamicDocument>
                                        {
-                                           new DynamicWrapper { { "SomeField", "Message6" } }
+                                           new DynamicDocument { { "SomeField", "Message6" } }
                                        };
             var queue3CountdownEvent = new CountdownEvent(1);
-            var queue3TaskConsumer = new Queue3DynamicWrapperTaskConsumer(queue3Messages, queue3CountdownEvent);
+            var queue3TaskConsumer = new Queue3DynamicDocumentTaskConsumer(queue3Messages, queue3CountdownEvent);
 
             ITaskConsumer[] taskConsumers =
             {
@@ -125,9 +125,9 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         [Test]
         public void AllTypedMessagesRoutedToCorrespondedTaskConsumers()
         {
-            var dynamicWrapperMessages = new List<DynamicWrapper>();
-            var dynamicWrapperCountdownEvent = new CountdownEvent(3);
-            var dynamicWrapperConsumer = new DynamicWrapperTaskConsumer(dynamicWrapperMessages, dynamicWrapperCountdownEvent);
+            var dynamicDocumentMessages = new List<DynamicDocument>();
+            var dynamicDocumentCountdownEvent = new CountdownEvent(3);
+            var dynamicDocumentConsumer = new DynamicDocumentTaskConsumer(dynamicDocumentMessages, dynamicDocumentCountdownEvent);
 
             var testMessages = new List<TestMessage>();
             var testMessageCountdownEvent = new CountdownEvent(2);
@@ -139,9 +139,9 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             object[] assertMessages =
             {
-                new DynamicWrapper { { "SomeField", "Message1" } },
-                new DynamicWrapper { { "SomeField", "Message2" } },
-                new DynamicWrapper { { "SomeField", "Message3" } },
+                new DynamicDocument { { "SomeField", "Message1" } },
+                new DynamicDocument { { "SomeField", "Message2" } },
+                new DynamicDocument { { "SomeField", "Message3" } },
                 new TestMessage("1", 1, new DateTime(1, 1, 1)),
                 new TestMessage("2", 2, new DateTime(2, 2, 2)),
                 "message1"
@@ -149,7 +149,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             ITaskConsumer[] taskConsumers =
             {
-                dynamicWrapperConsumer,
+                dynamicDocumentConsumer,
                 stringConsumer,
                 testMessageConsumer
             };
@@ -164,12 +164,12 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             const int timeout = 500;
 
-            Assert.IsTrue(dynamicWrapperCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(dynamicWrapperConsumer)}.");
+            Assert.IsTrue(dynamicDocumentCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(dynamicDocumentConsumer)}.");
             Assert.IsTrue(stringCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(stringConsumer)}.");
             Assert.IsTrue(testMessageCountdownEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms by {nameof(testMessageConsumer)}.");
 
             var actualMessages = new List<object>();
-            actualMessages.AddRange(dynamicWrapperMessages);
+            actualMessages.AddRange(dynamicDocumentMessages);
             actualMessages.AddRange(stringMessages);
             actualMessages.AddRange(testMessages);
 

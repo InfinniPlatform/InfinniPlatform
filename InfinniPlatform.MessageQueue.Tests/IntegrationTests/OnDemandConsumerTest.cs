@@ -16,27 +16,27 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         {
             var onDemandConsumer = new RabbitMqOnDemandConsumer(RabbitMqManager, RabbitMqMessageSerializer);
 
-            DynamicWrapper[] assertMessages =
+            DynamicDocument[] assertMessages =
             {
-                new DynamicWrapper { { "SomeField", "Message1" } },
-                new DynamicWrapper { { "SomeField", "Message2" } },
-                new DynamicWrapper { { "SomeField", "Message3" } }
+                new DynamicDocument { { "SomeField", "Message1" } },
+                new DynamicDocument { { "SomeField", "Message2" } },
+                new DynamicDocument { { "SomeField", "Message3" } }
             };
 
             var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
-                producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);
+                producerBase.PublishDynamic(message, typeof(DynamicDocument).FullName);
             }
 
             foreach (var message in assertMessages)
             {
-                var actualMessage = await onDemandConsumer.Consume<DynamicWrapper>();
+                var actualMessage = await onDemandConsumer.Consume<DynamicDocument>();
                 var body = actualMessage.GetBody();
                 Assert.AreEqual(message, body);
             }
 
-            var emptyMessage = await onDemandConsumer.Consume<DynamicWrapper>();
+            var emptyMessage = await onDemandConsumer.Consume<DynamicDocument>();
             Assert.IsNull(emptyMessage);
         }
     }

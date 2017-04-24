@@ -19,12 +19,12 @@ namespace InfinniPlatform.DocumentStorage
         private readonly IUserIdentityProvider _userIdentityProvider;
 
 
-        public void SetInsertHeader(DynamicWrapper document)
+        public void SetInsertHeader(DynamicDocument document)
         {
             var userInfo = GetCurrentUserInfo();
             var currentDate = DateTime.UtcNow;
 
-            var header = new DynamicWrapper
+            var header = new DynamicDocument
             {
                 ["_tenant"] = _tenantProvider.GetTenantId(),
                 ["_created"] = currentDate,
@@ -52,12 +52,12 @@ namespace InfinniPlatform.DocumentStorage
         }
 
 
-        public void SetReplaceHeader(DynamicWrapper document)
+        public void SetReplaceHeader(DynamicDocument document)
         {
             var userInfo = GetCurrentUserInfo();
             var currentDate = DateTime.UtcNow;
 
-            var header = (document["_header"] as DynamicWrapper) ?? new DynamicWrapper();
+            var header = (document["_header"] as DynamicDocument) ?? new DynamicDocument();
 
             header["_tenant"] = header["_tenant"] ?? _tenantProvider.GetTenantId();
             header["_created"] = header["_created"] ?? currentDate;

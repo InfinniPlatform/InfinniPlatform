@@ -23,7 +23,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldCount));
 
             // When
-            storage.InsertMany(new[] { new DynamicWrapper(), new DynamicWrapper(), new DynamicWrapper() });
+            storage.InsertMany(new[] { new DynamicDocument(), new DynamicDocument(), new DynamicDocument() });
             var count = storage.Count();
 
             // Then
@@ -37,7 +37,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldCountAsync));
 
             // When
-            storage.InsertMany(new[] { new DynamicWrapper(), new DynamicWrapper(), new DynamicWrapper() });
+            storage.InsertMany(new[] { new DynamicDocument(), new DynamicDocument(), new DynamicDocument() });
             var count = await storage.CountAsync();
 
             // Then
@@ -57,9 +57,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "prop1", findValue } },
-                                   new DynamicWrapper { { "prop1", anotherValue } },
-                                   new DynamicWrapper { { "prop1", findValue } }
+                                   new DynamicDocument { { "prop1", findValue } },
+                                   new DynamicDocument { { "prop1", anotherValue } },
+                                   new DynamicDocument { { "prop1", findValue } }
                                });
 
             var count = storage.Count(f => f.Eq("prop1", findValue));
@@ -81,9 +81,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "prop1", findValue } },
-                                   new DynamicWrapper { { "prop1", anotherValue } },
-                                   new DynamicWrapper { { "prop1", findValue } }
+                                   new DynamicDocument { { "prop1", findValue } },
+                                   new DynamicDocument { { "prop1", anotherValue } },
+                                   new DynamicDocument { { "prop1", findValue } }
                                });
 
             var count = await storage.CountAsync(f => f.Eq("prop1", findValue));
@@ -102,10 +102,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "dept", "A" }, { "item", new DynamicWrapper { { "sku", 111 }, { "color", "red" } } }, { "sizes", new[] { "S", "M" } } },
-                                   new DynamicWrapper { { "_id", 2 }, { "dept", "A" }, { "item", new DynamicWrapper { { "sku", 111 }, { "color", "blue" } } }, { "sizes", new[] { "M", "L" } } },
-                                   new DynamicWrapper { { "_id", 3 }, { "dept", "B" }, { "item", new DynamicWrapper { { "sku", 222 }, { "color", "blue" } } }, { "sizes", new[] { "S" } } },
-                                   new DynamicWrapper { { "_id", 4 }, { "dept", "A" }, { "item", new DynamicWrapper { { "sku", 333 }, { "color", "black" } } }, { "sizes", new[] { "S" } } },
+                                   new DynamicDocument { { "_id", 1 }, { "dept", "A" }, { "item", new DynamicDocument { { "sku", 111 }, { "color", "red" } } }, { "sizes", new[] { "S", "M" } } },
+                                   new DynamicDocument { { "_id", 2 }, { "dept", "A" }, { "item", new DynamicDocument { { "sku", 111 }, { "color", "blue" } } }, { "sizes", new[] { "M", "L" } } },
+                                   new DynamicDocument { { "_id", 3 }, { "dept", "B" }, { "item", new DynamicDocument { { "sku", 222 }, { "color", "blue" } } }, { "sizes", new[] { "S" } } },
+                                   new DynamicDocument { { "_id", 4 }, { "dept", "A" }, { "item", new DynamicDocument { { "sku", 333 }, { "color", "black" } } }, { "sizes", new[] { "S" } } },
                                });
 
             var deptList = storage.Distinct<string>("dept").ToList();
@@ -130,10 +130,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "dept", "A" }, { "item", new DynamicWrapper { { "sku", 111 }, { "color", "red" } } }, { "sizes", new[] { "S", "M" } } },
-                                   new DynamicWrapper { { "_id", 2 }, { "dept", "A" }, { "item", new DynamicWrapper { { "sku", 111 }, { "color", "blue" } } }, { "sizes", new[] { "M", "L" } } },
-                                   new DynamicWrapper { { "_id", 3 }, { "dept", "B" }, { "item", new DynamicWrapper { { "sku", 222 }, { "color", "blue" } } }, { "sizes", new[] { "S" } } },
-                                   new DynamicWrapper { { "_id", 4 }, { "dept", "A" }, { "item", new DynamicWrapper { { "sku", 333 }, { "color", "black" } } }, { "sizes", new[] { "S" } } }
+                                   new DynamicDocument { { "_id", 1 }, { "dept", "A" }, { "item", new DynamicDocument { { "sku", 111 }, { "color", "red" } } }, { "sizes", new[] { "S", "M" } } },
+                                   new DynamicDocument { { "_id", 2 }, { "dept", "A" }, { "item", new DynamicDocument { { "sku", 111 }, { "color", "blue" } } }, { "sizes", new[] { "M", "L" } } },
+                                   new DynamicDocument { { "_id", 3 }, { "dept", "B" }, { "item", new DynamicDocument { { "sku", 222 }, { "color", "blue" } } }, { "sizes", new[] { "S" } } },
+                                   new DynamicDocument { { "_id", 4 }, { "dept", "A" }, { "item", new DynamicDocument { { "sku", 333 }, { "color", "black" } } }, { "sizes", new[] { "S" } } }
                                });
 
             var deptList = (await storage.DistinctAsync<string>("dept")).ToList();
@@ -158,11 +158,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 2 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 3 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 4 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 5 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 2 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 3 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 4 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 5 } }
                                });
 
             var result = storage.Find(f => f.Empty()).ToList();
@@ -187,11 +187,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 2 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 3 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 4 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 5 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 2 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 3 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 4 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 5 } }
                                });
 
             var result = storage.Find(f => f.Not(f.Eq("prop1", 5))).ToList();
@@ -215,11 +215,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 2 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 3 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 4 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 5 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 2 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 3 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 4 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 5 } }
                                });
 
             var result = storage.Find(f => f.Or(f.Lt("prop1", 2), f.Gt("prop1", 4))).ToList();
@@ -241,11 +241,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 2 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 3 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 4 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 5 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 2 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 3 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 4 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 5 } }
                                });
 
             var result = storage.Find(f => f.And(f.Gte("prop1", 2), f.Lte("prop1", 4))).ToList();
@@ -268,9 +268,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 }, { "prop2", "A" } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 }, { "prop2", "B" } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 }, { "prop2", "A" } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 }, { "prop2", "B" } }
                                });
 
             var existsResult = storage.Find(f => f.Exists("prop2")).ToList();
@@ -296,15 +296,15 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", "Boolean" }, { "prop1", true } },
-                                   new DynamicWrapper { { "_id", "Int32" }, { "prop1", 123 } },
-                                   new DynamicWrapper { { "_id", "Int64" }, { "prop1", int.MaxValue + 100L } },
-                                   new DynamicWrapper { { "_id", "Double" }, { "prop1", 123.456 } },
-                                   new DynamicWrapper { { "_id", "String" }, { "prop1", "abc" } },
-                                   new DynamicWrapper { { "_id", "DateTime" }, { "prop1", new DateTime(2015, 2, 9, 1, 2, 3, 4) } },
-                                   new DynamicWrapper { { "_id", "Binary" }, { "prop1", new byte[] { 1, 2, 3, 4, 5 } } },
-                                   new DynamicWrapper { { "_id", "Object" }, { "prop1", new DynamicWrapper { { "subProp1", true } } } },
-                                   new DynamicWrapper { { "_id", "Array" }, { "prop1", new object[] { new object[] { 1, 2, 3 } } } }
+                                   new DynamicDocument { { "_id", "Boolean" }, { "prop1", true } },
+                                   new DynamicDocument { { "_id", "Int32" }, { "prop1", 123 } },
+                                   new DynamicDocument { { "_id", "Int64" }, { "prop1", int.MaxValue + 100L } },
+                                   new DynamicDocument { { "_id", "Double" }, { "prop1", 123.456 } },
+                                   new DynamicDocument { { "_id", "String" }, { "prop1", "abc" } },
+                                   new DynamicDocument { { "_id", "DateTime" }, { "prop1", new DateTime(2015, 2, 9, 1, 2, 3, 4) } },
+                                   new DynamicDocument { { "_id", "Binary" }, { "prop1", new byte[] { 1, 2, 3, 4, 5 } } },
+                                   new DynamicDocument { { "_id", "Object" }, { "prop1", new DynamicDocument { { "subProp1", true } } } },
+                                   new DynamicDocument { { "_id", "Array" }, { "prop1", new object[] { new object[] { 1, 2, 3 } } } }
                                });
 
             var booleanResult = storage.Find(f => f.Type("prop1", DataType.Boolean)).ToList();
@@ -366,11 +366,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 44 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 55 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 44 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 55 } }
                                });
 
             var inResult = storage.Find(f => f.In("prop1", new[] { 11, 33, 55 })).ToList();
@@ -398,11 +398,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 11 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 11 } }
                                });
 
             var eqResult = storage.Find(f => f.Eq("prop1", 11)).ToList();
@@ -430,13 +430,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 1.5 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 2 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 2.5 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 3 } },
-                                   new DynamicWrapper { { "_id", 6 }, { "prop1", 3.5 } },
-                                   new DynamicWrapper { { "_id", 7 }, { "prop1", 4 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 1.5 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 2 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 2.5 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 3 } },
+                                   new DynamicDocument { { "_id", 6 }, { "prop1", 3.5 } },
+                                   new DynamicDocument { { "_id", 7 }, { "prop1", 4 } }
                                });
 
             var gtResult = storage.Find(f => f.Gt("prop1", 3)).ToList();
@@ -481,13 +481,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", DateTime.Today.AddHours(1) } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", DateTime.Today.AddHours(1.5) } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", DateTime.Today.AddHours(2) } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", DateTime.Today.AddHours(2.5) } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", DateTime.Today.AddHours(3) } },
-                                   new DynamicWrapper { { "_id", 6 }, { "prop1", DateTime.Today.AddHours(3.5) } },
-                                   new DynamicWrapper { { "_id", 7 }, { "prop1", DateTime.Today.AddHours(4) } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", DateTime.Today.AddHours(1) } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", DateTime.Today.AddHours(1.5) } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", DateTime.Today.AddHours(2) } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", DateTime.Today.AddHours(2.5) } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", DateTime.Today.AddHours(3) } },
+                                   new DynamicDocument { { "_id", 6 }, { "prop1", DateTime.Today.AddHours(3.5) } },
+                                   new DynamicDocument { { "_id", 7 }, { "prop1", DateTime.Today.AddHours(4) } }
                                });
 
             var gtResult = storage.Find(f => f.Gt("prop1", DateTime.Today.AddHours(3))).ToList();
@@ -532,10 +532,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 100 }, { "sku", "abc123" }, { "description", "Single line description." } },
-                                   new DynamicWrapper { { "_id", 101 }, { "sku", "abc789" }, { "description", "First line\nSecond line" } },
-                                   new DynamicWrapper { { "_id", 102 }, { "sku", "xyz456" }, { "description", "Many spaces before     line" } },
-                                   new DynamicWrapper { { "_id", 103 }, { "sku", "xyz789" }, { "description", "Multiple\nline description" } }
+                                   new DynamicDocument { { "_id", 100 }, { "sku", "abc123" }, { "description", "Single line description." } },
+                                   new DynamicDocument { { "_id", 101 }, { "sku", "abc789" }, { "description", "First line\nSecond line" } },
+                                   new DynamicDocument { { "_id", 102 }, { "sku", "xyz456" }, { "description", "Many spaces before     line" } },
+                                   new DynamicDocument { { "_id", 103 }, { "sku", "xyz789" }, { "description", "Multiple\nline description" } }
                                });
 
             var caseInsensitiveRegexResult = storage.Find(f => f.Regex("sku", new Regex("^ABC", RegexOptions.IgnoreCase))).ToList();
@@ -572,9 +572,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", "It starts with some text." } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", "it starts with some text." } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it start with some text?" } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", "It starts with some text." } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", "it starts with some text." } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", "Does it start with some text?" } }
                                });
 
             var caseInsensitiveResult= storage.Find(f => f.StartsWith("prop1", "It")).ToList();
@@ -600,9 +600,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", "It ends with some Text." } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", "It ends with some text." } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it end with some text?" } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", "It ends with some Text." } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", "It ends with some text." } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", "Does it end with some text?" } }
                                });
 
             var caseInsensitiveResult= storage.Find(f => f.EndsWith("prop1", "Text.")).ToList();
@@ -628,9 +628,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", "It Contains some text." } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", "It contains some text." } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it contain some text?" } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", "It Contains some text." } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", "It contains some text." } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", "Does it contain some text?" } }
                                });
 
             var caseInsensitiveResult= storage.Find(f => f.Contains("prop1", "Contains")).ToList();
@@ -656,36 +656,36 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 1 },
                                        {
                                            "results", new[]
                                                       {
-                                                          new DynamicWrapper { { "product", "abc" }, { "score", 10 } },
-                                                          new DynamicWrapper { { "product", "xyz" }, { "score", 5 } }
+                                                          new DynamicDocument { { "product", "abc" }, { "score", 10 } },
+                                                          new DynamicDocument { { "product", "xyz" }, { "score", 5 } }
                                                       }
                                        }
                                    },
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 2 },
                                        {
                                            "results", new[]
                                                       {
-                                                          new DynamicWrapper { { "product", "abc" }, { "score", 8 } },
-                                                          new DynamicWrapper { { "product", "xyz" }, { "score", 7 } }
+                                                          new DynamicDocument { { "product", "abc" }, { "score", 8 } },
+                                                          new DynamicDocument { { "product", "xyz" }, { "score", 7 } }
                                                       }
                                        }
                                    },
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 3 },
                                        {
                                            "results", new[]
                                                       {
-                                                          new DynamicWrapper { { "product", "abc" }, { "score", 7 } },
-                                                          new DynamicWrapper { { "product", "xyz" }, { "score", 8 } }
+                                                          new DynamicDocument { { "product", "abc" }, { "score", 7 } },
+                                                          new DynamicDocument { { "product", "xyz" }, { "score", 8 } }
                                                       }
                                        }
                                    }
@@ -709,7 +709,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 1 },
                                        { "code", "xyz" },
@@ -717,13 +717,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                        {
                                            "qty", new[]
                                                   {
-                                                      new DynamicWrapper { { "size", "S" }, { "num", 10 }, { "color", "blue" } },
-                                                      new DynamicWrapper { { "size", "M" }, { "num", 45 }, { "color", "blue" } },
-                                                      new DynamicWrapper { { "size", "L" }, { "num", 100 }, { "color", "green" } }
+                                                      new DynamicDocument { { "size", "S" }, { "num", 10 }, { "color", "blue" } },
+                                                      new DynamicDocument { { "size", "M" }, { "num", 45 }, { "color", "blue" } },
+                                                      new DynamicDocument { { "size", "L" }, { "num", 100 }, { "color", "green" } }
                                                   }
                                        }
                                    },
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 2 },
                                        { "code", "abc" },
@@ -731,13 +731,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                        {
                                            "qty", new[]
                                                   {
-                                                      new DynamicWrapper { { "size", "6" }, { "num", 100 }, { "color", "green" } },
-                                                      new DynamicWrapper { { "size", "6" }, { "num", 50 }, { "color", "blue" } },
-                                                      new DynamicWrapper { { "size", "8" }, { "num", 100 }, { "color", "brown" } }
+                                                      new DynamicDocument { { "size", "6" }, { "num", 100 }, { "color", "green" } },
+                                                      new DynamicDocument { { "size", "6" }, { "num", 50 }, { "color", "blue" } },
+                                                      new DynamicDocument { { "size", "8" }, { "num", 100 }, { "color", "brown" } }
                                                   }
                                        }
                                    },
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 3 },
                                        { "code", "efg" },
@@ -745,13 +745,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                        {
                                            "qty", new[]
                                                   {
-                                                      new DynamicWrapper { { "size", "S" }, { "num", 10 }, { "color", "blue" } },
-                                                      new DynamicWrapper { { "size", "M" }, { "num", 100 }, { "color", "blue" } },
-                                                      new DynamicWrapper { { "size", "L" }, { "num", 100 }, { "color", "green" } }
+                                                      new DynamicDocument { { "size", "S" }, { "num", 10 }, { "color", "blue" } },
+                                                      new DynamicDocument { { "size", "M" }, { "num", 100 }, { "color", "blue" } },
+                                                      new DynamicDocument { { "size", "L" }, { "num", 100 }, { "color", "green" } }
                                                   }
                                        }
                                    },
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 4 },
                                        { "code", "ijk" },
@@ -759,7 +759,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                        {
                                            "qty", new[]
                                                   {
-                                                      new DynamicWrapper { { "size", "M" }, { "num", 100 }, { "color", "green" } }
+                                                      new DynamicDocument { { "size", "M" }, { "num", 100 }, { "color", "green" } }
                                                   }
                                        }
                                    }
@@ -784,11 +784,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "items", new[] { 1, 2, 3 } } },
-                                   new DynamicWrapper { { "_id", 2 }, { "items", new[] { 2, 3, 4 } } },
-                                   new DynamicWrapper { { "_id", 3 }, { "items", new[] { 3, 4, 5 } } },
-                                   new DynamicWrapper { { "_id", 4 }, { "items", new[] { 4, 5, 6 } } },
-                                   new DynamicWrapper { { "_id", 5 }, { "items", new[] { 5, 6, 7 } } }
+                                   new DynamicDocument { { "_id", 1 }, { "items", new[] { 1, 2, 3 } } },
+                                   new DynamicDocument { { "_id", 2 }, { "items", new[] { 2, 3, 4 } } },
+                                   new DynamicDocument { { "_id", 3 }, { "items", new[] { 3, 4, 5 } } },
+                                   new DynamicDocument { { "_id", 4 }, { "items", new[] { 4, 5, 6 } } },
+                                   new DynamicDocument { { "_id", 5 }, { "items", new[] { 5, 6, 7 } } }
                                });
 
             var anyInResult = storage.Find(f => f.AnyIn("items", new[] { 3, 4 })).ToList();
@@ -816,11 +816,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "items", new[] { 1, 2, 3 } } },
-                                   new DynamicWrapper { { "_id", 2 }, { "items", new[] { 2, 3, 4 } } },
-                                   new DynamicWrapper { { "_id", 3 }, { "items", new[] { 3, 4, 5 } } },
-                                   new DynamicWrapper { { "_id", 4 }, { "items", new[] { 4, 5, 6 } } },
-                                   new DynamicWrapper { { "_id", 5 }, { "items", new[] { 5, 6, 7 } } }
+                                   new DynamicDocument { { "_id", 1 }, { "items", new[] { 1, 2, 3 } } },
+                                   new DynamicDocument { { "_id", 2 }, { "items", new[] { 2, 3, 4 } } },
+                                   new DynamicDocument { { "_id", 3 }, { "items", new[] { 3, 4, 5 } } },
+                                   new DynamicDocument { { "_id", 4 }, { "items", new[] { 4, 5, 6 } } },
+                                   new DynamicDocument { { "_id", 5 }, { "items", new[] { 5, 6, 7 } } }
                                });
 
             var anyEqResult = storage.Find(f => f.AnyEq("items", 4)).ToList();
@@ -848,11 +848,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "items", new[] { 1, 2, 3 } } },
-                                   new DynamicWrapper { { "_id", 2 }, { "items", new[] { 2, 3, 4 } } },
-                                   new DynamicWrapper { { "_id", 3 }, { "items", new[] { 3, 4, 5 } } },
-                                   new DynamicWrapper { { "_id", 4 }, { "items", new[] { 4, 5, 6 } } },
-                                   new DynamicWrapper { { "_id", 5 }, { "items", new[] { 5, 6, 7 } } }
+                                   new DynamicDocument { { "_id", 1 }, { "items", new[] { 1, 2, 3 } } },
+                                   new DynamicDocument { { "_id", 2 }, { "items", new[] { 2, 3, 4 } } },
+                                   new DynamicDocument { { "_id", 3 }, { "items", new[] { 3, 4, 5 } } },
+                                   new DynamicDocument { { "_id", 4 }, { "items", new[] { 4, 5, 6 } } },
+                                   new DynamicDocument { { "_id", 5 }, { "items", new[] { 5, 6, 7 } } }
                                });
 
             var anyGtResult = storage.Find(f => f.AnyGt("items", 4)).ToList();
@@ -894,11 +894,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "items", new[] { today.AddHours(1), today.AddHours(2), today.AddHours(3) } } },
-                                   new DynamicWrapper { { "_id", 2 }, { "items", new[] { today.AddHours(2), today.AddHours(3), today.AddHours(4) } } },
-                                   new DynamicWrapper { { "_id", 3 }, { "items", new[] { today.AddHours(3), today.AddHours(4), today.AddHours(5) } } },
-                                   new DynamicWrapper { { "_id", 4 }, { "items", new[] { today.AddHours(4), today.AddHours(5), today.AddHours(6) } } },
-                                   new DynamicWrapper { { "_id", 5 }, { "items", new[] { today.AddHours(5), today.AddHours(6), today.AddHours(7) } } }
+                                   new DynamicDocument { { "_id", 1 }, { "items", new[] { today.AddHours(1), today.AddHours(2), today.AddHours(3) } } },
+                                   new DynamicDocument { { "_id", 2 }, { "items", new[] { today.AddHours(2), today.AddHours(3), today.AddHours(4) } } },
+                                   new DynamicDocument { { "_id", 3 }, { "items", new[] { today.AddHours(3), today.AddHours(4), today.AddHours(5) } } },
+                                   new DynamicDocument { { "_id", 4 }, { "items", new[] { today.AddHours(4), today.AddHours(5), today.AddHours(6) } } },
+                                   new DynamicDocument { { "_id", 5 }, { "items", new[] { today.AddHours(5), today.AddHours(6), today.AddHours(7) } } }
                                });
 
             var anyGtResult = storage.Find(f => f.AnyGt("items", today.AddHours(4))).ToList();
@@ -938,13 +938,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "items", new int[] { } } },
-                                   new DynamicWrapper { { "_id", 3 }, { "items", new[] { 1 } } },
-                                   new DynamicWrapper { { "_id", 4 }, { "items", new[] { 1, 2 } } },
-                                   new DynamicWrapper { { "_id", 5 }, { "items", new[] { 1, 2, 3 } } },
-                                   new DynamicWrapper { { "_id", 6 }, { "items", new[] { 1, 2, 3, 4 } } },
-                                   new DynamicWrapper { { "_id", 7 }, { "items", new[] { 1, 2, 3, 4, 5 } } }
+                                   new DynamicDocument { { "_id", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, { "items", new int[] { } } },
+                                   new DynamicDocument { { "_id", 3 }, { "items", new[] { 1 } } },
+                                   new DynamicDocument { { "_id", 4 }, { "items", new[] { 1, 2 } } },
+                                   new DynamicDocument { { "_id", 5 }, { "items", new[] { 1, 2, 3 } } },
+                                   new DynamicDocument { { "_id", 6 }, { "items", new[] { 1, 2, 3, 4 } } },
+                                   new DynamicDocument { { "_id", 7 }, { "items", new[] { 1, 2, 3, 4, 5 } } }
                                });
 
             var sizeEq0Result = storage.Find(f => f.SizeEq("items", 0)).ToList();
@@ -1008,14 +1008,14 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "subject", "coffee" }, { "author", "xyz" }, { "views", 50 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "subject", "Coffee Shopping" }, { "author", "efg" }, { "views", 5 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "subject", "Baking a cake" }, { "author", "abc" }, { "views", 90 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "subject", "baking" }, { "author", "xyz" }, { "views", 100 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "subject", "Café Con Leche" }, { "author", "abc" }, { "views", 200 } },
-                                   new DynamicWrapper { { "_id", 6 }, { "subject", "Сырники" }, { "author", "jkl" }, { "views", 80 } },
-                                   new DynamicWrapper { { "_id", 7 }, { "subject", "coffee and cream" }, { "author", "efg" }, { "views", 10 } },
-                                   new DynamicWrapper { { "_id", 8 }, { "subject", "Cafe con Leche" }, { "author", "xyz" }, { "views", 10 } }
+                                   new DynamicDocument { { "_id", 1 }, { "subject", "coffee" }, { "author", "xyz" }, { "views", 50 } },
+                                   new DynamicDocument { { "_id", 2 }, { "subject", "Coffee Shopping" }, { "author", "efg" }, { "views", 5 } },
+                                   new DynamicDocument { { "_id", 3 }, { "subject", "Baking a cake" }, { "author", "abc" }, { "views", 90 } },
+                                   new DynamicDocument { { "_id", 4 }, { "subject", "baking" }, { "author", "xyz" }, { "views", 100 } },
+                                   new DynamicDocument { { "_id", 5 }, { "subject", "Café Con Leche" }, { "author", "abc" }, { "views", 200 } },
+                                   new DynamicDocument { { "_id", 6 }, { "subject", "Сырники" }, { "author", "jkl" }, { "views", 80 } },
+                                   new DynamicDocument { { "_id", 7 }, { "subject", "coffee and cream" }, { "author", "efg" }, { "views", 10 } },
+                                   new DynamicDocument { { "_id", 8 }, { "subject", "Cafe con Leche" }, { "author", "xyz" }, { "views", 10 } }
                                });
 
             var searchSingleWordResult = storage.Find(f => f.Text("coffee")).ToList();
@@ -1074,12 +1074,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", "A" }, { "prop2", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", "A" }, { "prop2", 11 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", "A" }, { "prop2", 12 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", "B" }, { "prop2", 11 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", "B" }, { "prop2", 11 } },
-                                   new DynamicWrapper { { "_id", 6 }, { "prop1", "B" }, { "prop2", 12 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", "A" }, { "prop2", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", "A" }, { "prop2", 11 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", "A" }, { "prop2", 12 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", "B" }, { "prop2", 11 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", "B" }, { "prop2", 11 } },
+                                   new DynamicDocument { { "_id", 6 }, { "prop1", "B" }, { "prop2", 12 } }
                                });
 
             var resultA11 = storage.Find()
@@ -1112,12 +1112,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "item", new DynamicWrapper { { "category", "cake" }, { "type", "chiffon" } } }, { "amount", 10 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "item", new DynamicWrapper { { "category", "cookies" }, { "type", "chocolate chip" } } }, { "amount", 50 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "item", new DynamicWrapper { { "category", "cookies" }, { "type", "chocolate chip" } } }, { "amount", 15 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "item", new DynamicWrapper { { "category", "cake" }, { "type", "lemon" } } }, { "amount", 30 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "item", new DynamicWrapper { { "category", "cake" }, { "type", "carrot" } } }, { "amount", 20 } },
-                                   new DynamicWrapper { { "_id", 6 }, { "item", new DynamicWrapper { { "category", "brownies" }, { "type", "blondie" } } }, { "amount", 10 } }
+                                   new DynamicDocument { { "_id", 1 }, { "item", new DynamicDocument { { "category", "cake" }, { "type", "chiffon" } } }, { "amount", 10 } },
+                                   new DynamicDocument { { "_id", 2 }, { "item", new DynamicDocument { { "category", "cookies" }, { "type", "chocolate chip" } } }, { "amount", 50 } },
+                                   new DynamicDocument { { "_id", 3 }, { "item", new DynamicDocument { { "category", "cookies" }, { "type", "chocolate chip" } } }, { "amount", 15 } },
+                                   new DynamicDocument { { "_id", 4 }, { "item", new DynamicDocument { { "category", "cake" }, { "type", "lemon" } } }, { "amount", 30 } },
+                                   new DynamicDocument { { "_id", 5 }, { "item", new DynamicDocument { { "category", "cake" }, { "type", "carrot" } } }, { "amount", 20 } },
+                                   new DynamicDocument { { "_id", 6 }, { "item", new DynamicDocument { { "category", "brownies" }, { "type", "blondie" } } }, { "amount", 10 } }
                                });
 
             var sortAscByOneFieldResult = storage.Find().SortBy("amount").ToList();
@@ -1170,15 +1170,15 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 } },
-                                   new DynamicWrapper { { "_id", 2 } },
-                                   new DynamicWrapper { { "_id", 3 } },
-                                   new DynamicWrapper { { "_id", 4 } },
-                                   new DynamicWrapper { { "_id", 5 } },
-                                   new DynamicWrapper { { "_id", 6 } },
-                                   new DynamicWrapper { { "_id", 7 } },
-                                   new DynamicWrapper { { "_id", 8 } },
-                                   new DynamicWrapper { { "_id", 9 } }
+                                   new DynamicDocument { { "_id", 1 } },
+                                   new DynamicDocument { { "_id", 2 } },
+                                   new DynamicDocument { { "_id", 3 } },
+                                   new DynamicDocument { { "_id", 4 } },
+                                   new DynamicDocument { { "_id", 5 } },
+                                   new DynamicDocument { { "_id", 6 } },
+                                   new DynamicDocument { { "_id", 7 } },
+                                   new DynamicDocument { { "_id", 8 } },
+                                   new DynamicDocument { { "_id", 9 } }
                                });
 
             var skipResult = storage.Find().Skip(7).ToList();
@@ -1227,24 +1227,24 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper
+            storage.InsertOne(new DynamicDocument
                               {
                                   { "_id", 1 },
                                   { "type", "food" },
                                   { "item", "Super Dark Chocolate" },
                                   { "ratings", new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } },
                                   {
-                                      "classification", new DynamicWrapper
+                                      "classification", new DynamicDocument
                                                         {
                                                             { "dept", "grocery" },
                                                             { "category", "chocolate" }
                                                         }
                                   },
                                   {
-                                      "vendor", new DynamicWrapper
+                                      "vendor", new DynamicDocument
                                                 {
                                                     {
-                                                        "primary", new DynamicWrapper
+                                                        "primary", new DynamicDocument
                                                                    {
                                                                        { "name", "Marsupial Vending Co" },
                                                                        { "address", "Wallaby Rd" },
@@ -1252,7 +1252,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                                                                    }
                                                     },
                                                     {
-                                                        "secondary", new DynamicWrapper
+                                                        "secondary", new DynamicDocument
                                                                      {
                                                                          { "name", "Intl. Chocolatiers" },
                                                                          { "address", "Cocoa Plaza" },
@@ -1340,52 +1340,52 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 1 },
                                        { "zipcode", "63109" },
                                        {
                                            "students", new[]
                                                        {
-                                                           new DynamicWrapper { { "name", "john" }, { "school", 102 }, { "age", 10 } },
-                                                           new DynamicWrapper { { "name", "jess" }, { "school", 102 }, { "age", 11 } },
-                                                           new DynamicWrapper { { "name", "jeff" }, { "school", 108 }, { "age", 15 } }
+                                                           new DynamicDocument { { "name", "john" }, { "school", 102 }, { "age", 10 } },
+                                                           new DynamicDocument { { "name", "jess" }, { "school", 102 }, { "age", 11 } },
+                                                           new DynamicDocument { { "name", "jeff" }, { "school", 108 }, { "age", 15 } }
                                                        }
                                        }
                                    },
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 2 },
                                        { "zipcode", "63110" },
                                        {
                                            "students", new[]
                                                        {
-                                                           new DynamicWrapper { { "name", "ajax" }, { "school", 100 }, { "age", 7 } },
-                                                           new DynamicWrapper { { "name", "achilles" }, { "school", 100 }, { "age", 8 } }
+                                                           new DynamicDocument { { "name", "ajax" }, { "school", 100 }, { "age", 7 } },
+                                                           new DynamicDocument { { "name", "achilles" }, { "school", 100 }, { "age", 8 } }
                                                        }
                                        }
                                    },
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 3 },
                                        { "zipcode", "63110" },
                                        {
                                            "students", new[]
                                                        {
-                                                           new DynamicWrapper { { "name", "ajax" }, { "school", 100 }, { "age", 7 } },
-                                                           new DynamicWrapper { { "name", "achilles" }, { "school", 100 }, { "age", 8 } }
+                                                           new DynamicDocument { { "name", "ajax" }, { "school", 100 }, { "age", 7 } },
+                                                           new DynamicDocument { { "name", "achilles" }, { "school", 100 }, { "age", 8 } }
                                                        }
                                        }
                                    },
-                                   new DynamicWrapper
+                                   new DynamicDocument
                                    {
                                        { "_id", 4 },
                                        { "zipcode", "63109" },
                                        {
                                            "students", new[]
                                                        {
-                                                           new DynamicWrapper { { "name", "barney" }, { "school", 102 }, { "age", 7 } },
-                                                           new DynamicWrapper { { "name", "ruth" }, { "school", 102 }, { "age", 16 } }
+                                                           new DynamicDocument { { "name", "barney" }, { "school", 102 }, { "age", 7 } },
+                                                           new DynamicDocument { { "name", "ruth" }, { "school", 102 }, { "age", 16 } }
                                                        }
                                        }
                                    }
@@ -1432,7 +1432,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertOne));
 
             // When
-            storage.InsertOne(new DynamicWrapper());
+            storage.InsertOne(new DynamicDocument());
             var result = storage.Count();
 
             // Then
@@ -1447,7 +1447,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertOneAsync));
 
             // When
-            await storage.InsertOneAsync(new DynamicWrapper());
+            await storage.InsertOneAsync(new DynamicDocument());
             var result = storage.Count();
 
             // Then
@@ -1462,7 +1462,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertMany));
 
             // When
-            storage.InsertMany(new[] { new DynamicWrapper(), new DynamicWrapper() });
+            storage.InsertMany(new[] { new DynamicDocument(), new DynamicDocument() });
             var result = storage.Count();
 
             // Then
@@ -1477,7 +1477,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldInsertManyAsync));
 
             // When
-            await storage.InsertManyAsync(new[] { new DynamicWrapper(), new DynamicWrapper() });
+            await storage.InsertManyAsync(new[] { new DynamicDocument(), new DynamicDocument() });
             var result = storage.Count();
 
             // Then
@@ -1496,7 +1496,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper
+            storage.InsertOne(new DynamicDocument
                               {
                                   { "_id", 1 },
                                   { "value", value }
@@ -1517,9 +1517,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             // When
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 } }
                                });
 
             var updateResult1 = storage.UpdateOne(u => u.Set("prop1", 44));
@@ -1564,9 +1564,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             // When
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 } }
                                });
 
             var updateResult1 = await storage.UpdateOneAsync(u => u.Set("prop1", 44));
@@ -1643,9 +1643,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             // When
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 }, { "prop2", 111 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 }, { "prop2", 111 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 }, { "prop2", 222 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 }, { "prop2", 111 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 }, { "prop2", 111 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 }, { "prop2", 222 } }
                                });
 
             var updateResult1 = storage.UpdateMany(u => u.Set("prop1", 44));
@@ -1701,9 +1701,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             // When
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 }, { "prop2", 111 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 }, { "prop2", 111 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 }, { "prop2", 222 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 }, { "prop2", 111 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 }, { "prop2", 111 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 }, { "prop2", 222 } }
                                });
 
             var updateResult1 = await storage.UpdateManyAsync(u => u.Set("prop1", 44));
@@ -1758,7 +1758,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "prop1", 123 } });
+            storage.InsertOne(new DynamicDocument { { "prop1", 123 } });
             storage.UpdateOne(u => u.Rename("prop1", "prop2"));
             dynamic document = storage.Find().First();
 
@@ -1774,7 +1774,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "prop1", 123 } });
+            storage.InsertOne(new DynamicDocument { { "prop1", 123 } });
             storage.UpdateOne(u => u.Remove("prop1"));
             dynamic document = storage.Find().First();
 
@@ -1790,7 +1790,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper());
+            storage.InsertOne(new DynamicDocument());
             storage.UpdateOne(u => u.Set("prop1", 123));
             dynamic document = storage.Find().First();
 
@@ -1806,7 +1806,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "intProp1", 1 }, { "intProp2", 2 }, { "doubleProp1", 1.5 }, { "doubleProp2", 2.5 } });
+            storage.InsertOne(new DynamicDocument { { "intProp1", 1 }, { "intProp2", 2 }, { "doubleProp1", 1.5 }, { "doubleProp2", 2.5 } });
             storage.UpdateOne(u => u.Inc("intProp1", 3).Inc("intProp2", -3).Inc("doubleProp1", 3.3).Inc("doubleProp2", -3.3));
             dynamic document = storage.Find().First();
 
@@ -1825,7 +1825,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "intProp1", 2 }, { "intProp2", 3 }, { "doubleProp1", 1.5 }, { "doubleProp2", 2.5 } });
+            storage.InsertOne(new DynamicDocument { { "intProp1", 2 }, { "intProp2", 3 }, { "doubleProp1", 1.5 }, { "doubleProp2", 2.5 } });
             storage.UpdateOne(u => u.Mul("intProp1", 4).Mul("intProp2", -5).Mul("doubleProp1", 3.3).Mul("doubleProp2", -3.3));
             dynamic document = storage.Find().First();
 
@@ -1844,7 +1844,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "intProp1", 2 }, { "intProp2", 2 }, { "doubleProp1", 1.5 }, { "doubleProp2", 1.5 } });
+            storage.InsertOne(new DynamicDocument { { "intProp1", 2 }, { "intProp2", 2 }, { "doubleProp1", 1.5 }, { "doubleProp2", 1.5 } });
             storage.UpdateOne(u => u.Min("intProp1", 1).Min("intProp2", 3).Min("doubleProp1", 1.3).Min("doubleProp2", 1.7));
             dynamic document = storage.Find().First();
 
@@ -1863,7 +1863,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "intProp1", 2 }, { "intProp2", 2 }, { "doubleProp1", 1.5 }, { "doubleProp2", 1.5 } });
+            storage.InsertOne(new DynamicDocument { { "intProp1", 2 }, { "intProp2", 2 }, { "doubleProp1", 1.5 }, { "doubleProp2", 1.5 } });
             storage.UpdateOne(u => u.Max("intProp1", 1).Max("intProp2", 3).Max("doubleProp1", 1.3).Max("doubleProp2", 1.7));
             dynamic document = storage.Find().First();
 
@@ -1882,7 +1882,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "intProp1", 0x1101 }, { "intProp2", 0x0011 }, { "intProp3", 0x0001 } });
+            storage.InsertOne(new DynamicDocument { { "intProp1", 0x1101 }, { "intProp2", 0x0011 }, { "intProp3", 0x0001 } });
             storage.UpdateOne(u => u.BitwiseAnd("intProp1", 0x1010).BitwiseOr("intProp2", 0x0101).BitwiseXor("intProp3", 0x0101));
             dynamic document = storage.Find().First();
 
@@ -1900,7 +1900,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var storage = MongoTestHelpers.GetEmptyStorageProvider(nameof(ShouldUpdateWithCurrentDate));
 
             // When
-            storage.InsertOne(new DynamicWrapper());
+            storage.InsertOne(new DynamicDocument());
             storage.UpdateOne(u => u.CurrentDate("date"));
             dynamic document = storage.Find().First();
 
@@ -1917,7 +1917,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper());
+            storage.InsertOne(new DynamicDocument());
 
             storage.UpdateOne(u => u.Push("propPush", 1).PushAll("propPushAll", new[] { 11, 22 }).PushUnique("propPushUnique", 111).PushAllUnique("propPushAllUnique", new[] { 1111, 2222 }));
             storage.UpdateOne(u => u.Push("propPush", 1).PushAll("propPushAll", new[] { 22, 33 }).PushUnique("propPushUnique", 111).PushAllUnique("propPushAllUnique", new[] { 2222, 3333 }));
@@ -1941,13 +1941,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper
+            storage.InsertOne(new DynamicDocument
                               {
                                   { "propPopFirst", new[] { 1, 2, 3, 4 } },
                                   { "propPopLast", new[] { 5, 6, 7, 8 } },
                                   { "propPull", new[] { 11, 22, 33 } },
                                   { "propPullAll", new[] { 44, 55, 66 } },
-                                  { "propPullFilter", new[] { new DynamicWrapper { { "value", 111 } }, new DynamicWrapper { { "value", 111 } }, new DynamicWrapper { { "value", 222 } } } }
+                                  { "propPullFilter", new[] { new DynamicDocument { { "value", 111 } }, new DynamicDocument { { "value", 111 } }, new DynamicDocument { { "value", 222 } } } }
                               });
 
             storage.UpdateOne(u => u.PopFirst("propPopFirst")
@@ -1977,15 +1977,15 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 }, { "prop2", "A" } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 }, { "prop2", "A" } }
+                                   new DynamicDocument { { "_id", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 }, { "prop2", "A" } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 }, { "prop2", "A" } }
                                });
 
-            var replaceResult1 = storage.ReplaceOne(new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } });
-            var replaceResult2 = storage.ReplaceOne(new DynamicWrapper { { "prop1", 22 }, { "prop2", "B" } }, f => f.Eq("prop2", "A"));
-            var replaceResult3 = storage.ReplaceOne(new DynamicWrapper { { "prop1", 44 }, { "prop2", "C" } }, f => f.Eq("_id", 4));
-            var replaceResult4 = storage.ReplaceOne(new DynamicWrapper { { "prop1", 55 }, { "prop2", "D" } }, f => f.Eq("_id", 5), true);
+            var replaceResult1 = storage.ReplaceOne(new DynamicDocument { { "_id", 1 }, { "prop1", 11 } });
+            var replaceResult2 = storage.ReplaceOne(new DynamicDocument { { "prop1", 22 }, { "prop2", "B" } }, f => f.Eq("prop2", "A"));
+            var replaceResult3 = storage.ReplaceOne(new DynamicDocument { { "prop1", 44 }, { "prop2", "C" } }, f => f.Eq("_id", 4));
+            var replaceResult4 = storage.ReplaceOne(new DynamicDocument { { "prop1", 55 }, { "prop2", "D" } }, f => f.Eq("_id", 5), true);
 
             var documents = storage.Find().ToList();
 
@@ -2036,15 +2036,15 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 22 }, { "prop2", "A" } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 33 }, { "prop2", "A" } }
+                                   new DynamicDocument { { "_id", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 22 }, { "prop2", "A" } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 33 }, { "prop2", "A" } }
                                });
 
-            var replaceResult1 = await storage.ReplaceOneAsync(new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } });
-            var replaceResult2 = await storage.ReplaceOneAsync(new DynamicWrapper { { "prop1", 22 }, { "prop2", "B" } }, f => f.Eq("prop2", "A"));
-            var replaceResult3 = await storage.ReplaceOneAsync(new DynamicWrapper { { "prop1", 44 }, { "prop2", "C" } }, f => f.Eq("_id", 4));
-            var replaceResult4 = await storage.ReplaceOneAsync(new DynamicWrapper { { "prop1", 55 }, { "prop2", "D" } }, f => f.Eq("_id", 5), true);
+            var replaceResult1 = await storage.ReplaceOneAsync(new DynamicDocument { { "_id", 1 }, { "prop1", 11 } });
+            var replaceResult2 = await storage.ReplaceOneAsync(new DynamicDocument { { "prop1", 22 }, { "prop2", "B" } }, f => f.Eq("prop2", "A"));
+            var replaceResult3 = await storage.ReplaceOneAsync(new DynamicDocument { { "prop1", 44 }, { "prop2", "C" } }, f => f.Eq("_id", 4));
+            var replaceResult4 = await storage.ReplaceOneAsync(new DynamicDocument { { "prop1", 55 }, { "prop2", "D" } }, f => f.Eq("_id", 5), true);
 
             var documents = storage.Find().ToList();
 
@@ -2093,10 +2093,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             // When
 
-            storage.InsertOne(new DynamicWrapper { { "_id", 1 }, { "prop1", "123" /* string */ } });
+            storage.InsertOne(new DynamicDocument { { "_id", 1 }, { "prop1", "123" /* string */ } });
             var beforeReplace = storage.Find(f => f.Eq("_id", 1)).FirstOrDefault();
 
-            storage.ReplaceOne(new DynamicWrapper { { "_id", 1 }, { "prop1", 123 /* int */ } }, f => f.Eq("_id", 1), true);
+            storage.ReplaceOne(new DynamicDocument { { "_id", 1 }, { "prop1", 123 /* int */ } }, f => f.Eq("_id", 1), true);
             var afterReplace = storage.Find(f => f.Eq("_id", 1)).FirstOrDefault();
 
             // Then
@@ -2120,11 +2120,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } }, // first delete
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 22 } }, // second delete
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 33 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } }, // first delete
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 22 } }, // second delete
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 33 } }
                                });
 
             var deleteResult1 = storage.DeleteOne();
@@ -2155,11 +2155,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } }, // first delete
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 22 } }, // second delete
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 33 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } }, // first delete
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 22 } }, // second delete
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 33 } }
                                });
 
             var deleteResult1 = await storage.DeleteOneAsync();
@@ -2190,22 +2190,22 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 33 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 33 } }
                                });
 
             var deleteResult1 = storage.DeleteMany();
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } }, // second delete
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 11 } }, // second delete
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 22 } }, // third delete
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 22 } }, // third delete
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 33 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } }, // second delete
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 11 } }, // second delete
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 22 } }, // third delete
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 22 } }, // third delete
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 33 } }
                                });
 
             var deleteResult2 = storage.DeleteMany(f => f.Eq("prop1", 11));
@@ -2235,22 +2235,22 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 11 } },
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 22 } },
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 33 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 11 } },
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 22 } },
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 33 } }
                                });
 
             var deleteResult1 = await storage.DeleteManyAsync();
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "prop1", 11 } }, // second delete
-                                   new DynamicWrapper { { "_id", 2 }, { "prop1", 11 } }, // second delete
-                                   new DynamicWrapper { { "_id", 3 }, { "prop1", 22 } }, // third delete
-                                   new DynamicWrapper { { "_id", 4 }, { "prop1", 22 } }, // third delete
-                                   new DynamicWrapper { { "_id", 5 }, { "prop1", 33 } }
+                                   new DynamicDocument { { "_id", 1 }, { "prop1", 11 } }, // second delete
+                                   new DynamicDocument { { "_id", 2 }, { "prop1", 11 } }, // second delete
+                                   new DynamicDocument { { "_id", 3 }, { "prop1", 22 } }, // third delete
+                                   new DynamicDocument { { "_id", 4 }, { "prop1", 22 } }, // third delete
+                                   new DynamicDocument { { "_id", 5 }, { "prop1", 33 } }
                                });
 
             var deleteResult2 = await storage.DeleteManyAsync(f => f.Eq("prop1", 11));
@@ -2280,38 +2280,38 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, { "item", "abc" }, { "price", 10 }, { "quantity", 2 }, { "date", DateTime.Parse("2016-03-01T08:00:00Z") } },
-                                   new DynamicWrapper { { "_id", 2 }, { "item", "jkl" }, { "price", 20 }, { "quantity", 1 }, { "date", DateTime.Parse("2016-03-01T09:00:00Z") } },
-                                   new DynamicWrapper { { "_id", 3 }, { "item", "xyz" }, { "price", 5 }, { "quantity", 10 }, { "date", DateTime.Parse("2016-03-15T09:00:00Z") } },
-                                   new DynamicWrapper { { "_id", 4 }, { "item", "xyz" }, { "price", 5 }, { "quantity", 20 }, { "date", DateTime.Parse("2016-04-04T11:21:39.736Z") } },
-                                   new DynamicWrapper { { "_id", 5 }, { "item", "abc" }, { "price", 10 }, { "quantity", 10 }, { "date", DateTime.Parse("2016-04-04T21:23:13.331Z") } }
+                                   new DynamicDocument { { "_id", 1 }, { "item", "abc" }, { "price", 10 }, { "quantity", 2 }, { "date", DateTime.Parse("2016-03-01T08:00:00Z") } },
+                                   new DynamicDocument { { "_id", 2 }, { "item", "jkl" }, { "price", 20 }, { "quantity", 1 }, { "date", DateTime.Parse("2016-03-01T09:00:00Z") } },
+                                   new DynamicDocument { { "_id", 3 }, { "item", "xyz" }, { "price", 5 }, { "quantity", 10 }, { "date", DateTime.Parse("2016-03-15T09:00:00Z") } },
+                                   new DynamicDocument { { "_id", 4 }, { "item", "xyz" }, { "price", 5 }, { "quantity", 20 }, { "date", DateTime.Parse("2016-04-04T11:21:39.736Z") } },
+                                   new DynamicDocument { { "_id", 5 }, { "item", "abc" }, { "price", 10 }, { "quantity", 10 }, { "date", DateTime.Parse("2016-04-04T21:23:13.331Z") } }
                                });
 
             var groupByMonthDayYearResult = storage.Aggregate()
-                                                   .Group(new DynamicWrapper
+                                                   .Group(new DynamicDocument
                                                           {
                                                               {
-                                                                  "_id", new DynamicWrapper
+                                                                  "_id", new DynamicDocument
                                                                          {
-                                                                             { "month", new DynamicWrapper { { "$month", "$date" } } },
-                                                                             { "day", new DynamicWrapper { { "$dayOfMonth", "$date" } } },
-                                                                             { "year", new DynamicWrapper { { "$year", "$date" } } }
+                                                                             { "month", new DynamicDocument { { "$month", "$date" } } },
+                                                                             { "day", new DynamicDocument { { "$dayOfMonth", "$date" } } },
+                                                                             { "year", new DynamicDocument { { "$year", "$date" } } }
                                                                          }
                                                               },
                                                               {
-                                                                  "totalPrice", new DynamicWrapper
+                                                                  "totalPrice", new DynamicDocument
                                                                                 {
-                                                                                    { "$sum", new DynamicWrapper { { "$multiply", new[] { "$price", "$quantity" } } } }
+                                                                                    { "$sum", new DynamicDocument { { "$multiply", new[] { "$price", "$quantity" } } } }
                                                                                 }
                                                               },
                                                               {
-                                                                  "averageQuantity", new DynamicWrapper
+                                                                  "averageQuantity", new DynamicDocument
                                                                                      {
                                                                                          { "$avg", "$quantity" }
                                                                                      }
                                                               },
                                                               {
-                                                                  "count", new DynamicWrapper
+                                                                  "count", new DynamicDocument
                                                                            {
                                                                                { "$sum", 1 }
                                                                            }
@@ -2361,17 +2361,17 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             storage.InsertMany(new[]
                                {
-                                   new DynamicWrapper { { "_id", 1 }, {"prop1", 1 } },
-                                   new DynamicWrapper { { "_id", 2 }, {"prop1", 1 } },
-                                   new DynamicWrapper { { "_id", 3 }, {"prop1", 2 } },
-                                   new DynamicWrapper { { "_id", 4 }, {"prop1", 2 } },
-                                   new DynamicWrapper { { "_id", 5 }, {"prop1", 3 } }
+                                   new DynamicDocument { { "_id", 1 }, {"prop1", 1 } },
+                                   new DynamicDocument { { "_id", 2 }, {"prop1", 1 } },
+                                   new DynamicDocument { { "_id", 3 }, {"prop1", 2 } },
+                                   new DynamicDocument { { "_id", 4 }, {"prop1", 2 } },
+                                   new DynamicDocument { { "_id", 5 }, {"prop1", 3 } }
                                });
 
-            var result = storage.Bulk(b => b.InsertOne(new DynamicWrapper { { "_id", 6 }, { "prop1", 6 } })
+            var result = storage.Bulk(b => b.InsertOne(new DynamicDocument { { "_id", 6 }, { "prop1", 6 } })
                                             .UpdateOne(u => u.Set("prop1", 11), f => f.Eq("prop1", 1))
                                             .UpdateMany(u => u.Set("prop1", 22), f => f.Eq("prop1", 2))
-                                            .ReplaceOne(new DynamicWrapper { { "prop1", 7 } }, f => f.Eq("_id", 7), true)
+                                            .ReplaceOne(new DynamicDocument { { "prop1", 7 } }, f => f.Eq("_id", 7), true)
                                             .DeleteOne(f => f.Eq("prop1", 3)));
 
             var documents = storage.Find().ToList();

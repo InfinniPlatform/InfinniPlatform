@@ -37,6 +37,6 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Данные для выполнения задания.
         /// </summary>
-        DynamicWrapper Data { get; }
+        DynamicDocument Data { get; }
     }
 }

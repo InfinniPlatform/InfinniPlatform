@@ -29,8 +29,8 @@ namespace InfinniPlatform.Serialization
         {
             if (reader.TokenType == JsonToken.StartObject)
             {
-                // JObject is interpreted as DynamicWrapper
-                return serializer.Deserialize(reader, typeof(DynamicWrapper));
+                // JObject is interpreted as DynamicDocument
+                return serializer.Deserialize(reader, typeof(DynamicDocument));
             }
 
             if (reader.TokenType == JsonToken.StartArray)

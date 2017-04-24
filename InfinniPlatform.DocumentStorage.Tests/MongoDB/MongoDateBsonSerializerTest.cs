@@ -53,12 +53,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             Assert.AreEqual(date1.UnixTime, dynamicInstance["DateProperty"]);
             Assert.AreEqual(date2.UnixTime, dynamicInstance["NullableDateProperty"]);
             Assert.IsNotNull(dynamicInstance["ComplexProperty"]);
-            Assert.AreEqual(date3.UnixTime, ((DynamicWrapper)dynamicInstance["ComplexProperty"])["DateProperty"]);
-            Assert.IsNull(((DynamicWrapper)dynamicInstance["ComplexProperty"])["NullableDateProperty"]);
+            Assert.AreEqual(date3.UnixTime, ((DynamicDocument)dynamicInstance["ComplexProperty"])["DateProperty"]);
+            Assert.IsNull(((DynamicDocument)dynamicInstance["ComplexProperty"])["NullableDateProperty"]);
         }
 
         [Test]
-        public void ShouldSaveDynamicWrapperWithDate()
+        public void ShouldSaveDynamicDocumentWithDate()
         {
             // Given
 
@@ -66,21 +66,21 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var date2 = Date.Now.AddDays(2);
             var date3 = Date.Now.AddDays(3);
 
-            var instance = new DynamicWrapper
+            var instance = new DynamicDocument
                            {
                                { "_id", 1 },
                                { "DateProperty", date1 },
                                { "NullableDateProperty", date2 },
                                {
-                                   "ComplexProperty", new DynamicWrapper
+                                   "ComplexProperty", new DynamicDocument
                                                       {
                                                           { "DateProperty", date3 }
                                                       }
                                }
                            };
 
-            var classStorage = MongoTestHelpers.GetEmptyStorageProvider<DateClassExample>(nameof(ShouldSaveDynamicWrapperWithDate));
-            var dynamicStorage = MongoTestHelpers.GetStorageProvider(nameof(ShouldSaveDynamicWrapperWithDate));
+            var classStorage = MongoTestHelpers.GetEmptyStorageProvider<DateClassExample>(nameof(ShouldSaveDynamicDocumentWithDate));
+            var dynamicStorage = MongoTestHelpers.GetStorageProvider(nameof(ShouldSaveDynamicDocumentWithDate));
 
             // When
 
@@ -102,8 +102,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             Assert.AreEqual(date1.UnixTime, dynamicInstance["DateProperty"]);
             Assert.AreEqual(date2.UnixTime, dynamicInstance["NullableDateProperty"]);
             Assert.IsNotNull(dynamicInstance["ComplexProperty"]);
-            Assert.AreEqual(date3.UnixTime, ((DynamicWrapper)dynamicInstance["ComplexProperty"])["DateProperty"]);
-            Assert.IsNull(((DynamicWrapper)dynamicInstance["ComplexProperty"])["NullableDateProperty"]);
+            Assert.AreEqual(date3.UnixTime, ((DynamicDocument)dynamicInstance["ComplexProperty"])["DateProperty"]);
+            Assert.IsNull(((DynamicDocument)dynamicInstance["ComplexProperty"])["NullableDateProperty"]);
         }
 
 

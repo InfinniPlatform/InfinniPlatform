@@ -81,7 +81,7 @@ namespace InfinniPlatform.Http
 
         private static IHttpResponse CreateErrorHttpResponse(Exception exception)
         {
-            var error = new ServiceResult<DynamicWrapper>
+            var error = new ServiceResult<DynamicDocument>
             {
                 Success = false,
                 Error = exception.GetFullMessage()

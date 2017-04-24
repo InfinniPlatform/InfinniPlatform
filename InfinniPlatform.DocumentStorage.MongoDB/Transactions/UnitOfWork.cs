@@ -210,7 +210,7 @@ namespace InfinniPlatform.DocumentStorage.Transactions
         }
 
 
-        public void InsertOne(string documentType, DynamicWrapper document)
+        public void InsertOne(string documentType, DynamicDocument document)
         {
             _unitOfWorkLog.Enqueue(b => b.InsertOne(document), documentType);
         }
@@ -226,7 +226,7 @@ namespace InfinniPlatform.DocumentStorage.Transactions
         }
 
 
-        public void InsertMany(string documentType, IEnumerable<DynamicWrapper> documents)
+        public void InsertMany(string documentType, IEnumerable<DynamicDocument> documents)
         {
             foreach (var document in documents)
             {
@@ -283,7 +283,7 @@ namespace InfinniPlatform.DocumentStorage.Transactions
         }
 
 
-        public void ReplaceOne(string documentType, DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public void ReplaceOne(string documentType, DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
         {
             _unitOfWorkLog.Enqueue(b => b.ReplaceOne(replacement, filter, insertIfNotExists), documentType);
         }

@@ -157,7 +157,7 @@ namespace InfinniPlatform.Dynamic
                     }
                     else
                     {
-                        termValue = new DynamicWrapper();
+                        termValue = new DynamicDocument();
                     }
 
                     if (termIsCollectionIndex)

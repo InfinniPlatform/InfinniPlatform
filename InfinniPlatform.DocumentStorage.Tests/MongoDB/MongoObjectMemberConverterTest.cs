@@ -13,23 +13,23 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     public class MongoObjectMemberConverterTest
     {
         [Test]
-        public void ShouldDeserializeObjectPropertiesAsDynamicWrapper()
+        public void ShouldDeserializeObjectPropertiesAsDynamicDocument()
         {
             // Given
 
             object id = 123;
 
-            var dynamicDocument = new DynamicWrapper
+            var dynamicDocument = new DynamicDocument
                                   {
                                       { "_id", id },
                                       { "PropertyInt", 111 },
                                       { "PropertyScalar", 222 },
-                                      { "PropertyObject", new DynamicWrapper { { "Property1", 333 }, { "Property2", "Hello!" } } },
+                                      { "PropertyObject", new DynamicDocument { { "Property1", 333 }, { "Property2", "Hello!" } } },
                                       { "PropertyArray", new[] { 1, 2, 3 } }
                                   };
 
-            var dynamicStorage = MongoTestHelpers.GetStorageProvider(nameof(ShouldDeserializeObjectPropertiesAsDynamicWrapper));
-            var classStorage = MongoTestHelpers.GetEmptyStorageProvider<SomeClass>(nameof(ShouldDeserializeObjectPropertiesAsDynamicWrapper));
+            var dynamicStorage = MongoTestHelpers.GetStorageProvider(nameof(ShouldDeserializeObjectPropertiesAsDynamicDocument));
+            var classStorage = MongoTestHelpers.GetEmptyStorageProvider<SomeClass>(nameof(ShouldDeserializeObjectPropertiesAsDynamicDocument));
 
             // When
 
@@ -48,8 +48,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             Assert.AreEqual(222, typedDocument.PropertyScalar);
 
             // Object type
-            Assert.IsInstanceOf<DynamicWrapper>(typedDocument.PropertyObject);
-            var propertyObject = (DynamicWrapper)typedDocument.PropertyObject;
+            Assert.IsInstanceOf<DynamicDocument>(typedDocument.PropertyObject);
+            var propertyObject = (DynamicDocument)typedDocument.PropertyObject;
             Assert.AreEqual(333, propertyObject["Property1"]);
             Assert.AreEqual("Hello!", propertyObject["Property2"]);
 

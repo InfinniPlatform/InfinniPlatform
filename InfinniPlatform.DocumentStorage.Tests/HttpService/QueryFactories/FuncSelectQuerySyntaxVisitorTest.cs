@@ -31,7 +31,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
             Action<IDocumentProjectionBuilder> expectedSelectExpression1 = p => p.Include("prop1");
             Action<IDocumentProjectionBuilder> expectedSelectExpression2 = p => p.Include("prop1").Include("prop2");
 
-            var item = new DynamicWrapper
+            var item = new DynamicDocument
                        {
                            { "prop1", "Item1" },
                            { "prop2", 12345 },
@@ -58,7 +58,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
             Action<IDocumentProjectionBuilder> expectedSelectExpression1 = p => p.Exclude("prop1");
             Action<IDocumentProjectionBuilder> expectedSelectExpression2 = p => p.Exclude("prop1").Exclude("prop2");
 
-            var item = new DynamicWrapper
+            var item = new DynamicDocument
                        {
                            { "prop1", "Item1" },
                            { "prop2", 12345 },
@@ -85,7 +85,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
             Action<IDocumentProjectionBuilder> expectedSelectExpression1 = p => p.IncludeTextScore();
             Action<IDocumentProjectionBuilder> expectedSelectExpression2 = p => p.IncludeTextScore("myTextScore");
 
-            var item = new DynamicWrapper
+            var item = new DynamicDocument
                        {
                            { "prop1", "Item1" },
                            { "prop2", 12345 },
@@ -104,15 +104,15 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var expectedValue1 = documentStorage.FindText("Item1").Project(expectedSelectExpression1).FirstOrDefault();
             var actualValue1 = documentStorage.FindText("Item1").Project(selectActualExpression1).FirstOrDefault();
-            AreEqualDynamicWrapper(expectedValue1, actualValue1);
+            AreEqualDynamicDocument(expectedValue1, actualValue1);
 
             var expectedValue2 = documentStorage.FindText("Item1").Project(expectedSelectExpression2).FirstOrDefault();
             var actualValue2 = documentStorage.FindText("Item1").Project(selectActualExpression2).FirstOrDefault();
-            AreEqualDynamicWrapper(expectedValue2, actualValue2);
+            AreEqualDynamicDocument(expectedValue2, actualValue2);
         }
 
 
-        private static void AssertSelect(string documentType, DynamicWrapper item, Action<IDocumentProjectionBuilder> expectedSelect, Action<IDocumentProjectionBuilder> actualSelect)
+        private static void AssertSelect(string documentType, DynamicDocument item, Action<IDocumentProjectionBuilder> expectedSelect, Action<IDocumentProjectionBuilder> actualSelect)
         {
             var documentStorage = DocumentStorageTestHelpers.GetEmptyStorage(documentType);
             documentStorage.InsertOne(item);
@@ -120,10 +120,10 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
             var expectedValue = documentStorage.Find().Project(expectedSelect).FirstOrDefault();
             var actualValue = documentStorage.Find().Project(actualSelect).FirstOrDefault();
 
-            AreEqualDynamicWrapper(expectedValue, actualValue);
+            AreEqualDynamicDocument(expectedValue, actualValue);
         }
 
-        private static void AreEqualDynamicWrapper(DynamicWrapper expected, DynamicWrapper actual)
+        private static void AreEqualDynamicDocument(DynamicDocument expected, DynamicDocument actual)
         {
             Assert.IsNotNull(expected);
             Assert.IsNotNull(actual);

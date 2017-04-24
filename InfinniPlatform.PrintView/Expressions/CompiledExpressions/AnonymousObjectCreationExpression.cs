@@ -13,7 +13,7 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
 
         public object Execute(object dataContext, ExpressionScope scope)
         {
-            var result = new DynamicWrapper();
+            var result = new DynamicDocument();
 
             if (_initializer != null)
             {

@@ -12,54 +12,54 @@ namespace InfinniPlatform.DocumentStorage
     /// </summary>
     internal class MongoDocumentBulkBuilder : IDocumentBulkBuilder
     {
-        private MongoDocumentBulkBuilder(MongoDocumentFilterBuilder<DynamicWrapper> filterBuilder = null)
+        private MongoDocumentBulkBuilder(MongoDocumentFilterBuilder<DynamicDocument> filterBuilder = null)
         {
             _filterBuilder = filterBuilder;
         }
 
 
-        private readonly MongoDocumentFilterBuilder<DynamicWrapper> _filterBuilder;
-        private readonly List<WriteModel<DynamicWrapper>> _operations = new List<WriteModel<DynamicWrapper>>();
+        private readonly MongoDocumentFilterBuilder<DynamicDocument> _filterBuilder;
+        private readonly List<WriteModel<DynamicDocument>> _operations = new List<WriteModel<DynamicDocument>>();
 
 
-        public IDocumentBulkBuilder InsertOne(DynamicWrapper document)
+        public IDocumentBulkBuilder InsertOne(DynamicDocument document)
         {
-            _operations.Add(new InsertOneModel<DynamicWrapper>(document));
+            _operations.Add(new InsertOneModel<DynamicDocument>(document));
             return this;
         }
 
         public IDocumentBulkBuilder UpdateOne(Action<IDocumentUpdateBuilder> update, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
         {
-            _operations.Add(new UpdateOneModel<DynamicWrapper>(_filterBuilder.CreateMongoFilter(filter), MongoDocumentUpdateBuilder<DynamicWrapper>.CreateMongoUpdate(update)) { IsUpsert = insertIfNotExists });
+            _operations.Add(new UpdateOneModel<DynamicDocument>(_filterBuilder.CreateMongoFilter(filter), MongoDocumentUpdateBuilder<DynamicDocument>.CreateMongoUpdate(update)) { IsUpsert = insertIfNotExists });
             return this;
         }
 
         public IDocumentBulkBuilder UpdateMany(Action<IDocumentUpdateBuilder> update, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
         {
-            _operations.Add(new UpdateManyModel<DynamicWrapper>(_filterBuilder.CreateMongoFilter(filter), MongoDocumentUpdateBuilder<DynamicWrapper>.CreateMongoUpdate(update)) { IsUpsert = insertIfNotExists });
+            _operations.Add(new UpdateManyModel<DynamicDocument>(_filterBuilder.CreateMongoFilter(filter), MongoDocumentUpdateBuilder<DynamicDocument>.CreateMongoUpdate(update)) { IsUpsert = insertIfNotExists });
             return this;
         }
 
-        public IDocumentBulkBuilder ReplaceOne(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
+        public IDocumentBulkBuilder ReplaceOne(DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false)
         {
-            _operations.Add(new ReplaceOneModel<DynamicWrapper>(_filterBuilder.CreateMongoFilter(filter), replacement) { IsUpsert = insertIfNotExists });
+            _operations.Add(new ReplaceOneModel<DynamicDocument>(_filterBuilder.CreateMongoFilter(filter), replacement) { IsUpsert = insertIfNotExists });
             return this;
         }
 
         public IDocumentBulkBuilder DeleteOne(Func<IDocumentFilterBuilder, object> filter = null)
         {
-            _operations.Add(new DeleteOneModel<DynamicWrapper>(_filterBuilder.CreateMongoFilter(filter)));
+            _operations.Add(new DeleteOneModel<DynamicDocument>(_filterBuilder.CreateMongoFilter(filter)));
             return this;
         }
 
         public IDocumentBulkBuilder DeleteMany(Func<IDocumentFilterBuilder, object> filter = null)
         {
-            _operations.Add(new DeleteManyModel<DynamicWrapper>(_filterBuilder.CreateMongoFilter(filter)));
+            _operations.Add(new DeleteManyModel<DynamicDocument>(_filterBuilder.CreateMongoFilter(filter)));
             return this;
         }
 
 
-        public static IEnumerable<WriteModel<DynamicWrapper>> CreateMongoBulk(MongoDocumentFilterBuilder<DynamicWrapper> filterBuilder, Action<IDocumentBulkBuilder> requests)
+        public static IEnumerable<WriteModel<DynamicDocument>> CreateMongoBulk(MongoDocumentFilterBuilder<DynamicDocument> filterBuilder, Action<IDocumentBulkBuilder> requests)
         {
             var builder = new MongoDocumentBulkBuilder(filterBuilder);
 

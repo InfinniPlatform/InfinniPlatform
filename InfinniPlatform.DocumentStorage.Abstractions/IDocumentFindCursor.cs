@@ -8,7 +8,7 @@ namespace InfinniPlatform.DocumentStorage
     /// <summary>
     /// Указатель на список документов для поиска.
     /// </summary>
-    public interface IDocumentFindCursor : IDocumentCursor<DynamicWrapper>
+    public interface IDocumentFindCursor : IDocumentCursor<DynamicDocument>
     {
         /// <summary>
         /// Добавляет условие фильтрации.

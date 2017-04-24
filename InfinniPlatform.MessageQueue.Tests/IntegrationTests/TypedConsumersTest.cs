@@ -15,22 +15,22 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
     public class TypedConsumersTest : RabbitMqTestBase
     {
         [Test]
-        public void AllDynamicWrapperMessagesDelivered()
+        public void AllDynamicDocumentMessagesDelivered()
         {
-            var actualMessages = new List<DynamicWrapper>();
-            DynamicWrapper[] assertMessages =
+            var actualMessages = new List<DynamicDocument>();
+            DynamicDocument[] assertMessages =
             {
-                new DynamicWrapper { { "Field1", "string" } },
-                new DynamicWrapper { { "Field2", 1 } },
-                new DynamicWrapper { { "Field3", new DateTime(1, 1, 1) } },
-                new DynamicWrapper { { "Field4", 1.2 } },
-                new DynamicWrapper { { "Field5", false } }
+                new DynamicDocument { { "Field1", "string" } },
+                new DynamicDocument { { "Field2", 1 } },
+                new DynamicDocument { { "Field3", new DateTime(1, 1, 1) } },
+                new DynamicDocument { { "Field4", 1.2 } },
+                new DynamicDocument { { "Field5", false } }
             };
 
             var completeEvent = new CountdownEvent(assertMessages.Length);
             ITaskConsumer[] taskConsumers =
             {
-                new DynamicWrapperTaskConsumer(actualMessages, completeEvent)
+                new DynamicDocumentTaskConsumer(actualMessages, completeEvent)
             };
 
             RegisterConsumers(taskConsumers, null);
@@ -38,7 +38,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
             var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
-                producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);
+                producerBase.PublishDynamic(message, typeof(DynamicDocument).FullName);
             }
 
             const int timeout = 500;

@@ -7,9 +7,9 @@ using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.MessageQueue.TestConsumers
 {
-    public class DynamicWrapperTaskConsumer : TaskConsumerBase<DynamicWrapper>
+    public class DynamicDocumentTaskConsumer : TaskConsumerBase<DynamicDocument>
     {
-        public DynamicWrapperTaskConsumer(List<DynamicWrapper> messages,
+        public DynamicDocumentTaskConsumer(List<DynamicDocument> messages,
                                           CountdownEvent completeEvent,
                                           int taskWorkTime = 0)
         {
@@ -19,10 +19,10 @@ namespace InfinniPlatform.MessageQueue.TestConsumers
         }
 
         private readonly CountdownEvent _completeEvent;
-        private readonly List<DynamicWrapper> _messages;
+        private readonly List<DynamicDocument> _messages;
         private readonly int _taskWorkTime;
 
-        protected override Task Consume(Message<DynamicWrapper> message)
+        protected override Task Consume(Message<DynamicDocument> message)
         {
             return Task.Run(async () =>
                             {

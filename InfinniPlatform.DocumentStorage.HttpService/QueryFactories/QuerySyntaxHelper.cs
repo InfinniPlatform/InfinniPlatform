@@ -74,8 +74,8 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             Expression<Func<IEnumerable<object>, bool>> containsExpression = items => items.Contains(null);
             Expression<Func<IEnumerable<object>, int>> countExpression = items => items.Count();
             Expression<Func<string, string, RegexOptions, bool>> regexExpression = (input, pattern, options) => Regex.IsMatch(input, pattern, options);
-            Expression<Func<DynamicWrapper>> newProjectionExpression = () => new DynamicWrapper();
-            Expression<Action<DynamicWrapper, string, object>> addProjectionPropertyExpression = (instance, property, value) => instance.Add(property, value);
+            Expression<Func<DynamicDocument>> newProjectionExpression = () => new DynamicDocument();
+            Expression<Action<DynamicDocument, string, object>> addProjectionPropertyExpression = (instance, property, value) => instance.Add(property, value);
 
             AllMethod = ((MethodCallExpression)allExpression.Body).Method.GetGenericMethodDefinition();
             AnyMethod = ((MethodCallExpression)anyExpression.Body).Method.GetGenericMethodDefinition();

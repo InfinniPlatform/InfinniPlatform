@@ -11,7 +11,7 @@ namespace InfinniPlatform.DocumentStorage.Interceptors
         /// Конструктор.
         /// </summary>
         /// <param name="document">Документ для вставки.</param>
-        public DocumentInsertOneCommand(DynamicWrapper document)
+        public DocumentInsertOneCommand(DynamicDocument document)
         {
             Document = document;
         }
@@ -19,7 +19,7 @@ namespace InfinniPlatform.DocumentStorage.Interceptors
         /// <summary>
         /// Документ для вставки.
         /// </summary>
-        public DynamicWrapper Document { get; set; }
+        public DynamicDocument Document { get; set; }
     }
 
 

@@ -14,11 +14,11 @@ namespace InfinniPlatform.DocumentStorage.Interceptors
         /// Конструктор.
         /// </summary>
         /// <param name="documents">Документы для вставки.</param>
-        public DocumentInsertManyCommand(IEnumerable<DynamicWrapper> documents)
+        public DocumentInsertManyCommand(IEnumerable<DynamicDocument> documents)
         {
             // Производится материализация коллекции, чтобы избежать ситуаций, когда
             // экземпляры документов создаются при каждом перечислении коллекции,
-            // например: InsertMany(sources.Select(i => new DynamicWrapper()))
+            // например: InsertMany(sources.Select(i => new DynamicDocument()))
 
             Documents = documents.ToList();
         }
@@ -26,7 +26,7 @@ namespace InfinniPlatform.DocumentStorage.Interceptors
         /// <summary>
         /// Документы для вставки.
         /// </summary>
-        public IEnumerable<DynamicWrapper> Documents { get; set; }
+        public IEnumerable<DynamicDocument> Documents { get; set; }
     }
 
 

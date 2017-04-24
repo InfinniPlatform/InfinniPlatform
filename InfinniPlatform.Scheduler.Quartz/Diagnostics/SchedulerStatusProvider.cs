@@ -63,27 +63,27 @@ namespace InfinniPlatform.Scheduler.Diagnostics
             var plannedCount = await _jobScheduler.GetStatus(i => i.Count(j => j.State == JobState.Planned));
             var pausedCount = await _jobScheduler.GetStatus(i => i.Count(j => j.State == JobState.Paused));
 
-            var status = new DynamicWrapper
+            var status = new DynamicDocument
                          {
                              {
                                  "isStarted", isStarted
                              },
                              {
-                                 "all", new DynamicWrapper
+                                 "all", new DynamicDocument
                                         {
                                             { "count", totalCount },
                                             { "ref", $"{request.BasePath}/{Name}/jobs?skip=0&take=10" }
                                         }
                              },
                              {
-                                 "planned", new DynamicWrapper
+                                 "planned", new DynamicDocument
                                             {
                                                 { "count", plannedCount },
                                                 { "ref", $"{request.BasePath}/{Name}/jobs?state=planned&skip=0&take=10" }
                                             }
                              },
                              {
-                                 "paused", new DynamicWrapper
+                                 "paused", new DynamicDocument
                                            {
                                                { "count", pausedCount },
                                                { "ref", $"{request.BasePath}/{Name}/jobs?state=paused&skip=0&take=10" }
@@ -91,7 +91,7 @@ namespace InfinniPlatform.Scheduler.Diagnostics
                              }
                          };
 
-            return new ServiceResult<DynamicWrapper> { Success = true, Result = status };
+            return new ServiceResult<DynamicDocument> { Success = true, Result = status };
         }
 
 

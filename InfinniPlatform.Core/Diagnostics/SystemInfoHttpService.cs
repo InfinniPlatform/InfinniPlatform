@@ -84,7 +84,7 @@ namespace InfinniPlatform.Diagnostics
             // Версия системы
             var version = GetSystemVersion();
 
-            var status = new DynamicWrapper
+            var status = new DynamicDocument
                          {
                              { "ok", true },
                              { "version", version.Item1 },
@@ -109,7 +109,7 @@ namespace InfinniPlatform.Diagnostics
                         else
                         {
                             // Формирование ссылки на статусную страницу подсистемы
-                            status[subsystemName] = new DynamicWrapper { { "ref", $"{request.BasePath}/info/{subsystemName}" } };
+                            status[subsystemName] = new DynamicDocument { { "ref", $"{request.BasePath}/info/{subsystemName}" } };
                         }
                     }
                     catch (Exception exception)
@@ -144,13 +144,13 @@ namespace InfinniPlatform.Diagnostics
                 if (await Task.WhenAny(statusTask, Task.Delay(timeout)) == statusTask)
                 {
                     // Подсистема успешно вернула свой статус
-                    status = statusTask.Result ?? new DynamicWrapper();
+                    status = statusTask.Result ?? new DynamicDocument();
                     ok = true;
                 }
                 else
                 {
                     // Подсистема не отвечала длительное время
-                    status = new DynamicWrapper { { "error", Resources.SubsystemIsNotResponding } };
+                    status = new DynamicDocument { { "error", Resources.SubsystemIsNotResponding } };
                 }
             }
             catch (Exception exception)
@@ -158,7 +158,7 @@ namespace InfinniPlatform.Diagnostics
                 _log.Warn(exception);
 
                 // При определении статуса произошло исключение
-                status = new DynamicWrapper { { "error", exception.GetFullMessage() } };
+                status = new DynamicDocument { { "error", exception.GetFullMessage() } };
             }
 
             return new Tuple<object, bool>(status, ok);

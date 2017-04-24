@@ -48,11 +48,11 @@ namespace InfinniPlatform.DocumentStorage
             // Установка правил сериализации и десериализации внутренних типов данных
             BsonSerializer.RegisterSerializer(MongoDateBsonSerializer.Default);
             BsonSerializer.RegisterSerializer(MongoTimeBsonSerializer.Default);
-            BsonSerializer.RegisterSerializer(MongoDynamicWrapperBsonSerializer.Default);
+            BsonSerializer.RegisterSerializer(MongoDynamicDocumentBsonSerializer.Default);
             BsonSerializer.RegisterSerializer(MongoDecimalBsonSerializer.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDateBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoTimeBsonSerializationProvider.Default);
-            BsonSerializer.RegisterSerializationProvider(MongoDynamicWrapperBsonSerializationProvider.Default);
+            BsonSerializer.RegisterSerializationProvider(MongoDynamicDocumentBsonSerializationProvider.Default);
             BsonSerializer.RegisterSerializationProvider(MongoDecimalBsonSerializationProvider.Default);
         }
 
@@ -173,11 +173,11 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Возвращает состояние базы данных.
         /// </summary>
-        public Task<DynamicWrapper> GetDatabaseStatusAsync()
+        public Task<DynamicDocument> GetDatabaseStatusAsync()
         {
-            var dbStats = new DynamicWrapper { { "dbStats", 1 } };
+            var dbStats = new DynamicDocument { { "dbStats", 1 } };
 
-            return _database.Value.RunCommandAsync(new ObjectCommand<DynamicWrapper>(dbStats));
+            return _database.Value.RunCommandAsync(new ObjectCommand<DynamicDocument>(dbStats));
         }
     }
 }

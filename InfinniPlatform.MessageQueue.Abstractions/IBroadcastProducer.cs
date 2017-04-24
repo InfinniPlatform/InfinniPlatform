@@ -21,7 +21,7 @@ namespace InfinniPlatform.MessageQueue
         /// </summary>
         /// <param name="messageBody">Тело сообщения.</param>
         /// <param name="queueName">Имя очереди.</param>
-        void PublishDynamic(DynamicWrapper messageBody, string queueName);
+        void PublishDynamic(DynamicDocument messageBody, string queueName);
 
         /// <summary>
         /// Публикует широковещательные сообщения.
@@ -36,6 +36,6 @@ namespace InfinniPlatform.MessageQueue
         /// </summary>
         /// <param name="messageBody">Тело сообщения.</param>
         /// <param name="queueName">Имя очереди.</param>
-        Task PublishDynamicAsync(DynamicWrapper messageBody, string queueName);
+        Task PublishDynamicAsync(DynamicDocument messageBody, string queueName);
     }
 }

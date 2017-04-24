@@ -33,7 +33,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         public DocumentPostQuery CreatePostQuery(IHttpRequest request, string documentFormKey = DocumentHttpServiceConstants.DocumentFormKey)
         {
-            var document = ReadRequestForm<DynamicWrapper>(request, documentFormKey);
+            var document = ReadRequestForm<DynamicDocument>(request, documentFormKey);
 
             if (document != null)
             {

@@ -6,12 +6,12 @@ namespace InfinniPlatform.DocumentStorage
 {
     internal interface IDocumentStorageHeaderProvider
     {
-        void SetInsertHeader(DynamicWrapper document);
+        void SetInsertHeader(DynamicDocument document);
 
         void SetInsertHeader<TDocument>(TDocument document) where TDocument : Document;
 
 
-        void SetReplaceHeader(DynamicWrapper document);
+        void SetReplaceHeader(DynamicDocument document);
 
         void SetReplaceHeader<TDocument>(TDocument document) where TDocument : Document;
 

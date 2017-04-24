@@ -32,11 +32,11 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "prop1", "A" } },
-                            new DynamicWrapper { { "_id", 2 }, { "prop1", "B" } },
-                            new DynamicWrapper { { "_id", 3 }, { "prop1", "C" } },
-                            new DynamicWrapper { { "_id", 4 }, { "prop1", "D" } },
-                            new DynamicWrapper { { "_id", 5 }, { "prop1", "F" } }
+                            new DynamicDocument { { "_id", 1 }, { "prop1", "A" } },
+                            new DynamicDocument { { "_id", 2 }, { "prop1", "B" } },
+                            new DynamicDocument { { "_id", 3 }, { "prop1", "C" } },
+                            new DynamicDocument { { "_id", 4 }, { "prop1", "D" } },
+                            new DynamicDocument { { "_id", 5 }, { "prop1", "F" } }
                         };
 
             // When
@@ -57,11 +57,11 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "prop2", 5 }},
-                            new DynamicWrapper { { "_id", 2 }, { "prop2", 4 }},
-                            new DynamicWrapper { { "_id", 3 }, { "prop2", 3 }},
-                            new DynamicWrapper { { "_id", 4 }, { "prop2", 2 }},
-                            new DynamicWrapper { { "_id", 5 }, { "prop2", 1 }}
+                            new DynamicDocument { { "_id", 1 }, { "prop2", 5 }},
+                            new DynamicDocument { { "_id", 2 }, { "prop2", 4 }},
+                            new DynamicDocument { { "_id", 3 }, { "prop2", 3 }},
+                            new DynamicDocument { { "_id", 4 }, { "prop2", 2 }},
+                            new DynamicDocument { { "_id", 5 }, { "prop2", 1 }}
                         };
 
             // When
@@ -82,11 +82,11 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "prop2", 5 }},
-                            new DynamicWrapper { { "_id", 2 }, { "prop2", 4 }},
-                            new DynamicWrapper { { "_id", 3 }, { "prop2", 3 }},
-                            new DynamicWrapper { { "_id", 4 }, { "prop2", 2 }},
-                            new DynamicWrapper { { "_id", 5 }, { "prop2", 1 }}
+                            new DynamicDocument { { "_id", 1 }, { "prop2", 5 }},
+                            new DynamicDocument { { "_id", 2 }, { "prop2", 4 }},
+                            new DynamicDocument { { "_id", 3 }, { "prop2", 3 }},
+                            new DynamicDocument { { "_id", 4 }, { "prop2", 2 }},
+                            new DynamicDocument { { "_id", 5 }, { "prop2", 1 }}
                         };
 
             // When
@@ -111,11 +111,11 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 } },
-                            new DynamicWrapper { { "_id", 2 }, { "prop2", 22 }},
-                            new DynamicWrapper { { "_id", 3 } },
-                            new DynamicWrapper { { "_id", 4 }, { "prop2", 44 }},
-                            new DynamicWrapper { { "_id", 5 } }
+                            new DynamicDocument { { "_id", 1 } },
+                            new DynamicDocument { { "_id", 2 }, { "prop2", 22 }},
+                            new DynamicDocument { { "_id", 3 } },
+                            new DynamicDocument { { "_id", 4 }, { "prop2", 44 }},
+                            new DynamicDocument { { "_id", 5 } }
                         };
 
             // When
@@ -156,15 +156,15 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", "Boolean" }, { "prop1", true } },
-                            new DynamicWrapper { { "_id", "Int32" }, { "prop1", 123 } },
-                            new DynamicWrapper { { "_id", "Int64" }, { "prop1", int.MaxValue + 100L } },
-                            new DynamicWrapper { { "_id", "Double" }, { "prop1", 123.456 } },
-                            new DynamicWrapper { { "_id", "String" }, { "prop1", "abc" } },
-                            new DynamicWrapper { { "_id", "DateTime" }, { "prop1", new DateTime(2015, 2, 9, 1, 2, 3, 4) } },
-                            new DynamicWrapper { { "_id", "Binary" }, { "prop1", new byte[] { 1, 2, 3, 4, 5 } } },
-                            new DynamicWrapper { { "_id", "Object" }, { "prop1", new DynamicWrapper { { "subProp1", true } } } },
-                            new DynamicWrapper { { "_id", "Array" }, { "prop1", new object[] { new object[] { 1, 2, 3 } } } }
+                            new DynamicDocument { { "_id", "Boolean" }, { "prop1", true } },
+                            new DynamicDocument { { "_id", "Int32" }, { "prop1", 123 } },
+                            new DynamicDocument { { "_id", "Int64" }, { "prop1", int.MaxValue + 100L } },
+                            new DynamicDocument { { "_id", "Double" }, { "prop1", 123.456 } },
+                            new DynamicDocument { { "_id", "String" }, { "prop1", "abc" } },
+                            new DynamicDocument { { "_id", "DateTime" }, { "prop1", new DateTime(2015, 2, 9, 1, 2, 3, 4) } },
+                            new DynamicDocument { { "_id", "Binary" }, { "prop1", new byte[] { 1, 2, 3, 4, 5 } } },
+                            new DynamicDocument { { "_id", "Object" }, { "prop1", new DynamicDocument { { "subProp1", true } } } },
+                            new DynamicDocument { { "_id", "Array" }, { "prop1", new object[] { new object[] { 1, 2, 3 } } } }
                         };
 
             // When
@@ -203,11 +203,11 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "prop2", 55 }},
-                            new DynamicWrapper { { "_id", 2 }, { "prop2", 44 }},
-                            new DynamicWrapper { { "_id", 3 }, { "prop2", 33 }},
-                            new DynamicWrapper { { "_id", 4 }, { "prop2", 22 }},
-                            new DynamicWrapper { { "_id", 5 }, { "prop2", 11 }}
+                            new DynamicDocument { { "_id", 1 }, { "prop2", 55 }},
+                            new DynamicDocument { { "_id", 2 }, { "prop2", 44 }},
+                            new DynamicDocument { { "_id", 3 }, { "prop2", 33 }},
+                            new DynamicDocument { { "_id", 4 }, { "prop2", 22 }},
+                            new DynamicDocument { { "_id", 5 }, { "prop2", 11 }}
                         };
 
             // When
@@ -236,10 +236,10 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 100 }, { "sku", "abc123" }, { "description", "Single line description." } },
-                            new DynamicWrapper { { "_id", 101 }, { "sku", "abc789" }, { "description", "First line\nSecond line" } },
-                            new DynamicWrapper { { "_id", 102 }, { "sku", "xyz456" }, { "description", "Many spaces before     line" } },
-                            new DynamicWrapper { { "_id", 103 }, { "sku", "xyz789" }, { "description", "Multiple\nline description" } }
+                            new DynamicDocument { { "_id", 100 }, { "sku", "abc123" }, { "description", "Single line description." } },
+                            new DynamicDocument { { "_id", 101 }, { "sku", "abc789" }, { "description", "First line\nSecond line" } },
+                            new DynamicDocument { { "_id", 102 }, { "sku", "xyz456" }, { "description", "Many spaces before     line" } },
+                            new DynamicDocument { { "_id", 103 }, { "sku", "xyz789" }, { "description", "Multiple\nline description" } }
                         };
 
             // When
@@ -268,9 +268,9 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "prop1", "It starts with some text." } },
-                            new DynamicWrapper { { "_id", 2 }, { "prop1", "it starts with some text." } },
-                            new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it start with some text?" } }
+                            new DynamicDocument { { "_id", 1 }, { "prop1", "It starts with some text." } },
+                            new DynamicDocument { { "_id", 2 }, { "prop1", "it starts with some text." } },
+                            new DynamicDocument { { "_id", 3 }, { "prop1", "Does it start with some text?" } }
                         };
 
             // When
@@ -295,9 +295,9 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "prop1", "It ends with some Text." } },
-                            new DynamicWrapper { { "_id", 2 }, { "prop1", "It ends with some text." } },
-                            new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it end with some text?" } }
+                            new DynamicDocument { { "_id", 1 }, { "prop1", "It ends with some Text." } },
+                            new DynamicDocument { { "_id", 2 }, { "prop1", "It ends with some text." } },
+                            new DynamicDocument { { "_id", 3 }, { "prop1", "Does it end with some text?" } }
                         };
 
             // When
@@ -322,9 +322,9 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "prop1", "It Contains some text." } },
-                            new DynamicWrapper { { "_id", 2 }, { "prop1", "It contains some text." } },
-                            new DynamicWrapper { { "_id", 3 }, { "prop1", "Does it contain some text?" } }
+                            new DynamicDocument { { "_id", 1 }, { "prop1", "It Contains some text." } },
+                            new DynamicDocument { { "_id", 2 }, { "prop1", "It contains some text." } },
+                            new DynamicDocument { { "_id", 3 }, { "prop1", "Does it contain some text?" } }
                         };
 
             // When
@@ -347,36 +347,36 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper
+                            new DynamicDocument
                             {
                                 { "_id", 1 },
                                 {
                                     "results", new[]
                                                {
-                                                   new DynamicWrapper { { "product", "abc" }, { "score", 10 } },
-                                                   new DynamicWrapper { { "product", "xyz" }, { "score", 5 } }
+                                                   new DynamicDocument { { "product", "abc" }, { "score", 10 } },
+                                                   new DynamicDocument { { "product", "xyz" }, { "score", 5 } }
                                                }
                                 }
                             },
-                            new DynamicWrapper
+                            new DynamicDocument
                             {
                                 { "_id", 2 },
                                 {
                                     "results", new[]
                                                {
-                                                   new DynamicWrapper { { "product", "abc" }, { "score", 8 } },
-                                                   new DynamicWrapper { { "product", "xyz" }, { "score", 7 } }
+                                                   new DynamicDocument { { "product", "abc" }, { "score", 8 } },
+                                                   new DynamicDocument { { "product", "xyz" }, { "score", 7 } }
                                                }
                                 }
                             },
-                            new DynamicWrapper
+                            new DynamicDocument
                             {
                                 { "_id", 3 },
                                 {
                                     "results", new[]
                                                {
-                                                   new DynamicWrapper { { "product", "abc" }, { "score", 7 } },
-                                                   new DynamicWrapper { { "product", "xyz" }, { "score", 8 } }
+                                                   new DynamicDocument { { "product", "abc" }, { "score", 7 } },
+                                                   new DynamicDocument { { "product", "xyz" }, { "score", 8 } }
                                                }
                                 }
                             }
@@ -409,10 +409,10 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "prop2", 1 }},
-                            new DynamicWrapper { { "_id", 2 }, { "prop2", 2 }},
-                            new DynamicWrapper { { "_id", 3 }, { "prop2", 3 }},
-                            new DynamicWrapper { { "_id", 4 }, { "prop2", 4 }}
+                            new DynamicDocument { { "_id", 1 }, { "prop2", 1 }},
+                            new DynamicDocument { { "_id", 2 }, { "prop2", 2 }},
+                            new DynamicDocument { { "_id", 3 }, { "prop2", 3 }},
+                            new DynamicDocument { { "_id", 4 }, { "prop2", 4 }}
                         };
 
             // When
@@ -456,10 +456,10 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "date", today.AddDays(1) }},
-                            new DynamicWrapper { { "_id", 2 }, { "date", today.AddDays(2) }},
-                            new DynamicWrapper { { "_id", 3 }, { "date", today.AddDays(3) }},
-                            new DynamicWrapper { { "_id", 4 }, { "date", today.AddDays(4) }}
+                            new DynamicDocument { { "_id", 1 }, { "date", today.AddDays(1) }},
+                            new DynamicDocument { { "_id", 2 }, { "date", today.AddDays(2) }},
+                            new DynamicDocument { { "_id", 3 }, { "date", today.AddDays(3) }},
+                            new DynamicDocument { { "_id", 4 }, { "date", today.AddDays(4) }}
                         };
 
             // When
@@ -506,11 +506,11 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "items", new[] { 1, 2, 3 } } },
-                            new DynamicWrapper { { "_id", 2 }, { "items", new[] { 2, 3, 4 } } },
-                            new DynamicWrapper { { "_id", 3 }, { "items", new[] { 3, 4, 5 } } },
-                            new DynamicWrapper { { "_id", 4 }, { "items", new[] { 4, 5, 6 } } },
-                            new DynamicWrapper { { "_id", 5 }, { "items", new[] { 5, 6, 7 } } }
+                            new DynamicDocument { { "_id", 1 }, { "items", new[] { 1, 2, 3 } } },
+                            new DynamicDocument { { "_id", 2 }, { "items", new[] { 2, 3, 4 } } },
+                            new DynamicDocument { { "_id", 3 }, { "items", new[] { 3, 4, 5 } } },
+                            new DynamicDocument { { "_id", 4 }, { "items", new[] { 4, 5, 6 } } },
+                            new DynamicDocument { { "_id", 5 }, { "items", new[] { 5, 6, 7 } } }
                         };
 
             // When
@@ -565,11 +565,11 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "items", new[] { today.AddDays(1), today.AddDays(2), today.AddDays(3) } } },
-                            new DynamicWrapper { { "_id", 2 }, { "items", new[] { today.AddDays(2), today.AddDays(3), today.AddDays(4) } } },
-                            new DynamicWrapper { { "_id", 3 }, { "items", new[] { today.AddDays(3), today.AddDays(4), today.AddDays(5) } } },
-                            new DynamicWrapper { { "_id", 4 }, { "items", new[] { today.AddDays(4), today.AddDays(5), today.AddDays(6) } } },
-                            new DynamicWrapper { { "_id", 5 }, { "items", new[] { today.AddDays(5), today.AddDays(6), today.AddDays(7) } } }
+                            new DynamicDocument { { "_id", 1 }, { "items", new[] { today.AddDays(1), today.AddDays(2), today.AddDays(3) } } },
+                            new DynamicDocument { { "_id", 2 }, { "items", new[] { today.AddDays(2), today.AddDays(3), today.AddDays(4) } } },
+                            new DynamicDocument { { "_id", 3 }, { "items", new[] { today.AddDays(3), today.AddDays(4), today.AddDays(5) } } },
+                            new DynamicDocument { { "_id", 4 }, { "items", new[] { today.AddDays(4), today.AddDays(5), today.AddDays(6) } } },
+                            new DynamicDocument { { "_id", 5 }, { "items", new[] { today.AddDays(5), today.AddDays(6), today.AddDays(7) } } }
                         };
 
             // When
@@ -618,12 +618,12 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "items", new int[] { } } },
-                            new DynamicWrapper { { "_id", 2 }, { "items", new[] { 1 } } },
-                            new DynamicWrapper { { "_id", 3 }, { "items", new[] { 1, 2 } } },
-                            new DynamicWrapper { { "_id", 4 }, { "items", new[] { 1, 2, 3 } } },
-                            new DynamicWrapper { { "_id", 5 }, { "items", new[] { 1, 2, 3, 4 } } },
-                            new DynamicWrapper { { "_id", 6 }, { "items", new[] { 1, 2, 3, 4, 5 } } }
+                            new DynamicDocument { { "_id", 1 }, { "items", new int[] { } } },
+                            new DynamicDocument { { "_id", 2 }, { "items", new[] { 1 } } },
+                            new DynamicDocument { { "_id", 3 }, { "items", new[] { 1, 2 } } },
+                            new DynamicDocument { { "_id", 4 }, { "items", new[] { 1, 2, 3 } } },
+                            new DynamicDocument { { "_id", 5 }, { "items", new[] { 1, 2, 3, 4 } } },
+                            new DynamicDocument { { "_id", 6 }, { "items", new[] { 1, 2, 3, 4, 5 } } }
                         };
 
             // When
@@ -656,12 +656,12 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "item", new DynamicWrapper { { "category", "cake" }, { "type", "chiffon" } } }, { "amount", 10 } },
-                            new DynamicWrapper { { "_id", 2 }, { "item", new DynamicWrapper { { "category", "cookies" }, { "type", "chocolate chip" } } }, { "amount", 50 } },
-                            new DynamicWrapper { { "_id", 3 }, { "item", new DynamicWrapper { { "category", "cookies" }, { "type", "chocolate chip" } } }, { "amount", 15 } },
-                            new DynamicWrapper { { "_id", 4 }, { "item", new DynamicWrapper { { "category", "cake" }, { "type", "lemon" } } }, { "amount", 30 } },
-                            new DynamicWrapper { { "_id", 5 }, { "item", new DynamicWrapper { { "category", "cake" }, { "type", "carrot" } } }, { "amount", 20 } },
-                            new DynamicWrapper { { "_id", 6 }, { "item", new DynamicWrapper { { "category", "brownies" }, { "type", "blondie" } } }, { "amount", 10 } }
+                            new DynamicDocument { { "_id", 1 }, { "item", new DynamicDocument { { "category", "cake" }, { "type", "chiffon" } } }, { "amount", 10 } },
+                            new DynamicDocument { { "_id", 2 }, { "item", new DynamicDocument { { "category", "cookies" }, { "type", "chocolate chip" } } }, { "amount", 50 } },
+                            new DynamicDocument { { "_id", 3 }, { "item", new DynamicDocument { { "category", "cookies" }, { "type", "chocolate chip" } } }, { "amount", 15 } },
+                            new DynamicDocument { { "_id", 4 }, { "item", new DynamicDocument { { "category", "cake" }, { "type", "lemon" } } }, { "amount", 30 } },
+                            new DynamicDocument { { "_id", 5 }, { "item", new DynamicDocument { { "category", "cake" }, { "type", "carrot" } } }, { "amount", 20 } },
+                            new DynamicDocument { { "_id", 6 }, { "item", new DynamicDocument { { "category", "brownies" }, { "type", "blondie" } } }, { "amount", 10 } }
                         };
 
             // When
@@ -698,14 +698,14 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var items = new[]
                         {
-                            new DynamicWrapper { { "_id", 1 }, { "subject", "coffee" }, { "author", "xyz" }, { "views", 50 } },
-                            new DynamicWrapper { { "_id", 2 }, { "subject", "Coffee Shopping" }, { "author", "efg" }, { "views", 5 } },
-                            new DynamicWrapper { { "_id", 3 }, { "subject", "Baking a cake" }, { "author", "abc" }, { "views", 90 } },
-                            new DynamicWrapper { { "_id", 4 }, { "subject", "baking" }, { "author", "xyz" }, { "views", 100 } },
-                            new DynamicWrapper { { "_id", 5 }, { "subject", "Café Con Leche" }, { "author", "abc" }, { "views", 200 } },
-                            new DynamicWrapper { { "_id", 6 }, { "subject", "Сырники" }, { "author", "jkl" }, { "views", 80 } },
-                            new DynamicWrapper { { "_id", 7 }, { "subject", "coffee and cream" }, { "author", "efg" }, { "views", 10 } },
-                            new DynamicWrapper { { "_id", 8 }, { "subject", "Cafe con Leche" }, { "author", "xyz" }, { "views", 10 } }
+                            new DynamicDocument { { "_id", 1 }, { "subject", "coffee" }, { "author", "xyz" }, { "views", 50 } },
+                            new DynamicDocument { { "_id", 2 }, { "subject", "Coffee Shopping" }, { "author", "efg" }, { "views", 5 } },
+                            new DynamicDocument { { "_id", 3 }, { "subject", "Baking a cake" }, { "author", "abc" }, { "views", 90 } },
+                            new DynamicDocument { { "_id", 4 }, { "subject", "baking" }, { "author", "xyz" }, { "views", 100 } },
+                            new DynamicDocument { { "_id", 5 }, { "subject", "Café Con Leche" }, { "author", "abc" }, { "views", 200 } },
+                            new DynamicDocument { { "_id", 6 }, { "subject", "Сырники" }, { "author", "jkl" }, { "views", 80 } },
+                            new DynamicDocument { { "_id", 7 }, { "subject", "coffee and cream" }, { "author", "efg" }, { "views", 10 } },
+                            new DynamicDocument { { "_id", 8 }, { "subject", "Cafe con Leche" }, { "author", "xyz" }, { "views", 10 } }
                         };
 
             // When
@@ -737,7 +737,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
         }
 
 
-        private static void AssertFilter(string documentType, IEnumerable<DynamicWrapper> items, Func<IDocumentFilterBuilder, object> expectedFilter, Func<IDocumentFilterBuilder, object> actualFilter)
+        private static void AssertFilter(string documentType, IEnumerable<DynamicDocument> items, Func<IDocumentFilterBuilder, object> expectedFilter, Func<IDocumentFilterBuilder, object> actualFilter)
         {
             var documentStorage = DocumentStorageTestHelpers.GetEmptyStorage(documentType);
             documentStorage.InsertMany(items);

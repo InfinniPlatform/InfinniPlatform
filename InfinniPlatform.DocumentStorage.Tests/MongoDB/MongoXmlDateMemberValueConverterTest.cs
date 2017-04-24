@@ -58,12 +58,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             Assert.AreEqual(((Date)date1).UnixTime, dynamicInstance["DateProperty"]);
             Assert.AreEqual(((Date)date2).UnixTime, dynamicInstance["NullableDateProperty"]);
             Assert.IsNotNull(dynamicInstance["ComplexProperty"]);
-            Assert.AreEqual(((Date)date3).UnixTime, ((DynamicWrapper)dynamicInstance["ComplexProperty"])["DateProperty"]);
-            Assert.IsNull(((DynamicWrapper)dynamicInstance["ComplexProperty"])["NullableDateProperty"]);
+            Assert.AreEqual(((Date)date3).UnixTime, ((DynamicDocument)dynamicInstance["ComplexProperty"])["DateProperty"]);
+            Assert.IsNull(((DynamicDocument)dynamicInstance["ComplexProperty"])["NullableDateProperty"]);
         }
 
         [Test]
-        public void ShouldSaveDynamicWrapperWithXmlDate()
+        public void ShouldSaveDynamicDocumentWithXmlDate()
         {
             // Given
 
@@ -71,13 +71,13 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var date2 = DateTime.Today.AddDays(2);
             var date3 = DateTime.Today.AddDays(3);
 
-            var instance = new DynamicWrapper
+            var instance = new DynamicDocument
                            {
                                { "_id", 1 },
                                { "DateProperty", (Date)date1 },
                                { "NullableDateProperty", (Date)date2 },
                                {
-                                   "ComplexProperty", new DynamicWrapper
+                                   "ComplexProperty", new DynamicDocument
                                                       {
                                                           { "DateProperty", (Date)date3 }
                                                       }
@@ -85,8 +85,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                            };
 
             var converters = new IMemberValueConverter[] { new XmlDateMemberValueConverter() };
-            var classStorage = MongoTestHelpers.GetEmptyStorageProvider<XmlDateClass>(nameof(ShouldSaveDynamicWrapperWithXmlDate), converters);
-            var dynamicStorage = MongoTestHelpers.GetStorageProvider(nameof(ShouldSaveDynamicWrapperWithXmlDate), converters);
+            var classStorage = MongoTestHelpers.GetEmptyStorageProvider<XmlDateClass>(nameof(ShouldSaveDynamicDocumentWithXmlDate), converters);
+            var dynamicStorage = MongoTestHelpers.GetStorageProvider(nameof(ShouldSaveDynamicDocumentWithXmlDate), converters);
 
             // When
 
@@ -108,8 +108,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             Assert.AreEqual(((Date)date1).UnixTime, dynamicInstance["DateProperty"]);
             Assert.AreEqual(((Date)date2).UnixTime, dynamicInstance["NullableDateProperty"]);
             Assert.IsNotNull(dynamicInstance["ComplexProperty"]);
-            Assert.AreEqual(((Date)date3).UnixTime, ((DynamicWrapper)dynamicInstance["ComplexProperty"])["DateProperty"]);
-            Assert.IsNull(((DynamicWrapper)dynamicInstance["ComplexProperty"])["NullableDateProperty"]);
+            Assert.AreEqual(((Date)date3).UnixTime, ((DynamicDocument)dynamicInstance["ComplexProperty"])["DateProperty"]);
+            Assert.IsNull(((DynamicDocument)dynamicInstance["ComplexProperty"])["NullableDateProperty"]);
         }
 
 

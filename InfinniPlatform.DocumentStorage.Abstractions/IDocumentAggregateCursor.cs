@@ -5,13 +5,13 @@ namespace InfinniPlatform.DocumentStorage
     /// <summary>
     /// Указатель на список документов для агрегации.
     /// </summary>
-    public interface IDocumentAggregateCursor : IDocumentCursor<DynamicWrapper>
+    public interface IDocumentAggregateCursor : IDocumentCursor<DynamicDocument>
     {
         /// <summary>
         /// Создает проекцию для отображения результата агрегации документов.
         /// </summary>
         /// <param name="projection">Правило формирования проекции.</param>
-        IDocumentAggregateCursor Project(DynamicWrapper projection);
+        IDocumentAggregateCursor Project(DynamicDocument projection);
 
         /// <summary>
         /// Создает отдельный документ для каждого элемента массива, находящегося в указанном свойстве исходного документа.
@@ -23,7 +23,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Группирует исходные документы по указанному выражению и производит вычисление заданных функций агрегации для каждой группы.
         /// </summary>
         /// <param name="group">Правило группировки и агрегации групп данных.</param>
-        IDocumentAggregateCursor Group(DynamicWrapper group);
+        IDocumentAggregateCursor Group(DynamicDocument group);
 
         /// <summary>
         /// Присоединяет к каждому исходному документу документ из указанной внешней коллекции в соответствии с заданным правилом

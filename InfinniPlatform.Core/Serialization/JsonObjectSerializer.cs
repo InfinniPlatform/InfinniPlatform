@@ -97,7 +97,7 @@ namespace InfinniPlatform.Serialization
 
             serializer.Converters.Add(new DateJsonConverter());
             serializer.Converters.Add(new TimeJsonConverter());
-            serializer.Converters.Add(new DynamicWrapperJsonConverter());
+            serializer.Converters.Add(new DynamicDocumentJsonConverter());
 
             _serializer = serializer;
         }
@@ -210,7 +210,7 @@ namespace InfinniPlatform.Serialization
                     {
                         using (var jReader = new JsonTextReader(reader))
                         {
-                            return _serializer.Deserialize(jReader, typeof(DynamicWrapper));
+                            return _serializer.Deserialize(jReader, typeof(DynamicDocument));
                         }
                     }
                 }
@@ -232,7 +232,7 @@ namespace InfinniPlatform.Serialization
                 {
                     using (var jReader = new JsonTextReader(reader))
                     {
-                        return _serializer.Deserialize(jReader, typeof(DynamicWrapper));
+                        return _serializer.Deserialize(jReader, typeof(DynamicDocument));
                     }
                 }
             }
@@ -253,7 +253,7 @@ namespace InfinniPlatform.Serialization
                 {
                     using (var jReader = new JsonTextReader(reader))
                     {
-                        return _serializer.Deserialize(jReader, typeof(DynamicWrapper));
+                        return _serializer.Deserialize(jReader, typeof(DynamicDocument));
                     }
                 }
             }
@@ -329,7 +329,7 @@ namespace InfinniPlatform.Serialization
                     {
                         using (var jReader = new JsonTextReader(reader))
                         {
-                            return _serializer.Deserialize(jReader, typeof(DynamicWrapper));
+                            return _serializer.Deserialize(jReader, typeof(DynamicDocument));
                         }
                     }
                 }

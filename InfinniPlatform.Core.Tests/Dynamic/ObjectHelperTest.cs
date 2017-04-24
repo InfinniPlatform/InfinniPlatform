@@ -244,7 +244,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             var value = new object();
-            dynamic target = new DynamicWrapper();
+            dynamic target = new DynamicDocument();
 
             // When
             ObjectHelper.SetProperty(target, "Property1.Property2.Property3", value);
@@ -404,12 +404,12 @@ namespace InfinniPlatform.Dynamic
         }
 
         [Test]
-        public void ShouldGetNestedPropertyFromInstanceOfDynamicWrapper()
+        public void ShouldGetNestedPropertyFromInstanceOfDynamicDocument()
         {
             // Given
             var value = new object();
-            dynamic target = new DynamicWrapper();
-            dynamic nested = new DynamicWrapper();
+            dynamic target = new DynamicDocument();
+            dynamic nested = new DynamicDocument();
             target.Property2 = nested;
             nested.NestedProperty1 = value;
 
@@ -466,11 +466,11 @@ namespace InfinniPlatform.Dynamic
         }
 
         [Test]
-        public void ShouldGetPropertyFromInstanceOfDynamicWrapper()
+        public void ShouldGetPropertyFromInstanceOfDynamicDocument()
         {
             // Given
             var value = new object();
-            dynamic target = new DynamicWrapper();
+            dynamic target = new DynamicDocument();
             target.Property1 = value;
 
             // When
@@ -514,13 +514,13 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
 
-            dynamic target = new DynamicWrapper();
+            dynamic target = new DynamicDocument();
 
-            dynamic item0 = new DynamicWrapper();
+            dynamic item0 = new DynamicDocument();
             item0.ItemProperty1 = 11;
-            dynamic item1 = new DynamicWrapper();
+            dynamic item1 = new DynamicDocument();
             item1.ItemProperty1 = 22;
-            dynamic item2 = new DynamicWrapper();
+            dynamic item2 = new DynamicDocument();
             item2.ItemProperty1 = 33;
 
             target.Collection1 = new List<object>
@@ -564,12 +564,12 @@ namespace InfinniPlatform.Dynamic
         }
 
         [Test]
-        public void ShouldSetNestedPropertyForInstanceOfDynamicWrapper()
+        public void ShouldSetNestedPropertyForInstanceOfDynamicDocument()
         {
             // Given
             var value = new object();
-            dynamic target = new DynamicWrapper();
-            dynamic nested = new DynamicWrapper();
+            dynamic target = new DynamicDocument();
+            dynamic nested = new DynamicDocument();
             target.Property2 = nested;
 
             // When
@@ -610,11 +610,11 @@ namespace InfinniPlatform.Dynamic
         }
 
         [Test]
-        public void ShouldSetPropertyForInstanceOfDynamicWrapper()
+        public void ShouldSetPropertyForInstanceOfDynamicDocument()
         {
             // Given
             var value = new object();
-            dynamic target = new DynamicWrapper();
+            dynamic target = new DynamicDocument();
 
             // When
             ObjectHelper.SetProperty(target, "Property1", value);
@@ -656,13 +656,13 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
 
-            dynamic target = new DynamicWrapper();
+            dynamic target = new DynamicDocument();
 
-            dynamic item0 = new DynamicWrapper();
+            dynamic item0 = new DynamicDocument();
             item0.ItemProperty1 = 11;
-            dynamic item1 = new DynamicWrapper();
+            dynamic item1 = new DynamicDocument();
             item1.ItemProperty1 = 00;
-            dynamic item2 = new DynamicWrapper();
+            dynamic item2 = new DynamicDocument();
             item2.ItemProperty1 = 33;
 
             target.Collection1 = new List<object>

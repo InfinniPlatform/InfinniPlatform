@@ -79,7 +79,7 @@ namespace InfinniPlatform.Http
                 
                 if (contentType != null && contentType.Matches(new MediaRange(HttpConstants.JsonContentType)))
                 {
-                    return _jsonObjectSerializer.Deserialize(_nancyRequest.Body, typeof(DynamicWrapper));
+                    return _jsonObjectSerializer.Deserialize(_nancyRequest.Body, typeof(DynamicDocument));
                 }
             }
 

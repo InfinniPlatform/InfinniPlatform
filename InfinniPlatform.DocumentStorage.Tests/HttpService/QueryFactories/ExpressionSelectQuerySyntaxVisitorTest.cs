@@ -28,8 +28,8 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
             const string selectExpression1 = "include(prop1)";
             const string selectExpression2 = "include(prop1, prop2)";
 
-            Expression<Func<SimpleEntity, object>> selectExpectedExpression1 = i => new DynamicWrapper { { "prop1", i.prop1 } };
-            Expression<Func<SimpleEntity, object>> selectExpectedExpression2 = i => new DynamicWrapper { { "prop1", i.prop1 }, { "prop2", i.prop2 } };
+            Expression<Func<SimpleEntity, object>> selectExpectedExpression1 = i => new DynamicDocument { { "prop1", i.prop1 } };
+            Expression<Func<SimpleEntity, object>> selectExpectedExpression2 = i => new DynamicDocument { { "prop1", i.prop1 }, { "prop2", i.prop2 } };
 
             var item = new SimpleEntity
             {
@@ -50,8 +50,8 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
         private static void AssertSelect<T>(T item, Expression<Func<T, object>> expectedSelect, Expression<Func<T, object>> actualSelect)
         {
-            var expectedValue = (DynamicWrapper)expectedSelect.Compile().Invoke(item);
-            var actualValue = (DynamicWrapper)actualSelect.Compile().Invoke(item);
+            var expectedValue = (DynamicDocument)expectedSelect.Compile().Invoke(item);
+            var actualValue = (DynamicDocument)actualSelect.Compile().Invoke(item);
 
             Assert.IsNotNull(expectedValue);
             Assert.IsNotNull(actualValue);

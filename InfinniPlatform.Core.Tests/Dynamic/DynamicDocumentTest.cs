@@ -8,14 +8,14 @@ namespace InfinniPlatform.Dynamic
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
-    public sealed class DynamicWrapperTest
+    public sealed class DynamicDocumentTest
     {
         [Test]
         public void ShouldAddDynamicMethodWhenSubscribe()
         {
             // Given
             Guid expected = Guid.NewGuid();
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
             Func<object> subscription = () => expected;
 
             // When
@@ -34,7 +34,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             var expected = new object();
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
 
             // When
             element.DynamicProperty = expected;
@@ -49,7 +49,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             Guid expected = Guid.NewGuid();
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
             element.DynamicMethod = new Func<object>(() => expected);
 
             // When
@@ -64,7 +64,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             Guid expected = Guid.NewGuid();
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
             Func<object> subscription = () => expected;
             element.DynamicMethod = subscription;
 
@@ -82,7 +82,7 @@ namespace InfinniPlatform.Dynamic
             // Given
             Func<int> function1 = () => 12345;
             Func<string> function2 = () => "Hello!";
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
 
             // When
 
@@ -102,7 +102,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             DateTime wrongTypeValue = DateTime.Now;
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
 
             // When
             element.PrototypeField = wrongTypeValue;
@@ -117,7 +117,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             Func<int> delegateWithWrongSignature = () => 12345;
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
 
             // When
             element.PrototypeMethod = delegateWithWrongSignature;
@@ -133,7 +133,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             DateTime wrongTypeValue = DateTime.Now;
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
 
             // When
             element.PrototypeProperty = wrongTypeValue;
@@ -148,7 +148,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             string expected = Guid.NewGuid().ToString();
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
 
             // When
             element.PrototypeField = expected;
@@ -162,7 +162,7 @@ namespace InfinniPlatform.Dynamic
         public void ShouldSetPrototypeMethod()
         {
             // Given
-            var element = new DynamicWrapper();
+            var element = new DynamicDocument();
 
             // When
             ((dynamic) element).PrototypeMethod = new Func<string, string>(a => "NewMethod");
@@ -178,7 +178,7 @@ namespace InfinniPlatform.Dynamic
         {
             // Given
             string expected = Guid.NewGuid().ToString();
-            dynamic element = new DynamicWrapper();
+            dynamic element = new DynamicDocument();
 
             // When
             element.PrototypeProperty = expected;

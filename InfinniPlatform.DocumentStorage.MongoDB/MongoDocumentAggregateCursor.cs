@@ -12,26 +12,26 @@ namespace InfinniPlatform.DocumentStorage
     /// <summary>
     /// Указатель на список документов для агрегации MongoDB.
     /// </summary>
-    internal class MongoDocumentAggregateCursor : MongoDocumentCursor<DynamicWrapper>, IDocumentAggregateSortedCursor
+    internal class MongoDocumentAggregateCursor : MongoDocumentCursor<DynamicDocument>, IDocumentAggregateSortedCursor
     {
-        public MongoDocumentAggregateCursor(IAggregateFluent<DynamicWrapper> aggregateCursor)
+        public MongoDocumentAggregateCursor(IAggregateFluent<DynamicDocument> aggregateCursor)
         {
             _aggregateCursor = aggregateCursor;
         }
 
 
-        private readonly IAggregateFluent<DynamicWrapper> _aggregateCursor;
+        private readonly IAggregateFluent<DynamicDocument> _aggregateCursor;
 
-        private readonly List<Func<IAggregateFluent<DynamicWrapper>, IAggregateFluent<DynamicWrapper>>> _stages
-            = new List<Func<IAggregateFluent<DynamicWrapper>, IAggregateFluent<DynamicWrapper>>>();
+        private readonly List<Func<IAggregateFluent<DynamicDocument>, IAggregateFluent<DynamicDocument>>> _stages
+            = new List<Func<IAggregateFluent<DynamicDocument>, IAggregateFluent<DynamicDocument>>>();
 
-        private SortDefinition<DynamicWrapper> _sort;
-
-
-        protected override IAsyncCursor<DynamicWrapper> Cursor => CreateCursor();
+        private SortDefinition<DynamicDocument> _sort;
 
 
-        public IDocumentAggregateCursor Project(DynamicWrapper projection)
+        protected override IAsyncCursor<DynamicDocument> Cursor => CreateCursor();
+
+
+        public IDocumentAggregateCursor Project(DynamicDocument projection)
         {
             _stages.Add(f => f.Project(ToProjectionDefinition(projection)));
             return this;
@@ -39,11 +39,11 @@ namespace InfinniPlatform.DocumentStorage
 
         public IDocumentAggregateCursor Unwind(string arrayProperty)
         {
-            _stages.Add(f => f.Unwind<DynamicWrapper>(arrayProperty));
+            _stages.Add(f => f.Unwind<DynamicDocument>(arrayProperty));
             return this;
         }
 
-        public IDocumentAggregateCursor Group(DynamicWrapper group)
+        public IDocumentAggregateCursor Group(DynamicDocument group)
         {
             _stages.Add(f => f.Group(ToProjectionDefinition(group)));
             return this;
@@ -51,33 +51,33 @@ namespace InfinniPlatform.DocumentStorage
 
         public IDocumentAggregateCursor Lookup(string foreignDocumentType, string localKeyProperty, string foreignKeyProperty, string resultArrayProperty)
         {
-            _stages.Add(f => f.Lookup<DynamicWrapper, DynamicWrapper>(foreignKeyProperty, localKeyProperty, foreignKeyProperty, resultArrayProperty));
+            _stages.Add(f => f.Lookup<DynamicDocument, DynamicDocument>(foreignKeyProperty, localKeyProperty, foreignKeyProperty, resultArrayProperty));
             return this;
         }
 
         public IDocumentAggregateSortedCursor SortBy(string property)
         {
-            _sort = Builders<DynamicWrapper>.Sort.Ascending(property);
+            _sort = Builders<DynamicDocument>.Sort.Ascending(property);
             return this;
         }
 
         public IDocumentAggregateSortedCursor SortByDescending(string property)
         {
-            _sort = Builders<DynamicWrapper>.Sort.Descending(property);
+            _sort = Builders<DynamicDocument>.Sort.Descending(property);
             return this;
         }
 
         public IDocumentAggregateSortedCursor ThenBy(string property)
         {
-            var thenSort = Builders<DynamicWrapper>.Sort.Ascending(property);
-            _sort = Builders<DynamicWrapper>.Sort.Combine(_sort, thenSort);
+            var thenSort = Builders<DynamicDocument>.Sort.Ascending(property);
+            _sort = Builders<DynamicDocument>.Sort.Combine(_sort, thenSort);
             return this;
         }
 
         public IDocumentAggregateSortedCursor ThenByDescending(string property)
         {
-            var thenSort = Builders<DynamicWrapper>.Sort.Ascending(property);
-            _sort = Builders<DynamicWrapper>.Sort.Combine(_sort, thenSort);
+            var thenSort = Builders<DynamicDocument>.Sort.Ascending(property);
+            _sort = Builders<DynamicDocument>.Sort.Combine(_sort, thenSort);
             return this;
         }
 
@@ -94,13 +94,13 @@ namespace InfinniPlatform.DocumentStorage
         }
 
 
-        private static ProjectionDefinition<DynamicWrapper, DynamicWrapper> ToProjectionDefinition(object projection)
+        private static ProjectionDefinition<DynamicDocument, DynamicDocument> ToProjectionDefinition(object projection)
         {
-            return ((DynamicWrapper)projection).ToBsonDocument();
+            return ((DynamicDocument)projection).ToBsonDocument();
         }
 
 
-        private IAsyncCursor<DynamicWrapper> CreateCursor()
+        private IAsyncCursor<DynamicDocument> CreateCursor()
         {
             var aggregateCursor = _stages.Aggregate(_aggregateCursor, (current, stage) => stage(current));
 

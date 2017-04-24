@@ -35,7 +35,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
         /// <param name="document">Документ для сохранения.</param>
-        public static DocumentUpdateResult SaveOne(this IDocumentStorage target, DynamicWrapper document)
+        public static DocumentUpdateResult SaveOne(this IDocumentStorage target, DynamicDocument document)
         {
             return target.ReplaceOne(document, f => f.Eq("_id", document["_id"]), true);
         }
@@ -44,7 +44,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
         /// <param name="document">Документ для сохранения.</param>
-        public static Task<DocumentUpdateResult> SaveOneAsync(this IDocumentStorage target, DynamicWrapper document)
+        public static Task<DocumentUpdateResult> SaveOneAsync(this IDocumentStorage target, DynamicDocument document)
         {
             return target.ReplaceOneAsync(document, f => f.Eq("_id", document["_id"]), true);
         }
@@ -53,7 +53,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
         /// <param name="documents">Документы для сохранения.</param>
-        public static DocumentBulkResult SaveMany(this IDocumentStorage target, IEnumerable<DynamicWrapper> documents)
+        public static DocumentBulkResult SaveMany(this IDocumentStorage target, IEnumerable<DynamicDocument> documents)
         {
             return target.Bulk(b => b.SaveMany(documents));
         }
@@ -62,7 +62,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
         /// <param name="documents">Документы для сохранения.</param>
-        public static Task<DocumentBulkResult> SaveManyAsync(this IDocumentStorage target, IEnumerable<DynamicWrapper> documents)
+        public static Task<DocumentBulkResult> SaveManyAsync(this IDocumentStorage target, IEnumerable<DynamicDocument> documents)
         {
             return target.BulkAsync(b => b.SaveMany(documents));
         }
@@ -109,7 +109,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
         /// <param name="document">Документ для сохранения.</param>
-        public static IDocumentBulkBuilder SaveOne(this IDocumentBulkBuilder target, DynamicWrapper document)
+        public static IDocumentBulkBuilder SaveOne(this IDocumentBulkBuilder target, DynamicDocument document)
         {
             return target.ReplaceOne(document, f => f.Eq("_id", document["_id"]), true);
         }
@@ -118,7 +118,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
         /// <param name="documents">Документы для сохранения.</param>
-        public static IDocumentBulkBuilder SaveMany(this IDocumentBulkBuilder target, IEnumerable<DynamicWrapper> documents)
+        public static IDocumentBulkBuilder SaveMany(this IDocumentBulkBuilder target, IEnumerable<DynamicDocument> documents)
         {
             foreach (var document in documents)
             {
@@ -158,7 +158,7 @@ namespace InfinniPlatform.DocumentStorage
         /// </summary>
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="document">Документ для сохранения.</param>
-        public static void SaveOne(this IUnitOfWork target, string documentType, DynamicWrapper document)
+        public static void SaveOne(this IUnitOfWork target, string documentType, DynamicDocument document)
         {
             target.ReplaceOne(documentType, document, f => f.Eq("_id", document["_id"]), true);
         }
@@ -189,7 +189,7 @@ namespace InfinniPlatform.DocumentStorage
         /// </summary>
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="documents">Документы для сохранения.</param>
-        public static void SaveMany(this IUnitOfWork target, string documentType, IEnumerable<DynamicWrapper> documents)
+        public static void SaveMany(this IUnitOfWork target, string documentType, IEnumerable<DynamicDocument> documents)
         {
             foreach (var document in documents)
             {

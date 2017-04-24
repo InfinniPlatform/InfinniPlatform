@@ -26,7 +26,7 @@ namespace InfinniPlatform.PrintView.Contract
             // Given
             var target = CreatePrintViewBuilder();
             var template = GetPrintViewExample();
-            var dataSource = new DynamicWrapper { { "Date", DateTime.Now } };
+            var dataSource = new DynamicDocument { { "Date", DateTime.Now } };
 
             // When
             var result = new MemoryStream();
@@ -46,7 +46,7 @@ namespace InfinniPlatform.PrintView.Contract
             // Given
             var target = CreatePrintViewBuilder();
             var template = GetPrintViewExample();
-            var dataSource = new DynamicWrapper { { "Date", DateTime.Now } };
+            var dataSource = new DynamicDocument { { "Date", DateTime.Now } };
 
             // When
             var result = new MemoryStream();

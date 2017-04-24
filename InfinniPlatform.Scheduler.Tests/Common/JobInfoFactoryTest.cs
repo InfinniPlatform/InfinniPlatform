@@ -34,7 +34,7 @@ namespace InfinniPlatform.Scheduler.Common
             var expectedStartTimeUtc = DateTimeOffset.UtcNow;
             var expectedEndTimeUtc = DateTimeOffset.UtcNow;
             var expectedMisfirePolicy = JobMisfirePolicy.FireAndProceed;
-            var expectedData = new DynamicWrapper();
+            var expectedData = new DynamicDocument();
 
             var jobInfo = target.CreateJobInfo<MyJobHandler>(expectedName, expectedGroup, b => b.State(expectedState)
                                                                                                 .Description(expectedDescription)

@@ -8,12 +8,12 @@ using System.Reflection;
 namespace InfinniPlatform.Dynamic
 {
     /// <summary>
-    /// Предоставляет методы перехвата обращений к динамическому объекту типа <see cref="DynamicWrapper"/>.
+    /// Предоставляет методы перехвата обращений к динамическому объекту типа <see cref="DynamicDocument"/>.
     /// </summary>
     /// <remarks>
     /// По факту методы перехвата формируют <see cref="Expression"/>, который представляет собой реальную реакцию динамического объекта на перехваченное обращение.
     /// </remarks>
-    public class DynamicWrapperMetaObject : DynamicMetaObject
+    public class DynamicDocumentMetaObject : DynamicMetaObject
     {
         private static readonly Type ObjectType = typeof(object);
         private static readonly MethodInfo TryGetMemberMethod;
@@ -21,16 +21,16 @@ namespace InfinniPlatform.Dynamic
         private static readonly MethodInfo TryInvokeMember;
 
 
-        static DynamicWrapperMetaObject()
+        static DynamicDocumentMetaObject()
         {
             // Методы динамического объекта, которые будут вызываться при перехвате динамических обращений
-            TryGetMemberMethod = ((MethodCallExpression)(((Expression<Action<DynamicWrapper>>)(d => d.TryGetMember(string.Empty))).Body)).Method;
-            TrySetMemberMethod = ((MethodCallExpression)(((Expression<Action<DynamicWrapper>>)(d => d.TrySetMember(string.Empty, new object()))).Body)).Method;
-            TryInvokeMember = ((MethodCallExpression)(((Expression<Action<DynamicWrapper>>)(d => d.TryInvokeMember(string.Empty, new object[] { }))).Body)).Method;
+            TryGetMemberMethod = ((MethodCallExpression)(((Expression<Action<DynamicDocument>>)(d => d.TryGetMember(string.Empty))).Body)).Method;
+            TrySetMemberMethod = ((MethodCallExpression)(((Expression<Action<DynamicDocument>>)(d => d.TrySetMember(string.Empty, new object()))).Body)).Method;
+            TryInvokeMember = ((MethodCallExpression)(((Expression<Action<DynamicDocument>>)(d => d.TryInvokeMember(string.Empty, new object[] { }))).Body)).Method;
         }
 
 
-        public DynamicWrapperMetaObject(Expression expression, DynamicWrapper value)
+        public DynamicDocumentMetaObject(Expression expression, DynamicDocument value)
             : base(expression, BindingRestrictions.Empty, value)
         {
         }
@@ -58,7 +58,7 @@ namespace InfinniPlatform.Dynamic
         /// </summary>
         public override IEnumerable<string> GetDynamicMemberNames()
         {
-            var value = (DynamicWrapper)Value;
+            var value = (DynamicDocument)Value;
 
             foreach (KeyValuePair<string, object> property in value)
             {
@@ -71,7 +71,7 @@ namespace InfinniPlatform.Dynamic
         /// </summary>
         public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
         {
-            // DynamicWrapper.TryGetMember(binder.Name)
+            // DynamicDocument.TryGetMember(binder.Name)
             var tryGetMemberArgs = new Expression[] { Expression.Constant(binder.Name) };
             var tryGetMemberCall = Expression.Call(DynamicValue, TryGetMemberMethod, tryGetMemberArgs);
 
@@ -83,7 +83,7 @@ namespace InfinniPlatform.Dynamic
         /// </summary>
         public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject memberValue)
         {
-            // DynamicWrapper.TrySetMember(binder.Name, memberValue)
+            // DynamicDocument.TrySetMember(binder.Name, memberValue)
             var trySetMemberArgs = new Expression[] { Expression.Constant(binder.Name), Expression.Convert(memberValue.Expression, ObjectType) };
             var trySetMemberCall = Expression.Call(DynamicValue, TrySetMemberMethod, trySetMemberArgs);
 
@@ -95,7 +95,7 @@ namespace InfinniPlatform.Dynamic
         /// </summary>
         public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder, DynamicMetaObject[] invokeArguments)
         {
-            // DynamicWrapper.TryInvokeMember(binder.Name, invokeArguments) 
+            // DynamicDocument.TryInvokeMember(binder.Name, invokeArguments) 
             var tryInvokeMemberArgs = new Expression[] { Expression.Constant(binder.Name), Expression.NewArrayInit(ObjectType, invokeArguments.Select(a => Expression.Convert(Expression.Constant(a.Value), ObjectType))) };
             var tryInvokeMemberCall = Expression.Call(DynamicValue, TryInvokeMember, tryInvokeMemberArgs);
             var invokeMember = new DynamicMetaObject(tryInvokeMemberCall, TypeRestrictions);

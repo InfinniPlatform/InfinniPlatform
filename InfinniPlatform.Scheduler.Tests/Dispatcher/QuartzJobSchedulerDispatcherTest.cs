@@ -594,7 +594,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
             var expectedContext = new TaskCompletionSource<IJobExecutionContext>();
             Action<IJobExecutionContext> jobAction = c => { expectedContext.SetResult(c); };
 
-            var triggerData = new DynamicWrapper();
+            var triggerData = new DynamicDocument();
 
             var dispatcher = CreateDispatcher(jobAction);
 
@@ -648,7 +648,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
                                                          }
                                                      };
 
-            var triggerData = new DynamicWrapper();
+            var triggerData = new DynamicDocument();
 
             var dispatcher = CreateDispatcher(jobAction);
 

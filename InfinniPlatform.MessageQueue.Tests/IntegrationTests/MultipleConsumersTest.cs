@@ -16,34 +16,34 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         [Test]
         public void MessageAreDividedWithinConsumers()
         {
-            var actualMessagesLists = new List<List<DynamicWrapper>>
+            var actualMessagesLists = new List<List<DynamicDocument>>
                                       {
-                                          new List<DynamicWrapper>(),
-                                          new List<DynamicWrapper>(),
-                                          new List<DynamicWrapper>(),
-                                          new List<DynamicWrapper>()
+                                          new List<DynamicDocument>(),
+                                          new List<DynamicDocument>(),
+                                          new List<DynamicDocument>(),
+                                          new List<DynamicDocument>()
                                       };
 
-            DynamicWrapper[] assertMessages =
+            DynamicDocument[] assertMessages =
             {
-                new DynamicWrapper { { "SomeField", "Message1" } },
-                new DynamicWrapper { { "SomeField", "Message2" } },
-                new DynamicWrapper { { "SomeField", "Message3" } },
-                new DynamicWrapper { { "SomeField", "Message4" } },
-                new DynamicWrapper { { "SomeField", "Message5" } },
-                new DynamicWrapper { { "SomeField", "Message6" } },
-                new DynamicWrapper { { "SomeField", "Message7" } },
-                new DynamicWrapper { { "SomeField", "Message8" } }
+                new DynamicDocument { { "SomeField", "Message1" } },
+                new DynamicDocument { { "SomeField", "Message2" } },
+                new DynamicDocument { { "SomeField", "Message3" } },
+                new DynamicDocument { { "SomeField", "Message4" } },
+                new DynamicDocument { { "SomeField", "Message5" } },
+                new DynamicDocument { { "SomeField", "Message6" } },
+                new DynamicDocument { { "SomeField", "Message7" } },
+                new DynamicDocument { { "SomeField", "Message8" } }
             };
 
             var completeEvent = new CountdownEvent(assertMessages.Length);
 
             ITaskConsumer[] taskConsumers =
             {
-                new DynamicWrapperTaskConsumer(actualMessagesLists[0], completeEvent),
-                new DynamicWrapperTaskConsumer(actualMessagesLists[1], completeEvent),
-                new DynamicWrapperTaskConsumer(actualMessagesLists[2], completeEvent),
-                new DynamicWrapperTaskConsumer(actualMessagesLists[3], completeEvent)
+                new DynamicDocumentTaskConsumer(actualMessagesLists[0], completeEvent),
+                new DynamicDocumentTaskConsumer(actualMessagesLists[1], completeEvent),
+                new DynamicDocumentTaskConsumer(actualMessagesLists[2], completeEvent),
+                new DynamicDocumentTaskConsumer(actualMessagesLists[3], completeEvent)
             };
 
             RegisterConsumers(taskConsumers, null);
@@ -51,13 +51,13 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
             var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
-                producerBase.PublishDynamic(message, typeof(DynamicWrapper).FullName);
+                producerBase.PublishDynamic(message, typeof(DynamicDocument).FullName);
             }
 
             const int timeout = 500;
             Assert.IsTrue(completeEvent.Wait(timeout), $"Failed finish message consuming in {timeout} ms.");
 
-            var actualMessages = new List<DynamicWrapper>();
+            var actualMessages = new List<DynamicDocument>();
             foreach (var list in actualMessagesLists)
             {
                 CollectionAssert.IsNotEmpty(list);

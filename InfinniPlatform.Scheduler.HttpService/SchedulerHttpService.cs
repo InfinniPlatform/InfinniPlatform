@@ -81,27 +81,27 @@ namespace InfinniPlatform.Scheduler
             var plannedCount = await _jobScheduler.GetStatus(i => i.Count(j => j.State == JobState.Planned));
             var pausedCount = await _jobScheduler.GetStatus(i => i.Count(j => j.State == JobState.Paused));
 
-            var status = new DynamicWrapper
+            var status = new DynamicDocument
                          {
                              {
                                  "isStarted", isStarted
                              },
                              {
-                                 "all", new DynamicWrapper
+                                 "all", new DynamicDocument
                                         {
                                             { "count", totalCount },
                                             { "ref", $"{request.BasePath}/{Name}/jobs?skip=0&take=10" }
                                         }
                              },
                              {
-                                 "planned", new DynamicWrapper
+                                 "planned", new DynamicDocument
                                             {
                                                 { "count", plannedCount },
                                                 { "ref", $"{request.BasePath}/{Name}/jobs?state=planned&skip=0&take=10" }
                                             }
                              },
                              {
-                                 "paused", new DynamicWrapper
+                                 "paused", new DynamicDocument
                                            {
                                                { "count", pausedCount },
                                                { "ref", $"{request.BasePath}/{Name}/jobs?state=paused&skip=0&take=10" }
@@ -109,7 +109,7 @@ namespace InfinniPlatform.Scheduler
                              }
                          };
 
-            return new ServiceResult<DynamicWrapper> { Success = true, Result = status };
+            return new ServiceResult<DynamicDocument> { Success = true, Result = status };
         }
 
 
@@ -142,7 +142,7 @@ namespace InfinniPlatform.Scheduler
 
                                                          i = i.Skip(skip).Take(take);
 
-                                                         return i.Select(j => new DynamicWrapper
+                                                         return i.Select(j => new DynamicDocument
                                                                               {
                                                                                   { "id", j.Info.Id },
                                                                                   { "ref", $"{request.BasePath}/{Name}/jobs/{j.Info.Id}" }
@@ -150,7 +150,7 @@ namespace InfinniPlatform.Scheduler
                                                                  .ToList();
                                                      });
 
-            return new ServiceResult<List<DynamicWrapper>> { Success = true, Result = jobs };
+            return new ServiceResult<List<DynamicDocument>> { Success = true, Result = jobs };
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace InfinniPlatform.Scheduler
             List<string> jobIds = TryGetValues(request.Query.ids);
 
             // Данные для выполнения задания
-            var jobData = _jsonObjectSerializer.Deserialize<DynamicWrapper>(request.Content);
+            var jobData = _jsonObjectSerializer.Deserialize<DynamicDocument>(request.Content);
 
             // Если список пустой, досрочно вызываются все задания
             if (jobIds == null || jobIds.Count <= 0)
@@ -394,7 +394,7 @@ namespace InfinniPlatform.Scheduler
 
             public JobMisfirePolicy MisfirePolicy { get; set; }
 
-            public DynamicWrapper Data { get; set; }
+            public DynamicDocument Data { get; set; }
         }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local

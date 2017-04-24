@@ -53,12 +53,12 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             Assert.AreEqual(time1.TotalSeconds, dynamicInstance["TimeProperty"]);
             Assert.AreEqual(time2.TotalSeconds, dynamicInstance["NullableTimeProperty"]);
             Assert.IsNotNull(dynamicInstance["ComplexProperty"]);
-            Assert.AreEqual(time3.TotalSeconds, ((DynamicWrapper)dynamicInstance["ComplexProperty"])["TimeProperty"]);
-            Assert.IsNull(((DynamicWrapper)dynamicInstance["ComplexProperty"])["NullableTimeProperty"]);
+            Assert.AreEqual(time3.TotalSeconds, ((DynamicDocument)dynamicInstance["ComplexProperty"])["TimeProperty"]);
+            Assert.IsNull(((DynamicDocument)dynamicInstance["ComplexProperty"])["NullableTimeProperty"]);
         }
 
         [Test]
-        public void ShouldSaveDynamicWrapperWithTime()
+        public void ShouldSaveDynamicDocumentWithTime()
         {
             // Given
 
@@ -66,21 +66,21 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var time2 = Time.Now.AddDays(2);
             var time3 = Time.Now.AddDays(3);
 
-            var instance = new DynamicWrapper
+            var instance = new DynamicDocument
                            {
                                { "_id", 1 },
                                { "TimeProperty", time1 },
                                { "NullableTimeProperty", time2 },
                                {
-                                   "ComplexProperty", new DynamicWrapper
+                                   "ComplexProperty", new DynamicDocument
                                                       {
                                                           { "TimeProperty", time3 }
                                                       }
                                }
                            };
 
-            var classStorage = MongoTestHelpers.GetEmptyStorageProvider<TimeClassExample>(nameof(ShouldSaveDynamicWrapperWithTime));
-            var dynamicStorage = MongoTestHelpers.GetStorageProvider(nameof(ShouldSaveDynamicWrapperWithTime));
+            var classStorage = MongoTestHelpers.GetEmptyStorageProvider<TimeClassExample>(nameof(ShouldSaveDynamicDocumentWithTime));
+            var dynamicStorage = MongoTestHelpers.GetStorageProvider(nameof(ShouldSaveDynamicDocumentWithTime));
 
             // When
 
@@ -102,8 +102,8 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             Assert.AreEqual(time1.TotalSeconds, dynamicInstance["TimeProperty"]);
             Assert.AreEqual(time2.TotalSeconds, dynamicInstance["NullableTimeProperty"]);
             Assert.IsNotNull(dynamicInstance["ComplexProperty"]);
-            Assert.AreEqual(time3.TotalSeconds, ((DynamicWrapper)dynamicInstance["ComplexProperty"])["TimeProperty"]);
-            Assert.IsNull(((DynamicWrapper)dynamicInstance["ComplexProperty"])["NullableTimeProperty"]);
+            Assert.AreEqual(time3.TotalSeconds, ((DynamicDocument)dynamicInstance["ComplexProperty"])["TimeProperty"]);
+            Assert.IsNull(((DynamicDocument)dynamicInstance["ComplexProperty"])["NullableTimeProperty"]);
         }
 
 

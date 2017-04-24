@@ -73,25 +73,25 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или возвращает исключение, если хранилище уже содержит указанный документ.
         /// </summary>
         /// <param name="document">Документ для вставки.</param>
-        void InsertOne(DynamicWrapper document);
+        void InsertOne(DynamicDocument document);
 
         /// <summary>
         /// Вставляет один документ в хранилище или возвращает исключение, если хранилище уже содержит указанный документ.
         /// </summary>
         /// <param name="document">Документ для вставки.</param>
-        Task InsertOneAsync(DynamicWrapper document);
+        Task InsertOneAsync(DynamicDocument document);
 
         /// <summary>
         /// Вставляет набор документов хранилище или возвращает исключение, если хранилище уже содержит один из указанных документов.
         /// </summary>
         /// <param name="documents">Список документов для вставки.</param>
-        void InsertMany(IEnumerable<DynamicWrapper> documents);
+        void InsertMany(IEnumerable<DynamicDocument> documents);
 
         /// <summary>
         /// Вставляет набор документов хранилище или возвращает исключение, если хранилище уже содержит один из указанных документов.
         /// </summary>
         /// <param name="documents">Список документов для вставки.</param>
-        Task InsertManyAsync(IEnumerable<DynamicWrapper> documents);
+        Task InsertManyAsync(IEnumerable<DynamicDocument> documents);
 
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <param name="replacement">Документ замены.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
-        DocumentUpdateResult ReplaceOne(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false);
+        DocumentUpdateResult ReplaceOne(DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false);
 
         /// <summary>
         /// Заменяет первый найденный документ, удовлетворяющий указанному фильтру.
@@ -141,7 +141,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <param name="replacement">Документ замены.</param>
         /// <param name="filter">Фильтр для поиска документов.</param>
         /// <param name="insertIfNotExists">Следует ли создать документ, если ничего не найдено.</param>
-        Task<DocumentUpdateResult> ReplaceOneAsync(DynamicWrapper replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false);
+        Task<DocumentUpdateResult> ReplaceOneAsync(DynamicDocument replacement, Func<IDocumentFilterBuilder, object> filter = null, bool insertIfNotExists = false);
 
 
         /// <summary>
