@@ -3,7 +3,6 @@
 using InfinniPlatform.Diagnostics;
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Hosting;
-using InfinniPlatform.Http;
 using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Scheduler.Common;
@@ -63,7 +62,6 @@ namespace InfinniPlatform.Scheduler.IoC
             // Информация о состоянии планировщика заданий
             builder.RegisterType<SchedulerStatusProvider>()
                    .As<ISubsystemStatusProvider>()
-                   .As<IHttpService>()
                    .SingleInstance();
 
             // Storage

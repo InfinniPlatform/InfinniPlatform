@@ -114,11 +114,11 @@ namespace InfinniPlatform.DocumentStorage
         {
             var mongoClientSettings = new MongoClientSettings();
 
-            if (options.Nodes != null && options.Nodes.Length > 0)
+            if (options.Nodes != null)
             {
                 var servers = new List<MongoServerAddress>();
 
-                foreach (var server in options.Nodes)
+                foreach (var server in options.Nodes.Distinct())
                 {
                     MongoServerAddress serverAddress;
 
@@ -138,7 +138,8 @@ namespace InfinniPlatform.DocumentStorage
                 && !string.IsNullOrWhiteSpace(options.UserName)
                 && !string.IsNullOrWhiteSpace(options.Password))
             {
-                var mongoCredential = MongoCredential.CreateCredential(databaseName, options.UserName, options.Password);
+                // To search users will be used the admin database
+                var mongoCredential = MongoCredential.CreateCredential("admin", options.UserName, options.Password);
 
                 mongoClientSettings.Credentials = new[] { mongoCredential };
             }

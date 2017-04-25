@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.DocumentStorage
+﻿using System.Collections.Generic;
+
+namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Настройки хранилища документов MongoDB.
@@ -22,7 +24,7 @@
         /// <remarks>
         /// Каждый узел должен быть представлен в формате "host:port".
         /// </remarks>
-        public string[] Nodes { get; set; }
+        public IEnumerable<string> Nodes { get; set; }
 
         /// <summary>
         /// Имя пользователя в механизме аутентификации по умолчанию.
