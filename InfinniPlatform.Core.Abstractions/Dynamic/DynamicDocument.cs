@@ -19,7 +19,18 @@ namespace InfinniPlatform.Dynamic
     /// </remarks>
     public class DynamicDocument : IDynamicMetaObjectProvider, IEnumerable, ICustomTypeDescriptor
     {
-        private readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
+        public DynamicDocument()
+        {
+            _properties = new Dictionary<string, object>();
+        }
+
+        public DynamicDocument(IDictionary<string, object> properties)
+        {
+            _properties = properties ?? new Dictionary<string, object>();
+        }
+
+
+        private readonly IDictionary<string, object> _properties;
 
 
         /// <summary>
