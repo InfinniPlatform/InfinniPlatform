@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace InfinniPlatform.Settings
+namespace InfinniPlatform
 {
     /// <summary>
     /// Настройки приложения.

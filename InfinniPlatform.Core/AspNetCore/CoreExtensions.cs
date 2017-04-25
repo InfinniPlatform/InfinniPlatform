@@ -10,7 +10,6 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 using InfinniPlatform.IoC.Http;
-using InfinniPlatform.Settings;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -11,7 +11,6 @@ using InfinniPlatform.Scheduler.Diagnostics;
 using InfinniPlatform.Scheduler.Dispatcher;
 using InfinniPlatform.Scheduler.Hosting;
 using InfinniPlatform.Scheduler.Storage;
-using InfinniPlatform.Settings;
 
 using Quartz;
 using Quartz.Logging;
@@ -38,11 +37,6 @@ namespace InfinniPlatform.Scheduler.IoC
             builder.RegisterInstance(_options).AsSelf().SingleInstance();
 
             // Common
-
-            // Настройки планировщика заданий
-            builder.RegisterFactory(GetSchedulerSettings)
-                   .As<QuartzSchedulerOptions>()
-                   .SingleInstance();
 
             // Сериализатор типов обработчиков заданий
             builder.RegisterType<JobHandlerTypeSerializer>()
@@ -131,12 +125,6 @@ namespace InfinniPlatform.Scheduler.IoC
                    .SingleInstance();
 
             builder.RegisterJobHandlers(schedulerAssembly);
-        }
-
-
-        private static QuartzSchedulerOptions GetSchedulerSettings(IContainerResolver resolver)
-        {
-            return resolver.Resolve<IAppConfiguration>().GetSection<QuartzSchedulerOptions>(QuartzSchedulerOptions.SectionName);
         }
     }
 }

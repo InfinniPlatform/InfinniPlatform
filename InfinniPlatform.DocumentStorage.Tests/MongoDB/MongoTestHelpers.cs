@@ -2,7 +2,6 @@
 
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Serialization;
-using InfinniPlatform.Settings;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {

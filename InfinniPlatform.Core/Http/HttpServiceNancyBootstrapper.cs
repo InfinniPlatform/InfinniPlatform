@@ -7,7 +7,6 @@ using System.Runtime.Loader;
 using InfinniPlatform.Extensions;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Properties;
-using InfinniPlatform.Settings;
 
 using Nancy;
 using Nancy.Bootstrapper;

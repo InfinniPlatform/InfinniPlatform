@@ -8,7 +8,6 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.Hosting;
 using InfinniPlatform.MessageQueue.Management;
 using InfinniPlatform.Serialization;
-using InfinniPlatform.Settings;
 
 using Moq;
 

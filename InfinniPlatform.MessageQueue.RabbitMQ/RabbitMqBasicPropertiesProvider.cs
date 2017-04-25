@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Serialization;
-using InfinniPlatform.Settings;
 
 using RabbitMQ.Client.Framing;
 

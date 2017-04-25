@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Logging;
-using InfinniPlatform.Settings;
 
 using RabbitMQ.Client;
 

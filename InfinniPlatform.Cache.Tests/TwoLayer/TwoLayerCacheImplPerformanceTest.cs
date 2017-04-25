@@ -3,7 +3,6 @@ using System.Diagnostics;
 
 using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue;
-using InfinniPlatform.Settings;
 using InfinniPlatform.Tests;
 
 using Moq;

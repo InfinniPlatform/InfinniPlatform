@@ -1,0 +1,41 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/appConfig.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "appConfig",
+  "description": "InfinniPlatform application configuration.",
+  "type": "object",
+  "properties": {
+    "app": {
+      "description": "Настройки приложения.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/app.json"
+    },
+    "mongodbDocumentStorage": {
+      "description": "Настройки хранилища документов MongoDB.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/mongodbDocumentStorage.json"
+    },
+    "fileSystemBlobStorage": {
+      "description": "Настройки хранилища BLOB в файловой системе.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/fileSystemBlobStorage.json"
+    },
+    "rabbitmqMessageQueue": {
+      "description": "Настройки очереди сообщений на основе RabbitMQ.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/rabbitmqMessageQueue.json"
+    },
+    "redisSharedCache": {
+      "description": "Настройки распределенного кэша на основе Redis.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/redisSharedCache.json"
+    },
+    "authInternal": {
+      "description": "Настройки внутреннего провайдера аутентификации.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/authInternal.json"
+    },
+    "quartzScheduler": {
+      "description": "Настройки планировщика заданий Quartz.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/quartzScheduler.json"
+    },
+    "printView": {
+      "description": "Настройки печатных представлений.",
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/printView.json"
+    }
+  }
+}

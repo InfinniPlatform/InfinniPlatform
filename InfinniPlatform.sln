@@ -65,18 +65,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{BFF8197C-B04D-4E0F-9FCA-172A144E6592}"
 	ProjectSection(SolutionItems) = preProject
-		Files\Config\Schema\AgentInfo.json = Files\Config\Schema\AgentInfo.json
-		Files\Config\Schema\App.json = Files\Config\Schema\App.json
-		Files\Config\Schema\AuthCookie.json = Files\Config\Schema\AuthCookie.json
-		Files\Config\Schema\Cache.json = Files\Config\Schema\Cache.json
-		Files\Config\Schema\Common.json = Files\Config\Schema\Common.json
-		Files\Config\Schema\FileSystemBlobStorage.json = Files\Config\Schema\FileSystemBlobStorage.json
-		Files\Config\Schema\MongoDbDocumentStorage.json = Files\Config\Schema\MongoDbDocumentStorage.json
-		Files\Config\Schema\PrintView.json = Files\Config\Schema\PrintView.json
-		Files\Config\Schema\QuartzScheduler.json = Files\Config\Schema\QuartzScheduler.json
-		Files\Config\Schema\RabbitMqMessageQueue.json = Files\Config\Schema\RabbitMqMessageQueue.json
-		Files\Config\Schema\RedisSharedCache.json = Files\Config\Schema\RedisSharedCache.json
-		Files\Config\Schema\UserStorage.json = Files\Config\Schema\UserStorage.json
+		Files\Config\Schema\app.json = Files\Config\Schema\app.json
+		Files\Config\Schema\appConfig.json = Files\Config\Schema\appConfig.json
+		Files\Config\Schema\authInternal.json = Files\Config\Schema\authInternal.json
+		Files\Config\Schema\fileSystemBlobStorage.json = Files\Config\Schema\fileSystemBlobStorage.json
+		Files\Config\Schema\mongodbDocumentStorage.json = Files\Config\Schema\mongodbDocumentStorage.json
+		Files\Config\Schema\printView.json = Files\Config\Schema\printView.json
+		Files\Config\Schema\quartzScheduler.json = Files\Config\Schema\quartzScheduler.json
+		Files\Config\Schema\rabbitmqMessageQueue.json = Files\Config\Schema\rabbitmqMessageQueue.json
+		Files\Config\Schema\redisSharedCache.json = Files\Config\Schema\redisSharedCache.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage.Abstractions", "InfinniPlatform.BlobStorage.Abstractions\InfinniPlatform.BlobStorage.Abstractions.csproj", "{FEED9241-B996-4942-ABCC-5813C440C8BB}"

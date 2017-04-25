@@ -13,7 +13,6 @@ using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
-using InfinniPlatform.Settings;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -24,8 +23,17 @@ namespace InfinniPlatform.Auth.IoC
 {
     public class AuthInternalContainerModule : IContainerModule
     {
+        public AuthInternalContainerModule(AuthInternalOptions options)
+        {
+            _options = options;
+        }
+
+        private readonly AuthInternalOptions _options;
+
         public void Load(IContainerBuilder builder)
         {
+            builder.RegisterInstance(_options).AsSelf().SingleInstance();
+
             // AspNet.Identity
 
             builder.RegisterFactory(CreateUserStore)
@@ -61,10 +69,6 @@ namespace InfinniPlatform.Auth.IoC
 
             // UserStorage
 
-            builder.RegisterFactory(GetUserStorageSettings)
-                   .As<UserStorageSettings>()
-                   .SingleInstance();
-
             builder.RegisterType<AppUserStoreCache>()
                    .As<IUserCacheSynchronizer>()
                    .AsSelf()
@@ -87,10 +91,6 @@ namespace InfinniPlatform.Auth.IoC
                    .SingleInstance();
 
             // Cookie
-
-            builder.RegisterFactory(GetSettings)
-                   .As<AuthCookieHttpMiddlewareSettings>()
-                   .SingleInstance();
 
             builder.RegisterType<AuthCookieHttpMiddleware>()
                    .As<IHttpMiddleware>()
@@ -140,11 +140,6 @@ namespace InfinniPlatform.Auth.IoC
             return userManager;
         }
 
-        private static UserStorageSettings GetUserStorageSettings(IContainerResolver resolver)
-        {
-            return resolver.Resolve<IAppConfiguration>().GetSection<UserStorageSettings>(UserStorageSettings.SectionName);
-        }
-
         private static UserStore<IdentityUser> CreateUserStore(IContainerResolver resolver)
         {
             var documentStorage = resolver.Resolve<ISystemDocumentStorage<IdentityUser>>();
@@ -157,11 +152,6 @@ namespace InfinniPlatform.Auth.IoC
             var documentStorage = resolver.Resolve<IDocumentStorage<IdentityRole>>();
 
             return new RoleStore<IdentityRole>(documentStorage);
-        }
-
-        private static AuthCookieHttpMiddlewareSettings GetSettings(IContainerResolver resolver)
-        {
-            return resolver.Resolve<IAppConfiguration>().GetSection<AuthCookieHttpMiddlewareSettings>(AuthCookieHttpMiddlewareSettings.SectionName);
         }
     }
 }

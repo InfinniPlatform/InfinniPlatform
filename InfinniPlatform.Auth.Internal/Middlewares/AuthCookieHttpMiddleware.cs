@@ -12,12 +12,12 @@ namespace InfinniPlatform.Auth.Middlewares
     /// </summary>
     internal class AuthCookieHttpMiddleware : HttpMiddlewareBase<AuthCookieMiddlewareOptions>
     {
-        public AuthCookieHttpMiddleware(AuthCookieHttpMiddlewareSettings settings) : base(HttpMiddlewareType.AuthenticationBarrier)
+        public AuthCookieHttpMiddleware(AuthInternalOptions options) : base(HttpMiddlewareType.AuthenticationBarrier)
         {
-            _settings = settings;
+            _options = options;
         }
 
-        private readonly AuthCookieHttpMiddlewareSettings _settings;
+        private readonly AuthInternalOptions _options;
 
         public override void Configure(IApplicationBuilder app, AuthCookieMiddlewareOptions options)
         {
@@ -29,21 +29,15 @@ namespace InfinniPlatform.Auth.Middlewares
             var applicationCookieOptions = defaultCookiesOptions.ApplicationCookie;
             var externalCookieOptions = defaultCookiesOptions.ExternalCookie;
 
-            applicationCookieOptions.LoginPath = new PathString(_settings.LoginPath);
-            applicationCookieOptions.LogoutPath = new PathString(_settings.LogoutPath);
+            applicationCookieOptions.LoginPath = new PathString(_options.LoginPath);
+            applicationCookieOptions.LogoutPath = new PathString(_options.LogoutPath);
             applicationCookieOptions.AutomaticAuthenticate = true;
             applicationCookieOptions.AutomaticChallenge = true;
 
-            externalCookieOptions.LoginPath = new PathString(_settings.LoginPath);
-            externalCookieOptions.LogoutPath = new PathString(_settings.LogoutPath);
+            externalCookieOptions.LoginPath = new PathString(_options.LoginPath);
+            externalCookieOptions.LogoutPath = new PathString(_options.LogoutPath);
             externalCookieOptions.AutomaticAuthenticate = true;
             externalCookieOptions.AutomaticChallenge = true;
-
-            if (!string.IsNullOrEmpty(_settings.CookieDomain))
-            {
-                applicationCookieOptions.CookieDomain = _settings.CookieDomain;
-                externalCookieOptions.CookieDomain = _settings.CookieDomain;
-            }
 
             app.UseCookieAuthentication(applicationCookieOptions);
             app.UseCookieAuthentication(defaultCookiesOptions.ExternalCookie);

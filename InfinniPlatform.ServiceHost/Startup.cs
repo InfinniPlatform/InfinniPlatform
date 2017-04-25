@@ -29,10 +29,10 @@ namespace InfinniPlatform.ServiceHost
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var configureServices = services.AddAuth()
-                                            .AddLog4NetLogging()
+            var configureServices = services.AddLog4NetLogging()
+                                            .AddAuthInternal(_configuration)
                                             .AddInMemoryCache()
-                                            .AddRedisSharedCache()
+                                            .AddRedisSharedCache(_configuration)
                                             .AddTwoLayerCache()
                                             .AddFileSystemBlobStorage(_configuration)
                                             .AddBlobStorageHttpService()

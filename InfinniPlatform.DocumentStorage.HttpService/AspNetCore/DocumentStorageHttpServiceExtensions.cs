@@ -8,9 +8,9 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class DocumentStorageHttpServiceExtensions
     {
-        public static IServiceCollection AddDocumentStorageHttpService(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddDocumentStorageHttpService(this IServiceCollection services)
         {
-            return serviceCollection.AddSingleton(provider => new DocumentStorageHttpServiceContainerModule());
+            return services.AddSingleton(provider => new DocumentStorageHttpServiceContainerModule());
         }
     }
 }

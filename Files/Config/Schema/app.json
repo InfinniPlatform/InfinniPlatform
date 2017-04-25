@@ -1,7 +1,7 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/App.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/app.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "App",
+  "title": "app",
   "description": "Настройки приложения.",
   "type": "object",
   "properties": {

@@ -8,9 +8,9 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class BlobStorageHttpServiceExtensions
     {
-        public static IServiceCollection AddBlobStorageHttpService(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddBlobStorageHttpService(this IServiceCollection services)
         {
-            return serviceCollection.AddSingleton(provider => new BlobStorageHttpServiceContainerModule());
+            return services.AddSingleton(provider => new BlobStorageHttpServiceContainerModule());
         }
     }
 }

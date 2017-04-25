@@ -5,7 +5,6 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Properties;
-using InfinniPlatform.Settings;
 
 namespace InfinniPlatform.Scheduler.Queues
 {

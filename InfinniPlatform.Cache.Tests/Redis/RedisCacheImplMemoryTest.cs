@@ -1,7 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.Logging;
-using InfinniPlatform.Settings;
 using InfinniPlatform.Tests;
 
 using Moq;

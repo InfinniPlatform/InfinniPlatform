@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using InfinniPlatform.Auth.Identity.MongoDb;
 using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue;
-using InfinniPlatform.Settings;
 
 using Microsoft.Extensions.Caching.Memory;
 
@@ -15,14 +14,14 @@ namespace InfinniPlatform.Auth.UserStorage
 {
     internal class AppUserStoreCache : IUserCacheSynchronizer
     {
-        public AppUserStoreCache(UserStorageSettings userStorageSettings,
+        public AppUserStoreCache(AuthInternalOptions options,
                                  ILog log,
                                  IBroadcastProducer broadcastProducer,
                                  AppOptions appOptions)
         {
-            var cacheTimeout = userStorageSettings.UserCacheTimeout <= 0
-                                   ? UserStorageSettings.DefaultUserCacheTimeout
-                                   : userStorageSettings.UserCacheTimeout;
+            var cacheTimeout = options.UserCacheTimeout <= 0
+                                   ? AuthInternalOptions.DefaultUserCacheTimeout
+                                   : options.UserCacheTimeout;
 
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
             _log = log;

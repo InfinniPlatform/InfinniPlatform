@@ -8,9 +8,9 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class HeartbeatHttpServiceExtensions
     {
-        public static IServiceCollection AddHeartbeatHttpService(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddHeartbeatHttpService(this IServiceCollection services)
         {
-            return serviceCollection.AddSingleton(provider => new HeartbeatHttpServiceContainerModule());
+            return services.AddSingleton(provider => new HeartbeatHttpServiceContainerModule());
         }
     }
 }

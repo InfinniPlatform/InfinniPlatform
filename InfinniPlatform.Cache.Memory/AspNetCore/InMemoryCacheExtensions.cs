@@ -8,9 +8,9 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class InMemoryCacheExtensions
     {
-        public static IServiceCollection AddInMemoryCache(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddInMemoryCache(this IServiceCollection services)
         {
-            return serviceCollection.AddSingleton(provider => new InMemoryCacheContainerModule());
+            return services.AddSingleton(provider => new InMemoryCacheContainerModule());
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using InfinniPlatform.Cache.Properties;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Settings;
 
 using StackExchange.Redis;
 

@@ -8,9 +8,9 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class TwoLayerCacheExtensions
     {
-        public static IServiceCollection AddTwoLayerCache(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddTwoLayerCache(this IServiceCollection services)
         {
-            return serviceCollection.AddSingleton(provider => new TwoLayerCacheContainerModule());
+            return services.AddSingleton(provider => new TwoLayerCacheContainerModule());
         }
     }
 }

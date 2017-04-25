@@ -1,0 +1,28 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/authInternal.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "authInternal",
+  "description": "Настройки внутреннего провайдера аутентификации.",
+  "type": "object",
+  "properties": {
+    "UserCacheTimeout": {
+      "description": "Таймаут сброса кэша пользователей в минутах.",
+      "type": "integer",
+      "default": 30,
+      "minimum": 1
+    },
+    "LoginPath": {
+      "description": "Путь для перенаправления при возврате 401 Unauthorized.",
+      "type": "string",
+      "default": null
+    },
+    "LogoutPath": {
+      "description": "Путь для перенаправления при выходе из системы.",
+      "type": "string",
+      "default": null
+    }
+  },
+  "required": [
+    "UserCacheTimeout"
+  ]
+}

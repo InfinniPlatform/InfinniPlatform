@@ -8,9 +8,9 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class Log4NetExtensions
     {
-        public static IServiceCollection AddLog4NetLogging(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddLog4NetLogging(this IServiceCollection services)
         {
-            return serviceCollection.AddSingleton(provider => new Log4NetContainerModule());
+            return services.AddSingleton(provider => new Log4NetContainerModule());
         }
     }
 }

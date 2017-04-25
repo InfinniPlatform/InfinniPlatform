@@ -8,9 +8,9 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class SchedulerHttpServiceExtensions
     {
-        public static IServiceCollection AddSchedulerHttpService(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddSchedulerHttpService(this IServiceCollection services)
         {
-            return serviceCollection.AddSingleton(provider => new SchedulerHttpServiceContainerModule());
+            return services.AddSingleton(provider => new SchedulerHttpServiceContainerModule());
         }
     }
 }

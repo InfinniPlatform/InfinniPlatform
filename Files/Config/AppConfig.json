@@ -1,5 +1,5 @@
 ﻿{
-  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/Common.json",
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/appConfig.json",
   "app": {
     "AppName": "InfinniPlatform",
     "AppInstance": "",
@@ -12,23 +12,15 @@
     "EmbeddedResourceMapping": {
     }
   },
-  "redisSharedCache": {
-    "Host": "localhost",
-    "Port": 6379,
-    "Database": 0,
-    "Password": "TeamCity",
-    "ReadBufferSize": 512,
-    "WriteBufferSize": 512,
-    "ConnectionTimeout": 1000,
-    "MaxReconnectRetries": 10,
-    "PoolSize": 0
-  },
   "mongodbDocumentStorage": {
     "Nodes": [
       "localhost:27017"
     ],
     "UserName": "",
     "Password": ""
+  },
+  "fileSystemBlobStorage": {
+    "BaseDirectory": "%INFINNI_BLOBSTORAGE%"
   },
   "rabbitmqMessageQueue": {
     "HostName": "localhost",
@@ -40,25 +32,28 @@
     "MaxConcurrentThreads": 200,
     "ReconnectTimeout": 5
   },
-  "fileSystemBlobStorage": {
-    "BaseDirectory": "%INFINNI_BLOBSTORAGE%"
+  "redisSharedCache": {
+    "Host": "localhost",
+    "Port": 6379,
+    "Database": 0,
+    "Password": "TeamCity",
+    "ReadBufferSize": 512,
+    "WriteBufferSize": 512,
+    "ConnectionTimeout": 1000,
+    "MaxReconnectRetries": 10,
+    "PoolSize": 0
   },
-  "userStorage": {
-    "UserCacheTimeout": 30
+  "authInternal": {
+    "UserCacheTimeout": 30,
+    "LoginPath": "/",
+    "LogoutPath": "/"
   },
-  "cache": {
-    "Type": "Memory"
+  "quartzScheduler": {
+    "ExpireHistoryAfter": 30
   },
   "printView": {
     "TempDirectory": "",
     "WkHtmlToPdfPath": "",
     "WkHtmlToPdfArguments": ""
-  },
-  "quartzScheduler": {
-    "ExpireHistoryAfter": null
-  },
-  "authCookie": {
-    "LoginPath": "/Auth/SignInInternal",
-    "LogoutPath": "/Auth/SignOut"
   }
 }

@@ -1,7 +1,7 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/MongoDbDocumentStorage.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/mongodbDocumentStorage.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "MongoDbDocumentStorage",
+  "title": "mongodbDocumentStorage",
   "description": "Настройки хранилища документов MongoDB.",
   "type": "object",
   "properties": {

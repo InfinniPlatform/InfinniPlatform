@@ -7,7 +7,6 @@ using InfinniPlatform.IoC.Http;
 using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
 using InfinniPlatform.Session;
-using InfinniPlatform.Settings;
 
 namespace InfinniPlatform.IoC
 {

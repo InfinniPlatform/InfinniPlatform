@@ -1,7 +1,7 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/RedisSharedCache.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/redisSharedCache.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "RedisSharedCache",
+  "title": "redisSharedCache",
   "description": "Настройки распределенного кэша на основе Redis.",
   "type": "object",
   "properties": {
