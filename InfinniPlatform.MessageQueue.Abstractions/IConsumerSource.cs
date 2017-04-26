@@ -5,7 +5,7 @@ namespace InfinniPlatform.MessageQueue
     /// <summary>
     /// Источник потребителей сообщений.
     /// </summary>
-    public interface IMessageConsumerSource
+    public interface IConsumerSource
     {
         /// <summary>
         /// Возвращает перечисление потребителей сообщений из очереди.

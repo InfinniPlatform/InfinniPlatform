@@ -4,9 +4,9 @@ using InfinniPlatform.MessageQueue;
 
 namespace InfinniPlatform.Auth.UserStorage
 {
-    internal class AuthInternalMessageConsumerSource : IMessageConsumerSource
+    internal class AuthInternalConsumerSource : IConsumerSource
     {
-        public AuthInternalMessageConsumerSource(AppUserStoreCacheConsumer userStoreCacheConsumer)
+        public AuthInternalConsumerSource(AppUserStoreCacheConsumer userStoreCacheConsumer)
         {
             _userStoreCacheConsumer = userStoreCacheConsumer;
         }

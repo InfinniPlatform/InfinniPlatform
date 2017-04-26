@@ -43,6 +43,10 @@ namespace InfinniPlatform.MessageQueue.IoC
                    .AsSelf()
                    .SingleInstance();
 
+            builder.RegisterType<DefaultConsumerSource>()
+                   .As<IConsumerSource>()
+                   .SingleInstance();
+
             // Producers
 
             builder.RegisterType<RabbitMqOnDemandConsumer>()

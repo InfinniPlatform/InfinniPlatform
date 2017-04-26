@@ -21,7 +21,7 @@ namespace InfinniPlatform.MessageQueue.Hosting
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="log">Лог.</param>
         public RabbitMqMessageQueueInitializer(IMessageQueueConsumersManager consumersManager,
-                                               IEnumerable<IMessageConsumerSource> consumerSource,
+                                               IEnumerable<IConsumerSource> consumerSource,
                                                RabbitMqManager manager,
                                                ILog log)
         {
