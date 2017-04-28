@@ -170,15 +170,6 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/Microsoft/msbuild/issues/1661.
-        /// </summary>
-        internal static string RESOURCE_KEY_FOR_DOTNET_BUILD1 {
-            get {
-                return ResourceManager.GetString("RESOURCE_KEY_FOR_DOTNET_BUILD1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Не удалось создать канал RabbitMQ..
         /// </summary>
         internal static string UnableToCreateRabbitMQChannel {

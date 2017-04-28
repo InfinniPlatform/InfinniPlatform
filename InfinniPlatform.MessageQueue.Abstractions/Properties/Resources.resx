@@ -153,9 +153,6 @@
   <data name="RESOURCE_KEY_FOR_DOTNET_BUILD" xml:space="preserve">
     <value>https://github.com/Microsoft/msbuild/issues/1661</value>
   </data>
-  <data name="RESOURCE_KEY_FOR_DOTNET_BUILD1" xml:space="preserve">
-    <value>https://github.com/Microsoft/msbuild/issues/1661</value>
-  </data>
   <data name="UnableToCreateRabbitMQChannel" xml:space="preserve">
     <value>Не удалось создать канал RabbitMQ.</value>
   </data>

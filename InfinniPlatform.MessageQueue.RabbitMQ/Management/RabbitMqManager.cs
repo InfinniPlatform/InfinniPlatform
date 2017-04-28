@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Logging;
-
+using InfinniPlatform.MessageQueue.Properties;
 using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.Management
@@ -47,7 +47,7 @@ namespace InfinniPlatform.MessageQueue.Management
 
         public void Dispose()
         {
-            Connection.Dispose();
+            Connection?.Dispose();
         }
 
         /// <summary>
@@ -60,15 +60,28 @@ namespace InfinniPlatform.MessageQueue.Management
             Task.Run(() =>
                      {
                          IConnection connection = null;
+                         var reconnectRetries = settings.MaxReconnectRetries;
 
-                         while (connection == null)
+                         while (connection == null && reconnectRetries > 0)
                          {
                              connection = CreateConnection(settings);
-                             Task.Delay(TimeSpan.FromSeconds(settings.ReconnectTimeout));
+
+                             if (connection == null)
+                             {
+                                 reconnectRetries--;
+                                 Task.Delay(TimeSpan.FromSeconds(settings.ReconnectTimeout));
+                             }
                          }
 
-                         Connection = connection;
-                         OnReconnect?.Invoke(this, new RabbitMqReconnectEventArgs());
+                         if (connection == null)
+                         {
+                             _log.Fatal(string.Format(Resources.ReconnectRetriesExceeded, settings.HostName, settings.Port));
+                         }
+                         else
+                         {
+                             Connection = connection;
+                             OnReconnect?.Invoke(this, new RabbitMqReconnectEventArgs());
+                         }
                      });
         }
 

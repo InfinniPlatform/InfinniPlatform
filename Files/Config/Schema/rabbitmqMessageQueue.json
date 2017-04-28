@@ -44,6 +44,11 @@
       "description": "Время между попытками переподключения к серверу RabbitMQ в cекундах.",
       "type": "integer",
       "default": 5
+    },
+    "MaxReconnectRetries": {
+      "description": "Максимальное количество попыток переподключения к серверу RabbitMQ.",
+      "type": "integer",
+      "default": 10
     }
   },
   "required": [
