@@ -160,6 +160,15 @@ namespace InfinniPlatform.MessageQueue.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max reconnect retries exceeded. Can&apos;t reconnect to RabbitMQ server at {0}:{1}..
+        /// </summary>
+        internal static string ReconnectRetriesExceeded {
+            get {
+                return ResourceManager.GetString("ReconnectRetriesExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to create RabbitMQ channel..
         /// </summary>
         internal static string UnableToCreateRabbitMQChannel {

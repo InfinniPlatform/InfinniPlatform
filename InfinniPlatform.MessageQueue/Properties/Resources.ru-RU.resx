@@ -159,4 +159,7 @@
   <data name="InitializationOfTaskConsumerSuccessfullyCompleted" xml:space="preserve">
     <value>Инициализация потребителя сообщений очереди задач успешно завершена.</value>
   </data>
+  <data name="ReconnectRetriesExceeded" xml:space="preserve">
+    <value>Превышено количество попыток переподключения. Невозможно подключится к RabbitMQ по адресу {0}:{1}.</value>
+  </data>
 </root>

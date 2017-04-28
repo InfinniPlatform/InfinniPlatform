@@ -159,4 +159,7 @@
   <data name="InitializationOfTaskConsumerSuccessfullyCompleted" xml:space="preserve">
     <value>Initialization of the task consumer successfully completed.</value>
   </data>
+  <data name="ReconnectRetriesExceeded" xml:space="preserve">
+    <value>Max reconnect retries exceeded. Can't reconnect to RabbitMQ server at {0}:{1}.</value>
+  </data>
 </root>

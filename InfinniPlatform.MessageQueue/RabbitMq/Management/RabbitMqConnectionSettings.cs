@@ -20,7 +20,8 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
             ManagementApiPort = 15672;
             PrefetchCount = 1;
             MaxConcurrentThreads = 200;
-            ReconnectTimeout = 5;
+            ReconnectTimeout = 10;
+            MaxReconnectRetries = 10;
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         public string Password { get; set; }
 
         /// <summary>
-        /// Порт .
+        /// Порт.
         /// </summary>
         public int ManagementApiPort { get; set; }
 
@@ -62,5 +63,10 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Management
         /// Время между попытками переподключения к серверу RabbitMQ в cекундах.
         /// </summary>
         public int ReconnectTimeout { get; set; }
+
+        /// <summary>
+        /// Максимальное количество попыток переподключения к серверу RabbitMQ.
+        /// </summary>
+        public int MaxReconnectRetries { get; set; }
     }
 }
