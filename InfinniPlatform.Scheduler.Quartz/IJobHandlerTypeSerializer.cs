@@ -5,7 +5,7 @@ namespace InfinniPlatform.Scheduler
     /// <summary>
     /// Предоставляет метод для сериализации и десериализации типов обработчиков заданий <see cref="IJobHandler"/>.
     /// </summary>
-    internal interface IJobHandlerTypeSerializer
+    public interface IJobHandlerTypeSerializer
     {
         /// <summary>
         /// Проверяет, возможно ли сериализовать тип обработчика заданий.

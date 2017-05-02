@@ -9,7 +9,7 @@ using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler
 {
-    internal class JobHandlerTypeSerializer : IJobHandlerTypeSerializer
+    public class JobHandlerTypeSerializer : IJobHandlerTypeSerializer
     {
         /// <summary>
         /// Регулярное выражение для десериализации типа обработчика заданий.

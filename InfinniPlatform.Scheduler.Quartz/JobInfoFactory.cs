@@ -4,7 +4,7 @@ using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler
 {
-    internal class JobInfoFactory : IJobInfoFactory
+    public class JobInfoFactory : IJobInfoFactory
     {
         public JobInfoFactory(IJobHandlerTypeSerializer handlerTypeSerializer)
         {
