@@ -8,9 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace InfinniPlatform.MessageQueue.Properties {
+    using System;
+    using System.Reflection;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -155,6 +157,15 @@ namespace InfinniPlatform.MessageQueue.Properties {
         internal static string InitializationOfTaskConsumerSuccessfullyCompleted {
             get {
                 return ResourceManager.GetString("InitializationOfTaskConsumerSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max reconnect retries exceeded. Can&apos;t reconnect to RabbitMQ server at {0}:{1}..
+        /// </summary>
+        internal static string ReconnectRetriesExceeded {
+            get {
+                return ResourceManager.GetString("ReconnectRetriesExceeded", resourceCulture);
             }
         }
         

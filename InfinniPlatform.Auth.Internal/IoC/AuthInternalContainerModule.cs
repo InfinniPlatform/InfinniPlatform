@@ -78,8 +78,8 @@ namespace InfinniPlatform.Auth.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<AuthInternalMessageConsumerSource>()
-                   .As<IMessageConsumerSource>()
+            builder.RegisterType<AuthInternalConsumerSource>()
+                   .As<IConsumerSource>()
                    .SingleInstance();
 
             builder.RegisterType<AuthInternalDocumentMetadataSource>()

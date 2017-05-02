@@ -87,7 +87,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
             list.AddRange(taskConsumers ?? Enumerable.Empty<ITaskConsumer>());
             list.AddRange(broadcastConsumers ?? Enumerable.Empty<IBroadcastConsumer>());
 
-            var messageConsumerSourceMock = new Mock<IMessageConsumerSource>();
+            var messageConsumerSourceMock = new Mock<IConsumerSource>();
             messageConsumerSourceMock.Setup(source => source.GetConsumers()).Returns(list);
 
             var messageConsumersManager = new RabbitMqMessageQueueInitializer(subscriptionManager,

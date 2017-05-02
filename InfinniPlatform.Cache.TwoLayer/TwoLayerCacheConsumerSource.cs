@@ -7,7 +7,7 @@ namespace InfinniPlatform.Cache
     /// <summary>
     /// Источник потребителей сообщений сборки InfinniPlatform.Caching.
     /// </summary>
-    public class TwoLayerCacheConsumerSource : IMessageConsumerSource
+    public class TwoLayerCacheConsumerSource : IConsumerSource
     {
         public TwoLayerCacheConsumerSource(TwoLayerCacheConsumer twoLayerCacheConsumer)
         {

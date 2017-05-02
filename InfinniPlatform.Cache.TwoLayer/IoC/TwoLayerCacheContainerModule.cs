@@ -17,7 +17,7 @@ namespace InfinniPlatform.Cache.IoC
                    .SingleInstance();
 
             builder.RegisterType<TwoLayerCacheConsumerSource>()
-                   .As<IMessageConsumerSource>()
+                   .As<IConsumerSource>()
                    .SingleInstance();
         }
     }

@@ -19,7 +19,8 @@
             ManagementApiPort = 15672;
             PrefetchCount = 1;
             MaxConcurrentThreads = 200;
-            ReconnectTimeout = 5;
+            ReconnectTimeout = 10;
+            MaxReconnectRetries = 10;
         }
 
 
@@ -62,5 +63,10 @@
         /// Время между попытками переподключения к серверу RabbitMQ в cекундах.
         /// </summary>
         public int ReconnectTimeout { get; set; }
+
+        /// <summary>
+        /// Максимальное количество попыток переподключения к серверу RabbitMQ.
+        /// </summary>
+        public int MaxReconnectRetries { get; set; }
     }
 }

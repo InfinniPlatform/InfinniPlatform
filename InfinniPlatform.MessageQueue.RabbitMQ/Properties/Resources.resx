@@ -162,4 +162,7 @@
   <data name="RESOURCE_KEY_FOR_DOTNET_BUILD" xml:space="preserve">
     <value>https://github.com/Microsoft/msbuild/issues/1661</value>
   </data>
+  <data name="ReconnectRetriesExceeded" xml:space="preserve">
+    <value>Max reconnect retries exceeded. Can't reconnect to RabbitMQ server at {0}:{1}.</value>
+  </data>
 </root>
