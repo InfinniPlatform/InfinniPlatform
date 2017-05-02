@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.Scheduler.Common;
 
 using Quartz;
 using Quartz.Impl;

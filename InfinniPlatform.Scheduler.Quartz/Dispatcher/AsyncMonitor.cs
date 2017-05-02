@@ -11,9 +11,6 @@ namespace InfinniPlatform.Scheduler.Dispatcher
     /// </summary>
     internal class AsyncMonitor
     {
-        private static readonly Task CompletedTask = Task.FromResult(true);
-
-
         private readonly ConcurrentDictionary<object, Queue<TaskCompletionSource<bool>>> _waiters
             = new ConcurrentDictionary<object, Queue<TaskCompletionSource<bool>>>();
 
@@ -65,7 +62,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
                 _waiters[obj] = new Queue<TaskCompletionSource<bool>>();
             }
 
-            return CompletedTask;
+            return Task.CompletedTask;
         }
 
 

@@ -1,15 +1,13 @@
-﻿using System.Reflection;
-
-using InfinniPlatform.Diagnostics;
+﻿using InfinniPlatform.Diagnostics;
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
-using InfinniPlatform.Scheduler.Common;
+using InfinniPlatform.Scheduler.Clusterization;
 using InfinniPlatform.Scheduler.Diagnostics;
 using InfinniPlatform.Scheduler.Dispatcher;
 using InfinniPlatform.Scheduler.Hosting;
-using InfinniPlatform.Scheduler.Storage;
+using InfinniPlatform.Scheduler.Repository;
 
 using Quartz;
 using Quartz.Logging;
@@ -31,98 +29,86 @@ namespace InfinniPlatform.Scheduler.IoC
 
         public void Load(IContainerBuilder builder)
         {
-            var schedulerAssembly = GetType().GetTypeInfo().Assembly;
-
             builder.RegisterInstance(_options).AsSelf().SingleInstance();
 
-            // Common
-
-            // Сериализатор типов обработчиков заданий
-            builder.RegisterType<JobHandlerTypeSerializer>()
-                   .As<IJobHandlerTypeSerializer>()
-                   .SingleInstance();
-
-            // Фабрика для создания информации о задании
-            builder.RegisterType<JobInfoFactory>()
-                   .As<IJobInfoFactory>()
-                   .SingleInstance();
-
-            // Фабрика для создания уникального идентификатора экземпляра задания
-            builder.RegisterType<JobInstanceFactory>()
-                   .As<IJobInstanceFactory>()
-                   .SingleInstance();
-
-            // Планировщик заданий
-            builder.RegisterType<JobScheduler>()
-                   .As<IJobScheduler>()
-                   .SingleInstance();
-
-            // Diagnostics
-
-            // Информация о состоянии планировщика заданий
-            builder.RegisterType<SchedulerStatusProvider>()
-                   .As<ISubsystemStatusProvider>()
-                   .SingleInstance();
-
-            // Storage
-
-            // Документы планировщика заданий
-            builder.RegisterType<SchedulerDocumentMetadataSource>()
-                   .As<IDocumentMetadataSource>()
-                   .SingleInstance();
-
-            // Список выполненных заданий
-            builder.RegisterType<JobInstanceManager>()
-                   .As<IJobInstanceManager>()
-                   .SingleInstance();
-
-            // Хранилище планировщика заданий
-            builder.RegisterType<JobInfoRepository>()
-                   .As<IJobInfoRepository>()
-                   .SingleInstance();
-
-            // Источник сохраненных заданий
-            builder.RegisterType<PersistentJobInfoSource>()
-                   .As<IJobInfoSource>()
-                   .SingleInstance();
-
-            // Queues
-
-            // Обработчики шины сообщений
-            builder.RegisterConsumers(schedulerAssembly);
-
-            // Quartz
-
-            // Обработчик заданий Quartz
-            builder.RegisterType<QuartzJob>()
-                   .As<IJob>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            // Сервис логирования Quartz
-            builder.RegisterType<QuartzJobLogProvider>()
-                   .As<ILogProvider>()
-                   .SingleInstance();
-
-            // Фабрика обработчиков заданий Quartz
-            builder.RegisterType<QuartzJobFactory>()
-                   .As<IJobFactory>()
-                   .SingleInstance();
-
-            // Диспетчер планировщика заданий Quartz
-            builder.RegisterType<QuartzJobSchedulerDispatcher>()
-                   .As<IJobSchedulerDispatcher>()
-                   .SingleInstance();
+            builder.RegisterType<JobHandlerTypeSerializer>().As<IJobHandlerTypeSerializer>().SingleInstance();
+            builder.RegisterType<JobInstanceFactory>().As<IJobInstanceFactory>().SingleInstance();
+            builder.RegisterType<JobInfoFactory>().As<IJobInfoFactory>().SingleInstance();
+            builder.RegisterType<JobScheduler>().As<IJobScheduler>().SingleInstance();
 
             // Hosting
 
-            // Инициализатор планировщика заданий
-            builder.RegisterType<SchedulerInitializer>()
-                   .As<IAppStartedHandler>()
-                   .As<IAppStoppedHandler>()
-                   .SingleInstance();
+            builder.RegisterType<SchedulerInitializer>().As<IAppStartedHandler>().As<IAppStoppedHandler>().SingleInstance();
 
-            builder.RegisterJobHandlers(schedulerAssembly);
+            // Diagnostics
+
+            builder.RegisterType<SchedulerStatusProvider>().As<ISubsystemStatusProvider>().SingleInstance();
+
+            // Dispatcher
+
+            builder.RegisterType<QuartzJob>().As<IJob>().AsSelf().SingleInstance();
+            builder.RegisterType<QuartzJobFactory>().As<IJobFactory>().SingleInstance();
+            builder.RegisterType<QuartzJobLogProvider>().As<ILogProvider>().SingleInstance();
+            builder.RegisterType<QuartzJobSchedulerDispatcher>().As<IJobSchedulerDispatcher>().SingleInstance();
+
+            // Clusterization
+
+            builder.RegisterType<JobHandlerConsumer>().As<IConsumer>().AsSelf().SingleInstance();
+            builder.RegisterType<AddOrUpdateJobConsumer>().As<IConsumer>().SingleInstance();
+            builder.RegisterType<DeleteJobConsumer>().As<IConsumer>().SingleInstance();
+            builder.RegisterType<PauseJobConsumer>().As<IConsumer>().SingleInstance();
+            builder.RegisterType<ResumeJobConsumer>().As<IConsumer>().SingleInstance();
+
+            builder.RegisterType<JobSchedulerStateObserver>().AsSelf().SingleInstance();
+            builder.RegisterType<JobSchedulerStateObserverStub>().AsSelf().SingleInstance();
+            builder.RegisterFactory(CreateJobSchedulerStateObserver).As<IJobSchedulerStateObserver>().SingleInstance();
+
+            // Repository
+
+            builder.RegisterType<JobSchedulerDocumentMetadataSource>().As<IDocumentMetadataSource>().SingleInstance();
+            builder.RegisterType<JobSchedulerRepository>().AsSelf().SingleInstance();
+            builder.RegisterType<JobSchedulerRepositoryStub>().AsSelf().SingleInstance();
+            builder.RegisterFactory(CreateJobSchedulerRepository).As<IJobSchedulerRepository>().SingleInstance();
+            builder.RegisterType<PersistentJobInfoSource>().As<IJobInfoSource>().SingleInstance();
+        }
+
+
+        private IJobSchedulerStateObserver CreateJobSchedulerStateObserver(IContainerResolver resolver)
+        {
+            var jobSchedulerStateObserver = _options.JobSchedulerStateObserver?.Invoke(resolver);
+
+            if (jobSchedulerStateObserver == null)
+            {
+                if (JobSchedulerStateObserver.CanBeCreated(resolver))
+                {
+                    jobSchedulerStateObserver = resolver.Resolve<JobSchedulerStateObserver>();
+                }
+                else
+                {
+                    jobSchedulerStateObserver = resolver.Resolve<JobSchedulerStateObserverStub>();
+                }
+            }
+
+            return jobSchedulerStateObserver;
+        }
+
+        private IJobSchedulerRepository CreateJobSchedulerRepository(IContainerResolver resolver)
+        {
+            var jobSchedulerRepository = _options.JobSchedulerRepository?.Invoke(resolver);
+
+            if (jobSchedulerRepository == null)
+            {
+                if (JobSchedulerRepository.CanBeCreated(resolver))
+                {
+                    jobSchedulerRepository = resolver.Resolve<JobSchedulerRepository>();
+                }
+                else
+                {
+                    jobSchedulerRepository = resolver.Resolve<JobSchedulerRepositoryStub>();
+                }
+            }
+
+            return jobSchedulerRepository;
         }
     }
 }

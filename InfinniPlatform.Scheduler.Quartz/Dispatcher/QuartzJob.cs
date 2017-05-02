@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.MessageQueue;
-using InfinniPlatform.Scheduler.Common;
 
 using Quartz;
 
@@ -25,18 +23,18 @@ namespace InfinniPlatform.Scheduler.Dispatcher
 
 
         public QuartzJob(IJobInstanceFactory jobInstanceFactory,
-                         IJobInstanceManager jobInstanceManager,
-                         ITaskProducer taskProducer)
+                         IJobSchedulerRepository jobSchedulerRepository,
+                         IJobSchedulerStateObserver jobSchedulerStateObserver)
         {
             _jobInstanceFactory = jobInstanceFactory;
-            _jobInstanceManager = jobInstanceManager;
-            _taskProducer = taskProducer;
+            _jobSchedulerRepository = jobSchedulerRepository;
+            _jobSchedulerStateObserver = jobSchedulerStateObserver;
         }
 
 
         private readonly IJobInstanceFactory _jobInstanceFactory;
-        private readonly IJobInstanceManager _jobInstanceManager;
-        private readonly ITaskProducer _taskProducer;
+        private readonly IJobSchedulerRepository _jobSchedulerRepository;
+        private readonly IJobSchedulerStateObserver _jobSchedulerStateObserver;
 
 
         public async Task Execute(IJobExecutionContext context)
@@ -66,7 +64,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
 
             // Проверка факта обработки задания кем-то ранее
 
-            if (await _jobInstanceManager.IsHandled(jobInstance))
+            if (await _jobSchedulerRepository.IsHandledJob(jobInstance))
             {
                 return;
             }
@@ -76,23 +74,17 @@ namespace InfinniPlatform.Scheduler.Dispatcher
             var triggerData = context.MergedJobDataMap.Get(TriggerDataKey) as DynamicDocument;
 
             var jobHandlerContext = new JobHandlerContext
-            {
-                InstanceId = jobInstance,
-                FireTimeUtc = fireTimeUtc.Value,
-                ScheduledFireTimeUtc = scheduledFireTimeUtc.Value,
-                PreviousFireTimeUtc = context.PreviousFireTimeUtc,
-                NextFireTimeUtc = context.NextFireTimeUtc,
-                Data = triggerData ?? jobInfo.Data
-            };
-
-            var handleJobMessage = new JobHandlerEvent
-            {
-                JobInfo = jobInfo,
-                Context = jobHandlerContext
-            };
+                                    {
+                                        InstanceId = jobInstance,
+                                        FireTimeUtc = fireTimeUtc.Value,
+                                        ScheduledFireTimeUtc = scheduledFireTimeUtc.Value,
+                                        PreviousFireTimeUtc = context.PreviousFireTimeUtc,
+                                        NextFireTimeUtc = context.NextFireTimeUtc,
+                                        Data = triggerData ?? jobInfo.Data
+                                    };
 
             // Постановка задания в очередь на выполнение
-            await _taskProducer.PublishAsync(handleJobMessage);
+            await _jobSchedulerStateObserver.OnExecuteJob(jobInfo, jobHandlerContext);
         }
     }
 }

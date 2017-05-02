@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Scheduler.Common;
 using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler.Hosting
@@ -14,10 +13,10 @@ namespace InfinniPlatform.Scheduler.Hosting
     /// </summary>
     /// <remarks>
     /// Планировщик заданий должен начать свою работу после того, как все подсистемы будут запущены. По этой причине
-    /// запуск планировщика осуществляется в методе <see cref="OnAfterStart" />. Чтобы вызов данного метода не
+    /// запуск планировщика осуществляется в реализации <see cref="IAppStartedHandler" />. Чтобы вызов данного метода не
     /// увеличивал время запуска приложения, запуск планировщика осуществляется асинхронно, с помощью метода
     /// <see cref="Task.Run(Func{Task})" />. Из этих же соображений остановка планировщика осуществляется
-    /// в методе <see cref="OnBeforeStop" /> также асинхронно.
+    /// в реализации <see cref="IAppStoppedHandler" /> также асинхронно.
     /// </remarks>
     internal class SchedulerInitializer : IAppStartedHandler, IAppStoppedHandler
     {
