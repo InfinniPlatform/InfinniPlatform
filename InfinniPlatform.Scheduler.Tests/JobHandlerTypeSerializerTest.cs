@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using InfinniPlatform.IoC;
@@ -13,7 +14,7 @@ namespace InfinniPlatform.Scheduler
     [TestFixture(Category = TestCategories.UnitTest)]
     public class JobHandlerTypeSerializerTest
     {
-        private const string HandlerType = "InfinniPlatform.Scheduler.Common.JobHandlerTypeSerializerTest+MyJobHandler,InfinniPlatform.Scheduler.Tests";
+        private static readonly string HandlerType = string.Join(",", typeof(MyJobHandler).AssemblyQualifiedName.Split(new[] { ", " }, StringSplitOptions.None).Take(2));
 
 
         [Test]
