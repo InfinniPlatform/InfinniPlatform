@@ -51,7 +51,7 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
             else if (invokeTarget is IDynamicMetaObjectProvider)
             {
                 // Получение свойства динамического объекта
-                var methodDelegate = ObjectHelper.GetProperty(invokeTarget, _methodName) as Delegate;
+                var methodDelegate = DynamicObjectExtensions.TryGetPropertyValueByPath(invokeTarget, _methodName) as Delegate;
 
                 if (methodDelegate != null)
                 {

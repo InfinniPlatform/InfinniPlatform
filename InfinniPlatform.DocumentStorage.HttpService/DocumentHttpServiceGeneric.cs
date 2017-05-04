@@ -138,7 +138,7 @@ namespace InfinniPlatform.DocumentStorage
                                   fileInfos[file.Key] = blobInfo;
 
                                   // Установка ссылки на файл в документе
-                                  query.Document.SetProperty(file.Key, blobInfo);
+                                  query.Document.TrySetPropertyValueByPath(file.Key, blobInfo);
                               }
                           }
 

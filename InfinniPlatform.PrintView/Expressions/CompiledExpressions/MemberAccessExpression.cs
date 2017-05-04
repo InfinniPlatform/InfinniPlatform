@@ -27,7 +27,7 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
             }
             else
             {
-                result = ObjectHelper.GetProperty(expression, _memberName);
+                result = DynamicObjectExtensions.TryGetPropertyValueByPath(expression, _memberName);
             }
 
             return result;

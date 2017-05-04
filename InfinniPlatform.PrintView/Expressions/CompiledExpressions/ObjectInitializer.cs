@@ -22,7 +22,7 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
                     var propertyName = property.Key;
                     var propertyValue = property.Value.Execute(dataContext, scope);
 
-                    instance.SetProperty(propertyName, propertyValue);
+                    instance.TrySetPropertyValueByPath(propertyName, propertyValue);
                 }
             }
         }
