@@ -122,8 +122,8 @@ namespace InfinniPlatform.PrintView.Factories
                 if (sourceProperty != PrintViewDefaults.RootSource)
                 {
                     elementSourceValue = sourceProperty.StartsWith(PrintViewDefaults.RootSource + ".")
-                        ? DynamicObjectExtensions.TryGetPropertyValueByPath(context.Source, sourceProperty.Substring(2))
-                        : DynamicObjectExtensions.TryGetPropertyValueByPath(context.ElementSourceValue, sourceProperty);
+                        ? context.Source?.TryGetPropertyValueByPath(sourceProperty.Substring(PrintViewDefaults.RootSource.Length + 1))
+                        : context.ElementSourceValue?.TryGetPropertyValueByPath(sourceProperty);
                 }
                 else
                 {

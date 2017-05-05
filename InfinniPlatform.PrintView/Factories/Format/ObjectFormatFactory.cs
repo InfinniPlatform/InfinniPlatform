@@ -104,7 +104,7 @@ namespace InfinniPlatform.PrintView.Factories.Format
             string propertyString = null;
 
             // Получение значения свойства
-            var propertyValue = value?.TryGetPropertyValueByPath(propertyName);
+            var propertyValue = string.IsNullOrEmpty(propertyName) ? value : value?.TryGetPropertyValueByPath(propertyName);
 
             if (propertyValue != null)
             {

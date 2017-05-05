@@ -38,14 +38,13 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
             if (_invokeArguments != null)
             {
                 invokeArguments =
-                    _invokeArguments.Select(i => (i != null) ? i.Execute(dataContext, scope) : null).ToArray();
+                    _invokeArguments.Select(i => i?.Execute(dataContext, scope)).ToArray();
             }
 
             // Вызов статического метода
             if (invokeTarget is Type)
             {
-                ReflectionExtensions.InvokeMember((Type) invokeTarget, _methodName, invokeArguments, out result,
-                    _genericArguments);
+                ReflectionExtensions.InvokeMember((Type)invokeTarget, _methodName, invokeArguments, out result, _genericArguments);
             }
             // Вызов метода динамического объекта
             else if (invokeTarget is IDynamicMetaObjectProvider)
@@ -59,15 +58,13 @@ namespace InfinniPlatform.PrintView.Expressions.CompiledExpressions
                 }
                 else
                 {
-                    ReflectionExtensions.InvokeMember(invokeTarget, _methodName, invokeArguments, out result,
-                        _genericArguments);
+                    ReflectionExtensions.InvokeMember(invokeTarget, _methodName, invokeArguments, out result, _genericArguments);
                 }
             }
             // Вызов метода строготипизированного обычного объекта
             else
             {
-                ReflectionExtensions.InvokeMember(invokeTarget, _methodName, invokeArguments, out result,
-                    _genericArguments);
+                ReflectionExtensions.InvokeMember(invokeTarget, _methodName, invokeArguments, out result, _genericArguments);
             }
 
             return result;

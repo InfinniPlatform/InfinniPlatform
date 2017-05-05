@@ -105,7 +105,7 @@ namespace InfinniPlatform.PrintView.Expressions
             foreach (var expectedProperty in expectedProperties)
             {
                 var expectedValue = expectedProperty.GetValue(expected);
-                var actualValue = actual.TryGetPropertyValueByPath(expectedProperty.Name);
+                var actualValue = actual?.TryGetPropertyValueByPath(expectedProperty.Name);
 
                 if (!ObjectEquals(expectedValue, actualValue))
                 {
