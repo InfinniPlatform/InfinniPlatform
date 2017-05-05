@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.DocumentStorage;
 using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.Identity
+namespace InfinniPlatform.Auth.Identity.UserStore
 {
     public class RoleStore<TRole> : IQueryableRoleStore<TRole> where TRole : IdentityRole
     {

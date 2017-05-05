@@ -3,7 +3,7 @@ using System.Linq;
 
 using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.Auth.Identity.UserCache;
-using InfinniPlatform.Auth.Identity.UserStorage;
+using InfinniPlatform.Auth.Identity.UserStore;
 using InfinniPlatform.Auth.Middlewares;
 using InfinniPlatform.Auth.Services;
 using InfinniPlatform.DocumentStorage;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.DocumentStorage;
 using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.Identity
+namespace InfinniPlatform.Auth.Identity.UserStore
 {
     /// <summary>
     /// Хранилище пользователей.

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.Identity.UserStorage;
 using InfinniPlatform.MessageQueue;
 
 namespace InfinniPlatform.Auth.Identity.UserCache
