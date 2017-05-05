@@ -44,7 +44,7 @@
     "MaxReconnectRetries": 10,
     "PoolSize": 0
   },
-  "authInternal": {
+  "auth": {
     "UserCacheTimeout": 30,
     "LoginPath": "/",
     "LogoutPath": "/"

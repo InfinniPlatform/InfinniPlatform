@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Core.Abstra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Http.Abstractions", "InfinniPlatform.Http.Abstractions\InfinniPlatform.Http.Abstractions.csproj", "{1D29338A-E798-4B18-8B28-5A8999AA2BC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.Internal", "InfinniPlatform.Auth.Internal\InfinniPlatform.Auth.Internal.csproj", "{B276F8B8-0D27-4637-80B8-4F1AAA7CF5BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth", "InfinniPlatform.Auth\InfinniPlatform.Auth.csproj", "{B276F8B8-0D27-4637-80B8-4F1AAA7CF5BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueue.RabbitMQ", "InfinniPlatform.MessageQueue.RabbitMQ\InfinniPlatform.MessageQueue.RabbitMQ.csproj", "{7EBB54A0-69CB-49FC-A340-8527502F9C67}"
 EndProject
@@ -67,7 +67,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{BFF819
 	ProjectSection(SolutionItems) = preProject
 		Files\Config\Schema\app.json = Files\Config\Schema\app.json
 		Files\Config\Schema\appConfig.json = Files\Config\Schema\appConfig.json
-		Files\Config\Schema\authInternal.json = Files\Config\Schema\authInternal.json
+		Files\Config\Schema\auth.json = Files\Config\Schema\auth.json
 		Files\Config\Schema\fileSystemBlobStorage.json = Files\Config\Schema\fileSystemBlobStorage.json
 		Files\Config\Schema\mongodbDocumentStorage.json = Files\Config\Schema\mongodbDocumentStorage.json
 		Files\Config\Schema\printView.json = Files\Config\Schema\printView.json
