@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>InfinniPlatform.PrintView.Tests</AssemblyName>
     <RootNamespace>InfinniPlatform.PrintView</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +14,8 @@
     <PackageReference Include="ImageSharp" Version="1.0.0-alpha2-00118" />
     <PackageReference Include="ImageSharp.Formats.Png" Version="1.0.0-alpha2-00114" />
     <PackageReference Include="NUnit" Version="3.6.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -96,6 +97,10 @@
     <EmbeddedResource Include="Writers\Html\Resources\ShouldBuildSpan.txt" />
     <EmbeddedResource Include="Writers\Html\Resources\ShouldBuildTable.txt" />
     <EmbeddedResource Include="Writers\Html\Resources\ShouldBuildUnderline.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
 </Project>
