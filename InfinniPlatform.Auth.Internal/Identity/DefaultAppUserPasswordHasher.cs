@@ -5,12 +5,12 @@ namespace InfinniPlatform.Auth.Identity
     /// <summary>
     ///     Предоставляет методы хэширования пароля.
     /// </summary>
-    internal class DefaultAppUserPasswordHasher : IPasswordHasher<IdentityUser>
+    internal class DefaultAppUserPasswordHasher : IPasswordHasher<AppUser>
     {
         /// <summary>
         ///     Возвращает хэш пароля.
         /// </summary>
-        public string HashPassword(IdentityUser user, string password)
+        public string HashPassword(AppUser user, string password)
         {
             return StringHasher.HashValue(password);
         }
@@ -18,7 +18,7 @@ namespace InfinniPlatform.Auth.Identity
         /// <summary>
         ///     Проверяет, что пароль соответствует хэшу.
         /// </summary>
-        public PasswordVerificationResult VerifyHashedPassword(IdentityUser user, string hashedPassword, string providedPassword)
+        public PasswordVerificationResult VerifyHashedPassword(AppUser user, string hashedPassword, string providedPassword)
         {
             var isVefified = StringHasher.VerifyValue(hashedPassword, providedPassword);
 

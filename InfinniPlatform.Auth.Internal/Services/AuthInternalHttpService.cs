@@ -27,16 +27,16 @@ namespace InfinniPlatform.Auth.Services
         private const string ApplicationAuthScheme = "Identity.Application";
         private const string ExternalAuthScheme = "Identity.External";
         private readonly IHttpContextProvider _httpContextProvider;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
         private readonly IUserIdentityProvider _userIdentityProvider;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
         public AuthInternalHttpService(IHttpContextProvider httpContextProvider,
                                        IUserIdentityProvider userIdentityProvider,
                                        UserEventHandlerInvoker userEventHandlerInvoker,
-                                       UserManager<IdentityUser> userManager,
-                                       SignInManager<IdentityUser> signInManager)
+                                       UserManager<AppUser> userManager,
+                                       SignInManager<AppUser> signInManager)
         {
             _httpContextProvider = httpContextProvider;
             _userIdentityProvider = userIdentityProvider;
@@ -316,10 +316,10 @@ namespace InfinniPlatform.Auth.Services
         /// <summary>
         /// Создает учетную запись пользователя по информации внешнего провайдера.
         /// </summary>
-        private static IdentityUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
+        private static AppUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
         {
             var email = loginInfo.Principal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
-            var user = new IdentityUser
+            var user = new AppUser
                        {
                            Id = Guid.NewGuid().ToString(),
                            UserName = email.Value,
@@ -410,7 +410,7 @@ namespace InfinniPlatform.Auth.Services
             return Identity != null && Identity.IsAuthenticated;
         }
 
-        private async Task<IdentityUser> GetUserInfo()
+        private async Task<AppUser> GetUserInfo()
         {
             var userId = Identity.GetUserId();
 
@@ -419,9 +419,9 @@ namespace InfinniPlatform.Auth.Services
             return userInfo;
         }
 
-        private static PublicUserInfo BuildPublicUserInfo(IdentityUser user, IIdentity identity)
+        private static PublicUserInfo BuildPublicUserInfo(AppUser user, IIdentity identity)
         {
-            var claims = new List<IdentityUserClaim>();
+            var claims = new List<AppUserClaim>();
 
             if (user.Claims != null)
             {
@@ -443,7 +443,7 @@ namespace InfinniPlatform.Auth.Services
                     if (claim.Type != null && !claims.Exists(c => string.Equals(c.Type, claim.Type, StringComparison.OrdinalIgnoreCase)
                                                                   && string.Equals(c.Value, claim.Value, StringComparison.Ordinal)))
                     {
-                        claims.Add(new IdentityUserClaim
+                        claims.Add(new AppUserClaim
                                    {
                                        Type = claim.Type,
                                        Value = claim.Value
@@ -455,9 +455,9 @@ namespace InfinniPlatform.Auth.Services
             return new PublicUserInfo(user.UserName, user.UserName, user.UserName, user.Roles, user.Logins, claims);
         }
 
-        private static IdentityUserClaim CreateIdentityUserClaim(Claim claim)
+        private static AppUserClaim CreateIdentityUserClaim(Claim claim)
         {
-            return new IdentityUserClaim
+            return new AppUserClaim
                    {
                        Type = claim.Type,
                        Value = claim.Value
@@ -509,8 +509,8 @@ namespace InfinniPlatform.Auth.Services
                                   string displayName,
                                   string description,
                                   IEnumerable<string> roles,
-                                  IEnumerable<IdentityUserLogin> logins,
-                                  List<IdentityUserClaim> claims)
+                                  IEnumerable<AppUserLogin> logins,
+                                  List<AppUserClaim> claims)
             {
                 UserName = userName;
                 DisplayName = displayName;
@@ -528,9 +528,9 @@ namespace InfinniPlatform.Auth.Services
 
             public IEnumerable<string> Roles { get; set; }
 
-            public IEnumerable<IdentityUserLogin> Logins { get; set; }
+            public IEnumerable<AppUserLogin> Logins { get; set; }
 
-            public List<IdentityUserClaim> Claims { get; set; }
+            public List<AppUserClaim> Claims { get; set; }
         }
     }
 }

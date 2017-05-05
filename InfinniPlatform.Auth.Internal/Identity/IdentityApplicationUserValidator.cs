@@ -13,9 +13,9 @@ namespace InfinniPlatform.Auth.Identity
     /// <summary>
     /// Проверяет корректность данных пользователей.
     /// </summary>
-    internal class IdentityApplicationUserValidator : IUserValidator<IdentityUser>
+    internal class IdentityApplicationUserValidator : IUserValidator<AppUser>
     {
-        public IdentityApplicationUserValidator(UserStore<IdentityUser> store)
+        public IdentityApplicationUserValidator(UserStore<AppUser> store)
         {
             if (store == null)
             {
@@ -29,7 +29,7 @@ namespace InfinniPlatform.Auth.Identity
             RequireUniquePhoneNumber = true;
         }
 
-        private readonly UserStore<IdentityUser> _store;
+        private readonly UserStore<AppUser> _store;
 
         /// <summary>
         /// Разрешать только пользователей с именами @"^[A-Za-z0-9@_\+\-\.]+$".
@@ -47,7 +47,7 @@ namespace InfinniPlatform.Auth.Identity
         public bool RequireUniquePhoneNumber { get; set; }
 
 
-        public async Task<IdentityResult> ValidateAsync(UserManager<IdentityUser> manager, IdentityUser user)
+        public async Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user)
         {
             var errors = new List<IdentityError>();
             await ValidateUserName(user, errors);
@@ -61,7 +61,7 @@ namespace InfinniPlatform.Auth.Identity
             return result;
         }
 
-        private async Task ValidateUserName(IdentityUser user, List<IdentityError> errors)
+        private async Task ValidateUserName(AppUser user, List<IdentityError> errors)
         {
             var userName = user.UserName;
 
@@ -98,7 +98,7 @@ namespace InfinniPlatform.Auth.Identity
             }
         }
 
-        private async Task ValidateEmail(IdentityUser user, List<IdentityError> errors)
+        private async Task ValidateEmail(AppUser user, List<IdentityError> errors)
         {
             var email = user.Email;
 
@@ -132,7 +132,7 @@ namespace InfinniPlatform.Auth.Identity
             }
         }
 
-        private async Task ValidatePhoneNumber(IdentityUser user, List<IdentityError> errors)
+        private async Task ValidatePhoneNumber(AppUser user, List<IdentityError> errors)
         {
             var phoneNumber = user.PhoneNumber;
 

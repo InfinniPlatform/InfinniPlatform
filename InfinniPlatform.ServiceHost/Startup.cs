@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.AspNetCore;
+using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.IoC;
 
 using Microsoft.AspNetCore.Builder;
@@ -30,7 +31,7 @@ namespace InfinniPlatform.ServiceHost
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddLog4NetLogging()
-                                            .AddAuthInternal(_configuration)
+                                            .AddAuthInternal<AppUser, AppUserRole>(_configuration)
                                             .AddInMemoryCache()
                                             .AddRedisSharedCache(_configuration)
                                             .AddTwoLayerCache()

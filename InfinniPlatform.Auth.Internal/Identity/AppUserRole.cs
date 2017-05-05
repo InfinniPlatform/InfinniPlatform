@@ -2,17 +2,17 @@
 
 namespace InfinniPlatform.Auth.Identity
 {
-    public class IdentityRole : Document
+    public class AppUserRole : Document
     {
-        public IdentityRole(string roleName)
+        public AppUserRole(string roleName)
         {
             Name = roleName;
         }
 
         public string Id
         {
-            get { return _id?.ToString(); }
-            set { _id = value; }
+            get => _id?.ToString();
+            set => _id = value;
         }
 
         public string Name { get; set; }

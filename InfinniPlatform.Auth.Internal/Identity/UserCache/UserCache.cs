@@ -9,7 +9,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace InfinniPlatform.Auth.Identity.UserCache
 {
-    public class UserCache<TUser> : IUserCacheObserver where TUser: IdentityUser
+    public class UserCache<TUser> : IUserCacheObserver where TUser: AppUser
     {
         public UserCache(AuthInternalOptions options,
                          ILog log,

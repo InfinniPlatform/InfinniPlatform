@@ -36,17 +36,17 @@ namespace InfinniPlatform.Auth.IoC
             // AspNet.Identity
 
             builder.RegisterFactory(CreateUserStore)
-                   .As<UserStore<IdentityUser>>()
-                   .As<IUserStore<IdentityUser>>()
+                   .As<UserStore<AppUser>>()
+                   .As<IUserStore<AppUser>>()
                    .SingleInstance();
 
             builder.RegisterFactory(CreateRoleStore)
-                   .As<RoleStore<IdentityRole>>()
-                   .As<IRoleStore<IdentityRole>>()
+                   .As<RoleStore<AppUserRole>>()
+                   .As<IRoleStore<AppUserRole>>()
                    .SingleInstance();
             
             builder.RegisterFactory(CreateUserManager)
-                   .As<UserManager<IdentityUser>>()
+                   .As<UserManager<AppUser>>()
                    .ExternallyOwned();
 
             // Middlewares
@@ -71,7 +71,7 @@ namespace InfinniPlatform.Auth.IoC
 
             // UserStorage
 
-            builder.RegisterType<UserCache<IdentityUser>>()
+            builder.RegisterType<UserCache<AppUser>>()
                    .As<IUserCacheObserver>()
                    .AsSelf()
                    .SingleInstance();
@@ -90,10 +90,10 @@ namespace InfinniPlatform.Auth.IoC
         }
 
 
-        private static UserManager<IdentityUser> CreateUserManager(IContainerResolver resolver)
+        private static UserManager<AppUser> CreateUserManager(IContainerResolver resolver)
         {
             // Хранилище учетных записей пользователей для AspNet.Identity
-            var identityUserStore = resolver.Resolve<UserStore<IdentityUser>>();
+            var identityUserStore = resolver.Resolve<UserStore<AppUser>>();
 
             // Провайдер настроек AspNet.Identity
             var optionsAccessor = new OptionsWrapper<IdentityOptions>(new IdentityOptions());
@@ -102,10 +102,10 @@ namespace InfinniPlatform.Auth.IoC
             var identityPasswordHasher = new DefaultAppUserPasswordHasher();
 
             // Валидаторы данных о пользователях
-            var userValidators = new List<IUserValidator<IdentityUser>> {new IdentityApplicationUserValidator(identityUserStore)};
+            var userValidators = new List<IUserValidator<AppUser>> {new IdentityApplicationUserValidator(identityUserStore)};
 
             // Валидатор паролей пользователей
-            var passwordValidators = Enumerable.Empty<IPasswordValidator<IdentityUser>>();
+            var passwordValidators = Enumerable.Empty<IPasswordValidator<AppUser>>();
 
             // Нормализатор
             var keyNormalizer = new UpperInvariantLookupNormalizer();
@@ -117,9 +117,9 @@ namespace InfinniPlatform.Auth.IoC
             var serviceProvider = resolver.Resolve<System.IServiceProvider>();
 
             // Логгер
-            var logger = resolver.Resolve<ILogger<UserManager<IdentityUser>>>();
+            var logger = resolver.Resolve<ILogger<UserManager<AppUser>>>();
 
-            var userManager = new UserManager<IdentityUser>(identityUserStore,
+            var userManager = new UserManager<AppUser>(identityUserStore,
                                                             optionsAccessor,
                                                             identityPasswordHasher,
                                                             userValidators,
@@ -132,19 +132,19 @@ namespace InfinniPlatform.Auth.IoC
             return userManager;
         }
 
-        private static UserStore<IdentityUser> CreateUserStore(IContainerResolver resolver)
+        private static UserStore<AppUser> CreateUserStore(IContainerResolver resolver)
         {
-            var userDocumentStorage = resolver.Resolve<ISystemDocumentStorage<IdentityUser>>();
-            var userCache = resolver.Resolve<UserCache<IdentityUser>>();
+            var userDocumentStorage = resolver.Resolve<ISystemDocumentStorage<AppUser>>();
+            var userCache = resolver.Resolve<UserCache<AppUser>>();
 
-            return new UserStore<IdentityUser>(userDocumentStorage, userCache);
+            return new UserStore<AppUser>(userDocumentStorage, userCache);
         }
 
-        private static RoleStore<IdentityRole> CreateRoleStore(IContainerResolver resolver)
+        private static RoleStore<AppUserRole> CreateRoleStore(IContainerResolver resolver)
         {
-            var documentStorage = resolver.Resolve<IDocumentStorage<IdentityRole>>();
+            var documentStorage = resolver.Resolve<IDocumentStorage<AppUserRole>>();
 
-            return new RoleStore<IdentityRole>(documentStorage);
+            return new RoleStore<AppUserRole>(documentStorage);
         }
     }
 }

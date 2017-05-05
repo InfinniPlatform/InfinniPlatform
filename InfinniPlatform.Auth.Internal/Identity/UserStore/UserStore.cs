@@ -1,4 +1,4 @@
-п»їusing System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth.Identity.UserStore
 {
     /// <summary>
-    /// РҐСЂР°РЅРёР»РёС‰Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№.
+    /// Хранилище пользователей.
     /// </summary>
-    /// <typeparam name="TUser">РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ.</typeparam>
+    /// <typeparam name="TUser">Пользователь.</typeparam>
     public class UserStore<TUser> : IUserStore<TUser>,
                                     IUserPasswordStore<TUser>,
                                     IUserRoleStore<TUser>,
@@ -24,12 +24,12 @@ namespace InfinniPlatform.Auth.Identity.UserStore
                                     IUserTwoFactorStore<TUser>,
                                     IUserLockoutStore<TUser>,
                                     IUserAuthenticationTokenStore<TUser>
-        where TUser : IdentityUser
+        where TUser : AppUser
     {
         private readonly ISystemDocumentStorage<TUser> _users;
-        private readonly UserCache.UserCache<IdentityUser> _userCache;
+        private readonly UserCache.UserCache<AppUser> _userCache;
 
-        public UserStore(ISystemDocumentStorage<TUser> users, UserCache.UserCache<IdentityUser> userCache)
+        public UserStore(ISystemDocumentStorage<TUser> users, UserCache.UserCache<AppUser> userCache)
         {
             _users = users;
             _userCache = userCache;
@@ -347,15 +347,15 @@ namespace InfinniPlatform.Auth.Identity.UserStore
         }
 
         /// <summary>
-        /// РћР±РЅРѕРІР»СЏРµС‚ СЃРІРµРґРµРЅРёСЏ Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РІ Р»РѕРєР°Р»СЊРЅРѕРј РєСЌС€Рµ.
+        /// Обновляет сведения о пользователе в локальном кэше.
         /// </summary>
-        private void UpdateUserInCache(IdentityUser user)
+        private void UpdateUserInCache(AppUser user)
         {
             _userCache.AddOrUpdateUser(user);
         }
 
         /// <summary>
-        /// РЈРґР°Р»СЏРµС‚ СЃРІРµРґРµРЅРёСЏ Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РёР· Р»РѕРєР°Р»СЊРЅРѕРіРѕ РєСЌС€Р°.
+        /// Удаляет сведения о пользователе из локального кэша.
         /// </summary>
         private void RemoveUserFromCache(string userId)
         {
@@ -363,7 +363,7 @@ namespace InfinniPlatform.Auth.Identity.UserStore
         }
 
         /// <summary>
-        /// РС‰РµС‚ СЃРІРµРґРµРЅРёСЏ Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РІ Р»РѕРєР°Р»СЊРЅРѕРј РєСЌС€Рµ.
+        /// Ищет сведения о пользователе в локальном кэше.
         /// </summary>
         private Task<TUser> FindUserInCache(Func<TUser> cacheSelector, Func<TUser> storageSelector)
         {

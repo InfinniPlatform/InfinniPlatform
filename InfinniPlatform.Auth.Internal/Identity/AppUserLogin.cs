@@ -2,16 +2,16 @@
 
 namespace InfinniPlatform.Auth.Identity
 {
-    public class IdentityUserLogin
+    public class AppUserLogin
     {
-        public IdentityUserLogin(string loginProvider, string providerKey, string providerDisplayName)
+        public AppUserLogin(string loginProvider, string providerKey, string providerDisplayName)
         {
             LoginProvider = loginProvider;
             ProviderDisplayName = providerDisplayName;
             ProviderKey = providerKey;
         }
 
-        public IdentityUserLogin(UserLoginInfo login)
+        public AppUserLogin(UserLoginInfo login)
         {
             LoginProvider = login.LoginProvider;
             ProviderDisplayName = login.ProviderDisplayName;

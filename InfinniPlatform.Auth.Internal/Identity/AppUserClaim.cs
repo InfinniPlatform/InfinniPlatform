@@ -2,13 +2,13 @@
 
 namespace InfinniPlatform.Auth.Identity
 {
-    public class IdentityUserClaim
+    public class AppUserClaim
     {
-        public IdentityUserClaim()
+        public AppUserClaim()
         {
         }
 
-        public IdentityUserClaim(Claim claim)
+        public AppUserClaim(Claim claim)
         {
             Type = claim.Type;
             Value = claim.Value;

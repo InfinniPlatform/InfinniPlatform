@@ -1,6 +1,6 @@
 ﻿namespace InfinniPlatform.Auth.Identity
 {
-    public class IdentityUserToken
+    public class AppUserToken
     {
         public string LoginProvider { get; set; }
 

@@ -8,21 +8,20 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth.Identity
 {
     [DocumentType("UserStore")]
-    // Add profile data for application users by adding properties to the IdentityUser class
-    public class IdentityUser : Document
+    public class AppUser : Document
     {
-        public IdentityUser()
+        public AppUser()
         {
             Roles = new List<string>();
-            Logins = new List<IdentityUserLogin>();
-            Claims = new List<IdentityUserClaim>();
-            Tokens = new List<IdentityUserToken>();
+            Logins = new List<AppUserLogin>();
+            Claims = new List<AppUserClaim>();
+            Tokens = new List<AppUserToken>();
         }
 
         public string Id
         {
-            get { return _id?.ToString(); }
-            set { _id = value; }
+            get => _id?.ToString();
+            set => _id = value;
         }
 
         public string UserName { get; set; }
@@ -53,11 +52,11 @@ namespace InfinniPlatform.Auth.Identity
 
         public string PasswordHash { get; set; }
 
-        public List<IdentityUserLogin> Logins { get; set; }
+        public List<AppUserLogin> Logins { get; set; }
 
-        public List<IdentityUserClaim> Claims { get; set; }
+        public List<AppUserClaim> Claims { get; set; }
 
-        public List<IdentityUserToken> Tokens { get; set; }
+        public List<AppUserToken> Tokens { get; set; }
 
         public void AddRole(string role)
         {
@@ -71,7 +70,7 @@ namespace InfinniPlatform.Auth.Identity
 
         public void AddLogin(UserLoginInfo login)
         {
-            Logins.Add(new IdentityUserLogin(login));
+            Logins.Add(new AppUserLogin(login));
         }
 
         public void RemoveLogin(string loginProvider, string providerKey)
@@ -93,7 +92,7 @@ namespace InfinniPlatform.Auth.Identity
 
         public void AddClaim(Claim claim)
         {
-            Claims.Add(new IdentityUserClaim(claim));
+            Claims.Add(new AppUserClaim(claim));
         }
 
         public void RemoveClaim(Claim claim)
@@ -125,7 +124,7 @@ namespace InfinniPlatform.Auth.Identity
             AddClaim(newClaim);
         }
 
-        private IdentityUserToken GetToken(string loginProider, string name)
+        private AppUserToken GetToken(string loginProider, string name)
         {
             return Tokens.FirstOrDefault(t =>
                                          {
@@ -146,7 +145,7 @@ namespace InfinniPlatform.Auth.Identity
             }
             else
             {
-                Tokens.Add(new IdentityUserToken
+                Tokens.Add(new AppUserToken
                            {
                                LoginProvider = loginProider,
                                Name = name,

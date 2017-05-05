@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Identity.UserStore
 {
-    public class RoleStore<TRole> : IQueryableRoleStore<TRole> where TRole : IdentityRole
+    public class RoleStore<TRole> : IQueryableRoleStore<TRole> where TRole : AppUserRole
     {
         private readonly IDocumentStorage<TRole> _roles;
 
