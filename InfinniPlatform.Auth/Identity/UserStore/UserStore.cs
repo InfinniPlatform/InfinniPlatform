@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth.Identity.UserStore
 {
     /// <summary>
-    /// Хранилище пользователей.
+    /// РҐСЂР°РЅРёР»РёС‰Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№.
     /// </summary>
-    /// <typeparam name="TUser">Пользователь.</typeparam>
+    /// <typeparam name="TUser">РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ.</typeparam>
     public class UserStore<TUser> : IUserStore<TUser>,
                                     IUserPasswordStore<TUser>,
                                     IUserRoleStore<TUser>,
@@ -347,7 +347,7 @@ namespace InfinniPlatform.Auth.Identity.UserStore
         }
 
         /// <summary>
-        /// Обновляет сведения о пользователе в локальном кэше.
+        /// РћР±РЅРѕРІР»СЏРµС‚ СЃРІРµРґРµРЅРёСЏ Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РІ Р»РѕРєР°Р»СЊРЅРѕРј РєСЌС€Рµ.
         /// </summary>
         private void UpdateUserInCache(AppUser user)
         {
@@ -355,7 +355,7 @@ namespace InfinniPlatform.Auth.Identity.UserStore
         }
 
         /// <summary>
-        /// Удаляет сведения о пользователе из локального кэша.
+        /// РЈРґР°Р»СЏРµС‚ СЃРІРµРґРµРЅРёСЏ Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РёР· Р»РѕРєР°Р»СЊРЅРѕРіРѕ РєСЌС€Р°.
         /// </summary>
         private void RemoveUserFromCache(string userId)
         {
@@ -363,7 +363,7 @@ namespace InfinniPlatform.Auth.Identity.UserStore
         }
 
         /// <summary>
-        /// Ищет сведения о пользователе в локальном кэше.
+        /// РС‰РµС‚ СЃРІРµРґРµРЅРёСЏ Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РІ Р»РѕРєР°Р»СЊРЅРѕРј РєСЌС€Рµ.
         /// </summary>
         private Task<TUser> FindUserInCache(Func<TUser> cacheSelector, Func<TUser> storageSelector)
         {
