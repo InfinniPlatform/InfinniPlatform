@@ -116,23 +116,6 @@ namespace InfinniPlatform.Tests.Conventions
 
         [Test]
         [TestCaseSource(nameof(SolutionCodeProjects))]
-        [Description(@"The project should have <DebugType> property which equals pdbonly")]
-        public void ProjectShouldHaveDebugTypeProperty(string project)
-        {
-            // Given
-            var projectXml = LoadProjectXml(project);
-
-            // When
-            var debugType = FindChildren(projectXml, "PropertyGroup")
-                .SelectMany(e => FindChildren(e, "DebugType"))
-                .FirstOrDefault();
-
-            // Then
-            AssertCondition("pdbonly".Equals(debugType?.Value, StringComparison.OrdinalIgnoreCase), @"The project should have <DebugType> property which equals pdbonly");
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SolutionCodeProjects))]
         [Description(@"The project should have reference on GlobalAssemblyInfo.cs")]
         public void ProjectShouldHaveReferenceOnGlobalAssemblyInfo(string project)
         {
