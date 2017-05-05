@@ -1,4 +1,4 @@
-﻿namespace InfinniPlatform.Auth.Identity.MongoDb
+﻿namespace InfinniPlatform.Auth.Identity
 {
     public class IdentityUserToken
     {

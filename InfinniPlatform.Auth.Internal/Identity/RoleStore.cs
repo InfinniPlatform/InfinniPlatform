@@ -1,12 +1,10 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using InfinniPlatform.DocumentStorage;
-
 using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.Identity.MongoDb
+namespace InfinniPlatform.Auth.Identity
 {
     public class RoleStore<TRole> : IQueryableRoleStore<TRole> where TRole : IdentityRole
     {

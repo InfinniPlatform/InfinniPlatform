@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-
-using InfinniPlatform.Auth.Identity.MongoDb;
 using InfinniPlatform.Auth.Properties;
 
 using Microsoft.AspNetCore.Identity;

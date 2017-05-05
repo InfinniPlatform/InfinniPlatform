@@ -1,6 +1,4 @@
-﻿using InfinniPlatform.Auth.Identity.MongoDb;
-
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Identity
 {

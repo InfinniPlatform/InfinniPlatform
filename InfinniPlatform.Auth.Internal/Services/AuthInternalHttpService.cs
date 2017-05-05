@@ -4,8 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-
-using InfinniPlatform.Auth.Identity.MongoDb;
+using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.Auth.Properties;
 using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;

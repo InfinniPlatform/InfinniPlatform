@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-
 using InfinniPlatform.DocumentStorage;
-
 using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.Identity.MongoDb
+namespace InfinniPlatform.Auth.Identity
 {
     [DocumentType("UserStore")]
     // Add profile data for application users by adding properties to the IdentityUser class

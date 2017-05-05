@@ -3,21 +3,19 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
-using InfinniPlatform.Auth.Identity.MongoDb;
+using InfinniPlatform.Auth.Identity.UserStorage;
 using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue;
-
 using Microsoft.Extensions.Caching.Memory;
 
-namespace InfinniPlatform.Auth.UserStorage
+namespace InfinniPlatform.Auth.Identity.UserCache
 {
-    internal class AppUserStoreCache : IUserCacheSynchronizer
+    public class UserCache<TUser> : IUserCacheObserver where TUser: IdentityUser
     {
-        public AppUserStoreCache(AuthInternalOptions options,
-                                 ILog log,
-                                 IBroadcastProducer broadcastProducer,
-                                 AppOptions appOptions)
+        public UserCache(AuthInternalOptions options,
+                         ILog log,
+                         IBroadcastProducer broadcastProducer,
+                         AppOptions appOptions)
         {
             var cacheTimeout = options.UserCacheTimeout <= 0
                                    ? AuthInternalOptions.DefaultUserCacheTimeout
@@ -31,10 +29,10 @@ namespace InfinniPlatform.Auth.UserStorage
             _cacheLockSlim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _usersById = new MemoryCache(new MemoryCacheOptions());
-            _usersByName = new ConcurrentDictionary<string, IdentityUser>();
-            _usersByEmail = new ConcurrentDictionary<string, IdentityUser>();
-            _usersByPhone = new ConcurrentDictionary<string, IdentityUser>();
-            _usersByLogin = new ConcurrentDictionary<string, IdentityUser>();
+            _usersByName = new ConcurrentDictionary<string, TUser>();
+            _usersByEmail = new ConcurrentDictionary<string, TUser>();
+            _usersByPhone = new ConcurrentDictionary<string, TUser>();
+            _usersByLogin = new ConcurrentDictionary<string, TUser>();
         }
 
 
@@ -44,12 +42,12 @@ namespace InfinniPlatform.Auth.UserStorage
         private readonly ReaderWriterLockSlim _cacheLockSlim;
         private readonly TimeSpan _cacheTimeout;
         private readonly ILog _log;
-        private readonly ConcurrentDictionary<string, IdentityUser> _usersByEmail;
+        private readonly ConcurrentDictionary<string, TUser> _usersByEmail;
 
         private readonly MemoryCache _usersById;
-        private readonly ConcurrentDictionary<string, IdentityUser> _usersByLogin;
-        private readonly ConcurrentDictionary<string, IdentityUser> _usersByName;
-        private readonly ConcurrentDictionary<string, IdentityUser> _usersByPhone;
+        private readonly ConcurrentDictionary<string, TUser> _usersByLogin;
+        private readonly ConcurrentDictionary<string, TUser> _usersByName;
+        private readonly ConcurrentDictionary<string, TUser> _usersByPhone;
 
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace InfinniPlatform.Auth.UserStorage
         /// </summary>
         /// <param name="userId">Уникальный идентификатор пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        public IdentityUser FindUserById(string userId)
+        public TUser FindUserById(string userId)
         {
             return GetUserCache(userId);
         }
@@ -67,7 +65,7 @@ namespace InfinniPlatform.Auth.UserStorage
         /// </summary>
         /// <param name="userName">Имя пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        public IdentityUser FindUserByUserName(string userName)
+        public TUser FindUserByUserName(string userName)
         {
             return GetAdditionalUserCache(_usersByName, userName);
         }
@@ -77,7 +75,7 @@ namespace InfinniPlatform.Auth.UserStorage
         /// </summary>
         /// <param name="email">Электронная почта пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        public IdentityUser FindUserByEmail(string email)
+        public TUser FindUserByEmail(string email)
         {
             return GetAdditionalUserCache(_usersByEmail, email);
         }
@@ -87,7 +85,7 @@ namespace InfinniPlatform.Auth.UserStorage
         /// </summary>
         /// <param name="phoneNumber">Номер телефона пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        public IdentityUser FindUserByPhoneNumber(string phoneNumber)
+        public TUser FindUserByPhoneNumber(string phoneNumber)
         {
             return GetAdditionalUserCache(_usersByPhone, phoneNumber);
         }
@@ -95,18 +93,19 @@ namespace InfinniPlatform.Auth.UserStorage
         /// <summary>
         /// Возвращает сведения о пользователе системы по его имени у внешнего провайдера.
         /// </summary>
-        /// <param name="userLogin">Имя входа пользователя системы у внешнего провайдера.</param>
+        /// <param name="loginProvider">Внешний провайдер.</param>
+        /// <param name="providerKey">Ключ внешнего провайдера.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        public IdentityUser FindUserByLogin(IdentityUserLogin userLogin)
+        public TUser FindUserByLogin(string loginProvider, string providerKey)
         {
-            return GetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin));
+            return GetAdditionalUserCache(_usersByLogin, GetUserLoginKey(loginProvider, providerKey));
         }
 
         /// <summary>
         /// Добавляет или обновляет сведения о пользователе системы.
         /// </summary>
         /// <param name="user">Сведения о пользователе системы.</param>
-        public void AddOrUpdateUser(IdentityUser user)
+        public void AddOrUpdateUser(TUser user)
         {
             _cacheLockSlim.EnterWriteLock();
 
@@ -123,7 +122,7 @@ namespace InfinniPlatform.Auth.UserStorage
                 {
                     foreach (var userLogin in userLogins)
                     {
-                        SetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin), user);
+                        SetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin.LoginProvider, userLogin.ProviderKey), user);
                     }
 
                     NotifyOnUserChanged(user.Id);
@@ -154,7 +153,7 @@ namespace InfinniPlatform.Auth.UserStorage
         }
 
 
-        //IUserCacheSynchronizer
+        //IUserCacheObserver
 
 
         public Task ProcessMessage(Message<string> message)
@@ -189,18 +188,18 @@ namespace InfinniPlatform.Auth.UserStorage
             await _broadcastProducer.PublishAsync(userId);
         }
 
-        private static string GetUserLoginKey(IdentityUserLogin userLogin)
+        private static string GetUserLoginKey(string loginProvider, string providerKey)
         {
-            return $"{userLogin.LoginProvider},{userLogin.ProviderKey}";
+            return $"{loginProvider},{providerKey}";
         }
 
-        private IdentityUser GetUserCache(string userId)
+        private TUser GetUserCache(string userId)
         {
             _cacheLockSlim.EnterReadLock();
 
             try
             {
-                return (IdentityUser)_usersById.Get(userId);
+                return (TUser)_usersById.Get(userId);
             }
             finally
             {
@@ -208,7 +207,7 @@ namespace InfinniPlatform.Auth.UserStorage
             }
         }
 
-        private void SetUserCache(string userId, IdentityUser user)
+        private void SetUserCache(string userId, TUser user)
         {
             var absoluteExpiration = DateTimeOffset.Now.Add(_cacheTimeout);
 
@@ -225,7 +224,7 @@ namespace InfinniPlatform.Auth.UserStorage
         {
             // TODO Use EvictionReason to filter?
 
-            var removedUser = (IdentityUser)value;
+            var removedUser = (TUser)value;
 
             _cacheLockSlim.EnterWriteLock();
 
@@ -241,7 +240,7 @@ namespace InfinniPlatform.Auth.UserStorage
                 {
                     foreach (var userLogin in userLogins)
                     {
-                        RemoveAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin));
+                        RemoveAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin.LoginProvider, userLogin.ProviderKey));
                     }
                 }
             }
@@ -256,13 +255,13 @@ namespace InfinniPlatform.Auth.UserStorage
             _usersById.Remove(userId);
         }
 
-        private IdentityUser GetAdditionalUserCache(IDictionary<string, IdentityUser> additionalCache, string userKey)
+        private TUser GetAdditionalUserCache(IDictionary<string, TUser> additionalCache, string userKey)
         {
             _cacheLockSlim.EnterReadLock();
 
             try
             {
-                IdentityUser user;
+                TUser user;
                 additionalCache.TryGetValue(userKey, out user);
                 return user;
             }
@@ -272,7 +271,7 @@ namespace InfinniPlatform.Auth.UserStorage
             }
         }
 
-        private static void SetAdditionalUserCache(IDictionary<string, IdentityUser> additionalCache, string userKey, IdentityUser user)
+        private static void SetAdditionalUserCache(IDictionary<string, TUser> additionalCache, string userKey, TUser user)
         {
             if (!string.IsNullOrEmpty(userKey))
             {
@@ -280,7 +279,7 @@ namespace InfinniPlatform.Auth.UserStorage
             }
         }
 
-        private static void RemoveAdditionalUserCache(IDictionary<string, IdentityUser> additionalCache, string userKey)
+        private static void RemoveAdditionalUserCache(IDictionary<string, TUser> additionalCache, string userKey)
         {
             if (!string.IsNullOrEmpty(userKey))
             {

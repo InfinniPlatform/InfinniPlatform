@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.Identity.MongoDb
+namespace InfinniPlatform.Auth.Identity
 {
     public class IdentityUserLogin
     {

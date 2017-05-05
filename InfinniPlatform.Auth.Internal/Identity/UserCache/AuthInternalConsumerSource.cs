@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-
 using InfinniPlatform.MessageQueue;
 
-namespace InfinniPlatform.Auth.UserStorage
+namespace InfinniPlatform.Auth.Identity.UserCache
 {
     internal class AuthInternalConsumerSource : IConsumerSource
     {

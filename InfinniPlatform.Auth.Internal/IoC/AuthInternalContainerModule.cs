@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Auth.Identity;
-using InfinniPlatform.Auth.Identity.MongoDb;
+using InfinniPlatform.Auth.Identity.UserCache;
+using InfinniPlatform.Auth.Identity.UserStorage;
 using InfinniPlatform.Auth.Middlewares;
 using InfinniPlatform.Auth.Services;
-using InfinniPlatform.Auth.UserStorage;
 using InfinniPlatform.DocumentStorage;
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Http;
@@ -45,8 +44,7 @@ namespace InfinniPlatform.Auth.IoC
                    .As<RoleStore<IdentityRole>>()
                    .As<IRoleStore<IdentityRole>>()
                    .SingleInstance();
-
-            // Менеджер работы с учетными записями пользователей для AspNet.Identity
+            
             builder.RegisterFactory(CreateUserManager)
                    .As<UserManager<IdentityUser>>()
                    .ExternallyOwned();
@@ -57,20 +55,24 @@ namespace InfinniPlatform.Auth.IoC
                    .As<IHttpMiddleware>()
                    .SingleInstance();
 
-            // Services
-
-            builder.RegisterType<UserEventHandlerInvoker>()
-                   .AsSelf()
+            builder.RegisterType<AuthCookieHttpMiddleware>()
+                   .As<IHttpMiddleware>()
                    .SingleInstance();
+
+            // Services
 
             builder.RegisterType<AuthInternalHttpService>()
                    .As<IHttpService>()
                    .SingleInstance();
 
+            builder.RegisterType<UserEventHandlerInvoker>()
+                   .AsSelf()
+                   .SingleInstance();
+
             // UserStorage
 
-            builder.RegisterType<AppUserStoreCache>()
-                   .As<IUserCacheSynchronizer>()
+            builder.RegisterType<UserCache<IdentityUser>>()
+                   .As<IUserCacheObserver>()
                    .AsSelf()
                    .SingleInstance();
 
@@ -84,16 +86,6 @@ namespace InfinniPlatform.Auth.IoC
 
             builder.RegisterType<AuthInternalDocumentMetadataSource>()
                    .As<IDocumentMetadataSource>()
-                   .SingleInstance();
-
-            builder.RegisterType<AppUserStore>()
-                   .As<IAppUserStore>()
-                   .SingleInstance();
-
-            // Cookie
-
-            builder.RegisterType<AuthCookieHttpMiddleware>()
-                   .As<IHttpMiddleware>()
                    .SingleInstance();
         }
 
@@ -122,7 +114,7 @@ namespace InfinniPlatform.Auth.IoC
             var identityErrorDescriber = new IdentityErrorDescriber();
 
             // Провайдер зарегистрированных в IoC сервисов
-            var serviceProvider = resolver.Resolve<IServiceProvider>();
+            var serviceProvider = resolver.Resolve<System.IServiceProvider>();
 
             // Логгер
             var logger = resolver.Resolve<ILogger<UserManager<IdentityUser>>>();
@@ -142,9 +134,10 @@ namespace InfinniPlatform.Auth.IoC
 
         private static UserStore<IdentityUser> CreateUserStore(IContainerResolver resolver)
         {
-            var documentStorage = resolver.Resolve<ISystemDocumentStorage<IdentityUser>>();
+            var userDocumentStorage = resolver.Resolve<ISystemDocumentStorage<IdentityUser>>();
+            var userCache = resolver.Resolve<UserCache<IdentityUser>>();
 
-            return new UserStore<IdentityUser>(documentStorage);
+            return new UserStore<IdentityUser>(userDocumentStorage, userCache);
         }
 
         private static RoleStore<IdentityRole> CreateRoleStore(IContainerResolver resolver)

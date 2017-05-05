@@ -1,5 +1,6 @@
-﻿using InfinniPlatform.Auth;
-using InfinniPlatform.Auth.Identity.MongoDb;
+﻿using System;
+using InfinniPlatform.Auth;
+using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.Auth.IoC;
 
 using Microsoft.Extensions.Configuration;
@@ -18,9 +19,11 @@ namespace InfinniPlatform.AspNetCore
             return AddAuthInternal(services, options);
         }
 
-        public static IServiceCollection AddAuthInternal(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddAuthInternal(this IServiceCollection services, IConfigurationRoot configuration, Action<AuthInternalOptions> callback = null)
         {
             var options = configuration.GetSection(AuthInternalOptions.SectionName).Get<AuthInternalOptions>();
+
+            callback?.Invoke(options);
 
             return AddAuthInternal(services, options);
         }

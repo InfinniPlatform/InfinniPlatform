@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Threading.Tasks;
-
+using InfinniPlatform.Auth.Identity.UserStorage;
 using InfinniPlatform.MessageQueue;
 
-namespace InfinniPlatform.Auth.UserStorage
+namespace InfinniPlatform.Auth.Identity.UserCache
 {
     /// <summary>
     /// Обработчик сообщений синхронизации кэша пользователей.
     /// </summary>
-    [QueueName(nameof(AppUserStoreCache))]
+    [QueueName(nameof(UserCache))]
     internal class AppUserStoreCacheConsumer : BroadcastConsumerBase<string>
     {
-        public AppUserStoreCacheConsumer(Lazy<IUserCacheSynchronizer> userCacheSynchronizer)
+        public AppUserStoreCacheConsumer(Lazy<IUserCacheObserver> userCacheSynchronizer)
         {
             _userCacheSynchronizer = userCacheSynchronizer;
         }
 
-        private readonly Lazy<IUserCacheSynchronizer> _userCacheSynchronizer;
+        private readonly Lazy<IUserCacheObserver> _userCacheSynchronizer;
 
         protected override async Task Consume(Message<string> message)
         {

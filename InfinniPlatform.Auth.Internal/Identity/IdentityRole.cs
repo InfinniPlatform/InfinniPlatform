@@ -1,6 +1,6 @@
 ﻿using InfinniPlatform.DocumentStorage;
 
-namespace InfinniPlatform.Auth.Identity.MongoDb
+namespace InfinniPlatform.Auth.Identity
 {
     public class IdentityRole : Document
     {
