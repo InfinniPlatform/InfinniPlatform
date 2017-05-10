@@ -9,8 +9,21 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace InfinniPlatform.Auth.Identity.UserCache
 {
-    public class UserCache<TUser> : IUserCacheObserver where TUser: AppUser
+    public class UserCache<TUser> : IUserCacheObserver where TUser : AppUser
     {
+        private readonly AppOptions _appOptions;
+        private readonly IBroadcastProducer _broadcastProducer;
+
+        private readonly ReaderWriterLockSlim _cacheLockSlim;
+        private readonly TimeSpan _cacheTimeout;
+        private readonly ILog _log;
+        private readonly ConcurrentDictionary<string, TUser> _usersByEmail;
+
+        private readonly MemoryCache _usersById;
+        private readonly ConcurrentDictionary<string, TUser> _usersByLogin;
+        private readonly ConcurrentDictionary<string, TUser> _usersByName;
+        private readonly ConcurrentDictionary<string, TUser> _usersByPhone;
+
         public UserCache(AuthInternalOptions options,
                          ILog log,
                          IBroadcastProducer broadcastProducer,
@@ -35,18 +48,35 @@ namespace InfinniPlatform.Auth.Identity.UserCache
         }
 
 
-        private readonly AppOptions _appOptions;
-        private readonly IBroadcastProducer _broadcastProducer;
+        //IUserCacheObserver
 
-        private readonly ReaderWriterLockSlim _cacheLockSlim;
-        private readonly TimeSpan _cacheTimeout;
-        private readonly ILog _log;
-        private readonly ConcurrentDictionary<string, TUser> _usersByEmail;
 
-        private readonly MemoryCache _usersById;
-        private readonly ConcurrentDictionary<string, TUser> _usersByLogin;
-        private readonly ConcurrentDictionary<string, TUser> _usersByName;
-        private readonly ConcurrentDictionary<string, TUser> _usersByPhone;
+        public Task ProcessMessage(Message<string> message)
+        {
+            return Task.Run(() =>
+                            {
+                                try
+                                {
+                                    if (message.AppId == _appOptions.AppInstance)
+                                    {
+                                        //ignore own message
+                                    }
+                                    else
+                                    {
+                                        var userId = (string) message.GetBody();
+
+                                        if (!string.IsNullOrEmpty(userId))
+                                        {
+                                            RemoveUser(userId);
+                                        }
+                                    }
+                                }
+                                catch (Exception exception)
+                                {
+                                    _log.Error(exception);
+                                }
+                            });
+        }
 
 
         /// <summary>
@@ -151,37 +181,6 @@ namespace InfinniPlatform.Auth.Identity.UserCache
             }
         }
 
-
-        //IUserCacheObserver
-
-
-        public Task ProcessMessage(Message<string> message)
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    if (message.AppId == _appOptions.AppInstance)
-                    {
-                        //ignore own message
-                    }
-                    else
-                    {
-                        var userId = (string)message.GetBody();
-
-                        if (!string.IsNullOrEmpty(userId))
-                        {
-                            RemoveUser(userId);
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    _log.Error(exception);
-                }
-            });
-        }
-
         private async void NotifyOnUserChanged(string userId)
         {
             await _broadcastProducer.PublishAsync(userId);
@@ -198,7 +197,7 @@ namespace InfinniPlatform.Auth.Identity.UserCache
 
             try
             {
-                return (TUser)_usersById.Get(userId);
+                return (TUser) _usersById.Get(userId);
             }
             finally
             {
@@ -223,7 +222,7 @@ namespace InfinniPlatform.Auth.Identity.UserCache
         {
             // TODO Use EvictionReason to filter?
 
-            var removedUser = (TUser)value;
+            var removedUser = (TUser) value;
 
             _cacheLockSlim.EnterWriteLock();
 

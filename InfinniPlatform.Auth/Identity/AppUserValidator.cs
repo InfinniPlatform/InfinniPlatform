@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.Identity.UserStore;
 using InfinniPlatform.Auth.Properties;
-
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Identity
@@ -13,23 +11,26 @@ namespace InfinniPlatform.Auth.Identity
     /// <summary>
     /// Проверяет корректность данных пользователей.
     /// </summary>
-    internal class IdentityApplicationUserValidator : IUserValidator<AppUser>
+    internal class AppUserValidator : IUserValidator<AppUser>
     {
-        public IdentityApplicationUserValidator(UserStore<AppUser> store)
+        private readonly IUserEmailStore<AppUser> _emailUserStore;
+        private readonly IUserStore<AppUser> _userStore;
+
+        public AppUserValidator(IUserStore<AppUser> userStore,
+                                IUserEmailStore<AppUser> emailUserStore)
         {
-            if (store == null)
+            if (userStore == null)
             {
-                throw new ArgumentNullException(nameof(store));
+                throw new ArgumentNullException(nameof(userStore));
             }
 
-            _store = store;
+            _userStore = userStore;
+            _emailUserStore = emailUserStore;
 
             AllowOnlyAlphanumericUserNames = true;
             RequireUniqueEmail = true;
             RequireUniquePhoneNumber = true;
         }
-
-        private readonly UserStore<AppUser> _store;
 
         /// <summary>
         /// Разрешать только пользователей с именами @"^[A-Za-z0-9@_\+\-\.]+$".
@@ -54,9 +55,9 @@ namespace InfinniPlatform.Auth.Identity
             await ValidateEmail(user, errors);
             await ValidatePhoneNumber(user, errors);
 
-            var result = (errors.Count <= 0)
-                ? IdentityResult.Success
-                : IdentityResult.Failed(errors.ToArray());
+            var result = errors.Count <= 0
+                             ? IdentityResult.Success
+                             : IdentityResult.Failed(errors.ToArray());
 
             return result;
         }
@@ -86,14 +87,14 @@ namespace InfinniPlatform.Auth.Identity
             {
                 // Проверка уникальности
 
-                var owner = await _store.FindByNameAsync(userName, default(CancellationToken));
+                var owner = await _userStore.FindByNameAsync(userName, default(CancellationToken));
 
                 if (owner != null && !string.Equals(owner.Id, user.Id))
                 {
                     errors.Add(new IdentityError
-                    {
-                        Description = string.Format(Resources.DuplicateUserName, userName)
-                    });
+                               {
+                                   Description = string.Format(Resources.DuplicateUserName, userName)
+                               });
                 }
             }
         }
@@ -122,11 +123,11 @@ namespace InfinniPlatform.Auth.Identity
 
                 if (RequireUniqueEmail)
                 {
-                    var owner = await _store.FindByEmailAsync(email, default(CancellationToken));
+                    var owner = await _emailUserStore.FindByEmailAsync(email, default(CancellationToken));
 
                     if (owner != null && !string.Equals(owner.Id, user.Id))
                     {
-                        errors.Add(new IdentityError { Description = string.Format(Resources.DuplicateEmail, email) });
+                        errors.Add(new IdentityError {Description = string.Format(Resources.DuplicateEmail, email)});
                     }
                 }
             }
@@ -145,7 +146,7 @@ namespace InfinniPlatform.Auth.Identity
                 if (RequireUniquePhoneNumber)
                 {
                     // TODO FindByPhoneNumberAsync implementation.
-//                                        var owner = await _store.FindByPhoneNumberAsync(phoneNumber);
+//                                        var owner = await _userStore.FindByPhoneNumberAsync(phoneNumber);
 //                    
 //                                        if (owner != null && !string.Equals(owner.Id, user.Id))
 //                                        {
