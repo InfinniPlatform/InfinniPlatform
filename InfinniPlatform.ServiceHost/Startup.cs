@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.AspNetCore;
+using InfinniPlatform.Auth;
 using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.IoC;
 
@@ -31,7 +32,7 @@ namespace InfinniPlatform.ServiceHost
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddLog4NetLogging()
-                                            .AddAuthInternal<AppUser, AppUserRole>(_configuration)
+                                            .AddAuthInternal<AppUser, AppUserRole>(_configuration, AuthCallback)
                                             .AddInMemoryCache()
                                             .AddRedisSharedCache(_configuration)
                                             .AddTwoLayerCache()
@@ -47,6 +48,10 @@ namespace InfinniPlatform.ServiceHost
                                             .BuildProvider(_configuration);
 
             return configureServices;
+        }
+
+        private void AuthCallback(AuthInternalOptions opt)
+        {
         }
 
         public void Configure(IApplicationBuilder app, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)
