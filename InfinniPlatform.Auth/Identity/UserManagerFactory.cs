@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using InfinniPlatform.IoC;
@@ -20,32 +20,32 @@ namespace InfinniPlatform.Auth.Identity
 
         public UserManager<TUser> GetUserManager<TUser>() where TUser : AppUser
         {
-            // Хранилище пользователей
+            // РҐСЂР°РЅРёР»РёС‰Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
             var appUserStoreFactory = _containerResolver.Resolve<IUserStoreFactory>();
             var appUserStore = appUserStoreFactory.GetUserStore<TUser>();
 
-            // Провайдер настроек AspNet.Identity
+            // РџСЂРѕРІР°Р№РґРµСЂ РЅР°СЃС‚СЂРѕРµРє AspNet.Identity
             var optionsAccessor = new OptionsWrapper<IdentityOptions>(new IdentityOptions());
 
-            // Сервис хэширования паролей
+            // РЎРµСЂРІРёСЃ С…СЌС€РёСЂРѕРІР°РЅРёСЏ РїР°СЂРѕР»РµР№
             var identityPasswordHasher = new DefaultAppUserPasswordHasher<TUser>();
 
-            // Валидаторы данных о пользователях
+            // Р’Р°Р»РёРґР°С‚РѕСЂС‹ РґР°РЅРЅС‹С… Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏС…
             var userValidators = new List<IUserValidator<TUser>> {new AppUserValidator<TUser>(appUserStore)};
 
-            // Валидатор паролей пользователей
+            // Р’Р°Р»РёРґР°С‚РѕСЂ РїР°СЂРѕР»РµР№ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
             var passwordValidators = Enumerable.Empty<IPasswordValidator<TUser>>();
 
-            // Нормализатор
+            // РќРѕСЂРјР°Р»РёР·Р°С‚РѕСЂ
             var keyNormalizer = new UpperInvariantLookupNormalizer();
 
-            // Сервис обработки ошибок AspNet.Identity
+            // РЎРµСЂРІРёСЃ РѕР±СЂР°Р±РѕС‚РєРё РѕС€РёР±РѕРє AspNet.Identity
             var identityErrorDescriber = new IdentityErrorDescriber();
 
-            // Провайдер зарегистрированных в IoC сервисов
+            // РџСЂРѕРІР°Р№РґРµСЂ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРЅС‹С… РІ IoC СЃРµСЂРІРёСЃРѕРІ
             var serviceProvider = _containerResolver.Resolve<IServiceProvider>();
 
-            // Логгер
+            // Р›РѕРіРіРµСЂ
             var logger = _containerResolver.Resolve<ILogger<UserManager<TUser>>>();
 
             var userManager = new UserManager<TUser>(appUserStore,

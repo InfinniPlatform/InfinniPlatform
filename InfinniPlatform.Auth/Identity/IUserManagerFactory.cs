@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Identity;
+п»їusing Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Identity
 {
     /// <summary>
-    /// Фабрика для получения экземпляров <see cref="UserManager{TUser}" />.
+    /// Р¤Р°Р±СЂРёРєР° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЌРєР·РµРјРїР»СЏСЂРѕРІ <see cref="UserManager{TUser}" />.
     /// </summary>
     public interface IUserManagerFactory
     {

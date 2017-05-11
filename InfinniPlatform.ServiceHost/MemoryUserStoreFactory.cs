@@ -1,4 +1,4 @@
-using InfinniPlatform.Auth;
+﻿using InfinniPlatform.Auth;
 using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Identity;
