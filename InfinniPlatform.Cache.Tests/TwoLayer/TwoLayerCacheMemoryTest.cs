@@ -13,7 +13,7 @@ namespace InfinniPlatform.Cache.TwoLayer
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
     [Ignore("Manual")]
-    public sealed class TwoLayerCacheImplMemoryTest
+    public sealed class TwoLayerCacheMemoryTest
     {
         [Test]
         [TestCase(1000)]
@@ -23,21 +23,18 @@ namespace InfinniPlatform.Cache.TwoLayer
         {
             // Given
 
-            var appOptions = new AppOptions { AppName = nameof(TwoLayerCacheImplMemoryTest) };
+            var inMemoryCache = new InMemoryCache();
+            var inMemoryCacheFactory = new Mock<IInMemoryCacheFactory>();
+            inMemoryCacheFactory.Setup(i => i.Create()).Returns(inMemoryCache);
 
-            var settings = new RedisSharedCacheOptions
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
+            var appOptions = new AppOptions { AppName = nameof(TwoLayerCacheMemoryTest) };
+            var redisOptions = new RedisSharedCacheOptions { Host = "localhost", Password = "TeamCity" };
+            var sharedCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions), new Mock<ILog>().Object, new Mock<IPerformanceLog>().Object);
+            var sharedCacheFactory = new Mock<ISharedCacheFactory>();
+            sharedCacheFactory.Setup(i => i.Create()).Returns(sharedCache);
 
-            var log = new Mock<ILog>().Object;
-            var performanceLog = new Mock<IPerformanceLog>().Object;
+            var twoLayerCache = new TwoLayerCache(inMemoryCacheFactory.Object, sharedCacheFactory.Object, new Mock<ITwoLayerCacheStateObserver>().Object);
 
-            var memoryCache = new InMemoryCacheImpl();
-            var redisCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
-
-            var twoLayerCache = new TwoLayerCache(memoryCache, redisCache, appOptions, new Mock<IBroadcastProducer>().Object, new Mock<ILog>().Object);
 
             const string key = "GetMemoryTest_Key";
 

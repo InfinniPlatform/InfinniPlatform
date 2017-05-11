@@ -35,7 +35,7 @@ namespace InfinniPlatform.ServiceHost
                                             .AddAuthInternal<AppUser, AppUserRole>(_configuration, AuthCallback)
                                             .AddInMemoryCache()
                                             .AddRedisSharedCache(_configuration)
-                                            .AddTwoLayerCache()
+                                            .AddTwoLayerCache(_configuration)
                                             .AddFileSystemBlobStorage(_configuration)
                                             .AddBlobStorageHttpService()
                                             .AddMongoDocumentStorage(_configuration)

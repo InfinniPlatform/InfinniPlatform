@@ -11,25 +11,17 @@ namespace InfinniPlatform.Cache.Redis
 {
     [TestFixture]
     [Category(TestCategories.IntegrationTest)]
-    public sealed class RedisCacheImplTest
+    public sealed class RedisCacheTest
     {
         private RedisSharedCache _cache;
 
         [SetUp]
         public void SetUp()
         {
-            var appOptions = new AppOptions { AppName = nameof(RedisCacheImplTest) };
+            var appOptions = new AppOptions { AppName = nameof(RedisCacheTest) };
+            var redisOptions = new RedisSharedCacheOptions { Host = "localhost", Password = "TeamCity" };
 
-            var settings = new RedisSharedCacheOptions
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
-
-            var log = new Mock<ILog>().Object;
-            var performanceLog = new Mock<IPerformanceLog>().Object;
-
-            _cache = new RedisSharedCache(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
+            _cache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions), new Mock<ILog>().Object, new Mock<IPerformanceLog>().Object);
         }
 
         [Test]

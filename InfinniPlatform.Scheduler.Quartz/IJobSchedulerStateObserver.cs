@@ -15,44 +15,44 @@ namespace InfinniPlatform.Scheduler
         Task OnAddOrUpdateJob(JobInfo jobInfo);
 
         /// <summary>
-        /// Взывается при добавлении или обновлении списка заданий.
+        /// Вызывается при добавлении или обновлении списка заданий.
         /// </summary>
         /// <param name="jobInfos">Список с информацией о заданиях.</param>
         Task OnAddOrUpdateJobs(IEnumerable<JobInfo> jobInfos);
 
 
         /// <summary>
-        /// Взывается при удалении указанного задания.
+        /// Вызывается при удалении указанного задания.
         /// </summary>
         /// <param name="jobId">Уникальный идентификатор задания.</param>
         Task OnDeleteJob(string jobId);
 
         /// <summary>
-        /// Взывается при удалении указанных заданий.
+        /// Вызывается при удалении указанных заданий.
         /// </summary>
         /// <param name="jobIds">Список с уникальными идентификаторами заданий.</param>
         Task OnDeleteJobs(IEnumerable<string> jobIds);
 
         /// <summary>
-        /// Взывается при удалении всех заданий.
+        /// Вызывается при удалении всех заданий.
         /// </summary>
         Task OnDeleteAllJobs();
 
 
         /// <summary>
-        /// Взывается при приостановке планирования указанного задания.
+        /// Вызывается при приостановке планирования указанного задания.
         /// </summary>
         /// <param name="jobId">Уникальный идентификатор задания.</param>
         Task OnPauseJob(string jobId);
 
         /// <summary>
-        /// Взывается при приостановке планирования указанных заданий.
+        /// Вызывается при приостановке планирования указанных заданий.
         /// </summary>
         /// <param name="jobIds">Список с уникальными идентификаторами заданий.</param>
         Task OnPauseJobs(IEnumerable<string> jobIds);
 
         /// <summary>
-        /// Взывается при приостановке планирования всех заданий.
+        /// Вызывается при приостановке планирования всех заданий.
         /// </summary>
         Task OnPauseAllJobs();
 

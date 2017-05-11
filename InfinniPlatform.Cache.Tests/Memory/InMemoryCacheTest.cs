@@ -8,14 +8,14 @@ namespace InfinniPlatform.Cache.Memory
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
-    public sealed class InMemoryCacheImplTest
+    public sealed class InMemoryCacheTest
     {
-        private InMemoryCacheImpl _cache;
+        private InMemoryCache _cache;
 
         [SetUp]
         public void SetUp()
         {
-            _cache = new InMemoryCacheImpl();
+            _cache = new InMemoryCache();
         }
 
         [TearDown]

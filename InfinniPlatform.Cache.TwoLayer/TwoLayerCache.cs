@@ -1,46 +1,21 @@
 ﻿using System;
-using System.Threading.Tasks;
-
-using InfinniPlatform.Logging;
-using InfinniPlatform.MessageQueue;
 
 namespace InfinniPlatform.Cache
 {
-    /// <summary>
-    /// Реализует интерфейс для управления двухуровневым кэшем.
-    /// </summary>
-    public class TwoLayerCache : ITwoLayerCache, ITwoLayerCacheSynchronizer
+    public class TwoLayerCache : ITwoLayerCache
     {
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="memoryCache">Локальный кэш.</param>
-        /// <param name="sharedCache">Распределенный кэш.</param>
-        /// <param name="appOptions">Настройки приложения.</param>
-        /// <param name="broadcastProducer">Шина для синхронизации кэша.</param>
-        /// <param name="log">Лог.</param>
-        public TwoLayerCache(IInMemoryCache memoryCache,
-                             ISharedCache sharedCache,
-                             AppOptions appOptions,
-                             IBroadcastProducer broadcastProducer,
-                             ILog log)
+        public TwoLayerCache(IInMemoryCacheFactory inMemoryCacheFactory, ISharedCacheFactory sharedCacheFactory, ITwoLayerCacheStateObserver сacheStateObserver)
         {
-            _memoryCache = memoryCache;
-            _sharedCache = sharedCache;
-            _appOptions = appOptions;
-            _broadcastProducer = broadcastProducer;
-            _log = log;
-
-            _isSharedCacheEnabled = !(_sharedCache is NullSharedCacheImpl);
+            _inMemoryCache = inMemoryCacheFactory.Create();
+            _sharedCache = sharedCacheFactory.Create();
+            _сacheStateObserver = сacheStateObserver;
         }
 
-        private readonly AppOptions _appOptions;
-        private readonly IBroadcastProducer _broadcastProducer;
-        private readonly ILog _log;
 
-        private readonly IInMemoryCache _memoryCache;
+        private readonly IInMemoryCache _inMemoryCache;
         private readonly ISharedCache _sharedCache;
-        private readonly bool _isSharedCacheEnabled;
+        private readonly ITwoLayerCacheStateObserver _сacheStateObserver;
+
 
         public bool Contains(string key)
         {
@@ -49,7 +24,7 @@ namespace InfinniPlatform.Cache
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return _memoryCache.Contains(key) || _sharedCache.Contains(key);
+            return _inMemoryCache.Contains(key) || _sharedCache.Contains(key);
         }
 
         public string Get(string key)
@@ -70,7 +45,7 @@ namespace InfinniPlatform.Cache
 
             var exists = false;
 
-            if (!_memoryCache.TryGet(key, out value))
+            if (!_inMemoryCache.TryGet(key, out value))
             {
                 if (!_sharedCache.TryGet(key, out value))
                 {
@@ -80,7 +55,7 @@ namespace InfinniPlatform.Cache
                 {
                     exists = true;
 
-                    _memoryCache.Set(key, value);
+                    _inMemoryCache.Set(key, value);
                 }
             }
             else
@@ -103,7 +78,7 @@ namespace InfinniPlatform.Cache
                 throw new ArgumentNullException(nameof(value));
             }
 
-            _memoryCache.Set(key, value);
+            _inMemoryCache.Set(key, value);
             _sharedCache.Set(key, value);
 
             NotifyOnKeyChangedAsync(key);
@@ -122,7 +97,7 @@ namespace InfinniPlatform.Cache
             {
                 try
                 {
-                    deleted |= _memoryCache.Remove(key);
+                    deleted |= _inMemoryCache.Remove(key);
                 }
                 finally
                 {
@@ -141,45 +116,9 @@ namespace InfinniPlatform.Cache
         }
 
 
-        // ITwoLayerCacheSynchronizer
-
-
-        public Task ProcessMessage(Message<string> message)
+        private void NotifyOnKeyChangedAsync(string key)
         {
-            return Task.Run(() =>
-                            {
-                                if (_isSharedCacheEnabled)
-                                {
-                                    try
-                                    {
-                                        if (message.AppId == _appOptions.AppInstance)
-                                        {
-                                            //ignore own message
-                                        }
-                                        else
-                                        {
-                                            var key = (string)message.GetBody();
-
-                                            if (!string.IsNullOrEmpty(key))
-                                            {
-                                                _memoryCache.Remove(key);
-                                            }
-                                        }
-                                    }
-                                    catch (Exception exception)
-                                    {
-                                        _log.Error(exception);
-                                    }
-                                }
-                            });
-        }
-
-        private async void NotifyOnKeyChangedAsync(string key)
-        {
-            if (_isSharedCacheEnabled)
-            {
-                await _broadcastProducer.PublishAsync(key, nameof(TwoLayerCache));
-            }
+            _сacheStateObserver.OnResetKey(key);
         }
     }
 }

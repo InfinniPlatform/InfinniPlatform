@@ -2,7 +2,7 @@
 
 namespace InfinniPlatform.Cache.TwoLayer
 {
-    internal sealed class FakeCacheImpl : IInMemoryCache, ISharedCache
+    internal sealed class FakeCache : IInMemoryCache, ISharedCache
     {
         private readonly Dictionary<string, string> _data = new Dictionary<string, string>();
 

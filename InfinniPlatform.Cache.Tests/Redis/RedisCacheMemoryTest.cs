@@ -12,7 +12,7 @@ namespace InfinniPlatform.Cache.Redis
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
     [Ignore("Manual")]
-    public sealed class RedisCacheImplMemoryTest
+    public sealed class RedisCacheMemoryTest
     {
         [Test]
         [TestCase(1000)]
@@ -22,18 +22,9 @@ namespace InfinniPlatform.Cache.Redis
         {
             // Given
 
-            var appOptions = new AppOptions { AppName = nameof(RedisCacheImplMemoryTest) };
-
-            var settings = new RedisSharedCacheOptions
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
-
-            var log = new Mock<ILog>().Object;
-            var performanceLog = new Mock<IPerformanceLog>().Object;
-
-            var redisCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
+            var appOptions = new AppOptions { AppName = nameof(RedisCacheMemoryTest) };
+            var redisOptions = new RedisSharedCacheOptions { Host = "localhost", Password = "TeamCity" };
+            var redisCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions), new Mock<ILog>().Object, new Mock<IPerformanceLog>().Object);
 
             const string key = "GetMemoryTest_Key";
 

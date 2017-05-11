@@ -1,7 +1,5 @@
 ﻿using System;
 
-using InfinniPlatform.Logging;
-using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Tests;
 
 using Moq;
@@ -12,23 +10,29 @@ namespace InfinniPlatform.Cache.TwoLayer
 {
     [TestFixture]
     [Category(TestCategories.UnitTest)]
-    public sealed class TwoLayerCacheImplTest
+    public sealed class TwoLayerCacheTest
     {
         private TwoLayerCache _cache;
-        private FakeCacheImpl _memoryCache;
-        private FakeCacheImpl _sharedCache;
-        private Mock<IBroadcastProducer> _broadcastProducerMock;
+        private FakeCache _memoryCache;
+        private FakeCache _sharedCache;
+        private Mock<ITwoLayerCacheStateObserver> _cacheStateObserver;
 
         [SetUp]
         public void SetUp()
         {
-            var appOptions = new AppOptions();
+            var inMemoryCache = new FakeCache();
+            var inMemoryCacheFactory = new Mock<IInMemoryCacheFactory>();
+            inMemoryCacheFactory.Setup(i => i.Create()).Returns(inMemoryCache);
 
-            _memoryCache = new FakeCacheImpl();
-            _sharedCache = new FakeCacheImpl();
-            _broadcastProducerMock = new Mock<IBroadcastProducer>();
-            
-            _cache = new TwoLayerCache(_memoryCache, _sharedCache, appOptions, _broadcastProducerMock.Object, new Mock<ILog>().Object);
+            var sharedCache = new FakeCache();
+            var sharedCacheFactory = new Mock<ISharedCacheFactory>();
+            sharedCacheFactory.Setup(i => i.Create()).Returns(sharedCache);
+
+            _memoryCache = inMemoryCache;
+            _sharedCache = sharedCache;
+            _cacheStateObserver = new Mock<ITwoLayerCacheStateObserver>();
+
+            _cache = new TwoLayerCache(inMemoryCacheFactory.Object, sharedCacheFactory.Object, _cacheStateObserver.Object);
         }
 
         [Test]
@@ -249,7 +253,7 @@ namespace InfinniPlatform.Cache.TwoLayer
             _cache.Set(key, value);
 
             // Then
-            _broadcastProducerMock.Verify(producer => producer.PublishAsync(key, nameof(TwoLayerCache)), Times.Once);
+            _cacheStateObserver.Verify(producer => producer.OnResetKey(key), Times.Once);
         }
 
 
@@ -306,7 +310,7 @@ namespace InfinniPlatform.Cache.TwoLayer
             _cache.Remove(key);
 
             // Then
-            _broadcastProducerMock.Verify(producer => producer.PublishAsync(key, nameof(TwoLayerCache)), Times.Exactly(2));
+            _cacheStateObserver.Verify(producer => producer.OnResetKey(key), Times.Exactly(2));
         }
     }
 }

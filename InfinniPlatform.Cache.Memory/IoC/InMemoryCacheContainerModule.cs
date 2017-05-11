@@ -6,7 +6,7 @@ namespace InfinniPlatform.Cache.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<InMemoryCacheImpl>().As<IInMemoryCache>().SingleInstance();
+            builder.RegisterType<InMemoryCache>().As<IInMemoryCache>().SingleInstance();
         }
     }
 }

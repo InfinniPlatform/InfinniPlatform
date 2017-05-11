@@ -7,12 +7,12 @@ namespace InfinniPlatform.Cache
     /// <summary>
     /// Реализует интерфейс для управления кэшем в памяти.
     /// </summary>
-    public class InMemoryCacheImpl : IInMemoryCache, IDisposable
+    public class InMemoryCache : IInMemoryCache, IDisposable
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public InMemoryCacheImpl()
+        public InMemoryCache()
         {
             _cache = new MemoryCache(new MemoryCacheOptions());
         }

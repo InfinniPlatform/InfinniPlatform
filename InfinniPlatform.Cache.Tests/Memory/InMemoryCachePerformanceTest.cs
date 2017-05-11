@@ -1,42 +1,29 @@
 ﻿using System;
 using System.Diagnostics;
 
-using InfinniPlatform.Logging;
-using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Tests;
-
-using Moq;
 
 using NUnit.Framework;
 
-namespace InfinniPlatform.Cache.TwoLayer
+namespace InfinniPlatform.Cache.Memory
 {
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
     [Ignore("Manual")]
-    public sealed class TwoLayerCacheImplPerformanceTest
+    public sealed class InMemoryCachePerformanceTest
     {
-        private TwoLayerCache _cache;
+        private InMemoryCache _cache;
 
         [SetUp]
         public void SetUp()
         {
-            var appOptions = new AppOptions { AppName = nameof(TwoLayerCacheImplPerformanceTest) };
+            _cache = new InMemoryCache();
+        }
 
-            var settings = new RedisSharedCacheOptions
-            {
-                Host = "localhost",
-                Password = "TeamCity"
-            };
-
-            var log = new Mock<ILog>().Object;
-            var performanceLog = new Mock<IPerformanceLog>().Object;
-
-            var memoryCache = new InMemoryCacheImpl();
-            var redisCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(settings), log, performanceLog);
-            var twoLayerCache = new TwoLayerCache(memoryCache, redisCache, appOptions, new Mock<IBroadcastProducer>().Object, new Mock<ILog>().Object);
-
-            _cache = twoLayerCache;
+        [TearDown]
+        public void TearDown()
+        {
+            _cache.Dispose();
         }
 
 
@@ -69,9 +56,9 @@ namespace InfinniPlatform.Cache.TwoLayer
 
             // Then
             var avg = stopwatch.Elapsed.TotalMilliseconds / iterations;
-            Console.WriteLine(@"TwoLayerCache.Get()");
+            Console.WriteLine(@"InMemoryCache.Get()");
             Console.WriteLine(@"  Iteration count: {0}", iterations);
-            Console.WriteLine(@"  Operation time : {0:N4} ms", avg);
+            Console.WriteLine(@"  Operation time : {0:N4} sec", avg);
             Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / avg);
         }
 
@@ -106,9 +93,9 @@ namespace InfinniPlatform.Cache.TwoLayer
 
             // Then
             var avg = stopwatch.Elapsed.TotalMilliseconds / iterations;
-            Console.WriteLine(@"TwoLayerCache.Set()");
+            Console.WriteLine(@"InMemoryCache.Set()");
             Console.WriteLine(@"  Iteration count: {0}", iterations);
-            Console.WriteLine(@"  Operation time : {0:N4} ms", avg);
+            Console.WriteLine(@"  Operation time : {0:N4} sec", avg);
             Console.WriteLine(@"  Operation/sec  : {0:N4}", 1000 / avg);
         }
     }

@@ -9,7 +9,7 @@ namespace InfinniPlatform.Cache.Memory
     [TestFixture]
     [Category(TestCategories.PerformanceTest)]
     [Ignore("Manual")]
-    public sealed class InMemoryCacheImplMemoryTest
+    public sealed class InMemoryCacheMemoryTest
     {
         [Test]
         [TestCase(1000)]
@@ -19,7 +19,7 @@ namespace InfinniPlatform.Cache.Memory
         {
             // Given
 
-            var memoryCache = new InMemoryCacheImpl();
+            var memoryCache = new InMemoryCache();
 
             const string key = "GetMemoryTest_Key";
 

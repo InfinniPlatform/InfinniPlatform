@@ -1,24 +1,69 @@
-﻿using InfinniPlatform.IoC;
+﻿using InfinniPlatform.Cache.Clusterization;
+using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
 
 namespace InfinniPlatform.Cache.IoC
 {
-    internal sealed class TwoLayerCacheContainerModule : IContainerModule
+    public class TwoLayerCacheContainerModule : IContainerModule
     {
+        public TwoLayerCacheContainerModule(TwoLayerCacheOptions options)
+        {
+            _options = options;
+        }
+
+
+        private readonly TwoLayerCacheOptions _options;
+
+
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<TwoLayerCache>()
-                   .As<ITwoLayerCache>()
-                   .As<ITwoLayerCacheSynchronizer>()
-                   .SingleInstance();
+            builder.RegisterInstance(_options).AsSelf().SingleInstance();
 
-            builder.RegisterType<TwoLayerCacheConsumer>()
-                   .AsSelf()
-                   .SingleInstance();
+            builder.RegisterType<InMemoryCacheFactory>().AsSelf().SingleInstance();
+            builder.RegisterFactory(CreateInMemoryCacheFactory).As<IInMemoryCacheFactory>().SingleInstance();
 
-            builder.RegisterType<TwoLayerCacheConsumerSource>()
-                   .As<IConsumerSource>()
-                   .SingleInstance();
+            builder.RegisterType<SharedCacheFactory>().AsSelf().SingleInstance();
+            builder.RegisterFactory(CreateSharedCacheFactory).As<ISharedCacheFactory>().SingleInstance();
+
+            builder.RegisterType<TwoLayerCacheStateObserver>().AsSelf().SingleInstance();
+            builder.RegisterType<TwoLayerCacheStateObserverStub>().AsSelf().SingleInstance();
+            builder.RegisterFactory(CreateTwoLayerCacheStateObserver).As<ITwoLayerCacheStateObserver>().SingleInstance();
+
+            builder.RegisterType<TwoLayerCache>().As<ITwoLayerCache>().SingleInstance();
+
+            // Clusterization
+
+            builder.RegisterType<TwoLayerCacheResetKeyConsumer>().As<IConsumer>().SingleInstance();
+        }
+
+
+        private IInMemoryCacheFactory CreateInMemoryCacheFactory(IContainerResolver resolver)
+        {
+            return _options.InMemoryCacheFactory?.Invoke(resolver) ?? resolver.Resolve<InMemoryCacheFactory>();
+        }
+
+        private ISharedCacheFactory CreateSharedCacheFactory(IContainerResolver resolver)
+        {
+            return _options.SharedCacheFactory?.Invoke(resolver) ?? resolver.Resolve<SharedCacheFactory>();
+        }
+
+        private ITwoLayerCacheStateObserver CreateTwoLayerCacheStateObserver(IContainerResolver resolver)
+        {
+            var twoLayerCacheStateObserver = _options.TwoLayerCacheStateObserver?.Invoke(resolver);
+
+            if (twoLayerCacheStateObserver == null)
+            {
+                if (TwoLayerCacheStateObserver.CanBeCreated(resolver))
+                {
+                    twoLayerCacheStateObserver = resolver.Resolve<TwoLayerCacheStateObserver>();
+                }
+                else
+                {
+                    twoLayerCacheStateObserver = resolver.Resolve<TwoLayerCacheStateObserverStub>();
+                }
+            }
+
+            return twoLayerCacheStateObserver;
         }
     }
 }
