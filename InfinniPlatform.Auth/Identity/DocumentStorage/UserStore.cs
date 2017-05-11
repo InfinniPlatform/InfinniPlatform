@@ -11,7 +11,7 @@ namespace InfinniPlatform.Auth.Identity.DocumentStorage
     /// Хранилище пользователей.
     /// </summary>
     /// <typeparam name="TUser">Пользователь.</typeparam>
-    public class UserStore<TUser> : IUserStore<TUser> where TUser : AppUser
+    public partial class UserStore<TUser> : IUserStore<TUser> where TUser : AppUser
     {
         protected readonly UserCache<AppUser> UserCache;
         protected readonly Lazy<ISystemDocumentStorage<TUser>> Users;
@@ -22,69 +22,75 @@ namespace InfinniPlatform.Auth.Identity.DocumentStorage
             UserCache = userCache;
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
         }
 
-        public virtual async Task<IdentityResult> CreateAsync(TUser user, CancellationToken token)
+        public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken token)
         {
             await Users.Value.InsertOneAsync(user);
+
             UpdateUserInCache(user);
+
             return IdentityResult.Success;
         }
 
-        public virtual async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken token)
+        public async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken token)
         {
             await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
+
             UpdateUserInCache(user);
+
             return IdentityResult.Success;
         }
 
-        public virtual async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken token)
+        public async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken token)
         {
             await Users.Value.DeleteOneAsync(u => u.Id == user.Id);
+
             RemoveUserFromCache(user.Id);
+
             return IdentityResult.Success;
         }
 
-        public virtual async Task<string> GetUserIdAsync(TUser user, CancellationToken token)
+        public Task<string> GetUserIdAsync(TUser user, CancellationToken token)
         {
-            var storedUser = await Users.Value.Find(u => u.Id == user.NormalizedUserName).FirstOrDefaultAsync();
-
-            return storedUser.Id;
+            return Task.FromResult(user.Id);
         }
 
-        public virtual async Task<string> GetUserNameAsync(TUser user, CancellationToken token)
+        public Task<string> GetUserNameAsync(TUser user, CancellationToken token)
         {
-            var storedUser = await Users.Value.Find(u => u.Id == user.Id).FirstOrDefaultAsync();
-
-            return storedUser.UserName;
+            return Task.FromResult(user.UserName);
         }
 
-        public virtual async Task SetUserNameAsync(TUser user, string userName, CancellationToken token)
+        public async Task SetUserNameAsync(TUser user, string userName, CancellationToken token)
         {
-            await Users.Value.UpdateOneAsync(builder => builder.Set(u => u.UserName, userName), u => u.Id == user.Id);
+            user.UserName = userName;
+
+            await Users.Value.ReplaceOneAsync(user);
+            UpdateUserInCache(user);
         }
 
-        public virtual async Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken token)
+        public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken token)
         {
-            var storedUser = await Users.Value.Find(u => u.Id == user.Id).FirstOrDefaultAsync();
-
-            return storedUser.NormalizedUserName;
+            return Task.FromResult(user.NormalizedUserName);
         }
 
-        public virtual async Task SetNormalizedUserNameAsync(TUser user, string normalizedUserName, CancellationToken token)
+        public async Task SetNormalizedUserNameAsync(TUser user, string normalizedUserName, CancellationToken token)
         {
-            await Users.Value.UpdateOneAsync(builder => builder.Set(u => u.NormalizedUserName, normalizedUserName), u => u.Id == user.Id);
+            user.NormalizedUserName = normalizedUserName;
+
+            await Users.Value.ReplaceOneAsync(user);
+            UpdateUserInCache(user);
         }
 
-        public virtual async Task<TUser> FindByIdAsync(string userId, CancellationToken token)
+        public async Task<TUser> FindByIdAsync(string userId, CancellationToken token)
         {
             return await FindUserInCache(() => (TUser) UserCache.FindUserById(userId),
                                          async () => await Users.Value.Find(u => u._id.Equals(userId)).FirstOrDefaultAsync());
         }
 
-        public virtual async Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)
+        public async Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)
         {
             return await FindUserInCache(() => (TUser) UserCache.FindUserByUserName(normalizedUserName),
                                          async () => await Users.Value.Find(u => u.UserName == normalizedUserName.ToLower()).FirstOrDefaultAsync());

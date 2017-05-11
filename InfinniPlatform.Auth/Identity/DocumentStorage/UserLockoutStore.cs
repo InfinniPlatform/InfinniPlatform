@@ -1,34 +1,26 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.Identity.UserCache;
-using InfinniPlatform.DocumentStorage;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Identity.DocumentStorage
 {
-    public class UserLockoutStore<TUser> : UserStore<TUser>, IUserLockoutStore<TUser> where TUser : AppUser
+    public partial class UserStore<TUser> : IUserLockoutStore<TUser> where TUser : AppUser
     {
-        public UserLockoutStore(ISystemDocumentStorageFactory documentStorageFactory, UserCache<AppUser> userCache)
-            : base(documentStorageFactory, userCache)
+        public Task<DateTimeOffset?> GetLockoutEndDateAsync(TUser user, CancellationToken token)
         {
+            return Task.FromResult(user.LockoutEndDateUtc.HasValue ? user.LockoutEndDateUtc.GetValueOrDefault() : new DateTimeOffset?());
         }
 
-        public virtual async Task<DateTimeOffset?> GetLockoutEndDateAsync(TUser user, CancellationToken token)
-        {
-            var storedUser = await Users.Value.Find(u => u.Id == user.Id).FirstOrDefaultAsync();
-
-            return storedUser.LockoutEndDateUtc.HasValue ? storedUser.LockoutEndDateUtc.GetValueOrDefault() : new DateTimeOffset?();
-        }
-
-        public virtual async Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken token)
+        public async Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken token)
         {
             user.LockoutEndDateUtc = lockoutEnd.HasValue ? lockoutEnd.GetValueOrDefault().UtcDateTime : new DateTime?();
+
             await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
             UpdateUserInCache(user);
         }
 
-        public virtual async Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken token)
+        public async Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken token)
         {
             ++user.AccessFailedCount;
 
@@ -38,7 +30,7 @@ namespace InfinniPlatform.Auth.Identity.DocumentStorage
             return user.AccessFailedCount;
         }
 
-        public virtual async Task ResetAccessFailedCountAsync(TUser user, CancellationToken token)
+        public async Task ResetAccessFailedCountAsync(TUser user, CancellationToken token)
         {
             user.AccessFailedCount = 0;
 
@@ -46,21 +38,17 @@ namespace InfinniPlatform.Auth.Identity.DocumentStorage
             UpdateUserInCache(user);
         }
 
-        public virtual async Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken token)
+        public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken token)
         {
-            var storedUser = await Users.Value.Find(u => u.Id == user.Id).FirstOrDefaultAsync();
-
-            return storedUser.AccessFailedCount;
+            return Task.FromResult(user.AccessFailedCount);
         }
 
-        public virtual async Task<bool> GetLockoutEnabledAsync(TUser user, CancellationToken token)
+        public Task<bool> GetLockoutEnabledAsync(TUser user, CancellationToken token)
         {
-            var storedUser = await Users.Value.Find(u => u.Id == user.Id).FirstOrDefaultAsync();
-
-            return storedUser.LockoutEnabled;
+            return Task.FromResult(user.LockoutEnabled);
         }
 
-        public virtual async Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken token)
+        public async Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken token)
         {
             user.LockoutEnabled = enabled;
 

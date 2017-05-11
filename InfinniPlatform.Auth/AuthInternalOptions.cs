@@ -1,4 +1,11 @@
-﻿namespace InfinniPlatform.Auth
+﻿using InfinniPlatform.Auth.Identity;
+using InfinniPlatform.Auth.Identity.DocumentStorage;
+using InfinniPlatform.Auth.Identity.UserCache;
+using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.IoC;
+using Microsoft.AspNetCore.Identity;
+
+namespace InfinniPlatform.Auth
 {
     /// <summary>
     /// Настройки внутреннего провайдера аутентификации.
@@ -21,6 +28,7 @@
             UserCacheTimeout = DefaultUserCacheTimeout;
             LoginPath = DefaultLoginPath;
             LogoutPath = DefaultLogoutPath;
+            UserStoreFactory = new UserStoreFactory();
         }
 
 
@@ -38,5 +46,21 @@
         /// Путь для перенаправления при выходе из системы.
         /// </summary>
         public string LogoutPath { get; set; }
+
+        /// <summary>
+        /// Фабрика для получения хранилища пользователей.
+        /// </summary>
+        public UserStoreFactory UserStoreFactory { get; set; }
+    }
+
+    /// <summary>
+    /// Фабрика для получения хранилища пользователей.
+    /// </summary>
+    public class UserStoreFactory
+    {
+        public virtual IUserStore<TUser> GetUserStore<TUser>(IContainerResolver resolver) where TUser : AppUser
+        {
+            return new UserStore<TUser>(resolver.Resolve<ISystemDocumentStorageFactory>(), resolver.Resolve<UserCache<AppUser>>());
+        }
     }
 }

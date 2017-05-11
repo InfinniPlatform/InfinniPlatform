@@ -3,55 +3,48 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.Identity.UserCache;
-using InfinniPlatform.DocumentStorage;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Identity.DocumentStorage
 {
-    public class UserClaimStore<TUser> : UserStore<TUser>, IUserClaimStore<TUser> where TUser : AppUser
+    public partial class UserStore<TUser> : IUserClaimStore<TUser> where TUser : AppUser
     {
-        public UserClaimStore(ISystemDocumentStorageFactory documentStorageFactory, UserCache<AppUser> userCache) : base(documentStorageFactory, userCache)
+        public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken token)
         {
+            return Task.FromResult(user.Claims.Select(c => c.ToSecurityClaim()) as IList<Claim>);
         }
 
-        public virtual Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken token)
+        public async Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
         {
-            return Task.Run(() => user.Claims.Select(c => c.ToSecurityClaim()) as IList<Claim>, token);
+            foreach (var claim in claims)
+            {
+                user.AddClaim(claim);
+            }
+
+            await Users.Value.ReplaceOneAsync(user);
+            UpdateUserInCache(user);
         }
 
-        public virtual Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
+        public async Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
         {
-            return Task.Run(() =>
-                            {
-                                foreach (var claim in claims)
-                                {
-                                    user.AddClaim(claim);
-                                }
+            foreach (var claim in claims)
+            {
+                user.RemoveClaim(claim);
+            }
 
-                                UpdateUserInCache(user);
-                            }, token);
+            await Users.Value.ReplaceOneAsync(user);
+            UpdateUserInCache(user);
         }
 
-        public virtual Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
+        public async Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken token)
         {
-            return Task.Run(() =>
-                            {
-                                foreach (var claim in claims)
-                                {
-                                    user.RemoveClaim(claim);
-                                }
+            user.ReplaceClaim(claim, newClaim);
 
-                                UpdateUserInCache(user);
-                            }, token);
+            await Users.Value.ReplaceOneAsync(user);
+            UpdateUserInCache(user);
         }
 
-        public virtual Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken token = default(CancellationToken))
-        {
-            return Task.Run(() => user.ReplaceClaim(claim, newClaim), token);
-        }
-
-        public virtual async Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken token = default(CancellationToken))
+        public async Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken token)
         {
             return await Users.Value.Find(u => u.Claims.Any(c => c.Type == claim.Type && c.Value == claim.Value)).ToListAsync();
         }

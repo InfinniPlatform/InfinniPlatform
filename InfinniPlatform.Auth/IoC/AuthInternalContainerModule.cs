@@ -33,48 +33,8 @@ namespace InfinniPlatform.Auth.IoC
 
             // User storage
 
-            builder.RegisterType<UserStore<AppUser>>()
+            builder.RegisterFactory(_options.UserStoreFactory.GetUserStore<AppUser>)
                    .As<IUserStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserAuthenticationTokenStore<AppUser>>()
-                   .As<IUserAuthenticationTokenStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserClaimStore<AppUser>>()
-                   .As<IUserClaimStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserEmailStore<AppUser>>()
-                   .As<IUserEmailStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserLockoutStore<AppUser>>()
-                   .As<IUserLockoutStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserLoginStore<AppUser>>()
-                   .As<IUserLoginStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserPasswordStore<AppUser>>()
-                   .As<IUserPasswordStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserPhoneNumberStore<AppUser>>()
-                   .As<IUserPhoneNumberStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserRoleStore<AppUser>>()
-                   .As<IUserRoleStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserSecurityStampStore<AppUser>>()
-                   .As<IUserSecurityStampStore<AppUser>>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserTwoFactorStore<AppUser>>()
-                   .As<IUserTwoFactorStore<AppUser>>()
                    .SingleInstance();
 
             // Role storage
@@ -87,7 +47,7 @@ namespace InfinniPlatform.Auth.IoC
 
             builder.RegisterFactory(CreateUserManager)
                    .As<UserManager<AppUser>>()
-                   .ExternallyOwned();
+                   .SingleInstance();
 
             // Middlewares
 
@@ -134,7 +94,6 @@ namespace InfinniPlatform.Auth.IoC
         {
             // Хранилище пользователей
             var appUserStore = resolver.Resolve<IUserStore<AppUser>>();
-            var appUserEmailStore = resolver.Resolve<IUserEmailStore<AppUser>>();
 
             // Провайдер настроек AspNet.Identity
             var optionsAccessor = new OptionsWrapper<IdentityOptions>(new IdentityOptions());
@@ -143,14 +102,14 @@ namespace InfinniPlatform.Auth.IoC
             var identityPasswordHasher = new DefaultAppUserPasswordHasher();
 
             // Валидаторы данных о пользователях
-            var userValidators = new List<IUserValidator<AppUser>> {new AppUserValidator(appUserStore, appUserEmailStore)};
+            var userValidators = new List<IUserValidator<AppUser>> { new AppUserValidator(appUserStore) };
 
             // Валидатор паролей пользователей
             var passwordValidators = Enumerable.Empty<IPasswordValidator<AppUser>>();
 
             // Нормализатор
             var keyNormalizer = new UpperInvariantLookupNormalizer();
-
+            var normalize = keyNormalizer.Normalize("sdfsdf");
             // Сервис обработки ошибок AspNet.Identity
             var identityErrorDescriber = new IdentityErrorDescriber();
 

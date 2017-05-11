@@ -1,31 +1,30 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.Identity.UserCache;
-using InfinniPlatform.DocumentStorage;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.Identity.DocumentStorage
 {
-    public class UserAuthenticationTokenStore<TUser> : UserStore<TUser>, IUserAuthenticationTokenStore<TUser>
-        where TUser : AppUser
+    public partial class UserStore<TUser> : IUserAuthenticationTokenStore<TUser> where TUser : AppUser
     {
-        public UserAuthenticationTokenStore(ISystemDocumentStorageFactory documentStorageFactory, UserCache<AppUser> userCache) : base(documentStorageFactory, userCache)
+        public async Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken token)
         {
+            user.SetToken(loginProvider, name, value);
+
+            await Users.Value.ReplaceOneAsync(user);
+            UpdateUserInCache(user);
         }
 
-        public virtual Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken token)
+        public async Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken token)
         {
-            return Task.Run(() => user.SetToken(loginProvider, name, value), token);
+            user.RemoveToken(loginProvider, name);
+
+            await Users.Value.ReplaceOneAsync(user);
+            UpdateUserInCache(user);
         }
 
-        public virtual Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken token)
+        public Task<string> GetTokenAsync(TUser user, string loginProvider, string name, CancellationToken token)
         {
-            return Task.Run(() => user.RemoveToken(loginProvider, name), token);
-        }
-
-        public virtual Task<string> GetTokenAsync(TUser user, string loginProvider, string name, CancellationToken token)
-        {
-            return Task.Run(() => user.GetTokenValue(loginProvider, name), token);
+            return Task.FromResult(user.GetTokenValue(loginProvider, name));
         }
     }
 }

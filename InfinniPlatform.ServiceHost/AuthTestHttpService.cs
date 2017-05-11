@@ -31,12 +31,12 @@ namespace InfinniPlatform.ServiceHost
 
             // UserManager
 
-            builder.Post["/Create"] = CreateUser;
-            builder.Get["/FindById"] = FindById;
-            builder.Get["/FindByEmail"] = FindByEmail;
-            builder.Get["/FindByName"] = FindByName;
-            builder.Get["/Delete"] = Delete;
-            builder.Get["/AddClaim"] = AddClaim;
+            builder.Post["/UserManager/Create"] = CreateUser;
+            builder.Get["/UserManager/FindById"] = FindById;
+            builder.Get["/UserManager/FindByEmail"] = FindByEmail;
+            builder.Get["/UserManager/FindByName"] = FindByName;
+            builder.Get["/UserManager/Delete"] = Delete;
+            builder.Get["/UserManager/AddClaim"] = AddClaim;
         }
 
         private async Task<object> CreateUser(IHttpRequest httpRequest)
@@ -45,6 +45,7 @@ namespace InfinniPlatform.ServiceHost
             string password = httpRequest.Form.Password;
 
             var appUser = new AppUser {UserName = email, Email = email};
+
             var identityResult = await _userManager.CreateAsync(appUser, password);
 
             return identityResult;

@@ -13,11 +13,9 @@ namespace InfinniPlatform.Auth.Identity
     /// </summary>
     internal class AppUserValidator : IUserValidator<AppUser>
     {
-        private readonly IUserEmailStore<AppUser> _emailUserStore;
         private readonly IUserStore<AppUser> _userStore;
 
-        public AppUserValidator(IUserStore<AppUser> userStore,
-                                IUserEmailStore<AppUser> emailUserStore)
+        public AppUserValidator(IUserStore<AppUser> userStore)
         {
             if (userStore == null)
             {
@@ -25,7 +23,6 @@ namespace InfinniPlatform.Auth.Identity
             }
 
             _userStore = userStore;
-            _emailUserStore = emailUserStore;
 
             AllowOnlyAlphanumericUserNames = true;
             RequireUniqueEmail = true;
@@ -121,9 +118,9 @@ namespace InfinniPlatform.Auth.Identity
 
                 // Проверка уникальности Email
 
-                if (RequireUniqueEmail)
+                if (RequireUniqueEmail && _userStore is IUserEmailStore<AppUser>)
                 {
-                    var owner = await _emailUserStore.FindByEmailAsync(email, default(CancellationToken));
+                    var owner = await ((IUserEmailStore<AppUser>) _userStore)?.FindByEmailAsync(email, default(CancellationToken));
 
                     if (owner != null && !string.Equals(owner.Id, user.Id))
                     {
@@ -143,15 +140,15 @@ namespace InfinniPlatform.Auth.Identity
             {
                 // Проверка уникальности номера телефона
 
-                if (RequireUniquePhoneNumber)
+                if (RequireUniquePhoneNumber && _userStore is IUserPhoneNumberStore<AppUser>)
                 {
-                    // TODO FindByPhoneNumberAsync implementation.
-//                                        var owner = await _userStore.FindByPhoneNumberAsync(phoneNumber);
-//                    
-//                                        if (owner != null && !string.Equals(owner.Id, user.Id))
-//                                        {
-//                                            errors.Add(new IdentityError { Description = string.Format(Resources.DuplicatePhoneNumber, phoneNumber) });
-//                                        }
+                    //TODO FindByPhoneNumberAsync
+                    //var owner = await ((IUserPhoneNumberStore<AppUser>)_userStore).FindByPhoneNumberAsync(phoneNumber);
+
+                    //if (owner != null && !string.Equals(owner.Id, user.Id))
+                    //{
+                    //    errors.Add(new IdentityError { Description = string.Format(Resources.DuplicatePhoneNumber, phoneNumber) });
+                    //}
                 }
             }
         }
