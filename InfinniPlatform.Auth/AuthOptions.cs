@@ -1,18 +1,15 @@
-﻿using InfinniPlatform.Auth.Identity;
-using InfinniPlatform.Auth.Identity.DocumentStorage;
+﻿using InfinniPlatform.Auth.Identity.DocumentStorage;
 using InfinniPlatform.Auth.Identity.UserCache;
 using InfinniPlatform.DocumentStorage;
-using InfinniPlatform.IoC;
-using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Настройки внутреннего провайдера аутентификации.
+    /// Настройки провайдера аутентификации.
     /// </summary>
-    public class AuthInternalOptions
+    public class AuthOptions
     {
-        public const string SectionName = "authInternal";
+        public const string SectionName = "auth";
 
         public const int DefaultUserCacheTimeout = 30;
 
@@ -20,15 +17,14 @@ namespace InfinniPlatform.Auth
 
         public const string DefaultLogoutPath = "/";
 
-        public static readonly AuthInternalOptions Default = new AuthInternalOptions();
+        public static readonly AuthOptions Default = new AuthOptions();
 
 
-        public AuthInternalOptions()
+        public AuthOptions()
         {
             UserCacheTimeout = DefaultUserCacheTimeout;
             LoginPath = DefaultLoginPath;
             LogoutPath = DefaultLogoutPath;
-            UserStoreFactory = new UserStoreFactory();
         }
 
 
@@ -50,17 +46,6 @@ namespace InfinniPlatform.Auth
         /// <summary>
         /// Фабрика для получения хранилища пользователей.
         /// </summary>
-        public UserStoreFactory UserStoreFactory { get; set; }
-    }
-
-    /// <summary>
-    /// Фабрика для получения хранилища пользователей.
-    /// </summary>
-    public class UserStoreFactory
-    {
-        public virtual IUserStore<TUser> GetUserStore<TUser>(IContainerResolver resolver) where TUser : AppUser
-        {
-            return new UserStore<TUser>(resolver.Resolve<ISystemDocumentStorageFactory>(), resolver.Resolve<UserCache<AppUser>>());
-        }
+        public ICustomUserStoreFactory UserStoreFactory { get; set; }
     }
 }

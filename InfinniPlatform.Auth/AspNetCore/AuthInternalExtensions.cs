@@ -13,26 +13,26 @@ namespace InfinniPlatform.AspNetCore
     {
         public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services) where TUser : AppUser where TRole : AppUserRole
         {
-            var options = AuthInternalOptions.Default;
+            var options = AuthOptions.Default;
 
             return AddAuthInternal<TUser, TRole>(services, options);
         }
 
-        public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services, IConfigurationRoot configuration, Action<AuthInternalOptions> callback = null) where TUser : AppUser where TRole : AppUserRole
+        public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services, IConfigurationRoot configuration, Action<AuthOptions> callback = null) where TUser : AppUser where TRole : AppUserRole
         {
-            var options = configuration.GetSection(AuthInternalOptions.SectionName)
-                                       .Get<AuthInternalOptions>();
+            var options = configuration.GetSection(AuthOptions.SectionName)
+                                       .Get<AuthOptions>();
 
             callback?.Invoke(options);
 
             return AddAuthInternal<TUser, TRole>(services, options);
         }
 
-        public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services, AuthInternalOptions options) where TUser : AppUser where TRole : AppUserRole
+        public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services, AuthOptions options) where TUser : AppUser where TRole : AppUserRole
         {
             services.AddIdentity<TUser, TRole>();
 
-            return services.AddSingleton(provider => new AuthInternalContainerModule(options ?? AuthInternalOptions.Default));
+            return services.AddSingleton(provider => new AuthInternalContainerModule(options ?? AuthOptions.Default));
         }
     }
 }

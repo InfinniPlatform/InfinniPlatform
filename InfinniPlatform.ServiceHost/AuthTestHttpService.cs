@@ -8,27 +8,15 @@ namespace InfinniPlatform.ServiceHost
 {
     public class AuthTestHttpService : IHttpService
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<AppCustomUser> _userManager;
 
-        public AuthTestHttpService(UserManager<AppUser> userManager)
+        public AuthTestHttpService(IUserManagerFactory userManagerFactory)
         {
-            _userManager = userManager;
+            _userManager = userManagerFactory.GetUserManager<AppCustomUser>();
         }
 
         public void Load(IHttpServiceBuilder builder)
         {
-            // UserStore
-            // UserAuthenticationTokenStore
-            // UserClaimStore
-            // UserEmailStore
-            // UserLockoutStore
-            // UserLoginStore
-            // UserPasswordStore
-            // UserPhoneNumberStore
-            // UserRoleStore
-            // UserSecurityStampStore
-            // UserTwoFactorStore
-
             // UserManager
 
             builder.Post["/UserManager/Create"] = CreateUser;
@@ -44,8 +32,13 @@ namespace InfinniPlatform.ServiceHost
             string email = httpRequest.Form.Email;
             string password = httpRequest.Form.Password;
 
-            var appUser = new AppUser {UserName = email, Email = email};
-
+            var appUser = new AppCustomUser
+                          {
+                              Age = 100,
+                              UserName = email,
+                              Email = email,
+                              Id = "59142e50061ec276e470823f"
+                          };
             var identityResult = await _userManager.CreateAsync(appUser, password);
 
             return identityResult;

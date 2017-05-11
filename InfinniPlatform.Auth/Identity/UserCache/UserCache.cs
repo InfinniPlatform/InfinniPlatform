@@ -24,13 +24,13 @@ namespace InfinniPlatform.Auth.Identity.UserCache
         private readonly ConcurrentDictionary<string, TUser> _usersByName;
         private readonly ConcurrentDictionary<string, TUser> _usersByPhone;
 
-        public UserCache(AuthInternalOptions options,
+        public UserCache(AuthOptions options,
                          ILog log,
                          IBroadcastProducer broadcastProducer,
                          AppOptions appOptions)
         {
             var cacheTimeout = options.UserCacheTimeout <= 0
-                                   ? AuthInternalOptions.DefaultUserCacheTimeout
+                                   ? AuthOptions.DefaultUserCacheTimeout
                                    : options.UserCacheTimeout;
 
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);

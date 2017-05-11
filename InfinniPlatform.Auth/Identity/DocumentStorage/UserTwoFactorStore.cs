@@ -9,6 +9,7 @@ namespace InfinniPlatform.Auth.Identity.DocumentStorage
         public async Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken token)
         {
             user.TwoFactorEnabled = enabled;
+
             await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
             UpdateUserInCache(user);
         }

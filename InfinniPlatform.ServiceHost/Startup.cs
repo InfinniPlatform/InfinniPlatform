@@ -1,10 +1,7 @@
 ﻿using System;
-
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.Auth;
 using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.IoC;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,25 +11,24 @@ namespace InfinniPlatform.ServiceHost
 {
     public class Startup
     {
+        private readonly IConfigurationRoot _configuration;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("AppConfig.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"AppConfig.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("AppConfig.json", true, true)
+                    .AddJsonFile($"AppConfig.{env.EnvironmentName}.json", true)
+                    .AddEnvironmentVariables();
 
             _configuration = builder.Build();
         }
 
 
-        private readonly IConfigurationRoot _configuration;
-
-
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddLog4NetLogging()
-                                            .AddAuthInternal<AppUser, AppUserRole>(_configuration, AuthCallback)
+                                            .AddAuthInternal<AppCustomUser, AppUserRole>(_configuration, opt => { opt.UserStoreFactory = new MemoryUserStoreFactory(); })
                                             .AddInMemoryCache()
                                             .AddRedisSharedCache(_configuration)
                                             .AddTwoLayerCache(_configuration)
@@ -48,10 +44,6 @@ namespace InfinniPlatform.ServiceHost
                                             .BuildProvider(_configuration);
 
             return configureServices;
-        }
-
-        private void AuthCallback(AuthInternalOptions opt)
-        {
         }
 
         public void Configure(IApplicationBuilder app, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)

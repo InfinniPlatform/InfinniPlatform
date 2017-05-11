@@ -22,26 +22,26 @@ namespace InfinniPlatform.Auth.Services
     /// <summary>
     /// Сервис аутентификации пользователей системы.
     /// </summary>
-    internal class AuthInternalHttpService : IHttpService
+    internal class AuthInternalHttpService<TUser> : IHttpService where TUser : AppUser, new()
     {
         private const string ApplicationAuthScheme = "Identity.Application";
         private const string ExternalAuthScheme = "Identity.External";
         private readonly IHttpContextProvider _httpContextProvider;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly SignInManager<TUser> _signInManager;
         private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
         private readonly IUserIdentityProvider _userIdentityProvider;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<TUser> _userManager;
 
         public AuthInternalHttpService(IHttpContextProvider httpContextProvider,
                                        IUserIdentityProvider userIdentityProvider,
                                        UserEventHandlerInvoker userEventHandlerInvoker,
-                                       UserManager<AppUser> userManager,
-                                       SignInManager<AppUser> signInManager)
+                                       UserManagerFactory userManagerFactory,
+                                       SignInManager<TUser> signInManager)
         {
             _httpContextProvider = httpContextProvider;
             _userIdentityProvider = userIdentityProvider;
             _userEventHandlerInvoker = userEventHandlerInvoker;
-            _userManager = userManager;
+            _userManager = userManagerFactory.GetUserManager<TUser>();
             _signInManager = signInManager;
         }
 
@@ -316,11 +316,12 @@ namespace InfinniPlatform.Auth.Services
         /// <summary>
         /// Создает учетную запись пользователя по информации внешнего провайдера.
         /// </summary>
-        private static AppUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
+        private static TUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
         {
             var email = loginInfo.Principal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
-            var user = new AppUser
-                       {
+
+            var user = new TUser
+            {
                            Id = Guid.NewGuid().ToString(),
                            UserName = email.Value,
                            Email = email.Value,
@@ -410,7 +411,7 @@ namespace InfinniPlatform.Auth.Services
             return Identity != null && Identity.IsAuthenticated;
         }
 
-        private async Task<AppUser> GetUserInfo()
+        private async Task<TUser> GetUserInfo()
         {
             var userId = Identity.GetUserId();
 
@@ -419,7 +420,7 @@ namespace InfinniPlatform.Auth.Services
             return userInfo;
         }
 
-        private static PublicUserInfo BuildPublicUserInfo(AppUser user, IIdentity identity)
+        private static PublicUserInfo BuildPublicUserInfo(TUser user, IIdentity identity)
         {
             var claims = new List<AppUserClaim>();
 

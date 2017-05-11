@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using InfinniPlatform.Auth.Identity;
+﻿using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.Auth.Identity.DocumentStorage;
 using InfinniPlatform.Auth.Identity.UserCache;
 using InfinniPlatform.Auth.Middlewares;
 using InfinniPlatform.Auth.Services;
 using InfinniPlatform.DocumentStorage.Metadata;
-using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth.IoC
 {
     public class AuthInternalContainerModule : IContainerModule
     {
-        private readonly AuthInternalOptions _options;
+        private readonly AuthOptions _options;
 
-        public AuthInternalContainerModule(AuthInternalOptions options)
+        public AuthInternalContainerModule(AuthOptions options)
         {
             _options = options;
         }
@@ -33,8 +26,8 @@ namespace InfinniPlatform.Auth.IoC
 
             // User storage
 
-            builder.RegisterFactory(_options.UserStoreFactory.GetUserStore<AppUser>)
-                   .As<IUserStore<AppUser>>()
+            builder.RegisterType<UserStoreFactory>()
+                   .As<IUserStoreFactory>()
                    .SingleInstance();
 
             // Role storage
@@ -45,8 +38,8 @@ namespace InfinniPlatform.Auth.IoC
 
             // User manager
 
-            builder.RegisterFactory(CreateUserManager)
-                   .As<UserManager<AppUser>>()
+            builder.RegisterType<UserManagerFactory>()
+                   .As<IUserManagerFactory>()
                    .SingleInstance();
 
             // Middlewares
@@ -61,9 +54,10 @@ namespace InfinniPlatform.Auth.IoC
 
             // Services
 
-            builder.RegisterType<AuthInternalHttpService>()
-                   .As<IHttpService>()
-                   .SingleInstance();
+            // TODO Generic AuthInternalHttpService?
+            //builder.RegisterType<AuthInternalHttpService<AppCustomUser>>()
+            //       .As<IHttpService>()
+            //       .SingleInstance();
 
             builder.RegisterType<UserEventHandlerInvoker>()
                    .AsSelf()
@@ -90,46 +84,51 @@ namespace InfinniPlatform.Auth.IoC
         }
 
 
-        private static UserManager<AppUser> CreateUserManager(IContainerResolver resolver)
-        {
-            // Хранилище пользователей
-            var appUserStore = resolver.Resolve<IUserStore<AppUser>>();
+        //private object CreateUserStore(IContainerResolver resolver)
+        //{
+        //    return _options.UserStoreFactory.GetUserStore<AppUser>(resolver) ?? resolver.Resolve<UserStore<AppUser>>();
+        //}
 
-            // Провайдер настроек AspNet.Identity
-            var optionsAccessor = new OptionsWrapper<IdentityOptions>(new IdentityOptions());
+        //private static UserManager<AppUser> CreateUserManager(IContainerResolver resolver)
+        //{
+        //    // Хранилище пользователей
+        //    var appUserStore = resolver.Resolve<IUserStore<AppUser>>();
 
-            // Сервис хэширования паролей
-            var identityPasswordHasher = new DefaultAppUserPasswordHasher();
+        //    // Провайдер настроек AspNet.Identity
+        //    var optionsAccessor = new OptionsWrapper<IdentityOptions>(new IdentityOptions());
 
-            // Валидаторы данных о пользователях
-            var userValidators = new List<IUserValidator<AppUser>> { new AppUserValidator(appUserStore) };
+        //    // Сервис хэширования паролей
+        //    var identityPasswordHasher = new DefaultAppUserPasswordHasher();
 
-            // Валидатор паролей пользователей
-            var passwordValidators = Enumerable.Empty<IPasswordValidator<AppUser>>();
+        //    // Валидаторы данных о пользователях
+        //    var userValidators = new List<IUserValidator<AppUser>> { new AppUserValidator(appUserStore) };
 
-            // Нормализатор
-            var keyNormalizer = new UpperInvariantLookupNormalizer();
-            var normalize = keyNormalizer.Normalize("sdfsdf");
-            // Сервис обработки ошибок AspNet.Identity
-            var identityErrorDescriber = new IdentityErrorDescriber();
+        //    // Валидатор паролей пользователей
+        //    var passwordValidators = Enumerable.Empty<IPasswordValidator<AppUser>>();
 
-            // Провайдер зарегистрированных в IoC сервисов
-            var serviceProvider = resolver.Resolve<IServiceProvider>();
+        //    // Нормализатор
+        //    var keyNormalizer = new UpperInvariantLookupNormalizer();
 
-            // Логгер
-            var logger = resolver.Resolve<ILogger<UserManager<AppUser>>>();
+        //    // Сервис обработки ошибок AspNet.Identity
+        //    var identityErrorDescriber = new IdentityErrorDescriber();
 
-            var userManager = new UserManager<AppUser>(appUserStore,
-                                                       optionsAccessor,
-                                                       identityPasswordHasher,
-                                                       userValidators,
-                                                       passwordValidators,
-                                                       keyNormalizer,
-                                                       identityErrorDescriber,
-                                                       serviceProvider,
-                                                       logger);
+        //    // Провайдер зарегистрированных в IoC сервисов
+        //    var serviceProvider = resolver.Resolve<IServiceProvider>();
 
-            return userManager;
-        }
+        //    // Логгер
+        //    var logger = resolver.Resolve<ILogger<UserManager<AppUser>>>();
+
+        //    var userManager = new UserManager<AppUser>(appUserStore,
+        //                                               optionsAccessor,
+        //                                               identityPasswordHasher,
+        //                                               userValidators,
+        //                                               passwordValidators,
+        //                                               keyNormalizer,
+        //                                               identityErrorDescriber,
+        //                                               serviceProvider,
+        //                                               logger);
+
+        //    return userManager;
+        //}
     }
 }
