@@ -12,5 +12,10 @@ namespace InfinniPlatform.AspNetCore
         {
             return services.AddSingleton(provider => new AuthHttpServiceContainerModule<TUser>());
         }
+
+        public static IServiceCollection AddAuthHttpService(this IServiceCollection services)
+        {
+            return services.AddSingleton(provider => new AuthHttpServiceContainerModule<AppUser>());
+        }
     }
 }

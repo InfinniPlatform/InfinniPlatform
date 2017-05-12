@@ -29,6 +29,7 @@ namespace InfinniPlatform.ServiceHost
         {
             var configureServices = services.AddLog4NetLogging()
                                             .AddAuthInternal<AppCustomUser, AppUserRole>(_configuration, opt => { opt.UserStoreFactory = new MemoryUserStoreFactory(); })
+                                            .AddAuthHttpService<AppCustomUser>()
                                             .AddInMemoryCache()
                                             .AddRedisSharedCache(_configuration)
                                             .AddTwoLayerCache(_configuration)

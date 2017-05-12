@@ -33,6 +33,10 @@ namespace InfinniPlatform.Auth.IoC
 
             // User storage
 
+            builder.RegisterType<UserStore<TUser>>()
+                   .AsSelf()
+                   .SingleInstance();
+
             builder.RegisterFactory(CreateUserStore)
                    .As<IUserStore<TUser>>()
                    .SingleInstance();
@@ -82,7 +86,7 @@ namespace InfinniPlatform.Auth.IoC
 
         private IUserStore<TUser> CreateUserStore(IContainerResolver resolver)
         {
-            return _options.UserStoreFactory.GetUserStore<TUser>(resolver) ?? resolver.Resolve<UserStore<TUser>>();
+            return _options.UserStoreFactory?.GetUserStore<TUser>(resolver) ?? resolver.Resolve<UserStore<TUser>>();
         }
 
         private static UserManager<TUser> CreateUserManager(IContainerResolver resolver)
