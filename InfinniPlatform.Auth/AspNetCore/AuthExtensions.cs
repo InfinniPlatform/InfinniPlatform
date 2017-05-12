@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace InfinniPlatform.AspNetCore
 {
-    public static class AuthInternalExtensions
+    public static class AuthExtensions
     {
         public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services) where TUser : AppUser where TRole : AppUserRole
         {
@@ -33,6 +33,30 @@ namespace InfinniPlatform.AspNetCore
             services.AddIdentity<TUser, TRole>();
 
             return services.AddSingleton(provider => new AuthInternalContainerModule<TUser>(options ?? AuthOptions.Default));
+        }
+
+        public static IServiceCollection AddAuthInternal(this IServiceCollection services)
+        {
+            var options = AuthOptions.Default;
+
+            return AddAuthInternal<AppUser, AppUserRole>(services, options);
+        }
+
+        public static IServiceCollection AddAuthInternal(this IServiceCollection services, IConfigurationRoot configuration, Action<AuthOptions> callback = null)
+        {
+            var options = configuration.GetSection(AuthOptions.SectionName)
+                                       .Get<AuthOptions>();
+
+            callback?.Invoke(options);
+
+            return AddAuthInternal<AppUser, AppUserRole>(services, options);
+        }
+
+        public static IServiceCollection AddAuthInternal(this IServiceCollection services, AuthOptions options)
+        {
+            services.AddIdentity<AppUser, AppUserRole>();
+
+            return services.AddSingleton(provider => new AuthInternalContainerModule<AppUser>(options ?? AuthOptions.Default));
         }
     }
 }
