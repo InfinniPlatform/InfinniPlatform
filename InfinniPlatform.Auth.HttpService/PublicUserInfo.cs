@@ -1,22 +1,13 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using InfinniPlatform.Auth.Identity;
 
 namespace InfinniPlatform.Auth.HttpService
 {
     /// <summary>
-    /// Информация о пользователе, доступная через <see cref="AuthInternalHttpService{TUser}" />.
+    /// User information available through <see cref="AuthInternalHttpService{TUser}" />.
     /// </summary>
     internal class PublicUserInfo
     {
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="userName">Имя пользователя.</param>
-        /// <param name="displayName">Отображаемое имя пользователя.</param>
-        /// <param name="description">Описание.</param>
-        /// <param name="roles">Роли пользователя.</param>
-        /// <param name="logins">Учетные записи пользователя.</param>
-        /// <param name="claims">Утверждения пользователя.</param>
         public PublicUserInfo(string userName,
                               string displayName,
                               string description,
