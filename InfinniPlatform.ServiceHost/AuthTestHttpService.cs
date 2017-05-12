@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.Http;
 using Microsoft.AspNetCore.Identity;
 
@@ -10,9 +9,9 @@ namespace InfinniPlatform.ServiceHost
     {
         private readonly UserManager<AppCustomUser> _userManager;
 
-        public AuthTestHttpService(IUserManagerFactory userManagerFactory)
+        public AuthTestHttpService(UserManager<AppCustomUser> userManager)
         {
-            _userManager = userManagerFactory.GetUserManager<AppCustomUser>();
+            _userManager = userManager;
         }
 
         public void Load(IHttpServiceBuilder builder)

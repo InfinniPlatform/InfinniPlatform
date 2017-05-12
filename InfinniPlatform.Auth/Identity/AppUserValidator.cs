@@ -17,12 +17,7 @@ namespace InfinniPlatform.Auth.Identity
 
         public AppUserValidator(IUserStore<TUser> userStore)
         {
-            if (userStore == null)
-            {
-                throw new ArgumentNullException(nameof(userStore));
-            }
-
-            _userStore = userStore;
+            _userStore = userStore ?? throw new ArgumentNullException(nameof(userStore));
 
             AllowOnlyAlphanumericUserNames = true;
             RequireUniqueEmail = true;

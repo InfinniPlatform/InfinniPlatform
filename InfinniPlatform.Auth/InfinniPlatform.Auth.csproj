@@ -6,6 +6,12 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Identity\IUserManagerFactory.cs" />
+    <Compile Remove="Identity\IUserStoreFactory.cs" />
+    <Compile Remove="Identity\UserManagerFactory.cs" />
+    <Compile Remove="Identity\UserStoreFactory.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\Files\Packaging\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />

@@ -32,7 +32,7 @@ namespace InfinniPlatform.AspNetCore
         {
             services.AddIdentity<TUser, TRole>();
 
-            return services.AddSingleton(provider => new AuthInternalContainerModule(options ?? AuthOptions.Default));
+            return services.AddSingleton(provider => new AuthInternalContainerModule<TUser>(options ?? AuthOptions.Default));
         }
     }
 }

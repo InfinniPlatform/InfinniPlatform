@@ -26,7 +26,7 @@ namespace InfinniPlatform.ServiceHost
 
         public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.Claims as IList<Claim>);
+            return Task.FromResult((IList<Claim>) user.Claims.Select(c=>c.ToSecurityClaim()).ToList());
         }
 
         public Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
@@ -191,7 +191,7 @@ namespace InfinniPlatform.ServiceHost
 
         public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.Roles as IList<string>);
+            return Task.FromResult((IList<string>) user.Roles);
         }
 
         public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)

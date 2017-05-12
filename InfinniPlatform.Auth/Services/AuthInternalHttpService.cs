@@ -35,13 +35,13 @@ namespace InfinniPlatform.Auth.Services
         public AuthInternalHttpService(IHttpContextProvider httpContextProvider,
                                        IUserIdentityProvider userIdentityProvider,
                                        UserEventHandlerInvoker userEventHandlerInvoker,
-                                       UserManagerFactory userManagerFactory,
+                                       UserManager<TUser> userManager,
                                        SignInManager<TUser> signInManager)
         {
             _httpContextProvider = httpContextProvider;
             _userIdentityProvider = userIdentityProvider;
             _userEventHandlerInvoker = userEventHandlerInvoker;
-            _userManager = userManagerFactory.GetUserManager<TUser>();
+            _userManager = userManager;
             _signInManager = signInManager;
         }
 
