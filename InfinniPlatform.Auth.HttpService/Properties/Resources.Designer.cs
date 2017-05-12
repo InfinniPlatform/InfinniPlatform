@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InfinniPlatform.Auth.Properties {
+namespace InfinniPlatform.Auth.HttpService.Properties {
     using System;
     using System.Reflection;
     
@@ -40,7 +40,7 @@ namespace InfinniPlatform.Auth.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Auth.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Auth.HttpService.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,29 +62,20 @@ namespace InfinniPlatform.Auth.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate e-mail: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to External provider cannot be null or whitespace..
         /// </summary>
-        internal static string DuplicateEmail {
+        internal static string ExternalProviderCannotBeNullOrWhiteSpace {
             get {
-                return ResourceManager.GetString("DuplicateEmail", resourceCulture);
+                return ResourceManager.GetString("ExternalProviderCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicate phone number: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to External provider key cannot be null or whitespace..
         /// </summary>
-        internal static string DuplicatePhoneNumber {
+        internal static string ExternalProviderKeyCannotBeNullOrWhiteSpace {
             get {
-                return ResourceManager.GetString("DuplicatePhoneNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duplicate username: &apos;{0}&apos;..
-        /// </summary>
-        internal static string DuplicateUserName {
-            get {
-                return ResourceManager.GetString("DuplicateUserName", resourceCulture);
+                return ResourceManager.GetString("ExternalProviderKeyCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
         
@@ -98,29 +89,29 @@ namespace InfinniPlatform.Auth.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid e-mail: &apos;{0}&apos;..
-        /// </summary>
-        internal static string InvalidEmail {
-            get {
-                return ResourceManager.GetString("InvalidEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid username: &apos;{0}&apos;..
-        /// </summary>
-        internal static string InvalidUserName {
-            get {
-                return ResourceManager.GetString("InvalidUserName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid username or password..
         /// </summary>
         internal static string InvalidUsernameOrPassword {
             get {
                 return ResourceManager.GetString("InvalidUsernameOrPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New password cannot be null or whitespace..
+        /// </summary>
+        internal static string NewPasswordCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("NewPasswordCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request is not authenticated..
+        /// </summary>
+        internal static string RequestIsNotAuthenticated {
+            get {
+                return ResourceManager.GetString("RequestIsNotAuthenticated", resourceCulture);
             }
         }
         
@@ -134,11 +125,29 @@ namespace InfinniPlatform.Auth.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unsuccessful signin with external provider..
+        /// </summary>
+        internal static string UnsuccessfulSignInWithExternalProvider {
+            get {
+                return ResourceManager.GetString("UnsuccessfulSignInWithExternalProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username cannot be null or whitespace..
         /// </summary>
         internal static string UserNameCannotBeNullOrWhiteSpace {
             get {
                 return ResourceManager.GetString("UserNameCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found..
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
     }

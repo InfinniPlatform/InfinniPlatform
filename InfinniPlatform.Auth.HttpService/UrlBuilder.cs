@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using InfinniPlatform.Auth.Services;
 
-namespace InfinniPlatform.Auth.Services
+namespace InfinniPlatform.Auth.HttpService
 {
     /// <summary>
     /// Предоставляет методы для формирования URI.

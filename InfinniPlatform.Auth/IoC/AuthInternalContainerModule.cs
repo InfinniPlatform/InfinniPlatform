@@ -59,16 +59,6 @@ namespace InfinniPlatform.Auth.IoC
                    .As<IHttpMiddleware>()
                    .SingleInstance();
 
-            // Services
-
-            builder.RegisterType(typeof(AuthInternalHttpService<>).MakeGenericType(typeof(TUser)))
-                   .As<IHttpService>()
-                   .SingleInstance();
-
-            builder.RegisterType<UserEventHandlerInvoker>()
-                   .AsSelf()
-                   .SingleInstance();
-
             // UserStorage
 
             builder.RegisterType<UserCache<AppUser>>()

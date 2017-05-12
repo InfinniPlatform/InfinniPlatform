@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Auth.Identity.DocumentStorage;
+﻿using InfinniPlatform.Auth.Identity;
+using InfinniPlatform.Auth.Identity.DocumentStorage;
 using InfinniPlatform.Auth.Identity.UserCache;
 using InfinniPlatform.DocumentStorage;
 
