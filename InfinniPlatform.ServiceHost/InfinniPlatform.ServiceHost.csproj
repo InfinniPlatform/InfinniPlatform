@@ -31,12 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfinniPlatform.Auth.HttpService\InfinniPlatform.Auth.HttpService.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Auth\InfinniPlatform.Auth.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.Auth.HttpService\InfinniPlatform.Auth.HttpService.csproj" />
     <ProjectReference Include="..\InfinniPlatform.BlobStorage.FileSystem\InfinniPlatform.BlobStorage.FileSystem.csproj" />
     <ProjectReference Include="..\InfinniPlatform.BlobStorage.HttpService\InfinniPlatform.BlobStorage.HttpService.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Cache.Memory\InfinniPlatform.Cache.Memory.csproj" />

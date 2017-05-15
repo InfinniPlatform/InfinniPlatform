@@ -1,6 +1,5 @@
 ﻿using System;
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,12 +23,11 @@ namespace InfinniPlatform.ServiceHost
             _configuration = builder.Build();
         }
 
-
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var configureServices = services.AddLog4NetLogging()
-                                            .AddAuthInternal<AppCustomUser, AppUserRole>(_configuration, opt => { opt.UserStoreFactory = new MemoryUserStoreFactory(); })
-                                            .AddAuthHttpService<AppCustomUser>()
+                                            .AddAuthInternal(_configuration)
+                                            .AddAuthHttpService()
                                             .AddInMemoryCache()
                                             .AddRedisSharedCache(_configuration)
                                             .AddTwoLayerCache(_configuration)
