@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfinniPlatform.Auth.Identity;
-using InfinniPlatform.Auth.Identity.DocumentStorage;
-using InfinniPlatform.Auth.Identity.UserCache;
+using InfinniPlatform.Auth.DocumentStorage;
 using InfinniPlatform.Auth.Middlewares;
-using InfinniPlatform.Auth.Services;
+using InfinniPlatform.Auth.UserCache;
+using InfinniPlatform.Auth.Validators;
 using InfinniPlatform.DocumentStorage.Metadata;
-using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
@@ -49,9 +47,35 @@ namespace InfinniPlatform.Auth.IoC
 
             // User manager
 
-            builder.RegisterFactory(CreateUserManager)
-                   .As<UserManager<TUser>>()
+            builder.RegisterFactory(CreateOptionsAccessor)
+                   .As<IOptions<IdentityOptions>>()
                    .SingleInstance();
+
+            builder.RegisterFactory(CreatePasswordHasher)
+                   .As<IPasswordHasher<TUser>>()
+                   .SingleInstance();
+
+            builder.RegisterFactory(CreateLookupNormalizer)
+                   .As<ILookupNormalizer>()
+                   .SingleInstance();
+
+            builder.RegisterFactory(CreateIdentityErrorDescriber)
+                   .As<IdentityErrorDescriber>()
+                   .SingleInstance();
+
+            if (_options.UserValidatorsFactory != null)
+            {
+                builder.RegisterFactory(_options.UserValidatorsFactory.Get<TUser>)
+                       .As<IEnumerable<IUserValidator<TUser>>>()
+                       .SingleInstance();
+            }
+
+            if (_options.PasswordValidatorsFactory != null)
+            {
+                builder.RegisterFactory(_options.PasswordValidatorsFactory.Get<TUser>)
+                       .As<IEnumerable<IUserValidator<TUser>>>()
+                       .SingleInstance();
+            }
 
             // Middlewares
 
@@ -86,49 +110,28 @@ namespace InfinniPlatform.Auth.IoC
 
         private IUserStore<TUser> CreateUserStore(IContainerResolver resolver)
         {
-            return _options.UserStoreFactory?.GetUserStore<TUser>(resolver) ?? resolver.Resolve<UserStore<TUser>>();
+            return _options.UserStoreFactory?.Get<TUser>(resolver) ?? resolver.Resolve<UserStore<TUser>>();
         }
 
-        private static UserManager<TUser> CreateUserManager(IContainerResolver resolver)
+
+        private IOptions<IdentityOptions> CreateOptionsAccessor(IContainerResolver resolver)
         {
-            // Хранилище пользователей
-            var appUserStore = resolver.Resolve<IUserStore<TUser>>();
+            return _options.IdentityOptions ?? new OptionsWrapper<IdentityOptions>(new IdentityOptions());
+        }
 
-            // Провайдер настроек AspNet.Identity
-            var optionsAccessor = new OptionsWrapper<IdentityOptions>(new IdentityOptions());
+        private IPasswordHasher<TUser> CreatePasswordHasher(IContainerResolver resolver)
+        {
+            return _options.PasswordHasherFactory?.Get<TUser>(resolver) ?? new DefaultAppUserPasswordHasher<TUser>();
+        }
 
-            // Сервис хэширования паролей
-            var identityPasswordHasher = new DefaultAppUserPasswordHasher<TUser>();
+        private ILookupNormalizer CreateLookupNormalizer(IContainerResolver resolver)
+        {
+            return _options.LookupNormalizerFactory?.Get(resolver) ?? new UpperInvariantLookupNormalizer();
+        }
 
-            // Валидаторы данных о пользователях
-            var userValidators = new List<IUserValidator<TUser>> { new AppUserValidator<TUser>(appUserStore) };
-
-            // Валидатор паролей пользователей
-            var passwordValidators = Enumerable.Empty<IPasswordValidator<TUser>>();
-
-            // Нормализатор
-            var keyNormalizer = new UpperInvariantLookupNormalizer();
-
-            // Сервис обработки ошибок AspNet.Identity
-            var identityErrorDescriber = new IdentityErrorDescriber();
-
-            // Провайдер зарегистрированных в IoC сервисов
-            var serviceProvider = resolver.Resolve<IServiceProvider>();
-
-            // Логгер
-            var logger = resolver.Resolve<ILogger<UserManager<TUser>>>();
-
-            var userManager = new UserManager<TUser>(appUserStore,
-                                                       optionsAccessor,
-                                                       identityPasswordHasher,
-                                                       userValidators,
-                                                       passwordValidators,
-                                                       keyNormalizer,
-                                                       identityErrorDescriber,
-                                                       serviceProvider,
-                                                       logger);
-
-            return userManager;
+        private IdentityErrorDescriber CreateIdentityErrorDescriber(IContainerResolver resolver)
+        {
+            return _options.IdentityErrorDescriber?.Get(resolver) ?? new IdentityErrorDescriber();
         }
     }
 }

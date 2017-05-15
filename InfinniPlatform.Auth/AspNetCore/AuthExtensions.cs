@@ -1,6 +1,5 @@
 ﻿using System;
 using InfinniPlatform.Auth;
-using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.Auth.IoC;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

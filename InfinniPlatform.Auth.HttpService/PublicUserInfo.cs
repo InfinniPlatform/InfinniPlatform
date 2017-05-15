@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using InfinniPlatform.Auth.Identity;
 
 namespace InfinniPlatform.Auth.HttpService
 {

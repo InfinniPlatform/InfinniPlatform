@@ -1,5 +1,5 @@
-﻿using InfinniPlatform.Auth.HttpService.IoC;
-using InfinniPlatform.Auth.Identity;
+﻿using InfinniPlatform.Auth;
+using InfinniPlatform.Auth.HttpService.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace

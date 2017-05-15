@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using InfinniPlatform.Auth.HttpService.Properties;
-using InfinniPlatform.Auth.Identity;
 using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Logging;
@@ -92,6 +91,8 @@ namespace InfinniPlatform.Auth.HttpService
 
             var result = await _signInManager.PasswordSignInAsync(userName, password, remember, false);
 
+            _userEventHandlerInvoker.OnAfterSignIn(Identity);
+
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(userName);
@@ -143,6 +144,8 @@ namespace InfinniPlatform.Auth.HttpService
                                                                   }
 
                                                                   await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, false);
+
+                                                                  _userEventHandlerInvoker.OnAfterSignIn(Identity);
 
                                                                   return null;
                                                               });

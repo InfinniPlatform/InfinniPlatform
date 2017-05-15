@@ -1,7 +1,6 @@
-﻿using InfinniPlatform.Auth.Identity;
-using InfinniPlatform.Auth.Identity.DocumentStorage;
-using InfinniPlatform.Auth.Identity.UserCache;
-using InfinniPlatform.DocumentStorage;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth
 {
@@ -45,8 +44,38 @@ namespace InfinniPlatform.Auth
         public string LogoutPath { get; set; }
 
         /// <summary>
-        /// Фабрика для получения хранилища пользователей.
+        /// Фабрика для получения хранилища пользователей <see cref="IUserStore{TUser}"/>.
         /// </summary>
-        public ICustomUserStoreFactory UserStoreFactory { get; set; }
+        public IUserStoreFactory UserStoreFactory { get; set; }
+
+        /// <summary>
+        /// Настройки ASP.NET Identity.
+        /// </summary>
+        public IOptions<IdentityOptions> IdentityOptions { get; set; }
+
+        /// <summary>
+        /// Фабрика для получения генератора хэшей для паролей <see cref="IPasswordHasher{TUser}"/>.
+        /// </summary>
+        public IPasswordHasherFactory PasswordHasherFactory { get; set; }
+
+        /// <summary>
+        /// Фабрика для получения валидаторов пользователей <see cref="IUserValidator{TUser}"/>.
+        /// </summary>
+        public IUserValidatorsFactory UserValidatorsFactory { get; set; }
+
+        /// <summary>
+        /// Фабрика для получения валидаторов паролей <see cref="IPasswordValidator{TUser}"/>.
+        /// </summary>
+        public IPasswordValidatorsFactory PasswordValidatorsFactory { get; set; }
+
+        /// <summary>
+        /// Фабрика для получения нормализатора ключей <see cref="ILookupNormalizer"/>.
+        /// </summary>
+        public ILookupNormalizerFactory LookupNormalizerFactory { get; set; }
+
+        /// <summary>
+        /// Фабрика для получения сервиса локализации ошибок аутентификации/авторизации <see cref="Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.
+        /// </summary>
+        public IIdentityErrorDescriberFactory IdentityErrorDescriber { get; set; }
     }
 }

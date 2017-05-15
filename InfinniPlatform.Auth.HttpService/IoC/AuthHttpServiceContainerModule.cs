@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Auth.Identity;
-using InfinniPlatform.Http;
+﻿using InfinniPlatform.Http;
 using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Auth.HttpService.IoC
