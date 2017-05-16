@@ -3,7 +3,7 @@ using InfinniPlatform.DocumentStorage.Metadata;
 
 namespace InfinniPlatform.Auth.DocumentStorage
 {
-    internal class AuthInternalDocumentMetadataSource : IDocumentMetadataSource
+    internal class AuthDocumentMetadataSource : IDocumentMetadataSource
     {
         public IEnumerable<DocumentMetadata> GetDocumentsMetadata()
         {

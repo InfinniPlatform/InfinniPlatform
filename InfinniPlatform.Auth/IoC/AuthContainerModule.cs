@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using InfinniPlatform.Auth.DocumentStorage;
 using InfinniPlatform.Auth.Middlewares;
 using InfinniPlatform.Auth.UserCache;
-using InfinniPlatform.Auth.Validators;
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth.IoC
 {
-    public class AuthInternalContainerModule<TUser> : IContainerModule where TUser : AppUser
+    public class AuthContainerModule<TUser> : IContainerModule where TUser : AppUser
     {
         private readonly AuthOptions _options;
 
-        public AuthInternalContainerModule(AuthOptions options)
+        public AuthContainerModule(AuthOptions options)
         {
             _options = options;
         }
@@ -103,7 +99,7 @@ namespace InfinniPlatform.Auth.IoC
                    .As<IConsumerSource>()
                    .SingleInstance();
 
-            builder.RegisterType<AuthInternalDocumentMetadataSource>()
+            builder.RegisterType<AuthDocumentMetadataSource>()
                    .As<IDocumentMetadataSource>()
                    .SingleInstance();
         }

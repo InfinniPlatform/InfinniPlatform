@@ -31,7 +31,7 @@ namespace InfinniPlatform.AspNetCore
         {
             services.AddIdentity<TUser, TRole>();
 
-            return services.AddSingleton(provider => new AuthInternalContainerModule<TUser>(options ?? AuthOptions.Default));
+            return services.AddSingleton(provider => new AuthContainerModule<TUser>(options ?? AuthOptions.Default));
         }
 
         public static IServiceCollection AddAuthInternal(this IServiceCollection services)
@@ -55,7 +55,7 @@ namespace InfinniPlatform.AspNetCore
         {
             services.AddIdentity<AppUser, AppUserRole>();
 
-            return services.AddSingleton(provider => new AuthInternalContainerModule<AppUser>(options ?? AuthOptions.Default));
+            return services.AddSingleton(provider => new AuthContainerModule<AppUser>(options ?? AuthOptions.Default));
         }
     }
 }
