@@ -32,6 +32,7 @@ namespace InfinniPlatform.Auth.IoC
             // User storage
 
             builder.RegisterType<UserStore<TUser>>()
+                   .As<IUserPhoneNumberStoreExtended<TUser>>()
                    .AsSelf()
                    .SingleInstance();
 

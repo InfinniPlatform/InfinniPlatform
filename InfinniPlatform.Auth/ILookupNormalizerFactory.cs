@@ -1,10 +1,10 @@
-using InfinniPlatform.IoC;
+п»їusing InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Фабрика для получения нормализатора ключей <see cref="ILookupNormalizer"/>.
+    /// Р¤Р°Р±СЂРёРєР° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РЅРѕСЂРјР°Р»РёР·Р°С‚РѕСЂР° РєР»СЋС‡РµР№ <see cref="ILookupNormalizer"/>.
     /// </summary>
     public interface ILookupNormalizerFactory
     {

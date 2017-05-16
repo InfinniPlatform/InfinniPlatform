@@ -1,10 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.DocumentStorage
 {
-    public partial class UserStore<TUser> : IUserPhoneNumberStore<TUser> where TUser : AppUser
+    public partial class UserStore<TUser> : IUserPhoneNumberStoreExtended<TUser> where TUser : AppUser
     {
         public async Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken token)
         {
@@ -30,6 +29,12 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
             await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
             UpdateUserInCache(user);
+        }
+
+        public Task<TUser> FindByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken)
+        {
+            return FindUserInCache(() => (TUser) UserCache.FindUserByPhoneNumber(phoneNumber),
+                                   async () => await Users.Value.Find(u => u.PhoneNumber == phoneNumber).FirstOrDefaultAsync());
         }
     }
 }

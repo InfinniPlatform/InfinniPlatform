@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Фабрика для получения валидаторов пользователей <see cref="IUserValidator{TUser}"/>.
+    /// Р¤Р°Р±СЂРёРєР° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РІР°Р»РёРґР°С‚РѕСЂРѕРІ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ <see cref="IUserValidator{TUser}"/>.
     /// </summary>
     public interface IUserValidatorsFactory
     {

@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Фабрика для получения валидаторов паролей <see cref="IPasswordValidator{TUser}"/>.
+    /// Р¤Р°Р±СЂРёРєР° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РІР°Р»РёРґР°С‚РѕСЂРѕРІ РїР°СЂРѕР»РµР№ <see cref="IPasswordValidator{TUser}"/>.
     /// </summary>
     public interface IPasswordValidatorsFactory
     {

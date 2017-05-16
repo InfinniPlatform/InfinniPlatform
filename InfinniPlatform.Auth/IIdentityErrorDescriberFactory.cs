@@ -1,10 +1,10 @@
-using InfinniPlatform.IoC;
+п»їusing InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Фабрика для получения сервиса локализации ошибок аутентификации/авторизации <see cref="Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.
+    /// Р¤Р°Р±СЂРёРєР° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЃРµСЂРІРёСЃР° Р»РѕРєР°Р»РёР·Р°С†РёРё РѕС€РёР±РѕРє Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё/Р°РІС‚РѕСЂРёР·Р°С†РёРё <see cref="Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.
     /// </summary>
     public interface IIdentityErrorDescriberFactory
     {

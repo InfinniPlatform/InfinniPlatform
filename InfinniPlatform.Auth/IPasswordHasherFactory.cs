@@ -1,10 +1,10 @@
-using InfinniPlatform.IoC;
+п»їusing InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Фабрика для получения генератора хэшей для паролей <see cref="IPasswordHasher{TUser}"/>.
+    /// Р¤Р°Р±СЂРёРєР° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РіРµРЅРµСЂР°С‚РѕСЂР° С…СЌС€РµР№ РґР»СЏ РїР°СЂРѕР»РµР№ <see cref="IPasswordHasher{TUser}"/>.
     /// </summary>
     public interface IPasswordHasherFactory
     {
