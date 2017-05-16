@@ -53,10 +53,4 @@
     <ProjectReference Include="..\InfinniPlatform.Scheduler.Quartz\InfinniPlatform.Scheduler.Quartz.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="content\www\AuthExternal.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
