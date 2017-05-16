@@ -188,8 +188,7 @@ namespace InfinniPlatform.MessageQueue.Management
                                             HostName = settings.HostName,
                                             Port = settings.Port,
                                             UserName = settings.UserName,
-                                            Password = settings.Password,
-                                            AutomaticRecoveryEnabled = RabbitMqDefaults.Connection.AutomaticRecoveryEnabled
+                                            Password = settings.Password
                                         };
 
                 var connection = connectionFactory.CreateConnection();
@@ -198,7 +197,7 @@ namespace InfinniPlatform.MessageQueue.Management
 
                 using (var channel = connection.CreateModel())
                 {
-                    channel.ExchangeDeclare(BroadcastExchangeName, RabbitMqDefaults.Exchange.Type.Direct, RabbitMqDefaults.Exchange.Durable, RabbitMqDefaults.Exchange.AutoDelete, null);
+                    channel.ExchangeDeclare(BroadcastExchangeName, RabbitMqDefaults.Exchange.Type.Direct, RabbitMqDefaults.Exchange.Durable);
                 }
 
                 return connection;
