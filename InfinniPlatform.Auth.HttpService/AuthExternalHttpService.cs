@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -16,7 +16,7 @@ using HttpResponse = InfinniPlatform.Http.HttpResponse;
 namespace InfinniPlatform.Auth.HttpService
 {
     /// <summary>
-    /// Сервис внешней аутентификации пользователей системы.
+    /// РЎРµСЂРІРёСЃ РІРЅРµС€РЅРµР№ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ СЃРёСЃС‚РµРјС‹.
     /// </summary>
     internal class AuthExternalHttpService<TUser> : IHttpService where TUser : AppUser, new()
     {
@@ -59,7 +59,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Осуществляет вход пользователя в систему через внешний провайдер.
+        /// РћСЃСѓС‰РµСЃС‚РІР»СЏРµС‚ РІС…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ С‡РµСЂРµР· РІРЅРµС€РЅРёР№ РїСЂРѕРІР°Р№РґРµСЂ.
         /// </summary>
         private async Task<object> SignInExternal(IHttpRequest request)
         {
@@ -67,7 +67,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
+        /// РџСЂРёРЅРёРјР°РµС‚ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РѕС‚ РІРЅРµС€РЅРµРіРѕ РїСЂРѕРІР°Р№РґРµСЂР° Рѕ РІС…РѕРґРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ.
         /// </summary>
         private Task<object> SignInExternalCallback(IHttpRequest request)
         {
@@ -96,7 +96,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Возвращает список внешних провайдеров входа в систему.
+        /// Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РІРЅРµС€РЅРёС… РїСЂРѕРІР°Р№РґРµСЂРѕРІ РІС…РѕРґР° РІ СЃРёСЃС‚РµРјСѓ.
         /// </summary>
         private Task<object> GetExternalProviders(IHttpRequest request)
         {
@@ -111,7 +111,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Добавляет текущему пользователю имя входа у внешнего провайдера.
+        /// Р”РѕР±Р°РІР»СЏРµС‚ С‚РµРєСѓС‰РµРјСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РёРјСЏ РІС…РѕРґР° Сѓ РІРЅРµС€РЅРµРіРѕ РїСЂРѕРІР°Р№РґРµСЂР°.
         /// </summary>
         private async Task<object> LinkExternalLogin(IHttpRequest request)
         {
@@ -126,7 +126,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
+        /// РџСЂРёРЅРёРјР°РµС‚ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РѕС‚ РІРЅРµС€РЅРµРіРѕ РїСЂРѕРІР°Р№РґРµСЂР° Рѕ РІС…РѕРґРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ.
         /// </summary>
         private Task<object> LinkExternalLoginCallback(IHttpRequest request)
         {
@@ -134,7 +134,7 @@ namespace InfinniPlatform.Auth.HttpService
                                                               {
                                                                   var identityUser = await _userManager.GetUserAsync(GetCurrentInternalClaimsPrincipal());
 
-                                                                  // Добавление имени входа пользователя
+                                                                  // Р”РѕР±Р°РІР»РµРЅРёРµ РёРјРµРЅРё РІС…РѕРґР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                                                                   var addLoginTask = await _userManager.AddLoginAsync(identityUser, loginInfo);
 
                                                                   return !addLoginTask.Succeeded
@@ -144,7 +144,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Удаляет у текущего пользователя имя входа у внешнего провайдера.
+        /// РЈРґР°Р»СЏРµС‚ Сѓ С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёРјСЏ РІС…РѕРґР° Сѓ РІРЅРµС€РЅРµРіРѕ РїСЂРѕРІР°Р№РґРµСЂР°.
         /// </summary>
         private async Task<object> UnlinkExternalLogin(IHttpRequest request)
         {
@@ -163,7 +163,7 @@ namespace InfinniPlatform.Auth.HttpService
 
             var identityUser = await _userManager.GetUserAsync(GetCurrentInternalClaimsPrincipal());
             var identityUserLogin = identityUser.Logins.Find(login => login.LoginProvider == provider);
-            // Удаление имени входа пользователя
+            // РЈРґР°Р»РµРЅРёРµ РёРјРµРЅРё РІС…РѕРґР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
             var removeLoginTask = await _userManager.RemoveLoginAsync(identityUser, identityUserLogin.LoginProvider, identityUserLogin.ProviderKey);
 
             if (!removeLoginTask.Succeeded)
@@ -179,7 +179,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Осуществляет переход на страницу входа внешнего провайдера.
+        /// РћСЃСѓС‰РµСЃС‚РІР»СЏРµС‚ РїРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ РІС…РѕРґР° РІРЅРµС€РЅРµРіРѕ РїСЂРѕРІР°Р№РґРµСЂР°.
         /// </summary>
         private async Task<IHttpResponse> ChallengeExternalProvider(IHttpRequest request, string callbackPath)
         {
@@ -201,7 +201,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
+        /// РџСЂРёРЅРёРјР°РµС‚ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РѕС‚ РІРЅРµС€РЅРµРіРѕ РїСЂРѕРІР°Р№РґРµСЂР° Рѕ РІС…РѕРґРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ.
         /// </summary>
         private async Task<object> ChallengeExternalProviderCallback(IHttpRequest request, Func<ExternalLoginInfo, Task<string>> callbackAction)
         {
@@ -213,7 +213,7 @@ namespace InfinniPlatform.Auth.HttpService
             try
             {
                 var externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
-                // Если пользователь прошел аутентификацию через внешний провайдер
+                // Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїСЂРѕС€РµР» Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёСЋ С‡РµСЂРµР· РІРЅРµС€РЅРёР№ РїСЂРѕРІР°Р№РґРµСЂ
                 if (externalLoginInfo != null)
                 {
                     errorMessage = await callbackAction(externalLoginInfo);
@@ -228,7 +228,7 @@ namespace InfinniPlatform.Auth.HttpService
                 errorMessage = error.GetFullMessage();
             }
 
-            // Перенаправление пользователя на страницу приложения
+            // РџРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅР° СЃС‚СЂР°РЅРёС†Сѓ РїСЂРёР»РѕР¶РµРЅРёСЏ
 
             RedirectHttpResponse response;
 
@@ -247,7 +247,7 @@ namespace InfinniPlatform.Auth.HttpService
 
 
         /// <summary>
-        /// Создает учетную запись пользователя по информации внешнего провайдера.
+        /// РЎРѕР·РґР°РµС‚ СѓС‡РµС‚РЅСѓСЋ Р·Р°РїРёСЃСЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РёРЅС„РѕСЂРјР°С†РёРё РІРЅРµС€РЅРµРіРѕ РїСЂРѕРІР°Р№РґРµСЂР°.
         /// </summary>
         private static TUser CreateUserByLoginInfo(ExternalLoginInfo loginInfo)
         {
