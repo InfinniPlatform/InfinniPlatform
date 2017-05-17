@@ -3,15 +3,15 @@ using InfinniPlatform.MessageQueue;
 
 namespace InfinniPlatform.Auth.UserCache
 {
-    internal class AuthInternalConsumerSource : IConsumerSource
+    internal class AuthConsumerSource : IConsumerSource
     {
-        public AuthInternalConsumerSource(AppUserStoreCacheConsumer userStoreCacheConsumer)
+        public AuthConsumerSource(UserCacheConsumer userStoreCacheConsumer)
         {
             _userStoreCacheConsumer = userStoreCacheConsumer;
         }
 
 
-        private readonly AppUserStoreCacheConsumer _userStoreCacheConsumer;
+        private readonly UserCacheConsumer _userStoreCacheConsumer;
 
 
         public IEnumerable<IConsumer> GetConsumers()

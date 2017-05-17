@@ -91,11 +91,11 @@ namespace InfinniPlatform.Auth.IoC
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<AppUserStoreCacheConsumer>()
+            builder.RegisterType<UserCacheConsumer>()
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<AuthInternalConsumerSource>()
+            builder.RegisterType<AuthConsumerSource>()
                    .As<IConsumerSource>()
                    .SingleInstance();
 
