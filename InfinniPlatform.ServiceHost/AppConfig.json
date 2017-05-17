@@ -6,9 +6,7 @@
     "ServerName": "localhost",
     "ServerPort": 9900,
     "StaticFilesMapping": {
-      "/":"wwwroot",
-      "/img": "img",
-      "/txt": "txt"
+      "/":"wwwroot"
     }
   },
   "mongodbDocumentStorage": {
