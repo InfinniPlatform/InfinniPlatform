@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -8,6 +9,7 @@ namespace InfinniPlatform.ServiceHost
         {
             var host = new WebHostBuilder()
                     .UseKestrel()
+                    .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseStartup<Startup>()
                     .Build();
 

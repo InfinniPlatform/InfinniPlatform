@@ -6,10 +6,9 @@
     "ServerName": "localhost",
     "ServerPort": 9900,
     "StaticFilesMapping": {
-      "/metadata": "content/metadata",
-      "/": "content/www"
-    },
-    "EmbeddedResourceMapping": {
+      "/":"wwwroot",
+      "/img": "img",
+      "/txt": "txt"
     }
   },
   "mongodbDocumentStorage": {

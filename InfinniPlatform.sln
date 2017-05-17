@@ -1,14 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.4
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{5ABA6C6E-8A75-4A08-8F2F-FE5EC5DEF04B}"
-	ProjectSection(SolutionItems) = preProject
-		Files\Config\AppConfig.json = Files\Config\AppConfig.json
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.csproj", "{1996F172-BE5B-4999-A472-81C1E470D49B}"
 EndProject
@@ -57,7 +52,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Logging.Log
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{296EF39D-F3DC-4AAF-946A-FC704D5BAF93}"
 	ProjectSection(SolutionItems) = preProject
-		Files\Monitoring\AppLog.config = Files\Monitoring\AppLog.config
 		Files\Monitoring\Inf.logstash.rb = Files\Monitoring\Inf.logstash.rb
 		Files\Monitoring\Inf.Monitor.kibana.json = Files\Monitoring\Inf.Monitor.kibana.json
 		Files\Monitoring\Inf.Performance.kibana.json = Files\Monitoring\Inf.Performance.kibana.json
@@ -756,9 +750,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5ABA6C6E-8A75-4A08-8F2F-FE5EC5DEF04B} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{B8D90B99-AAF9-4490-A39E-C1144A5B4CDE} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{296EF39D-F3DC-4AAF-946A-FC704D5BAF93} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
-		{BFF8197C-B04D-4E0F-9FCA-172A144E6592} = {5ABA6C6E-8A75-4A08-8F2F-FE5EC5DEF04B}
+		{BFF8197C-B04D-4E0F-9FCA-172A144E6592} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 	EndGlobalSection
 EndGlobal

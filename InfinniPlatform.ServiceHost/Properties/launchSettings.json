@@ -17,7 +17,6 @@
     },
     "InfinniPlatform.ServiceHost": {
       "commandName": "Project",
-      "workingDirectory": "bin\\Debug\\netcoreapp1.1",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

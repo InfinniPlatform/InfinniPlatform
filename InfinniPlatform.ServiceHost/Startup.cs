@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using InfinniPlatform.AspNetCore;
+using InfinniPlatform.Extensions;
+using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
+using InfinniPlatform.ServiceHost.Properties;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -45,8 +51,10 @@ namespace InfinniPlatform.ServiceHost
             return configureServices;
         }
 
-        public void Configure(IApplicationBuilder app, IContainerResolver resolver, IHostingEnvironment env, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IContainerResolver resolver)
         {
+            app.UseStaticFilesMapping(_configuration);
+
             app.UseInfinniMiddlewares(resolver);
         }
     }
