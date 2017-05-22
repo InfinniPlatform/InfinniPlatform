@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.Extensions;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
-using InfinniPlatform.ServiceHost.Properties;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -31,6 +26,8 @@ namespace InfinniPlatform.ServiceHost
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IInterface, MyClass>();
+
             var configureServices = services.AddLog4NetLogging()
                                             .AddAuthInternal(_configuration)
                                             .AddAuthHttpService()
