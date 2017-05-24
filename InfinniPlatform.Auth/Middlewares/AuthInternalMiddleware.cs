@@ -9,9 +9,9 @@ namespace InfinniPlatform.Auth.Middlewares
     /// <summary>
     /// Промежуточный слой обработки HTTP запросов приложения для аутентификации пользователя на основе базы данных пользователей.
     /// </summary>
-    internal class AuthInternalHttpMiddleware : HttpMiddlewareBase<AuthInternalMiddlewareOptions>
+    internal class AuthInternalMiddleware : IInternalAuthenticationMiddleware
     {
-        public AuthInternalHttpMiddleware(IUserIdentityProvider identityProvider, ILog log) : base(HttpMiddlewareType.InternalAuthentication)
+        public AuthInternalMiddleware(IUserIdentityProvider identityProvider, ILog log)
         {
             _identityProvider = identityProvider;
             _log = log;
@@ -22,10 +22,10 @@ namespace InfinniPlatform.Auth.Middlewares
         private readonly ILog _log;
 
 
-        public override void Configure(IApplicationBuilder app, AuthInternalMiddlewareOptions options)
+        public void Configure(IApplicationBuilder app)
         {
             // Прослойка для установки информации об идентификационных данных текущего пользователя
-            app.Use((httpContext, nextOwinMiddleware) =>
+            app.Use((httpContext, next) =>
                     {
                         var requestUser = httpContext.User;
 
@@ -33,7 +33,7 @@ namespace InfinniPlatform.Auth.Middlewares
 
                         _log.SetUserId(requestUser?.Identity);
 
-                        return nextOwinMiddleware.Invoke();
+                        return next.Invoke();
                     });
         }
     }

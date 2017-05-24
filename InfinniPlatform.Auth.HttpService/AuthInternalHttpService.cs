@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Http;
-using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
@@ -15,19 +14,19 @@ namespace InfinniPlatform.Auth.HttpService
     /// </summary>
     internal class AuthInternalHttpService<TUser> : IHttpService where TUser : AppUser, new()
     {
-        private readonly IHttpContextProvider _httpContextProvider;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly SignInManager<TUser> _signInManager;
         private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
         private readonly IUserIdentityProvider _userIdentityProvider;
         private readonly UserManager<TUser> _userManager;
 
-        public AuthInternalHttpService(IHttpContextProvider httpContextProvider,
+        public AuthInternalHttpService(IHttpContextAccessor httpContextAccessor,
                                        IUserIdentityProvider userIdentityProvider,
                                        UserEventHandlerInvoker userEventHandlerInvoker,
                                        UserManager<TUser> userManager,
                                        SignInManager<TUser> signInManager)
         {
-            _httpContextProvider = httpContextProvider;
+            _httpContextAccessor = httpContextAccessor;
             _userIdentityProvider = userIdentityProvider;
             _userEventHandlerInvoker = userEventHandlerInvoker;
             _userManager = userManager;
@@ -37,7 +36,7 @@ namespace InfinniPlatform.Auth.HttpService
 
         private IIdentity Identity => _userIdentityProvider.GetUserIdentity();
 
-        private HttpContext HttpContext => _httpContextProvider.GetHttpContext();
+        private HttpContext HttpContext => _httpContextAccessor.HttpContext;
 
         private AuthenticationManager AuthenticationManager => HttpContext.Authentication;
 

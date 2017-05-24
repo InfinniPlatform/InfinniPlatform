@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +21,6 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class CoreExtensions
     {
-        private static readonly Dictionary<HttpMiddlewareType, IMiddlewareOptions> MiddlewareOptions = BuildDefaultMiddlewareOptions();
-
         public static IServiceProvider BuildProvider(this IServiceCollection services, IEnumerable<IContainerModule> containerModules = null)
         {
             var options = AppOptions.Default;
@@ -57,7 +58,7 @@ namespace InfinniPlatform.AspNetCore
 
             // Регистрация самого Autofac-контейнера
             IContainer autofacRootContainer = null;
-            containerBuilder.RegisterInstance((Func<IContainer>) (() => autofacRootContainer));
+            containerBuilder.RegisterInstance((Func<IContainer>)(() => autofacRootContainer));
             containerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
 
             // ReSharper restore AccessToModifiedClosure
@@ -79,7 +80,7 @@ namespace InfinniPlatform.AspNetCore
 
             foreach (var module in modules)
             {
-                var containerModule = (IContainerModule) module.ImplementationFactory.Invoke(null);
+                var containerModule = (IContainerModule)module.ImplementationFactory.Invoke(null);
                 var autofacContainerModule = new AutofacContainerModule(containerModule);
                 containerBuilder.RegisterModule(autofacContainerModule);
             }
@@ -93,21 +94,14 @@ namespace InfinniPlatform.AspNetCore
 
             foreach (var module in modules)
             {
-                var containerModule = (IContainerModule) Activator.CreateInstance(module);
+                var containerModule = (IContainerModule)Activator.CreateInstance(module);
                 var autofacContainerModule = new AutofacContainerModule(containerModule);
                 containerBuilder.RegisterModule(autofacContainerModule);
             }
         }
 
-        private static Dictionary<HttpMiddlewareType, IMiddlewareOptions> BuildDefaultMiddlewareOptions()
-        {
-            var httpMiddlewareTypes = (HttpMiddlewareType[]) Enum.GetValues(typeof(HttpMiddlewareType));
-
-            return httpMiddlewareTypes.ToDictionary<HttpMiddlewareType, HttpMiddlewareType, IMiddlewareOptions>(type => type, type => null);
-        }
-
         /// <summary>
-        ///     Регистрирует middlewares обработки запросов к приложению.
+        /// Регистрирует middlewares обработки запросов к приложению.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="resolver">Провайдер разрешения зависимостей.</param>
@@ -115,86 +109,6 @@ namespace InfinniPlatform.AspNetCore
         {
             RegisterAppLifetimeHandlers(resolver);
             RegisterMiddlewares(app, resolver);
-        }
-
-        /// <summary>
-        ///     Регистрирует middleware глобальной обработки запросов.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="options">Обработчик запроса.</param>
-        public static void AddGlobalHandlingMiddleware(this IApplicationBuilder app, IMiddlewareOptions options)
-        {
-            AddUserMiddleware(HttpMiddlewareType.GlobalHandling, options);
-        }
-
-        /// <summary>
-        ///     Регистрирует middleware обработки ошибок выполнения запросов.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="options">Обработчик запроса.</param>
-        public static void AddErrorHandlingMiddleware(this IApplicationBuilder app, IMiddlewareOptions options)
-        {
-            AddUserMiddleware(HttpMiddlewareType.ErrorHandling, options);
-        }
-
-        /// <summary>
-        ///     Регистрирует middleware обработки запросов до аутентификации пользователя.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="options">Обработчик запроса.</param>
-        public static void AddBeforeAuthenticationMiddleware(this IApplicationBuilder app, IMiddlewareOptions options)
-        {
-            AddUserMiddleware(HttpMiddlewareType.BeforeAuthentication, options);
-        }
-
-        /// <summary>
-        ///     Регистрирует middleware барьерной аутентификации пользователя.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="options">Обработчик запроса.</param>
-        public static void AddAuthenticationBarrierMiddleware(this IApplicationBuilder app, IMiddlewareOptions options)
-        {
-            AddUserMiddleware(HttpMiddlewareType.AuthenticationBarrier, options);
-        }
-
-        /// <summary>
-        ///     Регистрирует middleware аутентификации пользователя на основе внешнего провайдера.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="options">Обработчик запроса.</param>
-        public static void AddExternalAuthenticationMiddleware(this IApplicationBuilder app, IMiddlewareOptions options)
-        {
-            AddUserMiddleware(HttpMiddlewareType.ExternalAuthentication, options);
-        }
-
-        /// <summary>
-        ///     Регистрирует middleware аутентификации пользователя средствами приложения.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="options">Обработчик запроса.</param>
-        public static void AddInternalAuthenticationMiddleware(this IApplicationBuilder app, IMiddlewareOptions options)
-        {
-            AddUserMiddleware(HttpMiddlewareType.InternalAuthentication, options);
-        }
-
-        /// <summary>
-        ///     Регистрирует middleware обработки запросов после аутентификации пользователя.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="options">Обработчик запроса.</param>
-        public static void AddAfterAuthenticationMiddleware(this IApplicationBuilder app, IMiddlewareOptions options)
-        {
-            AddUserMiddleware(HttpMiddlewareType.AfterAuthentication, options);
-        }
-
-        /// <summary>
-        ///     Регистрирует middleware обработки прикладных запросов.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="options">Обработчик запроса.</param>
-        public static void AddApplicationMiddleware(this IApplicationBuilder app, IMiddlewareOptions options)
-        {
-            AddUserMiddleware(HttpMiddlewareType.Application, options);
         }
 
         private static void RegisterAppLifetimeHandlers(IContainerResolver resolver)
@@ -216,20 +130,47 @@ namespace InfinniPlatform.AspNetCore
 
         private static void RegisterMiddlewares(IApplicationBuilder app, IContainerResolver resolver)
         {
-            var httpMiddlewares = resolver.Resolve<IHttpMiddleware[]>();
+            var middlewares = resolver.Resolve<IMiddleware[]>();
 
-            foreach (var options in MiddlewareOptions)
+            foreach (var middleware in middlewares.OfType<IGlobalHandlingMiddleware>())
             {
-                foreach (var middleware in httpMiddlewares.Where(m => m.Type == options.Key))
-                {
-                    middleware.Configure(app, options.Value);
-                }
+                middleware.Configure(app);
             }
-        }
 
-        private static void AddUserMiddleware(HttpMiddlewareType key, IMiddlewareOptions value)
-        {
-            MiddlewareOptions[key] = value;
+            foreach (var middleware in middlewares.OfType<IErrorHandlingMiddleware>())
+            {
+                middleware.Configure(app);
+            }
+
+            foreach (var middleware in middlewares.OfType<IBeforeAuthenticationMiddleware>())
+            {
+                middleware.Configure(app);
+            }
+
+            foreach (var middleware in middlewares.OfType<IAuthenticationBarrierMiddleware>())
+            {
+                middleware.Configure(app);
+            }
+
+            foreach (var middleware in middlewares.OfType<IExternalAuthenticationMiddleware>())
+            {
+                middleware.Configure(app);
+            }
+
+            foreach (var middleware in middlewares.OfType<IInternalAuthenticationMiddleware>())
+            {
+                middleware.Configure(app);
+            }
+
+            foreach (var middleware in middlewares.OfType<IAfterAuthenticationMiddleware>())
+            {
+                middleware.Configure(app);
+            }
+
+            foreach (var middleware in middlewares.OfType<IApplicationMiddleware>())
+            {
+                middleware.Configure(app);
+            }
         }
     }
 }

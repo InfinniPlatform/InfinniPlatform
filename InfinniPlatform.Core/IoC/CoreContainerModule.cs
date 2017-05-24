@@ -7,6 +7,11 @@ using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
 using InfinniPlatform.Session;
 
+using Nancy;
+using Nancy.Bootstrapper;
+
+using IObjectSerializer = InfinniPlatform.Serialization.IObjectSerializer;
+
 namespace InfinniPlatform.IoC
 {
     public class CoreContainerModule : IContainerModule
@@ -30,14 +35,14 @@ namespace InfinniPlatform.IoC
         }
 
 
-        private void RegisterDiagnosticsComponents(IContainerBuilder builder)
+        private static void RegisterDiagnosticsComponents(IContainerBuilder builder)
         {
             builder.RegisterType<SystemInfoHttpService>()
                    .As<IHttpService>()
                    .SingleInstance();
         }
 
-        private void RegisterSerializationComponents(IContainerBuilder builder)
+        private static void RegisterSerializationComponents(IContainerBuilder builder)
         {
             builder.RegisterInstance(JsonObjectSerializer.DefaultEncoding)
                    .As<Encoding>()
@@ -49,14 +54,14 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
         }
 
-        private void RegisterSecurityComponents(IContainerBuilder builder)
+        private static void RegisterSecurityComponents(IContainerBuilder builder)
         {
             builder.RegisterType<UserIdentityProvider>()
                    .As<IUserIdentityProvider>()
                    .SingleInstance();
         }
 
-        private void RegisterSessionComponents(IContainerBuilder builder)
+        private static void RegisterSessionComponents(IContainerBuilder builder)
         {
             builder.RegisterType<TenantScopeProvider>()
                    .As<ITenantScopeProvider>()
@@ -67,7 +72,7 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
         }
 
-        private void RegisterHttpComponents(IContainerBuilder builder)
+        private static void RegisterHttpComponents(IContainerBuilder builder)
         {
             // Hosting
 
@@ -77,30 +82,22 @@ namespace InfinniPlatform.IoC
 
             // Middlewares
 
-            builder.RegisterType<HttpContextProvider>()
-                   .As<IHttpContextProvider>()
+            builder.RegisterType<ErrorHandlingMiddleware>()
+                   .As<IMiddleware>()
                    .SingleInstance();
 
-            builder.RegisterType<ErrorHandlingHttpMiddleware>()
-                   .As<IHttpMiddleware>()
-                   .SingleInstance();
-
-            builder.RegisterType<ErrorHandlingOwinMiddleware>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<NancyHttpMiddleware>()
-                   .As<IHttpMiddleware>()
+            builder.RegisterType<NancyMiddleware>()
+                   .As<IMiddleware>()
                    .SingleInstance();
 
             // Services
 
             builder.RegisterType<HttpServiceNancyBootstrapper>()
-                   .As<Nancy.Bootstrapper.INancyBootstrapper>()
+                   .As<INancyBootstrapper>()
                    .SingleInstance();
 
             builder.RegisterType<HttpServiceNancyModuleCatalog>()
-                   .As<Nancy.INancyModuleCatalog>()
+                   .As<INancyModuleCatalog>()
                    .SingleInstance();
 
             builder.RegisterGeneric(typeof(HttpServiceNancyModule<>))
