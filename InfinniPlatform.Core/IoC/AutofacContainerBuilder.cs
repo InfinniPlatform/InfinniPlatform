@@ -46,7 +46,7 @@ namespace InfinniPlatform.IoC
 
         public IContainerRegistrationRule RegisterFactory<TComponent>(Func<IContainerResolver, TComponent> componentFactory) where TComponent : class
         {
-            var registrationBuilder = _builder.Register(r => componentFactory(new AutofacContainerResolver(r)));
+            var registrationBuilder = _builder.Register(r => componentFactory(r.Resolve<IContainerResolver>()));
 
             return CreateRegistrationRule(registrationBuilder);
         }

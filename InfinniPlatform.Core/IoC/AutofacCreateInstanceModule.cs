@@ -18,8 +18,8 @@ namespace InfinniPlatform.IoC
             Parameter[] parameters =
             {
                 new ResolvedParameter(
-                    (p, c) => parameterResolver.CanResolve(p, new AutofacContainerResolver(c)),
-                    (p, c) => parameterResolver.Resolve(p, new AutofacContainerResolver(c)))
+                    (p, c) => parameterResolver.CanResolve(p, c.Resolve<IContainerResolver>),
+                    (p, c) => parameterResolver.Resolve(p, c. Resolve<IContainerResolver>))
             };
 
             _parameters = parameters;

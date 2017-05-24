@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using InfinniPlatform.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -7,11 +11,13 @@ namespace InfinniPlatform.ServiceHost
     {
         private readonly IInterface _i1;
         private readonly IInterface _i2;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public HttpService(IInterface i1, IInterface i2)
+        public HttpService(IInterface i1, IInterface i2, IHttpContextAccessor httpContext)
         {
             _i1 = i1;
             _i2 = i2;
+            _httpContext = httpContext;
         }
 
         public void Load(IHttpServiceBuilder builder)
@@ -21,7 +27,17 @@ namespace InfinniPlatform.ServiceHost
 
         private Task<object> Get(IHttpRequest httpRequest)
         {
-            var foo = new {i1 = _i1.M(), i2 = _i2.M()};
+
+            var httpContext = _httpContext.HttpContext;
+
+            IServiceProvider services = httpContext.RequestServices;
+
+            var i1 = services.GetRequiredService<IInterface>();
+            var i2 = services.GetRequiredService<IInterface>();
+
+            //_httpContext.HttpContext.RequestServices.
+
+            var foo = new {i1 = i1.M(), i2 = i2.M()};
 
             return Task.FromResult<object>(foo);
         }

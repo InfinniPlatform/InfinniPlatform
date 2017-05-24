@@ -29,7 +29,7 @@ namespace InfinniPlatform.IoC
 
         private void OnComponentActivated(object sender, ActivatedEventArgs<object> e)
         {
-            _instanceActivator.Activate(e.Instance, new AutofacContainerResolver(e.Context));
+            _instanceActivator.Activate(e.Instance, e.Context.Resolve<IContainerResolver>);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace InfinniPlatform.Logging.IoC
 
         private readonly Func<Type, IJsonObjectSerializer, T> _logFactory;
 
-        public void Activate(object instance, IContainerResolver resolver)
+        public void Activate(object instance, Func<IContainerResolver> resolver)
         {
             var instanceType = instance.GetType();
 
@@ -26,7 +26,7 @@ namespace InfinniPlatform.Logging.IoC
 
             foreach (var propToSet in properties)
             {
-                propToSet.SetValue(instance, _logFactory(instanceType, resolver.Resolve<IJsonObjectSerializer>()), null);
+                propToSet.SetValue(instance, _logFactory(instanceType, resolver().Resolve<IJsonObjectSerializer>()), null);
             }
         }
     }

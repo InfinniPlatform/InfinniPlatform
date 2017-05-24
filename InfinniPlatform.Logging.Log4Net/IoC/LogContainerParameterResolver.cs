@@ -15,14 +15,14 @@ namespace InfinniPlatform.Logging.IoC
 
         private readonly Func<Type, IJsonObjectSerializer, T> _logFactory;
 
-        public bool CanResolve(ParameterInfo parameterInfo, IContainerResolver resolver)
+        public bool CanResolve(ParameterInfo parameterInfo, Func<IContainerResolver> resolver)
         {
             return parameterInfo.ParameterType == typeof(T);
         }
 
-        public object Resolve(ParameterInfo parameterInfo, IContainerResolver resolver)
+        public object Resolve(ParameterInfo parameterInfo, Func<IContainerResolver> resolver)
         {
-            return _logFactory(parameterInfo.Member.DeclaringType, resolver.Resolve<IJsonObjectSerializer>());
+            return _logFactory(parameterInfo.Member.DeclaringType, resolver().Resolve<IJsonObjectSerializer>());
         }
     }
 }

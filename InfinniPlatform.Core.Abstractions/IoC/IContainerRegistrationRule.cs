@@ -25,7 +25,7 @@ namespace InfinniPlatform.IoC
         /// <summary>
         /// Определяет, что зависимость должна создаваться на время выполнения запроса.
         /// </summary>
-        IContainerRegistrationRule InstancePerRequest();
+        IContainerRegistrationRule InstancePerLifetimeScope();
 
         /// <summary>
         /// Определяет сервис, который предоставляет компонент.

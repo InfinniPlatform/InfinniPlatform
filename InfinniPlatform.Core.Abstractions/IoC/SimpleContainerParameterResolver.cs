@@ -24,14 +24,14 @@ namespace InfinniPlatform.IoC
         private readonly Func<ParameterInfo, IContainerResolver, object> _resolve;
 
 
-        public bool CanResolve(ParameterInfo parameterInfo, IContainerResolver resolver)
+        public bool CanResolve(ParameterInfo parameterInfo, Func<IContainerResolver> resolver)
         {
-            return _canResolve(parameterInfo, resolver);
+            return _canResolve(parameterInfo, resolver());
         }
 
-        public object Resolve(ParameterInfo parameterInfo, IContainerResolver resolver)
+        public object Resolve(ParameterInfo parameterInfo, Func<IContainerResolver> resolver)
         {
-            return _resolve(parameterInfo, resolver);
+            return _resolve(parameterInfo, resolver());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace InfinniPlatform.IoC
+﻿using System;
+
+namespace InfinniPlatform.IoC
 {
     /// <summary>
     /// Обработчик инициализации экземпляра зависимости.
@@ -10,6 +12,6 @@
         /// </summary>
         /// <param name="instance">Экземпляр зависимости.</param>
         /// <param name="resolver">Провайдер разрешения зависимостей.</param>
-        void Activate(object instance, IContainerResolver resolver);
+        void Activate(object instance, Func<IContainerResolver> resolver);
     }
 }

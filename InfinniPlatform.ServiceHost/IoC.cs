@@ -8,6 +8,10 @@ namespace InfinniPlatform.ServiceHost
     {
         public void Load(IContainerBuilder builder)
         {
+            builder.RegisterType<MyClass>()
+                   .As<IInterface>()
+                   .InstancePerLifetimeScope();
+
             builder.RegisterHttpServices(GetType().GetTypeInfo().Assembly);
         }
     }

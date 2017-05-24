@@ -39,9 +39,9 @@ namespace InfinniPlatform.IoC
             return this;
         }
 
-        public IContainerRegistrationRule InstancePerRequest()
+        public IContainerRegistrationRule InstancePerLifetimeScope()
         {
-            _registrationBuilder.InstancePerRequest();
+            _registrationBuilder.InstancePerLifetimeScope();
 
             return this;
         }

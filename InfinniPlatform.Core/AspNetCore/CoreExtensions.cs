@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
-using InfinniPlatform.IoC.Http;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +18,8 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class CoreExtensions
     {
+        private static readonly Dictionary<HttpMiddlewareType, IMiddlewareOptions> MiddlewareOptions = BuildDefaultMiddlewareOptions();
+
         public static IServiceProvider BuildProvider(this IServiceCollection services, IEnumerable<IContainerModule> containerModules = null)
         {
             var options = AppOptions.Default;
@@ -31,7 +29,8 @@ namespace InfinniPlatform.AspNetCore
 
         public static IServiceProvider BuildProvider(this IServiceCollection services, IConfigurationRoot configuration, IEnumerable<IContainerModule> containerModules = null)
         {
-            var options = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();
+            var options = configuration.GetSection(AppOptions.SectionName)
+                                       .Get<AppOptions>();
 
             return BuildProvider(services, options);
         }
@@ -58,27 +57,20 @@ namespace InfinniPlatform.AspNetCore
 
             // Регистрация самого Autofac-контейнера
             IContainer autofacRootContainer = null;
-            containerBuilder.RegisterInstance((Func<IContainer>)(() => autofacRootContainer));
+            containerBuilder.RegisterInstance((Func<IContainer>) (() => autofacRootContainer));
             containerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
-
-            // Регистрация обертки над контейнером
-            IContainerResolver containerResolver = null;
-            containerBuilder.RegisterInstance((Func<IContainerResolver>)(() => containerResolver));
-            containerBuilder.Register(r => r.Resolve<Func<IContainerResolver>>()()).As<IContainerResolver>().SingleInstance();
-
-            // Регистрация контейнера для Asp.Net
-            IServiceProvider serviceProvider = null;
-            containerBuilder.RegisterInstance((Func<IServiceProvider>)(() => serviceProvider));
-            containerBuilder.Register(r => r.Resolve<Func<IServiceProvider>>()()).As<IServiceProvider>().SingleInstance();
 
             // ReSharper restore AccessToModifiedClosure
 
+            // Регистрация обертки над контейнером
+            containerBuilder.RegisterType<ContainerServiceRegistry>().As<IContainerServiceRegistry>().SingleInstance();
+            containerBuilder.RegisterType<ServiceProviderAccessor>().As<IServiceProviderAccessor>().SingleInstance();
+            containerBuilder.RegisterType<ContainerResolver>().As<IContainerResolver>().SingleInstance();
+
             // Построение контейнера зависимостей
             autofacRootContainer = containerBuilder.Build();
-            containerResolver = new AutofacContainerResolver(autofacRootContainer, AutofacRequestLifetimeScopeOwinMiddleware.TryGetRequestContainer);
-            serviceProvider = new AutofacServiceProvider(autofacRootContainer);
 
-            return serviceProvider;
+            return new AutofacServiceProvider(autofacRootContainer);
         }
 
         private static void RegisterDefinedModules(ContainerBuilder containerBuilder, IServiceCollection services)
@@ -87,7 +79,7 @@ namespace InfinniPlatform.AspNetCore
 
             foreach (var module in modules)
             {
-                var containerModule = (IContainerModule)module.ImplementationFactory.Invoke(null);
+                var containerModule = (IContainerModule) module.ImplementationFactory.Invoke(null);
                 var autofacContainerModule = new AutofacContainerModule(containerModule);
                 containerBuilder.RegisterModule(autofacContainerModule);
             }
@@ -95,28 +87,27 @@ namespace InfinniPlatform.AspNetCore
 
         private static void RegisterUserModules(ContainerBuilder containerBuilder)
         {
-            var modules = Assembly.GetEntryAssembly().GetTypes().Where(type => typeof(IContainerModule).IsAssignableFrom(type));
+            var modules = Assembly.GetEntryAssembly()
+                                  .GetTypes()
+                                  .Where(type => typeof(IContainerModule).IsAssignableFrom(type));
 
             foreach (var module in modules)
             {
-                var containerModule = (IContainerModule)Activator.CreateInstance(module);
+                var containerModule = (IContainerModule) Activator.CreateInstance(module);
                 var autofacContainerModule = new AutofacContainerModule(containerModule);
                 containerBuilder.RegisterModule(autofacContainerModule);
             }
         }
 
-
-        private static readonly Dictionary<HttpMiddlewareType, IMiddlewareOptions> MiddlewareOptions = BuildDefaultMiddlewareOptions();
-
         private static Dictionary<HttpMiddlewareType, IMiddlewareOptions> BuildDefaultMiddlewareOptions()
         {
-            var httpMiddlewareTypes = (HttpMiddlewareType[])Enum.GetValues(typeof(HttpMiddlewareType));
+            var httpMiddlewareTypes = (HttpMiddlewareType[]) Enum.GetValues(typeof(HttpMiddlewareType));
 
             return httpMiddlewareTypes.ToDictionary<HttpMiddlewareType, HttpMiddlewareType, IMiddlewareOptions>(type => type, type => null);
         }
 
         /// <summary>
-        /// Регистрирует middlewares обработки запросов к приложению.
+        ///     Регистрирует middlewares обработки запросов к приложению.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="resolver">Провайдер разрешения зависимостей.</param>
@@ -127,7 +118,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Регистрирует middleware глобальной обработки запросов.
+        ///     Регистрирует middleware глобальной обработки запросов.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="options">Обработчик запроса.</param>
@@ -137,7 +128,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Регистрирует middleware обработки ошибок выполнения запросов.
+        ///     Регистрирует middleware обработки ошибок выполнения запросов.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="options">Обработчик запроса.</param>
@@ -147,7 +138,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Регистрирует middleware обработки запросов до аутентификации пользователя.
+        ///     Регистрирует middleware обработки запросов до аутентификации пользователя.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="options">Обработчик запроса.</param>
@@ -157,7 +148,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Регистрирует middleware барьерной аутентификации пользователя.
+        ///     Регистрирует middleware барьерной аутентификации пользователя.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="options">Обработчик запроса.</param>
@@ -167,7 +158,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Регистрирует middleware аутентификации пользователя на основе внешнего провайдера.
+        ///     Регистрирует middleware аутентификации пользователя на основе внешнего провайдера.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="options">Обработчик запроса.</param>
@@ -177,7 +168,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Регистрирует middleware аутентификации пользователя средствами приложения.
+        ///     Регистрирует middleware аутентификации пользователя средствами приложения.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="options">Обработчик запроса.</param>
@@ -187,7 +178,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Регистрирует middleware обработки запросов после аутентификации пользователя.
+        ///     Регистрирует middleware обработки запросов после аутентификации пользователя.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="options">Обработчик запроса.</param>
@@ -197,7 +188,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Регистрирует middleware обработки прикладных запросов.
+        ///     Регистрирует middleware обработки прикладных запросов.
         /// </summary>
         /// <param name="app">Конфигуратор обработки запросов.</param>
         /// <param name="options">Обработчик запроса.</param>

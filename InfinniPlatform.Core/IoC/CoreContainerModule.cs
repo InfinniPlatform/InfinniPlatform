@@ -3,7 +3,6 @@
 using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.IoC.Http;
 using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
 using InfinniPlatform.Session;
@@ -23,7 +22,6 @@ namespace InfinniPlatform.IoC
         {
             builder.RegisterInstance(_options).AsSelf();
 
-            RegisterIoCComponents(builder);
             RegisterDiagnosticsComponents(builder);
             RegisterSerializationComponents(builder);
             RegisterSecurityComponents(builder);
@@ -31,17 +29,6 @@ namespace InfinniPlatform.IoC
             RegisterHttpComponents(builder);
         }
 
-
-        private void RegisterIoCComponents(IContainerBuilder builder)
-        {
-            builder.RegisterType<AutofacOwinMiddlewareResolver>()
-                   .As<IOwinMiddlewareTypeResolver>()
-                   .SingleInstance();
-
-            builder.RegisterType<AutofacRequestLifetimeScopeOwinMiddleware>()
-                   .As<OwinMiddleware>()
-                   .SingleInstance();
-        }
 
         private void RegisterDiagnosticsComponents(IContainerBuilder builder)
         {

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using InfinniPlatform.AspNetCore;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,8 +28,6 @@ namespace InfinniPlatform.ServiceHost
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IInterface, MyClass>();
-
             var configureServices = services.AddLog4NetLogging()
                                             .AddAuthInternal(_configuration)
                                             .AddAuthHttpService()
@@ -55,4 +55,5 @@ namespace InfinniPlatform.ServiceHost
             app.UseInfinniMiddlewares(resolver);
         }
     }
+    
 }

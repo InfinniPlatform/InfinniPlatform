@@ -17,8 +17,6 @@
     },
     "InfinniPlatform.ServiceHost": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:9900/get",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -102,7 +102,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             builder.RegisterType<UnitOfWork>()
                    .AsSelf()
-                   .InstancePerRequest();
+                   .InstancePerLifetimeScope();
 
             builder.RegisterType<UnitOfWorkFactory>()
                    .As<IUnitOfWorkFactory>()
