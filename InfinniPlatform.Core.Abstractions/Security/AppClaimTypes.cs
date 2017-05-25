@@ -6,7 +6,7 @@
     /// <remarks>
     /// Расширение системного списка <see cref="System.Security.Claims.ClaimTypes" />.
     /// </remarks>
-    public static class ApplicationClaimTypes
+    public static class AppClaimTypes
     {
         /// <summary>
         /// Тип утверждения для хранения идентификатора текущей организации.

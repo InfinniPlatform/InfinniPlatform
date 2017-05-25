@@ -21,6 +21,11 @@ namespace InfinniPlatform.AspNetCore
 {
     public static class CoreExtensions
     {
+        /// <summary>
+        /// Builds <see cref="IServiceProvider"/> based on registered services.
+        /// </summary>
+        /// <param name="services">Collection of registered services.</param>
+        /// <param name="containerModules">Registered IoC-conteiner modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, IEnumerable<IContainerModule> containerModules = null)
         {
             var options = AppOptions.Default;
@@ -28,6 +33,12 @@ namespace InfinniPlatform.AspNetCore
             return BuildProvider(services, options);
         }
 
+        /// <summary>
+        /// Builds <see cref="IServiceProvider"/> based on registered services.
+        /// </summary>
+        /// <param name="services">Collection of registered services.</param>
+        /// <param name="configuration">Application configuration.</param>
+        /// <param name="containerModules">Registered IoC-conteiner modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, IConfigurationRoot configuration, IEnumerable<IContainerModule> containerModules = null)
         {
             var options = configuration.GetSection(AppOptions.SectionName)
@@ -36,6 +47,12 @@ namespace InfinniPlatform.AspNetCore
             return BuildProvider(services, options);
         }
 
+        /// <summary>
+        /// Builds <see cref="IServiceProvider"/> based on registered services.
+        /// </summary>
+        /// <param name="services">Collection of registered services.</param>
+        /// <param name="options">Application options.</param>
+        /// <param name="containerModules">Registered IoC-conteiner modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, AppOptions options, IEnumerable<IContainerModule> containerModules = null)
         {
             services.AddSingleton(provider => new CoreContainerModule(options ?? AppOptions.Default));
@@ -74,6 +91,97 @@ namespace InfinniPlatform.AspNetCore
             return new AutofacServiceProvider(autofacRootContainer);
         }
 
+
+        /// <summary>
+        /// Register application layers defined by user in IoC.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        /// <param name="resolver">IoC container resolver.</param>
+        public static void UseAppLayers(this IApplicationBuilder app, IContainerResolver resolver)
+        {
+            app.RegisterAppLayers<IGlobalHandlingAppLayer>(resolver);
+            app.RegisterAppLayers<IErrorHandlingAppLayer>(resolver);
+            app.RegisterAppLayers<IBeforeAuthenticationAppLayer>(resolver);
+            app.RegisterAppLayers<IAuthenticationBarrierAppLayer>(resolver);
+            app.RegisterAppLayers<IExternalAuthenticationAppLayer>(resolver);
+            app.RegisterAppLayers<IInternalAuthenticationAppLayer>(resolver);
+            app.RegisterAppLayers<IAfterAuthenticationAppLayer>(resolver);
+            app.RegisterAppLayers<IBusinessAppLayer>(resolver);
+        }
+
+        /// <summary>
+        /// Register default application layers.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        /// <param name="resolver">IoC container resolver.</param>
+        public static void UseDefaultAppLayers(this IApplicationBuilder app, IContainerResolver resolver)
+        {
+            var layers = resolver.Resolve<IDefaultAppLayer[]>();
+
+            foreach (var layer in layers.OfType<IGlobalHandlingAppLayer>())
+            {
+                layer.Configure(app);
+            }
+
+            foreach (var layer in layers.OfType<IErrorHandlingAppLayer>())
+            {
+                layer.Configure(app);
+            }
+
+            foreach (var layer in layers.OfType<IBeforeAuthenticationAppLayer>())
+            {
+                layer.Configure(app);
+            }
+
+            foreach (var layer in layers.OfType<IAuthenticationBarrierAppLayer>())
+            {
+                layer.Configure(app);
+            }
+
+            foreach (var layer in layers.OfType<IExternalAuthenticationAppLayer>())
+            {
+                layer.Configure(app);
+            }
+
+            foreach (var layer in layers.OfType<IInternalAuthenticationAppLayer>())
+            {
+                layer.Configure(app);
+            }
+
+            foreach (var layer in layers.OfType<IAfterAuthenticationAppLayer>())
+            {
+                layer.Configure(app);
+            }
+
+            foreach (var layer in layers.OfType<IBusinessAppLayer>())
+            {
+                layer.Configure(app);
+            }
+        }
+
+        /// <summary>
+        /// Register application lifetime handlers.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        /// <param name="resolver">IoC container resolver.</param>
+        public static void RegisterAppLifetimeHandlers(this IApplicationBuilder app, IContainerResolver resolver)
+        {
+            var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();
+            var appStoppedHandlers = resolver.Resolve<IAppStoppedHandler[]>();
+            var lifetime = resolver.Resolve<IApplicationLifetime>();
+
+            foreach (var handler in appStartedHandlers)
+            {
+                lifetime.ApplicationStarted.Register(handler.Handle);
+            }
+
+            foreach (var handler in appStoppedHandlers)
+            {
+                lifetime.ApplicationStopped.Register(handler.Handle);
+            }
+        }
+
+
         private static void RegisterDefinedModules(ContainerBuilder containerBuilder, IServiceCollection services)
         {
             var modules = services.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
@@ -100,76 +208,13 @@ namespace InfinniPlatform.AspNetCore
             }
         }
 
-        /// <summary>
-        /// Регистрирует middlewares обработки запросов к приложению.
-        /// </summary>
-        /// <param name="app">Конфигуратор обработки запросов.</param>
-        /// <param name="resolver">Провайдер разрешения зависимостей.</param>
-        public static void UseInfinniMiddlewares(this IApplicationBuilder app, IContainerResolver resolver)
+        private static void RegisterAppLayers<T>(this IApplicationBuilder app, IContainerResolver resolver) where T : IAppLayer
         {
-            RegisterAppLifetimeHandlers(resolver);
-            RegisterMiddlewares(app, resolver);
-        }
+            var appLayers = resolver.Resolve<T[]>();
 
-        private static void RegisterAppLifetimeHandlers(IContainerResolver resolver)
-        {
-            var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();
-            var appStoppedHandlers = resolver.Resolve<IAppStoppedHandler[]>();
-            var lifetime = resolver.Resolve<IApplicationLifetime>();
-
-            foreach (var handler in appStartedHandlers)
+            foreach (var layer in appLayers)
             {
-                lifetime.ApplicationStarted.Register(handler.Handle);
-            }
-
-            foreach (var handler in appStoppedHandlers)
-            {
-                lifetime.ApplicationStopped.Register(handler.Handle);
-            }
-        }
-
-        private static void RegisterMiddlewares(IApplicationBuilder app, IContainerResolver resolver)
-        {
-            var middlewares = resolver.Resolve<IMiddleware[]>();
-
-            foreach (var middleware in middlewares.OfType<IGlobalHandlingMiddleware>())
-            {
-                middleware.Configure(app);
-            }
-
-            foreach (var middleware in middlewares.OfType<IErrorHandlingMiddleware>())
-            {
-                middleware.Configure(app);
-            }
-
-            foreach (var middleware in middlewares.OfType<IBeforeAuthenticationMiddleware>())
-            {
-                middleware.Configure(app);
-            }
-
-            foreach (var middleware in middlewares.OfType<IAuthenticationBarrierMiddleware>())
-            {
-                middleware.Configure(app);
-            }
-
-            foreach (var middleware in middlewares.OfType<IExternalAuthenticationMiddleware>())
-            {
-                middleware.Configure(app);
-            }
-
-            foreach (var middleware in middlewares.OfType<IInternalAuthenticationMiddleware>())
-            {
-                middleware.Configure(app);
-            }
-
-            foreach (var middleware in middlewares.OfType<IAfterAuthenticationMiddleware>())
-            {
-                middleware.Configure(app);
-            }
-
-            foreach (var middleware in middlewares.OfType<IApplicationMiddleware>())
-            {
-                middleware.Configure(app);
+                layer.Configure(app);
             }
         }
     }

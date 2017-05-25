@@ -6,7 +6,7 @@
     /// <remarks>
     /// Позволяет осуществлять обработку ошибок выполнения запросов. Например, вести журнал со статистикой обработки запросов.
     /// </remarks>
-    public interface IErrorHandlingMiddleware : IMiddleware
+    public interface IErrorHandlingAppLayer : IAppLayer
     {
     }
 }

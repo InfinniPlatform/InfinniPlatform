@@ -76,12 +76,12 @@ namespace InfinniPlatform.Auth.IoC
 
             // Middlewares
 
-            builder.RegisterType<AuthInternalMiddleware>()
-                   .As<IMiddleware>()
+            builder.RegisterType<AuthInternalAppLayer>()
+                   .As<IDefaultAppLayer>()
                    .SingleInstance();
 
-            builder.RegisterType<AuthCookieMiddleware>()
-                   .As<IMiddleware>()
+            builder.RegisterType<AuthCookieAppLayer>()
+                   .As<IDefaultAppLayer>()
                    .SingleInstance();
 
             // UserStorage

@@ -40,12 +40,12 @@ namespace InfinniPlatform.Session
             else if (identity != null && identity.IsAuthenticated)
             {
                 // Идентификатор текущей организации
-                tenantId = identity.FindFirstClaim(ApplicationClaimTypes.TenantId);
+                tenantId = identity.FindFirstClaim(AppClaimTypes.TenantId);
 
                 if (string.IsNullOrEmpty(tenantId))
                 {
                     // Идентификатор организации по умолчанию
-                    tenantId = identity.FindFirstClaim(ApplicationClaimTypes.DefaultTenantId);
+                    tenantId = identity.FindFirstClaim(AppClaimTypes.DefaultTenantId);
 
                     if (string.IsNullOrEmpty(tenantId))
                     {

@@ -6,7 +6,7 @@
     /// <remarks>
     /// Позволяет осуществлять любую логику после прохождения всех остальных уровней обработки запросов.
     /// </remarks>
-    public interface IApplicationMiddleware : IMiddleware
+    public interface IBusinessAppLayer : IAppLayer
     {
     }
 }

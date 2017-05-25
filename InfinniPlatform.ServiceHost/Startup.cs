@@ -51,7 +51,8 @@ namespace InfinniPlatform.ServiceHost
         {
             app.UseStaticFilesMapping(_configuration);
 
-            app.UseInfinniMiddlewares(resolver);
+            app.RegisterAppLifetimeHandlers(resolver);
+            app.UseDefaultAppLayers(resolver);
         }
     }
 }

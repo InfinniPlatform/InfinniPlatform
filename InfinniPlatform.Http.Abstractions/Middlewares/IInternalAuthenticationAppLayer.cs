@@ -7,7 +7,7 @@
     /// Позволяет осщуествлять аутентификацию пользователя на основе логики приложения. Например, на основе базы данных
     /// пользователей.
     /// </remarks>
-    public interface IInternalAuthenticationMiddleware : IMiddleware
+    public interface IInternalAuthenticationAppLayer : IAppLayer
     {
     }
 }

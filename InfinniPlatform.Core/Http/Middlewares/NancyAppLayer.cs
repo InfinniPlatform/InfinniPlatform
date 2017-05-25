@@ -6,11 +6,11 @@ using Nancy.Owin;
 namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
-    /// Модуль хостинга для обработки прикладных запросов на базе Nancy.
+    /// Hosting layer for request processing based on NancyFx framework.
     /// </summary>
-    internal class NancyMiddleware : IApplicationMiddleware
+    internal class NancyAppLayer : IBusinessAppLayer, IDefaultAppLayer
     {
-        public NancyMiddleware(INancyBootstrapper nancyBootstrapper)
+        public NancyAppLayer(INancyBootstrapper nancyBootstrapper)
         {
             _nancyBootstrapper = nancyBootstrapper;
         }
