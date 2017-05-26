@@ -11,6 +11,14 @@ namespace InfinniPlatform.Auth.HttpService.IoC
                    .As<IHttpService>()
                    .SingleInstance();
 
+            builder.RegisterType(typeof(AuthExternalHttpService<>).MakeGenericType(typeof(TUser)))
+                .As<IHttpService>()
+                .SingleInstance();
+
+            builder.RegisterType(typeof(AuthManagementHttpService<>).MakeGenericType(typeof(TUser)))
+                .As<IHttpService>()
+                .SingleInstance();
+
             builder.RegisterType<UserEventHandlerInvoker>()
                    .AsSelf()
                    .SingleInstance();
