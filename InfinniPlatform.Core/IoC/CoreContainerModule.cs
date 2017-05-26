@@ -83,10 +83,12 @@ namespace InfinniPlatform.IoC
             // Middlewares
 
             builder.RegisterType<ErrorHandlingAppLayer>()
+                   .AsSelf()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 
             builder.RegisterType<NancyAppLayer>()
+                   .AsSelf()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 

@@ -2,10 +2,13 @@
 
 namespace InfinniPlatform.Http.Middlewares
 {
+    /// <summary>
+    /// Represents application request processing layer.
+    /// </summary>
     public interface IAppLayer
     {
         /// <summary>
-        /// Configure application layer.
+        /// Configures middlewares of  specific application request processing layer.
         /// </summary>
         /// <param name="app">Application builder.</param>
         void Configure(IApplicationBuilder app);

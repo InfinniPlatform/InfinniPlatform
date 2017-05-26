@@ -13,7 +13,7 @@ namespace InfinniPlatform.Http.Middlewares
     /// Hosting layer for processing request errors.
     /// </summary>
     [LoggerName("OWIN")]
-    internal class ErrorHandlingAppLayer : IErrorHandlingAppLayer, IDefaultAppLayer
+    public class ErrorHandlingAppLayer : IErrorHandlingAppLayer, IDefaultAppLayer
     {
         private readonly ILog _log;
         private readonly IPerformanceLog _perfLog;
@@ -30,6 +30,7 @@ namespace InfinniPlatform.Http.Middlewares
         }
 
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class ErrorHandlingMiddleware
         {
             public ErrorHandlingMiddleware(RequestDelegate next, ILog log, IPerformanceLog perfLog)
