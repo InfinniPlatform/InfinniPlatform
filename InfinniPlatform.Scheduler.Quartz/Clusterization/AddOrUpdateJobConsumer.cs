@@ -5,6 +5,8 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Scheduler.Properties;
 
+using Microsoft.Extensions.Logging;
+
 namespace InfinniPlatform.Scheduler.Clusterization
 {
     /// <summary>
@@ -14,20 +16,20 @@ namespace InfinniPlatform.Scheduler.Clusterization
     {
         public AddOrUpdateJobConsumer(IJobSchedulerDispatcher jobSchedulerDispatcher,
                                       AppOptions appOptions,
-                                      IPerformanceLog performanceLog,
-                                      ILog log)
+                                      IPerformanceLogger<AddOrUpdateJobConsumer> perfLogger,
+                                      ILogger<AddOrUpdateJobConsumer> logger)
         {
             _jobSchedulerDispatcher = jobSchedulerDispatcher;
             _appOptions = appOptions;
-            _performanceLog = performanceLog;
-            _log = log;
+            _perfLogger = perfLogger;
+            _logger = logger;
         }
 
 
         private readonly IJobSchedulerDispatcher _jobSchedulerDispatcher;
         private readonly AppOptions _appOptions;
-        private readonly IPerformanceLog _performanceLog;
-        private readonly ILog _log;
+        private readonly IPerformanceLogger _perfLogger;
+        private readonly ILogger _logger;
 
 
         protected override async Task Consume(Message<AddOrUpdateJobEvent> message)
@@ -55,11 +57,11 @@ namespace InfinniPlatform.Scheduler.Clusterization
             {
                 error = exception;
 
-                _log.Error(Resources.AddOrUpdateJobsCompletedWithException, exception);
+                _logger.LogError(Resources.AddOrUpdateJobsCompletedWithException, exception);
             }
             finally
             {
-                _performanceLog.Log(nameof(AddOrUpdateJobConsumer), startTime, error);
+                _perfLogger.Log(nameof(AddOrUpdateJobConsumer), startTime, error);
             }
         }
     }

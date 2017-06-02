@@ -6,6 +6,8 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.Management;
 using InfinniPlatform.MessageQueue.Properties;
 
+using Microsoft.Extensions.Logging;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -14,27 +16,26 @@ namespace InfinniPlatform.MessageQueue.Hosting
     /// <summary>
     /// Предоставляет метод регистрации получателей сообщений из очереди.
     /// </summary>
-    [LoggerName("RabbitMqMessageQueue")]
     internal class RabbitMqMessageQueueConsumersManager : IMessageQueueConsumersManager
     {
         public RabbitMqMessageQueueConsumersManager(MessageQueueThreadPool messageQueueThreadPool,
                                                     IRabbitMqMessageSerializer messageSerializer,
                                                     RabbitMqManager manager,
-                                                    ILog log,
-                                                    IPerformanceLog performanceLog)
+                                                    ILogger<RabbitMqMessageQueueConsumersManager> logger,
+                                                    IPerformanceLogger<RabbitMqMessageQueueConsumersManager> perfLogger)
         {
             _messageQueueThreadPool = messageQueueThreadPool;
             _messageSerializer = messageSerializer;
             _manager = manager;
-            _log = log;
-            _performanceLog = performanceLog;
+            _logger = logger;
+            _perfLogger = perfLogger;
         }
 
         private readonly MessageQueueThreadPool _messageQueueThreadPool;
         private readonly IRabbitMqMessageSerializer _messageSerializer;
         private readonly RabbitMqManager _manager;
-        private readonly ILog _log;
-        private readonly IPerformanceLog _performanceLog;
+        private readonly ILogger _logger;
+        private readonly IPerformanceLogger _perfLogger;
 
         /// <summary>
         /// Регистрирует обработчик.
@@ -53,7 +54,7 @@ namespace InfinniPlatform.MessageQueue.Hosting
             var eventingConsumer = new EventingBasicConsumer(channel);
 
             eventingConsumer.Received += async (o, args) => await OnRecieved(consumer, args, channel);
-            eventingConsumer.Shutdown += (sender, args) => { _log.Error("Consumer shutdown.", () => CreateLogContext(consumer)); };
+            eventingConsumer.Shutdown += (sender, args) => { _logger.LogError("Consumer shutdown.", () => CreateLogContext(consumer)); };
 
             channel?.BasicConsume(queueName, false, eventingConsumer);
         }
@@ -79,11 +80,11 @@ namespace InfinniPlatform.MessageQueue.Hosting
                                                       {
                                                           var message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
 
-                                                          _log.Debug(Resources.ConsumeStart, logContext);
+                                                          _logger.LogDebug(Resources.ConsumeStart, logContext);
 
                                                           await consumer.Consume(message);
 
-                                                          _log.Debug(Resources.ConsumeSuccess, logContext);
+                                                          _logger.LogDebug(Resources.ConsumeSuccess, logContext);
 
                                                           BasicAck(channel, args, logContext);
                                                       }
@@ -96,11 +97,11 @@ namespace InfinniPlatform.MessageQueue.Hosting
                                                               BasicAck(channel, args, logContext);
                                                           }
 
-                                                          _log.Error(error, logContext);
+                                                          _logger.LogError(error, logContext);
                                                       }
                                                       finally
                                                       {
-                                                          _performanceLog.Log($"Consume::{consumerType}", startDate, error);
+                                                          _perfLogger.Log($"Consume::{consumerType}", startDate, error);
                                                       }
                                                   });
         }
@@ -115,14 +116,14 @@ namespace InfinniPlatform.MessageQueue.Hosting
         {
             try
             {
-                _log.Debug(Resources.AckStart, logContext);
+                _logger.LogDebug(Resources.AckStart, logContext);
                 //TODO: При передаче параметра multiple = true, BasicAck бросает исключение "unknown delivery tag". Вероятно путаница с каналами.
                 channel.BasicAck(args.DeliveryTag, false);
-                _log.Debug(Resources.AckSuccess, logContext);
+                _logger.LogDebug(Resources.AckSuccess, logContext);
             }
             catch (Exception e)
             {
-                _log.Error(e);
+                _logger.LogError(e);
             }
         }
 

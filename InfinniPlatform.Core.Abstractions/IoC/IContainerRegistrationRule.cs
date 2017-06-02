@@ -27,6 +27,7 @@ namespace InfinniPlatform.IoC
         /// </summary>
         IContainerRegistrationRule InstancePerLifetimeScope();
 
+
         /// <summary>
         /// Определяет сервис, который предоставляет компонент.
         /// </summary>

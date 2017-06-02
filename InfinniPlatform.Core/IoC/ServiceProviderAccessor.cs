@@ -1,18 +1,21 @@
 ﻿using System;
+
 using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.IoC
 {
     public class ServiceProviderAccessor : IServiceProviderAccessor
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IServiceProvider _rootServiceProvider;
-
         public ServiceProviderAccessor(IServiceProvider rootServiceProvider, IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             _rootServiceProvider = rootServiceProvider;
         }
+
+
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IServiceProvider _rootServiceProvider;
+
 
         public IServiceProvider GetProvider()
         {

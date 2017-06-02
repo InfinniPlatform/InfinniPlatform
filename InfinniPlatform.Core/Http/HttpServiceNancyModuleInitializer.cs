@@ -24,7 +24,6 @@ namespace InfinniPlatform.Http
     /// конвертируя правила маршрутизации системы в правила маршрутизации Nancy таким образом, чтобы этап инициализации
     /// модулей Nancy был максимально простым и быстрым.
     /// </remarks>
-    [LoggerName("Nancy")]
     internal class HttpServiceNancyModuleInitializer
     {
         public HttpServiceNancyModuleInitializer(IMimeTypeResolver mimeTypeResolver,
@@ -34,7 +33,7 @@ namespace InfinniPlatform.Http
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
                                                  IEnumerable<IHttpServiceSource> httpServiceSources,
-                                                 IPerformanceLog performanceLog)
+                                                 IPerformanceLogger<IHttpService> perfLogger)
         {
             _mimeTypeResolver = mimeTypeResolver;
             _userIdentityProvider = userIdentityProvider;
@@ -43,7 +42,7 @@ namespace InfinniPlatform.Http
             _httpRequestExcutorFactory = httpRequestExcutorFactory;
             _httpGlobalHandlers = httpGlobalHandlers;
             _httpServices = new Lazy<IEnumerable<IHttpService>>(() => httpServiceSources.SelectMany(i => i.GetServices()).ToArray());
-            _performanceLog = performanceLog;
+            _perfLogger = perfLogger;
 
             _nancyHttpServices = new Lazy<Dictionary<Type, NancyHttpService>>(CreateNancyHttpServices);
         }
@@ -56,7 +55,7 @@ namespace InfinniPlatform.Http
         private readonly HttpRequestExcutorFactory _httpRequestExcutorFactory;
         private readonly IEnumerable<IHttpGlobalHandler> _httpGlobalHandlers;
         private readonly Lazy<IEnumerable<IHttpService>> _httpServices;
-        private readonly IPerformanceLog _performanceLog;
+        private readonly IPerformanceLogger _perfLogger;
 
         private readonly Lazy<Dictionary<Type, NancyHttpService>> _nancyHttpServices;
 
@@ -245,7 +244,7 @@ namespace InfinniPlatform.Http
                                                                   }
                                                                   finally
                                                                   {
-                                                                      _performanceLog.Log(method, start, error);
+                                                                      _perfLogger.Log(method, start, error);
                                                                   }
                                                               };
 

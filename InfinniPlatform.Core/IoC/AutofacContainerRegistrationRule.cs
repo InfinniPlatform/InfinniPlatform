@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 
-using Autofac;
 using Autofac.Builder;
 
 namespace InfinniPlatform.IoC
@@ -45,6 +44,7 @@ namespace InfinniPlatform.IoC
 
             return this;
         }
+
 
         public IContainerRegistrationRule As<TService>()
         {

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InfinniPlatform.IoC
 {
     public sealed class ContainerResolver : IContainerResolver
     {
-        private readonly IContainerServiceRegistry _containerRegistry;
-        private readonly IServiceProviderAccessor _providerAccessor;
-
         public ContainerResolver(IContainerServiceRegistry containerRegistry, IServiceProviderAccessor providerAccessor)
         {
             _containerRegistry = containerRegistry;
@@ -16,7 +14,11 @@ namespace InfinniPlatform.IoC
         }
 
 
+        private readonly IContainerServiceRegistry _containerRegistry;
+        private readonly IServiceProviderAccessor _providerAccessor;
+
         private IServiceProvider ServiceProvider => _providerAccessor.GetProvider();
+
 
         public IEnumerable<Type> Services => _containerRegistry.Services;
 
@@ -30,6 +32,7 @@ namespace InfinniPlatform.IoC
         {
             return _containerRegistry.IsRegistered(serviceType);
         }
+
 
         public bool TryResolve<TService>(out TService serviceInstance) where TService : class
         {
@@ -45,6 +48,7 @@ namespace InfinniPlatform.IoC
             return serviceInstance != null;
         }
 
+
         public TService Resolve<TService>() where TService : class
         {
             return ServiceProvider.GetRequiredService<TService>();
@@ -54,6 +58,7 @@ namespace InfinniPlatform.IoC
         {
             return ServiceProvider.GetRequiredService(serviceType);
         }
+
 
         public TService ResolveOptional<TService>() where TService : class
         {

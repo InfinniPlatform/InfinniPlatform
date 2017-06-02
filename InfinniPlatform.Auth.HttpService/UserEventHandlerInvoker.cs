@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+
 using InfinniPlatform.Auth.HttpService.Properties;
-using InfinniPlatform.Logging;
 using InfinniPlatform.Session;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Auth.HttpService
 {
@@ -12,15 +14,15 @@ namespace InfinniPlatform.Auth.HttpService
     /// </summary>
     internal class UserEventHandlerInvoker
     {
-        public UserEventHandlerInvoker(IEnumerable<IUserEventHandler> userEventHandlers, ILog log)
+        public UserEventHandlerInvoker(IEnumerable<IUserEventHandler> userEventHandlers, ILogger<UserEventHandlerInvoker> logger)
         {
             _userEventHandlers = userEventHandlers;
-            _log = log;
+            _logger = logger;
         }
 
 
         private readonly IEnumerable<IUserEventHandler> _userEventHandlers;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace InfinniPlatform.Auth.HttpService
                     {
                         // Исключения игнорируются, так как они не должны нарушить работоспособность основного механизма
 
-                        _log.Error(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnAfterSignIn)), exception);
+                        _logger.LogError(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnAfterSignIn)), exception);
                     }
                 }
             }
@@ -66,7 +68,7 @@ namespace InfinniPlatform.Auth.HttpService
                     {
                         // Исключения игнорируются, так как они не должны нарушить работоспособность основного механизма
 
-                        _log.Error(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnBeforeSignOut)), exception);
+                        _logger.LogError(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnBeforeSignOut)), exception);
                     }
                 }
             }

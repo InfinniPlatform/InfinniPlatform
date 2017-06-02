@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.Hosting;
-using InfinniPlatform.Logging;
 using InfinniPlatform.Threading;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.DocumentStorage.Hosting
 {
@@ -15,22 +16,22 @@ namespace InfinniPlatform.DocumentStorage.Hosting
     {
         public MongoDocumentStorageInitializer(IDocumentStorageManager documentStorageManager,
                                                IEnumerable<IDocumentMetadataSource> documentMetadataSources,
-                                               ILog log)
+                                               ILogger<MongoDocumentStorageInitializer> logger)
         {
             _documentStorageManager = documentStorageManager;
             _documentMetadataSources = documentMetadataSources;
-            _log = log;
+            _logger = logger;
         }
 
 
         private readonly IEnumerable<IDocumentMetadataSource> _documentMetadataSources;
         private readonly IDocumentStorageManager _documentStorageManager;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         public void Handle()
         {
-            _log.Info(Resources.CreatingDocumentStorageStarted);
+            _logger.LogInformation(Resources.CreatingDocumentStorageStarted);
 
             var documentMetadataSources = _documentMetadataSources.SelectMany(documentMetadataSource => documentMetadataSource.GetDocumentsMetadata()).ToList();
 
@@ -40,24 +41,24 @@ namespace InfinniPlatform.DocumentStorage.Hosting
                 AsyncHelper.RunSync(() => CreateStorageAsync(metadata));
             }
 
-            _log.Info(Resources.CreatingDocumentStorageSuccessfullyCompleted, () => new Dictionary<string, object> { { "documentTypeCount", documentMetadataSources.Count } });
+            _logger.LogInformation(Resources.CreatingDocumentStorageSuccessfullyCompleted, () => new Dictionary<string, object> { { "documentTypeCount", documentMetadataSources.Count } });
         }
 
         private async Task CreateStorageAsync(DocumentMetadata documentMetadata)
         {
             Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object> { { "documentType", documentMetadata.Type } };
 
-            _log.Debug(Resources.CreatingDocumentStorageForTypeStarted, logContext);
+            _logger.LogDebug(Resources.CreatingDocumentStorageForTypeStarted, logContext);
 
             try
             {
                 await _documentStorageManager.CreateStorageAsync(documentMetadata);
 
-                _log.Debug(Resources.CreatingDocumentStorageForTypeSuccessfullyCompleted, logContext);
+                _logger.LogDebug(Resources.CreatingDocumentStorageForTypeSuccessfullyCompleted, logContext);
             }
             catch (Exception exception)
             {
-                _log.Error(Resources.CreatingDocumentStorageForTypeCompletedWithException, exception, logContext);
+                _logger.LogError(Resources.CreatingDocumentStorageForTypeCompletedWithException, exception, logContext);
             }
         }
     }

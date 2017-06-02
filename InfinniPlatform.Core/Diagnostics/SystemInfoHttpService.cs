@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Http;
-using InfinniPlatform.Logging;
 using InfinniPlatform.Properties;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Diagnostics
 {
@@ -19,17 +20,17 @@ namespace InfinniPlatform.Diagnostics
         private const int SubsystemTimeout = 1000;
 
 
-        public SystemInfoHttpService(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders, IHostAddressParser hostAddressParser, ILog log)
+        public SystemInfoHttpService(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders, IHostAddressParser hostAddressParser, ILogger<SystemInfoHttpService> logger)
         {
             _subsystemStatusProviders = subsystemStatusProviders;
             _hostAddressParser = hostAddressParser;
-            _log = log;
+            _logger = logger;
         }
 
 
         private readonly IEnumerable<ISubsystemStatusProvider> _subsystemStatusProviders;
         private readonly IHostAddressParser _hostAddressParser;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         public void Load(IHttpServiceBuilder builder)
@@ -67,7 +68,7 @@ namespace InfinniPlatform.Diagnostics
                     }
                     catch (Exception exception)
                     {
-                        _log.Warn(exception);
+                        _logger.LogWarning(exception);
                     }
                 }
             }
@@ -114,7 +115,7 @@ namespace InfinniPlatform.Diagnostics
                     }
                     catch (Exception exception)
                     {
-                        _log.Warn(exception);
+                        _logger.LogWarning(exception);
 
                         ok = false;
                     }
@@ -155,7 +156,7 @@ namespace InfinniPlatform.Diagnostics
             }
             catch (Exception exception)
             {
-                _log.Warn(exception);
+                _logger.LogWarning(exception);
 
                 // При определении статуса произошло исключение
                 status = new DynamicDocument { { "error", exception.GetFullMessage() } };

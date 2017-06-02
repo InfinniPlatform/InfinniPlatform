@@ -6,12 +6,13 @@ using InfinniPlatform.Dynamic;
 using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
 
+using Microsoft.Extensions.Logging;
+
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
     /// Сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}"/>.
     /// </summary>
-    [LoggerName("DocumentHttpService")]
     public class DocumentHttpService<TDocument> : DocumentHttpServiceBase where TDocument : Document
     {
         public DocumentHttpService(IDocumentHttpServiceHandlerBase serviceHandler,
@@ -19,9 +20,9 @@ namespace InfinniPlatform.DocumentStorage
                                    IDocumentStorageFactory storageFactory,
                                    ISystemDocumentStorageFactory systemStorageFactory,
                                    IBlobStorage blobStorage,
-                                   IPerformanceLog performanceLog,
-                                   ILog log)
-            : base(performanceLog, log)
+                                   IPerformanceLogger<DocumentHttpService<TDocument>> perfLogger,
+                                   ILogger<DocumentHttpService<TDocument>> logger)
+            : base(perfLogger, logger)
         {
             var storage = serviceHandler.AsSystem
                 ? systemStorageFactory.GetStorage<TDocument>(serviceHandler.DocumentType)

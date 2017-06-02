@@ -51,18 +51,8 @@ namespace InfinniPlatform.IoC
             return CreateRegistrationRule(registrationBuilder);
         }
 
-        public void OnCreateInstance(IContainerParameterResolver parameterResolver)
-        {
-            _builder.RegisterModule(new AutofacCreateInstanceModule(parameterResolver));
-        }
 
-        public void OnActivateInstance(IContainerInstanceActivator instanceActivator)
-        {
-            _builder.RegisterModule(new AutofacActivateInstanceModule(instanceActivator));
-        }
-
-
-        private static IContainerRegistrationRule CreateRegistrationRule<TComponent, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TComponent, TActivatorData, TRegistrationStyle> registrationBuilder) where TComponent : class
+        private static IContainerRegistrationRule CreateRegistrationRule<TComponent, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TComponent, TActivatorData, TRegistrationStyle> registrationBuilder)
         {
             return new AutofacContainerRegistrationRule<TComponent, TActivatorData, TRegistrationStyle>(registrationBuilder);
         }

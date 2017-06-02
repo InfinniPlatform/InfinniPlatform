@@ -1,12 +1,13 @@
 ﻿using System;
 
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -27,8 +28,7 @@ namespace InfinniPlatform.ServiceHost
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var configureServices = services.AddLog4NetLogging()
-                                            .AddAuthInternal(_configuration)
+            var configureServices = services.AddAuthInternal(_configuration)
                                             .AddAuthHttpService()
                                             .AddInMemoryCache()
                                             .AddRedisSharedCache(_configuration)
@@ -47,11 +47,12 @@ namespace InfinniPlatform.ServiceHost
             return configureServices;
         }
 
-        public void Configure(IApplicationBuilder app, IContainerResolver resolver)
+        public void Configure(IApplicationBuilder app, IContainerResolver resolver, ILoggerFactory loggerFactory)
         {
-            app.UseStaticFilesMapping(_configuration);
+            loggerFactory.AddConsole();
 
-            app.RegisterAppLifetimeHandlers(resolver);
+            //app.UseStaticFilesMapping(_configuration);
+            //app.RegisterAppLifetimeHandlers(resolver);
             app.UseDefaultAppLayers(resolver);
         }
     }

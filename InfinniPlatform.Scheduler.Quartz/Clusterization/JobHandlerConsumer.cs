@@ -6,6 +6,8 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue;
 using InfinniPlatform.Scheduler.Properties;
 
+using Microsoft.Extensions.Logging;
+
 namespace InfinniPlatform.Scheduler.Clusterization
 {
     /// <summary>
@@ -14,18 +16,18 @@ namespace InfinniPlatform.Scheduler.Clusterization
     internal class JobHandlerConsumer : TaskConsumerBase<JobHandlerEvent>
     {
         public JobHandlerConsumer(IJobHandlerTypeSerializer jobHandlerTypeSerializer,
-                                  IPerformanceLog performanceLog,
-                                  ILog log)
+                                  IPerformanceLogger<JobHandlerConsumer> perfLogger,
+                                  ILogger<JobHandlerConsumer> logger)
         {
             _jobHandlerTypeSerializer = jobHandlerTypeSerializer;
-            _performanceLog = performanceLog;
-            _log = log;
+            _perfLogger = perfLogger;
+            _logger = logger;
         }
 
 
         private readonly IJobHandlerTypeSerializer _jobHandlerTypeSerializer;
-        private readonly IPerformanceLog _performanceLog;
-        private readonly ILog _log;
+        private readonly IPerformanceLogger _perfLogger;
+        private readonly ILogger _logger;
 
 
         protected override async Task Consume(Message<JobHandlerEvent> message)
@@ -66,11 +68,11 @@ namespace InfinniPlatform.Scheduler.Clusterization
                                                                         { "jobHandlerType", jobInfo?.HandlerType }
                                                                     };
 
-                _log.Error(Resources.HandlingOfJobCompletedWithException, exception, logContext);
+                _logger.LogError(Resources.HandlingOfJobCompletedWithException, exception, logContext);
             }
             finally
             {
-                _performanceLog.Log(nameof(JobHandlerConsumer), startTime, error);
+                _perfLogger.Log(nameof(JobHandlerConsumer), startTime, error);
             }
         }
     }

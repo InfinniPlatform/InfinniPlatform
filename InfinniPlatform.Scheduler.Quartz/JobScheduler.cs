@@ -6,30 +6,31 @@ using InfinniPlatform.Dynamic;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Scheduler.Properties;
 
+using Microsoft.Extensions.Logging;
+
 namespace InfinniPlatform.Scheduler
 {
-    [LoggerName(SchedulerExtensions.ComponentName)]
     internal class JobScheduler : IJobScheduler
     {
         public JobScheduler(IJobSchedulerDispatcher jobSchedulerDispatcher,
                             IJobSchedulerStateObserver jobSchedulerStateObserver,
                             IJobSchedulerRepository jobSchedulerRepository,
-                            IPerformanceLog performanceLog,
-                            ILog log)
+                            IPerformanceLogger<JobScheduler> perfLogger,
+                            ILogger<JobScheduler> logger)
         {
             _jobSchedulerDispatcher = jobSchedulerDispatcher;
             _jobSchedulerRepository = jobSchedulerRepository;
             _jobSchedulerStateObserver = jobSchedulerStateObserver;
-            _performanceLog = performanceLog;
-            _log = log;
+            _perfLogger = perfLogger;
+            _logger = logger;
         }
 
 
         private readonly IJobSchedulerDispatcher _jobSchedulerDispatcher;
         private readonly IJobSchedulerRepository _jobSchedulerRepository;
         private readonly IJobSchedulerStateObserver _jobSchedulerStateObserver;
-        private readonly IPerformanceLog _performanceLog;
-        private readonly ILog _log;
+        private readonly IPerformanceLogger _perfLogger;
+        private readonly ILogger _logger;
 
 
         public Task<bool> IsStarted()
@@ -260,13 +261,13 @@ namespace InfinniPlatform.Scheduler
             {
                 error = exception;
 
-                _log.Error(string.Format(Resources.JobSchedulerMethodCompletedWithException, logMethod), error);
+                _logger.LogError(string.Format(Resources.JobSchedulerMethodCompletedWithException, logMethod), error);
 
                 throw;
             }
             finally
             {
-                _performanceLog.Log(logMethod, startTime, error);
+                _perfLogger.Log(logMethod, startTime, error);
             }
         }
     }

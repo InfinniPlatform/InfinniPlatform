@@ -6,6 +6,8 @@ using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
 
+using Microsoft.Extensions.Logging;
+
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
@@ -13,15 +15,15 @@ namespace InfinniPlatform.DocumentStorage
     /// </summary>
     public abstract class DocumentHttpServiceBase : IHttpService
     {
-        protected DocumentHttpServiceBase(IPerformanceLog performanceLog, ILog log)
+        protected DocumentHttpServiceBase(IPerformanceLogger perfLogger, ILogger logger)
         {
-            _performanceLog = performanceLog;
-            _log = log;
+            _perfLogger = perfLogger;
+            _logger = logger;
         }
 
 
-        private readonly IPerformanceLog _performanceLog;
-        private readonly ILog _log;
+        private readonly IPerformanceLogger _perfLogger;
+        private readonly ILogger _logger;
 
 
         void IHttpService.Load(IHttpServiceBuilder builder)
@@ -191,10 +193,10 @@ namespace InfinniPlatform.DocumentStorage
 
             if (error != null)
             {
-                _log.Error(Resources.RequestProcessedWithException, error, () => new Dictionary<string, object> { { "method", method } });
+                _logger.LogError(Resources.RequestProcessedWithException, error, () => new Dictionary<string, object> { { "method", method } });
             }
 
-            _performanceLog.Log(method, startTime, error);
+            _perfLogger.Log(method, startTime, error);
 
             return response;
         }

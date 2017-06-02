@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Autofac;
 using Autofac.Core;
 
@@ -8,8 +9,6 @@ namespace InfinniPlatform.IoC
 {
     public class ContainerServiceRegistry : IContainerServiceRegistry
     {
-        private readonly IContainer _rootContainer;
-
         public ContainerServiceRegistry(IContainer rootContainer)
         {
             _rootContainer = rootContainer;
@@ -21,16 +20,21 @@ namespace InfinniPlatform.IoC
                                     .Distinct();
         }
 
+
+        private readonly IContainer _rootContainer;
+
+
         public IEnumerable<Type> Services { get; }
+
 
         public bool IsRegistered(Type serviceType)
         {
-            return ResolutionExtensions.IsRegistered(_rootContainer, serviceType);
+            return _rootContainer.IsRegistered(serviceType);
         }
 
         public bool IsRegistered<TService>() where TService : class
         {
-            return ResolutionExtensions.IsRegistered<TService>(_rootContainer);
+            return _rootContainer.IsRegistered<TService>();
         }
     }
 }

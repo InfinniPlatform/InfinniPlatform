@@ -6,10 +6,12 @@ using InfinniPlatform.BlobStorage.Properties;
 using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
 
+using Microsoft.Extensions.Logging;
+
 namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
-    /// Provides HTTP serivce to get data from <see cref="IBlobStorage"/>.
+    /// Provides HTTP service to get data from <see cref="IBlobStorage"/>.
     /// </summary>
     /// <example>
     /// <code>
@@ -21,17 +23,17 @@ namespace InfinniPlatform.BlobStorage
         public const string DefaultServicePath = "/blob";
 
 
-        public BlobStorageHttpService(IBlobStorage blobStorage, IPerformanceLog performanceLog, ILog log)
+        public BlobStorageHttpService(IBlobStorage blobStorage, IPerformanceLogger<BlobStorageHttpService> perfLogger, ILogger<BlobStorageHttpService> logger)
         {
             _blobStorage = blobStorage;
-            _performanceLog = performanceLog;
-            _log = log;
+            _perfLogger = perfLogger;
+            _logger = logger;
         }
 
 
         private readonly IBlobStorage _blobStorage;
-        private readonly IPerformanceLog _performanceLog;
-        private readonly ILog _log;
+        private readonly IPerformanceLogger _perfLogger;
+        private readonly ILogger _logger;
 
 
         public virtual void Load(IHttpServiceBuilder builder)
@@ -78,13 +80,13 @@ namespace InfinniPlatform.BlobStorage
             {
                 exception = e;
 
-                _log.Error(Resources.RequestProcessedWithException, e, () => new Dictionary<string, object> { { "method", method } });
+                _logger.LogError(Resources.RequestProcessedWithException, e, () => new Dictionary<string, object> { { "method", method } });
 
                 throw;
             }
             finally
             {
-                _performanceLog.Log(method, startTime, exception);
+                _perfLogger.Log(method, startTime, exception);
             }
         }
     }

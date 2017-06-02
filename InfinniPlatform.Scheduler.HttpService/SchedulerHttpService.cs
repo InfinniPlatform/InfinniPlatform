@@ -5,32 +5,33 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Http;
-using InfinniPlatform.Logging;
 using InfinniPlatform.Serialization;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Scheduler
 {
     /// <summary>
-    /// Provides HTTP API to the shceduler.
+    /// Provides HTTP API to the scheduler.
     /// </summary>
     public class SchedulerHttpService : IHttpService
     {
         public SchedulerHttpService(IJobScheduler jobScheduler,
                                     IHostAddressParser hostAddressParser,
                                     IJsonObjectSerializer jsonObjectSerializer,
-                                    ILog log)
+                                    ILogger<SchedulerHttpService> logger)
         {
             _jobScheduler = jobScheduler;
             _hostAddressParser = hostAddressParser;
             _jsonObjectSerializer = jsonObjectSerializer;
-            _log = log;
+            _logger = logger;
         }
 
 
         private readonly IJobScheduler _jobScheduler;
         private readonly IHostAddressParser _hostAddressParser;
         private readonly IJsonObjectSerializer _jsonObjectSerializer;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         public string Name => "scheduler";
@@ -314,7 +315,7 @@ namespace InfinniPlatform.Scheduler
             }
             catch (Exception exception)
             {
-                _log.Error(exception);
+                _logger.LogError(exception);
 
                 return new ServiceResult<object>
                        {

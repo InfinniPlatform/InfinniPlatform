@@ -1,5 +1,7 @@
 ﻿using System.IO;
+
 using InfinniPlatform.Extensions;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
@@ -20,6 +22,7 @@ namespace InfinniPlatform.Http.StaticFiles
             foreach (var mapping in appOptions.StaticFilesMapping)
             {
                 var requestedPath = mapping.Key;
+
                 if (requestedPath.Equals("/"))
                 {
                     requestedPath = string.Empty;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
 EndProject
@@ -48,8 +48,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{
 		Files\Packaging\SetPackageInfo.ps1 = Files\Packaging\SetPackageInfo.ps1
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Logging.Log4Net", "InfinniPlatform.Logging.Log4Net\InfinniPlatform.Logging.Log4Net.csproj", "{27EC3648-A4AD-4648-B601-9AF815A740E3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{296EF39D-F3DC-4AAF-946A-FC704D5BAF93}"
 	ProjectSection(SolutionItems) = preProject
 		Files\Monitoring\Inf.logstash.rb = Files\Monitoring\Inf.logstash.rb
@@ -59,15 +57,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{BFF8197C-B04D-4E0F-9FCA-172A144E6592}"
 	ProjectSection(SolutionItems) = preProject
-		Files\Config\Schema\app.json = Files\Config\Schema\app.json
-		Files\Config\Schema\appConfig.json = Files\Config\Schema\appConfig.json
-		Files\Config\Schema\auth.json = Files\Config\Schema\auth.json
-		Files\Config\Schema\fileSystemBlobStorage.json = Files\Config\Schema\fileSystemBlobStorage.json
-		Files\Config\Schema\mongodbDocumentStorage.json = Files\Config\Schema\mongodbDocumentStorage.json
-		Files\Config\Schema\printView.json = Files\Config\Schema\printView.json
-		Files\Config\Schema\quartzScheduler.json = Files\Config\Schema\quartzScheduler.json
-		Files\Config\Schema\rabbitmqMessageQueue.json = Files\Config\Schema\rabbitmqMessageQueue.json
-		Files\Config\Schema\redisSharedCache.json = Files\Config\Schema\redisSharedCache.json
+		Files\Schema\app.json = Files\Schema\app.json
+		Files\Schema\appConfig.json = Files\Schema\appConfig.json
+		Files\Schema\auth.json = Files\Schema\auth.json
+		Files\Schema\fileSystemBlobStorage.json = Files\Schema\fileSystemBlobStorage.json
+		Files\Schema\mongodbDocumentStorage.json = Files\Schema\mongodbDocumentStorage.json
+		Files\Schema\printView.json = Files\Schema\printView.json
+		Files\Schema\quartzScheduler.json = Files\Schema\quartzScheduler.json
+		Files\Schema\rabbitmqMessageQueue.json = Files\Schema\rabbitmqMessageQueue.json
+		Files\Schema\redisSharedCache.json = Files\Schema\redisSharedCache.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.BlobStorage.Abstractions", "InfinniPlatform.BlobStorage.Abstractions\InfinniPlatform.BlobStorage.Abstractions.csproj", "{FEED9241-B996-4942-ABCC-5813C440C8BB}"
@@ -439,24 +437,6 @@ Global
 		{5BDEC31D-BA0E-497C-BE11-C88E52B2991F}.Release|x64.Build.0 = Release|Any CPU
 		{5BDEC31D-BA0E-497C-BE11-C88E52B2991F}.Release|x86.ActiveCfg = Release|Any CPU
 		{5BDEC31D-BA0E-497C-BE11-C88E52B2991F}.Release|x86.Build.0 = Release|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Debug|x64.Build.0 = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Debug|x86.Build.0 = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.DebugTools|Any CPU.ActiveCfg = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.DebugTools|Any CPU.Build.0 = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.DebugTools|x64.ActiveCfg = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.DebugTools|x64.Build.0 = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.DebugTools|x86.ActiveCfg = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.DebugTools|x86.Build.0 = Debug|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Release|x64.ActiveCfg = Release|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Release|x64.Build.0 = Release|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Release|x86.ActiveCfg = Release|Any CPU
-		{27EC3648-A4AD-4648-B601-9AF815A740E3}.Release|x86.Build.0 = Release|Any CPU
 		{FEED9241-B996-4942-ABCC-5813C440C8BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FEED9241-B996-4942-ABCC-5813C440C8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEED9241-B996-4942-ABCC-5813C440C8BB}.Debug|x64.ActiveCfg = Debug|Any CPU

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Cache.Clusterization
 {
@@ -12,17 +13,17 @@ namespace InfinniPlatform.Cache.Clusterization
     [QueueName(nameof(TwoLayerCache))]
     internal class TwoLayerCacheResetKeyConsumer : BroadcastConsumerBase<TwoLayerCacheResetKeyEvent>
     {
-        public TwoLayerCacheResetKeyConsumer(AppOptions appOptions, IInMemoryCache inMemoryCache, ILog log)
+        public TwoLayerCacheResetKeyConsumer(AppOptions appOptions, IInMemoryCache inMemoryCache, ILogger<TwoLayerCacheResetKeyConsumer> logger)
         {
             _appOptions = appOptions;
             _inMemoryCache = inMemoryCache;
-            _log = log;
+            _logger = logger;
         }
 
 
         private readonly AppOptions _appOptions;
         private readonly IInMemoryCache _inMemoryCache;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         protected override Task Consume(Message<TwoLayerCacheResetKeyEvent> message)
@@ -44,7 +45,7 @@ namespace InfinniPlatform.Cache.Clusterization
             }
             catch (Exception exception)
             {
-                _log.Error(exception);
+                _logger.LogError(exception);
             }
 
             return Task.CompletedTask;

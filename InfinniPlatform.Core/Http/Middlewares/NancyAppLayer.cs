@@ -8,7 +8,7 @@ namespace InfinniPlatform.Http.Middlewares
     /// <summary>
     /// Hosting layer for request processing based on NancyFx framework.
     /// </summary>
-    internal class NancyAppLayer : IBusinessAppLayer, IDefaultAppLayer
+    public class NancyAppLayer : IBusinessAppLayer, IDefaultAppLayer
     {
         public NancyAppLayer(INancyBootstrapper nancyBootstrapper)
         {

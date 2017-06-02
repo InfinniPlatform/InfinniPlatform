@@ -2,39 +2,25 @@
   "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/app.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "app",
-  "description": "Настройки приложения.",
+  "description": "The general application settings.",
   "type": "object",
   "properties": {
     "AppName": {
-      "description": "Имя приложения. Используется для изоляции данных между приложениями.",
+      "description": "The application name.",
       "type": "string",
       "default": "InfinniPlatform"
     },
     "AppInstance": {
-      "description": "Имя текущего экземпляра приложения. Используется для идентификации экземпляра приложения в кластере.",
+      "description": "The application instance identifier.",
       "type": "string"
     },
-    "ServerName": {
-      "description": "Адрес или имя сервера.",
+    "PerformanceLoggerNamePrefix": {
+      "description": "The prefix of the IPerformanceLogger.",
       "type": "string",
-      "default": "localhost"
-    },
-    "ServerPort": {
-      "description": "Номер порта сервера.",
-      "type": "integer",
-      "default": 9900
+      "default": "IPerformanceLogger."
     },
     "StaticFilesMapping": {
-      "description": "Соответствие виртуальных и физических путей до статических файлов.",
-      "type": "object",
-      "properties": {},
-      "default": {
-        "/metadata": "content/metadata",
-        "/": "content/www"
-      }
-    },
-    "EmbeddedResourceMapping": {
-      "description": "Соответствие виртуальных путей и сборок с файлами ресурсов.",
+      "description": "The relative request paths that map to static resources.",
       "type": "object",
       "properties": {}
     }

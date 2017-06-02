@@ -20,7 +20,7 @@ namespace InfinniPlatform.BlobStorage.FileSystem
         public void Setup()
         {
             var mimeTypeResolverMock = new Mock<IMimeTypeResolver>();
-            var performanceLogMock = new Mock<IPerformanceLog>();
+            var performanceLogMock = new Mock<IPerformanceLogger<FileSystemBlobStorage>>();
 
             _blobStorage = new FileSystemBlobStorage(
                 new FileSystemBlobStorageOptions(),

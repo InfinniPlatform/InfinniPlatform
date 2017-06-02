@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Http.Middlewares;
-using InfinniPlatform.Logging;
 using InfinniPlatform.Security;
 
 using Microsoft.AspNetCore.Builder;
@@ -14,41 +13,39 @@ namespace InfinniPlatform.Auth.Middlewares
     /// </summary>
     public class AuthInternalAppLayer : IInternalAuthenticationAppLayer, IDefaultAppLayer
     {
-        public AuthInternalAppLayer(IUserIdentityProvider identityProvider, ILog log)
+        public AuthInternalAppLayer(IUserIdentityProvider identityProvider)
         {
             _identityProvider = identityProvider;
-            _log = log;
         }
 
+
         private readonly IUserIdentityProvider _identityProvider;
-        private readonly ILog _log;
+
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMiddleware<AuthInternalMiddleware>(_identityProvider, _log);
+            app.UseMiddleware<AuthInternalMiddleware>(this);
         }
 
 
         private class AuthInternalMiddleware
         {
-            public AuthInternalMiddleware(RequestDelegate next, IUserIdentityProvider identityProvider, ILog log)
+            public AuthInternalMiddleware(RequestDelegate next, AuthInternalAppLayer parentLayer)
             {
                 _next = next;
-                _identityProvider = identityProvider;
-                _log = log;
+                _parentLayer = parentLayer;
             }
 
+
             private readonly RequestDelegate _next;
-            private readonly IUserIdentityProvider _identityProvider;
-            private readonly ILog _log;
+            private readonly AuthInternalAppLayer _parentLayer;
+
 
             public async Task Invoke(HttpContext httpContext)
             {
                 var requestUser = httpContext.User;
 
-                _identityProvider.SetUserIdentity(requestUser);
-
-                _log.SetUserId(requestUser?.Identity);
+                _parentLayer._identityProvider.SetUserIdentity(requestUser);
 
                 await _next.Invoke(httpContext);
             }

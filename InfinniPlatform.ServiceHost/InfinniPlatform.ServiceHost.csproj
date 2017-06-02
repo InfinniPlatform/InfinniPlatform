@@ -28,7 +28,6 @@
     <ProjectReference Include="..\InfinniPlatform.DocumentStorage.HttpService\InfinniPlatform.DocumentStorage.HttpService.csproj" />
     <ProjectReference Include="..\InfinniPlatform.DocumentStorage.MongoDB\InfinniPlatform.DocumentStorage.MongoDB.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Heartbeat.HttpService\InfinniPlatform.Heartbeat.HttpService.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Logging.Log4Net\InfinniPlatform.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\InfinniPlatform.MessageQueue.RabbitMQ\InfinniPlatform.MessageQueue.RabbitMQ.csproj" />
     <ProjectReference Include="..\InfinniPlatform.PrintView\InfinniPlatform.PrintView.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Scheduler.HttpService\InfinniPlatform.Scheduler.HttpService.csproj" />

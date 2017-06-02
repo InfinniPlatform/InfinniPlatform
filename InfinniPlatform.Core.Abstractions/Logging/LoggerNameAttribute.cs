@@ -1,24 +1,26 @@
 ﻿using System;
 
+using Microsoft.Extensions.Logging;
+
 namespace InfinniPlatform.Logging
 {
     /// <summary>
-    /// Атрибут для определения имени источника событий.
+    /// The attribute defines the category name for the <see cref="ILogger{TCategoryName}" />.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class LoggerNameAttribute : Attribute
+    public class LoggerNameAttribute : Attribute
     {
         /// <summary>
-        /// Конструктор.
+        /// Creates a new <see cref="LoggerNameAttribute" />.
         /// </summary>
-        /// <param name="name">Имя источника событий.</param>
+        /// <param name="name">The logger category name.</param>
         public LoggerNameAttribute(string name)
         {
             Name = name;
         }
 
         /// <summary>
-        /// Имя источника событий.
+        /// The logger category name.
         /// </summary>
         public string Name { get; }
     }

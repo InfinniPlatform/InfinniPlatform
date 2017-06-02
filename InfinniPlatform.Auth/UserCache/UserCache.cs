@@ -3,9 +3,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using InfinniPlatform.Logging;
+
 using InfinniPlatform.MessageQueue;
+
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Auth.UserCache
 {
@@ -16,7 +18,7 @@ namespace InfinniPlatform.Auth.UserCache
 
         private readonly ReaderWriterLockSlim _cacheLockSlim;
         private readonly TimeSpan _cacheTimeout;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
         private readonly ConcurrentDictionary<string, TUser> _usersByEmail;
 
         private readonly MemoryCache _usersById;
@@ -25,7 +27,7 @@ namespace InfinniPlatform.Auth.UserCache
         private readonly ConcurrentDictionary<string, TUser> _usersByPhone;
 
         public UserCache(AuthOptions options,
-                         ILog log,
+                         ILogger<UserCache<TUser>> logger,
                          IBroadcastProducer broadcastProducer,
                          AppOptions appOptions)
         {
@@ -34,7 +36,7 @@ namespace InfinniPlatform.Auth.UserCache
                                    : options.UserCacheTimeout;
 
             _cacheTimeout = TimeSpan.FromMinutes(cacheTimeout);
-            _log = log;
+            _logger = logger;
             _broadcastProducer = broadcastProducer;
             _appOptions = appOptions;
 
@@ -73,7 +75,7 @@ namespace InfinniPlatform.Auth.UserCache
                                 }
                                 catch (Exception exception)
                                 {
-                                    _log.Error(exception);
+                                    _logger.LogError(exception);
                                 }
                             });
         }

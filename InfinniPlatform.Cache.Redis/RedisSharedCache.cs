@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using InfinniPlatform.Cache.Properties;
 using InfinniPlatform.Logging;
 
+using Microsoft.Extensions.Logging;
+
 using StackExchange.Redis;
 
 namespace InfinniPlatform.Cache
@@ -11,7 +13,6 @@ namespace InfinniPlatform.Cache
     /// <summary>
     /// Реализует интерфейс для управления распределенным кэшем на базе Redis.
     /// </summary>
-    [LoggerName("Redis")]
     public class RedisSharedCache : ISharedCache
     {
         /// <summary>
@@ -19,23 +20,23 @@ namespace InfinniPlatform.Cache
         /// </summary>
         /// <param name="appOptions">Пространство имен для ключей.</param>
         /// <param name="connectionFactory">Фабрика подключений к Redis.</param>
-        /// <param name="log">Сервис регистрации событий.</param>
-        /// <param name="performanceLog">Сервис регистрации длительности выполнения методов.</param>
-        public RedisSharedCache(AppOptions appOptions, RedisConnectionFactory connectionFactory, ILog log, IPerformanceLog performanceLog)
+        /// <param name="logger">Сервис регистрации событий.</param>
+        /// <param name="perfLogger">Сервис регистрации длительности выполнения методов.</param>
+        public RedisSharedCache(AppOptions appOptions, RedisConnectionFactory connectionFactory, ILogger<RedisSharedCache> logger, IPerformanceLogger<RedisSharedCache> perfLogger)
         {
             _keyspace = appOptions.AppName;
             _connectionFactory = connectionFactory;
 
-            _log = log;
-            _performanceLog = performanceLog;
+            _logger = logger;
+            _perfLogger = perfLogger;
         }
 
 
         private readonly string _keyspace;
         private readonly RedisConnectionFactory _connectionFactory;
 
-        private readonly ILog _log;
-        private readonly IPerformanceLog _performanceLog;
+        private readonly ILogger _logger;
+        private readonly IPerformanceLogger _perfLogger;
 
 
         public bool Contains(string key)
@@ -45,7 +46,7 @@ namespace InfinniPlatform.Cache
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return TryExecute((c, wk) => c.KeyExists(wk), key, CachingHelpers.PerformanceLogRedisContainsMethod);
+            return TryExecute((c, wk) => c.KeyExists(wk), key, CachingHelpers.PerfLogRedisContainsMethod);
         }
 
         public string Get(string key)
@@ -64,7 +65,7 @@ namespace InfinniPlatform.Cache
                 throw new ArgumentNullException(nameof(key));
             }
 
-            var cacheValue = TryExecute((c, wk) => c.StringGet(wk), key, CachingHelpers.PerformanceLogRedisGetMethod);
+            var cacheValue = TryExecute((c, wk) => c.StringGet(wk), key, CachingHelpers.PerfLogRedisGetMethod);
 
             value = cacheValue;
 
@@ -83,7 +84,7 @@ namespace InfinniPlatform.Cache
                 throw new ArgumentNullException(nameof(value));
             }
 
-            TryExecute((c, wk) => c.StringSet(wk, value), key, CachingHelpers.PerformanceLogRedisSetMethod);
+            TryExecute((c, wk) => c.StringSet(wk, value), key, CachingHelpers.PerfLogRedisSetMethod);
         }
 
         public bool Remove(string key)
@@ -93,7 +94,7 @@ namespace InfinniPlatform.Cache
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return TryExecute((c, wk) => c.KeyDelete(wk), key, CachingHelpers.PerformanceLogRedisRemoveMethod);
+            return TryExecute((c, wk) => c.KeyDelete(wk), key, CachingHelpers.PerfLogRedisRemoveMethod);
         }
 
         public void Clear()
@@ -104,7 +105,7 @@ namespace InfinniPlatform.Cache
                            return true;
                        },
                 CachingHelpers.RedisStarWildcards,
-                CachingHelpers.PerformanceLogRedisClearMethod);
+                CachingHelpers.PerfLogRedisClearMethod);
         }
 
 
@@ -126,13 +127,13 @@ namespace InfinniPlatform.Cache
             {
                 error = exception;
 
-                _log.Error(Resources.RedisCommandCompletedWithError, error, () => new Dictionary<string, object> { { "method", method }, { "key", key } });
+                _logger.LogError(Resources.RedisCommandCompletedWithError, error, () => new Dictionary<string, object> { { "method", method }, { "key", key } });
 
                 throw;
             }
             finally
             {
-                _performanceLog.Log(method, startTime, error);
+                _perfLogger.Log(method, startTime, error);
             }
         }
     }

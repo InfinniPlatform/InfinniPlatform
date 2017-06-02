@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using InfinniPlatform.Hosting;
-using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.Management;
 using InfinniPlatform.MessageQueue.Properties;
+
+using Microsoft.Extensions.Logging;
 
 using RabbitMQ.Client;
 
@@ -19,11 +20,11 @@ namespace InfinniPlatform.MessageQueue.Hosting
         /// <param name="consumersManager">Предоставляет метод регистрации получателей сообщений из очереди.</param>
         /// <param name="consumerSource">Источники потребителей сообщений.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
-        /// <param name="log">Лог.</param>
+        /// <param name="logger">Лог.</param>
         public RabbitMqMessageQueueInitializer(IMessageQueueConsumersManager consumersManager,
                                                IEnumerable<IConsumerSource> consumerSource,
                                                RabbitMqManager manager,
-                                               ILog log)
+                                               ILogger<RabbitMqMessageQueueInitializer> logger)
         {
             var consumers = consumerSource.SelectMany(source => source.GetConsumers()).ToList();
             _taskConsumers = consumers.OfType<ITaskConsumer>().ToList();
@@ -33,13 +34,13 @@ namespace InfinniPlatform.MessageQueue.Hosting
 
             _consumersManager = consumersManager;
             _manager = manager;
-            _log = log;
+            _logger = logger;
         }
 
         private readonly List<IBroadcastConsumer> _broadcastConsumers;
         private readonly IMessageQueueConsumersManager _consumersManager;
 
-        private readonly ILog _log;
+        private readonly ILogger _logger;
         private readonly RabbitMqManager _manager;
         private readonly List<ITaskConsumer> _taskConsumers;
 
@@ -52,14 +53,14 @@ namespace InfinniPlatform.MessageQueue.Hosting
         {
             try
             {
-                _log.Info(Resources.InitializationOfConsumersStarted);
+                _logger.LogInformation(Resources.InitializationOfConsumersStarted);
 
                 InitializeTaskConsumers();
                 InitializeBroadcastConsumers();
             }
             catch (Exception e)
             {
-                _log.Error(Resources.UnableToInitializeConsumers, e);
+                _logger.LogError(Resources.UnableToInitializeConsumers, e);
             }
         }
 
@@ -86,17 +87,17 @@ namespace InfinniPlatform.MessageQueue.Hosting
             foreach (var consumer in _taskConsumers)
             {
                 var consumerType = consumer.GetType().Name;
-                _log.Debug(Resources.InitializationOfTaskConsumerStarted, () => CreateLogContext(consumerType));
+                _logger.LogDebug(Resources.InitializationOfTaskConsumerStarted, () => CreateLogContext(consumerType));
 
                 var key = RabbitMqHelper.GetConsumerQueueName(consumer);
                 var queueName = _manager.DeclareTaskQueue(key);
 
                 _consumersManager.RegisterConsumer(queueName, consumer);
 
-                _log.Debug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
+                _logger.LogDebug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
 
-            _log.Info(Resources.InitializationOfTaskConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "taskCounsumerCount", _taskConsumers.Count } });
+            _logger.LogInformation(Resources.InitializationOfTaskConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "taskCounsumerCount", _taskConsumers.Count } });
         }
 
         private void InitializeBroadcastConsumers()
@@ -104,17 +105,17 @@ namespace InfinniPlatform.MessageQueue.Hosting
             foreach (var consumer in _broadcastConsumers)
             {
                 var consumerType = consumer.GetType().Name;
-                _log.Debug(Resources.InitializationOfBroadcastConsumerStarted, () => CreateLogContext(consumerType));
+                _logger.LogDebug(Resources.InitializationOfBroadcastConsumerStarted, () => CreateLogContext(consumerType));
 
                 var routingKey = RabbitMqHelper.GetConsumerQueueName(consumer);
                 var queueName = _manager.DeclareBroadcastQueue(routingKey);
 
                 _consumersManager.RegisterConsumer(queueName, consumer);
 
-                _log.Debug(Resources.InitializationOfBroadcastConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
+                _logger.LogDebug(Resources.InitializationOfBroadcastConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
 
-            _log.Info(Resources.InitializationOfBroadcastConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "broadcastConsumerCount", _broadcastConsumers.Count } });
+            _logger.LogInformation(Resources.InitializationOfBroadcastConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "broadcastConsumerCount", _broadcastConsumers.Count } });
         }
 
         private static Dictionary<string, object> CreateLogContext(string consumerType)

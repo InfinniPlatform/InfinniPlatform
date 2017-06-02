@@ -4,15 +4,15 @@
     {
         public const string RedisStarWildcards = "*";
 
-        // IPerformanceLog
-        public const string PerformanceLogRedisContainsMethod = "Contains";
-        public const string PerformanceLogRedisGetMethod = "Get";
-        public const string PerformanceLogRedisSetMethod = "Set";
-        public const string PerformanceLogRedisRemoveMethod = "Remove";
-        public const string PerformanceLogRedisClearMethod = "Clear";
-        public const string PerformanceLogRedisSubscribeMethod = "Subscribe";
-        public const string PerformanceLogRedisPublishMethod = "Publish";
-        public const string PerformanceLogRedisHandleMethod = "Handle";
+        // IPerformanceLogger
+        public const string PerfLogRedisContainsMethod = "Contains";
+        public const string PerfLogRedisGetMethod = "Get";
+        public const string PerfLogRedisSetMethod = "Set";
+        public const string PerfLogRedisRemoveMethod = "Remove";
+        public const string PerfLogRedisClearMethod = "Clear";
+        public const string PerfLogRedisSubscribeMethod = "Subscribe";
+        public const string PerfLogRedisPublishMethod = "Publish";
+        public const string PerfLogRedisHandleMethod = "Handle";
 
 
         /// <summary>

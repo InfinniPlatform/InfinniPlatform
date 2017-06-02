@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.Properties;
+
+using Microsoft.Extensions.Logging;
+
 using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.Management
@@ -15,13 +17,13 @@ namespace InfinniPlatform.MessageQueue.Management
     {
         public RabbitMqManager(RabbitMqMessageQueueOptions options,
                                AppOptions appOptions,
-                               ILog log)
+                               ILogger<RabbitMqManager> logger)
         {
             BroadcastExchangeName = $"{appOptions.AppName}.{RabbitMqDefaults.Exchange.Type.Direct}";
 
             _appOptions = appOptions;
             _options = options;
-            _log = log;
+            _logger = logger;
 
             var connection = CreateConnection(options);
 
@@ -38,7 +40,7 @@ namespace InfinniPlatform.MessageQueue.Management
 
         private readonly RabbitMqMessageQueueOptions _options;
         private readonly AppOptions _appOptions;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         public string BroadcastExchangeName { get; }
@@ -51,7 +53,7 @@ namespace InfinniPlatform.MessageQueue.Management
         }
 
         /// <summary>
-        /// Событие, вызваемое при восстановлении соединения с сервером RabbitMq.
+        /// Событие, вызываемое при восстановлении соединения с сервером RabbitMq.
         /// </summary>
         public event ReconnectEventHandler OnReconnect;
 
@@ -75,7 +77,7 @@ namespace InfinniPlatform.MessageQueue.Management
 
                          if (connection == null)
                          {
-                             _log.Fatal(string.Format(Resources.ReconnectRetriesExceeded, settings.HostName, settings.Port));
+                             _logger.LogCritical(string.Format(Resources.ReconnectRetriesExceeded, settings.HostName, settings.Port));
                          }
                          else
                          {
@@ -103,7 +105,7 @@ namespace InfinniPlatform.MessageQueue.Management
             }
             catch (Exception exception)
             {
-                _log.Error(exception);
+                _logger.LogError(exception);
                 return null;
             }
         }
@@ -123,7 +125,7 @@ namespace InfinniPlatform.MessageQueue.Management
             }
             catch (Exception exception)
             {
-                _log.Error(exception);
+                _logger.LogError(exception);
                 return null;
             }
         }
@@ -204,14 +206,14 @@ namespace InfinniPlatform.MessageQueue.Management
             }
             catch (Exception e)
             {
-                _log.Error(e);
+                _logger.LogError(e);
                 return null;
             }
         }
 
         private void OnConnectionShutdown(object sender, ShutdownEventArgs args)
         {
-            _log.Error("RabbitMQ connection shutdown.", () => CreateLogContext(args));
+            _logger.LogError("RabbitMQ connection shutdown.", () => CreateLogContext(args));
         }
 
         private static Dictionary<string, object> CreateLogContext(ShutdownEventArgs args)

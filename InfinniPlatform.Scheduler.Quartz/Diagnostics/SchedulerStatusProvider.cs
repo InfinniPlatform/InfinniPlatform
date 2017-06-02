@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Http;
-using InfinniPlatform.Logging;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Scheduler.Diagnostics
 {
@@ -16,17 +17,17 @@ namespace InfinniPlatform.Scheduler.Diagnostics
     {
         public SchedulerStatusProvider(IJobScheduler jobScheduler,
                                        IHostAddressParser hostAddressParser,
-                                       ILog log)
+                                       ILogger<SchedulerStatusProvider> logger)
         {
             _jobScheduler = jobScheduler;
             _hostAddressParser = hostAddressParser;
-            _log = log;
+            _logger = logger;
         }
 
 
         private readonly IJobScheduler _jobScheduler;
         private readonly IHostAddressParser _hostAddressParser;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         public string Name => "scheduler";
@@ -103,7 +104,7 @@ namespace InfinniPlatform.Scheduler.Diagnostics
             }
             catch (Exception exception)
             {
-                _log.Error(exception);
+                _logger.LogError(exception);
 
                 return new ServiceResult<object>
                 {

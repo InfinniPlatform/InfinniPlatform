@@ -1,8 +1,10 @@
 ﻿using System;
 
+using Microsoft.Extensions.Logging;
+
 using Quartz.Logging;
 
-using ILog = InfinniPlatform.Logging.ILog;
+using LogLevel = Quartz.Logging.LogLevel;
 
 namespace InfinniPlatform.Scheduler.Dispatcher
 {
@@ -11,13 +13,13 @@ namespace InfinniPlatform.Scheduler.Dispatcher
     /// </summary>
     internal class QuartzJobLogProvider : ILogProvider
     {
-        public QuartzJobLogProvider(ILog log)
+        public QuartzJobLogProvider(ILogger<QuartzJobLogProvider> logger)
         {
-            _log = log;
+            _logger = logger;
         }
 
 
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         public Logger GetLogger(string name)
@@ -32,19 +34,19 @@ namespace InfinniPlatform.Scheduler.Dispatcher
                            {
                                case LogLevel.Trace:
                                case LogLevel.Debug:
-                                   _log.Debug(message, exception);
+                                   _logger.LogDebug(message, exception);
                                    break;
                                case LogLevel.Info:
-                                   _log.Info(message, exception);
+                                   _logger.LogInformation(message, exception);
                                    break;
                                case LogLevel.Warn:
-                                   _log.Warn(message, exception);
+                                   _logger.LogWarning(message, exception);
                                    break;
                                case LogLevel.Error:
-                                   _log.Error(message, exception);
+                                   _logger.LogError(message, exception);
                                    break;
                                case LogLevel.Fatal:
-                                   _log.Fatal(message, exception);
+                                   _logger.LogCritical(message, exception);
                                    break;
                            }
                        }

@@ -3,13 +3,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Http;
-using InfinniPlatform.Logging;
 using InfinniPlatform.Security;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+
 using HttpResponse = InfinniPlatform.Http.HttpResponse;
 
 namespace InfinniPlatform.Auth.HttpService

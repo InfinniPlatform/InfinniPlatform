@@ -13,6 +13,7 @@ namespace InfinniPlatform.IoC
         /// </summary>
         IEnumerable<Type> Services { get; }
 
+
         /// <summary>
         /// Определяет, зарегистрирован ли сервис указанного типа.
         /// </summary>
@@ -32,6 +33,7 @@ namespace InfinniPlatform.IoC
         /// IsRegistered(typeof(IMyService))
         /// </example>
         bool IsRegistered(Type serviceType);
+
 
         /// <summary>
         /// Осуществляет попытку получения экземпляра сервиса.
@@ -54,6 +56,7 @@ namespace InfinniPlatform.IoC
         /// </example>
         bool TryResolve(Type serviceType, out object serviceInstance);
 
+
         /// <summary>
         /// Возвращает экземпляр сервиса.
         /// </summary>
@@ -75,6 +78,7 @@ namespace InfinniPlatform.IoC
         /// Resolve(typeof(IMyService))
         /// </example>
         object Resolve(Type serviceType);
+
 
         /// <summary>
         /// Возвращает экземпляр сервиса, если он был зарегистрирован.

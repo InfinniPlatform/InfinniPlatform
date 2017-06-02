@@ -3,6 +3,7 @@
 using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
 using InfinniPlatform.Session;
@@ -28,6 +29,7 @@ namespace InfinniPlatform.IoC
             builder.RegisterInstance(_options).AsSelf();
 
             RegisterDiagnosticsComponents(builder);
+            RegisterLoggingComponents(builder);
             RegisterSerializationComponents(builder);
             RegisterSecurityComponents(builder);
             RegisterSessionComponents(builder);
@@ -39,6 +41,17 @@ namespace InfinniPlatform.IoC
         {
             builder.RegisterType<SystemInfoHttpService>()
                    .As<IHttpService>()
+                   .SingleInstance();
+        }
+
+        private static void RegisterLoggingComponents(IContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(PerformanceLogger<>))
+                   .As(typeof(IPerformanceLogger<>))
+                   .SingleInstance();
+
+            builder.RegisterType<PerformanceLogger<object>>()
+                   .As<IPerformanceLogger>()
                    .SingleInstance();
         }
 

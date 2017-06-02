@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Hosting;
-using InfinniPlatform.Logging;
 using InfinniPlatform.Scheduler.Properties;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Scheduler.Hosting
 {
@@ -23,19 +24,19 @@ namespace InfinniPlatform.Scheduler.Hosting
         public SchedulerInitializer(IJobSchedulerDispatcher jobSchedulerDispatcher,
                                     IEnumerable<IJobInfoSource> jobInfoSources,
                                     IJobInfoFactory jobInfoFactory,
-                                    ILog log)
+                                    ILogger<SchedulerInitializer> logger)
         {
             _jobSchedulerDispatcher = jobSchedulerDispatcher;
             _jobInfoSources = jobInfoSources;
             _jobInfoFactory = jobInfoFactory;
-            _log = log;
+            _logger = logger;
         }
 
 
         private readonly IJobSchedulerDispatcher _jobSchedulerDispatcher;
         private readonly IEnumerable<IJobInfoSource> _jobInfoSources;
         private readonly IJobInfoFactory _jobInfoFactory;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace InfinniPlatform.Scheduler.Hosting
         /// </summary>
         private async Task TryToStartJobScheduler()
         {
-            _log.Info(Resources.StartingJobScheduler);
+            _logger.LogInformation(Resources.StartingJobScheduler);
 
             try
             {
@@ -76,11 +77,11 @@ namespace InfinniPlatform.Scheduler.Hosting
                 // Запуск планирования заданий
                 await _jobSchedulerDispatcher.Start();
 
-                _log.Info(Resources.StartingJobSchedulerSuccessfullyCompleted);
+                _logger.LogInformation(Resources.StartingJobSchedulerSuccessfullyCompleted);
             }
             catch (Exception exception)
             {
-                _log.Error(Resources.StartingJobSchedulerCompletedWithException, exception);
+                _logger.LogError(Resources.StartingJobSchedulerCompletedWithException, exception);
             }
         }
 
@@ -91,7 +92,7 @@ namespace InfinniPlatform.Scheduler.Hosting
         {
             Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object> { { "jobInfoSource", jobInfoSource.GetType().AssemblyQualifiedName } };
 
-            _log.Debug(Resources.AddingJobSourceToSchedule, logContext);
+            _logger.LogDebug(Resources.AddingJobSourceToSchedule, logContext);
 
             try
             {
@@ -107,11 +108,11 @@ namespace InfinniPlatform.Scheduler.Hosting
                     }
                 }
 
-                _log.Debug(Resources.AddingJobSourceToScheduleSuccessfullyCompleted, logContext);
+                _logger.LogDebug(Resources.AddingJobSourceToScheduleSuccessfullyCompleted, logContext);
             }
             catch (Exception exception)
             {
-                _log.Error(Resources.AddingJobSourceToScheduleCompletedWithException, exception, logContext);
+                _logger.LogError(Resources.AddingJobSourceToScheduleCompletedWithException, exception, logContext);
             }
         }
 
@@ -122,18 +123,18 @@ namespace InfinniPlatform.Scheduler.Hosting
         {
             Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object> { { "jobId", jobInfo.Id } };
 
-            _log.Debug(Resources.AddingJobToSchedule, logContext);
+            _logger.LogDebug(Resources.AddingJobToSchedule, logContext);
 
             try
             {
                 // Добавление или обновление задания
                 await _jobSchedulerDispatcher.AddOrUpdateJob(jobInfo);
 
-                _log.Debug(Resources.AddingJobToScheduleSuccessfullyCompleted, logContext);
+                _logger.LogDebug(Resources.AddingJobToScheduleSuccessfullyCompleted, logContext);
             }
             catch (Exception exception)
             {
-                _log.Error(Resources.AddingJobToScheduleCompletedWithException, exception, logContext);
+                _logger.LogError(Resources.AddingJobToScheduleCompletedWithException, exception, logContext);
             }
         }
 
@@ -142,18 +143,18 @@ namespace InfinniPlatform.Scheduler.Hosting
         /// </summary>
         private async Task TryToStopJobScheduler()
         {
-            _log.Info(Resources.StoppingJobScheduler);
+            _logger.LogInformation(Resources.StoppingJobScheduler);
 
             try
             {
                 // Остановка планирования заданий
                 await _jobSchedulerDispatcher.Stop();
 
-                _log.Info(Resources.StoppingJobSchedulerSuccessfullyCompleted);
+                _logger.LogInformation(Resources.StoppingJobSchedulerSuccessfullyCompleted);
             }
             catch (Exception exception)
             {
-                _log.Error(Resources.StoppingJobSchedulerCompletedWithException, exception);
+                _logger.LogError(Resources.StoppingJobSchedulerCompletedWithException, exception);
             }
         }
     }

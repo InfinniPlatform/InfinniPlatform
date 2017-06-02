@@ -3,7 +3,7 @@
 namespace InfinniPlatform.IoC
 {
     /// <summary>
-    /// Accessor for getting <see cref="IServiceProvider" /> instances in current scope.
+    /// Accessors for getting <see cref="IServiceProvider" /> instances in current scope.
     /// </summary>
     public interface IServiceProviderAccessor
     {

@@ -2,7 +2,8 @@
 using System.IO;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.Logging;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Http
 {

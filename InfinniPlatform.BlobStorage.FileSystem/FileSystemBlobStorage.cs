@@ -40,13 +40,12 @@ namespace InfinniPlatform.BlobStorage
     /// ошибок, а доступ к каждому файлу контролировать механизмом, подобным
     /// <see cref="System.Threading.ReaderWriterLockSlim"/>, но более простым.
     /// </remarks>
-    [LoggerName("BlobStorage")]
     public class FileSystemBlobStorage : IBlobStorage
     {
         public FileSystemBlobStorage(FileSystemBlobStorageOptions options,
                                      IObjectSerializer objectSerializer,
                                      IMimeTypeResolver mimeTypeResolver,
-                                     IPerformanceLog performanceLog)
+                                     IPerformanceLogger<FileSystemBlobStorage> perfLogger)
         {
             var baseDirectory = Environment.ExpandEnvironmentVariables(options.BaseDirectory);
 
@@ -56,16 +55,16 @@ namespace InfinniPlatform.BlobStorage
             }
 
             _baseDirectory = baseDirectory;
-            _mimeTypeResolver = mimeTypeResolver;
             _objectSerializer = objectSerializer;
-            _performanceLog = performanceLog;
+            _mimeTypeResolver = mimeTypeResolver;
+            _perfLogger = perfLogger;
         }
 
 
         private readonly string _baseDirectory;
-        private readonly IPerformanceLog _performanceLog;
         private readonly IObjectSerializer _objectSerializer;
         private readonly IMimeTypeResolver _mimeTypeResolver;
+        private readonly IPerformanceLogger _perfLogger;
 
 
         public BlobInfo GetBlobInfo(string blobId)
@@ -81,13 +80,13 @@ namespace InfinniPlatform.BlobStorage
 
                 var result = ReadBlobInfo(blobId);
 
-                _performanceLog.Log("GetBlobInfo", start);
+                _perfLogger.Log("GetBlobInfo", start);
 
                 return result;
             }
             catch (Exception e)
             {
-                _performanceLog.Log("GetBlobInfo", start, e);
+                _perfLogger.Log("GetBlobInfo", start, e);
 
                 throw;
             }
@@ -115,13 +114,13 @@ namespace InfinniPlatform.BlobStorage
                     }
                     : null;
 
-                _performanceLog.Log("GetBlobData", start);
+                _perfLogger.Log("GetBlobData", start);
 
                 return result;
             }
             catch (Exception e)
             {
-                _performanceLog.Log("GetBlobData", start, e);
+                _perfLogger.Log("GetBlobData", start, e);
 
                 throw;
             }
@@ -174,13 +173,13 @@ namespace InfinniPlatform.BlobStorage
                 WriteBlobInfo(blobId, blobInfo);
                 WriteBlobData(blobId, blobData);
 
-                _performanceLog.Log("UpdateBlob", start);
+                _perfLogger.Log("UpdateBlob", start);
 
                 return blobInfo;
             }
             catch (Exception e)
             {
-                _performanceLog.Log("UpdateBlob", start, e);
+                _perfLogger.Log("UpdateBlob", start, e);
 
                 throw;
             }
@@ -219,13 +218,13 @@ namespace InfinniPlatform.BlobStorage
                 WriteBlobInfo(blobId, blobInfo);
                 await WriteBlobDataAsync(blobId, blobData);
 
-                _performanceLog.Log("UpdateBlob", start);
+                _perfLogger.Log("UpdateBlob", start);
 
                 return blobInfo;
             }
             catch (Exception e)
             {
-                _performanceLog.Log("UpdateBlob", start, e);
+                _perfLogger.Log("UpdateBlob", start, e);
 
                 throw;
             }
@@ -244,11 +243,11 @@ namespace InfinniPlatform.BlobStorage
 
                 TryDeleteDirectory(blobId);
 
-                _performanceLog.Log("DeleteBlob", start);
+                _perfLogger.Log("DeleteBlob", start);
             }
             catch (Exception e)
             {
-                _performanceLog.Log("DeleteBlob", start, e);
+                _perfLogger.Log("DeleteBlob", start, e);
 
                 throw;
             }

@@ -6,42 +6,43 @@ using InfinniPlatform.Properties;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Http.Middlewares
 {
     /// <summary>
     /// Hosting layer for processing request errors.
     /// </summary>
-    [LoggerName("OWIN")]
-    internal class ErrorHandlingAppLayer : IErrorHandlingAppLayer, IDefaultAppLayer
+    public class ErrorHandlingAppLayer : IErrorHandlingAppLayer, IDefaultAppLayer
     {
-        private readonly ILog _log;
-        private readonly IPerformanceLog _perfLog;
-
-        public ErrorHandlingAppLayer(ILog log, IPerformanceLog perfLog)
+        public ErrorHandlingAppLayer(ILogger<ErrorHandlingAppLayer> logger, IPerformanceLogger<ErrorHandlingAppLayer> perfLogger)
         {
-            _log = log;
-            _perfLog = perfLog;
+            _logger = logger;
+            _perfLogger = perfLogger;
         }
+
+
+        private readonly ILogger _logger;
+        private readonly IPerformanceLogger _perfLogger;
+
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMiddleware<ErrorHandlingMiddleware>(_log, _perfLog);
+            app.UseMiddleware<ErrorHandlingMiddleware>(this);
         }
 
 
         private class ErrorHandlingMiddleware
         {
-            public ErrorHandlingMiddleware(RequestDelegate next, ILog log, IPerformanceLog perfLog)
+            public ErrorHandlingMiddleware(RequestDelegate next, ErrorHandlingAppLayer parentLayer)
             {
                 _next = next;
-                _log = log;
-                _perfLog = perfLog;
+                _parentLayer = parentLayer;
             }
 
+
             private readonly RequestDelegate _next;
-            private readonly ILog _log;
-            private readonly IPerformanceLog _perfLog;
+            private readonly ErrorHandlingAppLayer _parentLayer;
 
 
             public async Task Invoke(HttpContext httpContext)
@@ -50,17 +51,9 @@ namespace InfinniPlatform.Http.Middlewares
 
                 try
                 {
-                    // Setting logging context for current thread.
-                    _log.SetRequestId(httpContext.TraceIdentifier);
-
                     await _next.Invoke(httpContext)
                                .ContinueWith(task =>
                                              {
-                                                 // ContinueWith does not work in same thread as request processing,
-                                                 // so setting logging context again.
-                                                 _log.SetRequestId(httpContext.TraceIdentifier);
-                                                 _log.SetUserId(httpContext.User?.Identity);
-
                                                  if (task.IsFaulted)
                                                  {
                                                      LogException(task.Exception);
@@ -74,18 +67,19 @@ namespace InfinniPlatform.Http.Middlewares
                 catch (Exception exception)
                 {
                     LogException(exception);
-                    LogPerformance("Invoke", start, exception);
+
+                    LogPerformance(nameof(Invoke), start, exception);
                 }
             }
 
             private void LogException(Exception exception)
             {
-                _log.Error(Resources.UnhandledExceptionOwinMiddleware, exception);
+                _parentLayer._logger.LogError(Resources.UnhandledExceptionOwinMiddleware, exception);
             }
 
             private void LogPerformance(string method, DateTime start, Exception exception)
             {
-                _perfLog.Log(method, start, exception);
+                _parentLayer._perfLogger.Log(method, start, exception);
             }
         }
     }

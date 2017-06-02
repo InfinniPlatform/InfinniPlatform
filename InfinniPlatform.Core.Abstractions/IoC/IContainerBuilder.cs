@@ -61,17 +61,5 @@ namespace InfinniPlatform.IoC
         /// RegisterFactory(r =&gt; new MyComponent())
         /// </example>
         IContainerRegistrationRule RegisterFactory<TComponent>(Func<IContainerResolver, TComponent> componentFactory) where TComponent : class;
-
-        /// <summary>
-        /// Определяет обработчик на событие создания зависимости.
-        /// </summary>
-        /// <param name="parameterResolver">Обработчик разрешения зависимостей, передаваемых через параметры конструкторов.</param>
-        void OnCreateInstance(IContainerParameterResolver parameterResolver);
-
-        /// <summary>
-        /// Определяет обработчик на событие инициализации зависимости.
-        /// </summary>
-        /// <param name="instanceActivator">Обработчик инициализации экземпляра зависимости.</param>
-        void OnActivateInstance(IContainerInstanceActivator instanceActivator);
     }
 }

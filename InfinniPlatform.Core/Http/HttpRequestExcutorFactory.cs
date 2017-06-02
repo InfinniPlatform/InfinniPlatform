@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using InfinniPlatform.Logging;
 using InfinniPlatform.Properties;
+
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Http
 {
@@ -11,13 +12,13 @@ namespace InfinniPlatform.Http
     /// </summary>
     internal class HttpRequestExcutorFactory
     {
-        public HttpRequestExcutorFactory(ILog log)
+        public HttpRequestExcutorFactory(ILogger<HttpRequestExcutorFactory> logger)
         {
-            _log = log;
+            _logger = logger;
         }
 
 
-        private readonly ILog _log;
+        private readonly ILogger _logger;
 
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace InfinniPlatform.Http
             var beforeExcutor = new BeforeHttpRequestExcutor(onBefore);
             var handlerExcutor = new HandlerHttpRequestExcutor(onHandle);
             var afterExcutor = new AfterHttpRequestExcutor(onAfter);
-            var errorExcutor = new ErrorHttpRequestExcutor(onError, _log);
+            var errorExcutor = new ErrorHttpRequestExcutor(onError, _logger);
 
             beforeExcutor.Handler = handlerExcutor;
             beforeExcutor.After = afterExcutor;
@@ -227,14 +228,14 @@ namespace InfinniPlatform.Http
 
         private sealed class ErrorHttpRequestExcutor : IHttpRequestExcutor
         {
-            public ErrorHttpRequestExcutor(Func<IHttpRequest, Exception, Task<object>> onError, ILog log)
+            public ErrorHttpRequestExcutor(Func<IHttpRequest, Exception, Task<object>> onError, ILogger logger)
             {
                 _onError = onError;
-                _log = log;
+                _logger = logger;
             }
 
             private readonly Func<IHttpRequest, Exception, Task<object>> _onError;
-            private readonly ILog _log;
+            private readonly ILogger _logger;
 
             public async Task Execute(HttpRequestExcutorContext context)
             {
@@ -249,7 +250,7 @@ namespace InfinniPlatform.Http
                     else
                     {
                         // Вне зависимости от наличия прикладных обработчиков, фиксируем событие ошибки
-                        _log.Error(Resources.RequestProcessingCompletedWithUnexpectedException, error);
+                        _logger.LogError(Resources.RequestProcessingCompletedWithUnexpectedException, error);
 
                         throw new InvalidOperationException(Resources.RequestProcessingCompletedWithUnexpectedException, error);
                     }

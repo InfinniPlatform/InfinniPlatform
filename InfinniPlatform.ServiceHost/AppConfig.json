@@ -3,8 +3,6 @@
   "app": {
     "AppName": "InfinniPlatform",
     "AppInstance": "",
-    "ServerName": "localhost",
-    "ServerPort": 9900,
     "StaticFilesMapping": {
       "/":"wwwroot"
     }

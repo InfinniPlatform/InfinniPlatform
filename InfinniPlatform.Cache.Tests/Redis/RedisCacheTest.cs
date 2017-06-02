@@ -3,6 +3,8 @@
 using InfinniPlatform.Logging;
 using InfinniPlatform.Tests;
 
+using Microsoft.Extensions.Logging;
+
 using Moq;
 
 using NUnit.Framework;
@@ -21,7 +23,7 @@ namespace InfinniPlatform.Cache.Redis
             var appOptions = new AppOptions { AppName = nameof(RedisCacheTest) };
             var redisOptions = new RedisSharedCacheOptions { Host = "localhost", Password = "TeamCity" };
 
-            _cache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions), new Mock<ILog>().Object, new Mock<IPerformanceLog>().Object);
+            _cache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions), new Mock<ILogger<RedisSharedCache>>().Object, new Mock<IPerformanceLogger<RedisSharedCache>>().Object);
         }
 
         [Test]

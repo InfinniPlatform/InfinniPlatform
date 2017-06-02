@@ -9,11 +9,15 @@ using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
+using InfinniPlatform.Logging;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable once CheckNamespace
 
@@ -25,7 +29,7 @@ namespace InfinniPlatform.AspNetCore
         /// Builds <see cref="IServiceProvider"/> based on registered services.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
-        /// <param name="containerModules">Registered IoC-conteiner modules.</param>
+        /// <param name="containerModules">Registered IoC-container modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, IEnumerable<IContainerModule> containerModules = null)
         {
             var options = AppOptions.Default;
@@ -38,11 +42,10 @@ namespace InfinniPlatform.AspNetCore
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="configuration">Application configuration.</param>
-        /// <param name="containerModules">Registered IoC-conteiner modules.</param>
+        /// <param name="containerModules">Registered IoC-container modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, IConfigurationRoot configuration, IEnumerable<IContainerModule> containerModules = null)
         {
-            var options = configuration.GetSection(AppOptions.SectionName)
-                                       .Get<AppOptions>();
+            var options = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();
 
             return BuildProvider(services, options);
         }
@@ -52,9 +55,15 @@ namespace InfinniPlatform.AspNetCore
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="options">Application options.</param>
-        /// <param name="containerModules">Registered IoC-conteiner modules.</param>
+        /// <param name="containerModules">Registered IoC-container modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, AppOptions options, IEnumerable<IContainerModule> containerModules = null)
         {
+            // Because IoC uses IHttpContextAccessor for InstancePerLifetimeScope strategy
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // For correct resolving a logger name via LoggerNameAttribute
+            services.AddSingleton(typeof(ILogger<>), typeof(TypedLogger<>));
+
             services.AddSingleton(provider => new CoreContainerModule(options ?? AppOptions.Default));
 
             if (containerModules != null)
@@ -118,6 +127,8 @@ namespace InfinniPlatform.AspNetCore
         {
             var layers = resolver.Resolve<IDefaultAppLayer[]>();
 
+            // ReSharper disable SuspiciousTypeConversion.Global
+
             foreach (var layer in layers.OfType<IGlobalHandlingAppLayer>())
             {
                 layer.Configure(app);
@@ -157,6 +168,8 @@ namespace InfinniPlatform.AspNetCore
             {
                 layer.Configure(app);
             }
+
+            // ReSharper restore SuspiciousTypeConversion.Global
         }
 
         /// <summary>
