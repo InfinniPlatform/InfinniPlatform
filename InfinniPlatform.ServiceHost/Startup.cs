@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Serilog;
+
 namespace InfinniPlatform.ServiceHost
 {
     public class Startup
@@ -17,6 +19,15 @@ namespace InfinniPlatform.ServiceHost
 
         public Startup(IHostingEnvironment env)
         {
+            const string outputTemplate = "{Timestamp:o}|{Level:u3}|{SourceContext}|{Message}{NewLine}{Exception}";
+
+            // Example of configure Serilog
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.LiterateConsole(outputTemplate: outputTemplate)
+                .CreateLogger();
+
+            // Example of configure application
             var builder = new ConfigurationBuilder()
                     .SetBasePath(env.ContentRootPath)
                     .AddJsonFile("AppConfig.json", true, true)
@@ -47,12 +58,18 @@ namespace InfinniPlatform.ServiceHost
             return configureServices;
         }
 
-        public void Configure(IApplicationBuilder app, IContainerResolver resolver, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app,
+                              IContainerResolver resolver,
+                              ILoggerFactory loggerFactory,
+                              IApplicationLifetime appLifetime)
         {
-            loggerFactory.AddConsole();
+            // Register Serilog
+            loggerFactory.AddSerilog();
 
-            //app.UseStaticFilesMapping(_configuration);
-            //app.RegisterAppLifetimeHandlers(resolver);
+            // Ensure any buffered events are sent at shutdown
+            appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
+
+            // Setup default application layers
             app.UseDefaultAppLayers(resolver);
         }
     }
