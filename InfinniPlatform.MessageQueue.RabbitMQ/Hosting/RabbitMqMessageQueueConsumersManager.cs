@@ -16,7 +16,7 @@ namespace InfinniPlatform.MessageQueue.Hosting
     /// <summary>
     /// Предоставляет метод регистрации получателей сообщений из очереди.
     /// </summary>
-    internal class RabbitMqMessageQueueConsumersManager : IMessageQueueConsumersManager
+    public class RabbitMqMessageQueueConsumersManager : IMessageQueueConsumersManager
     {
         public RabbitMqMessageQueueConsumersManager(MessageQueueThreadPool messageQueueThreadPool,
                                                     IRabbitMqMessageSerializer messageSerializer,

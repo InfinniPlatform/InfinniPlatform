@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace InfinniPlatform.MessageQueue.Hosting
 {
-    internal class MessageQueueThreadPool
+    public class MessageQueueThreadPool
     {
         public MessageQueueThreadPool(RabbitMqMessageQueueOptions settings)
         {
