@@ -13,7 +13,7 @@ namespace InfinniPlatform.Http
         /// <param name="content">Содержимое тела ответа.</param>
         /// <param name="contentType">Тип содержимого тела ответа.</param>
         /// <param name="encoding">Кодировка содержимого тела ответа.</param>
-        public TextHttpResponse(string content, string contentType = HttpConstants.TextContentType, Encoding encoding = null)
+        public TextHttpResponse(string content, string contentType = HttpConstants.TextPlainContentType, Encoding encoding = null)
         {
             ContentType = contentType;
 
