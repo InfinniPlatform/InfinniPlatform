@@ -34,22 +34,18 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         {
             var appOptions = new AppOptions { AppName = TestConstants.AppName, AppInstance = TestConstants.AppInstanceId };
 
-            var loggerMock = new Mock<ILogger<RabbitMqManager>>();
-            loggerMock.Setup(log => log.LogError(It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<Func<Dictionary<string, object>>>()));
-
-            RabbitMqManager = new RabbitMqManager(RabbitMqMessageQueueOptions.Default, appOptions, loggerMock.Object);
+            RabbitMqManager = new RabbitMqManager(RabbitMqMessageQueueOptions.Default, appOptions, new Mock<ILogger<RabbitMqManager>>().Object);
             RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqMessageQueueOptions.Default, JsonObjectSerializer.Default);
 
             RabbitMqMessageSerializer = new RabbitMqMessageSerializer(new JsonObjectSerializer());
 
             var basicPropertiesProviderMock = new Mock<IRabbitMqBasicPropertiesProvider>();
-            basicPropertiesProviderMock.Setup(provider => provider.Get())
-                                       .Returns(new BasicProperties());
-            basicPropertiesProviderMock.Setup(provider => provider.GetPersistent())
-                                       .Returns(new BasicProperties());
+            basicPropertiesProviderMock.Setup(provider => provider.Get()).Returns(new BasicProperties());
+            basicPropertiesProviderMock.Setup(provider => provider.GetPersistent()).Returns(new BasicProperties());
             BasicPropertiesProvider = basicPropertiesProviderMock.Object;
 
             var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();
+
             using (var channel = RabbitMqManager.GetChannel())
             {
                 foreach (var queue in queues)
@@ -63,6 +59,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         public async Task TearDown()
         {
             var queues = (await RabbitMqManagementHttpClient.GetQueues()).ToArray();
+
             using (var channel = RabbitMqManager.GetChannel())
             {
                 foreach (var queue in queues)
@@ -70,6 +67,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
                     channel.QueueDelete(queue.Name, false, false);
                 }
             }
+
             RabbitMqManager.Dispose();
         }
 

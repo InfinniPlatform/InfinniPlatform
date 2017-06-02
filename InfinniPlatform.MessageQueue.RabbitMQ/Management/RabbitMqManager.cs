@@ -13,7 +13,7 @@ namespace InfinniPlatform.MessageQueue.Management
     /// <summary>
     /// Менеджер соединения с RabbitMQ.
     /// </summary>
-    internal class RabbitMqManager : IDisposable
+    public class RabbitMqManager : IDisposable
     {
         public RabbitMqManager(RabbitMqMessageQueueOptions options,
                                AppOptions appOptions,
@@ -227,11 +227,11 @@ namespace InfinniPlatform.MessageQueue.Management
         }
 
 
-        internal delegate void ReconnectEventHandler(object sender, RabbitMqReconnectEventArgs e);
+        public delegate void ReconnectEventHandler(object sender, RabbitMqReconnectEventArgs e);
     }
 
 
-    internal class RabbitMqReconnectEventArgs
+    public class RabbitMqReconnectEventArgs
     {
     }
 }
