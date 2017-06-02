@@ -12,7 +12,7 @@ using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.Hosting
 {
-    internal class RabbitMqMessageQueueInitializer : IAppStartedHandler, IAppStoppedHandler
+    public class RabbitMqMessageQueueInitializer : IAppStartedHandler, IAppStoppedHandler
     {
         /// <summary>
         /// Регистрирует потребителей сообщений.
