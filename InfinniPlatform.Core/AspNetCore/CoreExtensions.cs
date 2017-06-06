@@ -26,11 +26,21 @@ namespace InfinniPlatform.AspNetCore
     public static class CoreExtensions
     {
         /// <summary>
+        /// Adds an application IoC-container module.
+        /// </summary>
+        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        /// <param name="containerModule">The application IoC-container module.</param>
+        public static IServiceCollection AddContainerModule(this IServiceCollection services, IContainerModule containerModule)
+        {
+            return services.AddSingleton(provider => containerModule);
+        }
+
+
+        /// <summary>
         /// Builds <see cref="IServiceProvider"/> based on registered services.
         /// </summary>
-        /// <param name="services">Collection of registered services.</param>
-        /// <param name="containerModules">Registered IoC-container modules.</param>
-        public static IServiceProvider BuildProvider(this IServiceCollection services, IEnumerable<IContainerModule> containerModules = null)
+        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        public static IServiceProvider BuildProvider(this IServiceCollection services)
         {
             var options = AppOptions.Default;
 
@@ -40,10 +50,9 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Builds <see cref="IServiceProvider"/> based on registered services.
         /// </summary>
-        /// <param name="services">Collection of registered services.</param>
-        /// <param name="configuration">Application configuration.</param>
-        /// <param name="containerModules">Registered IoC-container modules.</param>
-        public static IServiceProvider BuildProvider(this IServiceCollection services, IConfigurationRoot configuration, IEnumerable<IContainerModule> containerModules = null)
+        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        /// <param name="configuration">The application configuration.</param>
+        public static IServiceProvider BuildProvider(this IServiceCollection services, IConfigurationRoot configuration)
         {
             var options = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();
 
@@ -53,10 +62,9 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Builds <see cref="IServiceProvider"/> based on registered services.
         /// </summary>
-        /// <param name="services">Collection of registered services.</param>
-        /// <param name="options">Application options.</param>
-        /// <param name="containerModules">Registered IoC-container modules.</param>
-        public static IServiceProvider BuildProvider(this IServiceCollection services, AppOptions options, IEnumerable<IContainerModule> containerModules = null)
+        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        /// <param name="options">The general application settings.</param>
+        public static IServiceProvider BuildProvider(this IServiceCollection services, AppOptions options)
         {
             // Because IoC uses IHttpContextAccessor for InstancePerLifetimeScope strategy
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -66,19 +74,10 @@ namespace InfinniPlatform.AspNetCore
 
             services.AddSingleton(provider => new CoreContainerModule(options ?? AppOptions.Default));
 
-            if (containerModules != null)
-            {
-                foreach (var containerModule in containerModules)
-                {
-                    services.AddSingleton(provider => containerModule);
-                }
-            }
-
             var containerBuilder = new ContainerBuilder();
             containerBuilder.Populate(services);
 
             RegisterDefinedModules(containerBuilder, services);
-            RegisterUserModules(containerBuilder);
 
             // ReSharper disable AccessToModifiedClosure
 
@@ -100,84 +99,65 @@ namespace InfinniPlatform.AspNetCore
             return new AutofacServiceProvider(autofacRootContainer);
         }
 
+        private static void RegisterDefinedModules(ContainerBuilder containerBuilder, IServiceCollection services)
+        {
+            var modules = services.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
+
+            foreach (var module in modules)
+            {
+                var containerModule = (IContainerModule)module.ImplementationFactory.Invoke(null);
+                var autofacContainerModule = new AutofacContainerModule(containerModule);
+                containerBuilder.RegisterModule(autofacContainerModule);
+            }
+        }
+
 
         /// <summary>
-        /// Register application layers defined by user in IoC.
+        /// Registers application layers defined by user in IoC.
         /// </summary>
-        /// <param name="app">Application builder.</param>
-        /// <param name="resolver">IoC container resolver.</param>
+        /// <param name="app">The application builder.</param>
+        /// <param name="resolver">The IoC container resolver.</param>
         public static void UseAppLayers(this IApplicationBuilder app, IContainerResolver resolver)
         {
-            app.RegisterAppLayers<IGlobalHandlingAppLayer>(resolver);
-            app.RegisterAppLayers<IErrorHandlingAppLayer>(resolver);
-            app.RegisterAppLayers<IBeforeAuthenticationAppLayer>(resolver);
-            app.RegisterAppLayers<IAuthenticationBarrierAppLayer>(resolver);
-            app.RegisterAppLayers<IExternalAuthenticationAppLayer>(resolver);
-            app.RegisterAppLayers<IInternalAuthenticationAppLayer>(resolver);
-            app.RegisterAppLayers<IAfterAuthenticationAppLayer>(resolver);
-            app.RegisterAppLayers<IBusinessAppLayer>(resolver);
+            ConfigureAppLayers(app, resolver.Resolve<IGlobalHandlingAppLayer[]>());
+            ConfigureAppLayers(app, resolver.Resolve<IErrorHandlingAppLayer[]>());
+            ConfigureAppLayers(app, resolver.Resolve<IBeforeAuthenticationAppLayer[]>());
+            ConfigureAppLayers(app, resolver.Resolve<IAuthenticationBarrierAppLayer[]>());
+            ConfigureAppLayers(app, resolver.Resolve<IExternalAuthenticationAppLayer[]>());
+            ConfigureAppLayers(app, resolver.Resolve<IInternalAuthenticationAppLayer[]>());
+            ConfigureAppLayers(app, resolver.Resolve<IAfterAuthenticationAppLayer[]>());
+            ConfigureAppLayers(app, resolver.Resolve<IBusinessAppLayer[]>());
+
+            RegisterAppLifetimeHandlers(resolver);
         }
 
         /// <summary>
-        /// Register default application layers.
+        /// Registers default application layers.
         /// </summary>
-        /// <param name="app">Application builder.</param>
-        /// <param name="resolver">IoC container resolver.</param>
+        /// <param name="app">The application builder.</param>
+        /// <param name="resolver">The IoC container resolver.</param>
         public static void UseDefaultAppLayers(this IApplicationBuilder app, IContainerResolver resolver)
         {
             var layers = resolver.Resolve<IDefaultAppLayer[]>();
 
             // ReSharper disable SuspiciousTypeConversion.Global
 
-            foreach (var layer in layers.OfType<IGlobalHandlingAppLayer>())
-            {
-                layer.Configure(app);
-            }
-
-            foreach (var layer in layers.OfType<IErrorHandlingAppLayer>())
-            {
-                layer.Configure(app);
-            }
-
-            foreach (var layer in layers.OfType<IBeforeAuthenticationAppLayer>())
-            {
-                layer.Configure(app);
-            }
-
-            foreach (var layer in layers.OfType<IAuthenticationBarrierAppLayer>())
-            {
-                layer.Configure(app);
-            }
-
-            foreach (var layer in layers.OfType<IExternalAuthenticationAppLayer>())
-            {
-                layer.Configure(app);
-            }
-
-            foreach (var layer in layers.OfType<IInternalAuthenticationAppLayer>())
-            {
-                layer.Configure(app);
-            }
-
-            foreach (var layer in layers.OfType<IAfterAuthenticationAppLayer>())
-            {
-                layer.Configure(app);
-            }
-
-            foreach (var layer in layers.OfType<IBusinessAppLayer>())
-            {
-                layer.Configure(app);
-            }
+            ConfigureAppLayers(app, layers.OfType<IGlobalHandlingAppLayer>());
+            ConfigureAppLayers(app, layers.OfType<IErrorHandlingAppLayer>());
+            ConfigureAppLayers(app, layers.OfType<IBeforeAuthenticationAppLayer>());
+            ConfigureAppLayers(app, layers.OfType<IAuthenticationBarrierAppLayer>());
+            ConfigureAppLayers(app, layers.OfType<IExternalAuthenticationAppLayer>());
+            ConfigureAppLayers(app, layers.OfType<IInternalAuthenticationAppLayer>());
+            ConfigureAppLayers(app, layers.OfType<IAfterAuthenticationAppLayer>());
+            ConfigureAppLayers(app, layers.OfType<IBusinessAppLayer>());
 
             // ReSharper restore SuspiciousTypeConversion.Global
+
+            RegisterAppLifetimeHandlers(resolver);
         }
 
-        /// <summary>
-        /// Register application lifetime handlers.
-        /// </summary>
-        /// <param name="app">Application builder.</param>
-        /// <param name="resolver">IoC container resolver.</param>
-        public static void RegisterAppLifetimeHandlers(this IApplicationBuilder app, IContainerResolver resolver)
+
+        private static void RegisterAppLifetimeHandlers(IContainerResolver resolver)
         {
             var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();
             var appStoppedHandlers = resolver.Resolve<IAppStoppedHandler[]>();
@@ -194,37 +174,8 @@ namespace InfinniPlatform.AspNetCore
             }
         }
 
-
-        private static void RegisterDefinedModules(ContainerBuilder containerBuilder, IServiceCollection services)
+        private static void ConfigureAppLayers<T>(IApplicationBuilder app, IEnumerable<T> appLayers) where T : IAppLayer
         {
-            var modules = services.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
-
-            foreach (var module in modules)
-            {
-                var containerModule = (IContainerModule)module.ImplementationFactory.Invoke(null);
-                var autofacContainerModule = new AutofacContainerModule(containerModule);
-                containerBuilder.RegisterModule(autofacContainerModule);
-            }
-        }
-
-        private static void RegisterUserModules(ContainerBuilder containerBuilder)
-        {
-            var modules = Assembly.GetEntryAssembly()
-                                  .GetTypes()
-                                  .Where(type => typeof(IContainerModule).IsAssignableFrom(type));
-
-            foreach (var module in modules)
-            {
-                var containerModule = (IContainerModule)Activator.CreateInstance(module);
-                var autofacContainerModule = new AutofacContainerModule(containerModule);
-                containerBuilder.RegisterModule(autofacContainerModule);
-            }
-        }
-
-        private static void RegisterAppLayers<T>(this IApplicationBuilder app, IContainerResolver resolver) where T : IAppLayer
-        {
-            var appLayers = resolver.Resolve<T[]>();
-
             foreach (var layer in appLayers)
             {
                 layer.Configure(app);

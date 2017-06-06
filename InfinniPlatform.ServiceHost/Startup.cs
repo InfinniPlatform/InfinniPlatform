@@ -39,23 +39,24 @@ namespace InfinniPlatform.ServiceHost
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var configureServices = services.AddAuthInternal(_configuration)
-                                            .AddAuthHttpService()
-                                            .AddInMemoryCache()
-                                            .AddRedisSharedCache(_configuration)
-                                            .AddTwoLayerCache(_configuration)
-                                            .AddFileSystemBlobStorage(_configuration)
-                                            .AddBlobStorageHttpService()
-                                            .AddMongoDocumentStorage(_configuration)
-                                            .AddDocumentStorageHttpService()
-                                            .AddRabbitMqMessageQueue(_configuration)
-                                            .AddQuartzScheduler(_configuration)
-                                            .AddSchedulerHttpService()
-                                            .AddPrintView(_configuration)
-                                            .AddHeartbeatHttpService()
-                                            .BuildProvider(_configuration);
+            var serviceProvider = services.AddAuthInternal(_configuration)
+                                          .AddAuthHttpService()
+                                          .AddInMemoryCache()
+                                          .AddRedisSharedCache(_configuration)
+                                          .AddTwoLayerCache(_configuration)
+                                          .AddFileSystemBlobStorage(_configuration)
+                                          .AddBlobStorageHttpService()
+                                          .AddMongoDocumentStorage(_configuration)
+                                          .AddDocumentStorageHttpService()
+                                          .AddRabbitMqMessageQueue(_configuration)
+                                          .AddQuartzScheduler(_configuration)
+                                          .AddSchedulerHttpService()
+                                          .AddPrintView(_configuration)
+                                          .AddHeartbeatHttpService()
+                                          .AddContainerModule(new ContainerModule())
+                                          .BuildProvider(_configuration);
 
-            return configureServices;
+            return serviceProvider;
         }
 
         public void Configure(IApplicationBuilder app,
