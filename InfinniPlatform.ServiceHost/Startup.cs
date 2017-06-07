@@ -30,8 +30,8 @@ namespace InfinniPlatform.ServiceHost
             // Example of configure application
             var builder = new ConfigurationBuilder()
                     .SetBasePath(env.ContentRootPath)
-                    .AddJsonFile("AppConfig.json", true, true)
-                    .AddJsonFile($"AppConfig.{env.EnvironmentName}.json", true)
+                    .AddJsonFile("AppConfig.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"AppConfig.{env.EnvironmentName}.json", optional: true)
                     .AddEnvironmentVariables();
 
             _configuration = builder.Build();
