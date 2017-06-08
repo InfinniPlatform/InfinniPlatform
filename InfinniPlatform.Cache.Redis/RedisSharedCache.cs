@@ -13,6 +13,7 @@ namespace InfinniPlatform.Cache
     /// <summary>
     /// Реализует интерфейс для управления распределенным кэшем на базе Redis.
     /// </summary>
+    [LoggerName(nameof(RedisSharedCache))]
     public class RedisSharedCache : ISharedCache
     {
         /// <summary>

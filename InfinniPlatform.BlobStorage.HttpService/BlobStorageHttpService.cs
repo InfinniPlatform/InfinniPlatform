@@ -18,6 +18,7 @@ namespace InfinniPlatform.BlobStorage
     /// GET /blob/{id}
     /// </code>
     /// </example>
+    [LoggerName(nameof(BlobStorageHttpService))]
     public class BlobStorageHttpService : IHttpService
     {
         public const string DefaultServicePath = "/blob";

@@ -13,6 +13,7 @@ namespace InfinniPlatform.Scheduler.Clusterization
     /// <summary>
     /// Обработчик события <see cref="JobHandlerEvent"/>.
     /// </summary>
+    [LoggerName(nameof(JobHandlerConsumer))]
     internal class JobHandlerConsumer : TaskConsumerBase<JobHandlerEvent>
     {
         public JobHandlerConsumer(IJobHandlerTypeSerializer jobHandlerTypeSerializer,

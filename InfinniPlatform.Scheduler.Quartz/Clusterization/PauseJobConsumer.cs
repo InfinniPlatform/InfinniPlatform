@@ -12,6 +12,7 @@ namespace InfinniPlatform.Scheduler.Clusterization
     /// <summary>
     /// Обработчик события <see cref="PauseJobEvent" />.
     /// </summary>
+    [LoggerName(nameof(PauseJobConsumer))]
     internal class PauseJobConsumer : BroadcastConsumerBase<PauseJobEvent>
     {
         public PauseJobConsumer(IJobSchedulerDispatcher jobSchedulerDispatcher,

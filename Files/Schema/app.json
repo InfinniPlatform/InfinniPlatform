@@ -14,11 +14,6 @@
       "description": "The application instance identifier.",
       "type": "string"
     },
-    "PerformanceLoggerNamePrefix": {
-      "description": "The prefix of the IPerformanceLogger.",
-      "type": "string",
-      "default": "IPerformanceLogger."
-    },
     "StaticFilesMapping": {
       "description": "The relative request paths that map to static resources.",
       "type": "object",

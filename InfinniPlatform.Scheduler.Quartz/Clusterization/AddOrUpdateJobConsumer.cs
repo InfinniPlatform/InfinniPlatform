@@ -12,6 +12,7 @@ namespace InfinniPlatform.Scheduler.Clusterization
     /// <summary>
     /// Обработчик события <see cref="AddOrUpdateJobEvent" />.
     /// </summary>
+    [LoggerName(nameof(AddOrUpdateJobConsumer))]
     internal class AddOrUpdateJobConsumer : BroadcastConsumerBase<AddOrUpdateJobEvent>
     {
         public AddOrUpdateJobConsumer(IJobSchedulerDispatcher jobSchedulerDispatcher,

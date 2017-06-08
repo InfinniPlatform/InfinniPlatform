@@ -6,11 +6,9 @@ namespace InfinniPlatform.Logging
 {
     public class PerformanceLogger<TComponent> : IPerformanceLogger<TComponent>
     {
-        public PerformanceLogger(AppOptions options, ILoggerFactory loggerFactory)
+        public PerformanceLogger(ILogger<IPerformanceLogger<TComponent>> logger)
         {
-            var loggerCategoryName = LoggerNameHelper.GetCategoryName(typeof(TComponent));
-
-            _logger = loggerFactory.CreateLogger($"{options.PerformanceLoggerNamePrefix}{loggerCategoryName}");
+            _logger = logger;
         }
 
 
@@ -50,6 +48,8 @@ namespace InfinniPlatform.Logging
 
             public override string ToString()
             {
+                // Note: I suppose it may need improvement
+
                 return $"{_method}={_duration:N0}";
             }
         }

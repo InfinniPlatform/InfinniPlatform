@@ -2,14 +2,18 @@
 
 using InfinniPlatform.AspNetCore;
 using InfinniPlatform.IoC;
+using InfinniPlatform.Logging;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Serilog;
+using Serilog.Core;
+using Serilog.Filters;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -19,14 +23,6 @@ namespace InfinniPlatform.ServiceHost
 
         public Startup(IHostingEnvironment env)
         {
-            const string outputTemplate = "{Timestamp:o}|{Level:u3}|{SourceContext}|{Message}{NewLine}{Exception}";
-
-            // Example of configure Serilog
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.LiterateConsole(outputTemplate: outputTemplate)
-                .CreateLogger();
-
             // Example of configure application
             var builder = new ConfigurationBuilder()
                     .SetBasePath(env.ContentRootPath)
@@ -62,16 +58,39 @@ namespace InfinniPlatform.ServiceHost
         public void Configure(IApplicationBuilder app,
                               IContainerResolver resolver,
                               ILoggerFactory loggerFactory,
-                              IApplicationLifetime appLifetime)
+                              IApplicationLifetime appLifetime,
+                              IHttpContextAccessor httpContextAccessor)
         {
+            ConfigureLogger(loggerFactory, appLifetime, httpContextAccessor);
+
+            // Setup default application layers
+            app.UseDefaultAppLayers(resolver);
+        }
+
+
+        private static void ConfigureLogger(ILoggerFactory loggerFactory,
+                                            IApplicationLifetime appLifetime,
+                                            IHttpContextAccessor httpContextAccessor)
+        {
+            const string outputTemplate = "{Timestamp:o}|{Level:u3}|{RequestId}|{UserName}|{SourceContext}|{Message}{NewLine}{Exception}";
+
+            var performanceLoggerFilter = Matching.WithProperty<string>(Constants.SourceContextPropertyName, p => p.StartsWith(typeof(IPerformanceLogger).FullName));
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .Enrich.With(new HttpContextLogEventEnricher(httpContextAccessor))
+                .WriteTo.LiterateConsole(outputTemplate: outputTemplate)
+                .WriteTo.Logger(lc => lc.Filter.ByExcluding(performanceLoggerFilter)
+                                        .WriteTo.RollingFile("logs/events-{Date}.log", outputTemplate: outputTemplate))
+                .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(performanceLoggerFilter)
+                                        .WriteTo.RollingFile("logs/performance-{Date}.log", outputTemplate: outputTemplate))
+                .CreateLogger();
+
             // Register Serilog
             loggerFactory.AddSerilog();
 
             // Ensure any buffered events are sent at shutdown
             appLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
-
-            // Setup default application layers
-            app.UseDefaultAppLayers(resolver);
         }
     }
 }

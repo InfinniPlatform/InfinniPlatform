@@ -13,17 +13,16 @@ namespace InfinniPlatform.Http.Middlewares
     /// <summary>
     /// Hosting layer for processing request errors.
     /// </summary>
+    [LoggerName(nameof(ErrorHandlingAppLayer))]
     public class ErrorHandlingAppLayer : IErrorHandlingAppLayer, IDefaultAppLayer
     {
-        public ErrorHandlingAppLayer(ILogger<ErrorHandlingAppLayer> logger, IPerformanceLogger<ErrorHandlingAppLayer> perfLogger)
+        public ErrorHandlingAppLayer(ILogger<ErrorHandlingAppLayer> logger)
         {
             _logger = logger;
-            _perfLogger = perfLogger;
         }
 
 
         private readonly ILogger _logger;
-        private readonly IPerformanceLogger _perfLogger;
 
 
         public void Configure(IApplicationBuilder app)
@@ -45,41 +44,27 @@ namespace InfinniPlatform.Http.Middlewares
             private readonly ErrorHandlingAppLayer _parentLayer;
 
 
+            // ReSharper disable once UnusedMember.Local
             public async Task Invoke(HttpContext httpContext)
             {
-                var start = DateTime.Now;
-
                 try
                 {
-                    await _next.Invoke(httpContext)
-                               .ContinueWith(task =>
-                                             {
-                                                 if (task.IsFaulted)
-                                                 {
-                                                     LogException(task.Exception);
-                                                 }
-
-                                                 LogPerformance($"{httpContext.Request.Method}::{httpContext.Request.Path}", start, task.Exception);
-
-                                                 return Task.CompletedTask;
-                                             });
+                    await _next.Invoke(httpContext).ContinueWith(task => LogException(task.Exception));
                 }
                 catch (Exception exception)
                 {
-                    LogException(exception);
-
-                    LogPerformance(nameof(Invoke), start, exception);
+                    await LogException(exception);
                 }
             }
 
-            private void LogException(Exception exception)
+            private Task LogException(Exception exception)
             {
-                _parentLayer._logger.LogError(Resources.UnhandledExceptionOwinMiddleware, exception);
-            }
+                if (exception != null)
+                {
+                    _parentLayer._logger.LogError(Resources.UnhandledExceptionOwinMiddleware, exception);
+                }
 
-            private void LogPerformance(string method, DateTime start, Exception exception)
-            {
-                _parentLayer._perfLogger.Log(method, start, exception);
+                return Task.CompletedTask;
             }
         }
     }

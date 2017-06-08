@@ -95,6 +95,10 @@ namespace InfinniPlatform.IoC
 
             // Middlewares
 
+            builder.RegisterType<GlobalHandlingAppLayer>()
+                   .As<IDefaultAppLayer>()
+                   .SingleInstance();
+
             builder.RegisterType<ErrorHandlingAppLayer>()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();

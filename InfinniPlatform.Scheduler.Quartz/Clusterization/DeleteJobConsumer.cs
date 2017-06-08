@@ -12,6 +12,7 @@ namespace InfinniPlatform.Scheduler.Clusterization
     /// <summary>
     /// Обработчик события <see cref="DeleteJobEvent" />.
     /// </summary>
+    [LoggerName(nameof(DeleteJobConsumer))]
     internal class DeleteJobConsumer : BroadcastConsumerBase<DeleteJobEvent>
     {
         public DeleteJobConsumer(IJobSchedulerDispatcher jobSchedulerDispatcher,

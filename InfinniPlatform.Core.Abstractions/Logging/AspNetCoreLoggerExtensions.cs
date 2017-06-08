@@ -362,6 +362,8 @@ namespace Microsoft.Extensions.Logging
 
             public override string ToString()
             {
+                // Note: I suppose it may need improvement
+
                 if (_context == null)
                 {
                     return _message;

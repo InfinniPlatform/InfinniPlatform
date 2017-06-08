@@ -24,6 +24,7 @@ namespace InfinniPlatform.Http
     /// конвертируя правила маршрутизации системы в правила маршрутизации Nancy таким образом, чтобы этап инициализации
     /// модулей Nancy был максимально простым и быстрым.
     /// </remarks>
+    [LoggerName(nameof(IHttpService))]
     internal class HttpServiceNancyModuleInitializer
     {
         public HttpServiceNancyModuleInitializer(IMimeTypeResolver mimeTypeResolver,
@@ -33,7 +34,7 @@ namespace InfinniPlatform.Http
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
                                                  IEnumerable<IHttpServiceSource> httpServiceSources,
-                                                 IPerformanceLogger<IHttpService> perfLogger)
+                                                 IPerformanceLogger<HttpServiceNancyModuleInitializer> perfLogger)
         {
             _mimeTypeResolver = mimeTypeResolver;
             _userIdentityProvider = userIdentityProvider;

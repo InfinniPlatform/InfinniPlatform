@@ -40,6 +40,7 @@ namespace InfinniPlatform.BlobStorage
     /// ошибок, а доступ к каждому файлу контролировать механизмом, подобным
     /// <see cref="System.Threading.ReaderWriterLockSlim"/>, но более простым.
     /// </remarks>
+    [LoggerName(nameof(FileSystemBlobStorage))]
     public class FileSystemBlobStorage : IBlobStorage
     {
         public FileSystemBlobStorage(FileSystemBlobStorageOptions options,

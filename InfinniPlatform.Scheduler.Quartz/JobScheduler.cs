@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Scheduler
 {
+    [LoggerName(nameof(JobScheduler))]
     internal class JobScheduler : IJobScheduler
     {
         public JobScheduler(IJobSchedulerDispatcher jobSchedulerDispatcher,

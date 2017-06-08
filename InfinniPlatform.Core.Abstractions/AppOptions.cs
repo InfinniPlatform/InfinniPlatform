@@ -21,7 +21,6 @@ namespace InfinniPlatform
         {
             AppName = "InfinniPlatform";
             AppInstance = Guid.NewGuid().ToString("N");
-            PerformanceLoggerNamePrefix = "IPerformanceLogger.";
             StaticFilesMapping = new Dictionary<string, string>();
         }
 
@@ -41,14 +40,6 @@ namespace InfinniPlatform
         /// App1_Instance1
         /// </example>
         public string AppInstance { get; set; }
-
-        /// <summary>
-        /// The prefix of the <see cref="InfinniPlatform.Logging.IPerformanceLogger" />.
-        /// </summary>
-        /// <example>
-        /// IPerformanceLogger.
-        /// </example>
-        public string PerformanceLoggerNamePrefix { get; set; }
 
         /// <summary>
         /// The relative request paths that map to static resources.
