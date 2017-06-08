@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 using Microsoft.Extensions.Logging;
 
@@ -50,7 +51,7 @@ namespace InfinniPlatform.Logging
             {
                 // Note: I suppose it may need improvement
 
-                return $"{_method}={_duration:N0}";
+                return string.Format("{{ \"{0}\": {1:N0} }}", _method, _duration);
             }
         }
     }

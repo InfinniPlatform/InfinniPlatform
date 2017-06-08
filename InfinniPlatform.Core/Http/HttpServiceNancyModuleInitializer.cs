@@ -209,7 +209,7 @@ namespace InfinniPlatform.Http
 
                                                                   var start = DateTime.Now;
 
-                                                                  var method = $"{nancyContext.Request.Method}::{nancyContext.Request.Path}";
+                                                                  var method = $"{nancyContext.Request.Method}::{nancyContext.ResolvedRoute?.Description?.Path}";
 
                                                                   Exception error = null;
 
