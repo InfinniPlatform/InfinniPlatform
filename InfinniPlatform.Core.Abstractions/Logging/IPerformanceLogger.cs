@@ -5,6 +5,7 @@ namespace InfinniPlatform.Logging
     /// <summary>
     /// A generic interface for performance logging.
     /// </summary>
+    [LoggerName(nameof(IPerformanceLogger))]
     public interface IPerformanceLogger
     {
         /// <summary>

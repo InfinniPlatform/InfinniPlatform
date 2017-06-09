@@ -7,7 +7,7 @@ namespace InfinniPlatform.Logging
     /// <summary>
     /// The attribute defines the category name for the <see cref="ILogger{TCategoryName}" />.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Interface)]
     public class LoggerNameAttribute : Attribute
     {
         /// <summary>

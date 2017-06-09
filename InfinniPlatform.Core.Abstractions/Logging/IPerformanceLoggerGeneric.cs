@@ -9,6 +9,7 @@ namespace InfinniPlatform.Logging
     /// <remarks>
     /// Generally the <typeparamref name="TComponent" /> is used to enable activation of a named <see cref="ILogger" /> from dependency injection.
     /// </remarks>
+    [LoggerName(nameof(IPerformanceLogger<TComponent>))]
     public interface IPerformanceLogger<TComponent> : IPerformanceLogger
     {
     }

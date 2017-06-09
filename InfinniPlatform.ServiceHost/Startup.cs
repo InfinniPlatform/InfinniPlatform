@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 using Serilog.Core;
+using Serilog.Events;
 using Serilog.Filters;
 
 namespace InfinniPlatform.ServiceHost
@@ -72,18 +73,24 @@ namespace InfinniPlatform.ServiceHost
                                             IApplicationLifetime appLifetime,
                                             IHttpContextAccessor httpContextAccessor)
         {
-            const string outputTemplate = "{Timestamp:o}|{Level:u3}|{RequestId}|{UserName}|{SourceContext}|{Message}{NewLine}{Exception}";
+            const string outputTemplate
+                = "{Timestamp:o}|{Level:u3}|{RequestId}|{UserName}|{SourceContext}|{Message}{NewLine}{Exception}";
 
-            var performanceLoggerFilter = Matching.WithProperty<string>(Constants.SourceContextPropertyName, p => p.StartsWith(typeof(IPerformanceLogger).FullName));
+            Func<LogEvent, bool> performanceLoggerFilter = 
+                Matching.WithProperty<string>(
+                    Constants.SourceContextPropertyName,
+                    p => p.StartsWith(nameof(IPerformanceLogger)));
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .Enrich.With(new HttpContextLogEventEnricher(httpContextAccessor))
                 .WriteTo.LiterateConsole(outputTemplate: outputTemplate)
                 .WriteTo.Logger(lc => lc.Filter.ByExcluding(performanceLoggerFilter)
-                                        .WriteTo.RollingFile("logs/events-{Date}.log", outputTemplate: outputTemplate))
+                                        .WriteTo.RollingFile("logs/events-{Date}.log",
+                                                             outputTemplate: outputTemplate))
                 .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(performanceLoggerFilter)
-                                        .WriteTo.RollingFile("logs/performance-{Date}.log", outputTemplate: outputTemplate))
+                                        .WriteTo.RollingFile("logs/performance-{Date}.log",
+                                                             outputTemplate: outputTemplate))
                 .CreateLogger();
 
             // Register Serilog
