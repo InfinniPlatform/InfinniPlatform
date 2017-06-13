@@ -1,8 +1,6 @@
 ﻿using System;
-
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Tests;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.IntegrationTests
@@ -13,7 +11,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         [Test]
         public void BroadcastProducerThrowsExceptionIfDynamicDocumentSendViaPublishMethod()
         {
-            var broadcastProducer = new RabbitMqBroadcastProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var broadcastProducer = new BroadcastProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
 
             Assert.Throws<ArgumentException>(() => broadcastProducer.Publish(new DynamicDocument()));
             Assert.ThrowsAsync<ArgumentException>(() => broadcastProducer.PublishAsync(new DynamicDocument()));
@@ -22,7 +20,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         [Test]
         public void TaskProducerThrowsExceptionIfDynamicDocumentSendViaPublishMethod()
         {
-            var taskProducer = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var taskProducer = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
 
             Assert.Throws<ArgumentException>(() => taskProducer.Publish(new DynamicDocument()));
             Assert.ThrowsAsync<ArgumentException>(() => taskProducer.PublishAsync(new DynamicDocument()));

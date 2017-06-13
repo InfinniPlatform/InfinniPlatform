@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue
@@ -8,7 +7,7 @@ namespace InfinniPlatform.MessageQueue
     /// <summary>
     /// Предоставляет методы для работы с базовыми свойствами сообщений в очереди.
     /// </summary>
-    public interface IRabbitMqBasicPropertiesProvider
+    public interface IBasicPropertiesProvider
     {
         /// <summary>
         /// Заполняет базовые свойства сообщения служебной информацией.

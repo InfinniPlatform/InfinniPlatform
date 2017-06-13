@@ -1,43 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using InfinniPlatform.Serialization;
-
 using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue
 {
-    public class RabbitMqBasicPropertiesProvider : IRabbitMqBasicPropertiesProvider
+    public class BasicPropertiesProvider : IBasicPropertiesProvider
     {
-        public RabbitMqBasicPropertiesProvider(AppOptions appOptions, IJsonObjectSerializer serializer)
+        private readonly AppOptions _appOptions;
+        private readonly IJsonObjectSerializer _serializer;
+
+        public BasicPropertiesProvider(AppOptions appOptions, IJsonObjectSerializer serializer)
         {
             _appOptions = appOptions;
             _serializer = serializer;
         }
 
 
-        private readonly AppOptions _appOptions;
-        private readonly IJsonObjectSerializer _serializer;
-
-
         public BasicProperties Get()
         {
             return new BasicProperties
-                   {
-                       AppId = _appOptions.AppInstance,
-                       Headers = new Dictionary<string, object>()
-                   };
+            {
+                AppId = _appOptions.AppInstance,
+                Headers = new Dictionary<string, object>()
+            };
         }
 
         public BasicProperties GetPersistent()
         {
             return new BasicProperties
-                   {
-                       AppId = _appOptions.AppInstance,
-                       Headers = new Dictionary<string, object>(),
-                       Persistent = true
-                   };
+            {
+                AppId = _appOptions.AppInstance,
+                Headers = new Dictionary<string, object>(),
+                Persistent = true
+            };
         }
 
         public Dictionary<string, Func<string>> GetHeaders(IMessage message)
@@ -46,7 +43,7 @@ namespace InfinniPlatform.MessageQueue
 
             foreach (var header in message.Headers.Where(pair => pair.Value is byte[]))
             {
-                var value = (byte[])header.Value;
+                var value = (byte[]) header.Value;
 
                 if (value != null)
                 {

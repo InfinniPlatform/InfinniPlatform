@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.MessageQueue.TestConsumers;
 using InfinniPlatform.Tests;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.IntegrationTests
@@ -20,11 +18,11 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
             var actualMessages = new List<DynamicDocument>();
             DynamicDocument[] assertMessages =
             {
-                new DynamicDocument { { "Field1", "string" } },
-                new DynamicDocument { { "Field2", 1 } },
-                new DynamicDocument { { "Field3", new DateTime(1, 1, 1) } },
-                new DynamicDocument { { "Field4", 1.2 } },
-                new DynamicDocument { { "Field5", false } }
+                new DynamicDocument {{"Field1", "string"}},
+                new DynamicDocument {{"Field2", 1}},
+                new DynamicDocument {{"Field3", new DateTime(1, 1, 1)}},
+                new DynamicDocument {{"Field4", 1.2}},
+                new DynamicDocument {{"Field5", false}}
             };
 
             var completeEvent = new CountdownEvent(assertMessages.Length);
@@ -35,7 +33,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.PublishDynamic(message, typeof(DynamicDocument).FullName);
@@ -67,7 +65,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);
@@ -99,7 +97,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.Properties;
-
 using Microsoft.Extensions.Logging;
-
 using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.Management
@@ -13,8 +11,17 @@ namespace InfinniPlatform.MessageQueue.Management
     /// <summary>
     /// Менеджер соединения с RabbitMQ.
     /// </summary>
+    [LoggerName(nameof(RabbitMqManager))]
     public class RabbitMqManager : IDisposable
     {
+        public delegate void ReconnectEventHandler(object sender, RabbitMqReconnectEventArgs e);
+
+        private readonly AppOptions _appOptions;
+        private readonly ILogger _logger;
+
+
+        private readonly RabbitMqMessageQueueOptions _options;
+
         public RabbitMqManager(RabbitMqMessageQueueOptions options,
                                AppOptions appOptions,
                                ILogger<RabbitMqManager> logger)
@@ -38,11 +45,6 @@ namespace InfinniPlatform.MessageQueue.Management
         }
 
 
-        private readonly RabbitMqMessageQueueOptions _options;
-        private readonly AppOptions _appOptions;
-        private readonly ILogger _logger;
-
-
         public string BroadcastExchangeName { get; }
 
         public IConnection Connection { get; private set; }
@@ -60,31 +62,31 @@ namespace InfinniPlatform.MessageQueue.Management
         private void StartRabbitMqListener(RabbitMqMessageQueueOptions settings)
         {
             Task.Run(() =>
-                     {
-                         IConnection connection = null;
-                         var reconnectRetries = settings.MaxReconnectRetries;
+            {
+                IConnection connection = null;
+                var reconnectRetries = settings.MaxReconnectRetries;
 
-                         while (connection == null && reconnectRetries > 0)
-                         {
-                             connection = CreateConnection(settings);
+                while (connection == null && reconnectRetries > 0)
+                {
+                    connection = CreateConnection(settings);
 
-                             if (connection == null)
-                             {
-                                 reconnectRetries--;
-                                 Task.Delay(TimeSpan.FromSeconds(settings.ReconnectTimeout));
-                             }
-                         }
+                    if (connection == null)
+                    {
+                        reconnectRetries--;
+                        Task.Delay(TimeSpan.FromSeconds(settings.ReconnectTimeout));
+                    }
+                }
 
-                         if (connection == null)
-                         {
-                             _logger.LogCritical(string.Format(Resources.ReconnectRetriesExceeded, settings.HostName, settings.Port));
-                         }
-                         else
-                         {
-                             Connection = connection;
-                             OnReconnect?.Invoke(this, new RabbitMqReconnectEventArgs());
-                         }
-                     });
+                if (connection == null)
+                {
+                    _logger.LogCritical(string.Format(Resources.ReconnectRetriesExceeded, settings.HostName, settings.Port));
+                }
+                else
+                {
+                    Connection = connection;
+                    OnReconnect?.Invoke(this, new RabbitMqReconnectEventArgs());
+                }
+            });
         }
 
         /// <summary>
@@ -186,12 +188,12 @@ namespace InfinniPlatform.MessageQueue.Management
             try
             {
                 var connectionFactory = new ConnectionFactory
-                                        {
-                                            HostName = settings.HostName,
-                                            Port = settings.Port,
-                                            UserName = settings.UserName,
-                                            Password = settings.Password
-                                        };
+                {
+                    HostName = settings.HostName,
+                    Port = settings.Port,
+                    UserName = settings.UserName,
+                    Password = settings.Password
+                };
 
                 var connection = connectionFactory.CreateConnection();
 
@@ -213,21 +215,24 @@ namespace InfinniPlatform.MessageQueue.Management
 
         private void OnConnectionShutdown(object sender, ShutdownEventArgs args)
         {
-            _logger.LogError("RabbitMQ connection shutdown.", () => CreateLogContext(args));
+            if (args.Initiator == ShutdownInitiator.Application && args.ReplyCode == 200)
+            {
+                _logger.LogInformation(args.ReplyText, () => CreateLogContext(args));
+            }
+            else
+            {
+                _logger.LogError(args.ReplyText, () => CreateLogContext(args));
+            }
         }
 
         private static Dictionary<string, object> CreateLogContext(ShutdownEventArgs args)
         {
             return new Dictionary<string, object>
-                   {
-                       { "Initiator", args.Initiator },
-                       { "ReplyCode", args.ReplyCode },
-                       { "ReplyText", args.ReplyText }
-                   };
+            {
+                {"initiator", args.Initiator},
+                {"replyCode", args.ReplyCode}
+            };
         }
-
-
-        public delegate void ReconnectEventHandler(object sender, RabbitMqReconnectEventArgs e);
     }
 
 

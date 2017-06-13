@@ -53,7 +53,7 @@ namespace InfinniPlatform.MessageQueue
                 return false;
             }
 
-            return Equals((TestMessage)obj);
+            return Equals((TestMessage) obj);
         }
 
         public override int GetHashCode()

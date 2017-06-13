@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.MessageQueue;
 using InfinniPlatform.MessageQueue.IoC;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

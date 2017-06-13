@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-
 using InfinniPlatform.MessageQueue.TestConsumers;
 using InfinniPlatform.Tests;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.IntegrationTests
@@ -33,7 +31,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message, "StringConsumerWithAttributeTest");
@@ -65,7 +63,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 using InfinniPlatform.MessageQueue.TestConsumers;
 using InfinniPlatform.Tests;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.IntegrationTests
@@ -36,7 +34,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(null, broadcastConsumers);
 
-            var producerBase = new RabbitMqBroadcastProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new BroadcastProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 await producerBase.PublishAsync(message);

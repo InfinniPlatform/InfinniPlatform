@@ -1,15 +1,20 @@
 ﻿using System.Threading.Tasks;
-
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.MessageQueue.Management;
 
 namespace InfinniPlatform.MessageQueue
 {
-    internal class RabbitMqTaskProducer : ITaskProducer
+    internal class BroadcastProducer : IBroadcastProducer
     {
-        public RabbitMqTaskProducer(RabbitMqManager manager,
-                                    IRabbitMqMessageSerializer messageSerializer,
-                                    IRabbitMqBasicPropertiesProvider basicPropertiesProvider)
+        private readonly IBasicPropertiesProvider _basicPropertiesProvider;
+
+
+        private readonly RabbitMqManager _manager;
+        private readonly IMessageSerializer _messageSerializer;
+
+        public BroadcastProducer(RabbitMqManager manager,
+                                 IMessageSerializer messageSerializer,
+                                 IBasicPropertiesProvider basicPropertiesProvider)
         {
             _manager = manager;
             _messageSerializer = messageSerializer;
@@ -17,14 +22,9 @@ namespace InfinniPlatform.MessageQueue
         }
 
 
-        private readonly RabbitMqManager _manager;
-        private readonly IRabbitMqMessageSerializer _messageSerializer;
-        private readonly IRabbitMqBasicPropertiesProvider _basicPropertiesProvider;
-
-
         public void Publish<T>(T messageBody, string queueName = null)
         {
-            RabbitMqHelper.CheckTypeRestrictions<T>();
+            MessageQueueHelper.CheckTypeRestrictions<T>();
 
             BasicPublish(messageBody, queueName);
         }
@@ -36,7 +36,7 @@ namespace InfinniPlatform.MessageQueue
 
         public async Task PublishAsync<T>(T messageBody, string queueName = null)
         {
-            RabbitMqHelper.CheckTypeRestrictions<T>();
+            MessageQueueHelper.CheckTypeRestrictions<T>();
 
             await Task.Run(() => { BasicPublish(messageBody, queueName); });
         }
@@ -48,18 +48,14 @@ namespace InfinniPlatform.MessageQueue
 
         private void BasicPublish<T>(T messageBody, string queueName)
         {
-            var messageBodyToBytes = _messageSerializer.MessageToBytes(messageBody);
-            var routingKey = queueName ?? RabbitMqHelper.GetProducerQueueName(messageBody);
-
-            _manager.DeclareTaskQueue(routingKey);
+            var messageToBytes = _messageSerializer.MessageToBytes(messageBody);
+            var routingKey = queueName ?? MessageQueueHelper.GetProducerQueueName(messageBody);
 
             using (var channel = _manager.GetChannel())
             {
-                var taskKey = _manager.GetTaskKey(routingKey);
-                var basicProperties = _basicPropertiesProvider.GetPersistent();
-                basicProperties.Persistent = true;
+                var basicProperties = _basicPropertiesProvider.Get();
 
-                channel?.BasicPublish(string.Empty, taskKey, true, basicProperties, messageBodyToBytes);
+                channel?.BasicPublish(_manager.BroadcastExchangeName, routingKey, true, basicProperties, messageToBytes);
             }
         }
     }

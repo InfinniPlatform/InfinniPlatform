@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using InfinniPlatform.Hosting;
 using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.Hosting;
 using InfinniPlatform.MessageQueue.Management;
 using InfinniPlatform.Serialization;
-
 using Microsoft.Extensions.Logging;
-
 using Moq;
-
 using NUnit.Framework;
-
 using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue.IntegrationTests
@@ -25,21 +19,21 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
         internal RabbitMqManagementHttpClient RabbitMqManagementHttpClient { get; set; }
 
-        internal RabbitMqMessageSerializer RabbitMqMessageSerializer { get; set; }
+        internal MessageSerializer MessageSerializer { get; set; }
 
-        internal IRabbitMqBasicPropertiesProvider BasicPropertiesProvider { get; set; }
+        internal IBasicPropertiesProvider BasicPropertiesProvider { get; set; }
 
         [SetUp]
         public async Task SetUp()
         {
-            var appOptions = new AppOptions { AppName = TestConstants.AppName, AppInstance = TestConstants.AppInstanceId };
+            var appOptions = new AppOptions {AppName = TestConstants.AppName, AppInstance = TestConstants.AppInstanceId};
 
             RabbitMqManager = new RabbitMqManager(RabbitMqMessageQueueOptions.Default, appOptions, new Mock<ILogger<RabbitMqManager>>().Object);
             RabbitMqManagementHttpClient = new RabbitMqManagementHttpClient(RabbitMqMessageQueueOptions.Default, JsonObjectSerializer.Default);
 
-            RabbitMqMessageSerializer = new RabbitMqMessageSerializer(new JsonObjectSerializer());
+            MessageSerializer = new MessageSerializer(new JsonObjectSerializer());
 
-            var basicPropertiesProviderMock = new Mock<IRabbitMqBasicPropertiesProvider>();
+            var basicPropertiesProviderMock = new Mock<IBasicPropertiesProvider>();
             basicPropertiesProviderMock.Setup(provider => provider.Get()).Returns(new BasicProperties());
             basicPropertiesProviderMock.Setup(provider => provider.GetPersistent()).Returns(new BasicProperties());
             BasicPropertiesProvider = basicPropertiesProviderMock.Object;
@@ -73,11 +67,11 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
         public void RegisterConsumers(IEnumerable<ITaskConsumer> taskConsumers, IEnumerable<IBroadcastConsumer> broadcastConsumers, RabbitMqMessageQueueOptions customSettings = null)
         {
-            var subscriptionManager = new RabbitMqMessageQueueConsumersManager(new MessageQueueThreadPool(customSettings ?? RabbitMqMessageQueueOptions.Default),
-                                                                               RabbitMqMessageSerializer,
-                                                                               RabbitMqManager,
-                                                                               new Mock<ILogger<RabbitMqMessageQueueConsumersManager>>().Object,
-                                                                               new Mock<IPerformanceLogger<RabbitMqMessageQueueConsumersManager>>().Object);
+            var subscriptionManager = new MessageQueueConsumersManager(new MessageQueueThreadPool(customSettings ?? RabbitMqMessageQueueOptions.Default),
+                MessageSerializer,
+                RabbitMqManager,
+                new Mock<ILogger<MessageQueueConsumersManager>>().Object,
+                new Mock<IPerformanceLogger<MessageQueueConsumersManager>>().Object);
 
             var list = new List<IConsumer>();
             list.AddRange(taskConsumers ?? Enumerable.Empty<ITaskConsumer>());
@@ -86,10 +80,10 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
             var messageConsumerSourceMock = new Mock<IConsumerSource>();
             messageConsumerSourceMock.Setup(source => source.GetConsumers()).Returns(list);
 
-            var messageConsumersManager = new RabbitMqMessageQueueInitializer(subscriptionManager,
-                                                                      new[] { messageConsumerSourceMock.Object },
-                                                                      RabbitMqManager,
-                                                                      new Mock<ILogger<RabbitMqMessageQueueInitializer>>().Object);
+            var messageConsumersManager = new MessageQueueInitializer(subscriptionManager,
+                new[] {messageConsumerSourceMock.Object},
+                RabbitMqManager,
+                new Mock<ILogger<MessageQueueInitializer>>().Object);
 
             ((IAppStartedHandler) messageConsumersManager).Handle();
         }

@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using InfinniPlatform.Hosting;
 using InfinniPlatform.MessageQueue.Management;
 using InfinniPlatform.MessageQueue.Properties;
-
 using Microsoft.Extensions.Logging;
-
 using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.Hosting
 {
-    public class RabbitMqMessageQueueInitializer : IAppStartedHandler, IAppStoppedHandler
+    public class MessageQueueInitializer : IAppStartedHandler, IAppStoppedHandler
     {
+        private readonly List<IBroadcastConsumer> _broadcastConsumers;
+        private readonly IMessageQueueConsumersManager _consumersManager;
+
+        private readonly ILogger _logger;
+        private readonly RabbitMqManager _manager;
+        private readonly List<ITaskConsumer> _taskConsumers;
+
         /// <summary>
         /// Регистрирует потребителей сообщений.
         /// </summary>
@@ -21,10 +25,10 @@ namespace InfinniPlatform.MessageQueue.Hosting
         /// <param name="consumerSource">Источники потребителей сообщений.</param>
         /// <param name="manager">Менеджер соединения с RabbitMQ.</param>
         /// <param name="logger">Лог.</param>
-        public RabbitMqMessageQueueInitializer(IMessageQueueConsumersManager consumersManager,
-                                               IEnumerable<IConsumerSource> consumerSource,
-                                               RabbitMqManager manager,
-                                               ILogger<RabbitMqMessageQueueInitializer> logger)
+        public MessageQueueInitializer(IMessageQueueConsumersManager consumersManager,
+                                       IEnumerable<IConsumerSource> consumerSource,
+                                       RabbitMqManager manager,
+                                       ILogger<MessageQueueInitializer> logger)
         {
             var consumers = consumerSource.SelectMany(source => source.GetConsumers()).ToList();
             _taskConsumers = consumers.OfType<ITaskConsumer>().ToList();
@@ -37,16 +41,14 @@ namespace InfinniPlatform.MessageQueue.Hosting
             _logger = logger;
         }
 
-        private readonly List<IBroadcastConsumer> _broadcastConsumers;
-        private readonly IMessageQueueConsumersManager _consumersManager;
-
-        private readonly ILogger _logger;
-        private readonly RabbitMqManager _manager;
-        private readonly List<ITaskConsumer> _taskConsumers;
-
         void IAppStartedHandler.Handle()
         {
             HandleStart();
+        }
+
+        void IAppStoppedHandler.Handle()
+        {
+            _manager.Dispose();
         }
 
         private void HandleStart()
@@ -64,11 +66,6 @@ namespace InfinniPlatform.MessageQueue.Hosting
             }
         }
 
-        void IAppStoppedHandler.Handle()
-        {
-            _manager.Dispose();
-        }
-
         private void RegisterOnReconnectEvent()
         {
             var connection = _manager.Connection;
@@ -76,9 +73,9 @@ namespace InfinniPlatform.MessageQueue.Hosting
             if (recoverable != null)
             {
                 recoverable.Recovery += (sender, args) =>
-                                        {
-                                            //InitializeBroadcastConsumers();
-                                        };
+                {
+                    //InitializeBroadcastConsumers();
+                };
             }
         }
 
@@ -89,7 +86,7 @@ namespace InfinniPlatform.MessageQueue.Hosting
                 var consumerType = consumer.GetType().Name;
                 _logger.LogDebug(Resources.InitializationOfTaskConsumerStarted, () => CreateLogContext(consumerType));
 
-                var key = RabbitMqHelper.GetConsumerQueueName(consumer);
+                var key = MessageQueueHelper.GetConsumerQueueName(consumer);
                 var queueName = _manager.DeclareTaskQueue(key);
 
                 _consumersManager.RegisterConsumer(queueName, consumer);
@@ -97,7 +94,7 @@ namespace InfinniPlatform.MessageQueue.Hosting
                 _logger.LogDebug(Resources.InitializationOfTaskConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
 
-            _logger.LogInformation(Resources.InitializationOfTaskConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "taskCounsumerCount", _taskConsumers.Count } });
+            _logger.LogInformation(Resources.InitializationOfTaskConsumersSuccessfullyCompleted, () => new Dictionary<string, object> {{"taskCounsumerCount", _taskConsumers.Count}});
         }
 
         private void InitializeBroadcastConsumers()
@@ -107,7 +104,7 @@ namespace InfinniPlatform.MessageQueue.Hosting
                 var consumerType = consumer.GetType().Name;
                 _logger.LogDebug(Resources.InitializationOfBroadcastConsumerStarted, () => CreateLogContext(consumerType));
 
-                var routingKey = RabbitMqHelper.GetConsumerQueueName(consumer);
+                var routingKey = MessageQueueHelper.GetConsumerQueueName(consumer);
                 var queueName = _manager.DeclareBroadcastQueue(routingKey);
 
                 _consumersManager.RegisterConsumer(queueName, consumer);
@@ -115,12 +112,12 @@ namespace InfinniPlatform.MessageQueue.Hosting
                 _logger.LogDebug(Resources.InitializationOfBroadcastConsumerSuccessfullyCompleted, () => CreateLogContext(consumerType));
             }
 
-            _logger.LogInformation(Resources.InitializationOfBroadcastConsumersSuccessfullyCompleted, () => new Dictionary<string, object> { { "broadcastConsumerCount", _broadcastConsumers.Count } });
+            _logger.LogInformation(Resources.InitializationOfBroadcastConsumersSuccessfullyCompleted, () => new Dictionary<string, object> {{"broadcastConsumerCount", _broadcastConsumers.Count}});
         }
 
         private static Dictionary<string, object> CreateLogContext(string consumerType)
         {
-            return new Dictionary<string, object> { { "consumerType", consumerType } };
+            return new Dictionary<string, object> {{"consumerType", consumerType}};
         }
     }
 }

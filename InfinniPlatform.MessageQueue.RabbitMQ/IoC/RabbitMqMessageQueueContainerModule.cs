@@ -9,12 +9,12 @@ namespace InfinniPlatform.MessageQueue.IoC
 {
     public class RabbitMqMessageQueueContainerModule : IContainerModule
     {
+        private readonly RabbitMqMessageQueueOptions _options;
+
         public RabbitMqMessageQueueContainerModule(RabbitMqMessageQueueOptions options)
         {
             _options = options;
         }
-
-        private readonly RabbitMqMessageQueueOptions _options;
 
         public void Load(IContainerBuilder builder)
         {
@@ -22,60 +22,56 @@ namespace InfinniPlatform.MessageQueue.IoC
 
             // Hosting
 
-            builder.RegisterType<RabbitMqMessageQueueInitializer>()
-                   .As<IAppStartedHandler>()
-                   .As<IAppStoppedHandler>()
-                   .SingleInstance();
+            builder.RegisterType<MessageQueueInitializer>()
+                .As<IAppStartedHandler>()
+                .As<IAppStoppedHandler>()
+                .SingleInstance();
 
             builder.RegisterType<RabbitMqManager>()
-                   .As<RabbitMqManager>()
-                   .SingleInstance();
+                .As<RabbitMqManager>()
+                .SingleInstance();
 
             builder.RegisterType<RabbitMqManagementHttpClient>()
-                   .AsSelf()
-                   .SingleInstance();
+                .AsSelf()
+                .SingleInstance();
 
-            builder.RegisterType<RabbitMqMessageQueueConsumersManager>()
-                   .As<IMessageQueueConsumersManager>()
-                   .SingleInstance();
+            builder.RegisterType<MessageQueueConsumersManager>()
+                .As<IMessageQueueConsumersManager>()
+                .SingleInstance();
 
             builder.RegisterType<MessageQueueThreadPool>()
-                   .AsSelf()
-                   .SingleInstance();
+                .AsSelf()
+                .SingleInstance();
 
             builder.RegisterType<DefaultConsumerSource>()
-                   .As<IConsumerSource>()
-                   .SingleInstance();
+                .As<IConsumerSource>()
+                .SingleInstance();
 
             // Producers
 
-            builder.RegisterType<RabbitMqOnDemandConsumer>()
-                   .As<IOnDemandConsumer>()
-                   .SingleInstance();
+            builder.RegisterType<TaskProducer>()
+                .As<ITaskProducer>()
+                .SingleInstance();
 
-            builder.RegisterType<RabbitMqTaskProducer>()
-                   .As<ITaskProducer>()
-                   .SingleInstance();
-
-            builder.RegisterType<RabbitMqBroadcastProducer>()
-                   .As<IBroadcastProducer>()
-                   .SingleInstance();
+            builder.RegisterType<BroadcastProducer>()
+                .As<IBroadcastProducer>()
+                .SingleInstance();
 
             // Diagnostics
 
             builder.RegisterType<RabbitMqMessageQueueStatusProvider>()
-                   .As<ISubsystemStatusProvider>()
-                   .SingleInstance();
+                .As<ISubsystemStatusProvider>()
+                .SingleInstance();
 
             // Other
 
-            builder.RegisterType<RabbitMqMessageSerializer>()
-                   .As<IRabbitMqMessageSerializer>()
-                   .SingleInstance();
+            builder.RegisterType<MessageSerializer>()
+                .As<IMessageSerializer>()
+                .SingleInstance();
 
-            builder.RegisterType<RabbitMqBasicPropertiesProvider>()
-                   .As<IRabbitMqBasicPropertiesProvider>()
-                   .SingleInstance();
+            builder.RegisterType<BasicPropertiesProvider>()
+                .As<IBasicPropertiesProvider>()
+                .SingleInstance();
         }
     }
 }

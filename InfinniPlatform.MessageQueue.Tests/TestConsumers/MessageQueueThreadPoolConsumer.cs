@@ -7,6 +7,10 @@ namespace InfinniPlatform.MessageQueue.TestConsumers
     [QueueName("MessageQueueThreadPoolTest")]
     public class MessageQueueThreadPoolConsumer : TaskConsumerBase<string>
     {
+        private readonly CountdownEvent _completeEvent;
+        private readonly ConcurrentBag<string> _messages;
+        private readonly int _workTime;
+
         public MessageQueueThreadPoolConsumer(ConcurrentBag<string> messages,
                                               CountdownEvent completeEvent,
                                               int workTime)
@@ -15,10 +19,6 @@ namespace InfinniPlatform.MessageQueue.TestConsumers
             _completeEvent = completeEvent;
             _workTime = workTime;
         }
-
-        private readonly CountdownEvent _completeEvent;
-        private readonly ConcurrentBag<string> _messages;
-        private readonly int _workTime;
 
         protected override async Task Consume(Message<string> message)
         {

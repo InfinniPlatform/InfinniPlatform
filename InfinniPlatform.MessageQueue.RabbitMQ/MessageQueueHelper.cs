@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Reflection;
-
 using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.MessageQueue
 {
-    internal static class RabbitMqHelper
+    internal static class MessageQueueHelper
     {
         public static void CheckTypeRestrictions<T>()
         {
@@ -17,12 +16,12 @@ namespace InfinniPlatform.MessageQueue
 
         public static string GetProducerQueueName(object message)
         {
-            return (message != null) ? GetQueueName(message.GetType()) : null;
+            return message != null ? GetQueueName(message.GetType()) : null;
         }
 
         public static string GetConsumerQueueName(IConsumer consumer)
         {
-            return (consumer != null) ? GetQueueName(consumer.MessageType, GetQueueName(consumer.GetType(), consumer.MessageType.FullName)) : null;
+            return consumer != null ? GetQueueName(consumer.MessageType, GetQueueName(consumer.GetType(), consumer.MessageType.FullName)) : null;
         }
 
         public static string GetQueueName(Type type, string defaultValue = null)

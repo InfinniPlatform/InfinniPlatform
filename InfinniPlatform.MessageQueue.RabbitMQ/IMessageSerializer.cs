@@ -1,11 +1,10 @@
 ﻿using System;
-
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue
 {
-    public interface IRabbitMqMessageSerializer
+    public interface IMessageSerializer
     {
         /// <summary>
         /// Преобразует сообщение в массив байтов для передачи в шину сообщений.

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using InfinniPlatform.Logging;
 using InfinniPlatform.MessageQueue.Management;
 using InfinniPlatform.MessageQueue.Properties;
-
 using Microsoft.Extensions.Logging;
-
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -16,14 +13,21 @@ namespace InfinniPlatform.MessageQueue.Hosting
     /// <summary>
     /// Предоставляет метод регистрации получателей сообщений из очереди.
     /// </summary>
-    [LoggerName(nameof(RabbitMqMessageQueueConsumersManager))]
-    public class RabbitMqMessageQueueConsumersManager : IMessageQueueConsumersManager
+    [LoggerName(nameof(MessageQueueConsumersManager))]
+    public class MessageQueueConsumersManager : IMessageQueueConsumersManager
     {
-        public RabbitMqMessageQueueConsumersManager(MessageQueueThreadPool messageQueueThreadPool,
-                                                    IRabbitMqMessageSerializer messageSerializer,
-                                                    RabbitMqManager manager,
-                                                    ILogger<RabbitMqMessageQueueConsumersManager> logger,
-                                                    IPerformanceLogger<RabbitMqMessageQueueConsumersManager> perfLogger)
+        private readonly ILogger _logger;
+        private readonly RabbitMqManager _manager;
+
+        private readonly MessageQueueThreadPool _messageQueueThreadPool;
+        private readonly IMessageSerializer _messageSerializer;
+        private readonly IPerformanceLogger _perfLogger;
+
+        public MessageQueueConsumersManager(MessageQueueThreadPool messageQueueThreadPool,
+                                            IMessageSerializer messageSerializer,
+                                            RabbitMqManager manager,
+                                            ILogger<MessageQueueConsumersManager> logger,
+                                            IPerformanceLogger<MessageQueueConsumersManager> perfLogger)
         {
             _messageQueueThreadPool = messageQueueThreadPool;
             _messageSerializer = messageSerializer;
@@ -31,12 +35,6 @@ namespace InfinniPlatform.MessageQueue.Hosting
             _logger = logger;
             _perfLogger = perfLogger;
         }
-
-        private readonly MessageQueueThreadPool _messageQueueThreadPool;
-        private readonly IRabbitMqMessageSerializer _messageSerializer;
-        private readonly RabbitMqManager _manager;
-        private readonly ILogger _logger;
-        private readonly IPerformanceLogger _perfLogger;
 
         /// <summary>
         /// Регистрирует обработчик.
@@ -55,7 +53,17 @@ namespace InfinniPlatform.MessageQueue.Hosting
             var eventingConsumer = new EventingBasicConsumer(channel);
 
             eventingConsumer.Received += async (o, args) => await OnRecieved(consumer, args, channel);
-            eventingConsumer.Shutdown += (sender, args) => { _logger.LogError("Consumer shutdown.", () => CreateLogContext(consumer)); };
+            eventingConsumer.Shutdown += (sender, args) =>
+            {
+                if (args.Initiator == ShutdownInitiator.Application && args.ReplyCode == 200)
+                {
+                    _logger.LogInformation(args.ReplyText, () => CreateLogContext(consumer));
+                }
+                else
+                {
+                    _logger.LogError(args.ReplyText, () => CreateLogContext(consumer));
+                }
+            };
 
             channel?.BasicConsume(queueName, false, eventingConsumer);
         }
@@ -72,39 +80,39 @@ namespace InfinniPlatform.MessageQueue.Hosting
             Exception error = null;
 
             await _messageQueueThreadPool.Enqueue(async () =>
-                                                  {
-                                                      var consumerType = consumer.GetType().Name;
+            {
+                var consumerType = consumer.GetType().Name;
 
-                                                      Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
+                Func<Dictionary<string, object>> logContext = () => CreateLogContext(consumerType, args);
 
-                                                      try
-                                                      {
-                                                          var message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
+                try
+                {
+                    var message = _messageSerializer.BytesToMessage(args, consumer.MessageType);
 
-                                                          _logger.LogDebug(Resources.ConsumeStart, logContext);
+                    _logger.LogDebug(Resources.ConsumeStart, logContext);
 
-                                                          await consumer.Consume(message);
+                    await consumer.Consume(message);
 
-                                                          _logger.LogDebug(Resources.ConsumeSuccess, logContext);
+                    _logger.LogDebug(Resources.ConsumeSuccess, logContext);
 
-                                                          BasicAck(channel, args, logContext);
-                                                      }
-                                                      catch (Exception e)
-                                                      {
-                                                          error = e;
+                    BasicAck(channel, args, logContext);
+                }
+                catch (Exception e)
+                {
+                    error = e;
 
-                                                          if (await consumer.OnError(error))
-                                                          {
-                                                              BasicAck(channel, args, logContext);
-                                                          }
+                    if (await consumer.OnError(error))
+                    {
+                        BasicAck(channel, args, logContext);
+                    }
 
-                                                          _logger.LogError(error, logContext);
-                                                      }
-                                                      finally
-                                                      {
-                                                          _perfLogger.Log($"Consume::{consumerType}", startDate, error);
-                                                      }
-                                                  });
+                    _logger.LogError(error, logContext);
+                }
+                finally
+                {
+                    _perfLogger.Log($"Consume::{consumerType}", startDate, error);
+                }
+            });
         }
 
         /// <summary>
@@ -130,17 +138,17 @@ namespace InfinniPlatform.MessageQueue.Hosting
 
         private static Dictionary<string, object> CreateLogContext(IConsumer consumer)
         {
-            return new Dictionary<string, object> { { "ConsumerType", consumer.GetType().Name } };
+            return new Dictionary<string, object> {{"consumerType", consumer.GetType().Name}};
         }
 
         private static Dictionary<string, object> CreateLogContext(string consumerType, BasicDeliverEventArgs args)
         {
             return new Dictionary<string, object>
-                   {
-                       { "consumerType", consumerType },
-                       { "deliveryTag", args?.DeliveryTag },
-                       { "messageSize", args?.Body?.Length }
-                   };
+            {
+                {"consumerType", consumerType},
+                {"deliveryTag", args?.DeliveryTag},
+                {"messageSize", args?.Body?.Length}
+            };
         }
     }
 }

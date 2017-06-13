@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-
 using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http;
 using InfinniPlatform.MessageQueue.Management;
@@ -8,12 +7,12 @@ namespace InfinniPlatform.MessageQueue.Diagnostics
 {
     internal class RabbitMqMessageQueueStatusProvider : ISubsystemStatusProvider
     {
+        private readonly RabbitMqManagementHttpClient _client;
+
         public RabbitMqMessageQueueStatusProvider(RabbitMqManagementHttpClient client)
         {
             _client = client;
         }
-
-        private readonly RabbitMqManagementHttpClient _client;
 
         public string Name => RabbitMqMessageQueueOptions.SectionName;
 

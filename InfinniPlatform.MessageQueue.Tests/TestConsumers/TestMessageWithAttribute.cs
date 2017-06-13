@@ -13,7 +13,7 @@
         public override bool Equals(object obj)
         {
             var message = obj as TestMessageWithAttribute;
-            return (message != null) &&
+            return message != null &&
                    string.Equals(SomeString, message.SomeString);
         }
 

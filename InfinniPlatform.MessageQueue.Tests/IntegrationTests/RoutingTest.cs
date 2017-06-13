@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.MessageQueue.TestConsumers;
 using InfinniPlatform.Tests;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.IntegrationTests
@@ -20,28 +18,28 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
         {
             var queue1Messages = new List<DynamicDocument>();
             var queue1AssertMessages = new List<DynamicDocument>
-                                       {
-                                           new DynamicDocument { { "SomeField", "Message1" } },
-                                           new DynamicDocument { { "SomeField", "Message2" } },
-                                           new DynamicDocument { { "SomeField", "Message3" } }
-                                       };
+            {
+                new DynamicDocument {{"SomeField", "Message1"}},
+                new DynamicDocument {{"SomeField", "Message2"}},
+                new DynamicDocument {{"SomeField", "Message3"}}
+            };
             var queue1CountdownEvent = new CountdownEvent(3);
             var queue1TaskConsumer = new Queue1DynamicDocumentTaskConsumer(queue1Messages, queue1CountdownEvent);
 
             var queue2Messages = new List<DynamicDocument>();
             var queue2AssertMessages = new List<DynamicDocument>
-                                       {
-                                           new DynamicDocument { { "SomeField", "Message4" } },
-                                           new DynamicDocument { { "SomeField", "Message5" } }
-                                       };
+            {
+                new DynamicDocument {{"SomeField", "Message4"}},
+                new DynamicDocument {{"SomeField", "Message5"}}
+            };
             var queue2CountdownEvent = new CountdownEvent(2);
             var queue2TaskConsumer = new Queue2DynamicDocumentTaskConsumer(queue2Messages, queue2CountdownEvent);
 
             var queue3Messages = new List<DynamicDocument>();
             var queue3AssertMessages = new List<DynamicDocument>
-                                       {
-                                           new DynamicDocument { { "SomeField", "Message6" } }
-                                       };
+            {
+                new DynamicDocument {{"SomeField", "Message6"}}
+            };
             var queue3CountdownEvent = new CountdownEvent(1);
             var queue3TaskConsumer = new Queue3DynamicDocumentTaskConsumer(queue3Messages, queue3CountdownEvent);
 
@@ -54,7 +52,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in queue1AssertMessages)
             {
                 producerBase.PublishDynamic(message, "Queue1");
@@ -107,7 +105,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(null, broadcastConsumers);
 
-            var producerBase = new RabbitMqBroadcastProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new BroadcastProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);
@@ -139,9 +137,9 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             object[] assertMessages =
             {
-                new DynamicDocument { { "SomeField", "Message1" } },
-                new DynamicDocument { { "SomeField", "Message2" } },
-                new DynamicDocument { { "SomeField", "Message3" } },
+                new DynamicDocument {{"SomeField", "Message1"}},
+                new DynamicDocument {{"SomeField", "Message2"}},
+                new DynamicDocument {{"SomeField", "Message3"}},
                 new TestMessage("1", 1, new DateTime(1, 1, 1)),
                 new TestMessage("2", 2, new DateTime(2, 2, 2)),
                 "message1"
@@ -156,7 +154,7 @@ namespace InfinniPlatform.MessageQueue.IntegrationTests
 
             RegisterConsumers(taskConsumers, null);
 
-            var producerBase = new RabbitMqTaskProducer(RabbitMqManager, RabbitMqMessageSerializer, BasicPropertiesProvider);
+            var producerBase = new TaskProducer(RabbitMqManager, MessageSerializer, BasicPropertiesProvider);
             foreach (var message in assertMessages)
             {
                 producerBase.Publish(message);

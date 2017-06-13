@@ -7,23 +7,23 @@ namespace InfinniPlatform.MessageQueue.TestConsumers
 {
     public class TestMessageTaskConsumer : TaskConsumerBase<TestMessage>
     {
+        private readonly CountdownEvent _completeEvent;
+
+        private readonly List<TestMessage> _messages;
+
         public TestMessageTaskConsumer(List<TestMessage> messages, CountdownEvent completeEvent)
         {
             _messages = messages;
             _completeEvent = completeEvent;
         }
 
-        private readonly CountdownEvent _completeEvent;
-
-        private readonly List<TestMessage> _messages;
-
         protected override Task Consume(Message<TestMessage> message)
         {
             return Task.Run(() =>
-                            {
-                                _messages.Add(message.Body);
-                                _completeEvent.Signal();
-                            });
+            {
+                _messages.Add(message.Body);
+                _completeEvent.Signal();
+            });
         }
 
         protected override Task<bool> OnError(Exception exception)

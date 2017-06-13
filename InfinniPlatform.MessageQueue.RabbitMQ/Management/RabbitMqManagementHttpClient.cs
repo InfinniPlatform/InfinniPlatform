@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Serialization;
 
@@ -20,26 +19,26 @@ namespace InfinniPlatform.MessageQueue.Management
         /// </summary>
         private const string DefaultVhost = "%2f";
 
+        private readonly Lazy<HttpClient> _httpClient;
+        private readonly IJsonObjectSerializer _serializer;
+
         public RabbitMqManagementHttpClient(RabbitMqMessageQueueOptions options, IJsonObjectSerializer serializer)
         {
             _httpClient = new Lazy<HttpClient>(() => GetHttpClient(options));
             _serializer = serializer;
         }
 
-        private readonly Lazy<HttpClient> _httpClient;
-        private readonly IJsonObjectSerializer _serializer;
-
         private static HttpClient GetHttpClient(RabbitMqMessageQueueOptions options)
         {
             var httpMessageHandler = new HttpClientHandler
-                                     {
-                                         Credentials = new NetworkCredential(options.UserName, options.Password)
-                                     };
+            {
+                Credentials = new NetworkCredential(options.UserName, options.Password)
+            };
 
             var httpClient = new HttpClient(httpMessageHandler)
-                             {
-                                 BaseAddress = new Uri($"http://{options.HostName}:{options.ManagementApiPort}")
-                             };
+            {
+                BaseAddress = new Uri($"http://{options.HostName}:{options.ManagementApiPort}")
+            };
 
             try
             {

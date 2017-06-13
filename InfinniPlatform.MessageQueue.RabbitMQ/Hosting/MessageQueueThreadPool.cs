@@ -6,12 +6,12 @@ namespace InfinniPlatform.MessageQueue.Hosting
 {
     public class MessageQueueThreadPool
     {
+        private readonly SemaphoreSlim _semaphore;
+
         public MessageQueueThreadPool(RabbitMqMessageQueueOptions settings)
         {
             _semaphore = new SemaphoreSlim(settings.MaxConcurrentThreads);
         }
-
-        private readonly SemaphoreSlim _semaphore;
 
         public async Task Enqueue(Func<Task> func)
         {

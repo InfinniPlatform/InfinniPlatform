@@ -1,20 +1,18 @@
 ﻿using System;
-
 using InfinniPlatform.Serialization;
-
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue
 {
-    internal class RabbitMqMessageSerializer : IRabbitMqMessageSerializer
+    internal class MessageSerializer : IMessageSerializer
     {
-        public RabbitMqMessageSerializer(IJsonObjectSerializer serializer)
+        private readonly IJsonObjectSerializer _serializer;
+
+        public MessageSerializer(IJsonObjectSerializer serializer)
         {
             _serializer = serializer;
         }
-
-        private readonly IJsonObjectSerializer _serializer;
 
         public byte[] MessageToBytes(object message)
         {
@@ -27,7 +25,7 @@ namespace InfinniPlatform.MessageQueue
             var genericType = typeof(Message<>).MakeGenericType(type);
             var message = Activator.CreateInstance(genericType, body, args.BasicProperties.AppId, args.BasicProperties.Headers);
 
-            return (IMessage)message;
+            return (IMessage) message;
         }
 
         public IMessage BytesToMessage<T>(BasicDeliverEventArgs args)

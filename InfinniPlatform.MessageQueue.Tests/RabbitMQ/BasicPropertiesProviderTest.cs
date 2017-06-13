@@ -1,16 +1,13 @@
 ﻿using System;
-
 using InfinniPlatform.Serialization;
 using InfinniPlatform.Tests;
-
 using Moq;
-
 using NUnit.Framework;
 
 namespace InfinniPlatform.MessageQueue.RabbitMQ
 {
     [Category(TestCategories.UnitTest)]
-    public class RabbitMqBasicPropertiesProviderTest
+    public class BasicPropertiesProviderTest
     {
         [Test]
         public void BasicPropertiesProviderFillsAppId()
@@ -18,9 +15,9 @@ namespace InfinniPlatform.MessageQueue.RabbitMQ
             var jsonObjSerializerMock = new Mock<IJsonObjectSerializer>();
 
             var appId = Guid.NewGuid().ToString();
-            var appOptions = new AppOptions { AppInstance = appId };
+            var appOptions = new AppOptions {AppInstance = appId};
 
-            var basicPropertiesProvider = new RabbitMqBasicPropertiesProvider(appOptions, jsonObjSerializerMock.Object);
+            var basicPropertiesProvider = new BasicPropertiesProvider(appOptions, jsonObjSerializerMock.Object);
 
             var basicProperties = basicPropertiesProvider.Get();
 
@@ -34,7 +31,7 @@ namespace InfinniPlatform.MessageQueue.RabbitMQ
 
             var jsonObjectSerializer = new JsonObjectSerializer();
 
-            var basicPropertiesProvider = new RabbitMqBasicPropertiesProvider(appOptions, jsonObjectSerializer);
+            var basicPropertiesProvider = new BasicPropertiesProvider(appOptions, jsonObjectSerializer);
 
             var basicProperties = basicPropertiesProvider.Get();
 
