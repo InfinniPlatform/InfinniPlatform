@@ -1,8 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.Auth.Middlewares;
-using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using InfinniPlatform.Logging;
@@ -67,18 +65,10 @@ namespace InfinniPlatform.ServiceHost
         {
             ConfigureLogger(loggerFactory, appLifetime, httpContextAccessor);
 
-            // Setup default application layers
-            //app.UseDefaultAppLayers(resolver);
             app.UseStaticFilesMapping(_configuration);
 
-            var appLayersMap = new AppLayersMap(resolver);
-            appLayersMap.AddErrorHandlingAppLayer<ErrorHandlingAppLayer>();
-            appLayersMap.AddAuthenticationBarrierAppLayer<AuthCookieAppLayer>();
-            appLayersMap.AddExternalAuthenticationAppLayer<FacebookAuthAppLayer>();
-            appLayersMap.AddInternalAuthenticationAppLayer<AuthInternalAppLayer>();
-            appLayersMap.AddBusinessAppLayer<NancyAppLayer>();
-
-            app.UseAppLayersMap(appLayersMap);
+            // Setup default application layers
+            app.UseDefaultAppLayers(resolver);
         }
 
 

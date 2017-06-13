@@ -1,0 +1,19 @@
+{
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/authHttpService.json",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "authHttpService",
+  "description": "Настройки HTTP-сервиса аутентификации.",
+  "type": "object",
+  "properties": {
+    "SuccessUrl": {
+      "description": "Путь для перенаправления при успешной аутентификации через внешний провайдер.",
+      "type": "string",
+      "default": null
+    },
+    "FailureUrl": {
+      "description": "Путь для перенаправления при ошибке аутентификации через внешний провайдер.",
+      "type": "string",
+      "default": null
+    }
+  }
+}
