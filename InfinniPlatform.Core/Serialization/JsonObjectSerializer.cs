@@ -33,7 +33,7 @@ namespace InfinniPlatform.Serialization
         /// <summary>
         /// Экземпляр с настройками форматирования.
         /// </summary>
-        public static readonly JsonObjectSerializer Formated = new JsonObjectSerializer(true);
+        public static readonly JsonObjectSerializer Formatted = new JsonObjectSerializer(true);
 
 
         public JsonObjectSerializer(bool withFormatting = false,
