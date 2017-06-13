@@ -24,6 +24,7 @@ namespace InfinniPlatform.Auth.HttpService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly SignInManager<TUser> _signInManager;
+        private readonly AuthHttpServiceOptions _authHttpServiceOptions;
         private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
         private readonly IUserIdentityProvider _userIdentityProvider;
         private readonly UserManager<TUser> _userManager;
@@ -32,13 +33,15 @@ namespace InfinniPlatform.Auth.HttpService
                                        IUserIdentityProvider userIdentityProvider,
                                        UserEventHandlerInvoker userEventHandlerInvoker,
                                        UserManager<TUser> userManager,
-                                       SignInManager<TUser> signInManager)
+                                       SignInManager<TUser> signInManager,
+                                       AuthHttpServiceOptions authHttpServiceOptions)
         {
             _httpContextAccessor = httpContextAccessor;
             _userIdentityProvider = userIdentityProvider;
             _userEventHandlerInvoker = userEventHandlerInvoker;
             _userManager = userManager;
             _signInManager = signInManager;
+            _authHttpServiceOptions = authHttpServiceOptions;
         }
 
         private IIdentity Identity => _userIdentityProvider.GetUserIdentity();
@@ -104,7 +107,7 @@ namespace InfinniPlatform.Auth.HttpService
         {
             var loginProviders = _signInManager.GetExternalAuthenticationSchemes();
 
-            var loginProvidersList = loginProviders.Select(i => new {Type = i.AuthenticationScheme, Name = i.DisplayName})
+            var loginProvidersList = loginProviders.Select(i => new { Type = i.AuthenticationScheme, Name = i.DisplayName })
                                                    .ToArray();
 
             var httpResponse = Extensions.CreateSuccesResponse(loginProvidersList);
@@ -140,8 +143,8 @@ namespace InfinniPlatform.Auth.HttpService
                                                                   var addLoginTask = await _userManager.AddLoginAsync(identityUser, loginInfo);
 
                                                                   return !addLoginTask.Succeeded
-                                                                             ? string.Join(Environment.NewLine, addLoginTask.Errors)
-                                                                             : null;
+                                                                      ? string.Join(Environment.NewLine, addLoginTask.Errors)
+                                                                      : null;
                                                               });
         }
 
@@ -171,8 +174,8 @@ namespace InfinniPlatform.Auth.HttpService
             if (!removeLoginTask.Succeeded)
             {
                 var errorMessage = !removeLoginTask.Succeeded
-                                       ? string.Join(Environment.NewLine, removeLoginTask.Errors)
-                                       : null;
+                    ? string.Join(Environment.NewLine, removeLoginTask.Errors)
+                    : null;
 
                 return Extensions.CreateErrorResponse(errorMessage, 400);
             }
@@ -207,8 +210,8 @@ namespace InfinniPlatform.Auth.HttpService
         /// </summary>
         private async Task<object> ChallengeExternalProviderCallback(IHttpRequest request, Func<ExternalLoginInfo, Task<string>> callbackAction)
         {
-            var successUrl = request.Query.SuccessUrl;
-            var failureUrl = request.Query.FailureUrl;
+            var successUrl = (string)request.Query.SuccessUrl ?? _authHttpServiceOptions.SuccessUrl;
+            var failureUrl = (string)request.Query.FailureUrl ?? _authHttpServiceOptions.FailureUrl;
 
             string errorMessage;
 

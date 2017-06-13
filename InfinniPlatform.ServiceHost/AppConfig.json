@@ -44,6 +44,10 @@
     "LoginPath": "/",
     "LogoutPath": "/"
   },
+  "authHttpService": {
+    "SuccessUrl": "/",
+    "FailureUrl": "/"
+  },
   "quartzScheduler": {
     "ExpireHistoryAfter": 30
   },
