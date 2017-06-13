@@ -28,6 +28,7 @@ namespace InfinniPlatform.Auth.Middlewares
         }
 
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class AuthInternalMiddleware
         {
             public AuthInternalMiddleware(RequestDelegate next, AuthInternalAppLayer parentLayer)

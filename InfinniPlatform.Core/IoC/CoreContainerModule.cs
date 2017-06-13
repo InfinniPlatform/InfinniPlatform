@@ -100,10 +100,12 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
 
             builder.RegisterType<ErrorHandlingAppLayer>()
+                   .AsSelf()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 
             builder.RegisterType<NancyAppLayer>()
+                   .AsSelf()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 

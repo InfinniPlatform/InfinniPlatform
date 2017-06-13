@@ -31,6 +31,7 @@ namespace InfinniPlatform.Http.Middlewares
         }
 
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class ErrorHandlingMiddleware
         {
             public ErrorHandlingMiddleware(RequestDelegate next, ErrorHandlingAppLayer parentLayer)
