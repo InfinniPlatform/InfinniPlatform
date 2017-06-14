@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
-
+using InfinniPlatform.IoC;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
-
 using Nancy;
 using Nancy.Helpers;
 
@@ -34,7 +34,8 @@ namespace InfinniPlatform.Http
                                                  HttpRequestExcutorFactory httpRequestExcutorFactory,
                                                  IEnumerable<IHttpGlobalHandler> httpGlobalHandlers,
                                                  IEnumerable<IHttpServiceSource> httpServiceSources,
-                                                 IPerformanceLogger<HttpServiceNancyModuleInitializer> perfLogger)
+                                                 IPerformanceLogger<HttpServiceNancyModuleInitializer> defaultPerfLogger,
+                                                 IContainerResolver containerResolver)
         {
             _mimeTypeResolver = mimeTypeResolver;
             _userIdentityProvider = userIdentityProvider;
@@ -43,7 +44,8 @@ namespace InfinniPlatform.Http
             _httpRequestExcutorFactory = httpRequestExcutorFactory;
             _httpGlobalHandlers = httpGlobalHandlers;
             _httpServices = new Lazy<IEnumerable<IHttpService>>(() => httpServiceSources.SelectMany(i => i.GetServices()).ToArray());
-            _perfLogger = perfLogger;
+            _defaultPerfLogger = defaultPerfLogger;
+            _containerResolver = containerResolver;
 
             _nancyHttpServices = new Lazy<Dictionary<Type, NancyHttpService>>(CreateNancyHttpServices);
         }
@@ -56,7 +58,8 @@ namespace InfinniPlatform.Http
         private readonly HttpRequestExcutorFactory _httpRequestExcutorFactory;
         private readonly IEnumerable<IHttpGlobalHandler> _httpGlobalHandlers;
         private readonly Lazy<IEnumerable<IHttpService>> _httpServices;
-        private readonly IPerformanceLogger _perfLogger;
+        private readonly IPerformanceLogger _defaultPerfLogger;
+        private readonly IContainerResolver _containerResolver;
 
         private readonly Lazy<Dictionary<Type, NancyHttpService>> _nancyHttpServices;
 
@@ -135,17 +138,22 @@ namespace InfinniPlatform.Http
 
                     httpService.Load(serviceBuilder);
 
-                    var nancyHttpService = new NancyHttpService
-                                           {
-                                               ServicePath = serviceBuilder.ServicePath,
-                                               Get = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Get),
-                                               Post = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Post),
-                                               Put = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Put),
-                                               Patch = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Patch),
-                                               Delete = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Delete)
-                                           };
+                    var httpServiceType = httpService.GetType();
+                    var perfLoggerType = typeof(IPerformanceLogger<>).MakeGenericType(httpServiceType);
 
-                    nancyHttpServices[httpService.GetType()] = nancyHttpService;
+                    var nancyHttpService = new NancyHttpService
+                    {
+                        ServicePath = serviceBuilder.ServicePath,
+                        Get = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Get),
+                        Post = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Post),
+                        Put = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Put),
+                        Patch = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Patch),
+                        Delete = CreateNancyHttpServiceRoutes(httpGlobalHandler, serviceBuilder, s => s.Delete),
+                        PerformanceLogger = (IPerformanceLogger)_containerResolver.Resolve(perfLoggerType)
+
+                    };
+
+                    nancyHttpServices[httpServiceType] = nancyHttpService;
                 }
             }
 
@@ -176,12 +184,12 @@ namespace InfinniPlatform.Http
             }
 
             return new NancyHttpGlobalHandler
-                   {
-                       OnBefore = onBeforeGlobal,
-                       OnAfter = onAfterGlobal,
-                       OnError = onErrorGlobal,
-                       ResultConverter = resultConverterGlobal
-                   };
+            {
+                OnBefore = onBeforeGlobal,
+                OnAfter = onAfterGlobal,
+                OnError = onErrorGlobal,
+                ResultConverter = resultConverterGlobal
+            };
         }
 
         private IEnumerable<NancyHttpServiceRoute> CreateNancyHttpServiceRoutes(NancyHttpGlobalHandler httpGlobalHandler, IHttpServiceBuilder httpService, Func<IHttpServiceBuilder, IHttpServiceRouteBuilder> httpServiceRoutesSelector)
@@ -204,59 +212,78 @@ namespace InfinniPlatform.Http
 
                 // Функция обработки метода сервиса в контексте выполнения Nancy
                 Func<NancyModule, Task<object>> nancyAction = async nancyModule =>
-                                                              {
-                                                                  var nancyContext = nancyModule.Context;
+                {
+                    var nancyContext = nancyModule.Context;
 
-                                                                  var start = DateTime.Now;
+                    var start = DateTime.Now;
 
-                                                                  var method = $"{nancyContext.Request.Method}::{nancyContext.ResolvedRoute?.Description?.Path}";
+                    var method = $"{nancyContext.Request.Method}::{nancyContext.ResolvedRoute?.Description?.Path}";
 
-                                                                  Exception error = null;
+                    Exception error = null;
 
-                                                                  try
-                                                                  {
-                                                                      var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
+                    try
+                    {
+                        var httpRequest = new NancyHttpRequest(nancyContext, userIdentityProvider, _jsonObjectSerializer);
 
-                                                                      // Локализация ответа в зависимости от региональных параметров запроса
-                                                                      CultureInfo.CurrentCulture = httpRequest.Culture;
-                                                                      CultureInfo.CurrentUICulture = httpRequest.Culture;
+                        // Локализация ответа в зависимости от региональных параметров запроса
+                        CultureInfo.CurrentCulture = httpRequest.Culture;
+                        CultureInfo.CurrentUICulture = httpRequest.Culture;
 
-                                                                      // Инициализация контекста выполнения запроса
-                                                                      var httpServiceContext = (HttpServiceContext)_httpServiceContextProvider.GetContext();
-                                                                      httpServiceContext.Request = httpRequest;
+                        // Инициализация контекста выполнения запроса
+                        var httpServiceContext = (HttpServiceContext)_httpServiceContextProvider.GetContext();
+                        httpServiceContext.Request = httpRequest;
 
-                                                                      // Обработка запроса
-                                                                      var result = await onHandleGlobal(httpRequest);
+                        // Обработка запроса
+                        var result = await onHandleGlobal(httpRequest);
 
-                                                                      // Формирование ответа
-                                                                      var nancyHttpResponse = CreateNancyHttpResponse(nancyModule, result);
+                        // Формирование ответа
+                        var nancyHttpResponse = CreateNancyHttpResponse(nancyModule, result);
 
-                                                                      return nancyHttpResponse;
-                                                                  }
-                                                                  catch (Exception exception)
-                                                                  {
-                                                                      error = exception;
+                        return nancyHttpResponse;
+                    }
+                    catch (Exception exception)
+                    {
+                        error = exception;
 
-                                                                      // Формирование ответа с ошибкой
-                                                                      var errorResult = DefaultHttpResultConverter.Instance.Convert(exception);
-                                                                      var nancyErrorHttpResponse = CreateNancyHttpResponse(nancyModule, errorResult);
+                        // Формирование ответа с ошибкой
+                        var errorResult = DefaultHttpResultConverter.Instance.Convert(exception);
+                        var nancyErrorHttpResponse = CreateNancyHttpResponse(nancyModule, errorResult);
 
-                                                                      return nancyErrorHttpResponse;
-                                                                  }
-                                                                  finally
-                                                                  {
-                                                                      _perfLogger.Log(method, start, error);
-                                                                  }
-                                                              };
+                        return nancyErrorHttpResponse;
+                    }
+                    finally
+                    {
+
+                        GetPerformanceLogger(nancyModule).Log(method, start, error);
+                    }
+                };
 
                 var nancyRoute = new NancyHttpServiceRoute
-                                 {
-                                     Path = route.Path,
-                                     Action = nancyAction
-                                 };
+                {
+                    Path = route.Path,
+                    Action = nancyAction
+                };
 
                 yield return nancyRoute;
             }
+        }
+
+        private IPerformanceLogger GetPerformanceLogger(NancyModule nancyModule)
+        {
+            var nancyModuleGenericTypes = nancyModule.GetType().GenericTypeArguments;
+
+            if (nancyModuleGenericTypes.Any())
+            {
+                var nancyHttpServiceType = nancyModuleGenericTypes.First();
+
+                var nancyHttpServiceExists = _nancyHttpServices.Value.ContainsKey(nancyHttpServiceType);
+                if (nancyHttpServiceExists)
+                {
+                    return _nancyHttpServices.Value[nancyHttpServiceType].PerformanceLogger;
+                }
+            }
+
+            return _defaultPerfLogger;
         }
 
         private object CreateNancyHttpResponse(NancyModule nancyModule, object result)
@@ -273,10 +300,10 @@ namespace InfinniPlatform.Http
                 }
 
                 var nancyResponse = new Response
-                                    {
-                                        StatusCode = (HttpStatusCode)httpResponse.StatusCode,
-                                        ReasonPhrase = httpResponse.ReasonPhrase
-                                    };
+                {
+                    StatusCode = (HttpStatusCode)httpResponse.StatusCode,
+                    ReasonPhrase = httpResponse.ReasonPhrase
+                };
 
                 // Установка заголовков
                 if (httpResponse.Headers != null)
@@ -380,6 +407,7 @@ namespace InfinniPlatform.Http
             public IEnumerable<NancyHttpServiceRoute> Put;
             public IEnumerable<NancyHttpServiceRoute> Patch;
             public IEnumerable<NancyHttpServiceRoute> Delete;
+            public IPerformanceLogger PerformanceLogger;
         }
 
 
