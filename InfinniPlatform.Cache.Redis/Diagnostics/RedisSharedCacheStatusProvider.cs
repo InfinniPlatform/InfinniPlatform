@@ -21,7 +21,7 @@ namespace InfinniPlatform.Cache.Diagnostics
 
         public async Task<object> GetStatus(IHttpRequest request)
         {
-            return await _connectionFactory.RedisClient.GetStatusAsync();
+            return await _connectionFactory.RedisClient.Value.GetStatusAsync();
         }
     }
 }

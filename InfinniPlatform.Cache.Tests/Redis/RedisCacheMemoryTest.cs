@@ -26,7 +26,7 @@ namespace InfinniPlatform.Cache.Redis
 
             var appOptions = new AppOptions { AppName = nameof(RedisCacheMemoryTest) };
             var redisOptions = new RedisSharedCacheOptions { Host = "localhost", Password = "TeamCity" };
-            var redisCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions), new Mock<ILogger<RedisSharedCache>>().Object, new Mock<IPerformanceLogger<RedisSharedCache>>().Object);
+            var redisCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions, new Mock<ILogger<RedisConnectionFactory>>().Object), new Mock<ILogger<RedisSharedCache>>().Object, new Mock<IPerformanceLogger<RedisSharedCache>>().Object);
 
             const string key = "GetMemoryTest_Key";
 

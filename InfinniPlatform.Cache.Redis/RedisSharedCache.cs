@@ -120,7 +120,7 @@ namespace InfinniPlatform.Cache
 
             try
             {
-                var client = _connectionFactory.RedisClient.GetDatabase();
+                var client = _connectionFactory.RedisClient.Value.GetDatabase();
 
                 return action(client, wrappedKey);
             }

@@ -30,7 +30,7 @@ namespace InfinniPlatform.Cache.TwoLayer
 
             var appOptions = new AppOptions { AppName = nameof(TwoLayerCacheMemoryTest) };
             var redisOptions = new RedisSharedCacheOptions { Host = "localhost", Password = "TeamCity" };
-            var sharedCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions), new Mock<ILogger<RedisSharedCache>>().Object, new Mock<IPerformanceLogger<RedisSharedCache>>().Object);
+            var sharedCache = new RedisSharedCache(appOptions, new RedisConnectionFactory(redisOptions, new Mock<ILogger<RedisConnectionFactory>>().Object), new Mock<ILogger<RedisSharedCache>>().Object, new Mock<IPerformanceLogger<RedisSharedCache>>().Object);
             var sharedCacheFactory = new Mock<ISharedCacheFactory>();
             sharedCacheFactory.Setup(i => i.Create()).Returns(sharedCache);
 

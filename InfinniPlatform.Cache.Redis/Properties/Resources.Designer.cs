@@ -8,9 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace InfinniPlatform.Cache.Properties {
+    using System;
+    using System.Reflection;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -65,6 +67,15 @@ namespace InfinniPlatform.Cache.Properties {
         internal static string RedisCommandCompletedWithError {
             get {
                 return ResourceManager.GetString("RedisCommandCompletedWithError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redis connection failed..
+        /// </summary>
+        internal static string RedisConnectionFailed {
+            get {
+                return ResourceManager.GetString("RedisConnectionFailed", resourceCulture);
             }
         }
         

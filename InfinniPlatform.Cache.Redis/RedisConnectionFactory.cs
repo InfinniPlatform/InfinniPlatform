@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text.RegularExpressions;
-
+using InfinniPlatform.Cache.Properties;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace InfinniPlatform.Cache
@@ -11,7 +15,7 @@ namespace InfinniPlatform.Cache
     /// </summary>
     public class RedisConnectionFactory
     {
-        public RedisConnectionFactory(RedisSharedCacheOptions options)
+        public RedisConnectionFactory(RedisSharedCacheOptions options, ILogger<RedisConnectionFactory> logger)
         {
             var redisHost = string.IsNullOrEmpty(options.Host)
                                 ? RedisSharedCacheOptions.Default.Host
@@ -43,8 +47,27 @@ namespace InfinniPlatform.Cache
                                            Password = options.Password,
                                            AllowAdmin = true
                                        };
+            RedisClient = new Lazy<ConnectionMultiplexer>(()=> Connect(logger, configurationOptions, redisHost, redisPort));
+        }
 
-            RedisClient = ConnectionMultiplexer.Connect(configurationOptions);
+        private static ConnectionMultiplexer Connect(ILogger<RedisConnectionFactory> logger, ConfigurationOptions configurationOptions, string redisHost, int redisPort)
+        {
+            ConnectionMultiplexer redisClient = ConnectionMultiplexer.Connect(configurationOptions);
+
+            if (redisClient.IsConnected)
+            {
+                Func<Dictionary<string, object>> logContext = () => new Dictionary<string, object>
+                {
+                    { "status", redisClient.GetStatus()},
+                    {"endPoint", $"{redisHost}:{redisPort}"}
+                };
+
+                logger.LogError(Resources.RedisConnectionFailed, logContext);
+            }
+
+            
+
+            return redisClient;
         }
 
         private static string TryResolveIPv4(string host)
@@ -67,6 +90,6 @@ namespace InfinniPlatform.Cache
         }
 
 
-        public ConnectionMultiplexer RedisClient { get; }
+        public Lazy<ConnectionMultiplexer> RedisClient { get; }
     }
 }
