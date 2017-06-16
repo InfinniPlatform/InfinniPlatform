@@ -49,5 +49,10 @@ namespace InfinniPlatform.IoC
         /// Определяет, что сервисами являются все интерфейсы, реализованные компонентом.
         /// </summary>
         IContainerRegistrationRule AsImplementedInterfaces();
+
+
+        IContainerRegistrationRule EnableInterfaceInterceptors();
+
+        IContainerRegistrationRule InterceptedBy(params Type[] intercepterTypes);
     }
 }
