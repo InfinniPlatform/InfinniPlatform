@@ -32,13 +32,13 @@ namespace InfinniPlatform.Authentication.Modules
 
         public void Configure(IAppBuilder builder, IOwinHostingContext context)
         {
-            // Домен для создания cookie
+            // Домен для создания cookie.
             var cookieDomain = _settings.CookieDomain;
 
-            // Шифрование данных по умолчанию (работает также в Linux/Mono)
+            // Шифрование данных по умолчанию (работает также в Linux/Mono).
             builder.SetDataProtectionProvider(new AesDataProtectionProvider());
 
-            // Разрешение использования cookie для входа в систему через внутренний провайдер
+            // Разрешение использования cookie для входа в систему через внутренний провайдер.
 
             var cookieAuthOptions = new CookieAuthenticationOptions
             {
@@ -59,7 +59,7 @@ namespace InfinniPlatform.Authentication.Modules
 
             builder.UseCookieAuthentication(cookieAuthOptions);
 
-            // Разрешение использования cookie для входа в систему через внешние провайдеры
+            // Разрешение использования cookie для входа в систему через внешние провайдеры.
             builder.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
         }
     }
