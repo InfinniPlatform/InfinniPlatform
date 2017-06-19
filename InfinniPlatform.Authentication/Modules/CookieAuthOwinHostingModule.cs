@@ -43,8 +43,6 @@ namespace InfinniPlatform.Authentication.Modules
             var cookieAuthOptions = new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Auth/SignInInternal"),
-                LogoutPath = new PathString("/Auth/SignOut"),
                 ExpireTimeSpan = TimeSpan.FromDays(1),
                 SlidingExpiration = true
             };
