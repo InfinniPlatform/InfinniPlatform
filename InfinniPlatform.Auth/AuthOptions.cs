@@ -23,8 +23,6 @@ namespace InfinniPlatform.Auth
         public AuthOptions()
         {
             UserCacheTimeout = DefaultUserCacheTimeout;
-            LoginPath = DefaultLoginPath;
-            LogoutPath = DefaultLogoutPath;
         }
 
 
@@ -32,16 +30,6 @@ namespace InfinniPlatform.Auth
         /// Таймаут сброса кэша пользователей в минутах.
         /// </summary>
         public int UserCacheTimeout { get; set; }
-
-        /// <summary>
-        /// Путь для перенаправления при возврате 401 Unauthorized.
-        /// </summary>
-        public string LoginPath { get; set; }
-
-        /// <summary>
-        /// Путь для перенаправления при выходе из системы.
-        /// </summary>
-        public string LogoutPath { get; set; }
 
         /// <summary>
         /// Фабрика для получения хранилища пользователей <see cref="IUserStore{TUser}"/>.
