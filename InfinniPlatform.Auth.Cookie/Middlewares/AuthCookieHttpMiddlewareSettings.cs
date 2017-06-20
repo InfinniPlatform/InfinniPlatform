@@ -8,26 +8,12 @@
         public const string SectionName = "authCookie";
 
 
-        public AuthCookieHttpMiddlewareSettings()
-        {
-            LoginPath = "/Auth/SignInInternal";
-            LogoutPath = "/Auth/SignOut";
-        }
+        public AuthCookieHttpMiddlewareSettings() {}
 
 
         /// <summary>
         /// Домен для создания Cookie.
         /// </summary>
         public string CookieDomain { get; set; }
-
-        /// <summary>
-        /// Путь для перенаправления при возврате 401 Unauthorized.
-        /// </summary>
-        public string LoginPath { get; set; }
-
-        /// <summary>
-        /// Путь для перенаправления при выходе из системы.
-        /// </summary>
-        public string LogoutPath { get; set; }
     }
 }

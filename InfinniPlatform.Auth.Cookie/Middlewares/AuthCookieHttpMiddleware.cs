@@ -42,8 +42,6 @@ namespace InfinniPlatform.Auth.Cookie.Middlewares
             var cookieAuthOptions = new CookieAuthenticationOptions
                                     {
                                         AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                                        LoginPath = new PathString(_settings.LoginPath),
-                                        LogoutPath = new PathString(_settings.LogoutPath),
                                         ExpireTimeSpan = TimeSpan.FromDays(1),
                                         SlidingExpiration = true
                                     };
