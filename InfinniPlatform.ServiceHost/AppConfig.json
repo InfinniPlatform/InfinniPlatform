@@ -8,11 +8,7 @@
     }
   },
   "mongodbDocumentStorage": {
-    "Nodes": [
-      "localhost:27017"
-    ],
-    "UserName": "",
-    "Password": ""
+    "ConnectionString": "mongodb://localhost:27017"
   },
   "fileSystemBlobStorage": {
     "BaseDirectory": "%INFINNI_BLOBSTORAGE%"
