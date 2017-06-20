@@ -27,15 +27,10 @@ namespace InfinniPlatform.Auth.Middlewares
                                            .Cookies;
 
             var applicationCookieOptions = defaultCookiesOptions.ApplicationCookie;
-            var externalCookieOptions = defaultCookiesOptions.ExternalCookie;
-
-            applicationCookieOptions.LoginPath = new PathString(_options.LoginPath);
-            applicationCookieOptions.LogoutPath = new PathString(_options.LogoutPath);
             applicationCookieOptions.AutomaticAuthenticate = true;
             applicationCookieOptions.AutomaticChallenge = true;
 
-            externalCookieOptions.LoginPath = new PathString(_options.LoginPath);
-            externalCookieOptions.LogoutPath = new PathString(_options.LogoutPath);
+            var externalCookieOptions = defaultCookiesOptions.ExternalCookie;
             externalCookieOptions.AutomaticAuthenticate = true;
             externalCookieOptions.AutomaticChallenge = true;
 
