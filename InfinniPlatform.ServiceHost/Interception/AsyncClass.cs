@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using InfinniPlatform.Aspects;
 
 namespace InfinniPlatform.ServiceHost.Interception
 {
@@ -8,6 +9,7 @@ namespace InfinniPlatform.ServiceHost.Interception
         Task<int> DoGenericWork();
     }
 
+    [Aspect(typeof(PerformanceLoggerInterceptor))]
     public class AsyncClass : IAsyncInterface
     {
         public async Task DoWork()

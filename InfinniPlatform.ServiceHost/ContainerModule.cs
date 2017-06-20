@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using InfinniPlatform.Aspects;
 using InfinniPlatform.Http;
 using InfinniPlatform.IoC;
 using InfinniPlatform.ServiceHost.Interception;
@@ -13,23 +14,16 @@ namespace InfinniPlatform.ServiceHost
             builder.RegisterHttpServices(GetType().GetTypeInfo().Assembly);
 
             builder.RegisterType<AsyncClass>()
-                .As<IAsyncInterface>()
-                .SingleInstance()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(CallLogger));
+                   .As<IAsyncInterface>()
+                   .SingleInstance();
 
             builder.RegisterType<TaskClass>()
-                .As<ITaskInterface>()
-                .SingleInstance()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(CallLogger));
+                   .As<ITaskInterface>()
+                   .SingleInstance();
 
             builder.RegisterType<SyncClass>()
-                .As<ISyncInterface>().SingleInstance()
-                .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(CallLogger));
-
-            builder.RegisterType<CallLogger>().AsSelf();
+                   .As<ISyncInterface>()
+                   .SingleInstance();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using InfinniPlatform.Aspects;
 
 namespace InfinniPlatform.ServiceHost.Interception
 {
@@ -8,6 +9,7 @@ namespace InfinniPlatform.ServiceHost.Interception
         int DoGenericWork();
     }
 
+    [Aspect(typeof(PerformanceLoggerInterceptor))]
     public class SyncClass : ISyncInterface
     {
         public void DoWork()

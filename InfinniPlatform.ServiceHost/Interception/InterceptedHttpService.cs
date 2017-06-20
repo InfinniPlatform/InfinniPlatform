@@ -3,15 +3,15 @@ using InfinniPlatform.Http;
 
 namespace InfinniPlatform.ServiceHost.Interception
 {
-    public class HttpService : IHttpService
+    public class InterceptedHttpService : IHttpService
     {
         private readonly IAsyncInterface _asyncClass;
         private readonly ISyncInterface _syncClass;
         private readonly ITaskInterface _taskClass;
 
-        public HttpService(IAsyncInterface asyncClass,
-                           ITaskInterface taskClass,
-                           ISyncInterface syncClass)
+        public InterceptedHttpService(IAsyncInterface asyncClass,
+                                      ITaskInterface taskClass,
+                                      ISyncInterface syncClass)
         {
             _asyncClass = asyncClass;
             _taskClass = taskClass;

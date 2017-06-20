@@ -1,7 +1,9 @@
 ﻿using System;
-
+using System.Reflection;
 using Autofac;
 using Autofac.Builder;
+using Autofac.Extras.DynamicProxy;
+using InfinniPlatform.Aspects;
 
 namespace InfinniPlatform.IoC
 {
@@ -54,6 +56,14 @@ namespace InfinniPlatform.IoC
 
         private static IContainerRegistrationRule CreateRegistrationRule<TComponent, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TComponent, TActivatorData, TRegistrationStyle> registrationBuilder)
         {
+            var aspectAttribute = typeof(TComponent).GetTypeInfo().GetCustomAttribute<AspectAttribute>();
+
+            if (aspectAttribute!=null)
+            {
+                registrationBuilder.EnableInterfaceInterceptors()
+                                   .InterceptedBy(typeof(AutofacInterceptor<>).MakeGenericType(aspectAttribute.InterceptorType));
+            }
+
             return new AutofacContainerRegistrationRule<TComponent, TActivatorData, TRegistrationStyle>(registrationBuilder);
         }
     }
