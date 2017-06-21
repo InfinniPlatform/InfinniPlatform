@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using InfinniPlatform.Aspects;
 using InfinniPlatform.Http;
 using InfinniPlatform.IoC;
 using InfinniPlatform.ServiceHost.Interception;
@@ -13,16 +12,16 @@ namespace InfinniPlatform.ServiceHost
             // Register dependencies
             builder.RegisterHttpServices(GetType().GetTypeInfo().Assembly);
 
-            builder.RegisterType<AsyncClass>()
-                   .As<IAsyncInterface>()
+            builder.RegisterType<TestClasses.AsyncClass>()
+                   .As<TestInterfaces.IAsyncInterface>()
                    .SingleInstance();
 
-            builder.RegisterType<TaskClass>()
-                   .As<ITaskInterface>()
+            builder.RegisterType<TestClasses.TaskClass>()
+                   .As<TestInterfaces.ITaskInterface>()
                    .SingleInstance();
 
-            builder.RegisterType<SyncClass>()
-                   .As<ISyncInterface>()
+            builder.RegisterType<TestClasses.SyncClass>()
+                   .As<TestInterfaces.ISyncInterface>()
                    .SingleInstance();
         }
     }

@@ -65,6 +65,10 @@ namespace InfinniPlatform.IoC
             builder.RegisterType<PerformanceLoggerInterceptor>()
                    .AsSelf()
                    .SingleInstance();
+
+            builder.RegisterType<EmptyInterceptor>()
+                   .AsSelf()
+                   .SingleInstance();
         }
 
         private static void RegisterSerializationComponents(IContainerBuilder builder)

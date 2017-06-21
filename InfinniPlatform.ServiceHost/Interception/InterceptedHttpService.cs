@@ -1,17 +1,23 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using InfinniPlatform.Http;
 
 namespace InfinniPlatform.ServiceHost.Interception
 {
     public class InterceptedHttpService : IHttpService
     {
-        private readonly IAsyncInterface _asyncClass;
-        private readonly ISyncInterface _syncClass;
-        private readonly ITaskInterface _taskClass;
+        private const string AsyncFileName = "Async.csv";
+        private const string SyncFileName = "Sync.csv";
+        private const string TaskFileName = "Task.csv";
+        private readonly TestInterfaces.IAsyncInterface _asyncClass;
+        private readonly TestInterfaces.ISyncInterface _syncClass;
+        private readonly TestInterfaces.ITaskInterface _taskClass;
 
-        public InterceptedHttpService(IAsyncInterface asyncClass,
-                                      ITaskInterface taskClass,
-                                      ISyncInterface syncClass)
+        public InterceptedHttpService(TestInterfaces.IAsyncInterface asyncClass,
+                                      TestInterfaces.ITaskInterface taskClass,
+                                      TestInterfaces.ISyncInterface syncClass)
         {
             _asyncClass = asyncClass;
             _taskClass = taskClass;
@@ -29,44 +35,56 @@ namespace InfinniPlatform.ServiceHost.Interception
             builder.Get["/syncg"] = SyncWorkGeneric;
         }
 
-        public async Task<object> AsyncWork(IHttpRequest httpRequest)
-        {
-            await _asyncClass.DoWork();
+        // NOT GENERIC
 
-            return "OK.";
+        public Task<object> AsyncWork(IHttpRequest httpRequest)
+        {
+            return MeasureElapsedTime(async () => await _asyncClass.DoWork(), AsyncFileName);
         }
 
-        public async Task<object> TaskWork(IHttpRequest httpRequest)
+        public Task<object> TaskWork(IHttpRequest httpRequest)
         {
-            await _taskClass.DoWork();
-
-            return "OK.";
+            return MeasureElapsedTime(async () => await _taskClass.DoWork(), TaskFileName);
         }
 
         public Task<object> SyncWork(IHttpRequest httpRequest)
         {
-            _syncClass.DoWork();
-
-            return Task.FromResult<object>("OK");
+            return MeasureElapsedTime(() => _syncClass.DoWork(), SyncFileName);
         }
 
-        public async Task<object> AsyncWorkGeneric(IHttpRequest httpRequest)
-        {
-            await _asyncClass.DoGenericWork();
+        // GENERIC
 
-            return "OK.";
+        public Task<object> AsyncWorkGeneric(IHttpRequest httpRequest)
+        {
+            return MeasureElapsedTime(async () => await _asyncClass.DoGenericWork(), AsyncFileName);
         }
 
-        public async Task<object> TaskWorkGeneric(IHttpRequest httpRequest)
+        public Task<object> TaskWorkGeneric(IHttpRequest httpRequest)
         {
-            await _taskClass.DoGenericWork();
-
-            return "OK.";
+            return MeasureElapsedTime(async () => await _taskClass.DoGenericWork(), TaskFileName);
         }
 
         public Task<object> SyncWorkGeneric(IHttpRequest httpRequest)
         {
-            _syncClass.DoGenericWork();
+            return MeasureElapsedTime(() => _syncClass.DoGenericWork(), SyncFileName);
+        }
+
+        private static async Task<object> MeasureElapsedTime(Func<Task> action, string filename)
+        {
+            var startNew = Stopwatch.StartNew();
+            await action.Invoke();
+            var milliseconds = startNew.Elapsed.TotalMilliseconds;
+            File.AppendAllText(filename, $"{milliseconds}{Environment.NewLine}");
+
+            return "OK";
+        }
+
+        private static Task<object> MeasureElapsedTime(Action action, string filename)
+        {
+            var startNew = Stopwatch.StartNew();
+            action.Invoke();
+            var milliseconds = startNew.Elapsed.TotalMilliseconds;
+            File.AppendAllText(filename, $"{milliseconds}{Environment.NewLine}");
 
             return Task.FromResult<object>("OK");
         }
