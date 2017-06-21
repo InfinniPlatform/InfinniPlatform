@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Castle.DynamicProxy;
 
 namespace InfinniPlatform.Aspects
 {
+    /// <summary>
+    /// Invoked method properties.
+    /// </summary>
     public class MethodInvocation : IMethodInvocation
     {
         private readonly IInvocation _invocation;

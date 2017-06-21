@@ -30,6 +30,7 @@ namespace InfinniPlatform.IoC
 
             RegisterDiagnosticsComponents(builder);
             RegisterLoggingComponents(builder);
+            RegisterAspectsComponents(builder);
             RegisterSerializationComponents(builder);
             RegisterSecurityComponents(builder);
             RegisterSessionComponents(builder);
@@ -58,15 +59,22 @@ namespace InfinniPlatform.IoC
                    .As<IPerformanceLoggerFactory>()
                    .SingleInstance();
 
-            builder.RegisterGeneric(typeof(AutofacInterceptor<>))
-                   .As(typeof(AutofacInterceptor<>))
+            builder.RegisterGeneric(typeof(InternalInterceptor<>))
+                   .As(typeof(InternalInterceptor<>))
                    .SingleInstance();
 
             builder.RegisterType<PerformanceLoggerInterceptor>()
                    .AsSelf()
                    .SingleInstance();
+        }
 
-            builder.RegisterType<EmptyInterceptor>()
+        private static void RegisterAspectsComponents(IContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(InternalInterceptor<>))
+                   .As(typeof(InternalInterceptor<>))
+                   .SingleInstance();
+
+            builder.RegisterType<PerformanceLoggerInterceptor>()
                    .AsSelf()
                    .SingleInstance();
         }

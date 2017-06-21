@@ -1,29 +1,31 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using InfinniPlatform.Logging;
-using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Aspects
 {
-    public class PerformanceLoggerInterceptor : IAspectInterceptor
+    /// <summary>
+    /// Interceptor for logging execution time of invoked method.
+    /// </summary>
+    public class PerformanceLoggerInterceptor : IMethodInterceptor
     {
-        private readonly ILogger<PerformanceLoggerInterceptor> _logger;
         private readonly ConcurrentDictionary<Type, IPerformanceLogger> _perfLoggerCache;
         private readonly IPerformanceLoggerFactory _perfLoggerFactory;
 
-        public PerformanceLoggerInterceptor(IPerformanceLoggerFactory perfLoggerFactory, ILogger<PerformanceLoggerInterceptor> logger)
+        public PerformanceLoggerInterceptor(IPerformanceLoggerFactory perfLoggerFactory)
         {
             _perfLoggerFactory = perfLoggerFactory;
-            _logger = logger;
             _perfLoggerCache = new ConcurrentDictionary<Type, IPerformanceLogger>();
         }
 
         public void Intercept(IMethodInvocation invocation)
         {
             var isAssignableFromTask = typeof(Task).IsAssignableFrom(invocation.MethodInvocationTarget.ReturnType);
+
+            var targetType = invocation.InvocationTarget.GetType();
+            var methodName = invocation.MethodInvocationTarget.Name;
 
             if (isAssignableFromTask)
             {
@@ -34,22 +36,30 @@ namespace InfinniPlatform.Aspects
                 var returnValue = (Task) invocation.ReturnValue;
                 returnValue.ContinueWith(t =>
                 {
-                    var startNew = Stopwatch.StartNew();
-                    var perfLogger = GetPerfLogger(invocation.InvocationTarget.GetType());
-                    var startNewElapsedMilliseconds = startNew.Elapsed.TotalMilliseconds;
-
-                    _logger.LogInformation($"{startNewElapsedMilliseconds} ms to invoke _perfLoggerFactory.Create().");
-                    perfLogger.Log(invocation.MethodInvocationTarget.Name, startTime);
+                    if (t.IsFaulted)
+                    {
+                        GetPerfLogger(targetType).Log(methodName, startTime, t.Exception);
+                    }
+                    else
+                    {
+                        GetPerfLogger(targetType).Log(methodName, startTime);
+                    }
                 });
             }
             else
             {
                 var startTime = DateTime.Now;
 
-                invocation.Proceed();
+                try
+                {
+                    invocation.Proceed();
 
-                var perfLogger = GetPerfLogger(invocation.InvocationTarget.GetType());
-                perfLogger.Log(invocation.MethodInvocationTarget.Name, startTime);
+                    GetPerfLogger(targetType).Log(methodName, startTime);
+                }
+                catch (Exception e)
+                {
+                    GetPerfLogger(targetType).Log(methodName, startTime, e);
+                }
             }
         }
 
@@ -61,7 +71,7 @@ namespace InfinniPlatform.Aspects
             }
 
             var perfLogger = _perfLoggerFactory.Create(targetType);
-            var tryAdd = _perfLoggerCache.TryAdd(targetType, perfLogger);
+            _perfLoggerCache.TryAdd(targetType, perfLogger);
             return perfLogger;
         }
     }

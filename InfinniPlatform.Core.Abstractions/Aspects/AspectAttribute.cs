@@ -2,6 +2,9 @@
 
 namespace InfinniPlatform.Aspects
 {
+    /// <summary>
+    /// Enables method interception for current class.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class AspectAttribute : Attribute
     {
@@ -10,6 +13,9 @@ namespace InfinniPlatform.Aspects
             InterceptorType = interceptorType;
         }
 
+        /// <summary>
+        /// Type of <see cref="IMethodInterceptor"/> implementation.
+        /// </summary>
         public Type InterceptorType { get; set; }
     }
 }

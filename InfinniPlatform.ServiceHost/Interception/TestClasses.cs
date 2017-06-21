@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using InfinniPlatform.Aspects;
 
@@ -6,8 +7,7 @@ namespace InfinniPlatform.ServiceHost.Interception
 {
     public class TestClasses
     {
-        //[Aspect(typeof(PerformanceLoggerInterceptor))]
-        //Aspect(typeof(EmptyInterceptor))]
+        [Aspect(typeof(PerformanceLoggerInterceptor))]
         public class SyncClass : TestInterfaces.ISyncInterface
         {
             public void DoWork()
@@ -23,12 +23,12 @@ namespace InfinniPlatform.ServiceHost.Interception
         }
 
 
-        //[Aspect(typeof(PerformanceLoggerInterceptor))]
-        //[Aspect(typeof(EmptyInterceptor))]
+        [Aspect(typeof(PerformanceLoggerInterceptor))]
         public class AsyncClass : TestInterfaces.IAsyncInterface
         {
             public async Task DoWork()
             {
+                throw new NullReferenceException();
                 await Task.Delay(1000);
             }
 
@@ -40,8 +40,7 @@ namespace InfinniPlatform.ServiceHost.Interception
         }
 
 
-        //[Aspect(typeof(PerformanceLoggerInterceptor))]
-        //[Aspect(typeof(EmptyInterceptor))]
+        [Aspect(typeof(PerformanceLoggerInterceptor))]
         public class TaskClass : TestInterfaces.ITaskInterface
         {
             public Task DoWork()

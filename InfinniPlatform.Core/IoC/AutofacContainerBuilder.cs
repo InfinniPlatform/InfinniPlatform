@@ -61,7 +61,7 @@ namespace InfinniPlatform.IoC
             if (aspectAttribute!=null)
             {
                 registrationBuilder.EnableInterfaceInterceptors()
-                                   .InterceptedBy(typeof(AutofacInterceptor<>).MakeGenericType(aspectAttribute.InterceptorType));
+                                   .InterceptedBy(typeof(InternalInterceptor<>).MakeGenericType(aspectAttribute.InterceptorType));
             }
 
             return new AutofacContainerRegistrationRule<TComponent, TActivatorData, TRegistrationStyle>(registrationBuilder);
