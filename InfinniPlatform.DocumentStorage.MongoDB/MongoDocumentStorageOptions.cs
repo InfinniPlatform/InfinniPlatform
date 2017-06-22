@@ -12,7 +12,7 @@
 
         public MongoDocumentStorageOptions()
         {
-            ConnectionString = "localhost:27017";
+            ConnectionString = "mongodb://localhost:27017";
         }
 
         /// <summary>
