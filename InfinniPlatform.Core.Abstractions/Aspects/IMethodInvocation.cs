@@ -25,16 +25,6 @@ namespace InfinniPlatform.Aspects
         IEnumerable<object> Arguments { get; }
 
         /// <summary>
-        /// Return value of invoked method.
-        /// </summary>
-        object ReturnValue { get; }
-
-        /// <summary>
-        /// Proceeds the call to the next interceptor in line, and ultimately to the target method.
-        /// </summary>
-        void Proceed();
-
-        /// <summary>
         /// Raised when invocation throws an exception.
         /// </summary>
         event Action<Exception> OnError;
@@ -42,6 +32,11 @@ namespace InfinniPlatform.Aspects
         /// <summary>
         /// Raised after successful invocation.
         /// </summary>
-        event Action OnSuccess;
+        event Action<object> OnSuccess;
+
+        /// <summary>
+        /// Proceeds the call to the next interceptor in line, and ultimately to the target method.
+        /// </summary>
+        void Proceed();
     }
 }

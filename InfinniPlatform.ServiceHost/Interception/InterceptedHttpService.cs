@@ -8,8 +8,8 @@ namespace InfinniPlatform.ServiceHost.Interception
 {
     public class InterceptedHttpService : IHttpService
     {
-        private readonly ITestInterface _testClass;
         private readonly IInterceptedTestInterface _interceptedTestClass;
+        private readonly ITestInterface _testClass;
 
         public InterceptedHttpService(ITestInterface testClass, IInterceptedTestInterface interceptedTestClass)
         {
@@ -25,20 +25,18 @@ namespace InfinniPlatform.ServiceHost.Interception
 
         public async Task<object> Test(IHttpRequest httpRequest)
         {
-            var asyncTime = await MeasureElapsedTime(async () => await _testClass.DoAsyncWork());
-            var taskTime = await MeasureElapsedTime(async () => await _testClass.DoTaskWork());
-            var syncTime = MeasureElapsedTime(() => _testClass.DoSyncWork());
+            var cleanAsyncTime = await MeasureElapsedTime(async () => await _testClass.DoAsyncWork());
+            var cleanTaskTime = await MeasureElapsedTime(async () => await _testClass.DoTaskWork());
+            var cleanSyncTime = MeasureElapsedTime(() => _testClass.DoSyncWork());
 
-            var asyncTime1 = await MeasureElapsedTime(async () => await _interceptedTestClass.DoAsyncWork());
-            var taskTime1 = await MeasureElapsedTime(async () => await _interceptedTestClass.DoTaskWork());
-            var syncTime1 = MeasureElapsedTime(() => _interceptedTestClass.DoSyncWork());
+            var interceptedAsyncTime = await MeasureElapsedTime(async () => await _interceptedTestClass.DoAsyncWork());
+            var interceptedTaskTime = await MeasureElapsedTime(async () => await _interceptedTestClass.DoTaskWork());
+            var interceptedSyncTime = MeasureElapsedTime(() => _interceptedTestClass.DoSyncWork());
 
-            var row = $"{asyncTime};{taskTime};{syncTime}";
+            File.AppendAllLines("Clean.csv", new[] {$"{cleanAsyncTime};{cleanTaskTime};{cleanSyncTime}"});
+            File.AppendAllLines("Intercepted.csv", new[] {$"{interceptedAsyncTime};{interceptedTaskTime};{interceptedSyncTime}"});
 
-            File.AppendAllLines("Clean.csv", new []{ $"{asyncTime};{taskTime};{syncTime}" });
-            File.AppendAllLines("Intercepted.csv", new []{ $"{asyncTime1};{taskTime1};{syncTime1}" });
-            
-            return row;
+            return "OK";
         }
 
         private static async Task<double> MeasureElapsedTime(Func<Task> action)

@@ -58,14 +58,6 @@ namespace InfinniPlatform.IoC
             builder.RegisterType<PerformanceLoggerFactory>()
                    .As<IPerformanceLoggerFactory>()
                    .SingleInstance();
-
-            builder.RegisterGeneric(typeof(InternalInterceptor<>))
-                   .As(typeof(InternalInterceptor<>))
-                   .SingleInstance();
-
-            builder.RegisterType<PerformanceLoggerInterceptor>()
-                   .AsSelf()
-                   .SingleInstance();
         }
 
         private static void RegisterAspectsComponents(IContainerBuilder builder)

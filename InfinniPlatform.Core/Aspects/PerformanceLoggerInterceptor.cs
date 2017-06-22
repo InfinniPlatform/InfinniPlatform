@@ -9,8 +9,8 @@ namespace InfinniPlatform.Aspects
     /// </summary>
     public class PerformanceLoggerInterceptor : IMethodInterceptor
     {
-        private readonly ConcurrentDictionary<Type, IPerformanceLogger> _perfLoggerCache;
         private readonly IPerformanceLoggerFactory _perfLoggerFactory;
+        private readonly ConcurrentDictionary<Type, IPerformanceLogger> _perfLoggerCache;
 
         public PerformanceLoggerInterceptor(IPerformanceLoggerFactory perfLoggerFactory)
         {
@@ -26,20 +26,22 @@ namespace InfinniPlatform.Aspects
             var startTime = DateTime.Now;
 
             invocation.OnError += exception => GetPerfLogger(targetType).Log(methodName, startTime, exception);
-            invocation.OnSuccess += () => GetPerfLogger(targetType).Log(methodName, startTime);
+            invocation.OnSuccess += returnValue => GetPerfLogger(targetType).Log(methodName, startTime);
 
             invocation.Proceed();
         }
 
         private IPerformanceLogger GetPerfLogger(Type targetType)
         {
-            if (_perfLoggerCache.ContainsKey(targetType))
+            IPerformanceLogger perfLogger;
+
+            if (!_perfLoggerCache.TryGetValue(targetType, out perfLogger))
             {
-                return _perfLoggerCache[targetType];
+                perfLogger = _perfLoggerFactory.Create(targetType);
+
+                perfLogger = _perfLoggerCache.GetOrAdd(targetType, perfLogger);
             }
 
-            var perfLogger = _perfLoggerFactory.Create(targetType);
-            _perfLoggerCache.TryAdd(targetType, perfLogger);
             return perfLogger;
         }
     }

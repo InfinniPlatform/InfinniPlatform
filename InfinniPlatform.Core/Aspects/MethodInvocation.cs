@@ -9,7 +9,7 @@ namespace InfinniPlatform.Aspects
     /// <summary>
     /// Invoked method properties.
     /// </summary>
-    public class MethodInvocation : IMethodInvocation
+    internal class MethodInvocation : IMethodInvocation
     {
         private readonly IInvocation _invocation;
 
@@ -21,26 +21,29 @@ namespace InfinniPlatform.Aspects
         public object InvocationTarget => _invocation.InvocationTarget;
         public MethodInfo MethodInvocationTarget => _invocation.MethodInvocationTarget;
         public IEnumerable<object> Arguments => _invocation.Arguments;
-        public object ReturnValue => _invocation.ReturnValue;
 
         public void Proceed()
         {
-            var isAssignableFromTask = typeof(Task).IsAssignableFrom(_invocation.MethodInvocationTarget.ReturnType);
-
-            if (isAssignableFromTask)
+            try
             {
-                try
-                {
-                    _invocation.Proceed();
-                }
-                catch (Exception e)
-                {
-                    OnError?.Invoke(e);
-                    return;
-                }
+                _invocation.Proceed();
+            }
+            catch (Exception e)
+            {
+                OnError?.Invoke(e);
+                return;
+            }
 
-                var returnValue = (Task) _invocation.ReturnValue;
-                returnValue.ContinueWith(t =>
+            var returnValue = _invocation.ReturnValue;
+            var returnValueAsTask = _invocation.ReturnValue as Task;
+
+            if (returnValueAsTask == null)
+            {
+                OnSuccess?.Invoke(returnValue);
+            }
+            else
+            {
+                returnValueAsTask.ContinueWith(t =>
                 {
                     if (t.IsFaulted)
                     {
@@ -48,26 +51,13 @@ namespace InfinniPlatform.Aspects
                     }
                     else
                     {
-                        OnSuccess?.Invoke();
+                        OnSuccess?.Invoke(returnValue);
                     }
                 });
-            }
-            else
-            {
-                try
-                {
-                    _invocation.Proceed();
-
-                    OnSuccess?.Invoke();
-                }
-                catch (Exception e)
-                {
-                    OnError?.Invoke(e);
-                }
             }
         }
 
         public event Action<Exception> OnError;
-        public event Action OnSuccess;
+        public event Action<object> OnSuccess;
     }
 }
