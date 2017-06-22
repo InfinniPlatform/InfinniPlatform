@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Reflection;
-using System.Threading.Tasks;
 using InfinniPlatform.Logging;
 
 namespace InfinniPlatform.Aspects
@@ -22,45 +20,15 @@ namespace InfinniPlatform.Aspects
 
         public void Intercept(IMethodInvocation invocation)
         {
-            var isAssignableFromTask = typeof(Task).IsAssignableFrom(invocation.MethodInvocationTarget.ReturnType);
-
             var targetType = invocation.InvocationTarget.GetType();
             var methodName = invocation.MethodInvocationTarget.Name;
 
-            if (isAssignableFromTask)
-            {
-                var startTime = DateTime.Now;
+            var startTime = DateTime.Now;
 
-                invocation.Proceed();
+            invocation.OnError += exception => GetPerfLogger(targetType).Log(methodName, startTime, exception);
+            invocation.OnSuccess += () => GetPerfLogger(targetType).Log(methodName, startTime);
 
-                var returnValue = (Task) invocation.ReturnValue;
-                returnValue.ContinueWith(t =>
-                {
-                    if (t.IsFaulted)
-                    {
-                        GetPerfLogger(targetType).Log(methodName, startTime, t.Exception);
-                    }
-                    else
-                    {
-                        GetPerfLogger(targetType).Log(methodName, startTime);
-                    }
-                });
-            }
-            else
-            {
-                var startTime = DateTime.Now;
-
-                try
-                {
-                    invocation.Proceed();
-
-                    GetPerfLogger(targetType).Log(methodName, startTime);
-                }
-                catch (Exception e)
-                {
-                    GetPerfLogger(targetType).Log(methodName, startTime, e);
-                }
-            }
+            invocation.Proceed();
         }
 
         private IPerformanceLogger GetPerfLogger(Type targetType)

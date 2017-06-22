@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using Castle.DynamicProxy;
 
 namespace InfinniPlatform.Aspects
@@ -23,7 +25,49 @@ namespace InfinniPlatform.Aspects
 
         public void Proceed()
         {
-            _invocation.Proceed();
+            var isAssignableFromTask = typeof(Task).IsAssignableFrom(_invocation.MethodInvocationTarget.ReturnType);
+
+            if (isAssignableFromTask)
+            {
+                try
+                {
+                    _invocation.Proceed();
+                }
+                catch (Exception e)
+                {
+                    OnError?.Invoke(e);
+                    return;
+                }
+
+                var returnValue = (Task) _invocation.ReturnValue;
+                returnValue.ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        OnError?.Invoke(t.Exception);
+                    }
+                    else
+                    {
+                        OnSuccess?.Invoke();
+                    }
+                });
+            }
+            else
+            {
+                try
+                {
+                    _invocation.Proceed();
+
+                    OnSuccess?.Invoke();
+                }
+                catch (Exception e)
+                {
+                    OnError?.Invoke(e);
+                }
+            }
         }
+
+        public event Action<Exception> OnError;
+        public event Action OnSuccess;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace InfinniPlatform.Aspects
@@ -32,5 +33,15 @@ namespace InfinniPlatform.Aspects
         /// Proceeds the call to the next interceptor in line, and ultimately to the target method.
         /// </summary>
         void Proceed();
+
+        /// <summary>
+        /// Raised when invocation throws an exception.
+        /// </summary>
+        event Action<Exception> OnError;
+
+        /// <summary>
+        /// Raised after successful invocation.
+        /// </summary>
+        event Action OnSuccess;
     }
 }

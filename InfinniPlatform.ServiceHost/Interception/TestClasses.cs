@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using InfinniPlatform.Aspects;
 
@@ -28,7 +27,6 @@ namespace InfinniPlatform.ServiceHost.Interception
         {
             public async Task DoWork()
             {
-                throw new NullReferenceException();
                 await Task.Delay(1000);
             }
 
