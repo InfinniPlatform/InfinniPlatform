@@ -61,7 +61,7 @@ namespace InfinniPlatform.MessageQueue.Management
 
         private void StartRabbitMqListener(RabbitMqMessageQueueOptions settings)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 IConnection connection = null;
                 var reconnectRetries = settings.MaxReconnectRetries;
@@ -73,7 +73,7 @@ namespace InfinniPlatform.MessageQueue.Management
                     if (connection == null)
                     {
                         reconnectRetries--;
-                        Task.Delay(TimeSpan.FromSeconds(settings.ReconnectTimeout));
+                        await Task.Delay(TimeSpan.FromSeconds(settings.ReconnectTimeout));
                     }
                 }
 
