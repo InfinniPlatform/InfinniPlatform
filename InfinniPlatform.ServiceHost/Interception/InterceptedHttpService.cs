@@ -8,85 +8,55 @@ namespace InfinniPlatform.ServiceHost.Interception
 {
     public class InterceptedHttpService : IHttpService
     {
-        private const string AsyncFileName = "Async.csv";
-        private const string SyncFileName = "Sync.csv";
-        private const string TaskFileName = "Task.csv";
-        private readonly TestInterfaces.IAsyncInterface _asyncClass;
-        private readonly TestInterfaces.ISyncInterface _syncClass;
-        private readonly TestInterfaces.ITaskInterface _taskClass;
+        private readonly ITestInterface _testClass;
+        private readonly IInterceptedTestInterface _interceptedTestClass;
 
-        public InterceptedHttpService(TestInterfaces.IAsyncInterface asyncClass,
-                                      TestInterfaces.ITaskInterface taskClass,
-                                      TestInterfaces.ISyncInterface syncClass)
+        public InterceptedHttpService(ITestInterface testClass, IInterceptedTestInterface interceptedTestClass)
         {
-            _asyncClass = asyncClass;
-            _taskClass = taskClass;
-            _syncClass = syncClass;
+            _testClass = testClass;
+            _interceptedTestClass = interceptedTestClass;
         }
 
         public void Load(IHttpServiceBuilder builder)
         {
-            builder.Get["/async"] = AsyncWork;
-            builder.Get["/task"] = TaskWork;
-            builder.Get["/sync"] = SyncWork;
-
-            builder.Get["/asyncg"] = AsyncWorkGeneric;
-            builder.Get["/taskg"] = TaskWorkGeneric;
-            builder.Get["/syncg"] = SyncWorkGeneric;
+            builder.Get["/test"] = Test;
         }
 
-        // NOT GENERIC
 
-        public Task<object> AsyncWork(IHttpRequest httpRequest)
+        public async Task<object> Test(IHttpRequest httpRequest)
         {
-            return MeasureElapsedTime(async () => await _asyncClass.DoWork(), AsyncFileName);
+            var asyncTime = await MeasureElapsedTime(async () => await _testClass.DoAsyncWork());
+            var taskTime = await MeasureElapsedTime(async () => await _testClass.DoTaskWork());
+            var syncTime = MeasureElapsedTime(() => _testClass.DoSyncWork());
+
+            var asyncTime1 = await MeasureElapsedTime(async () => await _interceptedTestClass.DoAsyncWork());
+            var taskTime1 = await MeasureElapsedTime(async () => await _interceptedTestClass.DoTaskWork());
+            var syncTime1 = MeasureElapsedTime(() => _interceptedTestClass.DoSyncWork());
+
+            var row = $"{asyncTime};{taskTime};{syncTime}";
+
+            File.AppendAllLines("Clean.csv", new []{ $"{asyncTime};{taskTime};{syncTime}" });
+            File.AppendAllLines("Intercepted.csv", new []{ $"{asyncTime1};{taskTime1};{syncTime1}" });
+            
+            return row;
         }
 
-        public Task<object> TaskWork(IHttpRequest httpRequest)
-        {
-            return MeasureElapsedTime(async () => await _taskClass.DoWork(), TaskFileName);
-        }
-
-        public Task<object> SyncWork(IHttpRequest httpRequest)
-        {
-            return MeasureElapsedTime(() => _syncClass.DoWork(), SyncFileName);
-        }
-
-        // GENERIC
-
-        public Task<object> AsyncWorkGeneric(IHttpRequest httpRequest)
-        {
-            return MeasureElapsedTime(async () => await _asyncClass.DoGenericWork(), AsyncFileName);
-        }
-
-        public Task<object> TaskWorkGeneric(IHttpRequest httpRequest)
-        {
-            return MeasureElapsedTime(async () => await _taskClass.DoGenericWork(), TaskFileName);
-        }
-
-        public Task<object> SyncWorkGeneric(IHttpRequest httpRequest)
-        {
-            return MeasureElapsedTime(() => _syncClass.DoGenericWork(), SyncFileName);
-        }
-
-        private static async Task<object> MeasureElapsedTime(Func<Task> action, string filename)
+        private static async Task<double> MeasureElapsedTime(Func<Task> action)
         {
             var startNew = Stopwatch.StartNew();
+
             await action.Invoke();
-            var milliseconds = startNew.Elapsed.TotalMilliseconds;
-            File.AppendAllText(filename, $"{milliseconds}{Environment.NewLine}");
 
-            return "OK";
+            return startNew.Elapsed.TotalMilliseconds;
         }
 
-        private static Task<object> MeasureElapsedTime(Action action, string filename)
+        private static double MeasureElapsedTime(Action action)
         {
             var startNew = Stopwatch.StartNew();
-            action.Invoke();
-            var milliseconds = startNew.Elapsed.TotalMilliseconds;
-            File.AppendAllText(filename, $"{milliseconds}{Environment.NewLine}");
 
-            return Task.FromResult<object>("OK");
+            action.Invoke();
+
+            return startNew.Elapsed.TotalMilliseconds;
         }
     }
 }

@@ -12,16 +12,12 @@ namespace InfinniPlatform.ServiceHost
             // Register dependencies
             builder.RegisterHttpServices(GetType().GetTypeInfo().Assembly);
 
-            builder.RegisterType<TestClasses.AsyncClass>()
-                   .As<TestInterfaces.IAsyncInterface>()
+            builder.RegisterType<TestClass>()
+                   .As<ITestInterface>()
                    .SingleInstance();
 
-            builder.RegisterType<TestClasses.TaskClass>()
-                   .As<TestInterfaces.ITaskInterface>()
-                   .SingleInstance();
-
-            builder.RegisterType<TestClasses.SyncClass>()
-                   .As<TestInterfaces.ISyncInterface>()
+            builder.RegisterType<InterceptedTestClass>()
+                   .As<IInterceptedTestInterface>()
                    .SingleInstance();
         }
     }
