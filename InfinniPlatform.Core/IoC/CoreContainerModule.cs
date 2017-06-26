@@ -1,5 +1,5 @@
 ﻿using System.Text;
-
+using InfinniPlatform.Aspects;
 using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
@@ -30,6 +30,7 @@ namespace InfinniPlatform.IoC
 
             RegisterDiagnosticsComponents(builder);
             RegisterLoggingComponents(builder);
+            RegisterAspectsComponents(builder);
             RegisterSerializationComponents(builder);
             RegisterSecurityComponents(builder);
             RegisterSessionComponents(builder);
@@ -52,6 +53,21 @@ namespace InfinniPlatform.IoC
 
             builder.RegisterType<PerformanceLogger<object>>()
                    .As<IPerformanceLogger>()
+                   .SingleInstance();
+
+            builder.RegisterType<PerformanceLoggerFactory>()
+                   .As<IPerformanceLoggerFactory>()
+                   .SingleInstance();
+        }
+
+        private static void RegisterAspectsComponents(IContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(InternalInterceptor<>))
+                   .As(typeof(InternalInterceptor<>))
+                   .SingleInstance();
+
+            builder.RegisterType<PerformanceLoggerInterceptor>()
+                   .AsSelf()
                    .SingleInstance();
         }
 

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 using Autofac.Builder;
+using Autofac.Extras.DynamicProxy;
 
 namespace InfinniPlatform.IoC
 {
@@ -74,6 +75,20 @@ namespace InfinniPlatform.IoC
             var serviceTypes = GetImplementedInterfaces(((IConcreteActivatorData)_registrationBuilder.ActivatorData).Activator.LimitType);
 
             _registrationBuilder.As(serviceTypes);
+
+            return this;
+        }
+
+        public IContainerRegistrationRule EnableInterfaceInterceptors()
+        {
+            _registrationBuilder.EnableInterfaceInterceptors();
+
+            return this;
+        }
+
+        public IContainerRegistrationRule InterceptedBy(params Type[] interceptorTypes)
+        {
+            _registrationBuilder.InterceptedBy(interceptorTypes);
 
             return this;
         }
