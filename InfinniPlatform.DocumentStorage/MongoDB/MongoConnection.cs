@@ -110,38 +110,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
         private static IMongoDatabase CreateMongoDatabase(string databaseName, MongoConnectionSettings connectionSettings)
         {
-            var mongoClientSettings = new MongoClientSettings();
-
-            if (connectionSettings.Nodes != null && connectionSettings.Nodes.Length > 0)
-            {
-                var servers = new List<MongoServerAddress>();
-
-                foreach (var server in connectionSettings.Nodes)
-                {
-                    MongoServerAddress serverAddress;
-
-                    if (MongoServerAddress.TryParse(server, out serverAddress))
-                    {
-                        servers.Add(serverAddress);
-                    }
-                }
-
-                if (servers.Count > 0)
-                {
-                    mongoClientSettings.Servers = servers;
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(databaseName)
-                && !string.IsNullOrWhiteSpace(connectionSettings.UserName)
-                && !string.IsNullOrWhiteSpace(connectionSettings.Password))
-            {
-                var mongoCredential = MongoCredential.CreateCredential(databaseName, connectionSettings.UserName, connectionSettings.Password);
-
-                mongoClientSettings.Credentials = new[] { mongoCredential };
-            }
-
-            var mongoClient = new MongoClient(mongoClientSettings);
+            var mongoClient = new MongoClient(connectionSettings.ConnectionString);
 
             return mongoClient.GetDatabase(databaseName);
         }
