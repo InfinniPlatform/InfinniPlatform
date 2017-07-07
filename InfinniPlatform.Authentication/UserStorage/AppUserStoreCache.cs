@@ -128,9 +128,9 @@ namespace InfinniPlatform.Authentication.UserStorage
                     {
                         SetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin), user);
                     }
-
-                    NotifyOnUserChanged(user.Id);
                 }
+
+                NotifyOnUserChanged(user.Id);
             }
             finally
             {
@@ -166,11 +166,7 @@ namespace InfinniPlatform.Authentication.UserStorage
             {
                 try
                 {
-                    if (message.AppId == _appEnvironment.Id)
-                    {
-                        //ignore own message
-                    }
-                    else
+                    if (message.AppId != _appEnvironment.Id)
                     {
                         var userId = (string)message.GetBody();
 
