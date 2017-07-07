@@ -5,28 +5,13 @@
     "description": "Настройки подключения к MongoDB.",
     "type": "object",
     "properties": {
-        "Nodes": {
-            "description": "Список узлов кластера. Каждый узел должен быть представлен в формате 'host:port'.",
-            "type": "array",
-            "items": {
-                "type": "string"
-            },
-            "default": [
-                "localhost:27017"
-            ]
-        },
-        "UserName": {
-            "description": "Имя пользователя в механизме аутентификации. Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR).",
+        "ConnectionString": {
+            "description": "Строка подключения. Подробнее см. https://docs.mongodb.com/manual/reference/connection-string.",
             "type": "string",
-            "default": null
-        },
-        "Password": {
-            "description": "Пароль пользователя в механизме аутентификации. Начиная с MongoDB 3.0 по умолчанию используется SCRAM-SHA-1 вместо MONGODB-CR)",
-            "type": "string",
-            "default": null
+            "default": "mongodb://localhost:27017" 
         }
     },
     "required": [
-        "Nodes"
+        "ConnectionString"
     ]
 }
