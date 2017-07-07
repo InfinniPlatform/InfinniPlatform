@@ -130,9 +130,9 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
                     {
                         SetAdditionalUserCache(_usersByLogin, GetUserLoginKey(userLogin), user);
                     }
-
-                    NotifyOnUserChanged(user.Id);
                 }
+
+                NotifyOnUserChanged(user.Id);
             }
             finally
             {
