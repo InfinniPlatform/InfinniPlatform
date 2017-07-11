@@ -44,10 +44,6 @@ namespace InfinniPlatform.Auth.IoC
 
             // User manager
 
-            builder.RegisterFactory(CreateOptionsAccessor)
-                   .As<IOptions<IdentityOptions>>()
-                   .SingleInstance();
-
             builder.RegisterFactory(CreatePasswordHasher)
                    .As<IPasswordHasher<TUser>>()
                    .SingleInstance();
@@ -112,11 +108,6 @@ namespace InfinniPlatform.Auth.IoC
             return _options.UserStoreFactory?.Get<TUser>(resolver) ?? resolver.Resolve<UserStore<TUser>>();
         }
 
-
-        private IOptions<IdentityOptions> CreateOptionsAccessor(IContainerResolver resolver)
-        {
-            return _options.IdentityOptions ?? new OptionsWrapper<IdentityOptions>(new IdentityOptions());
-        }
 
         private IPasswordHasher<TUser> CreatePasswordHasher(IContainerResolver resolver)
         {
