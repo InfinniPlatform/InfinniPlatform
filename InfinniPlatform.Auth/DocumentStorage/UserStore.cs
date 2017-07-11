@@ -63,12 +63,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
             return Task.FromResult(user.UserName);
         }
 
-        public async Task SetUserNameAsync(TUser user, string userName, CancellationToken token)
+        public Task SetUserNameAsync(TUser user, string userName, CancellationToken token)
         {
-            user.UserName = userName;
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.UserName = userName, token);
         }
 
         public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken token)
@@ -76,12 +73,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
             return Task.FromResult(user.NormalizedUserName);
         }
 
-        public async Task SetNormalizedUserNameAsync(TUser user, string normalizedUserName, CancellationToken token)
+        public Task SetNormalizedUserNameAsync(TUser user, string normalizedUserName, CancellationToken token)
         {
-            user.NormalizedUserName = normalizedUserName;
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.NormalizedUserName = normalizedUserName, token);
         }
 
         public async Task<TUser> FindByIdAsync(string userId, CancellationToken token)
@@ -93,7 +87,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         public async Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)
         {
             return await FindUserInCache(() => (TUser) UserCache.FindUserByUserName(normalizedUserName),
-                                         async () => await Users.Value.Find(u => u.UserName == normalizedUserName.ToLower()).FirstOrDefaultAsync());
+                                         async () => await Users.Value.Find(u => u.UserName == normalizedUserName).FirstOrDefaultAsync());
         }
 
         /// <summary>

@@ -11,20 +11,14 @@ namespace InfinniPlatform.Auth.DocumentStorage
             return Task.FromResult(user.EmailConfirmed);
         }
 
-        public async Task SetEmailConfirmedAsync(TUser user, bool confirmed, CancellationToken token)
+        public Task SetEmailConfirmedAsync(TUser user, bool confirmed, CancellationToken token)
         {
-            user.EmailConfirmed = confirmed;
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+            return Task.Run(()=> user.EmailConfirmed = confirmed, token);
         }
 
-        public async Task SetEmailAsync(TUser user, string email, CancellationToken token)
+        public Task SetEmailAsync(TUser user, string email, CancellationToken token)
         {
-            user.Email = email;
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.Email = email, token);
         }
 
         public Task<string> GetEmailAsync(TUser user, CancellationToken token)
@@ -37,12 +31,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
             return Task.FromResult(user.NormalizedEmail);
         }
 
-        public async Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken token)
+        public Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken token)
         {
-            user.NormalizedEmail = normalizedEmail;
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.NormalizedEmail = normalizedEmail, token);
         }
 
         public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken token)
