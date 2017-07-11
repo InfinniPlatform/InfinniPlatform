@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -39,7 +40,7 @@ namespace InfinniPlatform.Auth
         /// <summary>
         /// Настройки ASP.NET Identity.
         /// </summary>
-        public IOptions<IdentityOptions> IdentityOptions { get; set; }
+        public Action<IdentityOptions> IdentityOptions { get; set; }
 
         /// <summary>
         /// Фабрика для получения генератора хэшей для паролей <see cref="IPasswordHasher{TUser}"/>.
