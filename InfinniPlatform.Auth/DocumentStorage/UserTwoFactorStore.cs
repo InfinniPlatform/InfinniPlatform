@@ -6,12 +6,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 {
     public partial class UserStore<TUser> : IUserTwoFactorStore<TUser> where TUser : AppUser
     {
-        public async Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken token)
+        public Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken token)
         {
-            user.TwoFactorEnabled = enabled;
-
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.TwoFactorEnabled = enabled, token);
         }
 
         public Task<bool> GetTwoFactorEnabledAsync(TUser user, CancellationToken token)

@@ -7,18 +7,14 @@ namespace InfinniPlatform.Auth.DocumentStorage
 {
     public partial class UserStore<TUser> : IUserRoleStore<TUser> where TUser : AppUser
     {
-        public async Task AddToRoleAsync(TUser user, string normalizedRoleName, CancellationToken token)
+        public Task AddToRoleAsync(TUser user, string normalizedRoleName, CancellationToken token)
         {
-            user.AddRole(normalizedRoleName);
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.AddRole(normalizedRoleName), token);
         }
 
-        public async Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, CancellationToken token)
+        public Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, CancellationToken token)
         {
-            user.RemoveRole(normalizedRoleName);
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.RemoveRole(normalizedRoleName), token);
         }
 
         public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken token)

@@ -6,11 +6,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 {
     public partial class UserStore<TUser> : IUserSecurityStampStore<TUser> where TUser : AppUser
     {
-        public async Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken token)
+        public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken token)
         {
-            user.SecurityStamp = stamp;
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.SecurityStamp = stamp, token);
         }
 
         public Task<string> GetSecurityStampAsync(TUser user, CancellationToken token)

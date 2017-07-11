@@ -14,34 +14,31 @@ namespace InfinniPlatform.Auth.DocumentStorage
             return Task.FromResult((IList<Claim>)user.Claims.Select(c => c.ToSecurityClaim()).ToList());
         }
 
-        public async Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
+        public Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
         {
-            foreach (var claim in claims)
+            return Task.Run(() =>
             {
-                user.AddClaim(claim);
-            }
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+                foreach (var claim in claims)
+                {
+                    user.AddClaim(claim);
+                }
+            }, token);
         }
 
-        public async Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
+        public Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
         {
-            foreach (var claim in claims)
+            return Task.Run(() =>
             {
-                user.RemoveClaim(claim);
-            }
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+                foreach (var claim in claims)
+                {
+                    user.RemoveClaim(claim);
+                }
+            }, token);
         }
 
-        public async Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken token)
+        public Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken token)
         {
-            user.ReplaceClaim(claim, newClaim);
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.ReplaceClaim(claim, newClaim), token);
         }
 
         public async Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken token)

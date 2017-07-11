@@ -12,30 +12,23 @@ namespace InfinniPlatform.Auth.DocumentStorage
             return Task.FromResult(user.LockoutEndDateUtc.HasValue ? user.LockoutEndDateUtc.GetValueOrDefault() : new DateTimeOffset?());
         }
 
-        public async Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken token)
+        public Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken token)
         {
-            user.LockoutEndDateUtc = lockoutEnd.HasValue ? lockoutEnd.GetValueOrDefault().UtcDateTime : new DateTime?();
-
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.LockoutEndDateUtc = lockoutEnd.HasValue ? lockoutEnd.GetValueOrDefault().UtcDateTime : new DateTime?(), token);
         }
 
-        public async Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken token)
+        public Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken token)
         {
-            ++user.AccessFailedCount;
-
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
-
-            return user.AccessFailedCount;
+            return Task.Run(() =>
+            {
+                ++user.AccessFailedCount;
+                return user.AccessFailedCount;
+            }, token);
         }
 
-        public async Task ResetAccessFailedCountAsync(TUser user, CancellationToken token)
+        public Task ResetAccessFailedCountAsync(TUser user, CancellationToken token)
         {
-            user.AccessFailedCount = 0;
-
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.AccessFailedCount = 0, token);
         }
 
         public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken token)
@@ -48,12 +41,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
             return Task.FromResult(user.LockoutEnabled);
         }
 
-        public async Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken token)
+        public Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken token)
         {
-            user.LockoutEnabled = enabled;
-
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.LockoutEnabled = enabled, token);
         }
     }
 }

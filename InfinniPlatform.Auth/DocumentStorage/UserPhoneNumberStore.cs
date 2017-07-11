@@ -5,12 +5,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 {
     public partial class UserStore<TUser> : IUserPhoneNumberStoreExtended<TUser> where TUser : AppUser
     {
-        public async Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken token)
+        public Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken token)
         {
-            user.PhoneNumber = phoneNumber;
-
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.PhoneNumber = phoneNumber, token);
         }
 
         public Task<string> GetPhoneNumberAsync(TUser user, CancellationToken token)
@@ -23,12 +20,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
             return Task.FromResult(user.PhoneNumberConfirmed);
         }
 
-        public async Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, CancellationToken token)
+        public Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, CancellationToken token)
         {
-            user.PhoneNumberConfirmed = confirmed;
-
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.PhoneNumberConfirmed = confirmed, token);
         }
 
         public Task<TUser> FindByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken)

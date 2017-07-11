@@ -8,20 +8,14 @@ namespace InfinniPlatform.Auth.DocumentStorage
 {
     public partial class UserStore<TUser> : IUserLoginStore<TUser> where TUser : AppUser
     {
-        public async Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken token)
+        public Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken token)
         {
-            user.AddLogin(login);
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.AddLogin(login), token);
         }
 
-        public async Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, CancellationToken token)
+        public Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, CancellationToken token)
         {
-            user.RemoveLogin(loginProvider, providerKey);
-
-            await Users.Value.ReplaceOneAsync(user);
-            UpdateUserInCache(user);
+            return Task.Run(() => user.RemoveLogin(loginProvider, providerKey), token);
         }
 
         public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken token)
