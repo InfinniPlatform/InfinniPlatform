@@ -48,9 +48,7 @@ namespace InfinniPlatform.Logging
 
             public override string ToString()
             {
-                // Note: I suppose it may need improvement
-
-                return string.Format("{{ \"{0}\": {1:N0} }}", _method, _duration);
+                return string.Format("{{ \"d\":\"{0}\", \"d\": {1:N0} }}", _method, _duration);
             }
         }
     }
