@@ -76,8 +76,8 @@ namespace InfinniPlatform.ServiceHost
                                             IApplicationLifetime appLifetime,
                                             IHttpContextAccessor httpContextAccessor)
         {
-            const string outputTemplate
-                = "{Timestamp:o}|{Level:u3}|{RequestId}|{UserName}|{SourceContext}|{Message}{NewLine}{Exception}";
+            const string outputTemplate = "{Timestamp:o}|{Level:u3}|{RequestId}|{UserName}|{SourceContext}|{Message}{NewLine}{Exception}";
+            const string outputTemplatePerf = "{Timestamp:o}|{RequestId}|{UserName}|{SourceContext}|null|null|{Message}{NewLine}";
 
             Func<LogEvent, bool> performanceLoggerFilter = 
                 Matching.WithProperty<string>(
@@ -93,7 +93,7 @@ namespace InfinniPlatform.ServiceHost
                                                              outputTemplate: outputTemplate))
                 .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(performanceLoggerFilter)
                                         .WriteTo.RollingFile("logs/performance-{Date}.log",
-                                                             outputTemplate: outputTemplate))
+                                                             outputTemplate: outputTemplatePerf))
                 .CreateLogger();
 
             // Register Serilog

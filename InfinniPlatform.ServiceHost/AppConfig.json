@@ -11,7 +11,7 @@
     "ConnectionString": "mongodb://localhost:27017"
   },
   "fileSystemBlobStorage": {
-    "BaseDirectory": "%INFINNI_BLOBSTORAGE%"
+    "BaseDirectory": "BlobStorage"
   },
   "rabbitmqMessageQueue": {
     "HostName": "localhost",
