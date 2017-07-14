@@ -350,7 +350,7 @@ namespace InfinniPlatform.Serialization
                     return value;
                 }
 
-                var jValue = JToken.FromObject(value);
+                var jValue = JToken.FromObject(value, _serializer);
 
                 if (jValue != null)
                 {

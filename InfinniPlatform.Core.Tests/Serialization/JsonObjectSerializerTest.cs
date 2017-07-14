@@ -409,6 +409,24 @@ namespace InfinniPlatform.Serialization
             Assert.AreEqual(3, propertyArray[2]);
         }
 
+        [Test]
+        public void SerializerCanConvertObjectToDynamicAndViceVersa()
+        {
+            var serializer = new JsonObjectSerializer();
+
+            const int propertyInt = 2;
+
+            var originalInstance = new SomeClass { PropertyInt = propertyInt };
+            var dynamicInstance = serializer.ConvertToDynamic(originalInstance);
+
+            Assert.DoesNotThrow(() => { serializer.ConvertFromDynamic(dynamicInstance, typeof(SomeClass));});
+
+            var someClass = serializer.ConvertFromDynamic(dynamicInstance, typeof(SomeClass));
+
+            Assert.IsInstanceOf(typeof(SomeClass), someClass);
+            Assert.AreEqual(propertyInt, ((SomeClass)someClass).PropertyInt);
+        }
+
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
 
