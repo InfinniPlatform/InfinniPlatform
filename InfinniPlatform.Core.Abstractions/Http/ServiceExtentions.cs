@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Reflection;
-using System.Text;
-
 using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Http
@@ -35,10 +33,9 @@ namespace InfinniPlatform.Http
         /// Устанавливает заголовок 'Content-Disposition' типа 'inline' (файл нужно отобразить средствами браузера).
         /// </summary>
         /// <param name="response">Ответ.</param>
-        /// <param name="userAgent">Значение заголовка запроса 'User-Agent'.</param>
-        public static void SetContentDispositionInline(this StreamHttpResponse response, string userAgent)
+        public static void SetContentDispositionInline(this StreamHttpResponse response)
         {
-            SetContentDisposition(response, DispositionTypeInline, response.FileName, userAgent);
+            SetContentDisposition(response, DispositionTypeInline, response.FileName);
         }
 
         /// <summary>
@@ -46,20 +43,18 @@ namespace InfinniPlatform.Http
         /// </summary>
         /// <param name="response">Ответ.</param>
         /// <param name="fileName">Имя файла.</param>
-        /// <param name="userAgent">Значение заголовка запроса 'User-Agent'.</param>
-        public static void SetContentDispositionInline(this IHttpResponse response, string fileName, string userAgent)
+        public static void SetContentDispositionInline(this IHttpResponse response, string fileName)
         {
-            SetContentDisposition(response, DispositionTypeInline, fileName, userAgent);
+            SetContentDisposition(response, DispositionTypeInline, fileName);
         }
 
         /// <summary>
         /// Устанавливает заголовок 'Content-Disposition' типа 'attachment' (файл нужно скачать и не отображать средствами браузера).
         /// </summary>
         /// <param name="response">Ответ.</param>
-        /// <param name="userAgent">Значение заголовка запроса 'User-Agent'.</param>
-        public static void SetContentDispositionAttachment(this StreamHttpResponse response, string userAgent)
+        public static void SetContentDispositionAttachment(this StreamHttpResponse response)
         {
-            SetContentDisposition(response, DispositionTypeAttachment, response.FileName, userAgent);
+            SetContentDisposition(response, DispositionTypeAttachment, response.FileName);
         }
 
         /// <summary>
@@ -67,52 +62,20 @@ namespace InfinniPlatform.Http
         /// </summary>
         /// <param name="response">Ответ.</param>
         /// <param name="fileName">Имя файла.</param>
-        /// <param name="userAgent">Значение заголовка запроса 'User-Agent'.</param>
-        public static void SetContentDispositionAttachment(this IHttpResponse response, string fileName, string userAgent)
+        public static void SetContentDispositionAttachment(this IHttpResponse response, string fileName)
         {
-            SetContentDisposition(response, DispositionTypeAttachment, fileName, userAgent);
+            SetContentDisposition(response, DispositionTypeAttachment, fileName);
         }
 
 
-        private static void SetContentDisposition(this IHttpResponse response, string dispositionType, string fileName, string userAgent)
+        private static void SetContentDisposition(this IHttpResponse response, string dispositionType, string fileName)
         {
             if (response.Headers == null)
             {
                 response.Headers = new Dictionary<string, string>();
             }
 
-            response.Headers["Content-Disposition"] = $"{dispositionType}; filename=\"{EncodeContentDespositionFileName(fileName, userAgent)}\"";
-        }
-
-        private static string EncodeContentDespositionFileName(string fileName, string userAgent)
-        {
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                var fileNameEcoding = Encoding.UTF8;
-
-                // Microsoft Internet Explorer or Edge
-                if (!string.IsNullOrEmpty(userAgent)
-                    && ((userAgent.IndexOf("Edge", StringComparison.OrdinalIgnoreCase) >= 0)
-                        || (userAgent.IndexOf("MSIE", StringComparison.OrdinalIgnoreCase) >= 0)
-                        || (userAgent.IndexOf("Trident", StringComparison.OrdinalIgnoreCase) >= 0)
-                        || (userAgent.IndexOf("rv:11.0", StringComparison.OrdinalIgnoreCase) >= 0)))
-                {
-                    fileNameEcoding = Encoding.GetEncoding("windows-1251");
-                }
-
-                var fileNameBytes = fileNameEcoding.GetBytes(fileName);
-
-                var dispositionFileName = "";
-
-                foreach (var b in fileNameBytes)
-                {
-                    dispositionFileName += (char)(b & 0xff);
-                }
-
-                return dispositionFileName;
-            }
-
-            return fileName;
+            response.Headers["Content-Disposition"] = $"{dispositionType}; filename=\"{WebUtility.UrlEncode(fileName)}\"";
         }
     }
 }

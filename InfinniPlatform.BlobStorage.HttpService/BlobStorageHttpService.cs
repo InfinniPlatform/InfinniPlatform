@@ -69,7 +69,7 @@ namespace InfinniPlatform.BlobStorage
                                                LastWriteTimeUtc = blobData.Info.Time
                                            };
 
-                        fileResponse.SetContentDispositionAttachment(request.Headers.UserAgent);
+                        fileResponse.SetContentDispositionAttachment();
 
                         return Task.FromResult<object>(fileResponse);
                     }
