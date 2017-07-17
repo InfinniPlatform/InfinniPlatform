@@ -37,6 +37,9 @@ namespace InfinniPlatform.Owin.Services
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
         {
+            // Отключен, т.к. провоцирует вызов длительной синхронной задачи сброса стрима запроса диск. Последствия пока не изучены.
+            StaticConfiguration.DisableRequestStreamSwitching = true;
+
             nancyContainer.Register(_nancyModuleCatalog);
 
             // Соглашения обработки запросов должны устанавливаться явно, так как автоматический поиск соглашений в Mono/Linux не работает,
