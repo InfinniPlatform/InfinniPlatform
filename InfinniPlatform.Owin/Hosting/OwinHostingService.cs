@@ -195,14 +195,6 @@ namespace InfinniPlatform.Owin.Hosting
 
         private void Startup(IAppBuilder builder)
         {
-            object httpListener;
-
-            if (builder.Properties.TryGetValue(typeof(HttpListener).FullName, out httpListener) && httpListener is HttpListener)
-            {
-                // HttpListener should not return exceptions that occur when sending the response to the client
-                ((HttpListener)httpListener).IgnoreWriteExceptions = true;
-            }
-
             foreach (var module in _hostingModules)
             {
                 module.Configure(builder, _hostingContext);

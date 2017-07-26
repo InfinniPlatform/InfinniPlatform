@@ -69,6 +69,8 @@ namespace InfinniPlatform.Owin.Services
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            StaticConfiguration.DisableRequestStreamSwitching = true;
+
             // Проверка заголовка Last-Modified при обработке запросов к файлам.
             pipelines.AfterRequest += CheckForIfModifiedSince;
             pipelines.AfterRequest += CheckForIfNonMatch;
