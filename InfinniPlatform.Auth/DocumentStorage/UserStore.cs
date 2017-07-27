@@ -87,7 +87,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         public async Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)
         {
             return await FindUserInCache(() => (TUser) UserCache.FindUserByUserName(normalizedUserName),
-                                         async () => await Users.Value.Find(u => u.UserName == normalizedUserName).FirstOrDefaultAsync());
+                                         async () => await Users.Value.Find(u => u.NormalizedUserName == normalizedUserName).FirstOrDefaultAsync());
         }
 
         /// <summary>

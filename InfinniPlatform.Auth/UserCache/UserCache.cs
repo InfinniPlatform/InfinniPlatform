@@ -94,11 +94,11 @@ namespace InfinniPlatform.Auth.UserCache
         /// <summary>
         /// Возвращает сведения о пользователе системы по его имени.
         /// </summary>
-        /// <param name="userName">Имя пользователя.</param>
+        /// <param name="normalizedUserName">Имя пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        public TUser FindUserByUserName(string userName)
+        public TUser FindUserByUserName(string normalizedUserName)
         {
-            return GetAdditionalUserCache(_usersByName, userName);
+            return GetAdditionalUserCache(_usersByName, normalizedUserName);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace InfinniPlatform.Auth.UserCache
             try
             {
                 SetUserCache(user.Id, user);
-                SetAdditionalUserCache(_usersByName, user.UserName, user);
+                SetAdditionalUserCache(_usersByName, user.NormalizedUserName, user);
                 SetAdditionalUserCache(_usersByEmail, user.Email, user);
                 SetAdditionalUserCache(_usersByPhone, user.PhoneNumber, user);
 
