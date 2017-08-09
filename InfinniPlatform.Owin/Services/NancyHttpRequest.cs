@@ -10,6 +10,7 @@ using InfinniPlatform.Sdk.Serialization;
 using InfinniPlatform.Sdk.Services;
 
 using Nancy;
+using Nancy.Responses.Negotiation;
 
 namespace InfinniPlatform.Owin.Services
 {
@@ -77,7 +78,7 @@ namespace InfinniPlatform.Owin.Services
             {
                 var contentType = _nancyRequest.Headers.ContentType;
 
-                if (contentType != null && contentType.StartsWith(HttpConstants.JsonContentType, StringComparison.OrdinalIgnoreCase))
+                if (contentType != null && contentType.Matches(new MediaRange(HttpConstants.JsonContentType)))
                 {
                     return _jsonObjectSerializer.Deserialize(_nancyRequest.Body, typeof(DynamicWrapper));
                 }
