@@ -75,9 +75,6 @@ namespace InfinniPlatform.Owin.Services
 
             base.ApplicationStartup(container, pipelines);
 
-            // Регистрация директории, содержащей Razor-представления.
-            Conventions.ViewLocationConventions.Add((viewName, model, context) => $"{_staticContentSettings.RazorViewsPath.ToWebPath()}/{viewName}");
-
             // Добавление сопоставления между виртуальными (запрашиваемый в браузере путь) и физическими директориями в файловой системе.
             Conventions.StaticContentsConventions.Clear();
 

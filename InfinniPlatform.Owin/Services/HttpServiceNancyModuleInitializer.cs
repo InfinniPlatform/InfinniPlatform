@@ -266,13 +266,6 @@ namespace InfinniPlatform.Owin.Services
 
             if (httpResponse != null)
             {
-                var viewHttpRespose = result as ViewHttpResponce;
-
-                if (viewHttpRespose != null)
-                {
-                    return nancyModule.View[viewHttpRespose.ViewName, viewHttpRespose.Model];
-                }
-
                 var nancyResponse = new Response
                 {
                     StatusCode = (HttpStatusCode)httpResponse.StatusCode,
@@ -389,11 +382,5 @@ namespace InfinniPlatform.Owin.Services
             public string Path;
             public Func<NancyModule, Task<object>> Action;
         }
-    }
-
-
-    public class ViewRenderModule : NancyModule
-    {
-
     }
 }

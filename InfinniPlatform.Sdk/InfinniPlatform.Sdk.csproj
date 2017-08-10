@@ -178,7 +178,6 @@
     <Compile Include="Serialization\IJsonObjectSerializer.cs" />
     <Compile Include="Services\IHttpServiceSource.cs" />
     <Compile Include="Services\IMimeTypeProvider.cs" />
-    <Compile Include="Services\ViewHttpResponce.cs" />
     <Compile Include="Session\IUserEventHandler.cs" />
     <Compile Include="Session\ITenantProvider.cs" />
     <Compile Include="Session\UserEventHandler.cs" />
