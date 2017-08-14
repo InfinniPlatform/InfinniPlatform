@@ -78,7 +78,7 @@ namespace InfinniPlatform.Owin.Services
             {
                 var contentType = _nancyRequest.Headers.ContentType;
 
-                if (contentType != null && contentType.Matches(new MediaRange(HttpConstants.JsonContentType)))
+                if (contentType != null && contentType.StartsWith(HttpConstants.JsonContentType, StringComparison.OrdinalIgnoreCase))
                 {
                     return _jsonObjectSerializer.Deserialize(_nancyRequest.Body, typeof(DynamicWrapper));
                 }
