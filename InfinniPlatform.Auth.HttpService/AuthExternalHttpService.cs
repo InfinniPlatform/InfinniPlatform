@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Http;
 using InfinniPlatform.Security;
-
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-
 using HttpResponse = InfinniPlatform.Http.HttpResponse;
 
 namespace InfinniPlatform.Auth.HttpService
@@ -47,8 +45,6 @@ namespace InfinniPlatform.Auth.HttpService
         private IIdentity Identity => _userIdentityProvider.GetUserIdentity();
 
         private HttpContext HttpContext => _httpContextAccessor.HttpContext;
-
-        private AuthenticationManager AuthenticationManager => HttpContext.Authentication;
 
         public void Load(IHttpServiceBuilder builder)
         {
@@ -103,11 +99,11 @@ namespace InfinniPlatform.Auth.HttpService
         /// <summary>
         /// Возвращает список внешних провайдеров входа в систему.
         /// </summary>
-        private Task<object> GetExternalProviders(IHttpRequest request)
+        private async Task<object> GetExternalProviders(IHttpRequest request)
         {
-            var loginProviders = _signInManager.GetExternalAuthenticationSchemes();
+            var loginProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
 
-            var loginProvidersList = loginProviders.Select(i => new { Type = i.AuthenticationScheme, Name = i.DisplayName })
+            var loginProvidersList = loginProviders.Select(i => new { Type = i.HandlerType, Name = i.DisplayName })
                                                    .ToArray();
 
             var httpResponse = Extensions.CreateSuccesResponse(loginProvidersList);
@@ -197,7 +193,7 @@ namespace InfinniPlatform.Auth.HttpService
 
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(loginProvider, callbackPath);
 
-            await AuthenticationManager.ChallengeAsync(loginProvider, properties);
+            await HttpContext.ChallengeAsync(properties);
 
             var httpResponse = HttpContext.Response;
             var response = new HttpResponse(httpResponse.StatusCode, httpResponse.ContentType);

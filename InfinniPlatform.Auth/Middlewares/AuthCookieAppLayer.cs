@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.Http.Middlewares;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth.Middlewares
@@ -19,16 +20,16 @@ namespace InfinniPlatform.Auth.Middlewares
 
         public void Configure(IApplicationBuilder app)
         {
-            var applicationCookieOptions = _identityOptions.Value.Cookies.ApplicationCookie;
-            applicationCookieOptions.AutomaticAuthenticate = true;
-            applicationCookieOptions.AutomaticChallenge = true;
+            //var applicationCookieOptions = _identityOptions.Value.Cookies.ApplicationCookie;
+            //applicationCookieOptions.AutomaticAuthenticate = true;
+            //applicationCookieOptions.AutomaticChallenge = true;
 
-            var externalCookieOptions = _identityOptions.Value.Cookies.ExternalCookie;
-            externalCookieOptions.AutomaticAuthenticate = true;
-            externalCookieOptions.AutomaticChallenge = true;
+            //var externalCookieOptions = _identityOptions.Value.Cookies.ExternalCookie;
+            //externalCookieOptions.AutomaticAuthenticate = true;
+            //externalCookieOptions.AutomaticChallenge = true;
 
-            app.UseCookieAuthentication(applicationCookieOptions);
-            app.UseCookieAuthentication(externalCookieOptions);
+            //app.UseCookieAuthentication(applicationCookieOptions);
+            //app.UseCookieAuthentication(externalCookieOptions);
         }
     }
 }
