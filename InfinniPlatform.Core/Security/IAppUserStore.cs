@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Sdk.Security;
+﻿using System.Threading.Tasks;
+
+using InfinniPlatform.Sdk.Security;
 
 namespace InfinniPlatform.Core.Security
 {
@@ -11,75 +13,75 @@ namespace InfinniPlatform.Core.Security
         /// Создает сведения о пользователе системы.
         /// </summary>
         /// <param name="user">Сведения о пользователе системы.</param>
-        void CreateUser(ApplicationUser user);
+        Task CreateUserAsync(ApplicationUser user);
 
         /// <summary>
         /// Обновляет сведения о пользователе системы.
         /// </summary>
         /// <param name="user">Сведения о пользователе системы.</param>
-        void UpdateUser(ApplicationUser user);
+        Task UpdateUserAsync(ApplicationUser user);
 
         /// <summary>
         /// Удаляет сведения о пользователе системы.
         /// </summary>
         /// <param name="user">Сведения о пользователе системы.</param>
-        void DeleteUser(ApplicationUser user);
+        Task DeleteUserAsync(ApplicationUser user);
 
         /// <summary>
         /// Возвращает сведения о пользователе системы по его идентификатору.
         /// </summary>
         /// <param name="userId">Уникальный идентификатор пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        ApplicationUser FindUserById(string userId);
+        Task<ApplicationUser> FindUserByIdAsync(string userId);
 
         /// <summary>
         /// Возвращает сведения о пользователе системы по его имени.
         /// </summary>
         /// <param name="name">Уникальное имя пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        ApplicationUser FindUserByName(string name);
+        Task<ApplicationUser> FindUserByNameAsync(string name);
 
         /// <summary>
         /// Возвращает сведения о пользователе системы по его имени.
         /// </summary>
         /// <param name="userName">Имя пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        ApplicationUser FindUserByUserName(string userName);
+        Task<ApplicationUser> FindUserByUserNameAsync(string userName);
 
         /// <summary>
         /// Возвращает сведения о пользователе системы по его электронной почте.
         /// </summary>
         /// <param name="email">Электронная почта пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        ApplicationUser FindUserByEmail(string email);
+        Task<ApplicationUser> FindUserByEmailAsync(string email);
 
         /// <summary>
         /// Возвращает сведения о пользователе системы по его номеру телефона.
         /// </summary>
         /// <param name="phoneNumber">Номер телефона пользователя.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        ApplicationUser FindUserByPhoneNumber(string phoneNumber);
+        Task<ApplicationUser> FindUserByPhoneNumberAsync(string phoneNumber);
 
         /// <summary>
         /// Возвращает сведения о пользователе системы по его имени у внешнего провайдера.
         /// </summary>
         /// <param name="userLogin">Имя входа пользователя системы у внешнего провайдера.</param>
         /// <returns>Сведения о пользователе системы.</returns>
-        ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin);
+        Task<ApplicationUser> FindUserByLoginAsync(ApplicationUserLogin userLogin);
 
         /// <summary>
         /// Добавляет пользователя в указанную роль.
         /// </summary>
         /// <param name="user">Сведения о пользователе системы.</param>
         /// <param name="roleName">Наименование системной роли.</param>
-        void AddUserToRole(ApplicationUser user, string roleName);
+        Task AddUserToRoleAsync(ApplicationUser user, string roleName);
 
         /// <summary>
         /// Удаляет пользователя из указанной роли.
         /// </summary>
         /// <param name="user">Сведения о пользователе системы.</param>
         /// <param name="roleName">Наименование системной роли.</param>
-        void RemoveUserFromRole(ApplicationUser user, string roleName);
+        Task RemoveUserFromRoleAsync(ApplicationUser user, string roleName);
 
         /// <summary>
         /// Добавляет пользователю утверждение.
@@ -87,7 +89,7 @@ namespace InfinniPlatform.Core.Security
         /// <param name="user">Сведения о пользователе системы.</param>
         /// <param name="claimType">Уникальный идентификатор типа утверждения.</param>
         /// <param name="claimValue">Значение утверждения заданного типа.</param>
-        void AddUserClaim(ApplicationUser user, string claimType, string claimValue);
+        Task AddUserClaimAsync(ApplicationUser user, string claimType, string claimValue);
 
         /// <summary>
         /// Удаляет у пользователя утверждение.
@@ -95,20 +97,20 @@ namespace InfinniPlatform.Core.Security
         /// <param name="user">Сведения о пользователе системы.</param>
         /// <param name="claimType">Уникальный идентификатор типа утверждения.</param>
         /// <param name="claimValue">Значение утверждения заданного типа.</param>
-        void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue);
+        Task RemoveUserClaimAsync(ApplicationUser user, string claimType, string claimValue);
 
         /// <summary>
         /// Добавляет пользователю имя входа у внешнего провайдера.
         /// </summary>
         /// <param name="user">Сведения о пользователе системы.</param>
         /// <param name="userLogin">Имя входа пользователя системы у внешнего провайдера.</param>
-        void AddUserLogin(ApplicationUser user, ApplicationUserLogin userLogin);
+        Task AddUserLoginAsync(ApplicationUser user, ApplicationUserLogin userLogin);
 
         /// <summary>
         /// Удаляет у пользователя имя входа у внешнего провайдера.
         /// </summary>
         /// <param name="user">Сведения о пользователе системы.</param>
         /// <param name="userLogin">Имя входа пользователя системы у внешнего провайдера.</param>
-        void RemoveUserLogin(ApplicationUser user, ApplicationUserLogin userLogin);
+        Task RemoveUserLoginAsync(ApplicationUser user, ApplicationUserLogin userLogin);
     }
 }

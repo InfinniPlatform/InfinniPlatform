@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Sdk.Security;
 
@@ -14,10 +15,9 @@ namespace InfinniPlatform.Core.Security
     /// </remarks>
     public sealed class MemoryAppUserStore : IAppUserStore
     {
-        private readonly List<ApplicationUser> _users
-            = new List<ApplicationUser>();
+        private readonly List<ApplicationUser> _users = new List<ApplicationUser>();
 
-        public void CreateUser(ApplicationUser user)
+        public async Task CreateUserAsync(ApplicationUser user)
         {
             if (user == null)
             {
@@ -31,9 +31,9 @@ namespace InfinniPlatform.Core.Security
             }
 
             // Имя пользователя уже занято
-            if (FindUserByName(user.UserName) != null)
+            if (await FindUserByNameAsync(user.UserName) != null)
             {
-                throw new ArgumentException(string.Format(@"User name '{0}' is already taken.", user.UserName));
+                throw new ArgumentException($@"User name '{user.UserName}' is already taken.");
             }
 
             // Обновление записи хранилища пользователей
@@ -50,14 +50,14 @@ namespace InfinniPlatform.Core.Security
             UpdateInfo(user, userEntry);
         }
 
-        public void UpdateUser(ApplicationUser user)
+        public async Task UpdateUserAsync(ApplicationUser user)
         {
             if (user == null)
             {
                 throw new ArgumentNullException("user");
             }
 
-            var userEntry = FindUserById(user.Id);
+            var userEntry = await FindUserByIdAsync(user.Id);
 
             if (userEntry != null)
             {
@@ -67,12 +67,12 @@ namespace InfinniPlatform.Core.Security
                     throw new ArgumentException(@"User name cannot be null or witespace.");
                 }
 
-                var userByName = FindUserByName(user.UserName);
+                var userByName = await FindUserByNameAsync(user.UserName);
 
                 // Имя пользователя уже занято
                 if (userByName != null && !StringEquals(userByName.Id, user.Id))
                 {
-                    throw new ArgumentException(string.Format(@"User name '{0}' is already taken.", user.UserName));
+                    throw new ArgumentException($@"User name '{user.UserName}' is already taken.");
                 }
 
                 // Обновление записи хранилища пользователей
@@ -83,18 +83,18 @@ namespace InfinniPlatform.Core.Security
             }
             else
             {
-                CreateUser(user);
+                await CreateUserAsync(user);
             }
         }
 
-        public void DeleteUser(ApplicationUser user)
+        public async Task DeleteUserAsync(ApplicationUser user)
         {
             if (user == null)
             {
                 throw new ArgumentNullException("user");
             }
 
-            var userById = FindUserById(user.Id);
+            var userById = await FindUserByIdAsync(user.Id);
 
             if (userById != null)
             {
@@ -102,34 +102,34 @@ namespace InfinniPlatform.Core.Security
             }
         }
 
-        public ApplicationUser FindUserById(string userId)
+        public Task<ApplicationUser> FindUserByIdAsync(string userId)
         {
-            return _users.FirstOrDefault(u => StringEquals(u.Id, userId));
+            return Task.FromResult(_users.FirstOrDefault(u => StringEquals(u.Id, userId)));
         }
 
-        public ApplicationUser FindUserByName(string name)
+        public async Task<ApplicationUser> FindUserByNameAsync(string name)
         {
-            return FindUserByUserName(name)
-                   ?? FindUserByEmail(name)
-                   ?? FindUserByPhoneNumber(name);
+            return await FindUserByUserNameAsync(name)
+                   ?? await FindUserByEmailAsync(name)
+                   ?? await FindUserByPhoneNumberAsync(name);
         }
 
-        public ApplicationUser FindUserByUserName(string userName)
+        public Task<ApplicationUser> FindUserByUserNameAsync(string userName)
         {
-            return _users.FirstOrDefault(u => StringEquals(u.UserName, userName));
+            return Task.FromResult(_users.FirstOrDefault(u => StringEquals(u.UserName, userName)));
         }
 
-        public ApplicationUser FindUserByEmail(string email)
+        public Task<ApplicationUser> FindUserByEmailAsync(string email)
         {
-            return _users.FirstOrDefault(u => StringEquals(u.Email, email));
+            return Task.FromResult(_users.FirstOrDefault(u => StringEquals(u.Email, email)));
         }
 
-        public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
+        public Task<ApplicationUser> FindUserByPhoneNumberAsync(string phoneNumber)
         {
-            return _users.FirstOrDefault(u => StringEquals(u.PhoneNumber, phoneNumber));
+            return Task.FromResult(_users.FirstOrDefault(u => StringEquals(u.PhoneNumber, phoneNumber)));
         }
 
-        public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
+        public Task<ApplicationUser> FindUserByLoginAsync(ApplicationUserLogin userLogin)
         {
             if (userLogin == null)
             {
@@ -139,10 +139,11 @@ namespace InfinniPlatform.Core.Security
             var loginProvider = userLogin.Provider;
             var providerKey = userLogin.ProviderKey;
 
-            return _users.FirstOrDefault(u => u.Logins != null && u.Logins.Any(l => StringEquals(l.Provider, loginProvider) && StringEquals(l.ProviderKey, providerKey)));
+            var user = _users.FirstOrDefault(u => u.Logins != null && u.Logins.Any(l => StringEquals(l.Provider, loginProvider) && StringEquals(l.ProviderKey, providerKey)));
+            return Task.FromResult(user);
         }
 
-        public void AddUserToRole(ApplicationUser user, string roleName)
+        public async Task AddUserToRoleAsync(ApplicationUser user, string roleName)
         {
             if (user == null)
             {
@@ -155,11 +156,11 @@ namespace InfinniPlatform.Core.Security
             }
 
             // Поиск указанного пользователя
-            var userEntry = FindUserById(user.Id);
+            var userEntry = await FindUserByIdAsync(user.Id);
 
             if (userEntry == null)
             {
-                throw new ArgumentException(string.Format("User '{0}' does not exist.", user.Id));
+                throw new ArgumentException($"User '{user.Id}' does not exist.");
             }
 
             // Поиск указанной роли пользователя
@@ -167,7 +168,7 @@ namespace InfinniPlatform.Core.Security
 
             if (roleEntry == null)
             {
-                throw new ArgumentException(string.Format("Role '{0}' does not exist.", roleName));
+                throw new ArgumentException($"Role '{roleName}' does not exist.");
             }
 
             // Обновление записи хранилища пользователей
@@ -186,7 +187,7 @@ namespace InfinniPlatform.Core.Security
             UpdateInfo(user, userEntry);
         }
 
-        public void RemoveUserFromRole(ApplicationUser user, string roleName)
+        public async Task RemoveUserFromRoleAsync(ApplicationUser user, string roleName)
         {
             if (user == null)
             {
@@ -199,11 +200,11 @@ namespace InfinniPlatform.Core.Security
             }
 
             // Поиск указанного пользователя
-            var userEntry = FindUserById(user.Id);
+            var userEntry = await FindUserByIdAsync(user.Id);
 
             if (userEntry == null)
             {
-                throw new ArgumentException(string.Format("User '{0}' does not exist.", user.Id));
+                throw new ArgumentException($"User '{user.Id}' does not exist.");
             }
 
             // Поиск указанной роли пользователя
@@ -211,7 +212,7 @@ namespace InfinniPlatform.Core.Security
 
             if (roleEntry == null)
             {
-                throw new ArgumentException(string.Format("Role '{0}' does not exist.", roleName));
+                throw new ArgumentException($"Role '{roleName}' does not exist.");
             }
 
             // Обновление записи хранилища пользователей
@@ -232,7 +233,7 @@ namespace InfinniPlatform.Core.Security
             UpdateInfo(user, userEntry);
         }
 
-        public void AddUserClaim(ApplicationUser user, string claimType, string claimValue)
+        public async Task AddUserClaimAsync(ApplicationUser user, string claimType, string claimValue)
         {
             if (user == null)
             {
@@ -250,11 +251,11 @@ namespace InfinniPlatform.Core.Security
             }
 
             // Поиск указанного пользователя
-            var userEntry = FindUserById(user.Id);
+            var userEntry = await FindUserByIdAsync(user.Id);
 
             if (userEntry == null)
             {
-                throw new ArgumentException(string.Format("User '{0}' does not exist.", user.Id));
+                throw new ArgumentException($"User '{user.Id}' does not exist.");
             }
 
             // Поиск указанного типа утверждения
@@ -262,7 +263,7 @@ namespace InfinniPlatform.Core.Security
 
             if (claimTypeEntry == null)
             {
-                throw new ArgumentException(string.Format("Claim type '{0}' does not exist.", claimType));
+                throw new ArgumentException($"Claim type '{claimType}' does not exist.");
             }
 
             // Обновление записи хранилища пользователей
@@ -278,7 +279,7 @@ namespace InfinniPlatform.Core.Security
             UpdateInfo(user, userEntry);
         }
 
-        public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
+        public async Task RemoveUserClaimAsync(ApplicationUser user, string claimType, string claimValue)
         {
             if (user == null)
             {
@@ -296,11 +297,11 @@ namespace InfinniPlatform.Core.Security
             }
 
             // Поиск указанного пользователя
-            var userEntry = FindUserById(user.Id);
+            var userEntry = await FindUserByIdAsync(user.Id);
 
             if (userEntry == null)
             {
-                throw new ArgumentException(string.Format("User '{0}' does not exist.", user.Id));
+                throw new ArgumentException($"User '{user.Id}' does not exist.");
             }
 
             // Обновление записи хранилища пользователей
@@ -316,7 +317,7 @@ namespace InfinniPlatform.Core.Security
             UpdateInfo(user, userEntry);
         }
 
-        public void AddUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
+        public async Task AddUserLoginAsync(ApplicationUser user, ApplicationUserLogin userLogin)
         {
             if (user == null)
             {
@@ -339,11 +340,11 @@ namespace InfinniPlatform.Core.Security
             }
 
             // Поиск указанного пользователя
-            var userEntry = FindUserById(user.Id);
+            var userEntry = await FindUserByIdAsync(user.Id);
 
             if (userEntry == null)
             {
-                throw new ArgumentException(string.Format("User '{0}' does not exist.", user.Id));
+                throw new ArgumentException($"User '{user.Id}' does not exist.");
             }
 
             // Обновление записи хранилища пользователей
@@ -359,7 +360,7 @@ namespace InfinniPlatform.Core.Security
             UpdateInfo(user, userEntry);
         }
 
-        public void RemoveUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
+        public async Task RemoveUserLoginAsync(ApplicationUser user, ApplicationUserLogin userLogin)
         {
             if (user == null)
             {
@@ -382,11 +383,11 @@ namespace InfinniPlatform.Core.Security
             }
 
             // Поиск указанного пользователя
-            var userEntry = FindUserById(user.Id);
+            var userEntry = await FindUserByIdAsync(user.Id);
 
             if (userEntry == null)
             {
-                throw new ArgumentException(string.Format("User '{0}' does not exist.", user.Id));
+                throw new ArgumentException($"User '{user.Id}' does not exist.");
             }
 
             // Обновление записи хранилища пользователей
@@ -443,7 +444,7 @@ namespace InfinniPlatform.Core.Security
 
             if (userInfo.DefaultRole != null && (userEntry.Roles == null || !userEntry.Roles.Any(r => StringEquals(r.Id, userInfo.DefaultRole.Id))))
             {
-                throw new ArgumentException(string.Format(@"User '{0}' is not in role '{1}'.", userInfo.UserName, userInfo.DefaultRole.Id));
+                throw new ArgumentException($@"User '{userInfo.UserName}' is not in role '{userInfo.DefaultRole.Id}'.");
             }
 
             userEntry.DefaultRole = userInfo.DefaultRole;
