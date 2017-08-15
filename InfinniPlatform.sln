@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
 EndProject
@@ -79,7 +79,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.DocumentSto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.MessageQueue.Abstractions", "InfinniPlatform.MessageQueue.Abstractions\InfinniPlatform.MessageQueue.Abstractions.csproj", "{136B170D-FD47-4AA7-8BEA-B0C92B85959C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.PrintView.Abstractions", "InfinniPlatform.PrintView.Abstractions\InfinniPlatform.PrintView.Abstractions.csproj", "{07699A73-2C99-4213-9482-F2EF213F9AD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.PrintView.Abstractions", "InfinniPlatform.PrintView.Abstractions\InfinniPlatform.PrintView.Abstractions.csproj", "{07699A73-2C99-4213-9482-F2EF213F9AD9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Abstractions", "InfinniPlatform.Cache.Abstractions\InfinniPlatform.Cache.Abstractions.csproj", "{7754D741-AA65-429C-AACF-3AF35FF36255}"
 EndProject
@@ -91,15 +91,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Cache.TwoLayer", "InfinniPlatform.Cache.TwoLayer\InfinniPlatform.Cache.TwoLayer.csproj", "{F80CF9EA-B95B-4B12-81D4-CF67CBFDB855}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Scheduler.Abstractions", "InfinniPlatform.Scheduler.Abstractions\InfinniPlatform.Scheduler.Abstractions.csproj", "{609CE6BE-881A-496C-9C7F-A91C52DA61B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Scheduler.Abstractions", "InfinniPlatform.Scheduler.Abstractions\InfinniPlatform.Scheduler.Abstractions.csproj", "{609CE6BE-881A-496C-9C7F-A91C52DA61B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Scheduler.HttpService", "InfinniPlatform.Scheduler.HttpService\InfinniPlatform.Scheduler.HttpService.csproj", "{8F7233F2-86A2-446D-AEF0-29659AF77C1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Scheduler.HttpService", "InfinniPlatform.Scheduler.HttpService\InfinniPlatform.Scheduler.HttpService.csproj", "{8F7233F2-86A2-446D-AEF0-29659AF77C1A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.PushNotification.Abstractions", "InfinniPlatform.PushNotification.Abstractions\InfinniPlatform.PushNotification.Abstractions.csproj", "{D9968874-41E6-4866-8982-9C59E9BC9127}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Heartbeat.HttpService", "InfinniPlatform.Heartbeat.HttpService\InfinniPlatform.Heartbeat.HttpService.csproj", "{2A31DE68-BD14-40AB-9B00-0DD2F962BBCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Auth.HttpService", "InfinniPlatform.Auth.HttpService\InfinniPlatform.Auth.HttpService.csproj", "{CA89B716-B45D-4FFB-BC85-ABC6BC120ED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.HttpService", "InfinniPlatform.Auth.HttpService\InfinniPlatform.Auth.HttpService.csproj", "{CA89B716-B45D-4FFB-BC85-ABC6BC120ED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -527,5 +527,8 @@ Global
 		{B8D90B99-AAF9-4490-A39E-C1144A5B4CDE} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{296EF39D-F3DC-4AAF-946A-FC704D5BAF93} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{BFF8197C-B04D-4E0F-9FCA-172A144E6592} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11E5BE38-282F-48F0-BE26-97E174A3A27B}
 	EndGlobalSection
 EndGlobal
