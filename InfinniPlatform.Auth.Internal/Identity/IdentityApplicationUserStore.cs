@@ -56,21 +56,25 @@ namespace InfinniPlatform.Auth.Internal.Identity
             return Task.FromResult(result);
         }
 
-        public Task AddClaimAsync(IdentityApplicationUser user, Claim claim)
+        public async Task AddClaimAsync(IdentityApplicationUser user, Claim claim)
         {
-            return InvokeUserStore((s, u, v) => s.AddUserClaim(u, v.Type, v.Value), user, claim);
+            await InvokeUserStore(async (s, u, v) => await s.AddUserClaimAsync(u, v.Type, v.Value), user, claim);
         }
 
-        public Task RemoveClaimAsync(IdentityApplicationUser user, Claim claim)
+        public async Task RemoveClaimAsync(IdentityApplicationUser user, Claim claim)
         {
-            return InvokeUserStore((s, u, v) => s.RemoveUserClaim(u, v.Type, v.Value), user, claim);
+            await InvokeUserStore(async (s, u, v) => await s.RemoveUserClaimAsync(u, v.Type, v.Value), user, claim);
         }
 
         // IUserEmailStore
 
-        public Task SetEmailAsync(IdentityApplicationUser user, string email)
+        public async Task SetEmailAsync(IdentityApplicationUser user, string email)
         {
-            return InvokeUserStore((s, u, v) => { u.Email = v; }, user, email);
+            await InvokeUserStore((s, u, v) =>
+                                  {
+                                      u.Email = v;
+                                      return Task.FromResult(0);
+                                  }, user, email);
         }
 
         public Task<string> GetEmailAsync(IdentityApplicationUser user)
@@ -79,9 +83,13 @@ namespace InfinniPlatform.Auth.Internal.Identity
             return Task.FromResult(result);
         }
 
-        public Task SetEmailConfirmedAsync(IdentityApplicationUser user, bool confirmed)
+        public async Task SetEmailConfirmedAsync(IdentityApplicationUser user, bool confirmed)
         {
-            return InvokeUserStore((s, u, v) => { u.EmailConfirmed = v; }, user, confirmed);
+            await InvokeUserStore((s, u, v) =>
+                                  {
+                                      u.EmailConfirmed = v;
+                                      return Task.FromResult(0);
+                                  }, user, confirmed);
         }
 
         public Task<bool> GetEmailConfirmedAsync(IdentityApplicationUser user)
@@ -90,16 +98,16 @@ namespace InfinniPlatform.Auth.Internal.Identity
             return Task.FromResult(result);
         }
 
-        public Task<IdentityApplicationUser> FindByEmailAsync(string email)
+        public async Task<IdentityApplicationUser> FindByEmailAsync(string email)
         {
-            return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserByEmail(v)), email);
+            return await InvokeUserStore(async (s, v) => ToIdentityUser(await s.FindUserByEmailAsync(v)), email);
         }
 
         // IUserLoginStore
 
-        public Task<IdentityApplicationUser> FindAsync(UserLoginInfo login)
+        public async Task<IdentityApplicationUser> FindAsync(UserLoginInfo login)
         {
-            return InvokeUserStore((s, l) => ToIdentityUser(s.FindUserByLogin(ToApplicationUserLogin(l))), login);
+            return await InvokeUserStore(async (s, l) => ToIdentityUser(await s.FindUserByLoginAsync(ToApplicationUserLogin(l))), login);
         }
 
         public Task<IList<UserLoginInfo>> GetLoginsAsync(IdentityApplicationUser user)
@@ -108,21 +116,25 @@ namespace InfinniPlatform.Auth.Internal.Identity
             return Task.FromResult(result);
         }
 
-        public Task AddLoginAsync(IdentityApplicationUser user, UserLoginInfo login)
+        public async Task AddLoginAsync(IdentityApplicationUser user, UserLoginInfo login)
         {
-            return InvokeUserStore((s, u, l) => s.AddUserLogin(u, ToApplicationUserLogin(l)), user, login);
+            await InvokeUserStore(async (s, u, l) => await s.AddUserLoginAsync(u, ToApplicationUserLogin(l)), user, login);
         }
 
         public Task RemoveLoginAsync(IdentityApplicationUser user, UserLoginInfo login)
         {
-            return InvokeUserStore((s, u, l) => s.RemoveUserLogin(u, ToApplicationUserLogin(l)), user, login);
+            return InvokeUserStore(async (s, u, l) => await s.RemoveUserLoginAsync(u, ToApplicationUserLogin(l)), user, login);
         }
 
         // IUserPasswordStore
 
-        public Task SetPasswordHashAsync(IdentityApplicationUser user, string passwordHash)
+        public async Task SetPasswordHashAsync(IdentityApplicationUser user, string passwordHash)
         {
-            return InvokeUserStore((s, u, v) => { u.PasswordHash = v; }, user, passwordHash);
+            await InvokeUserStore((s, u, v) =>
+                                  {
+                                      u.PasswordHash = v;
+                                      return Task.FromResult(0);
+                                  }, user, passwordHash);
         }
 
         public Task<string> GetPasswordHashAsync(IdentityApplicationUser user)
@@ -139,9 +151,13 @@ namespace InfinniPlatform.Auth.Internal.Identity
 
         // IUserPhoneNumberStore
 
-        public Task SetPhoneNumberAsync(IdentityApplicationUser user, string phoneNumber)
+        public async Task SetPhoneNumberAsync(IdentityApplicationUser user, string phoneNumber)
         {
-            return InvokeUserStore((s, u, v) => { u.PhoneNumber = v; }, user, phoneNumber);
+            await InvokeUserStore((s, u, v) =>
+                                  {
+                                      u.PhoneNumber = v;
+                                      return Task.FromResult(0);
+                                  }, user, phoneNumber);
         }
 
         public Task<string> GetPhoneNumberAsync(IdentityApplicationUser user)
@@ -150,9 +166,13 @@ namespace InfinniPlatform.Auth.Internal.Identity
             return Task.FromResult(result);
         }
 
-        public Task SetPhoneNumberConfirmedAsync(IdentityApplicationUser user, bool confirmed)
+        public async Task SetPhoneNumberConfirmedAsync(IdentityApplicationUser user, bool confirmed)
         {
-            return InvokeUserStore((s, u, v) => { u.PhoneNumberConfirmed = v; }, user, confirmed);
+            await InvokeUserStore((s, u, v) =>
+                                  {
+                                      u.PhoneNumberConfirmed = v;
+                                      return Task.FromResult(0);
+                                  }, user, confirmed);
         }
 
         public Task<bool> GetPhoneNumberConfirmedAsync(IdentityApplicationUser user)
@@ -163,14 +183,14 @@ namespace InfinniPlatform.Auth.Internal.Identity
 
         // IUserRoleStore
 
-        public Task AddToRoleAsync(IdentityApplicationUser user, string roleName)
+        public async Task AddToRoleAsync(IdentityApplicationUser user, string roleName)
         {
-            return InvokeUserStore((s, u, v) => s.AddUserToRole(u, v), user, roleName);
+            await InvokeUserStore(async (s, u, v) => await s.AddUserToRoleAsync(u, v), user, roleName);
         }
 
-        public Task RemoveFromRoleAsync(IdentityApplicationUser user, string roleName)
+        public async Task RemoveFromRoleAsync(IdentityApplicationUser user, string roleName)
         {
-            return InvokeUserStore((s, u, v) => s.RemoveUserFromRole(u, v), user, roleName);
+            await InvokeUserStore(async (s, u, v) => await s.RemoveUserFromRoleAsync(u, v), user, roleName);
         }
 
         public Task<IList<string>> GetRolesAsync(IdentityApplicationUser user)
@@ -187,9 +207,13 @@ namespace InfinniPlatform.Auth.Internal.Identity
 
         // IUserSecurityStampStore
 
-        public Task SetSecurityStampAsync(IdentityApplicationUser user, string stamp)
+        public async Task SetSecurityStampAsync(IdentityApplicationUser user, string stamp)
         {
-            return InvokeUserStore((s, u, v) => { u.SecurityStamp = v; }, user, stamp);
+            await InvokeUserStore((s, u, v) =>
+                                  {
+                                      u.SecurityStamp = v;
+                                      return Task.FromResult(0);
+                                  }, user, stamp);
         }
 
         public Task<string> GetSecurityStampAsync(IdentityApplicationUser user)
@@ -200,29 +224,29 @@ namespace InfinniPlatform.Auth.Internal.Identity
 
         // IUserStore
 
-        public Task CreateAsync(IdentityApplicationUser user)
+        public async Task CreateAsync(IdentityApplicationUser user)
         {
-            return InvokeUserStore((s, u) => s.CreateUser(u), user);
+            await InvokeUserStore(async (s, u) => await s.CreateUserAsync(u), user);
         }
 
-        public Task UpdateAsync(IdentityApplicationUser user)
+        public async Task UpdateAsync(IdentityApplicationUser user)
         {
-            return InvokeUserStore((s, u) => s.UpdateUser(u), user);
+            await InvokeUserStore(async (s, u) => await s.UpdateUserAsync(u), user);
         }
 
-        public Task DeleteAsync(IdentityApplicationUser user)
+        public async Task DeleteAsync(IdentityApplicationUser user)
         {
-            return InvokeUserStore((s, u) => s.DeleteUser(u), user);
+            await InvokeUserStore(async (s, u) => await s.DeleteUserAsync(u), user);
         }
 
-        public Task<IdentityApplicationUser> FindByIdAsync(string userId)
+        public async Task<IdentityApplicationUser> FindByIdAsync(string userId)
         {
-            return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserById(v)), userId);
+            return await InvokeUserStore(async (s, v) => ToIdentityUser(await s.FindUserByIdAsync(v)), userId);
         }
 
-        public Task<IdentityApplicationUser> FindByNameAsync(string userName)
+        public async Task<IdentityApplicationUser> FindByNameAsync(string userName)
         {
-            return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserByName(v)), userName);
+            return await InvokeUserStore(async (s, v) => ToIdentityUser(await s.FindUserByNameAsync(v)), userName);
         }
 
         // IDisposable
@@ -231,9 +255,9 @@ namespace InfinniPlatform.Auth.Internal.Identity
         {
         }
 
-        public Task<IdentityApplicationUser> FindByUserNameAsync(string userName)
+        public async Task<IdentityApplicationUser> FindByUserNameAsync(string userName)
         {
-            return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserByUserName(v)), userName);
+            return await InvokeUserStore(async (s, v) => ToIdentityUser(await s.FindUserByUserNameAsync(v)), userName);
         }
 
         private static ApplicationUserLogin ToApplicationUserLogin(UserLoginInfo login)
@@ -246,36 +270,29 @@ namespace InfinniPlatform.Auth.Internal.Identity
             return new UserLoginInfo(login.Provider, login.ProviderKey);
         }
 
-        public Task<IdentityApplicationUser> FindByPhoneNumberAsync(string phoneNumber)
+        public async Task<IdentityApplicationUser> FindByPhoneNumberAsync(string phoneNumber)
         {
-            return InvokeUserStore((s, v) => ToIdentityUser(s.FindUserByPhoneNumber(v)), phoneNumber);
+            return await InvokeUserStore(async (s, v) => ToIdentityUser(await s.FindUserByPhoneNumberAsync(v)), phoneNumber);
         }
 
         private static IdentityApplicationUser ToIdentityUser(ApplicationUser user)
         {
-            var identityApplicationUser = Mapper.Map<IdentityApplicationUser>(user);
-            return identityApplicationUser;
+            return Mapper.Map<IdentityApplicationUser>(user);
         }
 
-        private Task InvokeUserStore<T1>(Action<IAppUserStore, T1> action, T1 arg1)
+        private async Task InvokeUserStore<T1>(Func<IAppUserStore, T1, Task> action, T1 arg1)
         {
-            action(_userStore, arg1);
-
-            return Task.FromResult<object>(null);
+            await action(_userStore, arg1);
         }
 
-        private Task InvokeUserStore<T1, T2>(Action<IAppUserStore, T1, T2> action, T1 arg1, T2 arg2)
+        private async Task InvokeUserStore<T1, T2>(Func<IAppUserStore, T1, T2, Task> action, T1 arg1, T2 arg2)
         {
-            action(_userStore, arg1, arg2);
-
-            return Task.FromResult<object>(null);
+            await action(_userStore, arg1, arg2);
         }
 
-        private Task<T> InvokeUserStore<T, T1>(Func<IAppUserStore, T1, T> action, T1 arg1)
+        private async Task<T> InvokeUserStore<T, T1>(Func<IAppUserStore, T1, Task<T>> action, T1 arg1)
         {
-            var result = action(_userStore, arg1);
-
-            return Task.FromResult(result);
+            return await action(_userStore, arg1);
         }
     }
 }

@@ -188,7 +188,6 @@
     <Compile Include="Serialization\IJsonObjectSerializer.cs" />
     <Compile Include="Http\Services\IHttpServiceSource.cs" />
     <Compile Include="Http\Services\IMimeTypeProvider.cs" />
-    <Compile Include="Http\Services\ViewHttpResponce.cs" />
     <Compile Include="Session\ITenantScope.cs" />
     <Compile Include="Session\ITenantScopeProvider.cs" />
     <Compile Include="Session\IUserEventHandler.cs" />
@@ -258,7 +257,6 @@
     <Compile Include="Types\TimeJsonConverter.cs" />
     <Compile Include="Types\DateJsonConverter.cs" />
     <Compile Include="Types\Time.cs" />
-    <Compile Include="ViewEngine\IViewEngineBootstrapperExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 using InfinniPlatform.Auth.Internal.Properties;
 using InfinniPlatform.Sdk.Documents;
@@ -10,7 +11,8 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
 {
     internal class AppUserStore : IAppUserStore
     {
-        public AppUserStore(Lazy<AppUserStoreCache> userCache, ISystemDocumentStorageFactory documentStorageFactory)
+        public AppUserStore(Lazy<AppUserStoreCache> userCache,
+                            ISystemDocumentStorageFactory documentStorageFactory)
         {
             // Lazy, чтобы подписка на изменения кэша пользователей в кластере не создавалась сразу
 
@@ -23,60 +25,60 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
         private readonly Lazy<ISystemDocumentStorage<ApplicationUser>> _userStorage;
 
 
-        public void CreateUser(ApplicationUser user)
+        public async Task CreateUserAsync(ApplicationUser user)
         {
             if (string.IsNullOrEmpty(user.Id))
             {
                 user.Id = CreateUnique();
             }
 
-            UpdateUser(user);
+            await UpdateUserAsync(user);
         }
 
-        public void UpdateUser(ApplicationUser user)
+        public async Task UpdateUserAsync(ApplicationUser user)
         {
-            SaveUser(user);
+            await SaveUser(user);
             UpdateUserInCache(user);
         }
 
-        public void DeleteUser(ApplicationUser user)
+        public async Task DeleteUserAsync(ApplicationUser user)
         {
-            _userStorage.Value.DeleteOne(f => f._id == user._id);
+            await _userStorage.Value.DeleteOneAsync(f => f._id == user._id);
 
             RemoveUserFromCache(user.Id);
         }
 
-        public ApplicationUser FindUserById(string userId)
+        public async Task<ApplicationUser> FindUserByIdAsync(string userId)
         {
-            return FindUserInCache(c => c.FindUserById(userId), () => FindUser(f => f._header._deleted == null && f.Id == userId));
+            return await FindUserInCacheAsync(c => c.FindUserById(userId), async () => await FindUser(f => f._header._deleted == null && f.Id == userId));
         }
 
-        public ApplicationUser FindUserByUserName(string userName)
+        public async Task<ApplicationUser> FindUserByUserNameAsync(string userName)
         {
-            return FindUserInCache(c => c.FindUserByUserName(userName), () => FindUser(f => f._header._deleted == null && f.UserName == userName));
+            return await FindUserInCacheAsync(c => c.FindUserByUserName(userName), async () => await FindUser(f => f._header._deleted == null && f.UserName == userName));
         }
 
-        public ApplicationUser FindUserByEmail(string email)
+        public async Task<ApplicationUser> FindUserByEmailAsync(string email)
         {
-            return FindUserInCache(c => c.FindUserByEmail(email), () => FindUser(f => f._header._deleted == null && f.Email == email));
+            return await FindUserInCacheAsync(c => c.FindUserByEmail(email), async () => await FindUser(f => f._header._deleted == null && f.Email == email));
         }
 
-        public ApplicationUser FindUserByPhoneNumber(string phoneNumber)
+        public async Task<ApplicationUser> FindUserByPhoneNumberAsync(string phoneNumber)
         {
-            return FindUserInCache(c => c.FindUserByPhoneNumber(phoneNumber), () => FindUser(f => f._header._deleted == null && f.PhoneNumber == phoneNumber));
+            return await FindUserInCacheAsync(c => c.FindUserByPhoneNumber(phoneNumber), async () => await FindUser(f => f._header._deleted == null && f.PhoneNumber == phoneNumber));
         }
 
-        public ApplicationUser FindUserByLogin(ApplicationUserLogin userLogin)
+        public async Task<ApplicationUser> FindUserByLoginAsync(ApplicationUserLogin userLogin)
         {
-            return FindUserInCache(c => c.FindUserByLogin(userLogin), () => FindUser(f => f._header._deleted == null && f.Logins.Any(l => l.ProviderKey == userLogin.ProviderKey)));
+            return await FindUserInCacheAsync(c => c.FindUserByLogin(userLogin), async () => await FindUser(f => f._header._deleted == null && f.Logins.Any(l => l.ProviderKey == userLogin.ProviderKey)));
         }
 
-        public ApplicationUser FindUserByName(string name)
+        public async Task<ApplicationUser> FindUserByNameAsync(string name)
         {
-            return FindUserByUserName(name) ?? FindUserByEmail(name) ?? FindUserByPhoneNumber(name);
+            return await FindUserByUserNameAsync(name) ?? await FindUserByEmailAsync(name) ?? await FindUserByPhoneNumberAsync(name);
         }
 
-        public void AddUserToRole(ApplicationUser user, string roleName)
+        public async Task AddUserToRoleAsync(ApplicationUser user, string roleName)
         {
             if (user.Id == null)
             {
@@ -90,11 +92,11 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
                 // Обновление сведений пользователя
                 roles.Add(new ForeignKey { Id = roleName, DisplayName = roleName });
                 user.Roles = roles;
-                UpdateUser(user);
+                await UpdateUserAsync(user);
             }
         }
 
-        public void RemoveUserFromRole(ApplicationUser user, string roleName)
+        public async Task RemoveUserFromRoleAsync(ApplicationUser user, string roleName)
         {
             if (user.Id == null)
             {
@@ -107,31 +109,31 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
             {
                 // Обновление сведений пользователя
                 user.Roles = roles.Where(r => r.Id != roleName).ToList();
-                UpdateUser(user);
+                await UpdateUserAsync(user);
             }
         }
 
-        public void AddUserClaim(ApplicationUser user, string claimType, string claimValue)
+        public async Task AddUserClaimAsync(ApplicationUser user, string claimType, string claimValue)
         {
             if (!user.Claims.Any(c => c.Type.DisplayName == claimType && c.Value == claimValue))
             {
                 var claims = user.Claims.ToList();
                 claims.Add(new ApplicationUserClaim { Type = new ForeignKey { Id = claimType, DisplayName = claimType }, Value = claimValue });
                 user.Claims = claims;
-                UpdateUser(user);
+                await UpdateUserAsync(user);
             }
         }
 
-        public void RemoveUserClaim(ApplicationUser user, string claimType, string claimValue)
+        public async Task RemoveUserClaimAsync(ApplicationUser user, string claimType, string claimValue)
         {
             if (user.Claims.Any(c => c.Type.DisplayName == claimType && c.Value == claimValue))
             {
                 user.Claims = user.Claims.Where(c => !(c.Type.DisplayName == claimType && c.Value == claimValue)).ToList();
-                UpdateUser(user);
+                await UpdateUserAsync(user);
             }
         }
 
-        public void AddUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
+        public async Task AddUserLoginAsync(ApplicationUser user, ApplicationUserLogin userLogin)
         {
             var logins = user.Logins.ToList();
 
@@ -139,29 +141,29 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
             {
                 logins.Add(userLogin);
                 user.Logins = logins;
-                UpdateUser(user);
+                await UpdateUserAsync(user);
             }
         }
 
-        public void RemoveUserLogin(ApplicationUser user, ApplicationUserLogin userLogin)
+        public async Task RemoveUserLoginAsync(ApplicationUser user, ApplicationUserLogin userLogin)
         {
             if (user.Logins.Any(f => f.Provider == userLogin.Provider && f.ProviderKey == userLogin.ProviderKey))
             {
                 user.Logins = user.Logins.Where(f => !(f.Provider == userLogin.Provider && f.ProviderKey == userLogin.ProviderKey)).ToList();
-                UpdateUser(user);
+                await UpdateUserAsync(user);
             }
         }
 
-        private ApplicationUser FindUser(Expression<Func<ApplicationUser, bool>> expression)
+        private async Task<ApplicationUser> FindUser(Expression<Func<ApplicationUser, bool>> expression)
         {
-            return _userStorage.Value.Find(expression).FirstOrDefault();
+            return await _userStorage.Value.Find(expression).FirstOrDefaultAsync();
         }
 
-        private void SaveUser(ApplicationUser user)
+        private async Task SaveUser(ApplicationUser user)
         {
             user.SecurityStamp = CreateUnique();
 
-            _userStorage.Value.ReplaceOne(user, f => f._id == user._id, true);
+            await _userStorage.Value.ReplaceOneAsync(user, f => f._id == user._id, true);
         }
 
         /// <summary>
@@ -183,13 +185,13 @@ namespace InfinniPlatform.Auth.Internal.UserStorage
         /// <summary>
         /// Ищет сведения о пользователе в локальном кэше.
         /// </summary>
-        private ApplicationUser FindUserInCache(Func<AppUserStoreCache, ApplicationUser> cacheSelector, Func<ApplicationUser> storageSelector)
+        private async Task<ApplicationUser> FindUserInCacheAsync(Func<AppUserStoreCache, ApplicationUser> cacheSelector, Func<Task<ApplicationUser>> storageSelector)
         {
             var user = cacheSelector(_userCache.Value);
 
             if (user == null)
             {
-                user = storageSelector();
+                user = await storageSelector();
 
                 if (user != null)
                 {

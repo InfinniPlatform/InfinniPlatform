@@ -35,9 +35,8 @@
             'InfinniPlatform.Auth.Google',
             'InfinniPlatform.Auth.Internal',
             'InfinniPlatform.Auth.Vk',
-            'InfinniPlatform.PrintView',            
+            'InfinniPlatform.PrintView',
             'InfinniPlatform.Scheduler',
-            'InfinniPlatform.Plugins.ViewEngine',
             'InfinniPlatform.Watcher'
         )
     )

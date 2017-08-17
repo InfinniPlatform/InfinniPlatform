@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}"
 	ProjectSection(SolutionItems) = preProject
@@ -132,10 +132,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schema", "Schema", "{CB33EB
 		Files\Config\Schema\UserStorage.json = Files\Config\Schema\UserStorage.json
 		Files\Config\Schema\Watcher.json = Files\Config\Schema\Watcher.json
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Plugins.ViewEngine", "InfinniPlatform.Plugins.ViewEngine\InfinniPlatform.Plugins.ViewEngine.csproj", "{55F8F37E-5510-4101-9E3A-2F62E958951D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.Plugins.ViewEngine.Tests", "InfinniPlatform.Plugins.ViewEngine.Tests\InfinniPlatform.Plugins.ViewEngine.Tests.csproj", "{B658B824-8B93-422D-A641-486AF646FE86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -350,18 +346,6 @@ Global
 		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.DebugTools|Any CPU.Build.0 = DebugTools|Any CPU
 		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A769A09B-C751-4039-8972-6DE5DF3CFB30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55F8F37E-5510-4101-9E3A-2F62E958951D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55F8F37E-5510-4101-9E3A-2F62E958951D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55F8F37E-5510-4101-9E3A-2F62E958951D}.DebugTools|Any CPU.ActiveCfg = DebugTools|Any CPU
-		{55F8F37E-5510-4101-9E3A-2F62E958951D}.DebugTools|Any CPU.Build.0 = DebugTools|Any CPU
-		{55F8F37E-5510-4101-9E3A-2F62E958951D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55F8F37E-5510-4101-9E3A-2F62E958951D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B658B824-8B93-422D-A641-486AF646FE86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B658B824-8B93-422D-A641-486AF646FE86}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B658B824-8B93-422D-A641-486AF646FE86}.DebugTools|Any CPU.ActiveCfg = DebugTools|Any CPU
-		{B658B824-8B93-422D-A641-486AF646FE86}.DebugTools|Any CPU.Build.0 = DebugTools|Any CPU
-		{B658B824-8B93-422D-A641-486AF646FE86}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B658B824-8B93-422D-A641-486AF646FE86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -372,5 +356,8 @@ Global
 		{FA93727B-56AC-452A-8F91-F09C6620134F} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{90A10053-AB39-46B8-9F9D-0638E4D0BBAA} = {9F13A82A-0A67-4BA9-A2DE-6560A62FDCE1}
 		{CB33EBA2-A6F1-452B-975B-46608C8419C2} = {FA93727B-56AC-452A-8F91-F09C6620134F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C893613-69ED-458A-8566-7951800B9B89}
 	EndGlobalSection
 EndGlobal

@@ -18,19 +18,9 @@
             "description": "Соответствие виртуальных путей и сборок с файлами ресурсов.",
             "type": "object",
             "properties": {}
-        },
-        "RazorViewsPath": {
-            "description": "Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews)",
-            "type": "string",
-            "default": "content/RazorViews"
-        },
-        "EmbeddedRazorViewsAssemblies": {
-            "description": "Путь до файлов Razor-представлений (относительно рабочей папки, по умолчанию - content/RazorViews)",
-            "type": "array",
-            "items": {}
         }
     },
     "required": [
-        "StaticFilesMapping"        
+        "StaticFilesMapping"
     ]
 }

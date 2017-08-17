@@ -247,13 +247,6 @@ namespace InfinniPlatform.Core.Http.Services
 
             if (httpResponse != null)
             {
-                var viewHttpRespose = result as ViewHttpResponce;
-
-                if (viewHttpRespose != null)
-                {
-                    return nancyModule.View[viewHttpRespose.ViewName, viewHttpRespose.Model];
-                }
-
                 var nancyResponse = new Response
                                     {
                                         StatusCode = (HttpStatusCode)httpResponse.StatusCode,

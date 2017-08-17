@@ -8,7 +8,6 @@ using InfinniPlatform.Core.Extensions;
 using InfinniPlatform.Core.Properties;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
-using InfinniPlatform.Sdk.ViewEngine;
 
 using Nancy;
 using Nancy.Bootstrapper;
@@ -24,31 +23,17 @@ namespace InfinniPlatform.Core.Http.Services
     {
         public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
                                             StaticContentSettings staticContentSettings,
-                                            ILog log,
-                                            IViewEngineBootstrapperExtension viewEngineBootstrapperExtension = null)
+                                            ILog log)
         {
             _nancyModuleCatalog = nancyModuleCatalog;
             _staticContentSettings = staticContentSettings;
             _log = log;
-            _viewEngineBootstrapperExtension = viewEngineBootstrapperExtension;
         }
 
         private readonly ILog _log;
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
         private readonly StaticContentSettings _staticContentSettings;
-        private readonly IViewEngineBootstrapperExtension _viewEngineBootstrapperExtension;
-
-        protected override NancyInternalConfiguration InternalConfiguration
-        {
-            get
-            {
-                // регистрирует тип локатора Razor-представлений, если подключен пакет InfinniPlatform.Plugins.ViewEngine.
-                return _viewEngineBootstrapperExtension != null
-                    ? NancyInternalConfiguration.WithOverrides(c => c.ViewLocationProvider = _viewEngineBootstrapperExtension.ViewLocatorType)
-                    : NancyInternalConfiguration.Default;
-            }
-        }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
         {
@@ -97,9 +82,6 @@ namespace InfinniPlatform.Core.Http.Services
 
             RegisterStaticFiles();
             RegisterEmbeddedResource();
-
-            // Добавляет источники Razor-представлений, если подключен пакет InfinniPlatform.Plugins.ViewEngine.
-            _viewEngineBootstrapperExtension?.RegisterViewLocators(Conventions);
         }
 
         private static void CheckForIfModifiedSince(NancyContext context)

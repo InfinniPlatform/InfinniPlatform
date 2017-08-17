@@ -63,9 +63,7 @@
       "/metadata": "content/metadata",
       "/": "content/www"
     },
-    "EmbeddedResourceMapping": {},
-    "RazorViewsPath": "content/www/RazorViews",
-    "EmbeddedRazorViewsAssemblies": []
+    "EmbeddedResourceMapping": {}
   },
   "authCookie": {
     "CookieDomain": ""
