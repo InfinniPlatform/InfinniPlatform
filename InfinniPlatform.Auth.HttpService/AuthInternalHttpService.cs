@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Http;
 using InfinniPlatform.Security;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -35,10 +36,7 @@ namespace InfinniPlatform.Auth.HttpService
 
 
         private IIdentity Identity => _userIdentityProvider.GetUserIdentity();
-
         private HttpContext HttpContext => _httpContextAccessor.HttpContext;
-
-        private AuthenticationManager AuthenticationManager => HttpContext.Authentication;
 
 
         public void Load(IHttpServiceBuilder builder)
@@ -97,8 +95,8 @@ namespace InfinniPlatform.Auth.HttpService
             _userEventHandlerInvoker.OnBeforeSignOut(request.User);
 
             // Выход из системы
-            await AuthenticationManager.SignOutAsync(Extensions.ApplicationAuthScheme);
-            await AuthenticationManager.SignOutAsync(Extensions.ExternalAuthScheme);
+            await HttpContext.SignOutAsync(Extensions.ApplicationAuthScheme);
+            await HttpContext.SignOutAsync(Extensions.ExternalAuthScheme);
 
             var httpResponse = HttpContext.Response;
 

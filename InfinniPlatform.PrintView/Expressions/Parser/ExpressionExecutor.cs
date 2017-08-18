@@ -35,7 +35,7 @@ namespace InfinniPlatform.PrintView.Expressions.Parser
                     {
                         compiledExpression = ExpressionCompiler.Compile(expression);
                     }
-                    catch (Exception exception)
+                    catch (Exception)
                     {
                         // Пока просто игнорируем ошибки компиляции
                         compiledExpression = null;
