@@ -144,7 +144,7 @@ namespace InfinniPlatform.Auth.UserCache
             {
                 SetUserCache(user.Id, user);
                 SetAdditionalUserCache(_usersByName, user.NormalizedUserName, user);
-                SetAdditionalUserCache(_usersByEmail, user.Email, user);
+                SetAdditionalUserCache(_usersByEmail, user.NormalizedEmail, user);
                 SetAdditionalUserCache(_usersByPhone, user.PhoneNumber, user);
 
                 var userLogins = user.Logins;
@@ -230,8 +230,8 @@ namespace InfinniPlatform.Auth.UserCache
 
             try
             {
-                RemoveAdditionalUserCache(_usersByName, removedUser.UserName);
-                RemoveAdditionalUserCache(_usersByEmail, removedUser.Email);
+                RemoveAdditionalUserCache(_usersByName, removedUser.NormalizedUserName);
+                RemoveAdditionalUserCache(_usersByEmail, removedUser.NormalizedEmail);
                 RemoveAdditionalUserCache(_usersByPhone, removedUser.PhoneNumber);
 
                 var userLogins = removedUser.Logins;
