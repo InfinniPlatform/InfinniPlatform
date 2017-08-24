@@ -13,12 +13,16 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public Task SetEmailConfirmedAsync(TUser user, bool confirmed, CancellationToken token)
         {
-            return Task.Run(()=> user.EmailConfirmed = confirmed, token);
+            user.EmailConfirmed = confirmed;
+
+            return Task.CompletedTask;
         }
 
         public Task SetEmailAsync(TUser user, string email, CancellationToken token)
         {
-            return Task.Run(() => user.Email = email, token);
+            user.Email = email;
+
+            return Task.CompletedTask;
         }
 
         public Task<string> GetEmailAsync(TUser user, CancellationToken token)
@@ -33,7 +37,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken token)
         {
-            return Task.Run(() => user.NormalizedEmail = normalizedEmail, token);
+            user.NormalizedEmail = normalizedEmail;
+
+            return Task.CompletedTask;
         }
 
         public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken token)

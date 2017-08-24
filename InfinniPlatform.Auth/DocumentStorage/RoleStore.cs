@@ -49,7 +49,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public virtual Task SetRoleNameAsync(TRole role, string roleName, CancellationToken token)
         {
-            return Task.Run(() => role.Name = roleName, token);
+            role.Name = roleName;
+
+            return Task.CompletedTask;
         }
 
         public virtual Task<string> GetNormalizedRoleNameAsync(TRole role, CancellationToken token)
@@ -59,7 +61,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public virtual Task SetNormalizedRoleNameAsync(TRole role, string normalizedName, CancellationToken token)
         {
-            return Task.Run(() => role.NormalizedName = normalizedName, token);
+            role.NormalizedName = normalizedName;
+
+            return Task.CompletedTask;
         }
 
         public virtual Task<TRole> FindByIdAsync(string roleId, CancellationToken token)

@@ -10,12 +10,16 @@ namespace InfinniPlatform.Auth.DocumentStorage
     {
         public Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken token)
         {
-            return Task.Run(() => user.AddLogin(login), token);
+            user.AddLogin(login);
+
+            return Task.CompletedTask;
         }
 
         public Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, CancellationToken token)
         {
-            return Task.Run(() => user.RemoveLogin(loginProvider, providerKey), token);
+            user.RemoveLogin(loginProvider, providerKey);
+
+            return Task.CompletedTask;
         }
 
         public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken token)

@@ -8,7 +8,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
     {
         public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken token)
         {
-            return Task.Run(() => user.PasswordHash = passwordHash, token);
+            user.PasswordHash = passwordHash;
+
+            return Task.CompletedTask;
         }
 
         public Task<string> GetPasswordHashAsync(TUser user, CancellationToken token)

@@ -34,16 +34,20 @@ namespace InfinniPlatform.MessageQueue
             BasicPublish(messageBody, queueName);
         }
 
-        public async Task PublishAsync<T>(T messageBody, string queueName = null)
+        public Task PublishAsync<T>(T messageBody, string queueName = null)
         {
             MessageQueueHelper.CheckTypeRestrictions<T>();
 
-            await Task.Run(() => { BasicPublish(messageBody, queueName); });
+            BasicPublish(messageBody, queueName);
+
+            return Task.CompletedTask;
         }
 
-        public async Task PublishDynamicAsync(DynamicDocument messageBody, string queueName)
+        public Task PublishDynamicAsync(DynamicDocument messageBody, string queueName)
         {
-            await Task.Run(() => { BasicPublish(messageBody, queueName); });
+            BasicPublish(messageBody, queueName);
+
+            return Task.CompletedTask;
         }
 
         private void BasicPublish<T>(T messageBody, string queueName)

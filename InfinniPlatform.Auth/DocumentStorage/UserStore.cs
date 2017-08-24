@@ -65,7 +65,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public Task SetUserNameAsync(TUser user, string userName, CancellationToken token)
         {
-            return Task.Run(() => user.UserName = userName, token);
+            user.UserName = userName;
+
+            return Task.CompletedTask;
         }
 
         public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken token)
@@ -75,7 +77,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public Task SetNormalizedUserNameAsync(TUser user, string normalizedUserName, CancellationToken token)
         {
-            return Task.Run(() => user.NormalizedUserName = normalizedUserName, token);
+            user.NormalizedUserName = normalizedUserName;
+
+            return Task.CompletedTask;
         }
 
         public async Task<TUser> FindByIdAsync(string userId, CancellationToken token)

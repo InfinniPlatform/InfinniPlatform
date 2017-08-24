@@ -8,7 +8,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
     {
         public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken token)
         {
-            return Task.Run(() => user.SecurityStamp = stamp, token);
+            user.SecurityStamp = stamp;
+
+            return Task.CompletedTask;
         }
 
         public Task<string> GetSecurityStampAsync(TUser user, CancellationToken token)

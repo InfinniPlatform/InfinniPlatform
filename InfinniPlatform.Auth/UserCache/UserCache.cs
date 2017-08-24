@@ -55,29 +55,28 @@ namespace InfinniPlatform.Auth.UserCache
 
         public Task ProcessMessage(Message<string> message)
         {
-            return Task.Run(() =>
-                            {
-                                try
-                                {
-                                    if (message.AppId == _appOptions.AppInstance)
-                                    {
-                                        //ignore own message
-                                    }
-                                    else
-                                    {
-                                        var userId = (string) message.GetBody();
+            try
+            {
+                if (message.AppId == _appOptions.AppInstance)
+                {
+                    //ignore own message
+                }
+                else
+                {
+                    var userId = (string)message.GetBody();
 
-                                        if (!string.IsNullOrEmpty(userId))
-                                        {
-                                            RemoveUser(userId);
-                                        }
-                                    }
-                                }
-                                catch (Exception exception)
-                                {
-                                    _logger.LogError(exception);
-                                }
-                            });
+                    if (!string.IsNullOrEmpty(userId))
+                    {
+                        RemoveUser(userId);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception);
+            }
+
+            return Task.CompletedTask;
         }
 
 

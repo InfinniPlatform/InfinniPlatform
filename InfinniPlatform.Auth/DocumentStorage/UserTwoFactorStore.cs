@@ -8,7 +8,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
     {
         public Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken token)
         {
-            return Task.Run(() => user.TwoFactorEnabled = enabled, token);
+            user.TwoFactorEnabled = enabled;
+
+            return Task.CompletedTask;
         }
 
         public Task<bool> GetTwoFactorEnabledAsync(TUser user, CancellationToken token)

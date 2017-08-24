@@ -7,7 +7,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
     {
         public Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken token)
         {
-            return Task.Run(() => user.PhoneNumber = phoneNumber, token);
+            user.PhoneNumber = phoneNumber;
+
+            return Task.CompletedTask;
         }
 
         public Task<string> GetPhoneNumberAsync(TUser user, CancellationToken token)
@@ -22,7 +24,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, CancellationToken token)
         {
-            return Task.Run(() => user.PhoneNumberConfirmed = confirmed, token);
+            user.PhoneNumberConfirmed = confirmed;
+
+            return Task.CompletedTask;
         }
 
         public Task<TUser> FindByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken)

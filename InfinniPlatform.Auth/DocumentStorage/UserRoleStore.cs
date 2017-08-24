@@ -9,12 +9,16 @@ namespace InfinniPlatform.Auth.DocumentStorage
     {
         public Task AddToRoleAsync(TUser user, string normalizedRoleName, CancellationToken token)
         {
-            return Task.Run(() => user.AddRole(normalizedRoleName), token);
+            user.AddRole(normalizedRoleName);
+
+            return Task.CompletedTask;
         }
 
         public Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, CancellationToken token)
         {
-            return Task.Run(() => user.RemoveRole(normalizedRoleName), token);
+            user.RemoveRole(normalizedRoleName);
+
+            return Task.CompletedTask;
         }
 
         public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken token)

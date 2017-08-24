@@ -14,21 +14,24 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken token)
         {
-            return Task.Run(() => user.LockoutEndDateUtc = lockoutEnd.HasValue ? lockoutEnd.GetValueOrDefault().UtcDateTime : new DateTime?(), token);
+            user.LockoutEndDateUtc = lockoutEnd.HasValue
+                                         ? lockoutEnd.GetValueOrDefault().UtcDateTime
+                                         : new DateTime?();
+
+            return Task.CompletedTask;
         }
 
         public Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken token)
         {
-            return Task.Run(() =>
-            {
-                ++user.AccessFailedCount;
-                return user.AccessFailedCount;
-            }, token);
+            ++user.AccessFailedCount;
+            return Task.FromResult(user.AccessFailedCount);
         }
 
         public Task ResetAccessFailedCountAsync(TUser user, CancellationToken token)
         {
-            return Task.Run(() => user.AccessFailedCount = 0, token);
+            user.AccessFailedCount = 0;
+
+            return Task.CompletedTask;
         }
 
         public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken token)
@@ -43,7 +46,9 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken token)
         {
-            return Task.Run(() => user.LockoutEnabled = enabled, token);
+            user.LockoutEnabled = enabled;
+
+            return Task.CompletedTask;
         }
     }
 }

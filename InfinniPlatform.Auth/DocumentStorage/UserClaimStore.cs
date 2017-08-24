@@ -16,29 +16,29 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
         {
-            return Task.Run(() =>
+            foreach (var claim in claims)
             {
-                foreach (var claim in claims)
-                {
-                    user.AddClaim(claim);
-                }
-            }, token);
+                user.AddClaim(claim);
+            }
+
+            return Task.CompletedTask;
         }
 
         public Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken token)
         {
-            return Task.Run(() =>
+            foreach (var claim in claims)
             {
-                foreach (var claim in claims)
-                {
-                    user.RemoveClaim(claim);
-                }
-            }, token);
+                user.RemoveClaim(claim);
+            }
+
+            return Task.CompletedTask;
         }
 
         public Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken token)
         {
-            return Task.Run(() => user.ReplaceClaim(claim, newClaim), token);
+            user.ReplaceClaim(claim, newClaim);
+
+            return Task.CompletedTask;
         }
 
         public async Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken token)
