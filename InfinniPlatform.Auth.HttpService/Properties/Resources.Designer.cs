@@ -10,7 +10,6 @@
 
 namespace InfinniPlatform.Auth.HttpService.Properties {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -20,7 +19,7 @@ namespace InfinniPlatform.Auth.HttpService.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -40,7 +39,7 @@ namespace InfinniPlatform.Auth.HttpService.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Auth.HttpService.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Auth.HttpService.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -58,6 +57,15 @@ namespace InfinniPlatform.Auth.HttpService.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email cannot be null or whitespace..
+        /// </summary>
+        internal static string EmailCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("EmailCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
         
@@ -89,6 +97,15 @@ namespace InfinniPlatform.Auth.HttpService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id cannot be null or whitespace..
+        /// </summary>
+        internal static string IdCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("IdCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid username or password..
         /// </summary>
         internal static string InvalidUsernameOrPassword {
@@ -103,6 +120,15 @@ namespace InfinniPlatform.Auth.HttpService.Properties {
         internal static string NewPasswordCannotBeNullOrWhiteSpace {
             get {
                 return ResourceManager.GetString("NewPasswordCannotBeNullOrWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number cannot be null or whitespace..
+        /// </summary>
+        internal static string PhoneNumberCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("PhoneNumberCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
         
@@ -130,6 +156,15 @@ namespace InfinniPlatform.Auth.HttpService.Properties {
         internal static string UnsuccessfulSignInWithExternalProvider {
             get {
                 return ResourceManager.GetString("UnsuccessfulSignInWithExternalProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User key cannot be null or whitespace..
+        /// </summary>
+        internal static string UserKeyCannotBeNullOrWhiteSpace {
+            get {
+                return ResourceManager.GetString("UserKeyCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
         

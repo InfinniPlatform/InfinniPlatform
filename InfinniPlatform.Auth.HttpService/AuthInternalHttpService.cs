@@ -1,11 +1,11 @@
 ﻿using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Http;
 using InfinniPlatform.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.HttpService
@@ -17,21 +17,28 @@ namespace InfinniPlatform.Auth.HttpService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly SignInManager<TUser> _signInManager;
+        private readonly IUserEmailStore<TUser> _userEmailStore;
         private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
         private readonly IUserIdentityProvider _userIdentityProvider;
         private readonly UserManager<TUser> _userManager;
+        private readonly IUserPhoneNumberStoreExtended<TUser> _userPhoneNumberStoreExtended;
+        private readonly IUserStore<TUser> _userStore;
 
         public AuthInternalHttpService(IHttpContextAccessor httpContextAccessor,
                                        IUserIdentityProvider userIdentityProvider,
                                        UserEventHandlerInvoker userEventHandlerInvoker,
                                        UserManager<TUser> userManager,
-                                       SignInManager<TUser> signInManager)
+                                       SignInManager<TUser> signInManager,
+                                       IUserStore<TUser> userStore)
         {
             _httpContextAccessor = httpContextAccessor;
             _userIdentityProvider = userIdentityProvider;
             _userEventHandlerInvoker = userEventHandlerInvoker;
             _userManager = userManager;
             _signInManager = signInManager;
+            _userStore = userStore;
+            _userEmailStore = (IUserEmailStore<TUser>) userStore;
+            _userPhoneNumberStoreExtended = (IUserPhoneNumberStoreExtended<TUser>) userStore;
         }
 
 
@@ -43,15 +50,62 @@ namespace InfinniPlatform.Auth.HttpService
         {
             builder.ServicePath = "/Auth";
 
-            builder.Post["/SignInInternal"] = SignInInternal;
+            builder.Post["/SignIn"] = SignIn;
+            builder.Post["/SignInById"] = SignInById;
+            builder.Post["/SignInByUserName"] = SignInByUserName;
+            builder.Post["/SignInByEmail"] = SignInByEmail;
+            builder.Post["/SignInByPhoneNumber"] = SignInByPhoneNumber;
+
             builder.Post["/SignOut"] = SignOut;
         }
-
 
         /// <summary>
         /// Осуществляет вход пользователя в систему через внутренний провайдер.
         /// </summary>
-        private async Task<object> SignInInternal(IHttpRequest request)
+        private async Task<object> SignIn(IHttpRequest request)
+        {
+            var signInForm = request.Form;
+            string userKey = signInForm.UserKey;
+            string password = signInForm.Password;
+            var remember = ((bool?) signInForm.Remember).GetValueOrDefault();
+
+            if (string.IsNullOrWhiteSpace(userKey))
+            {
+                return Extensions.CreateErrorResponse(Resources.UserKeyCannotBeNullOrWhiteSpace, 400);
+            }
+
+            var appUser = await _userStore.FindByIdAsync(userKey, CancellationToken.None) ??
+                          await _userStore.FindByNameAsync(userKey, CancellationToken.None) ??
+                          await _userEmailStore.FindByEmailAsync(userKey, CancellationToken.None) ??
+                          await _userPhoneNumberStoreExtended.FindByPhoneNumberAsync(userKey, CancellationToken.None);
+
+            return await ProcessPasswordSignIn(appUser, password, remember);
+        }
+
+        /// <summary>
+        /// Осуществляет вход пользователя в систему по идентификатору через внутренний провайдер.
+        /// </summary>
+        private async Task<object> SignInById(IHttpRequest request)
+        {
+            var signInForm = request.Form;
+            string id = signInForm.Id;
+            string password = signInForm.Password;
+            var remember = ((bool?) signInForm.Remember).GetValueOrDefault();
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return Extensions.CreateErrorResponse(Resources.IdCannotBeNullOrWhiteSpace, 400);
+            }
+
+            var appUser = await _userManager.FindByIdAsync(id);
+
+            return await ProcessPasswordSignIn(appUser, password, remember);
+        }
+
+        /// <summary>
+        /// Осуществляет вход пользователя в систему по имени пользователя через внутренний провайдер.
+        /// </summary>
+        private async Task<object> SignInByUserName(IHttpRequest request)
         {
             var signInForm = request.Form;
             string userName = signInForm.UserName;
@@ -63,28 +117,69 @@ namespace InfinniPlatform.Auth.HttpService
                 return Extensions.CreateErrorResponse(Resources.UserNameCannotBeNullOrWhiteSpace, 400);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(userName, password, remember, false);
+            var appUser = await _userManager.FindByNameAsync(userName);
+
+            return await ProcessPasswordSignIn(appUser, password, remember);
+        }
+
+        /// <summary>
+        /// Осуществляет вход пользователя в систему по email через внутренний провайдер.
+        /// </summary>
+        private async Task<object> SignInByEmail(IHttpRequest request)
+        {
+            var signInForm = request.Form;
+            string email = signInForm.Email;
+            string password = signInForm.Password;
+            var remember = ((bool?) signInForm.Remember).GetValueOrDefault();
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return Extensions.CreateErrorResponse(Resources.EmailCannotBeNullOrWhiteSpace, 400);
+            }
+
+            var appUser = await _userManager.FindByEmailAsync(email);
+
+            return await ProcessPasswordSignIn(appUser, password, remember);
+        }
+
+        /// <summary>
+        /// Осуществляет вход пользователя в систему по номеру телофона через внутренний провайдер.
+        /// </summary>
+        private async Task<object> SignInByPhoneNumber(IHttpRequest request)
+        {
+            var signInForm = request.Form;
+            string phoneNumber = signInForm.PhoneNumber;
+            string password = signInForm.Password;
+            var remember = ((bool?) signInForm.Remember).GetValueOrDefault();
+
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                return Extensions.CreateErrorResponse(Resources.EmailCannotBeNullOrWhiteSpace, 400);
+            }
+
+            var appUser = await _userPhoneNumberStoreExtended.FindByPhoneNumberAsync(phoneNumber, CancellationToken.None);
+
+            return await ProcessPasswordSignIn(appUser, password, remember);
+        }
+
+        private async Task<object> ProcessPasswordSignIn(TUser appUser, string password, bool remember)
+        {
+            if (appUser == null)
+            {
+                return Extensions.CreateErrorResponse(Resources.UserNotFound, 400);
+            }
+
+            var signInResult = await _signInManager.PasswordSignInAsync(appUser.UserName, password, remember, false);
 
             _userEventHandlerInvoker.OnAfterSignIn(Identity);
 
-            if (result.Succeeded)
-            {
-                var user = await _userManager.FindByNameAsync(userName);
+            var serviceResult = signInResult.Succeeded
+                                    ? Extensions.CreateSuccesResponse(appUser)
+                                    : Extensions.CreateErrorResponse(Resources.InvalidUsernameOrPassword, 400);
 
-                return Extensions.CreateSuccesResponse(user);
-            }
-            else
-            {
-                var user = await _userManager.FindByNameAsync(userName);
-
-                if (user == null)
-                {
-                    return Extensions.CreateErrorResponse(Resources.UserNotFound, 400);
-                }
-
-                return Extensions.CreateErrorResponse(Resources.InvalidUsernameOrPassword, 400);
-            }
+            return serviceResult;
         }
+
 
         /// <summary>
         /// Осуществляет выход пользователя из системы.

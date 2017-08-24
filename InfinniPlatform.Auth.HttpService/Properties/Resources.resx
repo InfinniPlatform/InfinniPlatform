@@ -147,4 +147,16 @@
   <data name="RESOURCE_KEY_FOR_DOTNET_BUILD" xml:space="preserve">
     <value>https://github.com/Microsoft/msbuild/issues/1661</value>
   </data>
+  <data name="IdCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Id cannot be null or whitespace.</value>
+  </data>
+  <data name="EmailCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Email cannot be null or whitespace.</value>
+  </data>
+  <data name="PhoneNumberCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Phone number cannot be null or whitespace.</value>
+  </data>
+  <data name="UserKeyCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>User key cannot be null or whitespace.</value>
+  </data>
 </root>
