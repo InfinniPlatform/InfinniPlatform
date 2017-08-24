@@ -42,7 +42,7 @@ namespace InfinniPlatform.Security
         /// </remarks>
         private static void SetRequestUser(IPrincipal requestUser)
         {
-            RequestUserReference.Value=new WeakReference<IPrincipal>(requestUser);
+            RequestUserReference.Value = new WeakReference<IPrincipal>(requestUser);
         }
     }
 }

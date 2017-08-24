@@ -1,6 +1,7 @@
 ﻿using System;
 using InfinniPlatform.Auth;
 using InfinniPlatform.Auth.IoC;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -57,6 +58,8 @@ namespace InfinniPlatform.AspNetCore
             }
 
             services.AddIdentity<TUser, TRole>(options.IdentityOptions);
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie();
 
             return services.AddSingleton(provider => new AuthContainerModule<TUser>(options));
         }
