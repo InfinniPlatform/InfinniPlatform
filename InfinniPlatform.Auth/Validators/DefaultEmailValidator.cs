@@ -45,9 +45,9 @@ namespace InfinniPlatform.Auth.Validators
                 {
                     var owner = await store.FindByEmailAsync(email, default(CancellationToken));
 
-                    if (owner != null && !string.Equals((string) owner.Id, (string) user.Id))
+                    if (owner != null && !string.Equals((string) owner._id, (string) user._id))
                     {
-                        errors.Add(new IdentityError {Description = string.Format(Resources.DuplicateEmail, (object) email)});
+                        errors.Add(new IdentityError {Description = string.Format(Resources.DuplicateEmail, email)});
                     }
                 }
             }

@@ -142,7 +142,7 @@ namespace InfinniPlatform.Auth.UserCache
 
             try
             {
-                SetUserCache(user.Id, user);
+                SetUserCache(user._id.ToString(), user);
                 SetAdditionalUserCache(_usersByName, user.NormalizedUserName, user);
                 SetAdditionalUserCache(_usersByEmail, user.NormalizedEmail, user);
                 SetAdditionalUserCache(_usersByPhone, user.PhoneNumber, user);
@@ -157,7 +157,7 @@ namespace InfinniPlatform.Auth.UserCache
                     }
                 }
 
-                NotifyOnUserChanged(user.Id);
+                NotifyOnUserChanged(user._id.ToString());
             }
             finally
             {

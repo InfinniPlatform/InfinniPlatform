@@ -18,12 +18,6 @@ namespace InfinniPlatform.Auth
             Tokens = new List<AppUserToken>();
         }
 
-        public string Id
-        {
-            get => _id?.ToString();
-            set => _id = value;
-        }
-
         public string UserName { get; set; }
 
         public string NormalizedUserName { get; set; }

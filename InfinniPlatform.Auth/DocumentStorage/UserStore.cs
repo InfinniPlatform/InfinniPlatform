@@ -37,7 +37,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken token)
         {
-            await Users.Value.ReplaceOneAsync(user, u => u.Id == user.Id);
+            await Users.Value.ReplaceOneAsync(user, u => u._id.Equals(user._id));
 
             UpdateUserInCache(user);
 
@@ -46,16 +46,16 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
         public async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken token)
         {
-            await Users.Value.DeleteOneAsync(u => u.Id == user.Id);
+            await Users.Value.DeleteOneAsync(u => u._id.Equals(user._id));
 
-            RemoveUserFromCache(user.Id);
+            RemoveUserFromCache(user._id.ToString());
 
             return IdentityResult.Success;
         }
 
         public Task<string> GetUserIdAsync(TUser user, CancellationToken token)
         {
-            return Task.FromResult(user.Id);
+            return Task.FromResult(user._id.ToString());
         }
 
         public Task<string> GetUserNameAsync(TUser user, CancellationToken token)

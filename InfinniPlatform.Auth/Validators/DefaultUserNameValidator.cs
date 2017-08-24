@@ -45,7 +45,7 @@ namespace InfinniPlatform.Auth.Validators
                 // Проверка уникальности
                 var owner = await _userStore.FindByNameAsync(userName, default(CancellationToken));
 
-                if (owner != null && !string.Equals(owner.Id, user.Id))
+                if (owner != null && !Equals(owner._id, user._id))
                 {
                     errors.Add(new IdentityError
                                {

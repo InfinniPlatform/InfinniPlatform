@@ -28,7 +28,7 @@ namespace InfinniPlatform.Auth.Validators
                 // Проверка уникальности номера телефона
                 var owner = await _userStore.FindByPhoneNumberAsync(phoneNumber, CancellationToken.None);
 
-                if (owner != null && !string.Equals(owner.Id, user.Id))
+                if (owner != null && !Equals(owner._id, user._id))
                 {
                     errors.Add(new IdentityError {Description = string.Format(Resources.DuplicatePhoneNumber, phoneNumber)});
                 }

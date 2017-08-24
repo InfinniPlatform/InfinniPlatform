@@ -256,7 +256,7 @@ namespace InfinniPlatform.Auth.HttpService
 
             var user = new TUser
                        {
-                           Id = Guid.NewGuid().ToString(),
+                           _id = Guid.NewGuid().ToString(),
                            UserName = email.Value,
                            Email = email.Value,
                            EmailConfirmed = !string.IsNullOrEmpty(email.Value)
