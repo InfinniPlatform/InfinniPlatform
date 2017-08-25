@@ -108,7 +108,7 @@ namespace InfinniPlatform.Auth.HttpService
 
             var httpResponse = Extensions.CreateSuccesResponse(loginProvidersList);
 
-            return Task.FromResult<object>(httpResponse);
+            return httpResponse;
         }
 
         /// <summary>
