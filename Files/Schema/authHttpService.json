@@ -1,5 +1,5 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/authHttpService.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/authHttpService.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "authHttpService",
   "description": "Настройки HTTP-сервиса аутентификации.",

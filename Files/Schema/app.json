@@ -1,5 +1,5 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/app.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/app.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "app",
   "description": "The general application settings.",

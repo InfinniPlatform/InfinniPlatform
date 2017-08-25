@@ -1,5 +1,5 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/rabbitmqMessageQueue.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/rabbitmqMessageQueue.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "rabbitmqMessageQueue",
   "description": "Настройки очереди сообщений на основе RabbitMQ.",

@@ -1,5 +1,5 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/quartzScheduler.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/quartzScheduler.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "quartzScheduler",
   "description": "Настройки планировщика заданий Quartz.",

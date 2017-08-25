@@ -1,5 +1,5 @@
 {
-  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/appConfig.json",
+  "id": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/appConfig.json",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "appConfig",
   "description": "InfinniPlatform application configuration.",
@@ -7,35 +7,35 @@
   "properties": {
     "app": {
       "description": "Настройки приложения.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/app.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/app.json"
     },
     "mongodbDocumentStorage": {
       "description": "Настройки хранилища документов MongoDB.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/mongodbDocumentStorage.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/mongodbDocumentStorage.json"
     },
     "fileSystemBlobStorage": {
       "description": "Настройки хранилища BLOB в файловой системе.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/fileSystemBlobStorage.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/fileSystemBlobStorage.json"
     },
     "rabbitmqMessageQueue": {
       "description": "Настройки очереди сообщений на основе RabbitMQ.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/rabbitmqMessageQueue.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/rabbitmqMessageQueue.json"
     },
     "redisSharedCache": {
       "description": "Настройки распределенного кэша на основе Redis.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/redisSharedCache.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/redisSharedCache.json"
     },
     "auth": {
       "description": "Настройки внутреннего провайдера аутентификации.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/auth.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/auth.json"
     },
     "quartzScheduler": {
       "description": "Настройки планировщика заданий Quartz.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/quartzScheduler.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/quartzScheduler.json"
     },
     "printView": {
       "description": "Настройки печатных представлений.",
-      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/printView.json"
+      "$ref": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Schema/printView.json"
     }
   }
 }
