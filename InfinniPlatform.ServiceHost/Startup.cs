@@ -58,43 +58,39 @@ namespace InfinniPlatform.ServiceHost
         }
 
         public void Configure(IApplicationBuilder app,
-                              IContainerResolver resolver,
-                              ILoggerFactory loggerFactory,
-                              IApplicationLifetime appLifetime,
-                              IHttpContextAccessor httpContextAccessor)
+                              IContainerResolver resolver)
         {
-            ConfigureLogger(loggerFactory, appLifetime, httpContextAccessor);
+            ConfigureLogger(resolver);
 
-            app.UseStaticFilesMapping(_configuration);
+            app.UseStaticFilesMapping(_configuration, resolver);
 
             // Setup default application layers
             app.UseDefaultAppLayers(resolver);
         }
 
 
-        private static void ConfigureLogger(ILoggerFactory loggerFactory,
-                                            IApplicationLifetime appLifetime,
-                                            IHttpContextAccessor httpContextAccessor)
+        private static void ConfigureLogger(IContainerResolver resolver)
         {
+            var loggerFactory = resolver.Resolve<ILoggerFactory>();
+            var appLifetime = resolver.Resolve<IApplicationLifetime>();
+            var httpContextAccessor = resolver.Resolve<IHttpContextAccessor>();
+
             const string outputTemplate = "{Timestamp:o}|{Level:u3}|{RequestId}|{UserName}|{SourceContext}|{Message}{NewLine}{Exception}";
             const string outputTemplatePerf = "{Timestamp:o}|{RequestId}|{UserName}|{SourceContext}|null|null|{Message}{NewLine}";
 
-            Func<LogEvent, bool> performanceLoggerFilter = 
-                Matching.WithProperty<string>(
-                    Constants.SourceContextPropertyName,
-                    p => p.StartsWith(nameof(IPerformanceLogger)));
+            var performanceLoggerFilter = Matching.WithProperty<string>(Constants.SourceContextPropertyName,
+                                                                        p => p.StartsWith(nameof(IPerformanceLogger)));
 
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .Enrich.With(new HttpContextLogEventEnricher(httpContextAccessor))
-                .WriteTo.LiterateConsole(outputTemplate: outputTemplate)
-                .WriteTo.Logger(lc => lc.Filter.ByExcluding(performanceLoggerFilter)
-                                        .WriteTo.RollingFile("logs/events-{Date}.log",
-                                                             outputTemplate: outputTemplate))
-                .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(performanceLoggerFilter)
-                                        .WriteTo.RollingFile("logs/performance-{Date}.log",
-                                                             outputTemplate: outputTemplatePerf))
-                .CreateLogger();
+            Log.Logger = new LoggerConfiguration().MinimumLevel.Information()
+                                                  .Enrich.With(new HttpContextLogEventEnricher(httpContextAccessor))
+                                                  .WriteTo.LiterateConsole(outputTemplate: outputTemplate)
+                                                  .WriteTo.Logger(lc => lc.Filter.ByExcluding(performanceLoggerFilter)
+                                                                          .WriteTo.RollingFile("logs/events-{Date}.log",
+                                                                                               outputTemplate: outputTemplate))
+                                                  .WriteTo.Logger(lc => lc.Filter.ByIncludingOnly(performanceLoggerFilter)
+                                                                          .WriteTo.RollingFile("logs/performance-{Date}.log",
+                                                                                               outputTemplate: outputTemplatePerf))
+                                                  .CreateLogger();
 
             // Register Serilog
             loggerFactory.AddSerilog();
