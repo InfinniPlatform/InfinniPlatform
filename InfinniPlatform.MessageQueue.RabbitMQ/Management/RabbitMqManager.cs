@@ -180,7 +180,14 @@ namespace InfinniPlatform.MessageQueue.Management
         /// <param name="key">Ключ.</param>
         public string GetBroadcastKey(string key)
         {
-            return $"{_appOptions.AppName}.{key}.{_appOptions.AppInstance}";
+            var broadcastKey = $"{_appOptions.AppName}.{key}";
+
+            if (!string.IsNullOrEmpty(_appOptions.AppInstance))
+            {
+                broadcastKey += $".{_appOptions.AppInstance}";
+            }
+
+            return broadcastKey;
         }
 
         private IConnection CreateConnection(RabbitMqMessageQueueOptions settings)
