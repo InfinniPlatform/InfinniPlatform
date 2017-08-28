@@ -10,7 +10,6 @@
 
 namespace InfinniPlatform.Properties {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -20,7 +19,7 @@ namespace InfinniPlatform.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -40,7 +39,7 @@ namespace InfinniPlatform.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Properties.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("InfinniPlatform.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -103,6 +102,15 @@ namespace InfinniPlatform.Properties {
         internal static string CannotStopServiceCorrectly {
             get {
                 return ResourceManager.GetString("CannotStopServiceCorrectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The component {0} cannot use interface interception as it provides services that are not publicly visible interfaces. Check your registration of the component to ensure you&apos;re not enabling interception and registering it as an internal/private interface type..
+        /// </summary>
+        internal static string InterfaceProxyingOnlySupportsInterfaceServices {
+            get {
+                return ResourceManager.GetString("InterfaceProxyingOnlySupportsInterfaceServices", resourceCulture);
             }
         }
         
