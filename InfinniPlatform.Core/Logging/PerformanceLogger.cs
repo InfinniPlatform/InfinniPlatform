@@ -6,7 +6,7 @@ namespace InfinniPlatform.Logging
 {
     public class PerformanceLogger<TComponent> : IPerformanceLogger<TComponent>
     {
-        public PerformanceLogger(ILogger<IPerformanceLogger<TComponent>> logger)
+        public PerformanceLogger(ILogger<IPerformanceLogger> logger)
         {
             _logger = logger;
         }
@@ -29,26 +29,30 @@ namespace InfinniPlatform.Logging
         {
             string MessageFormatter(object m, Exception e) => m.ToString();
 
-            _logger.Log(LogLevel.Information, 0, new PerformanceLoggerEvent(method, duration), exception, MessageFormatter);
+            _logger.Log(LogLevel.Information, 0, new PerformanceLoggerEvent(method, duration, typeof(TComponent)), exception, MessageFormatter);
         }
 
 
         private class PerformanceLoggerEvent
         {
-            public PerformanceLoggerEvent(string method, double duration)
+            public PerformanceLoggerEvent(string method, double duration, Type componentType)
             {
                 _method = method;
                 _duration = duration;
+                _componentType = componentType;
             }
 
 
             private readonly string _method;
             private readonly double _duration;
+            private readonly Type _componentType;
 
 
             public override string ToString()
             {
-                return string.Format("{{ \"m\":\"{0}\", \"d\": {1:N0} }}", _method, _duration);
+                var component = LoggerNameHelper.GetCategoryName(_componentType);
+
+                return string.Format("{{ \"m\":\"{0}\", \"d\": {1:N0}, \"component\":\"{2}\" }}", _method, _duration, component);
             }
         }
     }
