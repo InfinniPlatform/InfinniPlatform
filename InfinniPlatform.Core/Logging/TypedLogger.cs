@@ -24,7 +24,7 @@ namespace InfinniPlatform.Logging
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            var loggerCategoryName = LoggerNameHelper.GetCategoryName(typeof(TComponent));
+            var loggerCategoryName = LoggerNameHelper.GetCategoryNameGeneric(typeof(TComponent));
 
             _logger = loggerFactory.CreateLogger(loggerCategoryName);
         }

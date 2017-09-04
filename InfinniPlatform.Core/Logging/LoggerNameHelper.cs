@@ -17,6 +17,20 @@ namespace InfinniPlatform.Logging
         /// </remarks>
         public static string GetCategoryName(Type componentType)
         {
+            return GetLoggerName(componentType);
+        }
+
+        /// <summary>
+        /// Gets the category name for messages produced by the logger.
+        /// </summary>
+        /// <param name="componentType">The type of the logger event source.</param>
+        /// <remarks>
+        /// The method checks whether the given type is marked using the <see cref="LoggerNameAttribute" /> attribute.
+        /// If it is marked returns <see cref="LoggerNameAttribute.Name" /> otherwise language representation of the type.
+        /// If <paramref name="componentType"/> is generic this logic repeats recursively for each generic parameter.
+        /// </remarks>
+        public static string GetCategoryNameGeneric(Type componentType)
+        {
             var result = new StringBuilder();
 
             var hasNested = false;

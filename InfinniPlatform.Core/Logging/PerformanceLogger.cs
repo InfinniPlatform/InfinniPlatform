@@ -9,10 +9,12 @@ namespace InfinniPlatform.Logging
         public PerformanceLogger(ILogger<IPerformanceLogger> logger)
         {
             _logger = logger;
+            _component = LoggerNameHelper.GetCategoryName(typeof(TComponent));
         }
 
 
         private readonly ILogger _logger;
+        private readonly string _component;
 
 
         public void Log(string method, TimeSpan duration, Exception exception = null)
@@ -29,30 +31,28 @@ namespace InfinniPlatform.Logging
         {
             string MessageFormatter(object m, Exception e) => m.ToString();
 
-            _logger.Log(LogLevel.Information, 0, new PerformanceLoggerEvent(method, duration, typeof(TComponent)), exception, MessageFormatter);
+            _logger.Log(LogLevel.Information, 0, new PerformanceLoggerEvent(method, duration, _component), exception, MessageFormatter);
         }
 
 
         private class PerformanceLoggerEvent
         {
-            public PerformanceLoggerEvent(string method, double duration, Type componentType)
+            public PerformanceLoggerEvent(string method, double duration, string component)
             {
                 _method = method;
                 _duration = duration;
-                _componentType = componentType;
+                _component = component;
             }
 
 
             private readonly string _method;
             private readonly double _duration;
-            private readonly Type _componentType;
+            private readonly string _component;
 
 
             public override string ToString()
             {
-                var component = LoggerNameHelper.GetCategoryName(_componentType);
-
-                return string.Format("{{ \"m\":\"{0}\", \"d\": {1:N0}, \"component\":\"{2}\" }}", _method, _duration, component);
+                return string.Format("{{ \"m\":\"{0}\", \"d\": {1:N0}, \"component\":\"{2}\" }}", _method, _duration, _component);
             }
         }
     }

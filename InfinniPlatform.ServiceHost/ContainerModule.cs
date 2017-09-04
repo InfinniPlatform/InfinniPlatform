@@ -16,6 +16,10 @@ namespace InfinniPlatform.ServiceHost
             builder.RegisterType<LogContextLayer>()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
+
+            builder.RegisterGeneric(typeof(DocExecutor<>))
+                   .As(typeof(DocExecutor<>))
+                   .SingleInstance();
         }
     }
 }
