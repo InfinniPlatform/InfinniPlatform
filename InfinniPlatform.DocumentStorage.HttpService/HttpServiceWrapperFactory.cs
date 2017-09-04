@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using InfinniPlatform.Http;
+using InfinniPlatform.Logging;
 
 namespace InfinniPlatform.DocumentStorage
 {
@@ -83,6 +84,11 @@ namespace InfinniPlatform.DocumentStorage
                 TypeAttributes.Public,
                 typeof(object),
                 new[] { typeof(IHttpService) });
+
+            // Set same LoggerName for all DocumentHttpServices
+            var constructorInfo = typeof(LoggerNameAttribute).GetConstructor(new[] {typeof(string)});
+            var customAttributeBuilder = new CustomAttributeBuilder(constructorInfo, new object[] {"DocumentHttpService"});
+            type.SetCustomAttribute(customAttributeBuilder);
 
             return type;
         }
