@@ -17,7 +17,7 @@ namespace InfinniPlatform.AspNetCore
             return AddRedisSharedCache(services, options);
         }
 
-        public static IServiceCollection AddRedisSharedCache(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddRedisSharedCache(this IServiceCollection services, IConfiguration configuration)
         {
             var options = configuration.GetSection(RedisSharedCacheOptions.SectionName).Get<RedisSharedCacheOptions>();
 

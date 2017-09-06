@@ -52,7 +52,7 @@ namespace InfinniPlatform.AspNetCore
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         /// <param name="configuration">The application configuration.</param>
-        public static IServiceProvider BuildProvider(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceProvider BuildProvider(this IServiceCollection services, IConfiguration configuration)
         {
             var options = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();
 

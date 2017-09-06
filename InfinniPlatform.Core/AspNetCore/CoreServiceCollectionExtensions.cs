@@ -30,7 +30,7 @@ namespace InfinniPlatform.AspNetCore
         /// <param name="services">Collection of registered services.</param>
         /// <param name="configuration">Application configuration.</param>
         /// <param name="containerModules">Registered IoC-container modules.</param>
-        public static IServiceProvider BuildProvider(this IServiceCollection services, IConfigurationRoot configuration, IEnumerable<IContainerModule> containerModules = null)
+        public static IServiceProvider BuildProvider(this IServiceCollection services, IConfiguration configuration, IEnumerable<IContainerModule> containerModules = null)
         {
             var options = configuration.GetSection(AppOptions.SectionName)
                 .Get<AppOptions>();

@@ -18,7 +18,7 @@ namespace InfinniPlatform.AspNetCore
             return AddAuthInternal<AppUser, AppUserRole>(services, options);
         }
 
-        public static IServiceCollection AddAuthInternal(this IServiceCollection services, IConfigurationRoot configuration, Action<AuthOptions> callback = null)
+        public static IServiceCollection AddAuthInternal(this IServiceCollection services, IConfiguration configuration, Action<AuthOptions> callback = null)
         {
             var options = configuration.GetSection(AuthOptions.SectionName)
                                        .Get<AuthOptions>();
@@ -40,7 +40,7 @@ namespace InfinniPlatform.AspNetCore
             return AddAuthInternal<TUser, TRole>(services, options);
         }
 
-        public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services, IConfigurationRoot configuration, Action<AuthOptions> callback = null) where TUser : AppUser where TRole : AppUserRole
+        public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services, IConfiguration configuration, Action<AuthOptions> callback = null) where TUser : AppUser where TRole : AppUserRole
         {
             var options = configuration.GetSection(AuthOptions.SectionName)
                                        .Get<AuthOptions>();

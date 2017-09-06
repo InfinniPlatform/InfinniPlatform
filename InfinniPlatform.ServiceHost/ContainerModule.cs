@@ -1,4 +1,5 @@
-﻿using InfinniPlatform.Http;
+﻿using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 
@@ -16,6 +17,8 @@ namespace InfinniPlatform.ServiceHost
             builder.RegisterType<LogContextLayer>()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
+
+            builder.RegisterDocumentHttpService<Entity>();
 
             builder.RegisterGeneric(typeof(DocExecutor<>))
                    .As(typeof(DocExecutor<>))

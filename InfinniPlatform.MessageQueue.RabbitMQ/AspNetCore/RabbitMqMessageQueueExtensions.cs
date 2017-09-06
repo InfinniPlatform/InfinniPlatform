@@ -16,7 +16,7 @@ namespace InfinniPlatform.AspNetCore
             return AddRabbitMqMessageQueue(services, options);
         }
 
-        public static IServiceCollection AddRabbitMqMessageQueue(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddRabbitMqMessageQueue(this IServiceCollection services, IConfiguration configuration)
         {
             var options = configuration.GetSection(RabbitMqMessageQueueOptions.SectionName).Get<RabbitMqMessageQueueOptions>();
 

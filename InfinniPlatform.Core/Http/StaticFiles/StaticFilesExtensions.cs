@@ -18,7 +18,7 @@ namespace InfinniPlatform.Http.StaticFiles
         /// <param name="app">Application builder.</param>
         /// <param name="configuration">Configuration.</param>
         /// <param name="resolver"></param>
-        public static void UseStaticFilesMapping(this IApplicationBuilder app, IConfigurationRoot configuration, IContainerResolver resolver)
+        public static void UseStaticFilesMapping(this IApplicationBuilder app, IConfiguration configuration, IContainerResolver resolver)
         {
             var appOptions = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();
             var logger = resolver.ResolveOptional<ILogger<IApplicationBuilder>>();

@@ -1,30 +1,20 @@
 ﻿using System;
-
 using InfinniPlatform.AspNetCore;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace InfinniPlatform.ServiceHost
 {
     public class Startup
     {
-        private readonly IConfigurationRoot _configuration;
+        private readonly IConfiguration _configuration;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                    .SetBasePath(env.ContentRootPath)
-                    .AddJsonFile("AppConfig.json", optional: true, reloadOnChange: true)
-                    .AddJsonFile($"AppConfig.{env.EnvironmentName}.json", optional: true)
-                    .AddEnvironmentVariables();
-
-            _configuration = builder.Build();
+            _configuration = configuration;
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)

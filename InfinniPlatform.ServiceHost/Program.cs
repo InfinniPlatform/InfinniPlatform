@@ -2,6 +2,7 @@
 using System.IO;
 using InfinniPlatform.Logging;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
@@ -20,6 +21,19 @@ namespace InfinniPlatform.ServiceHost
                 var host = new WebHostBuilder()
                     .UseKestrel()
                     .UseContentRoot(Directory.GetCurrentDirectory())
+                    .ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        var hostingEnvironment = hostingContext.HostingEnvironment;
+
+                        config.AddJsonFile("AppConfig.json", true, true)
+                              .AddJsonFile(string.Format("AppConfig.{0}.json", hostingEnvironment.EnvironmentName), true, true)
+                              .AddEnvironmentVariables();
+
+                        if (args != null)
+                        {
+                            config.AddCommandLine(args);
+                        }
+                    })
                     .UseStartup<Startup>()
                     .UseSerilog()
                     .Build();

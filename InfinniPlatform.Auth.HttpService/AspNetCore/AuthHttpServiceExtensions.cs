@@ -17,7 +17,7 @@ namespace InfinniPlatform.AspNetCore
             return services.AddSingleton(provider => new AuthHttpServiceContainerModule<AppUser>(options));
         }
 
-        public static IServiceCollection AddAuthHttpService(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddAuthHttpService(this IServiceCollection services, IConfiguration configuration)
         {
             var options = configuration.GetSection(AuthHttpServiceOptions.SectionName).Get<AuthHttpServiceOptions>();
 
@@ -36,7 +36,7 @@ namespace InfinniPlatform.AspNetCore
             return services.AddSingleton(provider => new AuthHttpServiceContainerModule<TUser>(options));
         }
 
-        public static IServiceCollection AddAuthHttpService<TUser>(this IServiceCollection services, IConfigurationRoot configuration) where TUser : AppUser
+        public static IServiceCollection AddAuthHttpService<TUser>(this IServiceCollection services, IConfiguration configuration) where TUser : AppUser
         {
             var options = configuration.GetSection(AuthHttpServiceOptions.SectionName).Get<AuthHttpServiceOptions>();
 

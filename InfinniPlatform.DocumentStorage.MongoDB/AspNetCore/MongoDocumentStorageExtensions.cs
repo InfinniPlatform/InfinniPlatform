@@ -17,7 +17,7 @@ namespace InfinniPlatform.AspNetCore
             return AddMongoDocumentStorage(services, options);
         }
 
-        public static IServiceCollection AddMongoDocumentStorage(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddMongoDocumentStorage(this IServiceCollection services, IConfiguration configuration)
         {
             var options = configuration.GetSection(MongoDocumentStorageOptions.SectionName).Get<MongoDocumentStorageOptions>();
 

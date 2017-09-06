@@ -58,7 +58,7 @@ namespace InfinniPlatform.ServiceHost
         }
     }
 
-    public class Entity
+    public class Entity : Document
     {
         public Entity()
         {

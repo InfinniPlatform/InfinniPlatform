@@ -1,0 +1,51 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/InfinniPlatform/InfinniPlatform/master/Files/Config/Schema/appConfig.json",
+  "app": {
+    "AppName": "InfinniPlatform",
+    "AppInstance": "",
+    "StaticFilesMapping": {
+      "/": "wwwroot"
+    }
+  },
+  "mongodbDocumentStorage": {
+    "ConnectionString": "mongodb://localhost:27017"
+  },
+  "fileSystemBlobStorage": {
+    "BaseDirectory": "BlobStorage"
+  },
+  "rabbitmqMessageQueue": {
+    "HostName": "localhost",
+    "Port": 5672,
+    "UserName": "guest",
+    "Password": "guest",
+    "ManagementApiPort": 15672,
+    "PrefetchCount": 1,
+    "MaxConcurrentThreads": 200,
+    "ReconnectTimeout": 5,
+    "MaxReconnectRetries": 10
+  },
+  "redisSharedCache": {
+    "Host": "localhost",
+    "Port": 6379,
+    "Database": 0,
+    "Password": "TeamCity",
+    "ReadBufferSize": 512,
+    "WriteBufferSize": 512,
+    "ConnectionTimeout": 1000,
+    "MaxReconnectRetries": 10,
+    "PoolSize": 0
+  },
+  "auth": {
+    "UserCacheTimeout": 30,
+    "LoginPath": "/",
+    "LogoutPath": "/"
+  },
+  "quartzScheduler": {
+    "ExpireHistoryAfter": 30
+  },
+  "printView": {
+    "TempDirectory": "",
+    "WkHtmlToPdfPath": "",
+    "WkHtmlToPdfArguments": ""
+  }
+}
