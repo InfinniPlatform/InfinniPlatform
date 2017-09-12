@@ -8,6 +8,7 @@ using InfinniPlatform.Sdk.Documents.Metadata;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Operations;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
 {
@@ -16,6 +17,9 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     /// </summary>
     internal sealed class MongoDocumentStorageManager : IDocumentStorageManager
     {
+        private const int MaxIndexNameLength = 127;
+        private const string IndexNameContinuation = "_";
+
         /// <summary>
         /// Список системных индексов, создаваемых для всех коллекций.
         /// </summary>
@@ -70,14 +74,16 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             var actualIndexes = await GetCollectionIndexesAsync(collection);
 
             // Получение требуемого списка индексов коллекции документов
-            var neededIndexes = SystemIndexes.Union((documentMetadata.Indexes ?? new DocumentIndex[] { })).ToArray();
+            var neededIndexes = SystemIndexes.Union(documentMetadata.Indexes ?? new DocumentIndex[] { }).ToArray();
 
             // Создание недостающих индексов
 
-            var createIndexes = neededIndexes.Except(actualIndexes).Distinct();
+            var createIndexes = neededIndexes.Except(actualIndexes).Distinct().ToArray();
 
             foreach (var createIndex in createIndexes)
             {
+                createIndex.Name = GenerateIndexName(database, documentMetadata, createIndex);
+
                 if (createIndex.Key != null && createIndex.Key.Count > 0)
                 {
                     var keysDefinitionList = new List<IndexKeysDefinition<BsonDocument>>(createIndex.Key.Count);
@@ -101,18 +107,18 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                         }
                     }
 
-                    var keysDefinition = (keysDefinitionList.Count == 1) ? keysDefinitionList[0] : Builders<BsonDocument>.IndexKeys.Combine(keysDefinitionList);
+                    var keysDefinition = keysDefinitionList.Count == 1 ? keysDefinitionList[0] : Builders<BsonDocument>.IndexKeys.Combine(keysDefinitionList);
 
                     CreateIndexOptions indexOptions = null;
 
-                    if (createIndex.Unique || !string.IsNullOrEmpty(createIndex.Name) || (createIndex.ExpireAfter != null))
+                    if (createIndex.Unique || !string.IsNullOrEmpty(createIndex.Name) || createIndex.ExpireAfter != null)
                     {
                         indexOptions = new CreateIndexOptions
-                        {
-                            Name = createIndex.Name,
-                            Unique = createIndex.Unique,
-                            ExpireAfter = createIndex.ExpireAfter
-                        };
+                                       {
+                                           Name = createIndex.Name,
+                                           Unique = createIndex.Unique,
+                                           ExpireAfter = createIndex.ExpireAfter
+                                       };
                     }
 
                     if (indexOptions != null)
@@ -149,6 +155,19 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             await database.DropCollectionAsync(documentType);
         }
 
+        private static string GenerateIndexName(IMongoDatabase database, DocumentMetadata documentMetadata, DocumentIndex createIndex)
+        {
+            var indexName = IndexNameHelper.GetIndexName(createIndex.Key.Select(k => k.Key).ToArray());
+            var indexNamespace = $"{database.DatabaseNamespace}.{documentMetadata.Type}.$";
+
+            if (indexName.Length + indexNamespace.Length > MaxIndexNameLength)
+            {
+                indexName = indexName.Substring(0, MaxIndexNameLength - indexNamespace.Length - IndexNameContinuation.Length) + IndexNameContinuation;
+            }
+
+            return indexName;
+        }
+
 
         private static async Task<bool> CollectionExistsAsync(IMongoDatabase database, string collectionName)
         {
@@ -179,11 +198,11 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
                         var expireAfterSeconds = TryGetValue(index, "expireAfterSeconds", v => v.AsDouble);
 
                         var indexMetadata = new DocumentIndex
-                        {
-                            Name = indexName,
-                            Unique = indexUnique,
-                            Key = new Dictionary<string, DocumentIndexKeyType>()
-                        };
+                                            {
+                                                Name = indexName,
+                                                Unique = indexUnique,
+                                                Key = new Dictionary<string, DocumentIndexKeyType>()
+                                            };
 
                         var knowKeyType = true;
 
@@ -238,7 +257,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         {
             BsonValue value;
 
-            return (document.TryGetValue(property, out value) && value != null) ? selector(value) : default(T);
+            return document.TryGetValue(property, out value) && value != null ? selector(value) : default(T);
         }
     }
 }

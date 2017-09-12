@@ -54,8 +54,6 @@ namespace InfinniPlatform.Core.ServiceHost
                             _hostingService.Value.Init();
 
                             Logger.Log.Info(Resources.ServiceHostInitializationSuccessfullyCompleted);
-
-                            Environment.Exit(0);
                         }
                         catch (Exception error)
                         {

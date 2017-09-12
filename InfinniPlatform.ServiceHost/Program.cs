@@ -43,6 +43,7 @@ namespace InfinniPlatform.ServiceHost
                 {
                     serviceHost.Init(Timeout.InfiniteTimeSpan);
                     Console.WriteLine(Resources.ServerInitialized);
+                    Environment.Exit(0);
                 }
 
                 if (!args.Any()
