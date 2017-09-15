@@ -21,11 +21,7 @@
     "PoolSize": 0
   },
   "mongodb": {
-    "Nodes": [
-      "localhost:27017"
-    ],
-    "UserName": "",
-    "Password": ""
+    "ConnectionString":"mongodb://localhost:27017"
   },
   "rabbitmq": {
     "HostName": "localhost",
