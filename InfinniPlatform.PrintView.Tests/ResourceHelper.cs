@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Reflection;
-
-using ImageSharp;
+using SixLabors.ImageSharp;
 
 namespace InfinniPlatform.PrintView
 {
@@ -38,7 +37,7 @@ namespace InfinniPlatform.PrintView
 
             if (resource != null)
             {
-                using (var image = new Image(resource))
+                using (var image = SixLabors.ImageSharp.Image.Load<Rgba32>(resource))
                 {
                     imageInfo.Width = image.Width;
                     imageInfo.Height = image.Height;

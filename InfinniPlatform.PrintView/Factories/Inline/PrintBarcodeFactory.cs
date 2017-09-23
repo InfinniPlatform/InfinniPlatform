@@ -1,7 +1,5 @@
-﻿using ImageSharp;
-
-using InfinniPlatform.PrintView.Inline;
-
+﻿using InfinniPlatform.PrintView.Inline;
+using SixLabors.ImageSharp;
 using ZXing.Common;
 
 namespace InfinniPlatform.PrintView.Factories.Inline
@@ -47,26 +45,27 @@ namespace InfinniPlatform.PrintView.Factories.Inline
                 }
                 catch
                 {
+                    //ignored
                 }
             }
         }
 
         protected static byte[] GetBarcodeImageData(BitMatrix barcode)
         {
-            using (var image = new Image(barcode.Width, barcode.Height))
+            using (var image = new Image<Rgba32>(barcode.Width, barcode.Height))
             {
-                using (var pixels = image.Lock())
+                using (var pixels = image.Frames[0])
                 {
                     for (var y = 0; y < barcode.Height; ++y)
                     {
                         for (var x = 0; x < barcode.Width; ++x)
                         {
-                            pixels[x, y] = barcode[x, y] ? Color.Black : Color.White;
+                            pixels[x, y] = barcode[x, y] ? Rgba32.Black : Rgba32.White;
                         }
                     }
-                }
 
-                return FactoryHelper.GetBitmapBytes(image);
+                    return FactoryHelper.GetBitmapBytes(image);
+                }
             }
         }
 

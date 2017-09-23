@@ -4,12 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-using ImageSharp;
-using ImageSharp.Processing;
-
 using InfinniPlatform.PrintView.Block;
 using InfinniPlatform.PrintView.Format;
 using InfinniPlatform.PrintView.Inline;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace InfinniPlatform.PrintView.Factories
 {
@@ -224,15 +223,16 @@ namespace InfinniPlatform.PrintView.Factories
                     // Чтение изображение из потока байт
 
                     using (var imageStream = new MemoryStream(imageElement.Data))
-                    using (var image = new Image(imageStream))
+                    using (var image = Image.Load<Rgba32>(imageStream))
                     {
-                        Image<Color> rotatedImage = null;
+                        Image<Rgba32> rotatedImage = null;
 
                         // Если изображение нужно повернуть
                         if (rotateType != RotateType.None)
                         {
                             // Поворот изображения и сброс угла поворота в ноль
-                            rotatedImage = image.Rotate(rotateType);
+                            image.Mutate(context => context.Rotate(rotateType));
+                            rotatedImage = image.Clone();
                             imageElement.Rotation = PrintImageRotation.Rotate0;
                         }
 
@@ -258,7 +258,7 @@ namespace InfinniPlatform.PrintView.Factories
             }
         }
 
-        public static byte[] GetBitmapBytes(Image<Color> image)
+        public static byte[] GetBitmapBytes(Image<Rgba32> image)
         {
             using (var imageStream = new MemoryStream())
             {

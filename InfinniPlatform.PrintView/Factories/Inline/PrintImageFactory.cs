@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
 
-using ImageSharp;
-
 using InfinniPlatform.PrintView.Defaults;
 using InfinniPlatform.PrintView.Inline;
+using SixLabors.ImageSharp;
 
 namespace InfinniPlatform.PrintView.Factories.Inline
 {
@@ -69,9 +68,10 @@ namespace InfinniPlatform.PrintView.Factories.Inline
 
         private static byte[] GetImageStubData(string imageText)
         {
-            using (var image = new Image(200, 200))
+            using (var image = new Image<Rgba32>(200, 200))
             {
-                var stubImage = image.BackgroundColor(Color.WhiteSmoke);
+                image.Mutate(context => context.BackgroundColor(Rgba32.WhiteSmoke));
+                var stubImage = image.Clone();
 
                 // TODO: DrawRectangle(Pens.LightGray, 0, 0, 200, 200);
                 // TODO: DrawString(imageText, new Font("Arial", 12), Brushes.Black, 10, 10);
