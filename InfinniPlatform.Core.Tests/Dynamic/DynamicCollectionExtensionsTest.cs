@@ -313,5 +313,20 @@ namespace InfinniPlatform.Dynamic
             // Then
             CollectionAssert.AreEqual(new[] { 11, 22, 33 }, target);
         }
+
+        [Test]
+        public void TrySetPropertyValueByPathShouldSetItemsInCollections()
+        {
+            // Given
+            var foo = new { Files = new object[] { null, null } };
+
+            // When
+            foo.TrySetPropertyValueByPath("Files.0", 0);
+            foo.TrySetPropertyValueByPath("Files.1", 1);
+
+            // Then
+            Assert.AreEqual(0, foo.Files[0]);
+            Assert.AreEqual(1, foo.Files[1]);
+        }
     }
 }

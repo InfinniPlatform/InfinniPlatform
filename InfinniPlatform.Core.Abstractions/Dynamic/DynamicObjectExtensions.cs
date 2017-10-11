@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Runtime.CompilerServices;
-
-using InfinniPlatform.Serialization;
 
 using Microsoft.CSharp.RuntimeBinder;
 
@@ -401,6 +400,8 @@ namespace InfinniPlatform.Dynamic
 
             var propertyNames = propertyPath.Split('.');
 
+            var b = target is ICollection;
+
             for (var i = 0; i < propertyNames.Length - 1; ++i)
             {
                 if (target == null)
@@ -415,7 +416,17 @@ namespace InfinniPlatform.Dynamic
                     : target.TryGetPropertyValue(propertyName);
             }
 
-            target?.TrySetPropertyValue(propertyNames[propertyNames.Length - 1], propertyValue);
+            // TODO Workaround for BlobInfo collections in documents.
+            if (target is ICollection)
+            {
+                TryParseCollectionIndex(propertyNames[propertyNames.Length - 1], out var collectionIndex);
+
+                target.SetItem(collectionIndex, propertyValue);
+            }
+            else
+            {
+                target?.TrySetPropertyValue(propertyNames[propertyNames.Length - 1], propertyValue);
+            }
         }
 
 
