@@ -18,7 +18,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
     internal sealed class MongoDocumentStorageManager : IDocumentStorageManager
     {
         private const int MaxIndexNameLength = 127;
-        private const string IndexNameContinuation = "_";
+        private const string IndexNameContinuation = "...";
 
         /// <summary>
         /// Список системных индексов, создаваемых для всех коллекций.
@@ -82,7 +82,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
 
             foreach (var createIndex in createIndexes)
             {
-                createIndex.Name = GenerateIndexName(database, documentMetadata, createIndex);
+                if (string.IsNullOrEmpty(createIndex.Name))
+                {
+                    createIndex.Name = GenerateIndexName(database, documentMetadata, createIndex);
+                }
 
                 if (createIndex.Key != null && createIndex.Key.Count > 0)
                 {
