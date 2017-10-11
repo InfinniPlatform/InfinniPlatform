@@ -15,6 +15,9 @@ namespace InfinniPlatform.DocumentStorage
     /// </summary>
     internal class MongoDocumentStorageManager : IDocumentStorageManager
     {
+        private const int MaxIndexNameLength = 127;
+        private const string IndexNameContinuation = "...";
+
         /// <summary>
         /// Список системных индексов, создаваемых для всех коллекций.
         /// </summary>
@@ -69,14 +72,19 @@ namespace InfinniPlatform.DocumentStorage
             var actualIndexes = await GetCollectionIndexesAsync(collection);
 
             // Получение требуемого списка индексов коллекции документов
-            var neededIndexes = SystemIndexes.Union((documentMetadata.Indexes ?? new DocumentIndex[] { })).ToArray();
+            var neededIndexes = SystemIndexes.Union(documentMetadata.Indexes ?? new DocumentIndex[] { }).ToArray();
 
             // Создание недостающих индексов
 
-            var createIndexes = neededIndexes.Except(actualIndexes).Distinct();
+            var createIndexes = neededIndexes.Except(actualIndexes).Distinct().ToArray();
 
             foreach (var createIndex in createIndexes)
             {
+                if (string.IsNullOrEmpty(createIndex.Name))
+                {
+                    createIndex.Name = GenerateIndexName(database, documentMetadata, createIndex);
+                }
+
                 if (createIndex.Key != null && createIndex.Key.Count > 0)
                 {
                     var keysDefinitionList = new List<IndexKeysDefinition<BsonDocument>>(createIndex.Key.Count);
@@ -100,11 +108,11 @@ namespace InfinniPlatform.DocumentStorage
                         }
                     }
 
-                    var keysDefinition = (keysDefinitionList.Count == 1) ? keysDefinitionList[0] : Builders<BsonDocument>.IndexKeys.Combine(keysDefinitionList);
+                    var keysDefinition = keysDefinitionList.Count == 1 ? keysDefinitionList[0] : Builders<BsonDocument>.IndexKeys.Combine(keysDefinitionList);
 
                     CreateIndexOptions indexOptions = null;
 
-                    if (createIndex.Unique || !string.IsNullOrEmpty(createIndex.Name) || (createIndex.ExpireAfter != null))
+                    if (createIndex.Unique || !string.IsNullOrEmpty(createIndex.Name) || createIndex.ExpireAfter != null)
                     {
                         indexOptions = new CreateIndexOptions
                         {
@@ -146,6 +154,19 @@ namespace InfinniPlatform.DocumentStorage
             var database = _connection.GetDatabase();
 
             await database.DropCollectionAsync(documentType);
+        }
+
+        private static string GenerateIndexName(IMongoDatabase database, DocumentMetadata documentMetadata, DocumentIndex createIndex)
+        {
+            var indexName = IndexNameHelper.GetIndexName(createIndex.Key.Select(k => k.Key).ToArray());
+            var indexNamespace = $"{database.DatabaseNamespace}.{documentMetadata.Type}.$";
+
+            if (indexName.Length + indexNamespace.Length > MaxIndexNameLength)
+            {
+                indexName = indexName.Substring(0, MaxIndexNameLength - indexNamespace.Length - IndexNameContinuation.Length) + IndexNameContinuation;
+            }
+
+            return indexName;
         }
 
 
@@ -237,7 +258,7 @@ namespace InfinniPlatform.DocumentStorage
         {
             BsonValue value;
 
-            return (document.TryGetValue(property, out value) && value != null) ? selector(value) : default(T);
+            return document.TryGetValue(property, out value) && value != null ? selector(value) : default(T);
         }
     }
 }
