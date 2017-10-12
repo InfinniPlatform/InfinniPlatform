@@ -7,6 +7,7 @@ using InfinniPlatform.DocumentStorage.Metadata;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Operations;
 
 namespace InfinniPlatform.DocumentStorage
 {
