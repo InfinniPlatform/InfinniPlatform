@@ -159,7 +159,7 @@ namespace InfinniPlatform.Auth.HttpService
 
             if (string.IsNullOrWhiteSpace(provider))
             {
-                return Extensions.CreateErrorResponse(Resources.ExternalProviderCannotBeNullOrWhiteSpace, 400);
+                return Extensions.CreateErrorResponse(Resources.ExternalProviderKeyCannotBeNullOrWhiteSpace, 400);
             }
 
             var identityUser = await _userManager.GetUserAsync(GetCurrentInternalClaimsPrincipal());
@@ -188,7 +188,7 @@ namespace InfinniPlatform.Auth.HttpService
 
             if (string.IsNullOrWhiteSpace(loginProvider))
             {
-                return Extensions.CreateErrorResponse(Resources.ExternalProviderCannotBeNullOrWhiteSpace, 400);
+                return Extensions.CreateErrorResponse(Resources.ExternalProviderKeyCannotBeNullOrWhiteSpace, 400);
             }
 
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(loginProvider, callbackPath);
