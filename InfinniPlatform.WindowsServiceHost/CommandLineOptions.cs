@@ -1,10 +1,10 @@
 ﻿namespace InfinniPlatform
 {
-    public static class Constants
+    public static class CommandLineOptions
     {
         /// <summary>
         /// Опция коммандной строки, передаваемая хосту, для запуска приложения в качестве службы Windows.
         /// </summary>
-        public const string WindowsServiceOption = "--windows-service";
+        public const string WindowsService = "--windows-service";
     }
 }
