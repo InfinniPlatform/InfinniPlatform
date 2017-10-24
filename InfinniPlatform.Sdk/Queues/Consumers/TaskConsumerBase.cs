@@ -26,6 +26,9 @@ namespace InfinniPlatform.Sdk.Queues.Consumers
             return await OnError(exception);
         }
 
+        /// <remarks>True - сообщение будет считаться обработанным и не вернется в очередь. 
+        /// False - сообщение будет считаться необработанным и вернется в очередь (например, для обработки на другом узле), 
+        /// однако в этом случае сообщение может "зависнуть" в очереди.</remarks>
         protected virtual Task<bool> OnError(Exception exception)
         {
             return Task.FromResult(true);

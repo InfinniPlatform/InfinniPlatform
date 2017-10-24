@@ -23,6 +23,9 @@ namespace InfinniPlatform.Sdk.Queues.Consumers
         /// Обработчик ошибок.
         /// </summary>
         /// <param name="exception">Исключение.</param>
+        /// <remarks>True - сообщение будет считаться обработанным и не вернется в очередь. 
+        /// False - сообщение будет считаться необработанным и вернется в очередь (например, для обработки на другом узле), 
+        /// однако в этом случае сообщение может "зависнуть" в очереди.</remarks>
         Task<bool> OnError(Exception exception);
     }
 }
