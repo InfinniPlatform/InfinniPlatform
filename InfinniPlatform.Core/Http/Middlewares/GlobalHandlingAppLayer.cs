@@ -25,46 +25,28 @@ namespace InfinniPlatform.Http.Middlewares
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMiddleware<GlobalHandlingMiddleware>(this);
-        }
-
-
-        private class GlobalHandlingMiddleware
-        {
-            public GlobalHandlingMiddleware(RequestDelegate next, GlobalHandlingAppLayer parentLayer)
-            {
-                _next = next;
-                _parentLayer = parentLayer;
-            }
-
-
-            private readonly RequestDelegate _next;
-            private readonly GlobalHandlingAppLayer _parentLayer;
-
-
-            // ReSharper disable once UnusedMember.Local
-            public async Task Invoke(HttpContext httpContext)
+            app.Use(async (httpContext, next) =>
             {
                 var start = DateTime.Now;
 
                 try
                 {
-                    await _next.Invoke(httpContext).ContinueWith(task => LogPerformance(httpContext, start, task.Exception));
+                    await next.Invoke().ContinueWith(task => LogPerformance(httpContext, start, task.Exception));
                 }
                 catch (Exception exception)
                 {
                     await LogPerformance(httpContext, start, exception);
                 }
-            }
+            });
+        }
 
-            private Task LogPerformance(HttpContext httpContext, DateTime start, Exception exception)
-            {
-                var method = $"{httpContext.Request.Method}::{httpContext.Request.Path}";
+        private Task LogPerformance(HttpContext httpContext, DateTime start, Exception exception)
+        {
+            var method = $"{httpContext.Request.Method}::{httpContext.Request.Path}";
 
-                _parentLayer._perfLogger.Log(method, start, exception);
+            _perfLogger.Log(method, start, exception);
 
-                return Task.CompletedTask;
-            }
+            return Task.CompletedTask;
         }
     }
 }

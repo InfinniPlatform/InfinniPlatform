@@ -5,7 +5,6 @@ using InfinniPlatform.Logging;
 using InfinniPlatform.Properties;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Http.Middlewares
@@ -27,46 +26,27 @@ namespace InfinniPlatform.Http.Middlewares
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMiddleware<ErrorHandlingMiddleware>(this);
-        }
-
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class ErrorHandlingMiddleware
-        {
-            public ErrorHandlingMiddleware(RequestDelegate next, ErrorHandlingAppLayer parentLayer)
-            {
-                _next = next;
-                _parentLayer = parentLayer;
-            }
-
-
-            private readonly RequestDelegate _next;
-            private readonly ErrorHandlingAppLayer _parentLayer;
-
-
-            // ReSharper disable once UnusedMember.Local
-            public async Task Invoke(HttpContext httpContext)
+            app.Use(async (httpContext, next) =>
             {
                 try
                 {
-                    await _next.Invoke(httpContext).ContinueWith(task => LogException(task.Exception));
+                    await next.Invoke().ContinueWith(task => LogException(task.Exception));
                 }
                 catch (Exception exception)
                 {
-                    await LogException(exception);
+                    await  LogException(exception);
                 }
-            }
+            });
+        }
 
-            private Task LogException(Exception exception)
+        private Task LogException(Exception exception)
+        {
+            if (exception != null)
             {
-                if (exception != null)
-                {
-                    _parentLayer._logger.LogError(Resources.UnhandledExceptionOwinMiddleware, exception);
-                }
-
-                return Task.CompletedTask;
+                _logger.LogError(Resources.UnhandledExceptionOwinMiddleware, exception);
             }
+
+            return Task.CompletedTask;
         }
     }
 }

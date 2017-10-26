@@ -1,10 +1,6 @@
-﻿using System.Threading.Tasks;
-
-using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Security;
-
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Auth.Middlewares
 {
@@ -24,32 +20,14 @@ namespace InfinniPlatform.Auth.Middlewares
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMiddleware<AuthInternalMiddleware>(this);
-        }
-
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class AuthInternalMiddleware
-        {
-            public AuthInternalMiddleware(RequestDelegate next, AuthInternalAppLayer parentLayer)
-            {
-                _next = next;
-                _parentLayer = parentLayer;
-            }
-
-
-            private readonly RequestDelegate _next;
-            private readonly AuthInternalAppLayer _parentLayer;
-
-
-            public async Task Invoke(HttpContext httpContext)
+            app.Use((httpContext, next) =>
             {
                 var requestUser = httpContext.User;
 
-                _parentLayer._identityProvider.SetUserIdentity(requestUser);
+                _identityProvider.SetUserIdentity(requestUser);
 
-                await _next.Invoke(httpContext);
-            }
+                return next.Invoke();
+            });
         }
     }
 }
