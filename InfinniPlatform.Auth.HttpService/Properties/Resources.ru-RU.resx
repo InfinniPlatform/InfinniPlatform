@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,42 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ExternalProviderKeyCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>External provider key cannot be null or whitespace.</value>
+    <value>Ключ внешнего провайдера не может быть пустым.</value>
   </data>
   <data name="InvalidUsernameOrPassword" xml:space="preserve">
-    <value>Invalid username or password.</value>
+    <value>Неверное имя пользователя или пароль.</value>
   </data>
   <data name="NewPasswordCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>New password cannot be null or whitespace.</value>
+    <value>Новый пароль не может быть пустым.</value>
   </data>
   <data name="RequestIsNotAuthenticated" xml:space="preserve">
-    <value>Request is not authenticated.</value>
+    <value>Запрос не аутентифицирован.</value>
   </data>
   <data name="UnsuccessfulSignInWithExternalProvider" xml:space="preserve">
-    <value>Unsuccessful signin with external provider.</value>
+    <value>Неудачная попытка входа через внешний провайдер.</value>
   </data>
   <data name="UserNameCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Username cannot be null or whitespace.</value>
+    <value>Имя пользователя не может быть пустым.</value>
   </data>
   <data name="UserNotFound" xml:space="preserve">
-    <value>User not found.</value>
+    <value>Пользователь не найден.</value>
   </data>
   <data name="HandlingUserEventCompletedWithException" xml:space="preserve">
-    <value>Handling user event '{0}' completed with an exception.</value>
+    <value>Событие '{0}' завершилось с ошибкой.</value>
   </data>
   <data name="RESOURCE_KEY_FOR_DOTNET_BUILD" xml:space="preserve">
     <value>https://github.com/Microsoft/msbuild/issues/1661</value>
   </data>
   <data name="IdCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Id cannot be null or whitespace.</value>
+    <value>Идентификатор не может быть пустым.</value>
   </data>
   <data name="EmailCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Email cannot be null or whitespace.</value>
+    <value>E-mail не может быть пустым.</value>
   </data>
   <data name="PhoneNumberCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Phone number cannot be null or whitespace.</value>
+    <value>Номер телефона не может быть пустым.</value>
   </data>
   <data name="UserKeyCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>User key cannot be null or whitespace.</value>
+    <value>Идентификатор пользователя не может быть пустым.</value>
   </data>
 </root>

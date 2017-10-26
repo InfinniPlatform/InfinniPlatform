@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
 EndProject
@@ -100,6 +100,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Heartbeat.HttpService", "InfinniPlatform.Heartbeat.HttpService\InfinniPlatform.Heartbeat.HttpService.csproj", "{2A31DE68-BD14-40AB-9B00-0DD2F962BBCD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.HttpService", "InfinniPlatform.Auth.HttpService\InfinniPlatform.Auth.HttpService.csproj", "{CA89B716-B45D-4FFB-BC85-ABC6BC120ED1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.WindowsServiceHost", "InfinniPlatform.WindowsServiceHost\InfinniPlatform.WindowsServiceHost.csproj", "{CF4D35B8-445C-4581-B685-D34A052E6BCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -519,6 +521,18 @@ Global
 		{CA89B716-B45D-4FFB-BC85-ABC6BC120ED1}.Release|x64.Build.0 = Release|Any CPU
 		{CA89B716-B45D-4FFB-BC85-ABC6BC120ED1}.Release|x86.ActiveCfg = Release|Any CPU
 		{CA89B716-B45D-4FFB-BC85-ABC6BC120ED1}.Release|x86.Build.0 = Release|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Debug|x64.Build.0 = Debug|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Debug|x86.Build.0 = Debug|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Release|x64.ActiveCfg = Release|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Release|x64.Build.0 = Release|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF4D35B8-445C-4581-B685-D34A052E6BCF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

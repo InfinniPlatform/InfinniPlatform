@@ -70,15 +70,6 @@ namespace InfinniPlatform.Auth.HttpService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to External provider cannot be null or whitespace..
-        /// </summary>
-        internal static string ExternalProviderCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("ExternalProviderCannotBeNullOrWhiteSpace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to External provider key cannot be null or whitespace..
         /// </summary>
         internal static string ExternalProviderKeyCannotBeNullOrWhiteSpace {

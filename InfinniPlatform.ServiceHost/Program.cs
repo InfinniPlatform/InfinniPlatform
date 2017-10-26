@@ -23,10 +23,7 @@ namespace InfinniPlatform.ServiceHost
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .ConfigureAppConfiguration((hostingContext, config) =>
                     {
-                        var hostingEnvironment = hostingContext.HostingEnvironment;
-
                         config.AddJsonFile("AppConfig.json", true, true)
-                              .AddJsonFile(string.Format("AppConfig.{0}.json", hostingEnvironment.EnvironmentName), true, true)
                               .AddEnvironmentVariables();
 
                         if (args != null)
