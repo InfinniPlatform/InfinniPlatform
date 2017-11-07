@@ -39,6 +39,8 @@ namespace InfinniPlatform.PushNotification.MessageBus
 
         public Type MessageType => typeof(ScaleoutMessageWrapper);
 
+        public ushort PrefetchCount => 1;
+
         public Task Consume(IMessage message)
         {
             return Task.Run(() =>

@@ -14,6 +14,11 @@ namespace InfinniPlatform.Sdk.Queues.Consumers
         /// </summary>
         public Type MessageType => typeof(T);
 
+        /// <summary>
+        /// Количество одновременно получаемых сообщений.
+        /// </summary>
+        public virtual ushort PrefetchCount => 1;
+
         async Task IConsumer.Consume(IMessage message)
         {
             await Consume((Message<T>)message);

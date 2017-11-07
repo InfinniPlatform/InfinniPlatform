@@ -14,6 +14,11 @@ namespace InfinniPlatform.Sdk.Queues.Consumers
         Type MessageType { get; }
 
         /// <summary>
+        /// Количество одновременно получаемых сообщений.
+        /// </summary>
+        ushort PrefetchCount { get; }
+
+        /// <summary>
         /// Обработчик сообщения.
         /// </summary>
         /// <param name="message">Сообщение.</param>

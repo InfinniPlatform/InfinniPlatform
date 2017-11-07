@@ -63,13 +63,13 @@ namespace InfinniPlatform.MessageQueue.RabbitMq.Hosting
             }
 
             var channel = _manager.GetChannel();
-
+            channel.BasicQos(0, consumer.PrefetchCount, false);
             var eventingConsumer = new EventingBasicConsumer(channel);
 
-            eventingConsumer.Received += async (o, args) => await OnRecieved(consumer, args, channel);
+            eventingConsumer.Received += async (sender, args) => await OnRecieved(consumer, args, channel);
             eventingConsumer.Shutdown += (sender, args) => { _log.Error("Consumer shutdown.", () => CreateLogContext(consumer)); };
 
-            channel?.BasicConsume(queueName, false, eventingConsumer);
+            channel.BasicConsume(queueName, false, eventingConsumer);
         }
 
         /// <summary>
