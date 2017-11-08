@@ -2,7 +2,6 @@
 using System.Text;
 
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.PrintView.Expressions;
 using InfinniPlatform.PrintView.Format;
 
 namespace InfinniPlatform.PrintView.Factories.Format

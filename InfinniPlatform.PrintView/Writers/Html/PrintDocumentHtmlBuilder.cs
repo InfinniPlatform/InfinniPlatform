@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 
-using InfinniPlatform.PrintView.Factories;
-
 namespace InfinniPlatform.PrintView.Writers.Html
 {
     internal class PrintDocumentHtmlBuilder : HtmlBuilderBase<PrintDocument>

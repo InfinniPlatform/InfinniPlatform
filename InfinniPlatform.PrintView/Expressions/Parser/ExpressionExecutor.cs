@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
-
-using InfinniPlatform.PrintView.Properties;
 
 namespace InfinniPlatform.PrintView.Expressions.Parser
 {

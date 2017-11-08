@@ -6,9 +6,7 @@ using InfinniPlatform.DocumentStorage.Metadata;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 
 namespace InfinniPlatform.Auth.IoC
 {

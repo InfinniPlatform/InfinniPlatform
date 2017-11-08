@@ -1,4 +1,8 @@
-﻿using Nancy;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Nancy;
+using Nancy.Bootstrapper;
 using Nancy.Conventions;
 using Nancy.TinyIoc;
 
@@ -9,12 +13,15 @@ namespace InfinniPlatform.Http
     /// </summary>
     public class HttpServiceNancyBootstrapper : DefaultNancyBootstrapper
     {
-        public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog)
+        public HttpServiceNancyBootstrapper(INancyModuleCatalog nancyModuleCatalog,
+                                            ILogger<HttpServiceNancyBootstrapper> logger)
         {
             _nancyModuleCatalog = nancyModuleCatalog;
+            _logger = logger;
         }
 
         private readonly INancyModuleCatalog _nancyModuleCatalog;
+        private readonly ILogger<HttpServiceNancyBootstrapper> _logger;
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer nancyContainer)
         {
@@ -44,6 +51,26 @@ namespace InfinniPlatform.Http
             }
 
             base.ConfigureConventions(nancyConventions);
+        }
+
+        protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
+        {
+            pipelines.OnError += (ctx, e) =>
+            {
+                _logger.LogError(e, BuildLogContext(ctx));
+
+                return null;
+            };
+
+            base.RequestStartup(container, pipelines, context);
+        }
+
+        private static Func<Dictionary<string, object>> BuildLogContext(NancyContext ctx)
+        {
+            return () => new Dictionary<string, object>
+            {
+                {"path", ctx.Request.Path}
+            };
         }
     }
 }
