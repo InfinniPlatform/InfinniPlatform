@@ -84,6 +84,18 @@ namespace InfinniPlatform.Core.Http.Services
             RegisterEmbeddedResource();
         }
 
+        protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
+        {
+            pipelines.OnError += (ctx, e) =>
+                                 {
+                                     _log.Error(e, BuildLogContext(ctx));
+
+                                     return null;
+                                 };
+
+            base.RequestStartup(container, pipelines, context);
+        }
+
         private static void CheckForIfModifiedSince(NancyContext context)
         {
             var request = context.Request;
@@ -149,6 +161,14 @@ namespace InfinniPlatform.Core.Http.Services
 
                 Conventions.StaticContentsConventions.AddDirectory(requestedPath, assembly);
             }
+        }
+
+        private static Func<Dictionary<string, object>> BuildLogContext(NancyContext ctx)
+        {
+            return () => new Dictionary<string, object>
+                         {
+                             {"path", ctx.Request.Path}
+                         };
         }
     }
 }
