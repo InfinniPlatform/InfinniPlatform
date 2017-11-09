@@ -1,7 +1,7 @@
 ﻿using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Http.Services;
 
-namespace InfinniPlatform.DocumentStorage.Services
+namespace InfinniPlatform.Sdk.Documents
 {
     /// <summary>
     /// Предоставляет интерфейс для создания запросов к сервису документов.

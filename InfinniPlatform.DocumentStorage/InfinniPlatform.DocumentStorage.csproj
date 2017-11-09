@@ -102,7 +102,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Hosting\DocumentStorageInitializer.cs" />
-    <Compile Include="Services\DocumentHttpServiceConstants.cs" />
     <Compile Include="Services\DocumentHttpServiceGeneric.cs" />
     <Compile Include="Services\DocumentHttpServiceBase.cs" />
     <Compile Include="Services\DocumentHttpServiceFactory.cs" />
@@ -116,7 +115,6 @@
     <Compile Include="Services\QueryFactories\ExpressionFilterQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\ExpressionOrderQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\ExpressionSelectQuerySyntaxVisitor.cs" />
-    <Compile Include="Services\IDocumentQueryFactory.cs" />
     <Compile Include="Services\QueryFactories\DocumentQueryFactory.cs" />
     <Compile Include="Services\QueryFactories\FuncBaseQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\FuncFilterQuerySyntaxVisitor.cs" />

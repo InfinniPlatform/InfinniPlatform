@@ -1,6 +1,6 @@
-﻿namespace InfinniPlatform.DocumentStorage.Services
+﻿namespace InfinniPlatform.Sdk.Documents
 {
-    internal static class DocumentHttpServiceConstants
+    public static class DocumentHttpServiceConstants
     {
         /// <summary>
         /// Базовый путь по умолчанию к методам сервиса документов.

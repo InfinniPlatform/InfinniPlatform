@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.DocumentStorage.Properties;
+using InfinniPlatform.Sdk.Documents;
 using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Http.Services;
 using InfinniPlatform.Sdk.Logging;
