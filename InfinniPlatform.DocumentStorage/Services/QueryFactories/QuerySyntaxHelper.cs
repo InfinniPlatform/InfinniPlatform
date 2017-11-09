@@ -12,15 +12,6 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 {
     internal static class QuerySyntaxHelper
     {
-        // Parameters
-        public const string SearchParameterName = "search";
-        public const string FilterParameterName = "filter";
-        public const string SelectParameterName = "select";
-        public const string OrderParameterName = "order";
-        public const string CountParameterName = "count";
-        public const string SkipParameterName = "skip";
-        public const string TakeParameterName = "take";
-
         // Filter
         public const string NotMethodName = "not";
         public const string OrMethodName = "or";

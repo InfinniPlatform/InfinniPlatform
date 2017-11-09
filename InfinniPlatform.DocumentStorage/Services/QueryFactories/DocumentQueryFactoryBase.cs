@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using InfinniPlatform.DocumentStorage.Services.QuerySyntax;
 using InfinniPlatform.Sdk.Http.Services;
@@ -59,7 +60,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// </summary>
         protected static string ParseSearch(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(request, QuerySyntaxHelper.SearchParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxParameter.Search);
 
             return parameter?.Trim();
         }
@@ -83,7 +84,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             // Если определено условие фильтрации
             else
             {
-                var documentQuery = GetQueryParameter(request, QuerySyntaxHelper.FilterParameterName);
+                var documentQuery = GetQueryParameter(request, QuerySyntaxParameter.Filter);
 
                 if (documentQuery != null)
                 {
@@ -112,7 +113,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// </summary>
         protected IEnumerable<InvocationQuerySyntaxNode> ParseSelect(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(request, QuerySyntaxHelper.SelectParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxParameter.Select);
 
             if (parameter != null)
             {
@@ -150,7 +151,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// </summary>
         protected IEnumerable<InvocationQuerySyntaxNode> ParseOrder(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(request, QuerySyntaxHelper.OrderParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxParameter.Order);
 
             if (parameter != null)
             {
@@ -183,7 +184,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// </summary>
         protected static bool ParseCount(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(request, QuerySyntaxHelper.CountParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxParameter.Count);
 
             if (parameter != null)
             {
@@ -199,7 +200,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// </summary>
         protected static int ParseSkip(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(request, QuerySyntaxHelper.SkipParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxParameter.Skip);
 
             if (parameter != null)
             {
@@ -219,7 +220,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
         /// </summary>
         protected static int ParseTake(IHttpRequest request)
         {
-            var parameter = GetQueryParameter(request, QuerySyntaxHelper.TakeParameterName);
+            var parameter = GetQueryParameter(request, QuerySyntaxParameter.Take);
 
             if (parameter != null)
             {
@@ -247,6 +248,22 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
             }
 
             return null;
+        }
+
+        public static Dictionary<string, object> GetAdditionalParameters(IHttpRequest request)
+        {
+            Dictionary<string, object> queryParameters = request.Query.ToDictionary();
+
+            var unparsedParameters = queryParameters.Keys
+                                                    .Where(s => QuerySyntaxParameter.ParameterNames.Contains(s))
+                                                    .ToArray();
+
+            foreach (var parameterName in unparsedParameters)
+            {
+                queryParameters.Remove(parameterName);
+            }
+
+            return queryParameters;
         }
 
         protected static string GetRequestParameter(IHttpRequest request, string parameterName)

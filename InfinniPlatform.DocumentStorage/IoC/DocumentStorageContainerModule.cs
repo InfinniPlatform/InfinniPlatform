@@ -8,6 +8,7 @@ using InfinniPlatform.DocumentStorage.Storage;
 using InfinniPlatform.DocumentStorage.Transactions;
 using InfinniPlatform.Sdk.Diagnostics;
 using InfinniPlatform.Sdk.Documents;
+using InfinniPlatform.Sdk.Documents.Services;
 using InfinniPlatform.Sdk.Documents.Transactions;
 using InfinniPlatform.Sdk.Hosting;
 using InfinniPlatform.Sdk.Http.Services;
@@ -164,6 +165,8 @@ namespace InfinniPlatform.DocumentStorage.IoC
             builder.RegisterType<DocumentStorageStatusProvider>()
                    .As<ISubsystemStatusProvider>()
                    .SingleInstance();
+
+            builder.RegisterDocumentHttpService<Entity>();
         }
 
 
@@ -171,5 +174,12 @@ namespace InfinniPlatform.DocumentStorage.IoC
         {
             return resolver.Resolve<IAppConfiguration>().GetSection<MongoConnectionSettings>(MongoConnectionSettings.SectionName);
         }
+    }
+
+
+    public class Entity : Document
+    {
+        public string Name { get; set; }
+        public int Digit { get; set; }
     }
 }

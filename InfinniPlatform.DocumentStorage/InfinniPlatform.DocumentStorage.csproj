@@ -122,6 +122,7 @@
     <Compile Include="Services\QueryFactories\FuncSelectQuerySyntaxVisitor.cs" />
     <Compile Include="Services\QueryFactories\QuerySyntaxHelper.cs" />
     <Compile Include="Services\DocumentHttpService.cs" />
+    <Compile Include="Services\QueryFactories\QuerySyntaxParameter.cs" />
     <Compile Include="Services\QuerySyntax\IdentifierNameQuerySyntaxNode.cs" />
     <Compile Include="Services\QuerySyntax\InvocationQuerySyntaxNode.cs" />
     <Compile Include="Services\QuerySyntax\IQuerySyntaxNode.cs" />

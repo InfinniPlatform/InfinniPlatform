@@ -43,6 +43,11 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// Максимальное количество документов, которое нужно выбрать.
         /// </summary>
         public int Take { get; set; }
+
+        /// <summary>
+        /// Дополнительные параметры запроса.
+        /// </summary>
+        public Dictionary<string, object> AdditionalParameters { get; set; }
     }
 
 
@@ -86,5 +91,10 @@ namespace InfinniPlatform.Sdk.Documents.Services
         /// Максимальное количество документов, которое нужно выбрать.
         /// </summary>
         public int Take { get; set; }
+
+        /// <summary>
+        /// Дополнительные параметры запроса.
+        /// </summary>
+        public Dictionary<string, object> AdditionalParameters { get; set; }
     }
 }

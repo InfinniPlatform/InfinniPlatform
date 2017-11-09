@@ -33,7 +33,8 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
                 Order = BuildOrder(request),
                 Count = ParseCount(request),
                 Skip = ParseSkip(request),
-                Take = ParseTake(request)
+                Take = ParseTake(request),
+                AdditionalParameters = GetAdditionalParameters(request)
             };
         }
 
