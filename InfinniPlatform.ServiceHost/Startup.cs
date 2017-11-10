@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using InfinniPlatform.AspNetCore;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
@@ -19,6 +21,15 @@ namespace InfinniPlatform.ServiceHost
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            Type[] entityTypes = {typeof(Entity)};
+            var closedControllerTypes = entityTypes
+                .Select(et => typeof(DocumentHttpController<>).MakeGenericType(et))
+                .Select(cct => cct.GetTypeInfo())
+                .ToArray();
+
+            services.AddMvc()
+                    .ConfigureApplicationPartManager(apm => apm.ApplicationParts.Add(new GenericControllerApplicationPart(closedControllerTypes)));
+
             var serviceProvider = services.AddAuthInternal(_configuration)
                                           .AddAuthHttpService()
                                           .AddInMemoryCache()

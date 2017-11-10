@@ -1,30 +1,21 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using InfinniPlatform.DocumentStorage;
 using InfinniPlatform.Http;
-using InfinniPlatform.Logging;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InfinniPlatform.ServiceHost
 {
-    public class HttpService : IHttpService
+    public class HttpController : Controller
     {
         private readonly IDocumentStorageProvider<Entity> _documentStorageProvider;
-        private readonly DocExecutor<Entity> _executor;
 
-        public HttpService(IDocumentStorageProviderFactory storageFactory,
-                           DocExecutor<Entity> executor)
+        public HttpController(IDocumentStorageProviderFactory storageFactory)
         {
-            _executor = executor;
             _documentStorageProvider = storageFactory.GetStorageProvider<Entity>();
         }
 
-        public void Load(IHttpServiceBuilder builder)
-        {
-            builder.Post["/save"] = Save;
-            builder.Get["/get"] = Get;
-        }
-
-        public async Task<object> Save(IHttpRequest httpRequest)
+        [HttpPost("/save")]
+        public async Task<object> Save()
         {
             var doc = new Entity {Digit = 5, Name = "Five"};
 
@@ -33,28 +24,12 @@ namespace InfinniPlatform.ServiceHost
             return doc;
         }
 
-        public Task<object> Get(IHttpRequest httpRequest)
+        [HttpGet("/get")]
+        public async Task<object> Get()
         {
-            return Task.FromResult<object>(_executor.Get());
-        }
-    }
+            var foo = await _documentStorageProvider.Find().Limit(10).ToListAsync();
 
-    [LoggerName("CustomComponentName")]
-    public class DocExecutor<TDoc> where TDoc : new()
-    {
-        private readonly IPerformanceLogger<DocExecutor<TDoc>> _logger;
-
-        public DocExecutor(IPerformanceLogger<DocExecutor<TDoc>> logger)
-        {
-            _logger = logger;
-        }
-
-        public TDoc Get()
-        {
-            var next = new Random().Next(1, 10);
-
-            _logger.Log("Get", TimeSpan.FromMilliseconds(next));
-            return new TDoc();
+            return foo;
         }
     }
 

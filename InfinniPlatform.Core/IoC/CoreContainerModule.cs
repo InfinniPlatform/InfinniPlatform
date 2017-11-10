@@ -8,9 +8,6 @@ using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
 using InfinniPlatform.Session;
 
-using Nancy;
-using Nancy.Bootstrapper;
-
 using IObjectSerializer = InfinniPlatform.Serialization.IObjectSerializer;
 
 namespace InfinniPlatform.IoC
@@ -120,32 +117,12 @@ namespace InfinniPlatform.IoC
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 
-            builder.RegisterType<NancyAppLayer>()
+            builder.RegisterType<MvcAppLayer>()
                    .AsSelf()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 
             // Services
-
-            builder.RegisterType<HttpServiceNancyBootstrapper>()
-                   .As<INancyBootstrapper>()
-                   .SingleInstance();
-
-            builder.RegisterType<HttpServiceNancyModuleCatalog>()
-                   .As<INancyModuleCatalog>()
-                   .SingleInstance();
-
-            builder.RegisterGeneric(typeof(HttpServiceNancyModule<>))
-                   .As(typeof(HttpServiceNancyModule<>))
-                   .InstancePerDependency();
-
-            builder.RegisterType<HttpServiceNancyModuleInitializer>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<NancyMimeTypeResolver>()
-                   .As<IMimeTypeResolver>()
-                   .SingleInstance();
 
             builder.RegisterType<HttpRequestExcutorFactory>()
                    .AsSelf()
