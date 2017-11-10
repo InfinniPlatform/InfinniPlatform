@@ -20,31 +20,31 @@ namespace InfinniPlatform.ServiceHost
     public class DocumentHttpController<T> : Controller where T : Document, new()
     {
         // GET
-        [HttpGet("/documents/T/{id}")]
+        [HttpGet("/documents/Entity/{id}")]
         public T Get(string id)
         {
             return new T();
         }
 
-        [HttpGet("/documents/T/")]
+        [HttpGet("/documents/Entity/")]
         public T Get()
         {
             return new T();
         }
 
-        [HttpPost("/documents/T/")]
+        [HttpPost("/documents/Entity/")]
         public T Post([FromBody] T document)
         {
             return new T();
         }
 
-        [HttpDelete("/documents/T/{id}")]
+        [HttpDelete("/documents/Entity/{id}")]
         public T Delete(string id)
         {
             return new T();
         }
 
-        [HttpDelete("/documents/T/")]
+        [HttpDelete("/documents/Entity/")]
         public T Delete()
         {
             return new T();

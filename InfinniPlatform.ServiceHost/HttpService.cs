@@ -1,10 +1,28 @@
 ﻿using System.Threading.Tasks;
 using InfinniPlatform.DocumentStorage;
-using InfinniPlatform.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace InfinniPlatform.ServiceHost
 {
+    [Route("api")]
+    public class ApiController : Controller
+    {
+        private readonly IApiDescriptionGroupCollectionProvider _provider;
+
+        public ApiController(IApiDescriptionGroupCollectionProvider provider)
+        {
+            _provider = provider;
+        }
+
+        [HttpGet("list")]
+        public JsonResult Api()
+        {
+            return new JsonResult(_provider.ApiDescriptionGroups);
+        }
+    }
+
+    [Route("test")]
     public class HttpController : Controller
     {
         private readonly IDocumentStorageProvider<Entity> _documentStorageProvider;
@@ -14,7 +32,7 @@ namespace InfinniPlatform.ServiceHost
             _documentStorageProvider = storageFactory.GetStorageProvider<Entity>();
         }
 
-        [HttpPost("/save")]
+        [HttpPost("save")]
         public async Task<object> Save()
         {
             var doc = new Entity {Digit = 5, Name = "Five"};
@@ -24,7 +42,7 @@ namespace InfinniPlatform.ServiceHost
             return doc;
         }
 
-        [HttpGet("/get")]
+        [HttpGet("get")]
         public async Task<object> Get()
         {
             var foo = await _documentStorageProvider.Find().Limit(10).ToListAsync();

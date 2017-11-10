@@ -57,6 +57,7 @@ namespace InfinniPlatform.ServiceHost
 
             // Setup default application layers
             app.UseDefaultAppLayers(resolver);
+            app.UseMvc();
         }
     }
 }
