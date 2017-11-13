@@ -1,6 +1,7 @@
 ﻿using InfinniPlatform.DocumentStorage;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
+using InfinniPlatform.ServiceHost.Models;
 
 namespace InfinniPlatform.ServiceHost
 {
@@ -12,7 +13,7 @@ namespace InfinniPlatform.ServiceHost
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 
-            builder.RegisterDocumentHttpService<Entity>();
+            //builder.RegisterDocumentHttpService<Entity>();
         }
     }
 }

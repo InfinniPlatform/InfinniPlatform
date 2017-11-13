@@ -139,6 +139,10 @@ namespace InfinniPlatform.IoC
             builder.RegisterType<HttpServiceContextProvider>()
                    .As<IHttpServiceContextProvider>()
                    .SingleInstance();
+
+            builder.RegisterType<MimeTypeResolver>()
+                   .As<IMimeTypeResolver>()
+                   .SingleInstance();
         }
     }
 }

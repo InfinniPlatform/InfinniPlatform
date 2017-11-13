@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using InfinniPlatform.AspNetCore;
+using InfinniPlatform.Http;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,14 +21,8 @@ namespace InfinniPlatform.ServiceHost
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            Type[] entityTypes = {typeof(Entity)};
-            var closedControllerTypes = entityTypes
-                .Select(et => typeof(DocumentHttpController<>).MakeGenericType(et))
-                .Select(cct => cct.GetTypeInfo())
-                .ToArray();
-
             services.AddMvc()
-                    .ConfigureApplicationPartManager(apm => apm.ApplicationParts.Add(new GenericControllerApplicationPart(closedControllerTypes)));
+                    .AddControllersAsServices();
 
             var serviceProvider = services.AddAuthInternal(_configuration)
                                           .AddAuthHttpService()
@@ -54,6 +48,8 @@ namespace InfinniPlatform.ServiceHost
                               IContainerResolver resolver)
         {
             app.UseStaticFilesMapping(_configuration, resolver);
+
+            var httpServices = resolver.Resolve<EntityDocumentHttpController>();
 
             // Setup default application layers
             app.UseDefaultAppLayers(resolver);

@@ -1,28 +1,12 @@
 ﻿using System.Threading.Tasks;
 using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.ServiceHost.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace InfinniPlatform.ServiceHost
 {
-    [Route("api")]
-    public class ApiController : Controller
-    {
-        private readonly IApiDescriptionGroupCollectionProvider _provider;
-
-        public ApiController(IApiDescriptionGroupCollectionProvider provider)
-        {
-            _provider = provider;
-        }
-
-        [HttpGet("list")]
-        public JsonResult Api()
-        {
-            return new JsonResult(_provider.ApiDescriptionGroups);
-        }
-    }
-
     [Route("test")]
+    [ApiExplorerSettings(IgnoreApi = false,GroupName = nameof(HttpController))]
     public class HttpController : Controller
     {
         private readonly IDocumentStorageProvider<Entity> _documentStorageProvider;
@@ -49,17 +33,5 @@ namespace InfinniPlatform.ServiceHost
 
             return foo;
         }
-    }
-
-    public class Entity : Document
-    {
-        public Entity()
-        {
-            Name = "Default";
-            Digit = 1;
-        }
-
-        public string Name { get; set; }
-        public int Digit { get; set; }
     }
 }
