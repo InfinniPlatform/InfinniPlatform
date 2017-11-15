@@ -2,6 +2,7 @@
 
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.DocumentStorage
 {
@@ -19,6 +20,11 @@ namespace InfinniPlatform.DocumentStorage
         /// Список файлов документа.
         /// </summary>
         public IEnumerable<IHttpRequestFile> Files { get; set; }
+
+        /// <summary>
+        /// Список файлов документа.
+        /// </summary>
+        public IFormFileCollection AspFiles { get; set; }
     }
 
 
