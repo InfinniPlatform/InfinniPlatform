@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-using InfinniPlatform.Http;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace InfinniPlatform.Heartbeat
 {
@@ -12,11 +10,13 @@ namespace InfinniPlatform.Heartbeat
     /// GET /heartbeat
     /// </code>
     /// </example>
-    public class HeartbeatHttpService : IHttpService
+    [Route("heartbeat")]
+    public class HeartbeatHttpService : Controller
     {
-        public virtual void Load(IHttpServiceBuilder builder)
+        [HttpGet("{id}")]
+        public object Heartbeat(string id)
         {
-            builder.Get["/{id}"] = request => Task.FromResult<object>(200);
+            return Ok();
         }
     }
 }

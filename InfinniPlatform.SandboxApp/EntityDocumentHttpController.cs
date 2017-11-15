@@ -1,10 +1,14 @@
-﻿using InfinniPlatform.SandboxApp.Models;
+﻿using System.Threading.Tasks;
+using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.Logging;
+using InfinniPlatform.SandboxApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.SandboxApp
 {
-    [ApiExplorerSettings(IgnoreApi = false, GroupName = nameof(EntityDocumentHttpController))]
-    public class EntityDocumentHttpController : Controller
+    [ApiExplorerSettings(IgnoreApi = false, GroupName = nameof(DocumentHttpController))]
+    public class DocumentHttpController : Controller
     {
         // GET
         [HttpGet("/documents/Entity/{id}")]
@@ -35,6 +39,28 @@ namespace InfinniPlatform.SandboxApp
         public Entity Delete()
         {
             return new Entity();
+        }
+    }
+
+    public class EntityDocumentHttpController : DocumentControllerBase
+    {
+        public EntityDocumentHttpController(IPerformanceLogger perfLogger, ILogger logger) : base(perfLogger, logger)
+        {
+        }
+
+        protected override Task<object> Get()
+        {
+            return Task.FromResult<object>(new Entity {Name = "1", Digit = 1});
+        }
+
+        protected override Task<object> Post()
+        {
+            return Task.FromResult<object>(new Entity { Name = "1", Digit = 1 });
+        }
+
+        protected override Task<object> Delete()
+        {
+            return Task.FromResult<object>(new Entity { Name = "1", Digit = 1 });
         }
     }
 }

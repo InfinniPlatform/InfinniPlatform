@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Http;
-using InfinniPlatform.IoC;
+﻿using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.BlobStorage.IoC
 {
@@ -7,7 +6,6 @@ namespace InfinniPlatform.BlobStorage.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<BlobStorageHttpService>().As<IHttpService>().SingleInstance();
         }
     }
 }

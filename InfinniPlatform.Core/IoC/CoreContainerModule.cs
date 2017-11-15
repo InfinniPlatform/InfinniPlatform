@@ -25,21 +25,12 @@ namespace InfinniPlatform.IoC
         {
             builder.RegisterInstance(_options).AsSelf();
 
-            RegisterDiagnosticsComponents(builder);
             RegisterLoggingComponents(builder);
             RegisterAspectsComponents(builder);
             RegisterSerializationComponents(builder);
             RegisterSecurityComponents(builder);
             RegisterSessionComponents(builder);
             RegisterHttpComponents(builder);
-        }
-
-
-        private static void RegisterDiagnosticsComponents(IContainerBuilder builder)
-        {
-            builder.RegisterType<SystemInfoHttpService>()
-                   .As<IHttpService>()
-                   .SingleInstance();
         }
 
         private static void RegisterLoggingComponents(IContainerBuilder builder)

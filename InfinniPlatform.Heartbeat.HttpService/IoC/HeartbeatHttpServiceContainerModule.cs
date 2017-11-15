@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Http;
-using InfinniPlatform.IoC;
+﻿using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Heartbeat.IoC
 {
@@ -7,7 +6,6 @@ namespace InfinniPlatform.Heartbeat.IoC
     {
         public void Load(IContainerBuilder builder)
         {
-            builder.RegisterType<HeartbeatHttpService>().As<IHttpService>().SingleInstance();
         }
     }
 }

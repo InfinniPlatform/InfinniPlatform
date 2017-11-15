@@ -1,84 +1,109 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Http;
 using InfinniPlatform.Properties;
+using InfinniPlatform.Serialization;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 
 namespace InfinniPlatform.Diagnostics
 {
     /// <summary>
     /// Реализует REST-сервис для получения информации о системе.
     /// </summary>
-    internal sealed class SystemInfoHttpService : IHttpService
+    public sealed class SystemInfoHttpService : Controller
     {
         private const int SubsystemTimeout = 1000;
 
 
-        public SystemInfoHttpService(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders, IHostAddressParser hostAddressParser, ILogger<SystemInfoHttpService> logger)
+        public SystemInfoHttpService(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders,
+                                     IHostAddressParser hostAddressParser,
+                                     IJsonObjectSerializer jsonObjectSerializer,
+                                     ILogger<SystemInfoHttpService> logger)
         {
-            _subsystemStatusProviders = subsystemStatusProviders;
+            _subsystemStatusProviders = subsystemStatusProviders.ToDictionary(p => p.Name, p => p);
             _hostAddressParser = hostAddressParser;
             _logger = logger;
+            _jsonObjectSerializer = jsonObjectSerializer;
         }
 
 
-        private readonly IEnumerable<ISubsystemStatusProvider> _subsystemStatusProviders;
+        private readonly Dictionary<string, ISubsystemStatusProvider> _subsystemStatusProviders;
         private readonly IHostAddressParser _hostAddressParser;
         private readonly ILogger _logger;
+        private readonly IJsonObjectSerializer _jsonObjectSerializer;
 
-
-        public void Load(IHttpServiceBuilder builder)
+        [HttpGet("")]
+        [HttpPost("")]
+        public async Task<object> GetStatus()
         {
-            builder.OnBefore = async r =>
-                               {
-                                   // Запрос статуса разрешен только с локального узла
-                                   if (!await _hostAddressParser.IsLocalAddress(r.UserHostAddress))
-                                   {
-                                       return HttpResponse.Forbidden;
-                                   }
+            var onBefore = await OnBefore();
 
-                                   return null;
-                               };
-
-            // Краткая информация о статусе системы
-            builder.Get["/"] = async r => await GetStatus(r, false, ParseTimeout(r.Query.timeout));
-            builder.Post["/"] = async r => await GetStatus(r, false, ParseTimeout(r.Query.timeout));
-
-            // Подробная информация о статусе системы
-            builder.Get["/info"] = async r => await GetStatus(r, true, ParseTimeout(r.Query.timeout));
-            builder.Post["/info"] = async r => await GetStatus(r, true, ParseTimeout(r.Query.timeout));
-
-            // Подробная информация о статусе подсистем
-
-            if (_subsystemStatusProviders != null)
+            if (onBefore != null)
             {
-                foreach (var subsystem in _subsystemStatusProviders)
-                {
-                    try
-                    {
-                        var subsystemName = subsystem.Name;
-                        builder.Get[$"/info/{subsystemName}"] = async r => (await GetSubsystemStatus(subsystem, r, ParseTimeout(r.Query.timeout)))?.Item1;
-                        builder.Post[$"/info/{subsystemName}"] = async r => (await GetSubsystemStatus(subsystem, r, ParseTimeout(r.Query.timeout)))?.Item1;
-                    }
-                    catch (Exception exception)
-                    {
-                        _logger.LogWarning(exception);
-                    }
-                }
+                return onBefore;
             }
+
+            return Json(await GetStatus(false));
+        }
+
+        [HttpGet("info")]
+        [HttpPost("info")]
+        public async Task<IActionResult> GetExpandedStatus()
+        {
+            var onBefore = await OnBefore();
+
+            if (onBefore != null)
+            {
+                return onBefore;
+            }
+
+            return Json(await GetStatus(true));
+        }
+
+        [HttpGet("info/{subsystemName}")]
+        [HttpPost("info/{subsystemName}")]
+        public async Task<object> GetSubsystemStatus(string subsystemName)
+        {
+            var onBefore = await OnBefore();
+
+            if (onBefore != null)
+            {
+                return onBefore;
+            }
+
+            _subsystemStatusProviders.TryGetValue(subsystemName, out var subsystem);
+
+            var statusExpanded = (await GetSubsystemStatus(subsystem, ParseTimeout(Request.Query["timeout"])))?.Item1;
+
+            return Json(statusExpanded);
+        }
+
+        private async Task<IActionResult> OnBefore()
+        {
+            // TODO On before
+            // Запрос статуса разрешен только с локального узла
+            if (!await _hostAddressParser.IsLocalAddress(Request.Host.Host))
+            {
+                return Forbid();
+            }
+
+            return null;
         }
 
 
         /// <summary>
         /// Возвращает объект с описанием статуса системы.
         /// </summary>
-        private async Task<object> GetStatus(IHttpRequest request, bool expanded, int timeout)
+        private async Task<IDictionary<string, object>> GetStatus(bool expanded)
         {
             var ok = true;
 
@@ -98,19 +123,19 @@ namespace InfinniPlatform.Diagnostics
                 {
                     try
                     {
-                        var subsystemName = subsystem.Name;
+                        var subsystemName = subsystem.Key;
 
                         if (expanded)
                         {
                             // Определение статуса подсистемы
-                            var subsystemStatus = await GetSubsystemStatus(subsystem, request, timeout);
+                            var subsystemStatus = await GetSubsystemStatus(subsystem.Value, ParseTimeout(Request.Query["timeout"]));
                             status[subsystemName] = subsystemStatus.Item1;
                             ok &= subsystemStatus.Item2;
                         }
                         else
                         {
                             // Формирование ссылки на статусную страницу подсистемы
-                            status[subsystemName] = new DynamicDocument { { "ref", $"{request.BasePath}/info/{subsystemName}" } };
+                            status[subsystemName] = new DynamicDocument { { "ref", $"{Request.PathBase}/info/{subsystemName}" } };
                         }
                     }
                     catch (Exception exception)
@@ -124,14 +149,14 @@ namespace InfinniPlatform.Diagnostics
 
             status["ok"] = ok;
 
-            return status;
+            return status.ToDictionary();
         }
 
 
         /// <summary>
         /// Возвращает объект с описанием статуса подсистемы и успешности его определения.
         /// </summary>
-        private async Task<Tuple<object, bool>> GetSubsystemStatus(ISubsystemStatusProvider subsystem, IHttpRequest request, int timeout)
+        private async Task<Tuple<object, bool>> GetSubsystemStatus(ISubsystemStatusProvider subsystem, int timeout)
         {
             var ok = false;
 
@@ -139,7 +164,7 @@ namespace InfinniPlatform.Diagnostics
 
             try
             {
-                var statusTask = subsystem.GetStatus(request);
+                var statusTask = subsystem.GetStatus(Request);
 
                 // Исключается возможность бесконечного ожидания ответа от подсистемы
                 if (await Task.WhenAny(statusTask, Task.Delay(timeout)) == statusTask)
@@ -159,7 +184,7 @@ namespace InfinniPlatform.Diagnostics
                 _logger.LogWarning(exception);
 
                 // При определении статуса произошло исключение
-                status = new DynamicDocument { { "error", exception.GetFullMessage() } };
+                status = new DynamicDocument { { "error", exception.GetFullMessage() } }.ToDictionary();
             }
 
             return new Tuple<object, bool>(status, ok);
@@ -177,18 +202,19 @@ namespace InfinniPlatform.Diagnostics
         }
 
 
-        private static int ParseTimeout(dynamic timeout)
+        private static int ParseTimeout(StringValues timeout)
         {
             var result = 0;
 
-            if (timeout != null)
+            if (!StringValues.IsNullOrEmpty(timeout))
             {
                 try
                 {
-                    result = (int)timeout;
+                    result =  int.Parse(timeout);
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 

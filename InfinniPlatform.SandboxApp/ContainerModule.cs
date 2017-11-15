@@ -1,5 +1,7 @@
-﻿using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.DocumentStorage;
+using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
+using InfinniPlatform.SandboxApp.Models;
 
 namespace InfinniPlatform.SandboxApp
 {
@@ -11,7 +13,7 @@ namespace InfinniPlatform.SandboxApp
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 
-            //builder.RegisterDocumentHttpService<Entity>();
+            builder.RegisterDocumentHttpService<Entity>();
         }
     }
 }

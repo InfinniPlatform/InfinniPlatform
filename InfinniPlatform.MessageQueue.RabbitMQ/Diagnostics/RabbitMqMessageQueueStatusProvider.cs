@@ -2,6 +2,7 @@
 using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http;
 using InfinniPlatform.MessageQueue.Management;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.MessageQueue.Diagnostics
 {
@@ -16,7 +17,7 @@ namespace InfinniPlatform.MessageQueue.Diagnostics
 
         public string Name => RabbitMqMessageQueueOptions.SectionName;
 
-        public async Task<object> GetStatus(IHttpRequest request)
+        public async Task<object> GetStatus(HttpRequest request)
         {
             return await _client.GetOverview();
         }

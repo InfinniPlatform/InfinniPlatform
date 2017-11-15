@@ -81,12 +81,6 @@ namespace InfinniPlatform.DocumentStorage
         /// </summary>
         public bool CanDelete { get; protected set; }
 
-
-        /// <summary>
-        /// Загружает настройки сервиса по работе с документами.
-        /// </summary>
-        protected abstract void Load(IHttpServiceBuilder builder);
-
         /// <summary>
         /// Обрабатывает запрос на получение документов.
         /// </summary>

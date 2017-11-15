@@ -37,7 +37,7 @@ namespace InfinniPlatform.Scheduler.Dispatcher
                                    _logger.LogDebug(message, exception);
                                    break;
                                case LogLevel.Info:
-                                   _logger.LogInformation(message, exception);
+                                   _logger.LogTrace(message, exception);
                                    break;
                                case LogLevel.Warn:
                                    _logger.LogWarning(message, exception);

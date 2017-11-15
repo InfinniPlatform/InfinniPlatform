@@ -1,8 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using InfinniPlatform.AspNetCore;
+using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +26,17 @@ namespace InfinniPlatform.SandboxApp
         {
             services.AddMvc()
                     .AddControllersAsServices();
+
+            var assembliesDirectory = Path.GetDirectoryName(typeof(Startup).Assembly.Location);
+
+            var enumerateFiles = Directory.GetFiles(assembliesDirectory, "*.dll");
+            foreach (var dll in enumerateFiles)
+            {
+                var assembly = Assembly.LoadFile(dll);
+                var controllerTypes = assembly.GetTypes()
+                                              .Where(type => typeof(Controller).IsAssignableFrom(type))
+                                              .ToArray();
+            }
 
             var serviceProvider = services.AddAuthInternal(_configuration)
                                           .AddAuthHttpService()
@@ -46,12 +62,10 @@ namespace InfinniPlatform.SandboxApp
                               IContainerResolver resolver)
         {
             app.UseStaticFilesMapping(_configuration, resolver);
-
-            var httpServices = resolver.Resolve<EntityDocumentHttpController>();
-
-            // Setup default application layers
             app.UseDefaultAppLayers(resolver);
             app.UseMvc();
+
+            var controller = resolver.Resolve<SystemInfoHttpService>();
         }
     }
 }

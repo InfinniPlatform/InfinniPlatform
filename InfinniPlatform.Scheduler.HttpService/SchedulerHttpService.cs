@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Http;
 using InfinniPlatform.Serialization;
-
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Scheduler
@@ -14,7 +14,7 @@ namespace InfinniPlatform.Scheduler
     /// <summary>
     /// Provides HTTP API to the scheduler.
     /// </summary>
-    public class SchedulerHttpService : IHttpService
+    public class SchedulerHttpService : Controller//: IHttpService
     {
         public SchedulerHttpService(IJobScheduler jobScheduler,
                                     IHostAddressParser hostAddressParser,

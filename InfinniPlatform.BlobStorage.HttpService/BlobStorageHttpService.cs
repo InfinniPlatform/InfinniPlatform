@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using InfinniPlatform.BlobStorage.Properties;
 using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
-
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.BlobStorage
@@ -18,13 +18,12 @@ namespace InfinniPlatform.BlobStorage
     /// GET /blob/{id}
     /// </code>
     /// </example>
-    [LoggerName(nameof(BlobStorageHttpService))]
-    public class BlobStorageHttpService : IHttpService
+    [Route("blob")]
+    public class BlobStorageHttpService : Controller
     {
-        public const string DefaultServicePath = "/blob";
-
-
-        public BlobStorageHttpService(IBlobStorage blobStorage, IPerformanceLogger<BlobStorageHttpService> perfLogger, ILogger<BlobStorageHttpService> logger)
+        public BlobStorageHttpService(IBlobStorage blobStorage,
+                                      IPerformanceLogger<BlobStorageHttpService> perfLogger,
+                                      ILogger<BlobStorageHttpService> logger)
         {
             _blobStorage = blobStorage;
             _perfLogger = perfLogger;
@@ -37,26 +36,17 @@ namespace InfinniPlatform.BlobStorage
         private readonly ILogger _logger;
 
 
-        public virtual void Load(IHttpServiceBuilder builder)
-        {
-            builder.ServicePath = DefaultServicePath;
-
-            builder.Get["/{id}"] = GetFileContentAsync;
-        }
-
-
-        protected virtual Task<object> GetFileContentAsync(IHttpRequest request)
+        [HttpGet("{id}")]
+        public virtual Task<object> GetFileContentAsync(string blobId)
         {
             var startTime = DateTime.Now;
 
-            var method = $"{request.Method}::{request.Path}";
+            var method = $"{Request.Method}::{Request.Path}";
 
             Exception exception = null;
 
             try
             {
-                string blobId = request.Parameters.id;
-
                 if (!string.IsNullOrEmpty(blobId))
                 {
                     var blobData = _blobStorage.GetBlobData(blobId);

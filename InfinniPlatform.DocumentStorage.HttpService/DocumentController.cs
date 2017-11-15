@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using InfinniPlatform.BlobStorage;
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
 using Microsoft.Extensions.Logging;
 
@@ -43,12 +42,6 @@ namespace InfinniPlatform.DocumentStorage
         private readonly IDocumentQueryFactory _queryFactory;
         private readonly IDocumentStorage _storage;
         private readonly IBlobStorage _blobStorage;
-
-
-        protected override void Load(IHttpServiceBuilder builder)
-        {
-            _serviceHandler.Load(builder);
-        }
 
 
         protected override Task<object> Get()

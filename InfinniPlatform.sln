@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
 EndProject
@@ -101,7 +101,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Heartbeat.H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Auth.HttpService", "InfinniPlatform.Auth.HttpService\InfinniPlatform.Auth.HttpService.csproj", "{CA89B716-B45D-4FFB-BC85-ABC6BC120ED1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinniPlatform.WindowsServiceHost", "InfinniPlatform.WindowsServiceHost\InfinniPlatform.WindowsServiceHost.csproj", "{CF4D35B8-445C-4581-B685-D34A052E6BCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.WindowsServiceHost", "InfinniPlatform.WindowsServiceHost\InfinniPlatform.WindowsServiceHost.csproj", "{CF4D35B8-445C-4581-B685-D34A052E6BCF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{7056B340-206F-4696-B934-561BA518FC83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -538,6 +540,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{1996F172-BE5B-4999-A472-81C1E470D49B} = {7056B340-206F-4696-B934-561BA518FC83}
 		{B8D90B99-AAF9-4490-A39E-C1144A5B4CDE} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{296EF39D-F3DC-4AAF-946A-FC704D5BAF93} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}
 		{BFF8197C-B04D-4E0F-9FCA-172A144E6592} = {162E7A87-4FF9-4692-A963-EEF8AD259CF7}

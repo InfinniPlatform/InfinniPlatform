@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Diagnostics;
-using InfinniPlatform.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Cache.Diagnostics
 {
@@ -19,7 +19,7 @@ namespace InfinniPlatform.Cache.Diagnostics
 
         public string Name => RedisSharedCacheOptions.SectionName;
 
-        public async Task<object> GetStatus(IHttpRequest request)
+        public async Task<object> GetStatus(HttpRequest request)
         {
             return await _connectionFactory.RedisClient.Value.GetStatusAsync();
         }
