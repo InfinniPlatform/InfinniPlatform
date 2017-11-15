@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{162E7A87-4FF9-4692-A963-EEF8AD259CF7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.ServiceHost", "InfinniPlatform.ServiceHost\InfinniPlatform.ServiceHost.csproj", "{1996F172-BE5B-4999-A472-81C1E470D49B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.SandboxApp", "InfinniPlatform.SandboxApp\InfinniPlatform.SandboxApp.csproj", "{1996F172-BE5B-4999-A472-81C1E470D49B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfinniPlatform.Core", "InfinniPlatform.Core\InfinniPlatform.Core.csproj", "{168A0089-AE82-4F8D-A124-DC31ED6561D0}"
 EndProject

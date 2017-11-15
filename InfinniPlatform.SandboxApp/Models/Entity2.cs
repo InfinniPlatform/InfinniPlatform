@@ -1,6 +1,6 @@
-using InfinniPlatform.DocumentStorage;
+﻿using InfinniPlatform.DocumentStorage;
 
-namespace InfinniPlatform.ServiceHost.Models
+namespace InfinniPlatform.SandboxApp.Models
 {
     public class Entity2 : Document
     {

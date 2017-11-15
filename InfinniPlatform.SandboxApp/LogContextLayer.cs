@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Serilog.Context;
 
-namespace InfinniPlatform.ServiceHost
+namespace InfinniPlatform.SandboxApp
 {
     public class LogContextLayer : IAfterAuthenticationAppLayer, IDefaultAppLayer
     {

@@ -1,14 +1,12 @@
 ﻿using System;
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.Http;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace InfinniPlatform.ServiceHost
+namespace InfinniPlatform.SandboxApp
 {
     public class Startup
     {

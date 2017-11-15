@@ -144,33 +144,6 @@
   <data name="ServerSchemeIsNotSupported" xml:space="preserve">
     <value>Server scheme '{0}' is not supported. Use 'http' or 'https'.</value>
   </data>
-  <data name="ServiceHostHasBeenSuccessfullyStarted" xml:space="preserve">
-    <value>Service host has been successfully started.</value>
-  </data>
-  <data name="ServiceHostHasBeenSuccessfullyStopped" xml:space="preserve">
-    <value>Service host has been successfully stopped.</value>
-  </data>
-  <data name="ServiceHostHasNotBeenStarted" xml:space="preserve">
-    <value>Service host has not been started.</value>
-  </data>
-  <data name="ServiceHostHasNotBeenStopped" xml:space="preserve">
-    <value>Service host has not been stopped.</value>
-  </data>
-  <data name="ServiceHostInitializationCompletedWithAnException" xml:space="preserve">
-    <value>Service host initialization completed with an exception.</value>
-  </data>
-  <data name="ServiceHostInitializationSuccessfullyCompleted" xml:space="preserve">
-    <value>Service host initialization successfully completed.</value>
-  </data>
-  <data name="ServiceHostInitializationWasStarted" xml:space="preserve">
-    <value>Service host initialization was started.</value>
-  </data>
-  <data name="ServiceHostIsStarting" xml:space="preserve">
-    <value>Service host is starting.</value>
-  </data>
-  <data name="ServiceHostIsStopping" xml:space="preserve">
-    <value>Service host is stopping.</value>
-  </data>
   <data name="ServingStaticContent" xml:space="preserve">
     <value>Serving static content.</value>
   </data>

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-namespace InfinniPlatform.ServiceHost
+namespace InfinniPlatform.SandboxApp
 {
     [Route("api")]
     public class ApiController : Controller

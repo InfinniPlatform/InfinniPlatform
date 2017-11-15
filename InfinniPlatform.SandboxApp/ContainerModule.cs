@@ -1,9 +1,7 @@
-﻿using InfinniPlatform.DocumentStorage;
-using InfinniPlatform.Http.Middlewares;
+﻿using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
-using InfinniPlatform.ServiceHost.Models;
 
-namespace InfinniPlatform.ServiceHost
+namespace InfinniPlatform.SandboxApp
 {
     public class ContainerModule : IContainerModule
     {

@@ -1,7 +1,7 @@
-﻿using InfinniPlatform.ServiceHost.Models;
+﻿using InfinniPlatform.SandboxApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InfinniPlatform.ServiceHost
+namespace InfinniPlatform.SandboxApp
 {
     [ApiExplorerSettings(IgnoreApi = false, GroupName = nameof(EntityDocumentHttpController))]
     public class EntityDocumentHttpController : Controller

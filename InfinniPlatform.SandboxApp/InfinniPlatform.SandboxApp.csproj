@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>InfinniPlatform.ServiceHost</AssemblyName>
-    <RootNamespace>InfinniPlatform.ServiceHost</RootNamespace>
+    <AssemblyName>InfinniPlatform.SandboxApp</AssemblyName>
+    <RootNamespace>InfinniPlatform.SandboxApp</RootNamespace>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>pdbonly</DebugType>

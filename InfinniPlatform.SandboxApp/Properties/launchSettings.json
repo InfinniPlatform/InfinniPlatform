@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "InfinniPlatform.ServiceHost": {
+    "InfinniPlatform.SandboxApp": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

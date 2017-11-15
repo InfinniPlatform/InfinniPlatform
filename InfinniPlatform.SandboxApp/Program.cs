@@ -8,7 +8,7 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Filters;
 
-namespace InfinniPlatform.ServiceHost
+namespace InfinniPlatform.SandboxApp
 {
     public class Program
     {
