@@ -28,36 +28,37 @@ namespace InfinniPlatform.DocumentStorage
         private readonly ILogger _logger;
 
         [HttpGet("documents/{documentType}/{id?}")]
-        public object ProcessGet(string documentType, string id)
+        public async Task<object> ProcessGet(string documentType, string id)
         {
             if (CanGet)
             {
-                Get();
+                var processGet = await Get();
+                return processGet;
             }
 
-            return new object();
+            return Forbid();
         }
 
         [HttpPost("documents/{documentType}")]
-        public object ProcessPost(string documentType)
+        public async Task<object> ProcessPost(string documentType)
         {
             if (CanPost)
             {
-                Post();
+                return await Post();
             }
 
-            return new object();
+            return Forbid();
         }
 
         [HttpDelete("documents/{documentType}/{id?}")]
-        public object ProcessDelete(string documentType, string id)
+        public async Task<object> ProcessDelete(string documentType, string id)
         {
             if (CanDelete)
             {
-                Delete();
+                return await Delete();
             }
 
-            return new object();
+            return Forbid();
         }
 
 
@@ -169,6 +170,8 @@ namespace InfinniPlatform.DocumentStorage
                     Error = BuildError(error, onError)
                 };
 
+                var jsonResult = Json(requestResult);
+
                 var statusCode = 200;
 
                 if (!success)
@@ -186,10 +189,9 @@ namespace InfinniPlatform.DocumentStorage
                     }
                 }
 
-                response = new JsonHttpResponse(requestResult)
-                {
-                    StatusCode = statusCode
-                };
+                jsonResult.StatusCode = statusCode;
+
+                response = jsonResult;
             }
 
             // Запись в журнал
