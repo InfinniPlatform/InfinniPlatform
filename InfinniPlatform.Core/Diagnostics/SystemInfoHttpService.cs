@@ -135,7 +135,7 @@ namespace InfinniPlatform.Diagnostics
                         else
                         {
                             // Формирование ссылки на статусную страницу подсистемы
-                            status[subsystemName] = new DynamicDocument { { "ref", $"{Request.PathBase}/info/{subsystemName}" } };
+                            status[subsystemName] = new DynamicDocument { { "ref", $"{Request.Scheme}://{Request.Host}/info/{subsystemName}" } };
                         }
                     }
                     catch (Exception exception)

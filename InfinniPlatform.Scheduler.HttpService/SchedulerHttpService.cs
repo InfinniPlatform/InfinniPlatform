@@ -8,13 +8,15 @@ using InfinniPlatform.Http;
 using InfinniPlatform.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 
 namespace InfinniPlatform.Scheduler
 {
     /// <summary>
     /// Provides HTTP API to the scheduler.
     /// </summary>
-    public class SchedulerHttpService : Controller//: IHttpService
+    [Route(Name)]
+    public class SchedulerHttpService : Controller
     {
         public SchedulerHttpService(IJobScheduler jobScheduler,
                                     IHostAddressParser hostAddressParser,
@@ -32,50 +34,87 @@ namespace InfinniPlatform.Scheduler
         private readonly IHostAddressParser _hostAddressParser;
         private readonly IJsonObjectSerializer _jsonObjectSerializer;
         private readonly ILogger _logger;
+        private const string Name = "scheduler";
 
-
-        public string Name => "scheduler";
-
-
-        public void Load(IHttpServiceBuilder builder)
+        /// <summary>
+        /// Получить состояние планировщика заданий.
+        /// </summary>
+        [HttpGet("")]
+        [HttpPost("")]
+        public async Task<object> ProcessGetStatus()
         {
-            builder.ServicePath = Name;
+            return await HandleRequest(GetStatus);
+        }
 
-            builder.OnBefore = async r =>
-                               {
-                                   // Запрос статуса разрешен только с локального узла
-                                   if (!await _hostAddressParser.IsLocalAddress(r.UserHostAddress))
-                                   {
-                                       return HttpResponse.Forbidden;
-                                   }
+        /// <summary>
+        /// Получить список заданий.
+        /// </summary>
+        [HttpGet("jobs")]
+        [HttpPost("jobs")]
+        public async Task<object> ProcessGetJobs()
+        {
+            return await HandleRequest(GetJobs);
+        }
 
-                                   return null;
-                               };
+        /// <summary>
+        /// Получить задание.
+        /// </summary>
+        [HttpGet("jobs/{id}")]
+        public async Task<object> ProcessGetJob()
+        {
+            return await HandleRequest(GetJob);
+        }
 
-            // Состояние планировщика заданий
-            builder.Get["/"] = r => HandleRequest(r, GetStatus);
-            builder.Post["/"] = r => HandleRequest(r, GetStatus);
+        /// <summary>
+        /// Сохранить задание.
+        /// </summary>
+        [HttpPost("jobs/{id}")]
+        public async Task<object> ProcessPostJob(string id)
+        {
+            return await HandleRequest(PostJob);
+        }
 
-            // Список заданий планировщика
-            builder.Get["/jobs"] = r => HandleRequest(r, GetJobs);
-            builder.Post["/jobs"] = r => HandleRequest(r, GetJobs);
+        /// <summary>
+        /// Удалить задание.
+        /// </summary>
+        [HttpDelete("jobs/{id}")]
+        public async Task<object> ProcessDeleteJob(string id)
+        {
+            return await HandleRequest(DeleteJob);
+        }
 
-            // Управление заданием планировщика
-            builder.Get["/jobs/{id}"] = r => HandleRequest(r, GetJob);
-            builder.Post["/jobs/{id}"] = r => HandleRequest(r, PostJob);
-            builder.Delete["/jobs/{id}"] = r => HandleRequest(r, DeleteJob);
+        /// <summary>
+        /// Приостановить выполнение задания.
+        /// </summary>
+        [HttpPost("pause")]
+        public async Task<object> ProcessPauseJobs()
+        {
+            return await HandleRequest(PauseJobs);
+        }
 
-            // Управление планировщиком заданий
-            builder.Post["/pause"] = r => HandleRequest(r, PauseJobs);
-            builder.Post["/resume"] = r => HandleRequest(r, ResumeJobs);
-            builder.Post["/trigger"] = r => HandleRequest(r, TriggerJobs);
+        /// <summary>
+        /// Продолжить выполнение задания.
+        /// </summary>
+        [HttpPost("resume")]
+        public async Task<object> ProcessResumeJobs()
+        {
+            return await HandleRequest(ResumeJobs);
+        }
+
+        /// <summary>
+        /// Запустить выполнение задания.
+        /// </summary>
+        [HttpPost("trigger")]
+        public async Task<object> ProcessTriggerJobs()
+        {
+            return await HandleRequest(TriggerJobs);
         }
 
 
         /// <summary>
         /// Gets the scheduler status.
         /// </summary>
-        private async Task<object> GetStatus(IHttpRequest request)
+        private async Task<object> GetStatus()
         {
             var isStarted = await _jobScheduler.IsStarted();
             var totalCount = await _jobScheduler.GetStatus(i => i.Count());
@@ -91,21 +130,21 @@ namespace InfinniPlatform.Scheduler
                                  "all", new DynamicDocument
                                         {
                                             { "count", totalCount },
-                                            { "ref", $"{request.BasePath}/{Name}/jobs?skip=0&take=10" }
+                                            { "ref", $"{Request.Scheme}://{Request.Host}/{Name}/jobs?skip=0&take=10" }
                                         }
                              },
                              {
                                  "planned", new DynamicDocument
                                             {
                                                 { "count", plannedCount },
-                                                { "ref", $"{request.BasePath}/{Name}/jobs?state=planned&skip=0&take=10" }
+                                                { "ref", $"{Request.Scheme}://{Request.Host}/{Name}/jobs?state=planned&skip=0&take=10" }
                                             }
                              },
                              {
                                  "paused", new DynamicDocument
                                            {
                                                { "count", pausedCount },
-                                               { "ref", $"{request.BasePath}/{Name}/jobs?state=paused&skip=0&take=10" }
+                                               { "ref", $"{Request.Scheme}://{Request.Host}/{Name}/jobs?state=paused&skip=0&take=10" }
                                            }
                              }
                          };
@@ -117,18 +156,17 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Gets the scheduler jobs.
         /// </summary>
-        private async Task<object> GetJobs(IHttpRequest request)
+        private async Task<object> GetJobs()
         {
             const int skipMin = 0;
-            const int skipDefault = 0;
 
             const int takeMin = 1;
             const int takeMax = 100;
             const int takeDefault = 10;
-
-            var state = (string)TryGetValue(request.Query.state, string.Empty);
-            var skip = Math.Max((int)TryGetValue(request.Query.skip, skipDefault), skipMin);
-            var take = Math.Max(Math.Min((int)TryGetValue(request.Query.take, takeDefault), takeMax), takeMin);
+            
+            var state = TryGetStringValue(Request.Query["state"]);
+            var skip = Math.Max(TryGetIntValue(Request.Query["skip"]), skipMin);
+            var take = Math.Max(Math.Min(TryGetIntValue(Request.Query["take"], takeDefault), takeMax), takeMin);
 
             var jobs = await _jobScheduler.GetStatus(i =>
                                                      {
@@ -146,7 +184,7 @@ namespace InfinniPlatform.Scheduler
                                                          return i.Select(j => new DynamicDocument
                                                                               {
                                                                                   { "id", j.Info.Id },
-                                                                                  { "ref", $"{request.BasePath}/{Name}/jobs/{j.Info.Id}" }
+                                                                                  { "ref", $"{Request.Scheme}://{Request.Host}/{Name}/jobs/{j.Info.Id}" }
                                                                               })
                                                                  .ToList();
                                                      });
@@ -157,11 +195,11 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Gets the scheduler job info.
         /// </summary>
-        private async Task<object> GetJob(IHttpRequest request)
+        private async Task<object> GetJob()
         {
             var response = new ServiceResult<IJobInfo>();
 
-            string jobId = TryGetValue(request.Parameters.id, string.Empty);
+            string jobId = RouteData.Values["id"] as string ?? string.Empty;
 
             if (!string.IsNullOrEmpty(jobId))
             {
@@ -180,15 +218,15 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Adds or updates the scheduler job.
         /// </summary>
-        private async Task<object> PostJob(IHttpRequest request)
+        private async Task<object> PostJob()
         {
             var response = new ServiceResult<bool>();
 
-            string jobId = TryGetValue(request.Parameters.id, string.Empty);
+            string jobId = RouteData.Values["id"] as string ?? string.Empty;
 
             if (!string.IsNullOrEmpty(jobId))
             {
-                var jobInfo = _jsonObjectSerializer.Deserialize<JobInfo>(request.Content);
+                var jobInfo = _jsonObjectSerializer.Deserialize<JobInfo>(Request.Body);
 
                 if (jobInfo != null)
                 {
@@ -207,11 +245,11 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Deletes the scheduler job.
         /// </summary>
-        private async Task<object> DeleteJob(IHttpRequest request)
+        private async Task<object> DeleteJob()
         {
             var response = new ServiceResult<bool>();
 
-            string jobId = TryGetValue(request.Parameters.id, string.Empty);
+            string jobId = RouteData.Values["id"] as string ?? string.Empty;
 
             if (!string.IsNullOrEmpty(jobId))
             {
@@ -228,12 +266,12 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Pauses the scheduler jobs.
         /// </summary>
-        private async Task<object> PauseJobs(IHttpRequest request)
+        private async Task<object> PauseJobs()
         {
             var response = new ServiceResult<bool>();
 
             // Список уникальных идентификаторов заданий
-            List<string> jobIds = TryGetValues(request.Query.ids);
+            List<string> jobIds = TryGetValues(RouteData.Values["ids"]);
 
             // Если список пустой, приостанавливаются все задания
             if (jobIds == null || jobIds.Count <= 0)
@@ -254,12 +292,12 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Resumes the scheduler jobs.
         /// </summary>
-        private async Task<object> ResumeJobs(IHttpRequest request)
+        private async Task<object> ResumeJobs()
         {
             var response = new ServiceResult<bool>();
 
             // Список уникальных идентификаторов заданий
-            List<string> jobIds = TryGetValues(request.Query.ids);
+            List<string> jobIds = TryGetValues(RouteData.Values["ids"]);
 
             // Если список пустой, возобновляются все задания
             if (jobIds == null || jobIds.Count <= 0)
@@ -280,15 +318,15 @@ namespace InfinniPlatform.Scheduler
         /// <summary>
         /// Triggers the scheduler jobs.
         /// </summary>
-        private async Task<object> TriggerJobs(IHttpRequest request)
+        private async Task<object> TriggerJobs()
         {
             var response = new ServiceResult<bool>();
 
             // Список уникальных идентификаторов заданий
-            List<string> jobIds = TryGetValues(request.Query.ids);
+            List<string> jobIds = TryGetValues(RouteData.Values["ids"]);
 
             // Данные для выполнения задания
-            var jobData = _jsonObjectSerializer.Deserialize<DynamicDocument>(request.Content);
+            var jobData = _jsonObjectSerializer.Deserialize<DynamicDocument>(Request.Body);
 
             // Если список пустой, досрочно вызываются все задания
             if (jobIds == null || jobIds.Count <= 0)
@@ -307,41 +345,44 @@ namespace InfinniPlatform.Scheduler
         }
 
 
-        private async Task<object> HandleRequest(IHttpRequest request, Func<IHttpRequest, Task<object>> requestHandler)
+        private async Task<object> HandleRequest(Func<Task<object>> requestHandler)
         {
+            // TODO On before
+            // Запрос статуса разрешен только с локального узла
+            if (!await _hostAddressParser.IsLocalAddress(Request.Host.Host))
+            {
+                return Forbid();
+            }
+
             try
             {
-                return await requestHandler(request);
+                return Json(await requestHandler());
             }
             catch (Exception exception)
             {
                 _logger.LogError(exception);
 
                 return new ServiceResult<object>
-                       {
-                           Success = false,
-                           Error = exception.GetFullMessage()
-                       };
+                {
+                    Success = false,
+                    Error = exception.GetFullMessage()
+                };
             }
         }
 
-
-        private static TResult TryGetValue<TResult>(dynamic value, TResult defaultValue = default(TResult))
+        private static string TryGetStringValue(StringValues stringValues)
         {
-            var result = defaultValue;
+            return stringValues.ToString();
+        }
 
-            if (value != null)
+        private static int TryGetIntValue(StringValues stringValues, int defaultValue = default(int))
+        {
+            if (int.TryParse(stringValues.ToString(), out var value))
             {
-                try
-                {
-                    result = (TResult)value;
-                }
-                catch
-                {
-                }
+                return value;
             }
 
-            return result;
+            return defaultValue;
         }
 
         private static List<string> TryGetValues(dynamic value)
@@ -356,6 +397,7 @@ namespace InfinniPlatform.Scheduler
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 

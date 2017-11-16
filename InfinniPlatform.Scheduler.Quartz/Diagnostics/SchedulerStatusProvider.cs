@@ -44,21 +44,21 @@ namespace InfinniPlatform.Scheduler.Diagnostics
                                  "all", new DynamicDocument
                                         {
                                             { "count", totalCount },
-                                            { "ref", $"{request.PathBase}/{Name}/jobs?skip=0&take=10" }
+                                            { "ref", $"{request.Scheme}://{request.Host}/{Name}/jobs?skip=0&take=10" }
                                         }
                              },
                              {
                                  "planned", new DynamicDocument
                                             {
                                                 { "count", plannedCount },
-                                                { "ref", $"{request.PathBase}/{Name}/jobs?state=planned&skip=0&take=10" }
+                                                { "ref", $"{request.Scheme}://{request.Host}/{Name}/jobs?state=planned&skip=0&take=10" }
                                             }
                              },
                              {
                                  "paused", new DynamicDocument
                                            {
                                                { "count", pausedCount },
-                                               { "ref", $"{request.PathBase}/{Name}/jobs?state=paused&skip=0&take=10" }
+                                               { "ref", $"{request.Scheme}://{request.Host}/{Name}/jobs?state=paused&skip=0&take=10" }
                                            }
                              }
                          };
