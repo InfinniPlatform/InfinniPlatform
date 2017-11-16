@@ -10,7 +10,7 @@ namespace InfinniPlatform.Serialization
     /// <summary>
     /// Осуществляет преобразование <see cref="Date"/> в JSON-представление и обратно.
     /// </summary>
-    internal class DateJsonConverter : JsonConverter
+    public class DateJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {

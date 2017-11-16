@@ -12,7 +12,7 @@ namespace InfinniPlatform.Serialization
     /// <summary>
     /// Осуществляет преобразование <see cref="DynamicDocument"/> в JSON-представление и обратно.
     /// </summary>
-    internal class DynamicDocumentJsonConverter : JsonConverter
+    public class DynamicDocumentJsonConverter : JsonConverter
     {
         private static readonly TypeInfo ConvertType = typeof(DynamicDocument).GetTypeInfo();
 

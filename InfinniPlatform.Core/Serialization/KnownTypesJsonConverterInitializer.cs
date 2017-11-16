@@ -9,7 +9,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace InfinniPlatform.Serialization
 {
-    internal class KnownTypesJsonConverterInitializer : IJsonPropertyInitializer
+    public class KnownTypesJsonConverterInitializer : IJsonPropertyInitializer
     {
         public KnownTypesJsonConverterInitializer(KnownTypesContainer knownTypes)
         {

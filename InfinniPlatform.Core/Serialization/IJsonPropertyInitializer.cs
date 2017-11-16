@@ -8,7 +8,7 @@ namespace InfinniPlatform.Serialization
     /// <summary>
     /// Интерфейс настройки <see cref="JsonProperty" />.
     /// </summary>
-    internal interface IJsonPropertyInitializer
+    public interface IJsonPropertyInitializer
     {
         /// <summary>
         /// Настраивает <see cref="JsonProperty" /> для соответствующего <see cref="MemberInfo" />.

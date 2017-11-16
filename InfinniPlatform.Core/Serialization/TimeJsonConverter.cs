@@ -10,7 +10,7 @@ namespace InfinniPlatform.Serialization
     /// <summary>
     /// Осуществляет преобразование <see cref="Time"/> в JSON-представление и обратно.
     /// </summary>
-    internal class TimeJsonConverter : JsonConverter
+    public class TimeJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
