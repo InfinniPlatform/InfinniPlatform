@@ -11,7 +11,7 @@ namespace InfinniPlatform.Heartbeat
     /// </code>
     /// </example>
     [Route("heartbeat")]
-    public class HeartbeatHttpService : Controller
+    public class HeartbeatController : Controller
     {
         [HttpGet("{id}")]
         public object Heartbeat(string id)

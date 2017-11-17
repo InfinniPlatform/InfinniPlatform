@@ -16,12 +16,12 @@ namespace InfinniPlatform.Scheduler
     /// Provides HTTP API to the scheduler.
     /// </summary>
     [Route(Name)]
-    public class SchedulerHttpService : Controller
+    public class SchedulerController : Controller
     {
-        public SchedulerHttpService(IJobScheduler jobScheduler,
-                                    IHostAddressParser hostAddressParser,
-                                    IJsonObjectSerializer jsonObjectSerializer,
-                                    ILogger<SchedulerHttpService> logger)
+        public SchedulerController(IJobScheduler jobScheduler,
+                                   IHostAddressParser hostAddressParser,
+                                   IJsonObjectSerializer jsonObjectSerializer,
+                                   ILogger<SchedulerController> logger)
         {
             _jobScheduler = jobScheduler;
             _hostAddressParser = hostAddressParser;

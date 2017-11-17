@@ -19,15 +19,15 @@ namespace InfinniPlatform.Diagnostics
     /// <summary>
     /// Реализует REST-сервис для получения информации о системе.
     /// </summary>
-    public sealed class SystemInfoHttpService : Controller
+    public sealed class SystemInfoContoller : Controller
     {
         private const int SubsystemTimeout = 1000;
 
 
-        public SystemInfoHttpService(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders,
-                                     IHostAddressParser hostAddressParser,
-                                     IJsonObjectSerializer jsonObjectSerializer,
-                                     ILogger<SystemInfoHttpService> logger)
+        public SystemInfoContoller(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders,
+                                   IHostAddressParser hostAddressParser,
+                                   IJsonObjectSerializer jsonObjectSerializer,
+                                   ILogger<SystemInfoContoller> logger)
         {
             _subsystemStatusProviders = subsystemStatusProviders.ToDictionary(p => p.Name, p => p);
             _hostAddressParser = hostAddressParser;
@@ -196,7 +196,7 @@ namespace InfinniPlatform.Diagnostics
         /// </summary>
         private static Tuple<string, string> GetSystemVersion()
         {
-            var assembly = typeof(SystemInfoHttpService).GetTypeInfo().Assembly;
+            var assembly = typeof(SystemInfoContoller).GetTypeInfo().Assembly;
             var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             return new Tuple<string, string>(versionInfo.FileVersion, versionInfo.ProductVersion);
         }

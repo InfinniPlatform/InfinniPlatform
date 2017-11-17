@@ -19,11 +19,11 @@ namespace InfinniPlatform.BlobStorage
     /// </code>
     /// </example>
     [Route("blob")]
-    public class BlobStorageHttpService : Controller
+    public class BlobStorageController : Controller
     {
-        public BlobStorageHttpService(IBlobStorage blobStorage,
-                                      IPerformanceLogger<BlobStorageHttpService> perfLogger,
-                                      ILogger<BlobStorageHttpService> logger)
+        public BlobStorageController(IBlobStorage blobStorage,
+                                     IPerformanceLogger<BlobStorageController> perfLogger,
+                                     ILogger<BlobStorageController> logger)
         {
             _blobStorage = blobStorage;
             _perfLogger = perfLogger;
