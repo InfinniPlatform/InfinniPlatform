@@ -5,6 +5,8 @@ using System.Reflection.Emit;
 using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>

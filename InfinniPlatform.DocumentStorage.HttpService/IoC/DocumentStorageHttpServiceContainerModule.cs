@@ -3,6 +3,8 @@ using InfinniPlatform.DocumentStorage.QuerySyntax;
 using InfinniPlatform.Http;
 using InfinniPlatform.IoC;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace InfinniPlatform.DocumentStorage.IoC
 {
     public class DocumentStorageHttpServiceContainerModule : IContainerModule
@@ -21,24 +23,25 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .As(typeof(IDocumentQueryFactory<>))
                    .SingleInstance();
 
-            builder.RegisterType<DocumentHttpService>()
-                   .AsSelf()
-                   .InstancePerDependency();
-
-            builder.RegisterGeneric(typeof(DocumentHttpService<>))
-                   .As(typeof(DocumentHttpService<>))
-                   .InstancePerDependency();
-
-            builder.RegisterType<DocumentHttpServiceFactory>()
-                   .As<IDocumentHttpServiceFactory>()
-                   .SingleInstance();
-
             builder.RegisterType<HttpServiceWrapperFactory>()
                    .As<IHttpServiceWrapperFactory>()
                    .SingleInstance();
 
             builder.RegisterType<DocumentHttpServiceSource>()
                    .As<IHttpServiceSource>()
+                   .SingleInstance();
+
+            builder.RegisterType<DocumentsController>()
+                   .As<Controller>()
+                   .AsSelf()
+                   .InstancePerDependency();
+
+            builder.RegisterGeneric(typeof(DocumentControllerProcessor<>))
+                   .As(typeof(DocumentControllerProcessor<>))
+                   .InstancePerDependency();
+
+            builder.RegisterType<DocumentControllerProcessorProvider>()
+                   .As<IDocumentControllerProcessorProvider>()
                    .SingleInstance();
         }
     }

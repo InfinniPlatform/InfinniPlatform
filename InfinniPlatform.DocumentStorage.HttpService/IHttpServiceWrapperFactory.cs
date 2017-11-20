@@ -1,5 +1,7 @@
 ﻿using InfinniPlatform.Http;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>

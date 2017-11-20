@@ -14,6 +14,7 @@ namespace InfinniPlatform.SandboxApp
         public HttpController(IDocumentStorageProviderFactory storageFactory)
         {
             _documentStorageProvider = storageFactory.GetStorageProvider<Entity>();
+
         }
 
         [HttpPost("save")]
