@@ -3,51 +3,42 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using InfinniPlatform.Auth.HttpService.Properties;
-using InfinniPlatform.Http;
-using InfinniPlatform.Security;
-using Microsoft.AspNetCore.Identity;
 
-namespace InfinniPlatform.Auth.HttpService
+using InfinniPlatform.Auth.HttpService.Properties;
+using InfinniPlatform.Security;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace InfinniPlatform.Auth.HttpService.Controllers
 {
     /// <summary>
     /// Сервис управления пользователями системы.
     /// </summary>
-    internal class AuthManagementHttpService<TUser> : IHttpService where TUser : AppUser, new()
+    [Route("Auth")]
+    public class AuthManagementController<TUser> : Controller where TUser : AppUser, new()
     {
-        private readonly IUserIdentityProvider _userIdentityProvider;
-        private readonly UserManager<TUser> _userManager;
-
-        public AuthManagementHttpService(IUserIdentityProvider userIdentityProvider,
-                                         UserManager<TUser> userManager)
+        public AuthManagementController(UserManager<TUser> userManager)
         {
-            _userIdentityProvider = userIdentityProvider;
             _userManager = userManager;
         }
 
-        private IIdentity Identity => _userIdentityProvider.GetUserIdentity();
-
-        public void Load(IHttpServiceBuilder builder)
-        {
-            builder.ServicePath = "/Auth";
-
-            builder.Post["/GetCurrentUser"] = GetCurrentUser;
-            builder.Post["/ChangePassword"] = ChangePassword;
-        }
+        private readonly UserManager<TUser> _userManager;
 
         /// <summary>
         /// Возвращает информацию о текущем пользователе.
         /// </summary>
-        private async Task<object> GetCurrentUser(IHttpRequest request)
+        [HttpPost("GetCurrentUser")]
+        public async Task<object> GetCurrentUser()
         {
-            if (!Identity.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated())
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
 
             var user = await GetUserInfo();
 
-            var userInfo = BuildPublicUserInfo(user, Identity);
+            var userInfo = BuildPublicUserInfo(user, HttpContext.User.Identity);
 
             return Extensions.CreateSuccesResponse(userInfo);
         }
@@ -55,16 +46,13 @@ namespace InfinniPlatform.Auth.HttpService
         /// <summary>
         /// Изменяет пароль текущего пользователя.
         /// </summary>
-        private async Task<object> ChangePassword(IHttpRequest request)
+        [HttpPost("ChangePassword")]
+        public async Task<object> ChangePassword([FromForm] string oldPassword, [FromForm] string newPassword)
         {
-            if (!Identity.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated())
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
-
-            var changePasswordForm = request.Form;
-            string oldPassword = changePasswordForm.OldPassword;
-            string newPassword = changePasswordForm.NewPassword;
 
             if (string.IsNullOrWhiteSpace(newPassword))
             {
@@ -91,7 +79,7 @@ namespace InfinniPlatform.Auth.HttpService
 
         private async Task<TUser> GetUserInfo()
         {
-            var userId = Identity.GetUserId();
+            var userId = HttpContext.User.Identity.GetUserId();
 
             var userInfo = await _userManager.FindByIdAsync(userId);
 

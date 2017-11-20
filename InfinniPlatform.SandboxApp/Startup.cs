@@ -1,7 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.DocumentStorage;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using InfinniPlatform.Serialization;
@@ -24,22 +23,22 @@ namespace InfinniPlatform.SandboxApp
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                    .AddJsonOptions(json =>
-                                    {
-                                        var settings = json.SerializerSettings;
+            var mvcBuilder = services.AddMvc()
+                                     .AddJsonOptions(json =>
+                                                     {
+                                                         var settings = json.SerializerSettings;
 
-                                        settings.Formatting = Formatting.Indented;
-                                        settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-                                        settings.NullValueHandling = NullValueHandling.Ignore;
-                                        settings.ContractResolver = new DefaultContractResolver { NamingStrategy = new DefaultNamingStrategy() };
-                                        settings.Converters.Add(new DateJsonConverter());
-                                        settings.Converters.Add(new TimeJsonConverter());
-                                        settings.Converters.Add(new DynamicDocumentJsonConverter());
-                                    });
+                                                         settings.Formatting = Formatting.Indented;
+                                                         settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+                                                         settings.NullValueHandling = NullValueHandling.Ignore;
+                                                         settings.ContractResolver = new DefaultContractResolver { NamingStrategy = new DefaultNamingStrategy() };
+                                                         settings.Converters.Add(new DateJsonConverter());
+                                                         settings.Converters.Add(new TimeJsonConverter());
+                                                         settings.Converters.Add(new DynamicDocumentJsonConverter());
+                                                     });
 
             var serviceProvider = services.AddAuthInternal(_configuration)
-                                          .AddAuthHttpService()
+                                          .AddAuthHttpService(mvcBuilder)
                                           .AddInMemoryCache()
                                           .AddRedisSharedCache(_configuration)
                                           .AddTwoLayerCache(_configuration)
@@ -64,10 +63,6 @@ namespace InfinniPlatform.SandboxApp
             app.UseStaticFilesMapping(_configuration, resolver);
             app.UseDefaultAppLayers(resolver);
             app.UseMvc();
-
-            var handlerBases = resolver.Resolve<IDocumentHttpServiceHandlerBase[]>();
-            var documentControllerProcessorProvider = new DocumentControllerProcessorProvider(handlerBases, resolver);
-            var processorsCache = documentControllerProcessorProvider.ProcessorsCache;
         }
     }
 }

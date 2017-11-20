@@ -12,7 +12,7 @@ namespace InfinniPlatform.Auth.HttpService
     /// <summary>
     /// Предоставляет методы для вызова зарегистрированных обработчиков событий пользователя.
     /// </summary>
-    internal class UserEventHandlerInvoker
+    public class UserEventHandlerInvoker
     {
         public UserEventHandlerInvoker(IEnumerable<IUserEventHandler> userEventHandlers, ILogger<UserEventHandlerInvoker> logger)
         {

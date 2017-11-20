@@ -1,5 +1,4 @@
-﻿using InfinniPlatform.Http;
-using InfinniPlatform.IoC;
+﻿using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Auth.HttpService.IoC
 {
@@ -15,18 +14,6 @@ namespace InfinniPlatform.Auth.HttpService.IoC
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf().SingleInstance();
-
-            builder.RegisterType(typeof(AuthInternalHttpService<>).MakeGenericType(typeof(TUser)))
-                   .As<IHttpService>()
-                   .SingleInstance();
-
-            builder.RegisterType(typeof(AuthExternalHttpService<>).MakeGenericType(typeof(TUser)))
-                .As<IHttpService>()
-                .SingleInstance();
-
-            builder.RegisterType(typeof(AuthManagementHttpService<>).MakeGenericType(typeof(TUser)))
-                .As<IHttpService>()
-                .SingleInstance();
 
             builder.RegisterType<UserEventHandlerInvoker>()
                    .AsSelf()

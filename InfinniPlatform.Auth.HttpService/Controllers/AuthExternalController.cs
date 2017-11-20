@@ -1,105 +1,85 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Auth.HttpService.Properties;
-using InfinniPlatform.Http;
-using InfinniPlatform.Security;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using HttpResponse = InfinniPlatform.Http.HttpResponse;
 
-namespace InfinniPlatform.Auth.HttpService
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+
+namespace InfinniPlatform.Auth.HttpService.Controllers
 {
     /// <summary>
     /// Сервис внешней аутентификации пользователей системы.
     /// </summary>
-    internal class AuthExternalHttpService<TUser> : IHttpService where TUser : AppUser, new()
+    [Route("Auth")]
+    public class AuthExternalController<TUser> : Controller where TUser : AppUser, new()
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly SignInManager<TUser> _signInManager;
-        private readonly AuthHttpServiceOptions _authHttpServiceOptions;
-        private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
-        private readonly IUserIdentityProvider _userIdentityProvider;
-        private readonly UserManager<TUser> _userManager;
-
-        public AuthExternalHttpService(IHttpContextAccessor httpContextAccessor,
-                                       IUserIdentityProvider userIdentityProvider,
-                                       UserEventHandlerInvoker userEventHandlerInvoker,
-                                       UserManager<TUser> userManager,
-                                       SignInManager<TUser> signInManager,
-                                       AuthHttpServiceOptions authHttpServiceOptions)
+        public AuthExternalController(UserEventHandlerInvoker userEventHandlerInvoker,
+                                      UserManager<TUser> userManager,
+                                      SignInManager<TUser> signInManager,
+                                      AuthHttpServiceOptions authHttpServiceOptions)
         {
-            _httpContextAccessor = httpContextAccessor;
-            _userIdentityProvider = userIdentityProvider;
             _userEventHandlerInvoker = userEventHandlerInvoker;
             _userManager = userManager;
             _signInManager = signInManager;
             _authHttpServiceOptions = authHttpServiceOptions;
         }
 
-        private IIdentity Identity => _userIdentityProvider.GetUserIdentity();
-
-        private HttpContext HttpContext => _httpContextAccessor.HttpContext;
-
-        public void Load(IHttpServiceBuilder builder)
-        {
-            builder.ServicePath = "/Auth";
-
-            builder.Post["/SignInExternal"] = SignInExternal;
-            builder.Get["/SignInExternalCallback"] = SignInExternalCallback;
-
-            builder.Post["/GetExternalProviders"] = GetExternalProviders;
-            builder.Post["/LinkExternalLogin"] = LinkExternalLogin;
-            builder.Get["/LinkExternalLoginCallback"] = LinkExternalLoginCallback;
-            builder.Post["/UnlinkExternalLogin"] = UnlinkExternalLogin;
-        }
+        private readonly SignInManager<TUser> _signInManager;
+        private readonly AuthHttpServiceOptions _authHttpServiceOptions;
+        private readonly UserEventHandlerInvoker _userEventHandlerInvoker;
+        private readonly UserManager<TUser> _userManager;
 
         /// <summary>
         /// Осуществляет вход пользователя в систему через внешний провайдер.
         /// </summary>
-        private async Task<object> SignInExternal(IHttpRequest request)
+        [HttpPost("SignInExternal")]
+        public async Task<object> SignInExternal([FromForm] string provider)
         {
-            return await ChallengeExternalProvider(request, "/Auth/SignInExternalCallback");
+            return await ChallengeExternalProvider(provider, "/Auth/SignInExternalCallback");
         }
 
         /// <summary>
         /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
         /// </summary>
-        private Task<object> SignInExternalCallback(IHttpRequest request)
+        [HttpGet("SignInExternalCallback")]
+        public Task<IActionResult> SignInExternalCallback([FromQuery] string successUrl, [FromQuery] string failureUrl)
         {
-            return ChallengeExternalProviderCallback(request, async loginInfo =>
-                                                              {
-                                                                  var user = await _userManager.GetUserAsync(loginInfo.Principal);
+            return ChallengeExternalProviderCallback(successUrl ?? _authHttpServiceOptions.SuccessUrl,
+                                                     failureUrl ?? _authHttpServiceOptions.FailureUrl,
+                                                     async loginInfo =>
+                                                     {
+                                                         var user = await _userManager.GetUserAsync(loginInfo.Principal);
 
-                                                                  if (user == null)
-                                                                  {
-                                                                      user = CreateUserByLoginInfo(loginInfo);
+                                                         if (user == null)
+                                                         {
+                                                             user = CreateUserByLoginInfo(loginInfo);
 
-                                                                      var result = await _userManager.CreateAsync(user);
+                                                             var result = await _userManager.CreateAsync(user);
 
-                                                                      if (result.Succeeded)
-                                                                      {
-                                                                          await _userManager.AddLoginAsync(user, loginInfo);
-                                                                      }
-                                                                  }
+                                                             if (result.Succeeded)
+                                                             {
+                                                                 await _userManager.AddLoginAsync(user, loginInfo);
+                                                             }
+                                                         }
 
-                                                                  await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, false);
+                                                         await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, false);
 
-                                                                  _userEventHandlerInvoker.OnAfterSignIn(Identity);
+                                                         _userEventHandlerInvoker.OnAfterSignIn(HttpContext.User.Identity);
 
-                                                                  return null;
-                                                              });
+                                                         return null;
+                                                     });
         }
 
         /// <summary>
         /// Возвращает список внешних провайдеров входа в систему.
         /// </summary>
-        private async Task<object> GetExternalProviders(IHttpRequest request)
+        [HttpGet("GetExternalProviders")]
+        public async Task<object> GetExternalProviders()
         {
             var loginProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
 
@@ -114,14 +94,15 @@ namespace InfinniPlatform.Auth.HttpService
         /// <summary>
         /// Добавляет текущему пользователю имя входа у внешнего провайдера.
         /// </summary>
-        private async Task<object> LinkExternalLogin(IHttpRequest request)
+        [HttpPost("LinkExternalLogin")]
+        public async Task<IActionResult> LinkExternalLogin([FromForm] string provider)
         {
-            if (!Identity.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated())
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
 
-            var challengeResult = await ChallengeExternalProvider(request, "/Auth/LinkExternalLoginCallback");
+            var challengeResult = await ChallengeExternalProvider(provider, "/Auth/LinkExternalLoginCallback");
 
             return challengeResult;
         }
@@ -129,33 +110,34 @@ namespace InfinniPlatform.Auth.HttpService
         /// <summary>
         /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
         /// </summary>
-        private Task<object> LinkExternalLoginCallback(IHttpRequest request)
+        [HttpGet("LinkExternalLoginCallback")]
+        public Task<IActionResult> LinkExternalLoginCallback([FromQuery] string successUrl, [FromQuery] string failureUrl)
         {
-            return ChallengeExternalProviderCallback(request, async loginInfo =>
-                                                              {
-                                                                  var identityUser = await _userManager.GetUserAsync(GetCurrentInternalClaimsPrincipal());
+            return ChallengeExternalProviderCallback(successUrl ?? _authHttpServiceOptions.SuccessUrl,
+                                                     failureUrl ?? _authHttpServiceOptions.FailureUrl,
+                                                     async loginInfo =>
+                                                     {
+                                                         var identityUser = await _userManager.GetUserAsync(GetCurrentInternalClaimsPrincipal());
 
-                                                                  // Добавление имени входа пользователя
-                                                                  var addLoginTask = await _userManager.AddLoginAsync(identityUser, loginInfo);
+                                                         // Добавление имени входа пользователя
+                                                         var addLoginTask = await _userManager.AddLoginAsync(identityUser, loginInfo);
 
-                                                                  return !addLoginTask.Succeeded
-                                                                      ? string.Join(Environment.NewLine, addLoginTask.Errors)
-                                                                      : null;
-                                                              });
+                                                         return !addLoginTask.Succeeded
+                                                                    ? string.Join(Environment.NewLine, addLoginTask.Errors)
+                                                                    : null;
+                                                     });
         }
 
         /// <summary>
         /// Удаляет у текущего пользователя имя входа у внешнего провайдера.
         /// </summary>
-        private async Task<object> UnlinkExternalLogin(IHttpRequest request)
+        [HttpPost("UnlinkExternalLogin")]
+        public async Task<object> UnlinkExternalLogin([FromForm] string provider)
         {
-            if (!Identity.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated())
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
-
-            var unlinkExternalLoginForm = request.Form;
-            string provider = unlinkExternalLoginForm.Provider;
 
             if (string.IsNullOrWhiteSpace(provider))
             {
@@ -170,8 +152,8 @@ namespace InfinniPlatform.Auth.HttpService
             if (!removeLoginTask.Succeeded)
             {
                 var errorMessage = !removeLoginTask.Succeeded
-                    ? string.Join(Environment.NewLine, removeLoginTask.Errors)
-                    : null;
+                                       ? string.Join(Environment.NewLine, removeLoginTask.Errors)
+                                       : null;
 
                 return Extensions.CreateErrorResponse(errorMessage, 400);
             }
@@ -182,10 +164,8 @@ namespace InfinniPlatform.Auth.HttpService
         /// <summary>
         /// Осуществляет переход на страницу входа внешнего провайдера.
         /// </summary>
-        private async Task<IHttpResponse> ChallengeExternalProvider(IHttpRequest request, string callbackPath)
+        private async Task<IActionResult> ChallengeExternalProvider(string loginProvider, string callbackPath)
         {
-            string loginProvider = request.Form.Provider;
-
             if (string.IsNullOrWhiteSpace(loginProvider))
             {
                 return Extensions.CreateErrorResponse(Resources.ExternalProviderKeyCannotBeNullOrWhiteSpace, 400);
@@ -196,19 +176,16 @@ namespace InfinniPlatform.Auth.HttpService
             await HttpContext.ChallengeAsync(properties);
 
             var httpResponse = HttpContext.Response;
-            var response = new HttpResponse(httpResponse.StatusCode, httpResponse.ContentType);
 
-            return response;
+            // TODO Check.
+            return new StatusCodeResult(httpResponse.StatusCode);
         }
 
         /// <summary>
         /// Принимает подтверждение от внешнего провайдера о входе пользователя в систему.
         /// </summary>
-        private async Task<object> ChallengeExternalProviderCallback(IHttpRequest request, Func<ExternalLoginInfo, Task<string>> callbackAction)
+        private async Task<IActionResult> ChallengeExternalProviderCallback(string successUrl, string failureUrl, Func<ExternalLoginInfo, Task<string>> callbackAction)
         {
-            var successUrl = (string)request.Query.SuccessUrl ?? _authHttpServiceOptions.SuccessUrl;
-            var failureUrl = (string)request.Query.FailureUrl ?? _authHttpServiceOptions.FailureUrl;
-
             string errorMessage;
 
             try
@@ -231,16 +208,16 @@ namespace InfinniPlatform.Auth.HttpService
 
             // Перенаправление пользователя на страницу приложения
 
-            RedirectHttpResponse response;
+            RedirectResult response;
 
             if (string.IsNullOrEmpty(errorMessage))
             {
-                response = new RedirectHttpResponse(successUrl);
+                response = new RedirectResult(successUrl);
             }
             else
             {
-                response = new RedirectHttpResponse(new UrlBuilder(failureUrl).AddQuery("error", errorMessage).ToString());
-                response.SetHeader("Warning", errorMessage);
+                response = new RedirectResult(new UrlBuilder(failureUrl).AddQuery("error", errorMessage).ToString());
+                Response.Headers.Add("Warning", errorMessage);
             }
 
             return response;
