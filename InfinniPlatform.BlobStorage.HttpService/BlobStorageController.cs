@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using InfinniPlatform.BlobStorage.Properties;
-using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -53,19 +53,17 @@ namespace InfinniPlatform.BlobStorage
 
                     if (blobData != null)
                     {
-                        var fileResponse = new StreamHttpResponse(blobData.Data, blobData.Info.Type)
-                                           {
-                                               FileName = blobData.Info.Name,
-                                               LastWriteTimeUtc = blobData.Info.Time
-                                           };
+                        var fileStreamResult = new FileStreamResult(blobData.Data(), blobData.Info.Type)
+                                               {
+                                                   FileDownloadName = blobData.Info.Name,
+                                                   LastModified = blobData.Info.Time
+                                               };
 
-                        fileResponse.SetContentDispositionAttachment();
-
-                        return Task.FromResult<object>(fileResponse);
+                        return Task.FromResult<object>(fileStreamResult);
                     }
                 }
 
-                return Task.FromResult<object>(HttpResponse.NotFound);
+                return Task.FromResult<object>(NotFound());
             }
             catch (Exception e)
             {

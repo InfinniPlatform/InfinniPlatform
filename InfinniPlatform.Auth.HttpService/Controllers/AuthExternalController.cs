@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Auth.HttpService.Properties;
+using InfinniPlatform.Http;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

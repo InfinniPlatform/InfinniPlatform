@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using InfinniPlatform.Aspects;
-using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Logging;
@@ -117,18 +116,6 @@ namespace InfinniPlatform.IoC
 
             builder.RegisterType<HttpRequestExcutorFactory>()
                    .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<HttpServiceSource>()
-                   .As<IHttpServiceSource>()
-                   .SingleInstance();
-
-            builder.RegisterType<HttpServiceContext>()
-                   .As<IHttpServiceContext>()
-                   .InstancePerDependency();
-
-            builder.RegisterType<HttpServiceContextProvider>()
-                   .As<IHttpServiceContextProvider>()
                    .SingleInstance();
 
             builder.RegisterType<MimeTypeResolver>()

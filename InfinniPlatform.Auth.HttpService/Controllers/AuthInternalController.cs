@@ -135,7 +135,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
 
             var httpResponse = HttpContext.Response;
 
-            return new JsonHttpResponse(new ServiceResult<object> { Success = true }) { StatusCode = httpResponse.StatusCode };
+            return new JsonResult(new ServiceResult<object> { Success = true }) { StatusCode = httpResponse.StatusCode };
         }
 
 

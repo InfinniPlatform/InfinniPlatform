@@ -26,6 +26,6 @@ namespace InfinniPlatform.Http
         /// <summary>
         /// Конвертер результата.
         /// </summary>
-        Func<object, IHttpResponse> ResultConverter { get; set; }
+        //Func<object, IHttpResponse> ResultConverter { get; set; }
     }
 }

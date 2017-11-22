@@ -1,6 +1,5 @@
 ﻿using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
-using InfinniPlatform.Http;
 using InfinniPlatform.IoC;
 
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +24,6 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
             builder.RegisterType<HttpServiceWrapperFactory>()
                    .As<IHttpServiceWrapperFactory>()
-                   .SingleInstance();
-
-            builder.RegisterType<DocumentHttpServiceSource>()
-                   .As<IHttpServiceSource>()
                    .SingleInstance();
 
             builder.RegisterType<DocumentsController>()

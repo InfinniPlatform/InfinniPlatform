@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using InfinniPlatform.Properties;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Http
@@ -38,7 +39,7 @@ namespace InfinniPlatform.Http
                                                                Func<IHttpRequest, Task<object>> onHandle,
                                                                Func<IHttpRequest, object, Task<object>> onAfter,
                                                                Func<IHttpRequest, Exception, Task<object>> onError,
-                                                               Func<object, IHttpResponse> resultConverter)
+                                                               Func<object, IActionResult> resultConverter)
         {
             // Создание цепочки обработки запроса
 

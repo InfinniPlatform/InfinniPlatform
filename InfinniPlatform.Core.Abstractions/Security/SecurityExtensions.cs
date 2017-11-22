@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading.Tasks;
 
 using InfinniPlatform.Http;
 
@@ -221,7 +220,9 @@ namespace InfinniPlatform.Security
         /// </remarks>
         public static void RequiresAuthentication(this IHttpServiceBuilder target)
         {
-            target.OnBefore += request => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated) ? HttpResponse.Unauthorized : null);
+            // TODO Implement extension for controllers
+            throw new NotImplementedException();
+            //target.OnBefore += request => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated) ? HttpResponse.Unauthorized : null);
         }
 
         /// <summary>
@@ -233,12 +234,15 @@ namespace InfinniPlatform.Security
         /// </remarks>
         public static void RequiresClaim(this IHttpServiceBuilder target, string claimType)
         {
-            target.OnBefore += request
-                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
-                    ? HttpResponse.Unauthorized
-                    : !request.User.HasClaim(claimType)
-                        ? HttpResponse.Forbidden
-                        : null);
+            // TODO Implement extension for controllers
+            throw new NotImplementedException();
+
+            //target.OnBefore += request
+            //    => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
+            //        ? HttpResponse.
+            //        : !request.User.HasClaim(claimType)
+            //            ? HttpResponse.Forbidden
+            //            : null);
         }
 
         /// <summary>
@@ -250,12 +254,15 @@ namespace InfinniPlatform.Security
         /// </remarks>
         public static void RequiresClaim(this IHttpServiceBuilder target, string claimType, string claimValue)
         {
-            target.OnBefore += request
-                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
-                    ? HttpResponse.Unauthorized
-                    : !request.User.HasClaim(claimType, claimValue)
-                        ? HttpResponse.Forbidden
-                        : null);
+            // TODO Implement extension for controllers
+            throw new NotImplementedException();
+
+            //target.OnBefore += request
+            //    => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
+            //        ? HttpResponse.Unauthorized
+            //        : !request.User.HasClaim(claimType, claimValue)
+            //            ? HttpResponse.Forbidden
+            //            : null);
         }
 
         /// <summary>
@@ -267,12 +274,15 @@ namespace InfinniPlatform.Security
         /// </remarks>
         public static void RequiresAllClaims(this IHttpServiceBuilder target, IEnumerable<string> claimTypes)
         {
-            target.OnBefore += request
-                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
-                    ? HttpResponse.Unauthorized
-                    : !request.User.HasAllClaims(claimTypes)
-                        ? HttpResponse.Forbidden
-                        : null);
+            // TODO Implement extension for controllers
+            throw new NotImplementedException();
+
+            //target.OnBefore += request
+            //    => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
+            //        ? HttpResponse.Unauthorized
+            //        : !request.User.HasAllClaims(claimTypes)
+            //            ? HttpResponse.Forbidden
+            //            : null);
         }
 
         /// <summary>
@@ -296,12 +306,15 @@ namespace InfinniPlatform.Security
         /// </remarks>
         public static void RequiresAnyClaims(this IHttpServiceBuilder target, IEnumerable<string> claimTypes)
         {
-            target.OnBefore += request
-                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
-                    ? HttpResponse.Unauthorized
-                    : !request.User.HasAnyClaims(claimTypes)
-                        ? HttpResponse.Forbidden
-                        : null);
+            // TODO Implement extension for controllers
+            throw new NotImplementedException();
+
+            //target.OnBefore += request
+            //    => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
+            //        ? HttpResponse.Unauthorized
+            //        : !request.User.HasAnyClaims(claimTypes)
+            //            ? HttpResponse.Forbidden
+            //            : null);
         }
 
         /// <summary>
@@ -325,12 +338,14 @@ namespace InfinniPlatform.Security
         /// </remarks>
         public static void RequiresValidUser(this IHttpServiceBuilder target, Func<IIdentity, bool> userMatch)
         {
-            target.OnBefore += request
-                => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
-                    ? HttpResponse.Unauthorized
-                    : !userMatch(request.User)
-                        ? HttpResponse.Forbidden
-                        : null);
+            // TODO Implement extension for controllers
+            throw new NotImplementedException();
+            //target.OnBefore += request
+            //    => Task.FromResult<object>((request.User == null || !request.User.IsAuthenticated)
+            //        ? HttpResponse.Unauthorized
+            //        : !userMatch(request.User)
+            //            ? HttpResponse.Forbidden
+            //            : null);
         }
 
 

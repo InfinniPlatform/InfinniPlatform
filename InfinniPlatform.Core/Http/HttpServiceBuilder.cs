@@ -1,32 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace InfinniPlatform.Http
 {
     internal class HttpServiceBuilder : IHttpServiceBuilder
     {
         public HttpServiceBuilder()
         {
-            Get = new HttpServiceRouteBuilder();
-            Post = new HttpServiceRouteBuilder();
-            Put = new HttpServiceRouteBuilder();
-            Patch = new HttpServiceRouteBuilder();
-            Delete = new HttpServiceRouteBuilder();
+            
         }
-
-
-        public string ServicePath { get; set; }
-
-
-        public IHttpServiceRouteBuilder Get { get; }
-
-        public IHttpServiceRouteBuilder Post { get; }
-
-        public IHttpServiceRouteBuilder Put { get; }
-
-        public IHttpServiceRouteBuilder Patch { get; }
-
-        public IHttpServiceRouteBuilder Delete { get; }
 
 
         public Func<IHttpRequest, Task<object>> OnBefore { get; set; }
@@ -36,6 +20,6 @@ namespace InfinniPlatform.Http
         public Func<IHttpRequest, Exception, Task<object>> OnError { get; set; }
 
 
-        public Func<object, IHttpResponse> ResultConverter { get; set; }
+        public Func<object, IActionResult> ResultConverter { get; set; }
     }
 }
