@@ -96,20 +96,6 @@ namespace InfinniPlatform.IoC
                    .As<IHostAddressParser>()
                    .SingleInstance();
 
-            // Middlewares
-
-            builder.RegisterType<GlobalHandlingAppLayer>()
-                   .As<IDefaultAppLayer>()
-                   .SingleInstance();
-
-            builder.RegisterType<ErrorHandlingAppLayer>()
-                   .As<IDefaultAppLayer>()
-                   .SingleInstance();
-
-            builder.RegisterType<MvcAppLayer>()
-                   .As<IDefaultAppLayer>()
-                   .SingleInstance();
-
             // Services
 
             builder.RegisterType<HttpRequestExcutorFactory>()

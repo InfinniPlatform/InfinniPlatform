@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using InfinniPlatform.Auth.DocumentStorage;
-using InfinniPlatform.Auth.Middlewares;
 using InfinniPlatform.Auth.UserCache;
 using InfinniPlatform.DocumentStorage.Metadata;
-using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 using InfinniPlatform.MessageQueue;
 using Microsoft.AspNetCore.Identity;
@@ -67,16 +65,6 @@ namespace InfinniPlatform.Auth.IoC
                        .As<IEnumerable<IUserValidator<TUser>>>()
                        .SingleInstance();
             }
-
-            // Middlewares
-
-            builder.RegisterType<AuthInternalAppLayer>()
-                   .As<IDefaultAppLayer>()
-                   .SingleInstance();
-
-            builder.RegisterType<AuthCookieAppLayer>()
-                   .As<IDefaultAppLayer>()
-                   .SingleInstance();
 
             // UserStorage
 

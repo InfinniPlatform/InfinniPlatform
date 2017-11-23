@@ -80,14 +80,14 @@ namespace InfinniPlatform.AspNetCore
 
             // ReSharper disable AccessToModifiedClosure
 
-            // Регистрация самого Autofac-контейнера
+            // Register Autofac-container itself
             IContainer autofacRootContainer = null;
             containerBuilder.RegisterInstance((Func<IContainer>)(() => autofacRootContainer));
             containerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
 
             // ReSharper restore AccessToModifiedClosure
 
-            // Регистрация обертки над контейнером
+            // Register wrapper for container Регистрация обертки над контейнером
             containerBuilder.RegisterType<ContainerServiceRegistry>().As<IContainerServiceRegistry>().SingleInstance();
             containerBuilder.RegisterType<ServiceProviderAccessor>().As<IServiceProviderAccessor>().SingleInstance();
             containerBuilder.RegisterType<ContainerResolver>().As<IContainerResolver>().SingleInstance();
@@ -108,51 +108,6 @@ namespace InfinniPlatform.AspNetCore
                 var autofacContainerModule = new AutofacContainerModule(containerModule);
                 containerBuilder.RegisterModule(autofacContainerModule);
             }
-        }
-
-
-        /// <summary>
-        /// Registers application layers defined by user in IoC.
-        /// </summary>
-        /// <param name="app">The application builder.</param>
-        /// <param name="resolver">The IoC container resolver.</param>
-        public static void UseAppLayers(this IApplicationBuilder app, IContainerResolver resolver)
-        {
-            app.ConfigureAppLayers(resolver.Resolve<IGlobalHandlingAppLayer[]>());
-            app.ConfigureAppLayers(resolver.Resolve<IErrorHandlingAppLayer[]>());
-            app.ConfigureAppLayers(resolver.Resolve<IBeforeAuthenticationAppLayer[]>());
-            app.ConfigureAppLayers(resolver.Resolve<IAuthenticationBarrierAppLayer[]>());
-            app.ConfigureAppLayers(resolver.Resolve<IExternalAuthenticationAppLayer[]>());
-            app.ConfigureAppLayers(resolver.Resolve<IInternalAuthenticationAppLayer[]>());
-            app.ConfigureAppLayers(resolver.Resolve<IAfterAuthenticationAppLayer[]>());
-            app.ConfigureAppLayers(resolver.Resolve<IBusinessAppLayer[]>());
-
-            RegisterAppLifetimeHandlers(resolver);
-        }
-
-        /// <summary>
-        /// Registers default application layers.
-        /// </summary>
-        /// <param name="app">The application builder.</param>
-        /// <param name="resolver">The IoC container resolver.</param>
-        public static void UseDefaultAppLayers(this IApplicationBuilder app, IContainerResolver resolver)
-        {
-            var layers = resolver.Resolve<IDefaultAppLayer[]>();
-
-            // ReSharper disable SuspiciousTypeConversion.Global
-
-            app.ConfigureAppLayers(layers.OfType<IGlobalHandlingAppLayer>());
-            app.ConfigureAppLayers(layers.OfType<IErrorHandlingAppLayer>());
-            app.ConfigureAppLayers(layers.OfType<IBeforeAuthenticationAppLayer>());
-            app.ConfigureAppLayers(layers.OfType<IAuthenticationBarrierAppLayer>());
-            app.ConfigureAppLayers(layers.OfType<IExternalAuthenticationAppLayer>());
-            app.ConfigureAppLayers(layers.OfType<IInternalAuthenticationAppLayer>());
-            app.ConfigureAppLayers(layers.OfType<IAfterAuthenticationAppLayer>());
-            app.ConfigureAppLayers(layers.OfType<IBusinessAppLayer>());
-
-            // ReSharper restore SuspiciousTypeConversion.Global
-
-            RegisterAppLifetimeHandlers(resolver);
         }
 
         public static IApplicationBuilder UseMvcWithInternalServices(this IApplicationBuilder app)
@@ -185,14 +140,6 @@ namespace InfinniPlatform.AspNetCore
             foreach (var handler in appStoppedHandlers)
             {
                 lifetime.ApplicationStopped.Register(handler.Handle);
-            }
-        }
-
-        private static void ConfigureAppLayers<T>(this IApplicationBuilder app, IEnumerable<T> appLayers) where T : IAppLayer
-        {
-            foreach (var layer in appLayers)
-            {
-                layer.Configure(app);
             }
         }
     }
