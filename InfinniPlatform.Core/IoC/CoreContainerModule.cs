@@ -103,12 +103,10 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
 
             builder.RegisterType<ErrorHandlingAppLayer>()
-                   .AsSelf()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 
             builder.RegisterType<MvcAppLayer>()
-                   .AsSelf()
                    .As<IDefaultAppLayer>()
                    .SingleInstance();
 

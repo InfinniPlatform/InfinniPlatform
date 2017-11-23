@@ -13,6 +13,7 @@ namespace InfinniPlatform.Http.Middlewares
     /// Hosting layer for processing request errors.
     /// </summary>
     [LoggerName(nameof(ErrorHandlingAppLayer))]
+    [Obsolete]
     public class ErrorHandlingAppLayer : IErrorHandlingAppLayer, IDefaultAppLayer
     {
         public ErrorHandlingAppLayer(ILogger<ErrorHandlingAppLayer> logger)
@@ -27,16 +28,16 @@ namespace InfinniPlatform.Http.Middlewares
         public void Configure(IApplicationBuilder app)
         {
             app.Use(async (httpContext, next) =>
-            {
-                try
-                {
-                    await next.Invoke().ContinueWith(task => LogException(task.Exception));
-                }
-                catch (Exception exception)
-                {
-                    await  LogException(exception);
-                }
-            });
+                    {
+                        try
+                        {
+                            await next.Invoke().ContinueWith(task => LogException(task.Exception));
+                        }
+                        catch (Exception exception)
+                        {
+                            await LogException(exception);
+                        }
+                    });
         }
 
         private Task LogException(Exception exception)

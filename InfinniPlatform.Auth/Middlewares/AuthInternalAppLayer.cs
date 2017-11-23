@@ -1,4 +1,6 @@
-﻿using InfinniPlatform.Http.Middlewares;
+﻿using System;
+
+using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Security;
 using Microsoft.AspNetCore.Builder;
 
@@ -7,6 +9,7 @@ namespace InfinniPlatform.Auth.Middlewares
     /// <summary>
     /// Hosting layer for user authentication via internal methods (like database).
     /// </summary>
+    [Obsolete]
     public class AuthInternalAppLayer : IInternalAuthenticationAppLayer, IDefaultAppLayer
     {
         public AuthInternalAppLayer(IUserIdentityProvider identityProvider)

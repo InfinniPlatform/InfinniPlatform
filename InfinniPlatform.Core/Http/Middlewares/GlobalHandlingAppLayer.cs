@@ -12,6 +12,7 @@ namespace InfinniPlatform.Http.Middlewares
     /// Hosting layer for processing request errors.
     /// </summary>
     [LoggerName(nameof(GlobalHandlingAppLayer))]
+    [Obsolete]
     public class GlobalHandlingAppLayer : IGlobalHandlingAppLayer, IDefaultAppLayer
     {
         public GlobalHandlingAppLayer(IPerformanceLogger<GlobalHandlingAppLayer> perfLogger)

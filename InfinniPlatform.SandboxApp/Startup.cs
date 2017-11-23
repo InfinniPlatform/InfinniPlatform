@@ -4,9 +4,12 @@ using InfinniPlatform.AspNetCore;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using InfinniPlatform.Serialization;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -14,12 +17,12 @@ namespace InfinniPlatform.SandboxApp
 {
     public class Startup
     {
-        private readonly IConfiguration _configuration;
-
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
+
+        private readonly IConfiguration _configuration;
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -60,9 +63,14 @@ namespace InfinniPlatform.SandboxApp
         public void Configure(IApplicationBuilder app,
                               IContainerResolver resolver)
         {
-            app.UseStaticFilesMapping(_configuration, resolver);
-            app.UseDefaultAppLayers(resolver);
-            app.UseMvc();
+            app.UseStaticFilesMapping(_configuration, resolver)
+               .UseGlobalHandling()
+               .UseErrorHandling()
+               .UseAuthInternal()
+               .UseMiddleware<LogContextMiddleware>()
+               .UseMvcWithInternalServices();
+
+            CoreExtensions.RegisterAppLifetimeHandlers(resolver);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace InfinniPlatform.Http.Middlewares
     {
         public void Configure(IApplicationBuilder app)
         {
-            //TODO
             //app.UseMvc();
         }
     }

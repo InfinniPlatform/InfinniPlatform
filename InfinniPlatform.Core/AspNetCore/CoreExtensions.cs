@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 
@@ -13,7 +13,6 @@ using InfinniPlatform.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -119,14 +118,14 @@ namespace InfinniPlatform.AspNetCore
         /// <param name="resolver">The IoC container resolver.</param>
         public static void UseAppLayers(this IApplicationBuilder app, IContainerResolver resolver)
         {
-            ConfigureAppLayers(app, resolver.Resolve<IGlobalHandlingAppLayer[]>());
-            ConfigureAppLayers(app, resolver.Resolve<IErrorHandlingAppLayer[]>());
-            ConfigureAppLayers(app, resolver.Resolve<IBeforeAuthenticationAppLayer[]>());
-            ConfigureAppLayers(app, resolver.Resolve<IAuthenticationBarrierAppLayer[]>());
-            ConfigureAppLayers(app, resolver.Resolve<IExternalAuthenticationAppLayer[]>());
-            ConfigureAppLayers(app, resolver.Resolve<IInternalAuthenticationAppLayer[]>());
-            ConfigureAppLayers(app, resolver.Resolve<IAfterAuthenticationAppLayer[]>());
-            ConfigureAppLayers(app, resolver.Resolve<IBusinessAppLayer[]>());
+            app.ConfigureAppLayers(resolver.Resolve<IGlobalHandlingAppLayer[]>());
+            app.ConfigureAppLayers(resolver.Resolve<IErrorHandlingAppLayer[]>());
+            app.ConfigureAppLayers(resolver.Resolve<IBeforeAuthenticationAppLayer[]>());
+            app.ConfigureAppLayers(resolver.Resolve<IAuthenticationBarrierAppLayer[]>());
+            app.ConfigureAppLayers(resolver.Resolve<IExternalAuthenticationAppLayer[]>());
+            app.ConfigureAppLayers(resolver.Resolve<IInternalAuthenticationAppLayer[]>());
+            app.ConfigureAppLayers(resolver.Resolve<IAfterAuthenticationAppLayer[]>());
+            app.ConfigureAppLayers(resolver.Resolve<IBusinessAppLayer[]>());
 
             RegisterAppLifetimeHandlers(resolver);
         }
@@ -142,22 +141,37 @@ namespace InfinniPlatform.AspNetCore
 
             // ReSharper disable SuspiciousTypeConversion.Global
 
-            ConfigureAppLayers(app, layers.OfType<IGlobalHandlingAppLayer>());
-            ConfigureAppLayers(app, layers.OfType<IErrorHandlingAppLayer>());
-            ConfigureAppLayers(app, layers.OfType<IBeforeAuthenticationAppLayer>());
-            ConfigureAppLayers(app, layers.OfType<IAuthenticationBarrierAppLayer>());
-            ConfigureAppLayers(app, layers.OfType<IExternalAuthenticationAppLayer>());
-            ConfigureAppLayers(app, layers.OfType<IInternalAuthenticationAppLayer>());
-            ConfigureAppLayers(app, layers.OfType<IAfterAuthenticationAppLayer>());
-            ConfigureAppLayers(app, layers.OfType<IBusinessAppLayer>());
+            app.ConfigureAppLayers(layers.OfType<IGlobalHandlingAppLayer>());
+            app.ConfigureAppLayers(layers.OfType<IErrorHandlingAppLayer>());
+            app.ConfigureAppLayers(layers.OfType<IBeforeAuthenticationAppLayer>());
+            app.ConfigureAppLayers(layers.OfType<IAuthenticationBarrierAppLayer>());
+            app.ConfigureAppLayers(layers.OfType<IExternalAuthenticationAppLayer>());
+            app.ConfigureAppLayers(layers.OfType<IInternalAuthenticationAppLayer>());
+            app.ConfigureAppLayers(layers.OfType<IAfterAuthenticationAppLayer>());
+            app.ConfigureAppLayers(layers.OfType<IBusinessAppLayer>());
 
             // ReSharper restore SuspiciousTypeConversion.Global
 
             RegisterAppLifetimeHandlers(resolver);
         }
 
+        public static IApplicationBuilder UseMvcWithInternalServices(this IApplicationBuilder app)
+        {
+            return app.UseMvc();
+        }
 
-        private static void RegisterAppLifetimeHandlers(IContainerResolver resolver)
+        public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<ErrorHandlingMiddleware>();
+        }
+
+        public static IApplicationBuilder UseGlobalHandling(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<GlobalHandlingMiddleware>();
+        }
+
+
+        public static void RegisterAppLifetimeHandlers(IContainerResolver resolver)
         {
             var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();
             var appStoppedHandlers = resolver.Resolve<IAppStoppedHandler[]>();
@@ -174,7 +188,7 @@ namespace InfinniPlatform.AspNetCore
             }
         }
 
-        private static void ConfigureAppLayers<T>(IApplicationBuilder app, IEnumerable<T> appLayers) where T : IAppLayer
+        private static void ConfigureAppLayers<T>(this IApplicationBuilder app, IEnumerable<T> appLayers) where T : IAppLayer
         {
             foreach (var layer in appLayers)
             {

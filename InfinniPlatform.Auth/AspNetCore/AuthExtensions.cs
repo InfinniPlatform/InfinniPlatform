@@ -2,6 +2,8 @@
 using InfinniPlatform.Auth;
 using InfinniPlatform.Auth.IoC;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -62,6 +64,11 @@ namespace InfinniPlatform.AspNetCore
                     .AddCookie();
 
             return services.AddSingleton(provider => new AuthContainerModule<TUser>(options));
+        }
+
+        public static IApplicationBuilder UseAuthInternal(this IApplicationBuilder app)
+        {
+            return app.UseAuthentication();
         }
     }
 }

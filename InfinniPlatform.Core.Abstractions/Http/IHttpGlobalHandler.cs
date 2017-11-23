@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
+
 namespace InfinniPlatform.Http
 {
     /// <summary>
@@ -11,21 +13,21 @@ namespace InfinniPlatform.Http
         /// <summary>
         /// Предобработчик запросов.
         /// </summary>
-        Func<IHttpRequest, Task<object>> OnBefore { get; set; }
+        Func<HttpRequest, Task<object>> OnBefore { get; set; }
 
         /// <summary>
         /// Постобработчик запросов.
         /// </summary>
-        Func<IHttpRequest, object, Task<object>> OnAfter { get; set; }
+        Func<HttpRequest, object, Task<object>> OnAfter { get; set; }
 
         /// <summary>
         /// Обработчик исключений.
         /// </summary>
-        Func<IHttpRequest, Exception, Task<object>> OnError { get; set; }
+        Func<HttpRequest, Exception, Task<object>> OnError { get; set; }
 
         /// <summary>
         /// Конвертер результата.
         /// </summary>
-        //Func<object, IHttpResponse> ResultConverter { get; set; }
+        Func<object, HttpResponse> ResultConverter { get; set; }
     }
 }

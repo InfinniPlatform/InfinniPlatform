@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 using Autofac;
 using Autofac.Builder;
@@ -57,8 +56,6 @@ namespace InfinniPlatform.IoC
 
         private static IContainerRegistrationRule CreateRegistrationRule<TComponent, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TComponent, TActivatorData, TRegistrationStyle> registrationBuilder)
         {
-            File.AppendAllText("registrations.txt", $"{typeof(TComponent).FullName}, {typeof(TComponent).Assembly.FullName}{Environment.NewLine}");
-
             var aspectAttribute = typeof(TComponent).GetTypeInfo().GetCustomAttribute<AspectAttribute>();
 
             if (aspectAttribute!=null)
