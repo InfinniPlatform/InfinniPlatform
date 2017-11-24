@@ -13,13 +13,16 @@ using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.DocumentStorage
 {
-    public abstract class DocumentControllerProcessorBase
+    /// <summary>
+    /// Базовый сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}" />.
+    /// </summary>
+    public abstract class DocumentRequestExecutorBase
     {
         private readonly ILogger _logger;
         private readonly IPerformanceLogger _perfLogger;
 
-        protected DocumentControllerProcessorBase(ILogger logger,
-                                                  IPerformanceLogger perfLogger)
+        protected DocumentRequestExecutorBase(ILogger logger,
+                                              IPerformanceLogger perfLogger)
         {
             _logger = logger;
             _perfLogger = perfLogger;

@@ -5,8 +5,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
-using InfinniPlatform.Http;
-
 namespace InfinniPlatform.Security
 {
     public static class SecurityExtensions
@@ -216,9 +214,9 @@ namespace InfinniPlatform.Security
         /// Устанавливает необходимость аутентификации пользователя.
         /// </summary>
         /// <remarks>
-        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ <see cref="HttpResponse.Unauthorized"/>.
+        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ 401 Unauthorized.
         /// </remarks>
-        public static void RequiresAuthentication(this IHttpServiceBuilder target)
+        public static void RequiresAuthentication()
         {
             // TODO Implement extension for controllers
             throw new NotImplementedException();
@@ -229,10 +227,10 @@ namespace InfinniPlatform.Security
         /// Устанавливает необходимость наличия у пользователя заданного типа утверждения.
         /// </summary>
         /// <remarks>
-        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ <see cref="HttpResponse.Unauthorized"/>.
-        /// Если пользователь не имеет утверждения заданного типа, клиенту будет возвращен ответ <see cref="HttpResponse.Forbidden"/>.
+        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ 401 Unauthorized.
+        /// Если пользователь не имеет утверждения заданного типа, клиенту будет возвращен ответ 403 Forbidden.
         /// </remarks>
-        public static void RequiresClaim(this IHttpServiceBuilder target, string claimType)
+        public static void RequiresClaim(string claimType)
         {
             // TODO Implement extension for controllers
             throw new NotImplementedException();
@@ -249,10 +247,10 @@ namespace InfinniPlatform.Security
         /// Устанавливает необходимость наличия у пользователя заданного типа утверждения с заданным значением.
         /// </summary>
         /// <remarks>
-        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ <see cref="HttpResponse.Unauthorized"/>.
-        /// Если пользователь не имеет утверждения заданного типа с заданным значением, клиенту будет возвращен ответ <see cref="HttpResponse.Forbidden"/>.
+        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ 401 Unauthorized.
+        /// Если пользователь не имеет утверждения заданного типа с заданным значением, клиенту будет возвращен ответ 403 Forbidden.
         /// </remarks>
-        public static void RequiresClaim(this IHttpServiceBuilder target, string claimType, string claimValue)
+        public static void RequiresClaim(string claimType, string claimValue)
         {
             // TODO Implement extension for controllers
             throw new NotImplementedException();
@@ -269,10 +267,10 @@ namespace InfinniPlatform.Security
         /// Устанавливает необходимость наличия у пользователя всех заданных типов утверждений.
         /// </summary>
         /// <remarks>
-        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ <see cref="HttpResponse.Unauthorized"/>.
-        /// Если пользователь не имеет всех утверждений заданных типов, клиенту будет возвращен ответ <see cref="HttpResponse.Forbidden"/>.
+        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ 401 Unauthorized.
+        /// Если пользователь не имеет всех утверждений заданных типов, клиенту будет возвращен ответ 403 Forbidden.
         /// </remarks>
-        public static void RequiresAllClaims(this IHttpServiceBuilder target, IEnumerable<string> claimTypes)
+        public static void RequiresAllClaims(IEnumerable<string> claimTypes)
         {
             // TODO Implement extension for controllers
             throw new NotImplementedException();
@@ -289,22 +287,22 @@ namespace InfinniPlatform.Security
         /// Устанавливает необходимость наличия у пользователя всех заданных типов утверждений.
         /// </summary>
         /// <remarks>
-        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ <see cref="HttpResponse.Unauthorized"/>.
-        /// Если пользователь не имеет всех утверждений заданных типов, клиенту будет возвращен ответ <see cref="HttpResponse.Forbidden"/>.
+        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ 401 Unauthorized.
+        /// Если пользователь не имеет всех утверждений заданных типов, клиенту будет возвращен ответ 403 Forbidden.
         /// </remarks>
-        public static void RequiresAllClaims(this IHttpServiceBuilder target, params string[] claimTypes)
+        public static void RequiresAllClaims(params string[] claimTypes)
         {
-            RequiresAllClaims(target, (IEnumerable<string>)claimTypes);
+            RequiresAllClaims((IEnumerable<string>)claimTypes);
         }
 
         /// <summary>
         /// Устанавливает необходимость наличия у пользователя одного из заданных типов утверждений.
         /// </summary>
         /// <remarks>
-        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ <see cref="HttpResponse.Unauthorized"/>.
-        /// Если пользователь не имеет ни одного утверждения из заданных типов, клиенту будет возвращен ответ <see cref="HttpResponse.Forbidden"/>.
+        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ 401 Unauthorized.
+        /// Если пользователь не имеет ни одного утверждения из заданных типов, клиенту будет возвращен ответ 403 Forbidden.
         /// </remarks>
-        public static void RequiresAnyClaims(this IHttpServiceBuilder target, IEnumerable<string> claimTypes)
+        public static void RequiresAnyClaims(IEnumerable<string> claimTypes)
         {
             // TODO Implement extension for controllers
             throw new NotImplementedException();
@@ -321,22 +319,22 @@ namespace InfinniPlatform.Security
         /// Устанавливает необходимость наличия у пользователя одного из заданных типов утверждений.
         /// </summary>
         /// <remarks>
-        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ <see cref="HttpResponse.Unauthorized"/>.
-        /// Если пользователь не имеет ни одного утверждения из заданных типов, клиенту будет возвращен ответ <see cref="HttpResponse.Forbidden"/>.
+        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ 401 Unauthorized.
+        /// Если пользователь не имеет ни одного утверждения из заданных типов, клиенту будет возвращен ответ 403 Forbidden.
         /// </remarks>
-        public static void RequiresAnyClaims(this IHttpServiceBuilder target, params string[] claimTypes)
+        public static void RequiresAnyClaims(params string[] claimTypes)
         {
-            RequiresAnyClaims(target, (IEnumerable<string>)claimTypes);
+            RequiresAnyClaims((IEnumerable<string>)claimTypes);
         }
 
         /// <summary>
         /// Устанавливает необходимость наличия пользователя, который проходит заданную проверку.
         /// </summary>
         /// <remarks>
-        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ <see cref="HttpResponse.Unauthorized"/>.
-        /// Если пользователь не проходит заданную проверку, клиенту будет возвращен ответ <see cref="HttpResponse.Forbidden"/>.
+        /// Если пользователь не идентифицирован, клиенту будет возвращен ответ 401 Unauthorized.
+        /// Если пользователь не проходит заданную проверку, клиенту будет возвращен ответ 403 Forbidden.
         /// </remarks>
-        public static void RequiresValidUser(this IHttpServiceBuilder target, Func<IIdentity, bool> userMatch)
+        public static void RequiresValidUser(Func<IIdentity, bool> userMatch)
         {
             // TODO Implement extension for controllers
             throw new NotImplementedException();

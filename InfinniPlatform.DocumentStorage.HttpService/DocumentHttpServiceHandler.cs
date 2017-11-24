@@ -115,15 +115,6 @@ namespace InfinniPlatform.DocumentStorage
 
 
         /// <summary>
-        /// Загружает модуль.
-        /// </summary>
-        /// <param name="builder">Регистратор обработчиков запросов.</param>
-        public virtual void Load(IHttpServiceBuilder builder)
-        {
-        }
-
-
-        /// <summary>
         /// Обрабатывает исключение.
         /// </summary>
         /// <param name="exception">Исключение.</param>
@@ -238,15 +229,6 @@ namespace InfinniPlatform.DocumentStorage
         public virtual Task OnAfterDelete(DocumentDeleteQuery<TDocument> query, DocumentDeleteQueryResult result, Exception exception)
         {
             return Task.FromResult<object>(null);
-        }
-
-
-        /// <summary>
-        /// Загружает модуль.
-        /// </summary>
-        /// <param name="builder">Регистратор обработчиков запросов.</param>
-        public virtual void Load(IHttpServiceBuilder builder)
-        {
         }
 
 

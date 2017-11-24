@@ -41,7 +41,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
                 return new DocumentPostQuery
                 {
                     Document = document,
-                    AspFiles = request.Form.Files
+                    Files = request.Form.Files
                 };
             }
 

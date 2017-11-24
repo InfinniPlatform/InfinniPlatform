@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Http.Middlewares
 {
+    /// <summary>
+    /// Logs errors occurred in the request execution pipeline.
+    /// </summary>
     public class ErrorHandlingMiddleware
     {
         public ErrorHandlingMiddleware(RequestDelegate next,

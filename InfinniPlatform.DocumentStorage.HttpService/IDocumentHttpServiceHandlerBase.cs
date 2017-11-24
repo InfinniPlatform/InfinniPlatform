@@ -1,7 +1,5 @@
 ﻿using System;
 
-using InfinniPlatform.Http;
-
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
@@ -35,13 +33,6 @@ namespace InfinniPlatform.DocumentStorage
         /// Разрешено ли удаление документов.
         /// </summary>
         bool CanDelete { get; }
-
-
-        /// <summary>
-        /// Загружает модуль.
-        /// </summary>
-        /// <param name="builder">Регистратор обработчиков запросов.</param>
-        void Load(IHttpServiceBuilder builder);
 
 
         /// <summary>

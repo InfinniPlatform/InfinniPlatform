@@ -15,15 +15,15 @@ namespace InfinniPlatform.DocumentStorage
     /// <summary>
     /// Сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}" />.
     /// </summary>
-    public class DocumentControllerProcessor : DocumentControllerProcessorBase, IDocumentControllerProcessor
+    public class DocumentRequestExecutor : DocumentRequestExecutorBase, IDocumentRequestExecutor
     {
-        public DocumentControllerProcessor(IDocumentHttpServiceHandlerBase serviceHandler,
-                                           IDocumentQueryFactory queryFactory,
-                                           IDocumentStorageFactory storageFactory,
-                                           ISystemDocumentStorageFactory systemStorageFactory,
-                                           IBlobStorage blobStorage,
-                                           ILogger<DocumentControllerProcessorBase> logger,
-                                           IPerformanceLogger<DocumentControllerProcessorBase> perfLogger)
+        public DocumentRequestExecutor(IDocumentHttpServiceHandlerBase serviceHandler,
+                                       IDocumentQueryFactory queryFactory,
+                                       IDocumentStorageFactory storageFactory,
+                                       ISystemDocumentStorageFactory systemStorageFactory,
+                                       IBlobStorage blobStorage,
+                                       ILogger<DocumentRequestExecutor> logger,
+                                       IPerformanceLogger<DocumentRequestExecutor> perfLogger)
             : base(logger, perfLogger)
         {
             var storage = serviceHandler.AsSystem
@@ -132,7 +132,7 @@ namespace InfinniPlatform.DocumentStorage
             }
 
             return ProcessRequestAsync(request,
-                                       routeData, 
+                                       routeData,
                                        (r, rd) => _queryFactory.CreatePostQuery(r, rd),
                                        async query =>
                                        {
@@ -146,13 +146,13 @@ namespace InfinniPlatform.DocumentStorage
                                                foreach (var file in query.Files)
                                                {
                                                    // Сохранение файла в хранилище
-                                                   var blobInfo = await _blobStorage.CreateBlobAsync(file.Name, file.ContentType, file.Value);
+                                                   var blobInfo = await _blobStorage.CreateBlobAsync(file.Name, file.ContentType, file);
 
                                                    // Включение информации о файле в ответ
-                                                   fileInfos[file.Key] = blobInfo;
+                                                   fileInfos[file.Name] = blobInfo;
 
                                                    // Установка ссылки на файл в документе
-                                                   query.Document.TrySetPropertyValueByPath(file.Key, blobInfo);
+                                                   query.Document.TrySetPropertyValueByPath(file.Name, blobInfo);
                                                }
                                            }
 
@@ -223,15 +223,15 @@ namespace InfinniPlatform.DocumentStorage
     /// <summary>
     /// Сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}" />.
     /// </summary>
-    public class DocumentControllerProcessor<TDocument> : DocumentControllerProcessorBase, IDocumentControllerProcessor where TDocument : Document
+    public class DocumentRequestExecutor<TDocument> : DocumentRequestExecutorBase, IDocumentRequestExecutor where TDocument : Document
     {
-        public DocumentControllerProcessor(IDocumentHttpServiceHandlerBase serviceHandler,
-                                           IDocumentQueryFactory<TDocument> queryFactory,
-                                           IDocumentStorageFactory storageFactory,
-                                           ISystemDocumentStorageFactory systemStorageFactory,
-                                           IBlobStorage blobStorage,
-                                           IPerformanceLogger<DocumentControllerProcessor<TDocument>> perfLogger,
-                                           ILogger<DocumentControllerProcessor<TDocument>> logger)
+        public DocumentRequestExecutor(IDocumentHttpServiceHandlerBase serviceHandler,
+                                       IDocumentQueryFactory<TDocument> queryFactory,
+                                       IDocumentStorageFactory storageFactory,
+                                       ISystemDocumentStorageFactory systemStorageFactory,
+                                       IBlobStorage blobStorage,
+                                       IPerformanceLogger<DocumentRequestExecutor<TDocument>> perfLogger,
+                                       ILogger<DocumentRequestExecutor<TDocument>> logger)
             : base(logger, perfLogger)
         {
             var storage = serviceHandler.AsSystem
@@ -264,7 +264,7 @@ namespace InfinniPlatform.DocumentStorage
             }
 
             return ProcessRequestAsync(request,
-                                       routeData, 
+                                       routeData,
                                        (r, rd) => _queryFactory.CreateGetQuery(r, rd),
                                        async query =>
                                        {
@@ -349,13 +349,13 @@ namespace InfinniPlatform.DocumentStorage
                                                foreach (var file in query.Files)
                                                {
                                                    // Сохранение файла в хранилище
-                                                   var blobInfo = await _blobStorage.CreateBlobAsync(file.Name, file.ContentType, file.Value);
+                                                   var blobInfo = await _blobStorage.CreateBlobAsync(file.Name, file.ContentType, file);
 
                                                    // Включение информации о файле в ответ
-                                                   fileInfos[file.Key] = blobInfo;
+                                                   fileInfos[file.Name] = blobInfo;
 
                                                    // Установка ссылки на файл в документе
-                                                   query.Document.TrySetPropertyValueByPath(file.Key, blobInfo);
+                                                   query.Document.TrySetPropertyValueByPath(file.Name, blobInfo);
                                                }
                                            }
 

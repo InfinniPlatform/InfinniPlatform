@@ -3,14 +3,9 @@
 using InfinniPlatform.AspNetCore;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
-using InfinniPlatform.Serialization;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace InfinniPlatform.SandboxApp
 {
@@ -25,19 +20,7 @@ namespace InfinniPlatform.SandboxApp
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var mvcBuilder = services.AddMvc()
-                                     .AddJsonOptions(json =>
-                                                     {
-                                                         var settings = json.SerializerSettings;
-
-                                                         settings.Formatting = Formatting.Indented;
-                                                         settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-                                                         settings.NullValueHandling = NullValueHandling.Ignore;
-                                                         settings.ContractResolver = new DefaultContractResolver { NamingStrategy = new DefaultNamingStrategy() };
-                                                         settings.Converters.Add(new DateJsonConverter());
-                                                         settings.Converters.Add(new TimeJsonConverter());
-                                                         settings.Converters.Add(new DynamicDocumentJsonConverter());
-                                                     });
+            var mvcBuilder = services.AddMvcWithInternalServices();
 
             var serviceProvider = services.AddAuthInternal(_configuration)
                                           .AddAuthHttpService(mvcBuilder)
@@ -63,7 +46,7 @@ namespace InfinniPlatform.SandboxApp
                               IContainerResolver resolver)
         {
             app.UseStaticFilesMapping(_configuration, resolver)
-               .UseGlobalHandling()
+               .UsePerformanceLogging()
                .UseErrorHandling()
                .UseAuthInternal()
                .UseMiddleware<LogContextMiddleware>()

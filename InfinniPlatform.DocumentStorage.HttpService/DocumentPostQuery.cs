@@ -19,12 +19,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Список файлов документа.
         /// </summary>
-        public IEnumerable<IHttpRequestFile> Files { get; set; }
-
-        /// <summary>
-        /// Список файлов документа.
-        /// </summary>
-        public IFormFileCollection AspFiles { get; set; }
+        public IFormFileCollection Files { get; set; }
     }
 
 
@@ -42,11 +37,6 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Список файлов документа.
         /// </summary>
-        public IEnumerable<IHttpRequestFile> Files { get; set; }
-
-        /// <summary>
-        /// Список файлов документа.
-        /// </summary>
-        public IFormFileCollection AspFiles { get; set; }
+        public IFormFileCollection Files { get; set; }
     }
 }

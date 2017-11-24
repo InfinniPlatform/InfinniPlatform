@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using Autofac;
@@ -9,6 +8,7 @@ using InfinniPlatform.Hosting;
 using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.IoC;
 using InfinniPlatform.Logging;
+using InfinniPlatform.Serialization;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +17,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 // ReSharper disable once CheckNamespace
 
@@ -36,7 +39,7 @@ namespace InfinniPlatform.AspNetCore
 
 
         /// <summary>
-        /// Builds <see cref="IServiceProvider"/> based on registered services.
+        /// Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services)
@@ -47,7 +50,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Builds <see cref="IServiceProvider"/> based on registered services.
+        /// Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         /// <param name="configuration">The application configuration.</param>
@@ -59,7 +62,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Builds <see cref="IServiceProvider"/> based on registered services.
+        /// Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         /// <param name="options">The general application settings.</param>
@@ -98,34 +101,60 @@ namespace InfinniPlatform.AspNetCore
             return new AutofacServiceProvider(autofacRootContainer);
         }
 
-        private static void RegisterDefinedModules(ContainerBuilder containerBuilder, IServiceCollection services)
+        /// <summary>
+        /// Adds customized MVC services.
+        /// </summary>
+        /// <param name="services">Service collection.</param>
+        public static IMvcBuilder AddMvcWithInternalServices(this IServiceCollection services)
         {
-            var modules = services.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
+            var mvcBuilder = services.AddMvc()
+                                     .AddJsonOptions(json =>
+                                                     {
+                                                         var settings = json.SerializerSettings;
 
-            foreach (var module in modules)
-            {
-                var containerModule = (IContainerModule)module.ImplementationFactory.Invoke(null);
-                var autofacContainerModule = new AutofacContainerModule(containerModule);
-                containerBuilder.RegisterModule(autofacContainerModule);
-            }
+                                                         settings.Formatting = Formatting.Indented;
+                                                         settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+                                                         settings.NullValueHandling = NullValueHandling.Ignore;
+                                                         settings.ContractResolver = new DefaultContractResolver { NamingStrategy = new DefaultNamingStrategy() };
+                                                         settings.Converters.Add(new DateJsonConverter());
+                                                         settings.Converters.Add(new TimeJsonConverter());
+                                                         settings.Converters.Add(new DynamicDocumentJsonConverter());
+                                                     });
+
+            return mvcBuilder;
         }
 
+        /// <summary>
+        /// Adds MVC with internal controllers to the request execution pipeline.
+        /// </summary>
+        /// <param name="app">Application builder instance.</param>
         public static IApplicationBuilder UseMvcWithInternalServices(this IApplicationBuilder app)
         {
             return app.UseMvc();
         }
 
+        /// <summary>
+        /// Adds error handling middleware to the request execution pipeline.
+        /// </summary>
+        /// <param name="app">Application builder instance.</param>
         public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app)
         {
             return app.UseMiddleware<ErrorHandlingMiddleware>();
         }
 
-        public static IApplicationBuilder UseGlobalHandling(this IApplicationBuilder app)
+        /// <summary>
+        /// Add error handling middleware to the request execution pipeline.
+        /// </summary>
+        /// <param name="app">Application builder instance.</param>
+        public static IApplicationBuilder UsePerformanceLogging(this IApplicationBuilder app)
         {
-            return app.UseMiddleware<GlobalHandlingMiddleware>();
+            return app.UseMiddleware<PerformanceLoggingMiddleware>();
         }
 
-
+        /// <summary>
+        /// Registers <see cref="IAppStartedHandler" /> and <see cref="IAppStoppedHandler" /> implementations.
+        /// </summary>
+        /// <param name="resolver">Container resolver.</param>
         public static void RegisterAppLifetimeHandlers(IContainerResolver resolver)
         {
             var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();
@@ -140,6 +169,19 @@ namespace InfinniPlatform.AspNetCore
             foreach (var handler in appStoppedHandlers)
             {
                 lifetime.ApplicationStopped.Register(handler.Handle);
+            }
+        }
+
+
+        private static void RegisterDefinedModules(ContainerBuilder containerBuilder, IServiceCollection services)
+        {
+            var modules = services.Where(service => typeof(IContainerModule).IsAssignableFrom(service.ServiceType));
+
+            foreach (var module in modules)
+            {
+                var containerModule = (IContainerModule)module.ImplementationFactory.Invoke(null);
+                var autofacContainerModule = new AutofacContainerModule(containerModule);
+                containerBuilder.RegisterModule(autofacContainerModule);
             }
         }
     }

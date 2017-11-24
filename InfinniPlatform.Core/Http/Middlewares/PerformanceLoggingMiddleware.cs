@@ -7,13 +7,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Http.Middlewares
 {
-    public class GlobalHandlingMiddleware
+    /// <summary>
+    /// Logs performance information of request execution.
+    /// </summary>
+    public class PerformanceLoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IPerformanceLogger<GlobalHandlingMiddleware> _perfLogger;
+        private readonly IPerformanceLogger<PerformanceLoggingMiddleware> _perfLogger;
 
-        public GlobalHandlingMiddleware(RequestDelegate next,
-                                        IPerformanceLogger<GlobalHandlingMiddleware> perfLogger)
+        public PerformanceLoggingMiddleware(RequestDelegate next,
+                                            IPerformanceLogger<PerformanceLoggingMiddleware> perfLogger)
         {
             _next = next;
             _perfLogger = perfLogger;
@@ -35,6 +38,7 @@ namespace InfinniPlatform.Http.Middlewares
 
         private Task LogPerformance(HttpContext httpContext, DateTime start, Exception exception)
         {
+            // TODO Use ASP.NET log information?
             var method = $"{httpContext.Request.Method}::{httpContext.Request.Path}";
 
             _perfLogger.Log(method, start, exception);

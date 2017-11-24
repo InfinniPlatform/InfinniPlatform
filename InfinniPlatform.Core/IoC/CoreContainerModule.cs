@@ -98,10 +98,6 @@ namespace InfinniPlatform.IoC
 
             // Services
 
-            builder.RegisterType<HttpRequestExcutorFactory>()
-                   .AsSelf()
-                   .SingleInstance();
-
             builder.RegisterType<MimeTypeResolver>()
                    .As<IMimeTypeResolver>()
                    .SingleInstance();
