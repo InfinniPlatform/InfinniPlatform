@@ -4,8 +4,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using InfinniPlatform.Auth.HttpService.Properties;
-using InfinniPlatform.Http;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +37,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         /// Осуществляет вход пользователя в систему через внешний провайдер.
         /// </summary>
         [HttpPost("SignInExternal")]
-        public async Task<object> SignInExternal([FromForm] string provider)
+        public async Task<object> SignInExternal([FromBody] string provider)
         {
             return await ChallengeExternalProvider(provider, "/Auth/SignInExternalCallback");
         }
@@ -96,7 +94,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         /// Добавляет текущему пользователю имя входа у внешнего провайдера.
         /// </summary>
         [HttpPost("LinkExternalLogin")]
-        public async Task<IActionResult> LinkExternalLogin([FromForm] string provider)
+        public async Task<IActionResult> LinkExternalLogin([FromBody] string provider)
         {
             if (!HttpContext.User.Identity.IsAuthenticated())
             {
@@ -133,7 +131,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         /// Удаляет у текущего пользователя имя входа у внешнего провайдера.
         /// </summary>
         [HttpPost("UnlinkExternalLogin")]
-        public async Task<object> UnlinkExternalLogin([FromForm] string provider)
+        public async Task<object> UnlinkExternalLogin([FromBody] string provider)
         {
             if (!HttpContext.User.Identity.IsAuthenticated())
             {

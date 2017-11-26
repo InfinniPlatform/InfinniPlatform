@@ -24,6 +24,16 @@ namespace InfinniPlatform.Auth.HttpService
             Claims = claims;
         }
 
+        public PublicUserInfo(AppUser appUser, List<AppUserClaim> claims)
+        {
+            UserName = appUser.UserName;
+            DisplayName = appUser.UserName;
+            Description = appUser.UserName;
+            Roles = appUser.Roles;
+            Logins = appUser.Logins;
+            Claims = claims;
+        }
+
         public string UserName { get; set; }
 
         public string DisplayName { get; set; }

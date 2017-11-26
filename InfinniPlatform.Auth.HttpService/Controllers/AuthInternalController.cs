@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-
+using InfinniPlatform.Auth.HttpService.Models;
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Http;
 
@@ -41,83 +41,83 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         /// Осуществляет вход пользователя в систему через внутренний провайдер.
         /// </summary>
         [HttpPost("SignIn")]
-        public async Task<object> SignIn([FromForm] string userKey, [FromForm] string password, [FromForm] bool remember)
+        public async Task<object> SignIn([FromBody] SignInModel model)
         {
-            if (string.IsNullOrWhiteSpace(userKey))
+            if (string.IsNullOrWhiteSpace(model.UserKey))
             {
                 return Extensions.CreateErrorResponse(Resources.UserKeyCannotBeNullOrWhiteSpace, 400);
             }
 
-            var appUser = await _userStore.FindByIdAsync(userKey, CancellationToken.None) ??
-                          await _userStore.FindByNameAsync(userKey, CancellationToken.None) ??
-                          await _userEmailStore.FindByEmailAsync(userKey, CancellationToken.None) ??
-                          await _userPhoneNumberStoreExtended.FindByPhoneNumberAsync(userKey, CancellationToken.None);
+            var appUser = await _userStore.FindByIdAsync(model.UserKey, CancellationToken.None) ??
+                          await _userStore.FindByNameAsync(model.UserKey, CancellationToken.None) ??
+                          await _userEmailStore.FindByEmailAsync(model.UserKey, CancellationToken.None) ??
+                          await _userPhoneNumberStoreExtended.FindByPhoneNumberAsync(model.UserKey, CancellationToken.None);
 
-            return await ProcessPasswordSignIn(appUser, password, remember);
+            return await ProcessPasswordSignIn(appUser, model.Password, model.Remember);
         }
 
         /// <summary>
         /// Осуществляет вход пользователя в систему по идентификатору через внутренний провайдер.
         /// </summary>
         [HttpPost("SignInById")]
-        public async Task<object> SignInById([FromForm] string id, [FromForm] string password, [FromForm] bool remember)
+        public async Task<object> SignInById([FromBody] SignInModel model)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(model.UserKey))
             {
                 return Extensions.CreateErrorResponse(Resources.IdCannotBeNullOrWhiteSpace, 400);
             }
 
-            var appUser = await _userManager.FindByIdAsync(id);
+            var appUser = await _userManager.FindByIdAsync(model.UserKey);
 
-            return await ProcessPasswordSignIn(appUser, password, remember);
+            return await ProcessPasswordSignIn(appUser, model.Password, model.Remember);
         }
 
         /// <summary>
         /// Осуществляет вход пользователя в систему по имени пользователя через внутренний провайдер.
         /// </summary>
         [HttpPost("SignInByUserName")]
-        public async Task<object> SignInByUserName([FromForm] string userName, [FromForm] string password, [FromForm] bool remember)
+        public async Task<object> SignInByUserName([FromBody] SignInModel model)
         {
-            if (string.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(model.UserKey))
             {
                 return Extensions.CreateErrorResponse(Resources.UserNameCannotBeNullOrWhiteSpace, 400);
             }
 
-            var appUser = await _userManager.FindByNameAsync(userName);
+            var appUser = await _userManager.FindByNameAsync(model.UserKey);
 
-            return await ProcessPasswordSignIn(appUser, password, remember);
+            return await ProcessPasswordSignIn(appUser, model.Password, model.Remember);
         }
 
         /// <summary>
         /// Осуществляет вход пользователя в систему по email через внутренний провайдер.
         /// </summary>
-        [HttpPost("SignInByUserName")]
-        public async Task<object> SignInByEmail([FromForm] string email, [FromForm] string password, [FromForm] bool remember)
+        [HttpPost("SignInByEmail")]
+        public async Task<object> SignInByEmail([FromBody] SignInModel model)
         {
-            if (string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(model.UserKey))
             {
                 return Extensions.CreateErrorResponse(Resources.EmailCannotBeNullOrWhiteSpace, 400);
             }
 
-            var appUser = await _userManager.FindByEmailAsync(email);
+            var appUser = await _userManager.FindByEmailAsync(model.UserKey);
 
-            return await ProcessPasswordSignIn(appUser, password, remember);
+            return await ProcessPasswordSignIn(appUser, model.Password, model.Remember);
         }
 
         /// <summary>
         /// Осуществляет вход пользователя в систему по номеру телофона через внутренний провайдер.
         /// </summary>
         [HttpPost("SignInByPhoneNumber")]
-        public async Task<object> SignInByPhoneNumber([FromForm] string phoneNumber, [FromForm] string password, [FromForm] bool remember)
+        public async Task<object> SignInByPhoneNumber([FromBody] SignInModel model)
         {
-            if (string.IsNullOrWhiteSpace(phoneNumber))
+            if (string.IsNullOrWhiteSpace(model.UserKey))
             {
                 return Extensions.CreateErrorResponse(Resources.EmailCannotBeNullOrWhiteSpace, 400);
             }
 
-            var appUser = await _userPhoneNumberStoreExtended.FindByPhoneNumberAsync(phoneNumber, CancellationToken.None);
+            var appUser = await _userPhoneNumberStoreExtended.FindByPhoneNumberAsync(model.UserKey, CancellationToken.None);
 
-            return await ProcessPasswordSignIn(appUser, password, remember);
+            return await ProcessPasswordSignIn(appUser, model.Password, model.Remember);
         }
 
         /// <summary>

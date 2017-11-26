@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-
+using InfinniPlatform.Auth.HttpService.Models;
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Security;
 
@@ -47,14 +47,14 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         /// Изменяет пароль текущего пользователя.
         /// </summary>
         [HttpPost("ChangePassword")]
-        public async Task<object> ChangePassword([FromForm] string oldPassword, [FromForm] string newPassword)
+        public async Task<object> ChangePassword([FromBody] ChangePasswordModel model)
         {
             if (!HttpContext.User.Identity.IsAuthenticated())
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
 
-            if (string.IsNullOrWhiteSpace(newPassword))
+            if (string.IsNullOrWhiteSpace(model.NewPassword))
             {
                 return Extensions.CreateErrorResponse(Resources.NewPasswordCannotBeNullOrWhiteSpace, 400);
             }
@@ -62,8 +62,8 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
             var user = await GetUserInfo();
 
             var changePasswordTask = string.IsNullOrEmpty(user.PasswordHash)
-                                         ? await _userManager.AddPasswordAsync(user, newPassword)
-                                         : await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+                                         ? await _userManager.AddPasswordAsync(user, model.NewPassword)
+                                         : await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
             if (!changePasswordTask.Succeeded)
             {
@@ -119,7 +119,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
                 }
             }
 
-            return new PublicUserInfo(user.UserName, user.UserName, user.UserName, user.Roles, user.Logins, claims);
+            return new PublicUserInfo(user, claims);
         }
     }
 }
