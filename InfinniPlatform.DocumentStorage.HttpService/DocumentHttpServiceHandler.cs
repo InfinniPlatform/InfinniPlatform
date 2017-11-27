@@ -135,7 +135,6 @@ namespace InfinniPlatform.DocumentStorage
         public DocumentHttpServiceHandler(string documentType = null)
         {
             DocumentType = documentType ?? DocumentStorageExtensions.GetDefaultDocumentTypeName<TDocument>();
-            //DocumentType = documentType;
         }
 
 

@@ -27,6 +27,10 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .AsSelf()
                    .InstancePerDependency();
 
+            builder.RegisterType<DocumentRequestExecutor>()
+                   .AsSelf()
+                   .InstancePerDependency();
+
             builder.RegisterGeneric(typeof(DocumentRequestExecutor<>))
                    .As(typeof(DocumentRequestExecutor<>))
                    .InstancePerDependency();
