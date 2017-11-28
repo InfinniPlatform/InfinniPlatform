@@ -118,7 +118,7 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
         private static IUserIdentityProvider GetUserIdentityProvider()
         {
             var userIdentityProvider = new Mock<IUserIdentityProvider>();
-            userIdentityProvider.Setup(i => i.GetUserIdentity()).Returns(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, FakeUserId), new Claim(ClaimTypes.Name, FakeUserName) }, "TestAuth"));
+            userIdentityProvider.Setup(i => i.Get()).Returns(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, FakeUserId), new Claim(ClaimTypes.Name, FakeUserName) }, "TestAuth"));
             return userIdentityProvider.Object;
         }
     }

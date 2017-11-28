@@ -167,7 +167,7 @@ namespace InfinniPlatform.DocumentStorage
 
         private Tuple<string, string> GetCurrentUserInfo()
         {
-            var userIdentity = _userIdentityProvider.GetUserIdentity();
+            var userIdentity = _userIdentityProvider.Get();
             var userName = DocumentStorageHelpers.AnonymousUser;
             var userId = DocumentStorageHelpers.AnonymousUser;
 

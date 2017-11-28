@@ -9,7 +9,8 @@ namespace InfinniPlatform.Session
     /// </summary>
     internal class TenantProvider : ITenantProvider
     {
-        public TenantProvider(ITenantScopeProvider tenantScopeProvider, IUserIdentityProvider userIdentityProvider)
+        public TenantProvider(ITenantScopeProvider tenantScopeProvider,
+                              IUserIdentityProvider userIdentityProvider)
         {
             _tenantScopeProvider = tenantScopeProvider;
             _userIdentityProvider = userIdentityProvider;
@@ -66,7 +67,7 @@ namespace InfinniPlatform.Session
 
         private IIdentity GetCurrentIdentity()
         {
-            var currentIdentity = _userIdentityProvider.GetUserIdentity();
+            var currentIdentity = _userIdentityProvider.Get();
             var currentUserId = currentIdentity.GetUserId();
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
             return isNotAuthenticated ? null : currentIdentity;

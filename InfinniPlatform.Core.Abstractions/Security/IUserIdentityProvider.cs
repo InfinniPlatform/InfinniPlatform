@@ -10,12 +10,6 @@ namespace InfinniPlatform.Security
         /// <summary>
         /// Возвращает идентификационные данные текущего пользователя.
         /// </summary>
-        IIdentity GetUserIdentity();
-
-
-        /// <summary>
-        /// Устанавливает идентификационные данные текущего пользователя.
-        /// </summary>
-        void SetUserIdentity(IPrincipal identity);
+        IIdentity Get();
     }
 }
