@@ -252,7 +252,7 @@ namespace InfinniPlatform.DocumentStorage.Services.QueryFactories
 
         public static Dictionary<string, object> GetAdditionalParameters(IHttpRequest request)
         {
-            Dictionary<string, object> queryParameters = request.Query.ToDictionary();
+            var queryParameters = request.Query as Dictionary<string, object> ?? new Dictionary<string, object>();
 
             var unparsedParameters = queryParameters.Keys
                                                     .Where(s => QuerySyntaxParameter.ParameterNames.Contains(s))
