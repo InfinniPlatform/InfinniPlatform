@@ -23,26 +23,20 @@ namespace InfinniPlatform.Diagnostics
     {
         private const int SubsystemTimeout = 1000;
 
-
         public SystemInfoContoller(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders,
                                    IHostAddressParser hostAddressParser,
-                                   IJsonObjectSerializer jsonObjectSerializer,
                                    ILogger<SystemInfoContoller> logger)
         {
             _subsystemStatusProviders = subsystemStatusProviders.ToDictionary(p => p.Name, p => p);
             _hostAddressParser = hostAddressParser;
             _logger = logger;
-            _jsonObjectSerializer = jsonObjectSerializer;
         }
 
 
         private readonly Dictionary<string, ISubsystemStatusProvider> _subsystemStatusProviders;
         private readonly IHostAddressParser _hostAddressParser;
         private readonly ILogger _logger;
-        private readonly IJsonObjectSerializer _jsonObjectSerializer;
 
-        [HttpGet("")]
-        [HttpPost("")]
         public async Task<object> GetStatus()
         {
             var onBefore = await OnBefore();
