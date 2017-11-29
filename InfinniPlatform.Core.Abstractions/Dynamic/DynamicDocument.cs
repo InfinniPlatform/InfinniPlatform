@@ -17,7 +17,6 @@ namespace InfinniPlatform.Dynamic
     /// Прототип может быть определен, как наследник <see cref="DynamicDocument"/> с определенными в нем прототипными членами, которые
     /// можно будет подменить у конкретного экземпляра - наследника прототипа.
     /// </remarks>
-    /// TODO ASP.NET serialization
     public class DynamicDocument : IDynamicMetaObjectProvider, IEnumerable, ICustomTypeDescriptor
     {
         public DynamicDocument()

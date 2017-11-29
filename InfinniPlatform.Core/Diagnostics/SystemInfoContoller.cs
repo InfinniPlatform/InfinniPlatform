@@ -4,13 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Http;
 using InfinniPlatform.Properties;
-using InfinniPlatform.Serialization;
-
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
@@ -22,30 +21,36 @@ namespace InfinniPlatform.Diagnostics
     public sealed class SystemInfoContoller : Controller
     {
         private const int SubsystemTimeout = 1000;
-
-        public SystemInfoContoller(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders,
-                                   IHostAddressParser hostAddressParser,
-                                   ILogger<SystemInfoContoller> logger)
-        {
-            _subsystemStatusProviders = subsystemStatusProviders.ToDictionary(p => p.Name, p => p);
-            _hostAddressParser = hostAddressParser;
-            _logger = logger;
-        }
+        private readonly ILogger _logger;
 
 
         private readonly Dictionary<string, ISubsystemStatusProvider> _subsystemStatusProviders;
-        private readonly IHostAddressParser _hostAddressParser;
-        private readonly ILogger _logger;
 
-        public async Task<object> GetStatus()
+        public SystemInfoContoller(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders,
+                                   ILogger<SystemInfoContoller> logger)
         {
-            var onBefore = await OnBefore();
+            _subsystemStatusProviders = subsystemStatusProviders.ToDictionary(p => p.Name, p => p);
+            _logger = logger;
+        }
 
-            if (onBefore != null)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            // Запрос статуса разрешен только с локального узла
+            if (!context.HttpContext.IsLocal())
             {
-                return onBefore;
+                _logger.LogWarning("Attemp to access to system info page from remote machine.");
+
+                context.HttpContext.Response.StatusCode = 403;
+                await context.HttpContext.Response.WriteAsync("Forbidden.");
+
+                return;
             }
 
+            await base.OnActionExecutionAsync(context, next);
+        }
+
+        public async Task<IActionResult> GetStatus()
+        {
             return Json(await GetStatus(false));
         }
 
@@ -53,46 +58,19 @@ namespace InfinniPlatform.Diagnostics
         [HttpPost("info")]
         public async Task<IActionResult> GetExpandedStatus()
         {
-            var onBefore = await OnBefore();
-
-            if (onBefore != null)
-            {
-                return onBefore;
-            }
-
             return Json(await GetStatus(true));
         }
 
         [HttpGet("info/{subsystemName}")]
         [HttpPost("info/{subsystemName}")]
-        public async Task<object> GetSubsystemStatus(string subsystemName)
+        public async Task<IActionResult> GetSubsystemStatus(string subsystemName)
         {
-            var onBefore = await OnBefore();
-
-            if (onBefore != null)
-            {
-                return onBefore;
-            }
-
             _subsystemStatusProviders.TryGetValue(subsystemName, out var subsystem);
 
             var statusExpanded = (await GetSubsystemStatus(subsystem, ParseTimeout(Request.Query["timeout"])))?.Item1;
 
             return Json(statusExpanded);
         }
-
-        private async Task<IActionResult> OnBefore()
-        {
-            // TODO On before
-            // Запрос статуса разрешен только с локального узла
-            if (!await _hostAddressParser.IsLocalAddress(Request.Host.Host))
-            {
-                return Forbid();
-            }
-
-            return null;
-        }
-
 
         /// <summary>
         /// Возвращает объект с описанием статуса системы.
@@ -105,11 +83,11 @@ namespace InfinniPlatform.Diagnostics
             var version = GetSystemVersion();
 
             var status = new DynamicDocument
-                         {
-                             { "ok", true },
-                             { "version", version.Item1 },
-                             { "versionHash", version.Item2 }
-                         };
+            {
+                {"ok", true},
+                {"version", version.Item1},
+                {"versionHash", version.Item2}
+            };
 
             if (_subsystemStatusProviders != null)
             {
@@ -129,7 +107,7 @@ namespace InfinniPlatform.Diagnostics
                         else
                         {
                             // Формирование ссылки на статусную страницу подсистемы
-                            status[subsystemName] = new DynamicDocument { { "ref", $"{Request.Scheme}://{Request.Host}/info/{subsystemName}" } };
+                            status[subsystemName] = new DynamicDocument {{"ref", $"{Request.Scheme}://{Request.Host}/info/{subsystemName}"}};
                         }
                     }
                     catch (Exception exception)
@@ -170,7 +148,7 @@ namespace InfinniPlatform.Diagnostics
                 else
                 {
                     // Подсистема не отвечала длительное время
-                    status = new DynamicDocument { { "error", Resources.SubsystemIsNotResponding } };
+                    status = new DynamicDocument {{"error", Resources.SubsystemIsNotResponding}};
                 }
             }
             catch (Exception exception)
@@ -178,7 +156,7 @@ namespace InfinniPlatform.Diagnostics
                 _logger.LogWarning(exception);
 
                 // При определении статуса произошло исключение
-                status = new DynamicDocument { { "error", exception.GetFullMessage() } }.ToDictionary();
+                status = new DynamicDocument {{"error", exception.GetFullMessage()}}.ToDictionary();
             }
 
             return new Tuple<object, bool>(status, ok);
@@ -204,7 +182,7 @@ namespace InfinniPlatform.Diagnostics
             {
                 try
                 {
-                    result =  int.Parse(timeout);
+                    result = int.Parse(timeout);
                 }
                 catch
                 {

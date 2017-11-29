@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using InfinniPlatform.Aspects;
 using InfinniPlatform.Http;
-using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
@@ -90,12 +89,6 @@ namespace InfinniPlatform.IoC
 
         private static void RegisterHttpComponents(IContainerBuilder builder)
         {
-            // Hosting
-
-            builder.RegisterType<HostAddressParser>()
-                   .As<IHostAddressParser>()
-                   .SingleInstance();
-
             // Services
 
             builder.RegisterType<MimeTypeResolver>()

@@ -19,19 +19,16 @@ namespace InfinniPlatform.Scheduler
     public class SchedulerController : Controller
     {
         public SchedulerController(IJobScheduler jobScheduler,
-                                   IHostAddressParser hostAddressParser,
                                    IJsonObjectSerializer jsonObjectSerializer,
                                    ILogger<SchedulerController> logger)
         {
             _jobScheduler = jobScheduler;
-            _hostAddressParser = hostAddressParser;
             _jsonObjectSerializer = jsonObjectSerializer;
             _logger = logger;
         }
 
 
         private readonly IJobScheduler _jobScheduler;
-        private readonly IHostAddressParser _hostAddressParser;
         private readonly IJsonObjectSerializer _jsonObjectSerializer;
         private readonly ILogger _logger;
         private const string Name = "scheduler";
@@ -349,7 +346,7 @@ namespace InfinniPlatform.Scheduler
         {
             // TODO On before
             // Запрос статуса разрешен только с локального узла
-            if (!await _hostAddressParser.IsLocalAddress(Request.Host.Host))
+            if (!HttpContext.IsLocal())
             {
                 return Forbid();
             }

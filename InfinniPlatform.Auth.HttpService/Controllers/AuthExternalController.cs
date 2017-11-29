@@ -179,7 +179,6 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
 
             var httpResponse = HttpContext.Response;
 
-            // TODO Check.
             return new StatusCodeResult(httpResponse.StatusCode);
         }
 
