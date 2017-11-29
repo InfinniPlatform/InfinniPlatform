@@ -8,8 +8,13 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace InfinniPlatform.Auth.HttpService
 {
+    /// <summary>
+    /// Provides controllers for authentication and user management.
+    /// </summary>
+    /// <typeparam name="TUser">User type.</typeparam>
     public class AuthControllersFeatureProvider<TUser> : IApplicationFeatureProvider<ControllerFeature> where TUser : AppUser
     {
+        /// <inheritdoc />
         public void PopulateFeature(IEnumerable<ApplicationPart> parts, ControllerFeature feature)
         {
             feature.Controllers.Add(typeof(AuthManagementController<>).MakeGenericType(typeof(TUser)).GetTypeInfo());

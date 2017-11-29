@@ -11,11 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace InfinniPlatform.Auth.HttpService.Controllers
 {
     /// <summary>
-    /// Сервис внутренней аутентификации пользователей системы.
+    /// Controller for internal (cookie-based) authentication.
     /// </summary>
     [Route("Auth")]
     public class AuthInternalController<TUser> : Controller where TUser : AppUser, new()
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="AuthInternalController{TUser}" />.
+        /// </summary>
         public AuthInternalController(UserEventHandlerInvoker userEventHandlerInvoker,
                                       UserManager<TUser> userManager,
                                       SignInManager<TUser> signInManager,

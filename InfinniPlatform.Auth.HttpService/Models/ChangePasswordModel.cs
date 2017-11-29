@@ -7,7 +7,14 @@ namespace InfinniPlatform.Auth.HttpService.Models
     /// </summary>
     public class ChangePasswordModel
     {
+        /// <summary>
+        /// User's old password. 
+        /// </summary>
         public string OldPassword { get; set; }
+        
+        /// <summary>
+        /// User's new password.
+        /// </summary>
         public string NewPassword { get; set; }
     }
 }

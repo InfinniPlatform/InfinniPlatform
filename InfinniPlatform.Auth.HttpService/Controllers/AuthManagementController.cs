@@ -13,11 +13,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace InfinniPlatform.Auth.HttpService.Controllers
 {
     /// <summary>
-    /// Сервис управления пользователями системы.
+    /// Controller for user management.
     /// </summary>
     [Route("Auth")]
     public class AuthManagementController<TUser> : Controller where TUser : AppUser, new()
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="AuthManagementController{TUser}" />.
+        /// </summary>
         public AuthManagementController(UserManager<TUser> userManager)
         {
             _userManager = userManager;
@@ -31,7 +34,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         [HttpPost("GetCurrentUser")]
         public async Task<object> GetCurrentUser()
         {
-            if (!HttpContext.User.Identity.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated)
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
@@ -49,7 +52,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         [HttpPost("ChangePassword")]
         public async Task<object> ChangePassword([FromBody] ChangePasswordModel model)
         {
-            if (!HttpContext.User.Identity.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated)
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
@@ -74,7 +77,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
                 return Extensions.CreateErrorResponse(errorMessage, 400);
             }
 
-            return Extensions.CreateSuccesResponse<object>(null);
+            return Extensions.CreateSuccesResponse();
         }
 
         private async Task<TUser> GetUserInfo()

@@ -12,11 +12,14 @@ using Microsoft.Extensions.Logging;
 namespace InfinniPlatform.Auth.HttpService.Controllers
 {
     /// <summary>
-    /// Сервис внешней аутентификации пользователей системы.
+    /// Controller for external authentication.
     /// </summary>
     [Route("Auth")]
     public class AuthExternalController<TUser> : Controller where TUser : AppUser, new()
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="AuthExternalController{TUser}" />.
+        /// </summary>
         public AuthExternalController(UserEventHandlerInvoker userEventHandlerInvoker,
                                       UserManager<TUser> userManager,
                                       SignInManager<TUser> signInManager,
@@ -96,7 +99,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         [HttpPost("LinkExternalLogin")]
         public async Task<IActionResult> LinkExternalLogin([FromBody] string provider)
         {
-            if (!HttpContext.User.Identity.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated)
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
@@ -133,7 +136,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
         [HttpPost("UnlinkExternalLogin")]
         public async Task<object> UnlinkExternalLogin([FromBody] string provider)
         {
-            if (!HttpContext.User.Identity.IsAuthenticated())
+            if (!HttpContext.User.Identity.IsAuthenticated)
             {
                 return Extensions.CreateErrorResponse(Resources.RequestIsNotAuthenticated, 401);
             }
@@ -157,7 +160,7 @@ namespace InfinniPlatform.Auth.HttpService.Controllers
                 return Extensions.CreateErrorResponse(errorMessage, 400);
             }
 
-            return Extensions.CreateSuccesResponse<object>(null);
+            return Extensions.CreateSuccesResponse();
         }
 
         /// <summary>

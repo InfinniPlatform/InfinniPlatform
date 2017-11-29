@@ -8,8 +8,19 @@ namespace InfinniPlatform.Auth.HttpService.Models
     /// </summary>
     public class SignInModel
     {
+        /// <summary>
+        /// User key for authentication (e.g. id, username, email).
+        /// </summary>
         public string UserKey { get; set; }
+        
+        /// <summary>
+        /// User password.
+        /// </summary>
         public string Password { get; set; }
+        
+        /// <summary>
+        /// Cookie persistence flag.
+        /// </summary>
         public bool Remember { get; set; }
 
         [JsonProperty("Id")]
