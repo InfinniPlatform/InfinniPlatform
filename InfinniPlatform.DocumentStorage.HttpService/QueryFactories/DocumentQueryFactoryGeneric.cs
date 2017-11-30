@@ -45,7 +45,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
                 return new DocumentPostQuery<TDocument>
                 {
                     Document = document,
-                    Files = request.Form.Files
+                    Files = IsFromForm(request) ? request.Form.Files : null
                 };
             }
 

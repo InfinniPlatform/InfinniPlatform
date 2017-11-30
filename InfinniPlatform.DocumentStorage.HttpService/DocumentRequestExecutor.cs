@@ -349,7 +349,7 @@ namespace InfinniPlatform.DocumentStorage
                                                foreach (var file in query.Files)
                                                {
                                                    // Сохранение файла в хранилище
-                                                   var blobInfo = await _blobStorage.CreateBlobAsync(file.Name, file.ContentType, file);
+                                                   var blobInfo = await _blobStorage.CreateBlobAsync(file.FileName, file.ContentType, file);
 
                                                    // Включение информации о файле в ответ
                                                    fileInfos[file.Name] = blobInfo;
