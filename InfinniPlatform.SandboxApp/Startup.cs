@@ -1,6 +1,7 @@
 ﻿using System;
 
 using InfinniPlatform.AspNetCore;
+using InfinniPlatform.Http;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
