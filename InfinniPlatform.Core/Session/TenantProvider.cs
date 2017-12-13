@@ -1,6 +1,7 @@
 ﻿using System.Security.Principal;
 
 using InfinniPlatform.Security;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Session
 {
@@ -10,15 +11,15 @@ namespace InfinniPlatform.Session
     internal class TenantProvider : ITenantProvider
     {
         public TenantProvider(ITenantScopeProvider tenantScopeProvider,
-                              IUserIdentityProvider userIdentityProvider)
+                              IHttpContextAccessor httpContextAccessor)
         {
             _tenantScopeProvider = tenantScopeProvider;
-            _userIdentityProvider = userIdentityProvider;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
         private readonly ITenantScopeProvider _tenantScopeProvider;
-        private readonly IUserIdentityProvider _userIdentityProvider;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
         public string GetTenantId()
@@ -67,7 +68,7 @@ namespace InfinniPlatform.Session
 
         private IIdentity GetCurrentIdentity()
         {
-            var currentIdentity = _userIdentityProvider.Get();
+            var currentIdentity = _httpContextAccessor.HttpContext.User.Identity;
             var currentUserId = currentIdentity.GetUserId();
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
             return isNotAuthenticated ? null : currentIdentity;

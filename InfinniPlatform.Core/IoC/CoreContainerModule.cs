@@ -2,7 +2,6 @@
 using InfinniPlatform.Aspects;
 using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
 using InfinniPlatform.Session;
 
@@ -26,7 +25,6 @@ namespace InfinniPlatform.IoC
             RegisterLoggingComponents(builder);
             RegisterAspectsComponents(builder);
             RegisterSerializationComponents(builder);
-            RegisterSecurityComponents(builder);
             RegisterSessionComponents(builder);
             RegisterHttpComponents(builder);
         }
@@ -69,13 +67,6 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
         }
 
-        private static void RegisterSecurityComponents(IContainerBuilder builder)
-        {
-            builder.RegisterType<UserIdentityProvider>()
-                   .As<IUserIdentityProvider>()
-                   .SingleInstance();
-        }
-
         private static void RegisterSessionComponents(IContainerBuilder builder)
         {
             builder.RegisterType<TenantScopeProvider>()
@@ -89,8 +80,6 @@ namespace InfinniPlatform.IoC
 
         private static void RegisterHttpComponents(IContainerBuilder builder)
         {
-            // Services
-
             builder.RegisterType<MimeTypeResolver>()
                    .As<IMimeTypeResolver>()
                    .SingleInstance();
