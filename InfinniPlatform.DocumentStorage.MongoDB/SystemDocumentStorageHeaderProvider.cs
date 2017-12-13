@@ -1,12 +1,12 @@
-﻿using InfinniPlatform.Security;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.DocumentStorage
 {
     internal class SystemDocumentStorageHeaderProvider : DocumentStorageHeaderProvider, ISystemDocumentStorageHeaderProvider
     {
         public SystemDocumentStorageHeaderProvider(ISystemTenantProvider tenantProvider,
-                                                   IUserIdentityProvider userIdentityProvider)
-            : base(tenantProvider, userIdentityProvider)
+                                                   IHttpContextAccessor httpContextAccessor)
+            : base(tenantProvider, httpContextAccessor)
         {
         }
     }
