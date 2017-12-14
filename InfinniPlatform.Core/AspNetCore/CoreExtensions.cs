@@ -30,7 +30,7 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Adds an application IoC-container module.
         /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        /// <param name="services">Collection of registered services.</param>
         /// <param name="containerModule">The application IoC-container module.</param>
         public static IServiceCollection AddContainerModule(this IServiceCollection services, IContainerModule containerModule)
         {
@@ -41,7 +41,7 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        /// <param name="services">Collection of registered services.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services)
         {
             var options = AppOptions.Default;
@@ -52,8 +52,8 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
-        /// <param name="configuration">The application configuration.</param>
+        /// <param name="services">Collection of registered services.</param>
+        /// <param name="configuration">Configuration properties set.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, IConfiguration configuration)
         {
             var options = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();
@@ -64,7 +64,7 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        /// <param name="services">Collection of registered services.</param>
         /// <param name="options">The general application settings.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, AppOptions options)
         {
@@ -104,7 +104,7 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Adds customized MVC services.
         /// </summary>
-        /// <param name="services">Service collection.</param>
+        /// <param name="services">Collection of registered services.</param>
         public static IMvcBuilder AddMvcWithInternalServices(this IServiceCollection services)
         {
             var mvcBuilder = services.AddMvc()
@@ -127,7 +127,7 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Adds MVC with internal controllers to the request execution pipeline.
         /// </summary>
-        /// <param name="app">Application builder instance.</param>
+        /// <param name="app">Application builder.</param>
         public static IApplicationBuilder UseMvcWithInternalServices(this IApplicationBuilder app)
         {
             return app.UseMvc();
@@ -145,7 +145,7 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Add error handling middleware to the request execution pipeline.
         /// </summary>
-        /// <param name="app">Application builder instance.</param>
+        /// <param name="app">Application builder.</param>
         public static IApplicationBuilder UsePerformanceLogging(this IApplicationBuilder app)
         {
             return app.UseMiddleware<PerformanceLoggingMiddleware>();

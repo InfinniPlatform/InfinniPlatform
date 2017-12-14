@@ -9,14 +9,17 @@ using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Http.StaticFiles
 {
+    /// <summary>
+    /// Extensions for static files serving.
+    /// </summary>
     public static class StaticFilesExtensions
     {
         /// <summary>
         /// Configure serving static files using mapping in configuration file.
         /// </summary>
         /// <param name="app">Application builder.</param>
-        /// <param name="configuration">Configuration.</param>
-        /// <param name="resolver"></param>
+        /// <param name="configuration">Configuration properties set.</param>
+        /// <param name="resolver">Dependency resolver.</param>
         public static IApplicationBuilder UseStaticFilesMapping(this IApplicationBuilder app, IConfiguration configuration, IContainerResolver resolver)
         {
             var appOptions = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();

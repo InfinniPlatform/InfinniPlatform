@@ -28,7 +28,7 @@ namespace InfinniPlatform.AspNetCore
         /// Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
-        /// <param name="configuration">Application configuration.</param>
+        /// <param name="configuration">Configuration properties set.</param>
         /// <param name="containerModules">Registered IoC-container modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, IConfiguration configuration, IEnumerable<IContainerModule> containerModules = null)
         {
