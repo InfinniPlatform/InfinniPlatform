@@ -21,6 +21,12 @@ namespace InfinniPlatform.BlobStorage
     [Route("blob")]
     public class BlobStorageController : Controller
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="BlobStorageController" />.
+        /// </summary>
+        /// <param name="blobStorage"></param>
+        /// <param name="perfLogger"></param>
+        /// <param name="logger"></param>
         public BlobStorageController(IBlobStorage blobStorage,
                                      IPerformanceLogger<BlobStorageController> perfLogger,
                                      ILogger<BlobStorageController> logger)
@@ -36,6 +42,10 @@ namespace InfinniPlatform.BlobStorage
         private readonly ILogger _logger;
 
 
+        /// <summary>
+        /// Returns BLOB content.
+        /// </summary>
+        /// <param name="blobId">BLOB identifier.</param>
         [HttpGet("{id}")]
         public virtual Task<object> GetFileContentAsync(string blobId)
         {

@@ -45,6 +45,13 @@ namespace InfinniPlatform.BlobStorage
     [LoggerName(nameof(FileSystemBlobStorage))]
     public class FileSystemBlobStorage : IBlobStorage
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="FileSystemBlobStorage" />.
+        /// </summary>
+        /// <param name="options">Authentication options from configuration.</param>
+        /// <param name="objectSerializer">Object serializer.</param>
+        /// <param name="mimeTypeResolver">File MIME type resolver.</param>
+        /// <param name="perfLogger">Performance logger.</param>
         public FileSystemBlobStorage(FileSystemBlobStorageOptions options,
                                      IObjectSerializer objectSerializer,
                                      IMimeTypeResolver mimeTypeResolver,
@@ -70,6 +77,7 @@ namespace InfinniPlatform.BlobStorage
         private readonly IPerformanceLogger _perfLogger;
 
 
+        /// <inheritdoc />
         public BlobInfo GetBlobInfo(string blobId)
         {
             var start = DateTime.Now;
@@ -95,6 +103,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
         public BlobData GetBlobData(string blobId)
         {
             var start = DateTime.Now;
@@ -129,6 +138,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
         public BlobInfo CreateBlob(string blobName, string blobType, Stream blobData)
         {
             var blobId = GenerateBlobId();
@@ -136,6 +146,7 @@ namespace InfinniPlatform.BlobStorage
             return UpdateBlob(blobId, blobName, blobType, blobData);
         }
 
+        /// <inheritdoc />
         public Task<BlobInfo> CreateBlobAsync(string blobName, string blobType, Stream blobData)
         {
             var blobId = GenerateBlobId();
@@ -143,6 +154,7 @@ namespace InfinniPlatform.BlobStorage
             return UpdateBlobAsync(blobId, blobName, blobType, blobData);
         }
 
+        /// <inheritdoc />
         public Task<BlobInfo> CreateBlobAsync(string blobName, string blobType, IFormFile formFile)
         {
             var blobId = GenerateBlobId();
@@ -150,6 +162,7 @@ namespace InfinniPlatform.BlobStorage
             return UpdateBlobAsync(blobId, blobName, blobType, formFile);
         }
 
+        /// <inheritdoc />
         public BlobInfo UpdateBlob(string blobId, string blobName, string blobType, Stream blobData)
         {
             var start = DateTime.Now;
@@ -195,6 +208,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
         public async Task<BlobInfo> UpdateBlobAsync(string blobId, string blobName, string blobType, Stream blobData)
         {
             var start = DateTime.Now;
@@ -240,6 +254,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
         public async Task<BlobInfo> UpdateBlobAsync(string blobId, string blobName, string blobType, IFormFile formFile)
         {
             var start = DateTime.Now;
@@ -285,6 +300,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
         public void DeleteBlob(string blobId)
         {
             var start = DateTime.Now;

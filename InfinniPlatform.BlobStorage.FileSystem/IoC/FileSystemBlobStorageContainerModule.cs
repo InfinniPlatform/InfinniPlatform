@@ -2,8 +2,15 @@
 
 namespace InfinniPlatform.BlobStorage.IoC
 {
+    /// <summary>
+    /// Container module for file system blob storage services.
+    /// </summary>
     public class FileSystemBlobStorageContainerModule : IContainerModule
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="FileSystemBlobStorageContainerModule" />.
+        /// </summary>
+        /// <param name="options"></param>
         public FileSystemBlobStorageContainerModule(FileSystemBlobStorageOptions options)
         {
             _options = options ?? new FileSystemBlobStorageOptions();
@@ -11,6 +18,7 @@ namespace InfinniPlatform.BlobStorage.IoC
 
         private readonly FileSystemBlobStorageOptions _options;
 
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf();

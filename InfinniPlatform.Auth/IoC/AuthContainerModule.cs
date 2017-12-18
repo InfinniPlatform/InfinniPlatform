@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth.IoC
 {
     /// <summary>
-    /// Container module for authentication.
+    /// Container module for authentication services.
     /// </summary>
     /// <typeparam name="TUser">User type.</typeparam>
     public class AuthContainerModule<TUser> : IContainerModule where TUser : AppUser
