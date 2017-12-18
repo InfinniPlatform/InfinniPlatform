@@ -8,24 +8,31 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth.Validators
 {
     /// <summary>
-    /// Проверяет корректность имени пользователя.
+    /// Validates user email.
     /// </summary>
     public class DefaultUserNameValidator<TUser> : IUserValidator<TUser> where TUser : AppUser
     {
         private readonly IUserStore<TUser> _userStore;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DefaultUserNameValidator{TUser}" />.
+        /// </summary>
+        /// <param name="userStore">User store.</param>
         public DefaultUserNameValidator(IUserStore<TUser> userStore)
         {
             _userStore = userStore;
         }
 
-
+        /// <summary>
+        /// Validates email.
+        /// </summary>
+        /// <param name="manager">User manager.</param>
+        /// <param name="user">User information.</param>
         public async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user)
         {
             var errors = new List<IdentityError>();
             var userName = user.UserName;
 
-            // Имя пользователя является обязательным
             if (string.IsNullOrWhiteSpace(userName))
             {
                 errors.Add(new IdentityError
@@ -42,7 +49,6 @@ namespace InfinniPlatform.Auth.Validators
             }
             else
             {
-                // Проверка уникальности
                 var owner = await _userStore.FindByNameAsync(userName, default(CancellationToken));
 
                 if (owner != null && !Equals(owner._id, user._id))

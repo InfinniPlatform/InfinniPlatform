@@ -6,16 +6,16 @@ using InfinniPlatform.Auth.Services;
 namespace InfinniPlatform.Auth.HttpService
 {
     /// <summary>
-    /// Предоставляет методы для формирования URI.
+    /// Provides methods for URI construction.
     /// </summary>
     internal class UrlBuilder
     {
         private static readonly Uri BaseUri = new Uri("http://localhost");
 
         /// <summary>
-        /// Конструктор.
+        /// Initializes a new instance of <see cref="UrlBuilder" />.
         /// </summary>
-        /// <param name="address">Адресная строка.</param>
+        /// <param name="address">Address.</param>
         public UrlBuilder(string address = null)
         {
             if (!string.IsNullOrWhiteSpace(address))
@@ -57,7 +57,7 @@ namespace InfinniPlatform.Auth.HttpService
 
 
         /// <summary>
-        /// Устанавливает базовый адрес для относительного URI.
+        /// Sets relative base address fot this instance.
         /// </summary>
         public UrlBuilder Relative(string baseAddress)
         {
@@ -67,7 +67,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Устанавливает базовый адрес для абсолютного URI.
+        /// Sets absolute base address fot this instance.
         /// </summary>
         public UrlBuilder Absolute(string serverScheme, string serverName, int? serverPort = null)
         {
@@ -94,7 +94,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Добавляет параметры запроса URI.
+        /// Adds query parameters.
         /// </summary>
         public UrlBuilder AddQuery(string name, object value)
         {
@@ -108,9 +108,7 @@ namespace InfinniPlatform.Auth.HttpService
             return this;
         }
 
-        /// <summary>
-        /// Возвращает строковое представление URI.
-        /// </summary>
+        /// <inheritdoc />
         public override string ToString()
         {
             var result = new StringBuilder(_baseAddress);
@@ -137,7 +135,7 @@ namespace InfinniPlatform.Auth.HttpService
         }
 
         /// <summary>
-        /// Возвращает объектное представление URI.
+        /// Returns URI.
         /// </summary>
         public Uri ToUri()
         {

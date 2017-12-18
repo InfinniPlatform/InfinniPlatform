@@ -5,10 +5,15 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Фабрика для получения валидаторов пользователей <see cref="IUserValidator{TUser}"/>.
+    /// Factory for creating <see cref="IUserValidator{TUser}"/> instances.
     /// </summary>
     public interface IUserValidatorsFactory
     {
+        /// <summary>
+        /// Returns list of <see cref="IUserValidator{TUser}"/> instances.
+        /// </summary>
+        /// <typeparam name="TUser">User type.</typeparam>
+        /// <param name="resolver">Application container resolver.</param>
         IEnumerable<IUserValidator<TUser>> Get<TUser>(IContainerResolver resolver) where TUser : AppUser;
     }
 }

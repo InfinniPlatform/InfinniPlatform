@@ -8,15 +8,24 @@ using Microsoft.AspNetCore.Identity;
 
 namespace InfinniPlatform.Auth.IoC
 {
+    /// <summary>
+    /// Container module for authentication.
+    /// </summary>
+    /// <typeparam name="TUser">User type.</typeparam>
     public class AuthContainerModule<TUser> : IContainerModule where TUser : AppUser
     {
         private readonly AuthOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="AuthContainerModule{TUser}" />.
+        /// </summary>
+        /// <param name="options">Auth configuration options.</param>
         public AuthContainerModule(AuthOptions options)
         {
             _options = options;
         }
 
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf().SingleInstance();
@@ -30,6 +39,11 @@ namespace InfinniPlatform.Auth.IoC
 
             builder.RegisterFactory(CreateUserStore)
                    .As<IUserStore<TUser>>()
+                   .SingleInstance();
+
+            builder.RegisterType<UserCache<AppUser>>()
+                   .As<IUserCacheObserver>()
+                   .AsSelf()
                    .SingleInstance();
 
             // Role storage
@@ -65,13 +79,6 @@ namespace InfinniPlatform.Auth.IoC
                        .As<IEnumerable<IUserValidator<TUser>>>()
                        .SingleInstance();
             }
-
-            // UserStorage
-
-            builder.RegisterType<UserCache<AppUser>>()
-                   .As<IUserCacheObserver>()
-                   .AsSelf()
-                   .SingleInstance();
 
             builder.RegisterType<UserCacheConsumer>()
                    .AsSelf()

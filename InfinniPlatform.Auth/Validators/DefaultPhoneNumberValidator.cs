@@ -7,17 +7,26 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth.Validators
 {
     /// <summary>
-    /// Проверяет корректность телефонного номера пользователя.
+    /// Validates user phone number.
     /// </summary>
     public class DefaultPhoneNumberValidator<TUser> : IUserValidator<TUser> where TUser : AppUser
     {
         private readonly IUserPhoneNumberStoreExtended<TUser> _userStore;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DefaultPhoneNumberValidator{TUser}" />.
+        /// </summary>
+        /// <param name="userStore">User phone number store.</param>
         public DefaultPhoneNumberValidator(IUserPhoneNumberStoreExtended<TUser> userStore)
         {
             _userStore = userStore;
         }
 
+        /// <summary>
+        /// Validates phone number.
+        /// </summary>
+        /// <param name="manager">User manager.</param>
+        /// <param name="user">User information.</param>
         public async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user)
         {
             var errors = new List<IdentityError>();
@@ -25,7 +34,6 @@ namespace InfinniPlatform.Auth.Validators
             
             if (!string.IsNullOrWhiteSpace(phoneNumber))
             {
-                // Проверка уникальности номера телефона
                 var owner = await _userStore.FindByPhoneNumberAsync(phoneNumber, CancellationToken.None);
 
                 if (owner != null && !Equals(owner._id, user._id))

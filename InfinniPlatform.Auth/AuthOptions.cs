@@ -4,21 +4,29 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Настройки провайдера аутентификации.
+    /// Authentication options from configuration.
     /// </summary>
     public class AuthOptions
     {
+        /// <summary>
+        /// Name of option section in configuration file.
+        /// </summary>
         public const string SectionName = "auth";
 
+        /// <summary>
+        /// Default user cache invalidation timeout (in minutes).
+        /// </summary>
         public const int DefaultUserCacheTimeout = 30;
 
-        public const string DefaultLoginPath = "/";
-
-        public const string DefaultLogoutPath = "/";
-
+        /// <summary>
+        /// Default instance of <see cref="AuthOptions" />.
+        /// </summary>
         public static readonly AuthOptions Default = new AuthOptions();
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="AuthOptions" />.
+        /// </summary>
         public AuthOptions()
         {
             UserCacheTimeout = DefaultUserCacheTimeout;
@@ -26,42 +34,42 @@ namespace InfinniPlatform.Auth
 
 
         /// <summary>
-        /// Таймаут сброса кэша пользователей в минутах.
+        /// User cache invalidation timeout (in minutes).
         /// </summary>
         public int UserCacheTimeout { get; set; }
 
         /// <summary>
-        /// Фабрика для получения хранилища пользователей <see cref="IUserStore{TUser}"/>.
+        /// Factory for creating <see cref="IUserStore{TUser}" /> instance.
         /// </summary>
         public IUserStoreFactory UserStoreFactory { get; set; }
 
         /// <summary>
-        /// Настройки ASP.NET Identity.
+        /// ASP.NET Identity options.
         /// </summary>
         public Action<IdentityOptions> IdentityOptions { get; set; }
 
         /// <summary>
-        /// Фабрика для получения генератора хэшей для паролей <see cref="IPasswordHasher{TUser}"/>.
+        /// Factory for creating <see cref="IPasswordHasher{TUser}" /> instance.
         /// </summary>
         public IPasswordHasherFactory PasswordHasherFactory { get; set; }
 
         /// <summary>
-        /// Фабрика для получения валидаторов пользователей <see cref="IUserValidator{TUser}"/>.
+        /// Factory for creating <see cref="IUserValidator{TUser}" /> instances.
         /// </summary>
         public IUserValidatorsFactory UserValidatorsFactory { get; set; }
 
         /// <summary>
-        /// Фабрика для получения валидаторов паролей <see cref="IPasswordValidator{TUser}"/>.
+        /// Factory for creating <see cref="IPasswordValidator{TUser}" /> instances.
         /// </summary>
         public IPasswordValidatorsFactory PasswordValidatorsFactory { get; set; }
 
         /// <summary>
-        /// Фабрика для получения нормализатора ключей <see cref="ILookupNormalizer"/>.
+        /// Factory for creating <see cref="ILookupNormalizer" /> instance.
         /// </summary>
         public ILookupNormalizerFactory LookupNormalizerFactory { get; set; }
 
         /// <summary>
-        /// Фабрика для получения сервиса локализации ошибок аутентификации/авторизации <see cref="Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.
+        /// Factory for creating  <see cref="Microsoft.AspNetCore.Identity.IdentityErrorDescriber" /> instance.
         /// </summary>
         public IIdentityErrorDescriberFactory IdentityErrorDescriber { get; set; }
     }
