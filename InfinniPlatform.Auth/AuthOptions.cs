@@ -33,6 +33,11 @@ namespace InfinniPlatform.Auth
         public int UserCacheTimeout { get; set; }
 
         /// <summary>
+        /// The domain name where the cookie is served.
+        /// </summary>
+        public string CookieDomain { get; set; }
+
+        /// <summary>
         /// Фабрика для получения хранилища пользователей <see cref="IUserStore{TUser}"/>.
         /// </summary>
         public IUserStoreFactory UserStoreFactory { get; set; }
