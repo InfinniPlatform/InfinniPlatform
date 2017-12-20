@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Runtime.CompilerServices;
-
+using InfinniPlatform.Serialization;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace InfinniPlatform.Dynamic
 {
+    /// <summary>
+    /// Extensions for dynamic objects.
+    /// </summary>
     public static class DynamicObjectExtensions
     {
         private static readonly TypePropertyNameResolver TypePropertyNameResolver

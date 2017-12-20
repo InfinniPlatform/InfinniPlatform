@@ -8,6 +8,10 @@ namespace InfinniPlatform.Aspects
     [AttributeUsage(AttributeTargets.Class)]
     public class AspectAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="AspectAttribute" />.
+        /// </summary>
+        /// <param name="interceptorType">Type of interceptor class.</param>
         public AspectAttribute(Type interceptorType)
         {
             InterceptorType = interceptorType;

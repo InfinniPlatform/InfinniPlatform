@@ -4,10 +4,14 @@ using System.ComponentModel;
 namespace InfinniPlatform.Dynamic
 {
     /// <summary>
-    /// Описание свойства динамического объекта <see cref="DynamicDocument"/>.
+    /// Properties description of <see cref="DynamicDocument"/>.
     /// </summary>
     public class DynamicDocumentPropertyDescriptor : PropertyDescriptor
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">Property name.</param>
         public DynamicDocumentPropertyDescriptor(string name)
             : base(name, null)
         {

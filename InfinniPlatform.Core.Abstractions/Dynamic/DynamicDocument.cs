@@ -10,20 +10,27 @@ using InfinniPlatform.Properties;
 namespace InfinniPlatform.Dynamic
 {
     /// <summary>
-    /// Динамический объект.
+    /// Dynamic object.
     /// </summary>
     /// <remarks>
-    /// Обеспечивает поведение, аналогичное поведению объекта в JavaScript. По аналогии можно осуществлять прототипное наследование.
-    /// Прототип может быть определен, как наследник <see cref="DynamicDocument"/> с определенными в нем прототипными членами, которые
-    /// можно будет подменить у конкретного экземпляра - наследника прототипа.
+    /// Provides behaviour similar to JavaScript object. Can implement prototype inheritance.
+    /// Prototype can be specified as inheritor of <see cref="DynamicDocument"/> with prototype members
+    /// suitable to override by instance of derived prototype.
     /// </remarks>
     public class DynamicDocument : IDynamicMetaObjectProvider, IEnumerable, ICustomTypeDescriptor
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DynamicDocument" />.
+        /// </summary>
         public DynamicDocument()
         {
             _properties = new Dictionary<string, object>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DynamicDocument" />.
+        /// </summary>
+        /// <param name="properties">Dictionary that represents object properties.</param>
         public DynamicDocument(IDictionary<string, object> properties)
         {
             _properties = properties ?? new Dictionary<string, object>();
