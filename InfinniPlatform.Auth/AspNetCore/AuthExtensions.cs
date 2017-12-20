@@ -59,7 +59,8 @@ namespace InfinniPlatform.AspNetCore
 
             services.AddIdentity<TUser, TRole>(options.IdentityOptions);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie();
+                    // TODO Move configuration action to parameters?
+                    .AddCookie(opt => opt.Cookie.Domain = options.CookieDomain);
 
             return services.AddSingleton(provider => new AuthContainerModule<TUser>(options));
         }
