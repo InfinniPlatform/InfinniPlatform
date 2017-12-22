@@ -8,20 +8,21 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth.DocumentStorage
 {
     /// <summary>
-    /// User store.
+    /// User storage abstraction.
     /// </summary>
     /// <typeparam name="TUser">User type.</typeparam>
+    // ReSharper disable once RedundantExtendsListEntry
     public partial class UserStore<TUser> : IUserStore<TUser> where TUser : AppUser
     {
         /// <summary>
         /// Local application cache of users.
         /// </summary>
-        protected readonly UserCache<AppUser> UserCache;
+        private readonly UserCache<AppUser> _userCache;
 
         /// <summary>
         /// Users database storage.
         /// </summary>
-        protected readonly Lazy<ISystemDocumentStorage<TUser>> Users;
+        private readonly Lazy<ISystemDocumentStorage<TUser>> _users;
 
         /// <summary>
         /// Initializes a new instance of <see cref="UserStore{TUser}" />.
@@ -30,8 +31,8 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <param name="userCache">Local application cache of users.</param>
         public UserStore(ISystemDocumentStorageFactory documentStorageFactory, UserCache<AppUser> userCache)
         {
-            Users = new Lazy<ISystemDocumentStorage<TUser>>(() => documentStorageFactory.GetStorage<TUser>());
-            UserCache = userCache;
+            _users = new Lazy<ISystemDocumentStorage<TUser>>(() => documentStorageFactory.GetStorage<TUser>());
+            _userCache = userCache;
         }
 
         /// <inheritdoc />
@@ -42,7 +43,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken token)
         {
-            await Users.Value.InsertOneAsync(user);
+            await _users.Value.InsertOneAsync(user);
 
             UpdateUserInCache(user);
 
@@ -52,7 +53,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken token)
         {
-            await Users.Value.ReplaceOneAsync(user, u => u._id.Equals(user._id));
+            await _users.Value.ReplaceOneAsync(user, u => u._id.Equals(user._id));
 
             UpdateUserInCache(user);
 
@@ -62,7 +63,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken token)
         {
-            await Users.Value.DeleteOneAsync(u => u._id.Equals(user._id));
+            await _users.Value.DeleteOneAsync(u => u._id.Equals(user._id));
 
             RemoveUserFromCache(user._id.ToString());
 
@@ -106,15 +107,15 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public async Task<TUser> FindByIdAsync(string userId, CancellationToken token)
         {
-            return await FindUserInCache(() => (TUser) UserCache.FindUserById(userId),
-                                         async () => await Users.Value.Find(u => u._id.Equals(userId)).FirstOrDefaultAsync());
+            return await FindUserInCache(() => (TUser) _userCache.FindUserById(userId),
+                                         async () => await _users.Value.Find(u => u._id.Equals(userId)).FirstOrDefaultAsync());
         }
 
         /// <inheritdoc />
         public async Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)
         {
-            return await FindUserInCache(() => (TUser) UserCache.FindUserByUserName(normalizedUserName),
-                                         async () => await Users.Value.Find(u => u.NormalizedUserName == normalizedUserName).FirstOrDefaultAsync());
+            return await FindUserInCache(() => (TUser) _userCache.FindUserByUserName(normalizedUserName),
+                                         async () => await _users.Value.Find(u => u.NormalizedUserName == normalizedUserName).FirstOrDefaultAsync());
         }
 
         /// <summary>
@@ -122,7 +123,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// </summary>
         protected void UpdateUserInCache(AppUser user)
         {
-            UserCache.AddOrUpdateUser(user);
+            _userCache.AddOrUpdateUser(user);
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// </summary>
         protected void RemoveUserFromCache(string userId)
         {
-            UserCache.RemoveUser(userId);
+            _userCache.RemoveUser(userId);
         }
 
         /// <summary>
@@ -146,7 +147,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
 
                 if (user != null)
                 {
-                    UserCache.AddOrUpdateUser(user);
+                    _userCache.AddOrUpdateUser(user);
                 }
             }
 

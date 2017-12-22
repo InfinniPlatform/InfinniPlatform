@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace InfinniPlatform.AspNetCore
 {
     /// <summary>
-    /// Extensions for authentication services registration.
+    /// Extension methods for authentication services registration.
     /// </summary>
     public static class AuthExtensions
     {

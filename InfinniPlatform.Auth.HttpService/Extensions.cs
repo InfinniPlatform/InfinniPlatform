@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InfinniPlatform.Auth.HttpService
 {
     /// <summary>
-    /// Extensions for <see cref="InfinniPlatform.Auth.HttpService"/> controllers.
+    /// Extension methods for <see cref="InfinniPlatform.Auth.HttpService"/> controllers.
     /// </summary>
     public static class Extensions
     {

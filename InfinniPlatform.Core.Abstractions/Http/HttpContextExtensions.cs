@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 namespace InfinniPlatform.Http
 {
     /// <summary>
-    /// Extensions for <see cref="HttpContext" />.
+    /// Extension methods for <see cref="HttpContext" />.
     /// </summary>
     public static class HttpContextExtensions
     {

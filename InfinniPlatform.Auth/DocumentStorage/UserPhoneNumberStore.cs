@@ -36,8 +36,8 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public Task<TUser> FindByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken)
         {
-            return FindUserInCache(() => (TUser) UserCache.FindUserByPhoneNumber(phoneNumber),
-                                   async () => await Users.Value.Find(u => u.PhoneNumber == phoneNumber).FirstOrDefaultAsync());
+            return FindUserInCache(() => (TUser) _userCache.FindUserByPhoneNumber(phoneNumber),
+                                   async () => await _users.Value.Find(u => u.PhoneNumber == phoneNumber).FirstOrDefaultAsync());
         }
     }
 }

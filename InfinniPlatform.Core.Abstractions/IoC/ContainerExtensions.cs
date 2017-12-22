@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace InfinniPlatform.IoC
 {
+    /// <summary>
+    /// Extension methods for IoC-container.
+    /// </summary>
     public static class ContainerExtensions
     {
         /// <summary>

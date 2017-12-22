@@ -33,8 +33,8 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken token)
         {
-            return FindUserInCache(() => (TUser) UserCache.FindUserByLogin(loginProvider, providerKey),
-                                   async () => await Users.Value.Find(u => u.Logins.Any(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey)).FirstOrDefaultAsync());
+            return FindUserInCache(() => (TUser) _userCache.FindUserByLogin(loginProvider, providerKey),
+                                   async () => await _users.Value.Find(u => u.Logins.Any(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey)).FirstOrDefaultAsync());
         }
     }
 }

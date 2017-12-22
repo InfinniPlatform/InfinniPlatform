@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace InfinniPlatform.Http.StaticFiles
 {
     /// <summary>
-    /// Extensions for static files serving.
+    /// Extension methods for static files serving.
     /// </summary>
     public static class StaticFilesExtensions
     {

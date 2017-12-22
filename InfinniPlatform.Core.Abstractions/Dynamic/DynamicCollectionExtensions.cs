@@ -5,6 +5,9 @@ using InfinniPlatform.Properties;
 
 namespace InfinniPlatform.Dynamic
 {
+    /// <summary>
+    /// Extension methods for working with dynamic objects as collections.
+    /// </summary>
     public static class DynamicCollectionExtensions
     {
         /// <summary>
@@ -19,9 +22,7 @@ namespace InfinniPlatform.Dynamic
 
             if (collection != null && index >= 0)
             {
-                var list = collection as IList;
-
-                if (list != null)
+                if (collection is IList list)
                 {
                     if (index < list.Count)
                     {
@@ -30,9 +31,7 @@ namespace InfinniPlatform.Dynamic
                 }
                 else
                 {
-                    var enumerable = collection as IEnumerable;
-
-                    if (enumerable != null)
+                    if (collection is IEnumerable enumerable)
                     {
                         foreach (var item in enumerable)
                         {

@@ -38,7 +38,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public async Task<IList<TUser>> GetUsersInRoleAsync(string normalizedRoleName, CancellationToken token)
         {
-            return await Users.Value.Find(u => u.Roles.Contains(normalizedRoleName)).ToListAsync();
+            return await _users.Value.Find(u => u.Roles.Contains(normalizedRoleName)).ToListAsync();
         }
     }
 }

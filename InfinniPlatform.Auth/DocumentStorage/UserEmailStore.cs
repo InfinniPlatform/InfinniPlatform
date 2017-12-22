@@ -51,8 +51,8 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken token)
         {
-            return FindUserInCache(() => (TUser) UserCache.FindUserByEmail(normalizedEmail),
-                                   async () => await Users.Value.Find(u => u.NormalizedEmail == normalizedEmail).FirstOrDefaultAsync());
+            return FindUserInCache(() => (TUser) _userCache.FindUserByEmail(normalizedEmail),
+                                   async () => await _users.Value.Find(u => u.NormalizedEmail == normalizedEmail).FirstOrDefaultAsync());
         }
     }
 }

@@ -11,7 +11,7 @@ using InfinniPlatform.Dynamic;
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Extensions for <see cref="IDocumentStorage"/>.
+    /// Extension methods for <see cref="IDocumentStorage"/>.
     /// </summary>
     public static class DocumentStorageExtensions
     {

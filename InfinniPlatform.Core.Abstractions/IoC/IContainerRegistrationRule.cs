@@ -27,7 +27,6 @@ namespace InfinniPlatform.IoC
         /// </summary>
         IContainerRegistrationRule InstancePerLifetimeScope();
 
-
         /// <summary>
         /// Определяет сервис, который предоставляет компонент.
         /// </summary>
@@ -51,8 +50,15 @@ namespace InfinniPlatform.IoC
         IContainerRegistrationRule AsImplementedInterfaces();
 
 
+        /// <summary>
+        /// Enables invocation interception for interface methods.
+        /// </summary>
         IContainerRegistrationRule EnableInterfaceInterceptors();
 
-        IContainerRegistrationRule InterceptedBy(params Type[] intercepterTypes);
+        /// <summary>
+        /// Register types of invocation interceptors for current interface.
+        /// </summary>
+        /// <param name="interceptorTypes">List of interceptor types.</param>
+        IContainerRegistrationRule InterceptedBy(params Type[] interceptorTypes);
     }
 }

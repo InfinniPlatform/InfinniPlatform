@@ -9,7 +9,7 @@ using Microsoft.CSharp.RuntimeBinder;
 namespace InfinniPlatform.Dynamic
 {
     /// <summary>
-    /// Extensions for dynamic objects.
+    /// Extension methods for dynamic objects.
     /// </summary>
     public static class DynamicObjectExtensions
     {

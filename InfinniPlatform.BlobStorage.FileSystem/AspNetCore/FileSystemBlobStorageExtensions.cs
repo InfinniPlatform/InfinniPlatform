@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace InfinniPlatform.AspNetCore
 {
     /// <summary>
-    /// Extensions for file system blob storage services registration.
+    /// Extension methods for file system blob storage services registration.
     /// </summary>
     public static class FileSystemBlobStorageExtensions
     {

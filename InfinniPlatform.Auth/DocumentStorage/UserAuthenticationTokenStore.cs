@@ -11,7 +11,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         {
             user.SetToken(loginProvider, name, value);
 
-            await Users.Value.ReplaceOneAsync(user);
+            await _users.Value.ReplaceOneAsync(user);
             UpdateUserInCache(user);
         }
 
@@ -20,7 +20,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         {
             user.RemoveToken(loginProvider, name);
 
-            await Users.Value.ReplaceOneAsync(user);
+            await _users.Value.ReplaceOneAsync(user);
             UpdateUserInCache(user);
         }
 

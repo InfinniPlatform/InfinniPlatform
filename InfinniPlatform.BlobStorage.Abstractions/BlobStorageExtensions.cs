@@ -3,7 +3,7 @@
 namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
-    /// Extensions for blob storage.
+    /// Extension methods for blob storage.
     /// </summary>
     public static class BlobStorageExtensions
     {

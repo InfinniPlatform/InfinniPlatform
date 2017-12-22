@@ -49,8 +49,8 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         protected static bool IsFromForm(HttpRequest request)
         {
-            return (request.ContentType.StartsWith(HttpConstants.MultipartFormDataContentType, StringComparison.OrdinalIgnoreCase)
-                   || request.ContentType.StartsWith(HttpConstants.FormUrlencodedContentType, StringComparison.OrdinalIgnoreCase)) &&
+            return (request.ContentType.StartsWith(ContentType.MultipartFormDataContentType, StringComparison.OrdinalIgnoreCase)
+                   || request.ContentType.StartsWith(ContentType.FormUrlencodedContentType, StringComparison.OrdinalIgnoreCase)) &&
                    request.Form != null;
         }
 

@@ -48,7 +48,7 @@ namespace InfinniPlatform.Auth.DocumentStorage
         /// <inheritdoc />
         public async Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken token)
         {
-            return await Users.Value.Find(u => u.Claims.Any(c => c.Type == claim.Type && c.Value == claim.Value)).ToListAsync();
+            return await _users.Value.Find(u => u.Claims.Any(c => c.Type == claim.Type && c.Value == claim.Value)).ToListAsync();
         }
     }
 }
