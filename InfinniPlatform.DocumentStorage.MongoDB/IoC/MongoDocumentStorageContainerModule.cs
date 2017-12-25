@@ -7,8 +7,14 @@ using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.DocumentStorage.IoC
 {
+    /// <summary>
+    /// Dependency registration module for <see cref="InfinniPlatform.DocumentStorage" />.
+    /// </summary>
     public class MongoDocumentStorageContainerModule : IContainerModule
     {
+        /// <summary>
+        /// Creates new instance of <see cref="MongoDocumentStorageContainerModule"/>.
+        /// </summary>
         public MongoDocumentStorageContainerModule(MongoDocumentStorageOptions options)
         {
             _options = options;
@@ -16,6 +22,7 @@ namespace InfinniPlatform.DocumentStorage.IoC
 
         private readonly MongoDocumentStorageOptions _options;
 
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf();

@@ -49,7 +49,7 @@ namespace InfinniPlatform.AspNetCore
         /// Register authentication services for <see cref="AppUser"/> and <see cref="AppUserRole"/>.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
-        /// <param name="options">Authentication options from configuration.</param>
+        /// <param name="options">Authentication options.</param>
         /// <returns>Service collection for further services registration.</returns>
         public static IServiceCollection AddAuthInternal(this IServiceCollection services, AuthOptions options)
         {
@@ -95,7 +95,7 @@ namespace InfinniPlatform.AspNetCore
         /// <typeparam name="TUser">User type.</typeparam>
         /// <typeparam name="TRole">Role type.</typeparam>
         /// <param name="services">Collection of registered services.</param>
-        /// <param name="options">Authentication options from configuration.</param>
+        /// <param name="options">Authentication options.</param>
         /// <returns>Service collection for further services registration.</returns>
         public static IServiceCollection AddAuthInternal<TUser, TRole>(this IServiceCollection services, AuthOptions options) where TUser : AppUser where TRole : AppUserRole
         {

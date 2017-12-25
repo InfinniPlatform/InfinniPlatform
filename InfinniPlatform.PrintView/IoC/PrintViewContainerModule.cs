@@ -6,8 +6,14 @@ using InfinniPlatform.Serialization;
 
 namespace InfinniPlatform.PrintView.IoC
 {
+    /// <summary>
+    /// Dependency registration module for <see cref="InfinniPlatform.PrintView" />.
+    /// </summary>
     public class PrintViewContainerModule : IContainerModule
     {
+        /// <summary>
+        /// Creates new instance of <see cref="PrintViewContainerModule"/>.
+        /// </summary>
         public PrintViewContainerModule(PrintViewOptions options)
         {
             _options = options;
@@ -15,6 +21,7 @@ namespace InfinniPlatform.PrintView.IoC
 
         private readonly PrintViewOptions _options;
 
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf().SingleInstance();

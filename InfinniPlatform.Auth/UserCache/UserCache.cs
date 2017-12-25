@@ -33,10 +33,10 @@ namespace InfinniPlatform.Auth.UserCache
         /// <summary>
         /// Initializes a new instance of <see cref="UserCache{TUser}" />.
         /// </summary>
-        /// <param name="options">Authentication options from configuration.</param>
+        /// <param name="options">Authentication options.</param>
         /// <param name="logger">Logger.</param>
         /// <param name="broadcastProducer">Broadcast messages producer.</param>
-        /// <param name="appOptions">Application options from configuration.</param>
+        /// <param name="appOptions">Application options.</param>
         public UserCache(AuthOptions options,
                          ILogger<UserCache<TUser>> logger,
                          IBroadcastProducer broadcastProducer,

@@ -1,14 +1,14 @@
 ﻿namespace InfinniPlatform.IoC
 {
     /// <summary>
-    /// Модуль регистрации зависимостей.
+    /// Dependencies registration module.
     /// </summary>
     public interface IContainerModule
     {
         /// <summary>
-        /// Загружает модуль.
+        /// Loads module.
         /// </summary>
-        /// <param name="builder">Регистратор зависимостей и правил их разрешения.</param>
+        /// <param name="builder">Dependency container builder.</param>
         void Load(IContainerBuilder builder);
     }
 }

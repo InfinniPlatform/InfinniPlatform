@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InfinniPlatform.DocumentStorage.IoC
 {
+    /// <summary>
+    /// Dependency registration module for <see cref="InfinniPlatform.DocumentStorage" />.
+    /// </summary>
     public class DocumentStorageHttpServiceContainerModule : IContainerModule
     {
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterType<QuerySyntaxTreeParser>()

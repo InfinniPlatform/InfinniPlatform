@@ -42,7 +42,7 @@ namespace InfinniPlatform.AspNetCore
         /// Register file system blob storage services.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
-        /// <param name="options">File system blob storage options from configuration.</param>
+        /// <param name="options">File system blob storage options.</param>
         /// <returns>Service collection for further services registration.</returns>
         public static IServiceCollection AddFileSystemBlobStorage(this IServiceCollection services, FileSystemBlobStorageOptions options)
         {

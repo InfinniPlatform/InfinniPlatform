@@ -48,7 +48,7 @@ namespace InfinniPlatform.BlobStorage
         /// <summary>
         /// Initializes a new instance of <see cref="FileSystemBlobStorage" />.
         /// </summary>
-        /// <param name="options">Authentication options from configuration.</param>
+        /// <param name="options">Authentication options.</param>
         /// <param name="objectSerializer">Object serializer.</param>
         /// <param name="mimeTypeResolver">File MIME type resolver.</param>
         /// <param name="perfLogger">Performance logger.</param>

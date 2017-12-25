@@ -9,8 +9,14 @@ using IObjectSerializer = InfinniPlatform.Serialization.IObjectSerializer;
 
 namespace InfinniPlatform.IoC
 {
+    /// <summary>
+    /// Dependency registration module for <see cref="InfinniPlatform" />.
+    /// </summary>
     public class CoreContainerModule : IContainerModule
     {
+        /// <summary>
+        /// Creates new instance of <see cref="CoreContainerModule"/>.
+        /// </summary>
         public CoreContainerModule(AppOptions options)
         {
             _options = options;
@@ -18,6 +24,7 @@ namespace InfinniPlatform.IoC
 
         private readonly AppOptions _options;
 
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf();
