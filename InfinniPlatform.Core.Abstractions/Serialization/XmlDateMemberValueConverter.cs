@@ -13,6 +13,7 @@ namespace InfinniPlatform.Serialization
     /// </summary>
     public class XmlDateMemberValueConverter : IMemberValueConverter
     {
+        /// <inheritdoc />
         public bool CanConvert(MemberInfo member)
         {
             var property = member as PropertyInfo;
@@ -27,6 +28,7 @@ namespace InfinniPlatform.Serialization
             return false;
         }
 
+        /// <inheritdoc />
         public object Convert(object value)
         {
             var date = value as DateTime?;
@@ -39,6 +41,7 @@ namespace InfinniPlatform.Serialization
             return null;
         }
 
+        /// <inheritdoc />
         public object ConvertBack(Func<Type, object> value)
         {
             var date = (Date?)value(typeof(Date?));

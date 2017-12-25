@@ -9,7 +9,7 @@ using InfinniPlatform.Properties;
 namespace InfinniPlatform.Serialization
 {
     /// <summary>
-    /// Контейнер известных типов для сериализации.
+    /// Container of known types for serialization.
     /// </summary>
     public class KnownTypesContainer : IEnumerable<KeyValuePair<Type, string>>
     {
@@ -21,9 +21,9 @@ namespace InfinniPlatform.Serialization
 
 
         /// <summary>
-        /// Является известным типом.
+        /// Flag indicating if type is known.
         /// </summary>
-        /// <param name="type">Тип.</param>
+        /// <param name="type">Type.</param>
         public bool IsKnownType(Type type)
         {
             return _types.Keys.Any(type.GetTypeInfo().IsAssignableFrom);
@@ -31,58 +31,54 @@ namespace InfinniPlatform.Serialization
 
 
         /// <summary>
-        /// Содержит указанный тип.
+        /// Flag indicating if container has specified type.
         /// </summary>
-        /// <param name="type">Тип.</param>
+        /// <param name="type">Type.</param>
         public bool HasType(Type type)
         {
             return _types.ContainsKey(type);
         }
 
         /// <summary>
-        /// Получить тип по имени типа.
+        /// Returns type by name.
         /// </summary>
-        /// <param name="name">Имя типа.</param>
-        /// <returns>Тип.</returns>
+        /// <param name="name">Type name.</param>
+        /// <returns>Type.</returns>
         public Type GetType(string name)
         {
-            Type result;
-
-            _names.TryGetValue(name, out result);
+            _names.TryGetValue(name, out var result);
 
             return result;
         }
 
 
         /// <summary>
-        /// Содержит тип с указанным именем.
+        /// Flag indicating if container has type with specified name.
         /// </summary>
-        /// <param name="name">Имя типа.</param>
+        /// <param name="name">Type name.</param>
         public bool HasName(string name)
         {
             return _names.ContainsKey(name);
         }
 
         /// <summary>
-        /// Получить имя типа по типу.
+        /// Returns type name by type.
         /// </summary>
-        /// <param name="type">Тип.</param>
-        /// <returns>Имя типа.</returns>
+        /// <param name="type">Type.</param>
+        /// <returns>Type name.</returns>
         public string GetName(Type type)
         {
-            string result;
-
-            _types.TryGetValue(type, out result);
+            _types.TryGetValue(type, out var result);
 
             return result;
         }
 
 
         /// <summary>
-        /// Добавить тип.
+        /// Adds type to container.
         /// </summary>
-        /// <typeparam name="T">Тип.</typeparam>
-        /// <param name="name">Имя типа.</param>
+        /// <typeparam name="T">Type.</typeparam>
+        /// <param name="name">Type name.</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public KnownTypesContainer Add<T>(string name)
@@ -91,10 +87,10 @@ namespace InfinniPlatform.Serialization
         }
 
         /// <summary>
-        /// Добавить тип.
+        /// Adds type to container.
         /// </summary>
-        /// <param name="type">Тип.</param>
-        /// <param name="name">Имя типа.</param>
+        /// <param name="type">Type.</param>
+        /// <param name="name">Type name.</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public KnownTypesContainer Add(Type type, string name)
@@ -136,6 +132,7 @@ namespace InfinniPlatform.Serialization
         }
 
 
+        /// <inheritdoc />
         public IEnumerator<KeyValuePair<Type, string>> GetEnumerator()
         {
             return _types.GetEnumerator();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+#pragma warning disable 1591 // for operators overrides
 
 namespace InfinniPlatform.Types
 {
@@ -357,7 +358,7 @@ namespace InfinniPlatform.Types
             return ((DateTime)this).ToString(format, provider);
         }
 
-
+        
         public static explicit operator Date(long value) { return new Date(value); }
         public static explicit operator long(Date value) { return value.UnixTime; }
         

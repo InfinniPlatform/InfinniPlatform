@@ -7,7 +7,10 @@ using System.Security.Principal;
 
 namespace InfinniPlatform.Security
 {
-    public static class SecurityExtensions
+    /// <summary>
+    /// Extensions methods for <see cref="IIdentity"/>.
+    /// </summary>
+    public static class IdentityExtensions
     {
         /// <summary>
         /// Возвращает уникальный идентификатор пользователя.

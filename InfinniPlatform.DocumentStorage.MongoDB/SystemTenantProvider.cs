@@ -8,12 +8,12 @@ namespace InfinniPlatform.DocumentStorage
     {
         public string GetTenantId()
         {
-            return SecurityConstants.SystemUserTenantId;
+            return TenantIdConstants.SystemUserTenantId;
         }
 
         public string GetTenantId(IIdentity identity)
         {
-            return SecurityConstants.SystemUserTenantId;
+            return TenantIdConstants.SystemUserTenantId;
         }
     }
 }

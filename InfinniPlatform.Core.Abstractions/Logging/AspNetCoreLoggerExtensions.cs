@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Microsoft.Extensions.Logging
 {
+    /// <summary>
+    /// Extensions methods for <see cref="ILogger"/>.
+    /// </summary>
     public static class AspNetCoreLoggerExtensions
     {
         private static readonly Func<object, Exception, string> MessageFormatter = (message, exception) => message.ToString();

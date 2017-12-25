@@ -52,14 +52,14 @@ namespace InfinniPlatform.Session
                     if (string.IsNullOrEmpty(tenantId))
                     {
                         // Организация не определена
-                        tenantId = SecurityConstants.UndefinedUserTenantId;
+                        tenantId = TenantIdConstants.UndefinedUserTenantId;
                     }
                 }
             }
             else
             {
                 // Анонимный пользователь
-                tenantId = SecurityConstants.AnonymousUserTenantId;
+                tenantId = TenantIdConstants.AnonymousUserTenantId;
             }
 
             return tenantId;

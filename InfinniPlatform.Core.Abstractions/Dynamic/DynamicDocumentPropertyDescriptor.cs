@@ -9,7 +9,7 @@ namespace InfinniPlatform.Dynamic
     public class DynamicDocumentPropertyDescriptor : PropertyDescriptor
     {
         /// <summary>
-        /// 
+        /// Initializes new instance of <see cref="DynamicDocumentPropertyDescriptor"/>.
         /// </summary>
         /// <param name="name">Property name.</param>
         public DynamicDocumentPropertyDescriptor(string name)
@@ -17,47 +17,44 @@ namespace InfinniPlatform.Dynamic
         {
         }
 
-
+        /// <inheritdoc />
         public override bool CanResetValue(object component)
         {
             return true;
         }
 
+        /// <inheritdoc />
         public override void ResetValue(object component)
         {
             CastInstance(component)[Name] = null;
         }
 
+        /// <inheritdoc />
         public override object GetValue(object component)
         {
             return CastInstance(component)[Name];
         }
 
+        /// <inheritdoc />
         public override void SetValue(object component, object value)
         {
             CastInstance(component)[Name] = value;
         }
 
+        /// <inheritdoc />
         public override bool ShouldSerializeValue(object component)
         {
             return false;
         }
 
+        /// <inheritdoc />
+        public override Type ComponentType => typeof(DynamicDocument);
 
-        public override Type ComponentType
-        {
-            get { return typeof(DynamicDocument); }
-        }
+        /// <inheritdoc />
+        public override bool IsReadOnly => false;
 
-        public override bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        public override Type PropertyType
-        {
-            get { return typeof(object); }
-        }
+        /// <inheritdoc />
+        public override Type PropertyType => typeof(object);
 
 
         private static DynamicDocument CastInstance(object component)
