@@ -5,13 +5,56 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using InfinniPlatform.IoC;
+using InfinniPlatform.Logging;
+using InfinniPlatform.Serialization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace InfinniPlatform.AspNetCore
 {
+    /// <summary>
+    /// Extension methods for core dependencies registration.
+    /// </summary>
     public static class CoreServiceCollectionExtensions
     {
+        /// <summary>
+        /// Adds an application IoC-container module.
+        /// </summary>
+        /// <param name="services">Collection of registered services.</param>
+        /// <param name="containerModule">The application IoC-container module.</param>
+        public static IServiceCollection AddContainerModule(this IServiceCollection services, IContainerModule containerModule)
+        {
+            return services.AddSingleton(provider => containerModule);
+        }
+
+        /// <summary>
+        /// Adds customized MVC services.
+        /// </summary>
+        /// <param name="services">Collection of registered services.</param>
+        public static IMvcBuilder AddMvcWithInternalServices(this IServiceCollection services)
+        {
+            var mvcBuilder = services.AddMvc()
+                .AddJsonOptions(json =>
+                {
+                    var settings = json.SerializerSettings;
+
+                    settings.Formatting = Formatting.Indented;
+                    settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+                    settings.NullValueHandling = NullValueHandling.Ignore;
+                    settings.ContractResolver = new DefaultContractResolver { NamingStrategy = new DefaultNamingStrategy() };
+                    settings.Converters.Add(new DateJsonConverter());
+                    settings.Converters.Add(new TimeJsonConverter());
+                    settings.Converters.Add(new DynamicDocumentJsonConverter());
+                });
+
+            return mvcBuilder;
+        }
+
         /// <summary>
         /// Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
@@ -25,7 +68,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Builds <see cref="IServiceProvider" /> based on registered services.
+        ///  Builds <see cref="IServiceProvider" /> based on registered services.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="configuration">Configuration properties set.</param>
@@ -46,6 +89,12 @@ namespace InfinniPlatform.AspNetCore
         /// <param name="containerModules">Registered IoC-container modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, AppOptions options, IEnumerable<IContainerModule> containerModules = null)
         {
+            // Because IoC uses IHttpContextAccessor for InstancePerLifetimeScope strategy
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // For correct resolving a logger name via LoggerNameAttribute
+            services.AddSingleton(typeof(ILogger<>), typeof(TypedLogger<>));
+
             services.AddSingleton(provider => new CoreContainerModule(options ?? AppOptions.Default));
 
             if (containerModules != null)
@@ -66,7 +115,7 @@ namespace InfinniPlatform.AspNetCore
 
             // Register Autofac container itself
             IContainer autofacRootContainer = null;
-            containerBuilder.RegisterInstance((Func<IContainer>) (() => autofacRootContainer));
+            containerBuilder.RegisterInstance((Func<IContainer>)(() => autofacRootContainer));
             containerBuilder.Register(r => r.Resolve<Func<IContainer>>()()).As<IContainer>().SingleInstance();
 
             // ReSharper restore AccessToModifiedClosure

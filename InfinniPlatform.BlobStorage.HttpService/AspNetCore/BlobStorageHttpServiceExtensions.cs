@@ -7,12 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace InfinniPlatform.AspNetCore
 {
     /// <summary>
-    /// Extension methods for blob storage http service services registration.
+    /// Extension methods for blob storage http service dependencies registration.
     /// </summary>
     public static class BlobStorageHttpServiceExtensions
     {
         /// <summary>
-        /// Register blob storage http service services.
+        /// Register blob storage http service dependencies.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         public static IServiceCollection AddBlobStorageHttpService(this IServiceCollection services)

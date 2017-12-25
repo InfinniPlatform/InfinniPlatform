@@ -53,7 +53,7 @@ namespace InfinniPlatform.SandboxApp
                .UseMiddleware<LogContextMiddleware>()
                .UseMvcWithInternalServices();
 
-            CoreExtensions.RegisterAppLifetimeHandlers(resolver);
+            CoreApplicationBuilderExtensions.RegisterAppLifetimeHandlers(resolver);
         }
     }
 }

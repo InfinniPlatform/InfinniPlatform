@@ -9,12 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace InfinniPlatform.AspNetCore
 {
     /// <summary>
-    /// Extension methods for file system blob storage services registration.
+    /// Extension methods for file system blob storage dependencies registration.
     /// </summary>
     public static class FileSystemBlobStorageExtensions
     {
         /// <summary>
-        /// Register file system blob storage services.
+        /// Register file system blob storage dependencies.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <returns>Service collection for further services registration.</returns>
@@ -26,7 +26,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Register file system blob storage services.
+        /// Register file system blob storage dependencies.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="configuration">Configuration properties set.</param>
@@ -39,7 +39,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Register file system blob storage services.
+        /// Register file system blob storage dependencies.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="options">File system blob storage options.</param>

@@ -8,12 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace InfinniPlatform.AspNetCore
 {
     /// <summary>
-    /// Extension methods for setting up auth http service dependencies.
+    /// Extension methods for auth http service dependencies registration.
     /// </summary>
     public static class AuthHttpServiceExtensions
     {
         /// <summary>
-        /// Adds auth http service dependencies.
+        /// Register auth http service dependencies.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="builder">MVC builder.</param>
@@ -28,7 +28,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Adds auth http service dependencies with settings from configuration.
+        /// Register auth http service dependencies with settings from configuration.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="builder">MVC builder.</param>
@@ -44,7 +44,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Adds auth http service dependencies with settings from custom options.
+        /// Register auth http service dependencies with settings from custom options.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="builder">MVC builder.</param>
@@ -58,7 +58,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Adds auth http service dependencies for custom user.
+        /// Register auth http service dependencies for custom user.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="builder">MVC builder.</param>
@@ -74,7 +74,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Adds auth http service dependencies for custom user with settings from configuration. 
+        /// Register auth http service dependencies for custom user with settings from configuration. 
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="builder">MVC builder.</param>
@@ -91,7 +91,7 @@ namespace InfinniPlatform.AspNetCore
         }
 
         /// <summary>
-        /// Adds auth http service dependencies for custom user with settings from custom options. 
+        /// Register auth http service dependencies for custom user with settings from custom options. 
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <param name="builder">MVC builder.</param>

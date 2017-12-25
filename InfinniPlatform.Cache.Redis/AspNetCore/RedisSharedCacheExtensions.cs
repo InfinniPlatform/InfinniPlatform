@@ -9,12 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace InfinniPlatform.AspNetCore
 {
     /// <summary>
-    /// Extension methods for shared cache services registration.
+    /// Extension methods for shared cache dependencies registration.
     /// </summary>
     public static class RedisSharedCacheExtensions
     {
         /// <summary>
-        /// Register shared cache services.
+        /// Register shared cache dependencies.
         /// </summary>
         /// <param name="services">Collection of registered services.</param>
         /// <returns>Service collection for further services registration.</returns>
