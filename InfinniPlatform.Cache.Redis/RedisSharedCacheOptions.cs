@@ -1,15 +1,22 @@
 ﻿namespace InfinniPlatform.Cache
 {
     /// <summary>
-    /// Настройки распределенного кэша на основе Redis.
+    /// Redis shared cache configuration options.
     /// </summary>
-    public class RedisSharedCacheOptions
+    public class RedisSharedCacheOptions : IOptions
     {
-        public const string SectionName = "redisSharedCache";
+        /// <inheritdoc />
+        public string SectionName => "redisSharedCache";
 
+        /// <summary>
+        /// Default instance of <see cref="RedisSharedCacheOptions" />.
+        /// </summary>
         public static readonly RedisSharedCacheOptions Default = new RedisSharedCacheOptions();
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="RedisSharedCacheOptions" />.
+        /// </summary>
         public RedisSharedCacheOptions()
         {
             Host = "localhost";
@@ -24,47 +31,47 @@
 
 
         /// <summary>
-        /// Адрес или доменное имя.
+        /// Redis server address.
         /// </summary>
         public string Host { get; set; }
 
         /// <summary>
-        /// Номер порта.
+        /// redis server port.
         /// </summary>
         public int Port { get; set; }
 
         /// <summary>
-        /// Номер базы данных.
+        /// Database number.
         /// </summary>
         public int Database { get; set; }
 
         /// <summary>
-        /// Пароль подключения.
+        /// Password.
         /// </summary>
         public string Password { get; set; }
 
         /// <summary>
-        /// Размер буфера чтения.
+        /// Read buffer size in bytes.
         /// </summary>
         public int ReadBufferSize { get; set; }
 
         /// <summary>
-        /// Размер буфера записи.
+        /// Write buffer size in bytes.
         /// </summary>
         public int WriteBufferSize { get; set; }
 
         /// <summary>
-        /// Таймаут подключения.
+        /// Connection timeout in milliseconds.
         /// </summary>
         public int ConnectionTimeout { get; set; }
 
         /// <summary>
-        /// Количество попыток подключения.
+        /// Maximum number of Reconnect retries.
         /// </summary>
         public int MaxReconnectRetries { get; set; }
 
         /// <summary>
-        /// Размер пула подключений.
+        /// Connection pool size.
         /// </summary>
         public int PoolSize { get; set; }
     }

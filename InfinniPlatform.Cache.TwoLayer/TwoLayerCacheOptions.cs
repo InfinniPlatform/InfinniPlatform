@@ -4,10 +4,17 @@ using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.Cache
 {
-    public class TwoLayerCacheOptions
+    /// <summary>
+    /// Two layer cache configuration options.
+    /// </summary>
+    public class TwoLayerCacheOptions : IOptions
     {
-        public const string SectionName = "twoLayerCache";
+        /// <inheritdoc />
+        public string SectionName => "twoLayerCache";
 
+        /// <summary>
+        /// Default instance of <see cref="TwoLayerCacheOptions" />.
+        /// </summary>
         public static readonly TwoLayerCacheOptions Default = new TwoLayerCacheOptions();
 
 

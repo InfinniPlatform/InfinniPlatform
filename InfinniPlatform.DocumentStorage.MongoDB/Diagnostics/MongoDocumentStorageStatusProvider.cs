@@ -11,16 +11,18 @@ namespace InfinniPlatform.DocumentStorage.Diagnostics
     /// </summary>
     internal class MongoDocumentStorageStatusProvider : ISubsystemStatusProvider
     {
-        public MongoDocumentStorageStatusProvider(MongoConnection connection)
+        public MongoDocumentStorageStatusProvider(MongoConnection connection, MongoDocumentStorageOptions mongoDocumentStorageOptions)
         {
             _connection = connection;
+            _mongoDocumentStorageOptions = mongoDocumentStorageOptions;
         }
 
 
         private readonly MongoConnection _connection;
+        private readonly MongoDocumentStorageOptions _mongoDocumentStorageOptions;
 
 
-        public string Name => MongoDocumentStorageOptions.SectionName;
+        public string Name => _mongoDocumentStorageOptions.SectionName;
 
 
         public async Task<object> GetStatus(HttpRequest request)

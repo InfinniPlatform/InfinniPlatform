@@ -36,7 +36,9 @@ namespace InfinniPlatform.AspNetCore
         /// <returns>Service collection for further services registration.</returns>
         public static IServiceCollection AddQuartzScheduler(this IServiceCollection services, IConfiguration configuration, Action<QuartzSchedulerOptions> callback = null)
         {
-            var options = configuration.GetSection(QuartzSchedulerOptions.SectionName).Get<QuartzSchedulerOptions>();
+            var options = QuartzSchedulerOptions.Default;
+            
+            configuration.GetSection(options.SectionName).Bind(options);
 
             callback?.Invoke(options);
 

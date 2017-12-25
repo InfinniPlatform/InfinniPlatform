@@ -36,7 +36,9 @@ namespace InfinniPlatform.AspNetCore
         /// <returns>Collection of registered services.</returns>
         public static IServiceCollection AddAuthHttpService(IServiceCollection services, IMvcBuilder builder, IConfiguration configuration)
         {
-            var options = configuration.GetSection(AuthHttpServiceOptions.SectionName).Get<AuthHttpServiceOptions>();
+            var options = AuthHttpServiceOptions.Default;
+            
+            configuration.GetSection(options.SectionName).Bind(options);
 
             builder.ConfigureApplicationPartManager(manager => manager.FeatureProviders.Add(new AuthControllersFeatureProvider<AppUser>()));
 
@@ -83,7 +85,9 @@ namespace InfinniPlatform.AspNetCore
         /// <returns>Collection of registered services.</returns>
         public static IServiceCollection AddAuthHttpService<TUser>(IServiceCollection services, IMvcBuilder builder, IConfiguration configuration) where TUser : AppUser
         {
-            var options = configuration.GetSection(AuthHttpServiceOptions.SectionName).Get<AuthHttpServiceOptions>();
+            var options = AuthHttpServiceOptions.Default;
+            
+            configuration.GetSection(options.SectionName).Bind(options);
 
             builder.ConfigureApplicationPartManager(manager => manager.FeatureProviders.Add(new AuthControllersFeatureProvider<TUser>()));
 

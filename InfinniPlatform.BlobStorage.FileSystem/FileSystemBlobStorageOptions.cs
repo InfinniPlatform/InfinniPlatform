@@ -1,14 +1,12 @@
 ﻿namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
-    /// File system blob storage options from configuration.
+    /// File system blob storage configuration options.
     /// </summary>
-    public class FileSystemBlobStorageOptions
+    public class FileSystemBlobStorageOptions : IOptions
     {
-        /// <summary>
-        /// Name of option section in configuration file.
-        /// </summary>
-        public const string SectionName = "fileSystemBlobStorage";
+        /// <inheritdoc />
+        public string SectionName => "fileSystemBlobStorage";
 
         /// <summary>
         /// Default directory for blob storage.

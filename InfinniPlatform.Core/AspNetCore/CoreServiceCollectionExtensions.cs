@@ -75,8 +75,9 @@ namespace InfinniPlatform.AspNetCore
         /// <param name="containerModules">Registered IoC-container modules.</param>
         public static IServiceProvider BuildProvider(this IServiceCollection services, IConfiguration configuration, IEnumerable<IContainerModule> containerModules = null)
         {
-            var options = configuration.GetSection(AppOptions.SectionName)
-                .Get<AppOptions>();
+            var options = AppOptions.Default;
+            
+            configuration.GetSection(options.SectionName).Bind(options);
 
             return BuildProvider(services, options);
         }

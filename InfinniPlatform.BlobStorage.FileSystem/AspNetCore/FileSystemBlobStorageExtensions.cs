@@ -33,7 +33,9 @@ namespace InfinniPlatform.AspNetCore
         /// <returns>Service collection for further services registration.</returns>
         public static IServiceCollection AddFileSystemBlobStorage(this IServiceCollection services, IConfiguration configuration)
         {
-            var options = configuration.GetSection(FileSystemBlobStorageOptions.SectionName).Get<FileSystemBlobStorageOptions>();
+            var options = FileSystemBlobStorageOptions.Default;
+
+            configuration.GetSection(options.SectionName).Bind(options);
 
             return AddFileSystemBlobStorage(services, options);
         }

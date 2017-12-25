@@ -33,7 +33,9 @@ namespace InfinniPlatform.AspNetCore
         /// <returns>Service collection for further services registration.</returns>
         public static IServiceCollection AddPrintView(this IServiceCollection services, IConfiguration configuration)
         {
-            var options = configuration.GetSection(PrintViewOptions.SectionName).Get<PrintViewOptions>();
+            var options = PrintViewOptions.Default;
+            
+            configuration.GetSection(options.SectionName).Bind(options);
 
             return AddPrintView(services, options);
         }

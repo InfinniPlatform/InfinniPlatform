@@ -4,14 +4,12 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth
 {
     /// <summary>
-    /// Authentication options from configuration.
+    /// Authentication configuration options.
     /// </summary>
-    public class AuthOptions
+    public class AuthOptions : IOptions
     {
-        /// <summary>
-        /// Name of option section in configuration file.
-        /// </summary>
-        public const string SectionName = "auth";
+        /// <inheritdoc />
+        public string SectionName => "auth";
 
         /// <summary>
         /// Default user cache invalidation timeout (in minutes).

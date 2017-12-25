@@ -1,25 +1,32 @@
 ﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Настройки хранилища документов MongoDB.
+    /// MongoDB document storage settings configuration options. 
     /// </summary>
-    public class MongoDocumentStorageOptions
+    public class MongoDocumentStorageOptions : IOptions
     {
-        public const string SectionName = "mongodbDocumentStorage";
+        /// <inheritdoc />
+        public string SectionName => "mongodbDocumentStorage";
 
+        /// <summary>
+        /// Default instance of <see cref="MongoDocumentStorageOptions" />.
+        /// </summary>
         public static MongoDocumentStorageOptions Default = new MongoDocumentStorageOptions();
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="MongoDocumentStorageOptions"/>.
+        /// </summary>
         public MongoDocumentStorageOptions()
         {
             ConnectionString = "mongodb://localhost:27017";
         }
 
         /// <summary>
-        /// Строка подключения.
+        /// Connection string.
         /// </summary>
         /// <remarks>
-        /// Подробнее см. https://docs.mongodb.com/manual/reference/connection-string..
+        /// Connection string format could be found at https://docs.mongodb.com/manual/reference/connection-string.
         /// </remarks>
         public string ConnectionString { get; set; }
     }

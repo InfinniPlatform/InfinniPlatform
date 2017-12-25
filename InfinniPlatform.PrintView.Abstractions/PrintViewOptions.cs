@@ -1,27 +1,25 @@
 ﻿namespace InfinniPlatform.PrintView
 {
     /// <summary>
-    /// Настройки печатных представлений.
+    /// Print view configuration options.
     /// </summary>
     /// <remarks>
-    /// Поддерживаемая версия утилиты wkhtmltopdf - 0.12.2.4 - http://wkhtmltopdf.org/.
+    /// This service assumes that wkhtmltopdf (http://wkhtmltopdf.org/) utility is installed on the machine. Tested compatible version - 0.12.2.4.
     /// </remarks>
-    public class PrintViewOptions
+    public class PrintViewOptions : IOptions
     {
-        /// <summary>
-        /// Имя секции в файле конфигурации.
-        /// </summary>
-        public const string SectionName = "printView";
+        /// <inheritdoc />
+        public string SectionName => "printView";
 
 
         /// <summary>
-        /// Настройка планировщика заданий по умолчанию.
+        /// Default instance of <see cref="PrintViewOptions" />.
         /// </summary>
         public static readonly PrintViewOptions Default = new PrintViewOptions();
 
 
         /// <summary>
-        /// Конструктор.
+        /// Initializes a new instance of <see cref="PrintViewOptions" />.
         /// </summary>
         public PrintViewOptions()
         {
@@ -29,26 +27,26 @@
 
 
         /// <summary>
-        /// Каталог для хранения временных файлов при генерации HTML/PDF.
+        /// Temporary files directory.
         /// </summary>
         /// <remarks>
-        /// По умолчанию - каталог временных файлов учетной записи пользователя.
+        /// By default - user profile temp files directory.
         /// </remarks>
         public string TempDirectory { get; set; }
 
         /// <summary>
-        /// Местоположение утилиты wkhtmltopdf - http://wkhtmltopdf.org/.
+        /// Location of wkhtmltopdf utility.
         /// </summary>
         /// <remarks>
-        /// По умолчанию - генерируется автоматически с учетом операционной системы.
+        /// By default - auto generated dependent on operation system.
         /// </remarks>
         public string WkHtmlToPdfPath { get; set; }
 
         /// <summary>
-        /// Формат аргументов утилиты wkhtmltopdf - http://wkhtmltopdf.org/.
+        /// Command line options for wkhtmltopdf utility.
         /// </summary>
         /// <remarks>
-        /// По умолчанию - генерируется автоматически с учетом операционной системы.
+        /// By default - auto generated dependent on operation system.
         /// </remarks>
         public string WkHtmlToPdfArguments { get; set; }
     }

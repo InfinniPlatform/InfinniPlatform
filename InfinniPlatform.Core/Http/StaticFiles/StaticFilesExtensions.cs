@@ -22,7 +22,10 @@ namespace InfinniPlatform.Http.StaticFiles
         /// <param name="resolver">Dependency resolver.</param>
         public static IApplicationBuilder UseStaticFilesMapping(this IApplicationBuilder app, IConfiguration configuration, IContainerResolver resolver)
         {
-            var appOptions = configuration.GetSection(AppOptions.SectionName).Get<AppOptions>();
+            var appOptions = AppOptions.Default;
+            
+            configuration.GetSection(appOptions.SectionName).Bind(appOptions);
+            
             var logger = resolver.ResolveOptional<ILogger<IApplicationBuilder>>();
 
             foreach (var mapping in appOptions.StaticFilesMapping)

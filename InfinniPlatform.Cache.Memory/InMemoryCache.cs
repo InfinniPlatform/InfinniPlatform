@@ -5,7 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace InfinniPlatform.Cache
 {
     /// <summary>
-    /// In-memory cache realization.
+    /// In-memory cache implementation.
     /// </summary>
     public class InMemoryCache : IInMemoryCache, IDisposable
     {
@@ -29,7 +29,7 @@ namespace InfinniPlatform.Cache
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return _cache.TryGetValue(key, out object value);
+            return _cache.TryGetValue(key, out var _);
         }
 
         /// <inheritdoc />

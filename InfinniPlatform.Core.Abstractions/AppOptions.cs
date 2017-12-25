@@ -4,14 +4,12 @@ using System.Collections.Generic;
 namespace InfinniPlatform
 {
     /// <summary>
-    /// General application settings from configuration.
+    /// General application settings configuration options.
     /// </summary>
-    public class AppOptions
+    public class AppOptions : IOptions
     {
-        /// <summary>
-        /// Name of option section in configuration file.
-        /// </summary>
-        public const string SectionName = "app";
+        /// <inheritdoc />
+        public string SectionName => "app";
 
         /// <summary>
         /// Default instance of <see cref="AppOptions" />.

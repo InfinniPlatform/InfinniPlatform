@@ -36,7 +36,9 @@ namespace InfinniPlatform.AspNetCore
         /// <returns>Service collection for further services registration.</returns>
         public static IServiceCollection AddTwoLayerCache(this IServiceCollection services, IConfiguration configuration, Action<TwoLayerCacheOptions> callback = null)
         {
-            var options = configuration.GetSection(TwoLayerCacheOptions.SectionName).Get<TwoLayerCacheOptions>();
+            var options = TwoLayerCacheOptions.Default;
+            
+            configuration.GetSection(options.SectionName).Bind(options);
 
             callback?.Invoke(options);
 

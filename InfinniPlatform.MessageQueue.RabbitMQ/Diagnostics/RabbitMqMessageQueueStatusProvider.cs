@@ -9,13 +9,15 @@ namespace InfinniPlatform.MessageQueue.Diagnostics
     internal class RabbitMqMessageQueueStatusProvider : ISubsystemStatusProvider
     {
         private readonly RabbitMqManagementHttpClient _client;
+        private readonly RabbitMqMessageQueueOptions _rabbitMqMessageQueueOptions;
 
-        public RabbitMqMessageQueueStatusProvider(RabbitMqManagementHttpClient client)
+        public RabbitMqMessageQueueStatusProvider(RabbitMqManagementHttpClient client, RabbitMqMessageQueueOptions rabbitMqMessageQueueOptions)
         {
             _client = client;
+            _rabbitMqMessageQueueOptions = rabbitMqMessageQueueOptions;
         }
 
-        public string Name => RabbitMqMessageQueueOptions.SectionName;
+        public string Name => _rabbitMqMessageQueueOptions.SectionName;
 
         public async Task<object> GetStatus(HttpRequest request)
         {
