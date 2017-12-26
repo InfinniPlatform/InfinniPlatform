@@ -3,7 +3,6 @@
 using InfinniPlatform.Extensions;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
@@ -18,14 +17,10 @@ namespace InfinniPlatform.Http.StaticFiles
         /// Configure serving static files using mapping in configuration file.
         /// </summary>
         /// <param name="app">Application builder.</param>
-        /// <param name="configuration">Configuration properties set.</param>
         /// <param name="resolver">Dependency resolver.</param>
-        public static IApplicationBuilder UseStaticFilesMapping(this IApplicationBuilder app, IConfiguration configuration, IContainerResolver resolver)
+        public static IApplicationBuilder UseStaticFilesMapping(this IApplicationBuilder app, IContainerResolver resolver)
         {
-            var appOptions = AppOptions.Default;
-            
-            configuration.GetSection(appOptions.SectionName).Bind(appOptions);
-            
+            var appOptions = resolver.Resolve<AppOptions>();
             var logger = resolver.ResolveOptional<ILogger<IApplicationBuilder>>();
 
             foreach (var mapping in appOptions.StaticFilesMapping)

@@ -1,7 +1,6 @@
 ﻿using System;
 
 using InfinniPlatform.AspNetCore;
-using InfinniPlatform.Http;
 using InfinniPlatform.Http.StaticFiles;
 using InfinniPlatform.IoC;
 using Microsoft.AspNetCore.Builder;
@@ -25,9 +24,9 @@ namespace InfinniPlatform.SandboxApp
 
             var serviceProvider = services.AddAuthInternal(_configuration)
                                           .AddAuthHttpService(mvcBuilder)
-                                          .AddInMemoryCache()
-                                          .AddRedisSharedCache(_configuration)
-                                          .AddTwoLayerCache(_configuration)
+                                          //.AddInMemoryCache()
+                                          //.AddRedisSharedCache(_configuration)
+                                          //.AddTwoLayerCache(_configuration)
                                           .AddFileSystemBlobStorage(_configuration)
                                           .AddBlobStorageHttpService()
                                           .AddMongoDocumentStorage(_configuration)
@@ -46,7 +45,7 @@ namespace InfinniPlatform.SandboxApp
         public void Configure(IApplicationBuilder app,
                               IContainerResolver resolver)
         {
-            app.UseStaticFilesMapping(_configuration, resolver)
+            app.UseStaticFilesMapping(resolver)
                .UsePerformanceLogging()
                .UseErrorHandling()
                .UseAuthInternal()

@@ -58,7 +58,7 @@ namespace InfinniPlatform.SandboxApp
 
             Log.Logger = new LoggerConfiguration()
                          .MinimumLevel.Information()
-                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                         //.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                          .Enrich.FromLogContext()
                          .WriteTo.Logger(lc => lc.Filter.ByExcluding(performanceLoggerFilter)
                                                  .WriteTo.RollingFile("logs/events-{Date}.log",
