@@ -403,8 +403,6 @@ namespace InfinniPlatform.Dynamic
 
             var propertyNames = propertyPath.Split('.');
 
-            var b = target is ICollection;
-
             for (var i = 0; i < propertyNames.Length - 1; ++i)
             {
                 if (target == null)
