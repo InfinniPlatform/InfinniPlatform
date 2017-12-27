@@ -3,12 +3,12 @@
 namespace InfinniPlatform.DocumentStorage.Specifications
 {
     /// <summary>
-    /// Спецификация условия фильтрации данных.
+    /// Data filter specification.
     /// </summary>
     public interface ISpecification
     {
         /// <summary>
-        /// Условие фильтрации данных.
+        /// Data filter condition.
         /// </summary>
         Func<IDocumentFilterBuilder, object> Filter { get; }
     }

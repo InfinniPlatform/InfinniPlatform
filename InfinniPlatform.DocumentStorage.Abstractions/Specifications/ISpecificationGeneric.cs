@@ -4,12 +4,12 @@ using System.Linq.Expressions;
 namespace InfinniPlatform.DocumentStorage.Specifications
 {
     /// <summary>
-    /// Спецификация условия фильтрации данных.
+    /// Data filter specification.
     /// </summary>
     public interface ISpecification<TDocument>
     {
         /// <summary>
-        /// Условие фильтрации данных.
+        /// Data filter condition.
         /// </summary>
         Expression<Func<TDocument, bool>> Filter { get; }
     }

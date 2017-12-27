@@ -14,13 +14,18 @@ using Microsoft.Extensions.Logging;
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Базовый сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}" />.
+    /// Base service for processing requests to <see cref="IDocumentStorage" />.
     /// </summary>
     public abstract class DocumentRequestExecutorBase
     {
         private readonly ILogger _logger;
         private readonly IPerformanceLogger _perfLogger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentRequestExecutorBase" />.
+        /// </summary>
+        /// <param name="logger">Logger.</param>
+        /// <param name="perfLogger">Performance logger.</param>
         protected DocumentRequestExecutorBase(ILogger logger,
                                               IPerformanceLogger perfLogger)
         {
@@ -30,22 +35,22 @@ namespace InfinniPlatform.DocumentStorage
 
 
         /// <summary>
-        /// Имя типа документа.
+        /// Document type name.
         /// </summary>
         public string DocumentType { get; protected set; }
 
         /// <summary>
-        /// Разрешено ли получение документов.
+        /// Flag indicating if GET method is allowed.
         /// </summary>
         public bool CanGet { get; protected set; }
 
         /// <summary>
-        /// Разрешено ли сохранение документов.
+        /// Flag indicating if POST method is allowed.
         /// </summary>
         public bool CanPost { get; protected set; }
 
         /// <summary>
-        /// Разрешено ли удаление документов.
+        /// Flag indicating if DELETE method is allowed.
         /// </summary>
         public bool CanDelete { get; protected set; }
 

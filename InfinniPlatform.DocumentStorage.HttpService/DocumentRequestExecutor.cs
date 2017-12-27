@@ -13,10 +13,20 @@ using Microsoft.Extensions.Logging;
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}" />.
+    /// Service for processing requests to <see cref="IDocumentStorage" />.
     /// </summary>
     public class DocumentRequestExecutor : DocumentRequestExecutorBase, IDocumentRequestExecutor
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentRequestExecutor" />.
+        /// </summary>
+        /// <param name="serviceHandler">Document HTTP service handler.</param>
+        /// <param name="queryFactory">Factory for creating requests to document storage.</param>
+        /// <param name="storageFactory">Factory for creating document storage instances.</param>
+        /// <param name="systemStorageFactory">Factory for creating system document storage instances.</param>
+        /// <param name="blobStorage">BLOB-data storage.</param>
+        /// <param name="logger">Logger.</param>
+        /// <param name="perfLogger">Performance logger.</param>
         public DocumentRequestExecutor(IDocumentHttpServiceHandlerBase serviceHandler,
                                        IDocumentQueryFactory queryFactory,
                                        IDocumentStorageFactory storageFactory,
@@ -48,6 +58,7 @@ namespace InfinniPlatform.DocumentStorage
         private readonly IBlobStorage _blobStorage;
 
 
+        /// <inheritdoc />
         public Task<object> Get(HttpRequest request, RouteData routeData)
         {
             if (!CanGet)
@@ -124,6 +135,7 @@ namespace InfinniPlatform.DocumentStorage
                                        _serviceHandler.OnError);
         }
 
+        /// <inheritdoc />
         public Task<object> Post(HttpRequest request, RouteData routeData)
         {
             if (!CanPost)
@@ -182,6 +194,7 @@ namespace InfinniPlatform.DocumentStorage
                                        _serviceHandler.OnError);
         }
 
+        /// <inheritdoc />
         public Task<object> Delete(HttpRequest request, RouteData routeData)
         {
             if (!CanDelete)
@@ -221,10 +234,20 @@ namespace InfinniPlatform.DocumentStorage
 
 
     /// <summary>
-    /// Сервис по работе с документами на базе <see cref="IDocumentStorage{TDocument}" />.
+    /// Service for processing requests to <see cref="IDocumentStorage{TDocument}" />.
     /// </summary>
     public class DocumentRequestExecutor<TDocument> : DocumentRequestExecutorBase, IDocumentRequestExecutor where TDocument : Document
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentRequestExecutor{TDocument}" />.
+        /// </summary>
+        /// <param name="serviceHandler">Document HTTP service handler.</param>
+        /// <param name="queryFactory">Factory for creating requests to document storage.</param>
+        /// <param name="storageFactory">Factory for creating document storage instances.</param>
+        /// <param name="systemStorageFactory">Factory for creating system document storage instances.</param>
+        /// <param name="blobStorage">BLOB-data storage.</param>
+        /// <param name="logger">Logger.</param>
+        /// <param name="perfLogger">Performance logger.</param>
         public DocumentRequestExecutor(IDocumentHttpServiceHandlerBase serviceHandler,
                                        IDocumentQueryFactory<TDocument> queryFactory,
                                        IDocumentStorageFactory storageFactory,
@@ -256,6 +279,7 @@ namespace InfinniPlatform.DocumentStorage
         private readonly IBlobStorage _blobStorage;
 
 
+        /// <inheritdoc />
         public Task<object> Get(HttpRequest request, RouteData routeData)
         {
             if (!CanGet)
@@ -327,6 +351,7 @@ namespace InfinniPlatform.DocumentStorage
                                        _serviceHandler.OnError);
         }
 
+        /// <inheritdoc />
         public Task<object> Post(HttpRequest request, RouteData routeData)
         {
             if (!CanPost)
@@ -385,6 +410,7 @@ namespace InfinniPlatform.DocumentStorage
                                        _serviceHandler.OnError);
         }
 
+        /// <inheritdoc />
         public Task<object> Delete(HttpRequest request, RouteData routeData)
         {
             if (!CanDelete)
