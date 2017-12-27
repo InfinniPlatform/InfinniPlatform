@@ -10,19 +10,21 @@ using Newtonsoft.Json.Linq;
 namespace InfinniPlatform.Serialization
 {
     /// <summary>
-    /// Осуществляет преобразование <see cref="DynamicDocument"/> в JSON-представление и обратно.
+    /// Converts <see cref="DynamicDocument"/> into JSON and vice versa.
     /// </summary>
     public class DynamicDocumentJsonConverter : JsonConverter
     {
         private static readonly TypeInfo ConvertType = typeof(DynamicDocument).GetTypeInfo();
 
 
+        /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
             return ConvertType.IsAssignableFrom(objectType);
         }
 
 
+        /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var dynamicDocument = value as DynamicDocument;
@@ -46,6 +48,7 @@ namespace InfinniPlatform.Serialization
         }
 
 
+        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObj = JObject.Load(reader);

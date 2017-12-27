@@ -42,7 +42,7 @@ namespace InfinniPlatform.AspNetCore
         /// <summary>
         /// Registers <see cref="IAppStartedHandler" /> and <see cref="IAppStoppedHandler" /> implementations.
         /// </summary>
-        /// <param name="resolver">Container resolver.</param>
+        /// <param name="resolver">Application container resolver.</param>
         public static void RegisterAppLifetimeHandlers(IContainerResolver resolver)
         {
             var appStartedHandlers = resolver.Resolve<IAppStartedHandler[]>();

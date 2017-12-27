@@ -6,12 +6,12 @@ using Newtonsoft.Json.Serialization;
 namespace InfinniPlatform.Serialization
 {
     /// <summary>
-    /// Интерфейс настройки <see cref="JsonProperty" />.
+    /// Interface for <see cref="JsonProperty" /> set up.
     /// </summary>
     public interface IJsonPropertyInitializer
     {
         /// <summary>
-        /// Настраивает <see cref="JsonProperty" /> для соответствующего <see cref="MemberInfo" />.
+        /// Setting up a <see cref="JsonProperty" /> for corresponding <see cref="MemberInfo" />.
         /// </summary>
         void InitializeProperty(JsonProperty property, MemberInfo member, MemberSerialization memberSerialization);
     }

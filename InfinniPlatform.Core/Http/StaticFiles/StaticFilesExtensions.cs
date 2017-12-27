@@ -17,7 +17,7 @@ namespace InfinniPlatform.Http.StaticFiles
         /// Configure serving static files using mapping in configuration file.
         /// </summary>
         /// <param name="app">Application builder.</param>
-        /// <param name="resolver">Dependency resolver.</param>
+        /// <param name="resolver">Application container resolver.</param>
         public static IApplicationBuilder UseStaticFilesMapping(this IApplicationBuilder app, IContainerResolver resolver)
         {
             var appOptions = resolver.Resolve<AppOptions>();

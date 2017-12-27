@@ -4,8 +4,13 @@ using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Logging
 {
+    /// <inheritdoc />
     public class PerformanceLogger<TComponent> : IPerformanceLogger<TComponent>
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="PerformanceLogger{TComponent}" />.
+        /// </summary>
+        /// <param name="logger">Logger.</param>
         public PerformanceLogger(ILogger<IPerformanceLogger> logger)
         {
             _logger = logger;
@@ -17,11 +22,13 @@ namespace InfinniPlatform.Logging
         private readonly string _component;
 
 
+        /// <inheritdoc />
         public void Log(string method, TimeSpan duration, Exception exception = null)
         {
             LogInternal(method, duration.TotalMilliseconds, exception);
         }
 
+        /// <inheritdoc />
         public void Log(string method, DateTime start, Exception exception = null)
         {
             LogInternal(method, (DateTime.Now - start).TotalMilliseconds, exception);

@@ -8,16 +8,18 @@ using Newtonsoft.Json.Linq;
 namespace InfinniPlatform.Serialization
 {
     /// <summary>
-    /// Осуществляет преобразование <see cref="Time"/> в JSON-представление и обратно.
+    /// Converts <see cref="Time"/> into JSON and vice versa.
     /// </summary>
     public class TimeJsonConverter : JsonConverter
     {
+        /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
             return (objectType == typeof(Time) || objectType == typeof(Time?));
         }
 
 
+        /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value is Time)
@@ -33,6 +35,7 @@ namespace InfinniPlatform.Serialization
         }
 
 
+        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jConvertValue = JToken.Load(reader) as JValue;

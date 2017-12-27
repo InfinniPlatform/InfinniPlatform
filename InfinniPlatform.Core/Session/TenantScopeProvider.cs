@@ -3,11 +3,13 @@ using System.Threading;
 
 namespace InfinniPlatform.Session
 {
+    /// <inheritdoc />
     public class TenantScopeProvider : ITenantScopeProvider
     {
         private static readonly AsyncLocal<TenantScopeContext> TenantScopeContext = new AsyncLocal<TenantScopeContext>();
 
 
+        /// <inheritdoc />
         public ITenantScope GetTenantScope()
         {
             var prevScopeContext = GetCurrentTenantScope();
@@ -15,6 +17,7 @@ namespace InfinniPlatform.Session
             return prevScopeContext?.Scope;
         }
 
+        /// <inheritdoc />
         public ITenantScope BeginTenantScope(string tenantId)
         {
             if (string.IsNullOrEmpty(tenantId))

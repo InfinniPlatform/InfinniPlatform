@@ -1,19 +1,19 @@
 ﻿namespace InfinniPlatform.Session
 {
     /// <summary>
-    /// Предоставляет методы для создания экземпляров <see cref="ITenantScope" />.
+    /// Provides methods for creating <see cref="ITenantScope" /> instances.
     /// </summary>
     public interface ITenantScopeProvider
     {
         /// <summary>
-        /// Возвращает текущую область выполнения запросов.
+        /// Returns currently active scope.
         /// </summary>
         ITenantScope GetTenantScope();
 
         /// <summary>
-        /// Начинает новую область выполнения запросов.
+        /// Creates new scope.
         /// </summary>
-        /// <param name="tenantId">Идентификатор организации.</param>
+        /// <param name="tenantId">Organization identifier.</param>
         ITenantScope BeginTenantScope(string tenantId);
     }
 }
