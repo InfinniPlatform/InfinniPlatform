@@ -1,5 +1,4 @@
 ﻿using DasMulli.Win32.ServiceUtils;
-using InfinniPlatform.WindowsServiceHost;
 using Microsoft.AspNetCore.Hosting;
 
 // ReSharper disable once CheckNamespace
@@ -11,7 +10,7 @@ namespace InfinniPlatform.AspNetCore
     public static class WebHostExtensions
     {
         /// <summary>
-        /// Wraps <see cref="IWebHost"/> instance to start as Windows service.
+        /// Starts an application in Windows service wrappper.
         /// </summary>
         /// <param name="webHost">Web host instance.</param>
         public static void RunAsService(this IWebHost webHost)
