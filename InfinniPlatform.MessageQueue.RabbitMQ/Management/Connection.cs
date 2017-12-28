@@ -1,7 +1,11 @@
-﻿using System.Diagnostics;
+﻿#pragma warning disable 1591
+using System.Diagnostics;
 
 namespace InfinniPlatform.MessageQueue.Management
 {
+    /// <summary>
+    /// Representation of RabbitMQ connection.
+    /// </summary>
     [DebuggerDisplay("{" + nameof(Name) + "}")]
     public class Connection
     {

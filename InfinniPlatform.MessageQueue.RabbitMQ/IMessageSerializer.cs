@@ -4,6 +4,9 @@ using RabbitMQ.Client.Events;
 
 namespace InfinniPlatform.MessageQueue
 {
+    /// <summary>
+    /// Provides methods for serializing queue messages.
+    /// </summary>
     public interface IMessageSerializer
     {
         /// <summary>

@@ -4,6 +4,9 @@ using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.MessageQueue
 {
+    /// <summary>
+    /// Extensions methods for message consumers registration.
+    /// </summary>
     public static class QueuesExtentions
     {
         /// <summary>
