@@ -2,8 +2,12 @@
 
 namespace InfinniPlatform.Scheduler
 {
+    /// <inheritdoc />
     public class CronExpressionHourBuilder : ICronExpressionHourBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="CronExpressionHourBuilder"/>.
+        /// </summary>
         public CronExpressionHourBuilder()
         {
             _expression = CronConstants.AllValues;
@@ -13,6 +17,7 @@ namespace InfinniPlatform.Scheduler
         private string _expression;
 
 
+        /// <inheritdoc />
         public ICronExpressionHourBuilder Every()
         {
             // Выражение '*'.
@@ -21,6 +26,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionHourBuilder Each(int hour)
         {
             CronConstants.EnsureRange(nameof(hour), hour, CronConstants.HourMin, CronConstants.HourMax);
@@ -31,6 +37,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionHourBuilder Each(int hour, int interval)
         {
             CronConstants.EnsureRange(nameof(hour), hour, CronConstants.HourMin, CronConstants.HourMax);
@@ -42,6 +49,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionHourBuilder EachOfSet(params int[] hours)
         {
             CronConstants.EnsureRange(nameof(hours), hours, CronConstants.HourMin, CronConstants.HourMax);
@@ -52,6 +60,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionHourBuilder EachOfRange(int hourFrom, int hourTo)
         {
             CronConstants.EnsureRange(nameof(hourFrom), hourFrom, CronConstants.HourMin, CronConstants.HourMax);
@@ -65,6 +74,9 @@ namespace InfinniPlatform.Scheduler
         }
 
 
+        /// <summary>
+        /// Returns current expression
+        /// </summary>
         public string Build()
         {
             return _expression;

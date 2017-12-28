@@ -2,8 +2,12 @@
 
 namespace InfinniPlatform.Scheduler
 {
+    /// <inheritdoc />
     public class CronExpressionDayOfMonthBuilder : ICronExpressionDayOfMonthBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="CronExpressionDayOfMonthBuilder"/>.
+        /// </summary>
         public CronExpressionDayOfMonthBuilder()
         {
             _expression = CronConstants.AllValues;
@@ -13,6 +17,7 @@ namespace InfinniPlatform.Scheduler
         private string _expression;
 
 
+        /// <inheritdoc />
         public ICronExpressionDayOfMonthBuilder Every()
         {
             // Выражение '*'.
@@ -21,6 +26,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfMonthBuilder Each(int dayOfMonth)
         {
             CronConstants.EnsureRange(nameof(dayOfMonth), dayOfMonth, CronConstants.DayOfMonthMin, CronConstants.DayOfMonthMax);
@@ -31,6 +37,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfMonthBuilder Each(int dayOfMonth, int interval)
         {
             CronConstants.EnsureRange(nameof(dayOfMonth), dayOfMonth, CronConstants.DayOfMonthMin, CronConstants.DayOfMonthMax);
@@ -42,6 +49,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfMonthBuilder EachOfSet(params int[] daysOfMonth)
         {
             CronConstants.EnsureRange(nameof(daysOfMonth), daysOfMonth, CronConstants.DayOfMonthMin, CronConstants.DayOfMonthMax);
@@ -52,6 +60,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfMonthBuilder EachOfRange(int dayOfMonthFrom, int dayOfMonthTo)
         {
             CronConstants.EnsureRange(nameof(dayOfMonthFrom), dayOfMonthFrom, CronConstants.DayOfMonthMin, CronConstants.DayOfMonthMax);
@@ -64,6 +73,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfMonthBuilder EachLast(int beforeDays = 0)
         {
             CronConstants.EnsureNonNegative(nameof(beforeDays), beforeDays);
@@ -75,6 +85,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfMonthBuilder EachNearestWeekday(int dayOfMonth)
         {
             CronConstants.EnsureRange(nameof(dayOfMonth), dayOfMonth, CronConstants.DayOfMonthMin, CronConstants.DayOfMonthMax);
@@ -86,6 +97,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfMonthBuilder EachLastWeekday()
         {
             // Выражение 'LW'. При использовании литералов L и W возможно определение только
@@ -96,6 +108,9 @@ namespace InfinniPlatform.Scheduler
         }
 
 
+        /// <summary>
+        /// Returns current expression.
+        /// </summary>
         public string Build()
         {
             return _expression;

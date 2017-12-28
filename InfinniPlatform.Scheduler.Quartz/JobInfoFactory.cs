@@ -4,8 +4,13 @@ using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler
 {
+    /// <inheritdoc />
     public class JobInfoFactory : IJobInfoFactory
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="JobInfoFactory"/>.
+        /// </summary>
+        /// <param name="handlerTypeSerializer">Job handlers serializer.</param>
         public JobInfoFactory(IJobHandlerTypeSerializer handlerTypeSerializer)
         {
             _handlerTypeSerializer = handlerTypeSerializer;
@@ -15,6 +20,7 @@ namespace InfinniPlatform.Scheduler
         private readonly IJobHandlerTypeSerializer _handlerTypeSerializer;
 
 
+        /// <inheritdoc />
         public IJobInfo CreateJobInfo(Type jobHandler, string jobName, string jobGroup, Action<IJobInfoBuilder> jobInfoBuilder)
         {
             if (jobHandler == null)

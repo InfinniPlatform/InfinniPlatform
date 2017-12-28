@@ -3,8 +3,12 @@ using System.Linq;
 
 namespace InfinniPlatform.Scheduler
 {
+    /// <inheritdoc />
     public class CronExpressionDayOfWeekBuilder : ICronExpressionDayOfWeekBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="CronExpressionDayOfWeekBuilder"/>.
+        /// </summary>
         public CronExpressionDayOfWeekBuilder()
         {
             _expression = CronConstants.AllValues;
@@ -14,6 +18,7 @@ namespace InfinniPlatform.Scheduler
         private string _expression;
 
 
+        /// <inheritdoc />
         public ICronExpressionDayOfWeekBuilder Every()
         {
             // Выражение '*'.
@@ -22,6 +27,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfWeekBuilder Each(DayOfWeek dayOfWeek)
         {
             // Добавляется выражение 'D'.
@@ -30,6 +36,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfWeekBuilder Each(DayOfWeek dayOfWeek, int interval)
         {
             CronConstants.EnsurePositive(nameof(interval), interval);
@@ -40,6 +47,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfWeekBuilder EachOfSet(params DayOfWeek[] daysOfWeek)
         {
             // Добавляется выражение 'D1,D2,D3,...,Dn'.
@@ -48,6 +56,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfWeekBuilder EachOfRange(DayOfWeek dayOfWeekFrom, DayOfWeek dayOfWeekTo)
         {
             CronConstants.EnsureRange(nameof(dayOfWeekTo), (int)dayOfWeekTo, (int)dayOfWeekFrom, (int)dayOfWeekTo);
@@ -58,6 +67,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfWeekBuilder EachLast(DayOfWeek dayOfWeek)
         {
             // Выражение 'DL'. При использовании литералов L и W возможно определение только
@@ -67,6 +77,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionDayOfWeekBuilder EachNth(DayOfWeek dayOfWeek, int orderNumber)
         {
             CronConstants.EnsureRange(nameof(orderNumber), orderNumber, 1, 5);
@@ -78,6 +89,9 @@ namespace InfinniPlatform.Scheduler
         }
 
 
+        /// <summary>
+        /// Returns current expression.
+        /// </summary>
         public string Build()
         {
             return _expression;
