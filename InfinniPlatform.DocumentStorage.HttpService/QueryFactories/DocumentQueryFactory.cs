@@ -11,13 +11,22 @@ using Microsoft.AspNetCore.Routing;
 
 namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
+    /// <inheritdoc cref="IDocumentQueryFactory" />
     public class DocumentQueryFactory : DocumentQueryFactoryBase, IDocumentQueryFactory
     {
-        public DocumentQueryFactory(IQuerySyntaxTreeParser syntaxTreeParser, IJsonObjectSerializer objectSerializer) : base(syntaxTreeParser, objectSerializer)
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentQueryFactory" />.
+        /// </summary>
+        /// <param name="syntaxTreeParser">Syntax analyzer for query.</param>
+        /// <param name="objectSerializer">JSON objects serializer.</param>
+        public DocumentQueryFactory(IQuerySyntaxTreeParser syntaxTreeParser,
+                                    IJsonObjectSerializer objectSerializer)
+            : base(syntaxTreeParser, objectSerializer)
         {
         }
 
 
+        /// <inheritdoc />
         public DocumentGetQuery CreateGetQuery(HttpRequest request, RouteData routeData, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
         {
             return new DocumentGetQuery
@@ -32,6 +41,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             };
         }
 
+        /// <inheritdoc />
         public DocumentPostQuery CreatePostQuery(HttpRequest request, RouteData routeData, string documentFormKey = DocumentHttpServiceConstants.DocumentFormKey)
         {
             var document = ReadRequestForm<DynamicDocument>(request, documentFormKey);
@@ -48,6 +58,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             throw new InvalidOperationException(Resources.MethodNotAllowed);
         }
 
+        /// <inheritdoc />
         public DocumentDeleteQuery CreateDeleteQuery(HttpRequest request, RouteData routeData, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
         {
             var filter = BuildFilter(request, routeData, documentIdKey);

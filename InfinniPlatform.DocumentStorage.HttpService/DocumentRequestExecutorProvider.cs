@@ -8,8 +8,14 @@ using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.DocumentStorage
 {
+    /// <inheritdoc />
     public class DocumentRequestExecutorProvider : IDocumentRequestExecutorProvider
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentRequestExecutorProvider" />.
+        /// </summary>
+        /// <param name="httpServiceHandlers">Set of document HTTP service handlers.</param>
+        /// <param name="containerResolver">Dependencies resolver from IoC-container.</param>
         public DocumentRequestExecutorProvider(IEnumerable<IDocumentHttpServiceHandlerBase> httpServiceHandlers,
                                                IContainerResolver containerResolver)
         {
@@ -22,6 +28,7 @@ namespace InfinniPlatform.DocumentStorage
         private readonly IContainerResolver _containerResolver;
         private readonly Lazy<Dictionary<string, IDocumentRequestExecutor>> _executorsCacheLazy;
 
+        /// <inheritdoc />
         public IDocumentRequestExecutor Get(string name)
         {
             return _executorsCacheLazy.Value[name];

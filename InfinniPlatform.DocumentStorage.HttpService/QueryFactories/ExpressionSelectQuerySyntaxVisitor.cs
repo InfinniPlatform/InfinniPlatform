@@ -7,7 +7,7 @@ using InfinniPlatform.DocumentStorage.QuerySyntax;
 namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
     /// <summary>
-    /// Выполняет синтаксический разбор для получения правила отображения документа <see cref="DocumentGetQuery{TDocument}.Select"/>.
+    /// Parse document projection rules from select query.
     /// </summary>
     public class ExpressionSelectQuerySyntaxVisitor : ExpressionBaseQuerySyntaxVisitor
     {
@@ -26,6 +26,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         // Overrides
 
+        /// <inheritdoc />
         public override Expression VisitInvocationExpression(InvocationQuerySyntaxNode node)
         {
             if (!string.Equals(node.Name, QuerySyntaxHelper.IncludeMethodName, StringComparison.OrdinalIgnoreCase))

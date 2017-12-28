@@ -63,6 +63,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         // Overrides
 
+        /// <inheritdoc />
         public override Func<IDocumentFilterBuilder, object> VisitInvocationExpression(InvocationQuerySyntaxNode node)
         {
             Func<FuncFilterQuerySyntaxVisitor, InvocationQuerySyntaxNode, Func<IDocumentFilterBuilder, object>> factory;
@@ -75,11 +76,13 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             return factory(this, node);
         }
 
+        /// <inheritdoc />
         public override Func<IDocumentFilterBuilder, object> VisitIdentifierName(IdentifierNameQuerySyntaxNode node)
         {
             return f => node.Identifier;
         }
 
+        /// <inheritdoc />
         public override Func<IDocumentFilterBuilder, object> VisitLiteral(LiteralQuerySyntaxNode node)
         {
             return f => node.Value;

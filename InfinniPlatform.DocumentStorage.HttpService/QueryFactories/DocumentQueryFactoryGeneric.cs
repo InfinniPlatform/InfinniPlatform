@@ -11,17 +11,23 @@ using Microsoft.AspNetCore.Routing;
 
 namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
-    /// <summary>
-    /// Предоставляет интерфейс для создания запросов к сервису документов.
-    /// </summary>
-    /// <typeparam name="TDocument">Тип документа.</typeparam>
+    /// <inheritdoc cref="IDocumentQueryFactory" />
+    /// <typeparam name="TDocument">Document type.</typeparam>
     public class DocumentQueryFactory<TDocument> : DocumentQueryFactoryBase, IDocumentQueryFactory<TDocument>
     {
-        public DocumentQueryFactory(IQuerySyntaxTreeParser syntaxTreeParser, IJsonObjectSerializer objectSerializer) : base(syntaxTreeParser, objectSerializer)
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentQueryFactory{TDocument}" />.
+        /// </summary>
+        /// <param name="syntaxTreeParser">Syntax analyzer for query.</param>
+        /// <param name="objectSerializer">JSON objects serializer.</param>
+        public DocumentQueryFactory(IQuerySyntaxTreeParser syntaxTreeParser, 
+                                    IJsonObjectSerializer objectSerializer) 
+            : base(syntaxTreeParser, objectSerializer)
         {
         }
 
 
+        /// <inheritdoc />
         public DocumentGetQuery<TDocument> CreateGetQuery(HttpRequest request, RouteData routeData, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
         {
             return new DocumentGetQuery<TDocument>
@@ -36,6 +42,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             };
         }
 
+        /// <inheritdoc />
         public DocumentPostQuery<TDocument> CreatePostQuery(HttpRequest request, RouteData routeData, string documentFormKey = DocumentHttpServiceConstants.DocumentFormKey)
         {
             var document = ReadRequestForm<TDocument>(request, documentFormKey);
@@ -52,6 +59,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             throw new InvalidOperationException(Resources.MethodNotAllowed);
         }
 
+        /// <inheritdoc />
         public DocumentDeleteQuery<TDocument> CreateDeleteQuery(HttpRequest request, RouteData routeData, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
         {
             var filter = BuildFilter(request, routeData, documentIdKey);

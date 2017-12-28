@@ -30,6 +30,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         // Overrides
 
+        /// <inheritdoc />
         public override IEnumerable<KeyValuePair<string, DocumentSortOrder>> VisitInvocationExpression(InvocationQuerySyntaxNode node)
         {
             Func<FuncOrderQuerySyntaxVisitor, InvocationQuerySyntaxNode, IEnumerable<KeyValuePair<string, DocumentSortOrder>>> factory;

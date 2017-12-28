@@ -27,6 +27,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         // Overrides
 
+        /// <inheritdoc />
         public override Expression VisitInvocationExpression(InvocationQuerySyntaxNode node)
         {
             if (string.Equals(node.Name, QuerySyntaxHelper.AscMethodName, StringComparison.OrdinalIgnoreCase))

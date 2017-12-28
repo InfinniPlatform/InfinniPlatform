@@ -3,7 +3,7 @@
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Document HTTP service handler.Обработчик для сервиса по работе с документами.
+    /// Document HTTP service handler.
     /// </summary>
     public interface IDocumentHttpServiceHandlerBase
     {

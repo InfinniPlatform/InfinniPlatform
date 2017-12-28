@@ -1,13 +1,13 @@
 ﻿namespace InfinniPlatform.DocumentStorage.QuerySyntax
 {
     /// <summary>
-    /// Предоставляет интерфейс для проведения синтаксического анализа строки запроса.
+    /// Provides interface for request string syntax analysis.
     /// </summary>
-    /// <typeparam name="TResult">Тип результата синтаксического анализа.</typeparam>
+    /// <typeparam name="TResult">Syntax analysis result type.</typeparam>
     public abstract class QuerySyntaxVisitor<TResult>
     {
         /// <summary>
-        /// Обрабатывает вызов метода.
+        /// Processes method invocation.
         /// </summary>
         public virtual TResult VisitInvocationExpression(InvocationQuerySyntaxNode node)
         {
@@ -15,7 +15,7 @@
         }
 
         /// <summary>
-        /// Обрабатывает имя идентификатора.
+        /// Processes identifier name.
         /// </summary>
         public virtual TResult VisitIdentifierName(IdentifierNameQuerySyntaxNode node)
         {
@@ -23,7 +23,7 @@
         }
 
         /// <summary>
-        /// Обрабатывает литерал.
+        /// Processes literal.
         /// </summary>
         public virtual TResult VisitLiteral(LiteralQuerySyntaxNode node)
         {
@@ -32,7 +32,7 @@
 
 
         /// <summary>
-        /// Обработчик узла по умолчанию.
+        /// Default node handler.
         /// </summary>
         public virtual TResult DefaultVisit(IQuerySyntaxNode node)
         {
@@ -41,7 +41,7 @@
 
 
         /// <summary>
-        /// Обработчик произвольного узла.
+        /// Node handler.
         /// </summary>
         public virtual TResult Visit(IQuerySyntaxNode node)
         {

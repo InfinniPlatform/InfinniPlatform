@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-
-using InfinniPlatform.Dynamic;
-using InfinniPlatform.Http;
+﻿using InfinniPlatform.Dynamic;
 using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.DocumentStorage

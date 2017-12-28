@@ -9,8 +9,16 @@ using Microsoft.AspNetCore.Routing;
 
 namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
+    /// <summary>
+    /// Base class for <see cref="IDocumentQueryFactory"/>.
+    /// </summary>
     public abstract class DocumentQueryFactoryBase
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentQueryFactoryBase" />.
+        /// </summary>
+        /// <param name="syntaxTreeParser">Syntax analyzer for query.</param>
+        /// <param name="objectSerializer">JSON objects serializer.</param>
         protected DocumentQueryFactoryBase(IQuerySyntaxTreeParser syntaxTreeParser, IJsonObjectSerializer objectSerializer)
         {
             _syntaxTreeParser = syntaxTreeParser;
@@ -23,7 +31,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
 
         /// <summary>
-        /// Возвращает форму запроса.
+        /// Returns request form content.
         /// </summary>
         protected TDocument ReadRequestForm<TDocument>(HttpRequest request, string documentFormKey)
         {
@@ -47,6 +55,10 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             return default(TDocument);
         }
 
+        /// <summary>
+        /// Flag indicating if request payload contains in form data. 
+        /// </summary>
+        /// <param name="request"><see cref="HttpRequest"/> instance.</param>
         protected static bool IsFromForm(HttpRequest request)
         {
             return (request.ContentType.StartsWith(ContentType.MultipartFormDataContentType, StringComparison.OrdinalIgnoreCase)
@@ -56,7 +68,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
 
         /// <summary>
-        /// Возвращает строку полнотекстового поиска.
+        /// Returns full-text search string from request parameters.
         /// </summary>
         protected static string ParseSearch(HttpRequest request)
         {
@@ -66,7 +78,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
         /// <summary>
-        /// Возвращает функцию фильтрации документов.
+        /// Returns documents filter func.
         /// </summary>
         protected InvocationQuerySyntaxNode ParseFilter(HttpRequest request, RouteData routeData, string documentIdKey)
         {
@@ -109,7 +121,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
         /// <summary>
-        /// Возвращает набор функций выборки документов.
+        /// Returns set of document search funcs.
         /// </summary>
         protected IEnumerable<InvocationQuerySyntaxNode> ParseSelect(HttpRequest request)
         {
@@ -126,9 +138,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
                     foreach (var node in syntaxNodes)
                     {
-                        var invocationNode = node as InvocationQuerySyntaxNode;
-
-                        if (invocationNode != null)
+                        if (node is InvocationQuerySyntaxNode invocationNode)
                         {
                             yield return invocationNode;
                         }
@@ -147,7 +157,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
         /// <summary>
-        /// Возвращает набор функций сортировки документов.
+        /// Returns set of document sort funcs.
         /// </summary>
         protected IEnumerable<InvocationQuerySyntaxNode> ParseOrder(HttpRequest request)
         {
@@ -161,9 +171,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
                 {
                     foreach (var node in syntaxNodes)
                     {
-                        var invocationNode = node as InvocationQuerySyntaxNode;
-
-                        if (invocationNode != null)
+                        if (node is InvocationQuerySyntaxNode invocationNode)
                         {
                             yield return invocationNode;
                         }
@@ -180,7 +188,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
         /// <summary>
-        /// Возвращает признак необходимости подсчета количества документов.
+        /// Returns flag indicating if documents count is needed.
         /// </summary>
         protected static bool ParseCount(HttpRequest request)
         {
@@ -188,15 +196,14 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
             if (parameter != null)
             {
-                bool value;
-                return bool.TryParse(parameter, out value) && value;
+                return bool.TryParse(parameter, out var value) && value;
             }
 
             return false;
         }
 
         /// <summary>
-        /// Возвращает количество документов, которое нужно пропустить.
+        /// Returns number of documents to skip.
         /// </summary>
         protected static int ParseSkip(HttpRequest request)
         {
@@ -204,9 +211,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
             if (parameter != null)
             {
-                int value;
-
-                if (int.TryParse(parameter, out value) && value >= 0)
+                if (int.TryParse(parameter, out var value) && value >= 0)
                 {
                     return value;
                 }
@@ -216,7 +221,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
         /// <summary>
-        /// Возвращает максимальное количество документов, которое нужно выбрать.
+        /// Returns max number of returning documents.
         /// </summary>
         protected static int ParseTake(HttpRequest request)
         {
@@ -224,9 +229,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
             if (parameter != null)
             {
-                int value;
-
-                if (int.TryParse(parameter, out value) && value > 0)
+                if (int.TryParse(parameter, out var value) && value > 0)
                 {
                     return Math.Min(value, 1000);
                 }
@@ -250,7 +253,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             return null;
         }
 
-        protected static string GetRequestParameter(HttpRequest request, RouteData routeData, string parameterName)
+        private static string GetRequestParameter(HttpRequest request, RouteData routeData, string parameterName)
         {
             string value = null;
 

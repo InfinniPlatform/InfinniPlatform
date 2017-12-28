@@ -66,6 +66,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         // Overrides
 
+        /// <inheritdoc />
         public override Expression VisitInvocationExpression(InvocationQuerySyntaxNode node)
         {
             Func<ExpressionFilterQuerySyntaxVisitor, InvocationQuerySyntaxNode, Expression> factory;
