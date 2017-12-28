@@ -10,6 +10,7 @@ namespace InfinniPlatform.PrintView
     /// </summary>
     public class PrintViewKnownTypesSource : IKnownTypesSource
     {
+        /// <inheritdoc />
         public void AddKnownTypes(KnownTypesContainer knownTypesContainer)
         {
             knownTypesContainer

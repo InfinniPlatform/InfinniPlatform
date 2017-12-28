@@ -104,6 +104,7 @@ namespace InfinniPlatform.PrintView.Factories.Inline
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 
