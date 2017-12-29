@@ -17,6 +17,11 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
 
+        /// <summary>
+        /// Creates order expression.
+        /// </summary>
+        /// <param name="type">Type.</param>
+        /// <param name="node">Invocation query node.</param>
         public static IEnumerable<KeyValuePair<Expression, DocumentSortOrder>> CreateOrderExpression(Type type, InvocationQuerySyntaxNode node)
         {
             var visitor = new ExpressionOrderQuerySyntaxVisitor(type);

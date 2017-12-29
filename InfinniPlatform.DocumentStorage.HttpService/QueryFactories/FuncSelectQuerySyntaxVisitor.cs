@@ -20,6 +20,10 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
               };
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
         public static Action<IDocumentProjectionBuilder> CreateSelectExpression(InvocationQuerySyntaxNode node)
         {
             var visitor = new FuncSelectQuerySyntaxVisitor();

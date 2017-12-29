@@ -16,6 +16,11 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
 
+        /// <summary>
+        /// Creates select expression.
+        /// </summary>
+        /// <param name="type">Type.</param>
+        /// <param name="node">Invocation query node.</param>
         public static Expression CreateSelectExpression(Type type, InvocationQuerySyntaxNode node)
         {
             var visitor = new ExpressionSelectQuerySyntaxVisitor(type);

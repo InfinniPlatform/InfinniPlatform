@@ -16,7 +16,7 @@ using Microsoft.Extensions.Primitives;
 namespace InfinniPlatform.Diagnostics
 {
     /// <summary>
-    /// Реализует REST-сервис для получения информации о системе.
+    /// Provides HTTP API for subsystem status.
     /// </summary>
     public sealed class SystemInfoContoller : Controller
     {
@@ -26,6 +26,11 @@ namespace InfinniPlatform.Diagnostics
 
         private readonly Dictionary<string, ISubsystemStatusProvider> _subsystemStatusProviders;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="SystemInfoContoller" />.
+        /// </summary>
+        /// <param name="subsystemStatusProviders">List of <see cref="ISubsystemStatusProvider"/> instances.</param>
+        /// <param name="logger">Logger.</param>
         public SystemInfoContoller(IEnumerable<ISubsystemStatusProvider> subsystemStatusProviders,
                                    ILogger<SystemInfoContoller> logger)
         {
@@ -33,6 +38,7 @@ namespace InfinniPlatform.Diagnostics
             _logger = logger;
         }
 
+        /// <inheritdoc />
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             // Запрос статуса разрешен только с локального узла
@@ -49,11 +55,18 @@ namespace InfinniPlatform.Diagnostics
             await base.OnActionExecutionAsync(context, next);
         }
 
+        /// <summary>
+        /// Returns summary status of subsystems.
+        /// </summary>
         public async Task<IActionResult> GetStatus()
         {
             return Json(await GetStatus(false));
         }
 
+        /// <summary>
+        /// Returns full status of subsystems.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("info")]
         [HttpPost("info")]
         public async Task<IActionResult> GetExpandedStatus()
@@ -61,6 +74,10 @@ namespace InfinniPlatform.Diagnostics
             return Json(await GetStatus(true));
         }
 
+        /// <summary>
+        /// Returns subsystem status by name.
+        /// </summary>
+        /// <param name="subsystemName">Subsystem name.</param>
         [HttpGet("info/{subsystemName}")]
         [HttpPost("info/{subsystemName}")]
         public async Task<IActionResult> GetSubsystemStatus(string subsystemName)

@@ -23,8 +23,19 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
 
+        /// <summary>
+        /// Type.
+        /// </summary>
         protected readonly Type Type;
+
+        /// <summary>
+        /// Level.
+        /// </summary>
         protected readonly int Level;
+
+        /// <summary>
+        /// Parameter.
+        /// </summary>
         protected readonly ParameterExpression Parameter;
 
 

@@ -18,6 +18,12 @@ namespace InfinniPlatform.Scheduler
     [Route(Name)]
     public class SchedulerController : Controller
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="SchedulerController" />.
+        /// </summary>
+        /// <param name="jobScheduler">Job scheduler.</param>
+        /// <param name="jsonObjectSerializer">JSON object serializer.</param>
+        /// <param name="logger">Logger.</param>
         public SchedulerController(IJobScheduler jobScheduler,
                                    IJsonObjectSerializer jsonObjectSerializer,
                                    ILogger<SchedulerController> logger)
@@ -34,7 +40,7 @@ namespace InfinniPlatform.Scheduler
         private const string Name = "scheduler";
 
         /// <summary>
-        /// Получить состояние планировщика заданий.
+        /// Returns scheduler status.
         /// </summary>
         [HttpGet("")]
         [HttpPost("")]
@@ -44,7 +50,7 @@ namespace InfinniPlatform.Scheduler
         }
 
         /// <summary>
-        /// Получить список заданий.
+        /// Returns jobs list.
         /// </summary>
         [HttpGet("jobs")]
         [HttpPost("jobs")]
@@ -54,7 +60,7 @@ namespace InfinniPlatform.Scheduler
         }
 
         /// <summary>
-        /// Получить задание.
+        /// Returns job by id.
         /// </summary>
         [HttpGet("jobs/{id}")]
         public async Task<object> ProcessGetJob()
@@ -63,7 +69,7 @@ namespace InfinniPlatform.Scheduler
         }
 
         /// <summary>
-        /// Сохранить задание.
+        /// Saves job by id.
         /// </summary>
         [HttpPost("jobs/{id}")]
         public async Task<object> ProcessPostJob(string id)
@@ -72,7 +78,7 @@ namespace InfinniPlatform.Scheduler
         }
 
         /// <summary>
-        /// Удалить задание.
+        /// Deletes job by id.
         /// </summary>
         [HttpDelete("jobs/{id}")]
         public async Task<object> ProcessDeleteJob(string id)
@@ -81,7 +87,7 @@ namespace InfinniPlatform.Scheduler
         }
 
         /// <summary>
-        /// Приостановить выполнение задания.
+        /// Pause jobs.
         /// </summary>
         [HttpPost("pause")]
         public async Task<object> ProcessPauseJobs()
@@ -90,7 +96,7 @@ namespace InfinniPlatform.Scheduler
         }
 
         /// <summary>
-        /// Продолжить выполнение задания.
+        /// Resume jobs.
         /// </summary>
         [HttpPost("resume")]
         public async Task<object> ProcessResumeJobs()
@@ -99,7 +105,7 @@ namespace InfinniPlatform.Scheduler
         }
 
         /// <summary>
-        /// Запустить выполнение задания.
+        /// Triggers jobs.
         /// </summary>
         [HttpPost("trigger")]
         public async Task<object> ProcessTriggerJobs()
@@ -268,7 +274,7 @@ namespace InfinniPlatform.Scheduler
             var response = new ServiceResult<bool>();
 
             // Список уникальных идентификаторов заданий
-            List<string> jobIds = TryGetValues(RouteData.Values["ids"]);
+            var jobIds = TryGetValues(RouteData.Values["ids"]);
 
             // Если список пустой, приостанавливаются все задания
             if (jobIds == null || jobIds.Count <= 0)

@@ -13,6 +13,10 @@ namespace InfinniPlatform.Heartbeat
     [Route("heartbeat")]
     public class HeartbeatController : Controller
     {
+        /// <summary>
+        /// Returns <see cref="OkResult"/>.
+        /// </summary>
+        /// <param name="id">Identifier.</param>
         [HttpGet("{id}")]
         public object Heartbeat(string id)
         {

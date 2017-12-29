@@ -53,6 +53,10 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
               };
 
 
+        /// <summary>
+        /// Creates filter expression.
+        /// </summary>
+        /// <param name="node">Invocation query node.</param>
         public static Func<IDocumentFilterBuilder, object> CreateFilterExpression(InvocationQuerySyntaxNode node)
         {
             var visitor = new FuncFilterQuerySyntaxVisitor();
