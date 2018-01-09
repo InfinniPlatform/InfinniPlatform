@@ -1,19 +1,17 @@
 ﻿namespace InfinniPlatform.DocumentStorage
 {
+    /// <summary>
+    /// Constants for <see cref="DocumentsController"/>.
+    /// </summary>
     public static class DocumentHttpServiceConstants
     {
         /// <summary>
-        /// Базовый путь по умолчанию к методам сервиса документов.
-        /// </summary>
-        public const string DefaultServicePath = "/documents";
-
-        /// <summary>
-        /// Имя ключа с документом в запросе на сохранение документа.
+        /// Document key name in save request form.
         /// </summary>
         public const string DocumentFormKey = "document";
 
         /// <summary>
-        /// Имя сегмента с идентификатором документа в запросе на удаление документа.
+        /// Document id field name in delete request.
         /// </summary>
         public const string DocumentIdKey = "id";
     }

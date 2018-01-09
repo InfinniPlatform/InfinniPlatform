@@ -1,10 +1,16 @@
 ﻿namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Результат выполнения операции обновления документов.
+    /// Result of document storage update command.
     /// </summary>
     public sealed class DocumentUpdateResult
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentUpdateResult" />.
+        /// </summary>
+        /// <param name="matchedCount">Number of found documents.</param>
+        /// <param name="modifiedCount">Number of modified documents.</param>
+        /// <param name="updateStatus">Status of update operation.</param>
         public DocumentUpdateResult(long matchedCount, long modifiedCount, DocumentUpdateStatus updateStatus)
         {
             MatchedCount = matchedCount;
@@ -13,17 +19,17 @@
         }
 
         /// <summary>
-        /// Количество найденных документов.
+        /// Number of found documents.
         /// </summary>
         public long MatchedCount { get; }
 
         /// <summary>
-        /// Количество измененных документов.
+        /// Number of modified documents.
         /// </summary>
         public long ModifiedCount { get; }
 
         /// <summary>
-        /// Статус выполнения операции обновления документа.
+        /// Status of update operation.
         /// </summary>
         public DocumentUpdateStatus UpdateStatus { get; }
     }

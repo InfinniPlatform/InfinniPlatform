@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿#pragma warning disable 1591
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace InfinniPlatform.MessageQueue.Management
 {
+    /// <summary>
+    /// Representation of RabbitMQ binding.
+    /// </summary>
     [DebuggerDisplay("{" + nameof(Destination) + "}")]
     public class Binding
     {

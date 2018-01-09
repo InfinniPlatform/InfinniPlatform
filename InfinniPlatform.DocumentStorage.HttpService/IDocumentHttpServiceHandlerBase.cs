@@ -1,54 +1,45 @@
 ﻿using System;
 
-using InfinniPlatform.Http;
-
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Обработчик для сервиса по работе с документами.
+    /// Document HTTP service handler.
     /// </summary>
     public interface IDocumentHttpServiceHandlerBase
     {
         /// <summary>
-        /// Имя типа документа.
+        /// Document type name.
         /// </summary>
         string DocumentType { get; }
 
 
         /// <summary>
-        /// Работать с системными документами.
+        /// Flag indicating if service can work with documents in "system" tenant.
         /// </summary>
         bool AsSystem { get; }
 
 
         /// <summary>
-        /// Разрешено ли получение документов.
+        /// Flag indicating if GET method is allowed.
         /// </summary>
         bool CanGet { get; }
 
         /// <summary>
-        /// Разрешено ли сохранение документов.
+        /// Flag indicating if POST method is allowed.
         /// </summary>
         bool CanPost { get; }
 
         /// <summary>
-        /// Разрешено ли удаление документов.
+        /// Flag indicating if DELETE method is allowed.
         /// </summary>
         bool CanDelete { get; }
 
 
         /// <summary>
-        /// Загружает модуль.
+        /// Action on exception raise.
         /// </summary>
-        /// <param name="builder">Регистратор обработчиков запросов.</param>
-        void Load(IHttpServiceBuilder builder);
-
-
-        /// <summary>
-        /// Обрабатывает исключение.
-        /// </summary>
-        /// <param name="exception">Исключение.</param>
-        /// <returns>Сообщение об ошибке.</returns>
+        /// <param name="exception">Exception.</param>
+        /// <returns>Erro message.</returns>
         string OnError(Exception exception);
     }
 }

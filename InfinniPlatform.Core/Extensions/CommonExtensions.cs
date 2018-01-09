@@ -26,6 +26,7 @@ namespace InfinniPlatform.Extensions
             }
             catch
             {
+                // ignored
             }
 
             return success;

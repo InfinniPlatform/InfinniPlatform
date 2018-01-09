@@ -24,7 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.Auth\InfinniPlatform.Auth.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core.Abstractions\InfinniPlatform.Core.Abstractions.csproj" />
-    <ProjectReference Include="..\InfinniPlatform.Http.Abstractions\InfinniPlatform.Http.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

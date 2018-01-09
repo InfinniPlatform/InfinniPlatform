@@ -16,10 +16,13 @@ using Quartz.Spi;
 namespace InfinniPlatform.Scheduler.IoC
 {
     /// <summary>
-    /// Модуль регистрации зависимостей <see cref="InfinniPlatform.Scheduler"/>.
+    /// Dependency registration module for <see cref="InfinniPlatform.Scheduler"/>.
     /// </summary>
     public class QuartzSchedulerContainerModule : IContainerModule
     {
+        /// <summary>
+        /// Creates new instance of <see cref="QuartzSchedulerContainerModule"/>.
+        /// </summary>
         public QuartzSchedulerContainerModule(QuartzSchedulerOptions options)
         {
             _options = options;
@@ -27,6 +30,7 @@ namespace InfinniPlatform.Scheduler.IoC
 
         private readonly QuartzSchedulerOptions _options;
 
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf().SingleInstance();

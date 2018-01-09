@@ -5,8 +5,14 @@ using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.DocumentStorage
 {
+    /// <inheritdoc />
     public class SystemDocumentStorageFactory : ISystemDocumentStorageFactory
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="SystemDocumentStorageFactory" />.
+        /// </summary>
+        /// <param name="containerResolver">Dependency resolver from container.</param>
+        /// <param name="storageFactory">Factory for creating <see cref="ISystemDocumentStorage"/></param> instances.
         public SystemDocumentStorageFactory(IContainerResolver containerResolver, Func<string, ISystemDocumentStorage> storageFactory)
         {
             _containerResolver = containerResolver;
@@ -14,15 +20,12 @@ namespace InfinniPlatform.DocumentStorage
         }
 
         private readonly IContainerResolver _containerResolver;
-
-        private readonly ConcurrentDictionary<string, object> _genericStorages
-            = new ConcurrentDictionary<string, object>();
-
         private readonly Func<string, ISystemDocumentStorage> _storageFactory;
 
-        private readonly ConcurrentDictionary<string, ISystemDocumentStorage> _storages
-            = new ConcurrentDictionary<string, ISystemDocumentStorage>();
+        private readonly ConcurrentDictionary<string, object> _genericStorages = new ConcurrentDictionary<string, object>();
+        private readonly ConcurrentDictionary<string, ISystemDocumentStorage> _storages = new ConcurrentDictionary<string, ISystemDocumentStorage>();
 
+        /// <inheritdoc />
         public ISystemDocumentStorage GetStorage(string documentTypeName)
         {
             if (string.IsNullOrEmpty(documentTypeName))
@@ -42,14 +45,13 @@ namespace InfinniPlatform.DocumentStorage
             return storage;
         }
 
+        /// <inheritdoc />
         public object GetStorage(Type documentType, string documentTypeName = null)
         {
-            object storage;
-
             var storageProviderKey = $"{documentType.FullName};{documentTypeName}";
 
             // Кэширование хранилища для каждого типа документа, чтобы не создавать его каждый раз при запросе
-            if (!_genericStorages.TryGetValue(storageProviderKey, out storage))
+            if (!_genericStorages.TryGetValue(storageProviderKey, out var storage))
             {
                 if (string.IsNullOrEmpty(documentTypeName))
                 {
@@ -69,14 +71,13 @@ namespace InfinniPlatform.DocumentStorage
             return storage;
         }
 
+        /// <inheritdoc />
         public ISystemDocumentStorage<TDocument> GetStorage<TDocument>(string documentTypeName = null) where TDocument : Document
         {
-            object storage;
-
             var storageProviderKey = $"{typeof(TDocument).FullName};{documentTypeName}";
 
             // Кэширование хранилища для каждого типа документа, чтобы не создавать его каждый раз при запросе
-            if (!_genericStorages.TryGetValue(storageProviderKey, out storage))
+            if (!_genericStorages.TryGetValue(storageProviderKey, out var storage))
             {
                 if (string.IsNullOrEmpty(documentTypeName))
                 {

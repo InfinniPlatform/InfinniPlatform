@@ -5,12 +5,12 @@ using Microsoft.Extensions.Caching.Memory;
 namespace InfinniPlatform.Cache
 {
     /// <summary>
-    /// Реализует интерфейс для управления кэшем в памяти.
+    /// In-memory cache implementation.
     /// </summary>
     public class InMemoryCache : IInMemoryCache, IDisposable
     {
         /// <summary>
-        /// Конструктор.
+        /// Initializes a new instance of <see cref="InMemoryCache" />.
         /// </summary>
         public InMemoryCache()
         {
@@ -21,6 +21,7 @@ namespace InfinniPlatform.Cache
         private readonly MemoryCache _cache;
 
 
+        /// <inheritdoc />
         public bool Contains(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -28,9 +29,10 @@ namespace InfinniPlatform.Cache
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return _cache.TryGetValue(key, out object value);
+            return _cache.TryGetValue(key, out var _);
         }
 
+        /// <inheritdoc />
         public string Get(string key)
         {
             TryGet(key, out string value);
@@ -38,6 +40,7 @@ namespace InfinniPlatform.Cache
             return value;
         }
 
+        /// <inheritdoc />
         public bool TryGet(string key, out string value)
         {
             if (string.IsNullOrEmpty(key))
@@ -50,6 +53,7 @@ namespace InfinniPlatform.Cache
             return value != null;
         }
 
+        /// <inheritdoc />
         public void Set(string key, string value)
         {
             if (string.IsNullOrEmpty(key))
@@ -65,6 +69,7 @@ namespace InfinniPlatform.Cache
             _cache.Set(key, value, new MemoryCacheEntryOptions());
         }
 
+        /// <inheritdoc />
         public bool Remove(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -84,7 +89,7 @@ namespace InfinniPlatform.Cache
             }
         }
 
-
+        /// <inheritdoc />
         public void Dispose()
         {
             _cache.Dispose();

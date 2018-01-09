@@ -5,23 +5,21 @@ using InfinniPlatform.IoC;
 namespace InfinniPlatform.Scheduler
 {
     /// <summary>
-    /// Настройки планировщика заданий Quartz.
+    /// Quartz scheduler configuration options.
     /// </summary>
-    public class QuartzSchedulerOptions
+    public class QuartzSchedulerOptions : IOptions
     {
-        /// <summary>
-        /// Имя секции в файле конфигурации.
-        /// </summary>
-        public const string SectionName = "quartzScheduler";
+        /// <inheritdoc />
+        public string SectionName => "quartzScheduler";
 
         /// <summary>
-        /// Настройка планировщика заданий по умолчанию.
+        /// Default instance of <see cref="QuartzSchedulerOptions"/>.
         /// </summary>
         public static readonly QuartzSchedulerOptions Default = new QuartzSchedulerOptions();
 
 
         /// <summary>
-        /// Конструктор.
+        /// Initializes a new instance of <see cref="QuartzSchedulerOptions"/>.
         /// </summary>
         public QuartzSchedulerOptions()
         {
@@ -29,17 +27,17 @@ namespace InfinniPlatform.Scheduler
 
 
         /// <summary>
-        /// Время хранения информации о вызове обработчиков заданий (в секундах).
+        /// Expiration timeout for job handlers invocation history in seconds.
         /// </summary>
         public int? ExpireHistoryAfter { get; set; }
 
         /// <summary>
-        /// Фабричный метод для получения <see cref="IJobSchedulerStateObserver"/>.
+        /// Factory for creating <see cref="IJobSchedulerStateObserver"/> instance.
         /// </summary>
         public Func<IContainerResolver, IJobSchedulerStateObserver> JobSchedulerStateObserver { get; set; }
 
         /// <summary>
-        /// Фабричный метод для получения <see cref="IJobSchedulerRepository"/>.
+        /// Factory for creating <see cref="IJobSchedulerRepository"/> instance.
         /// </summary>
         public Func<IContainerResolver, IJobSchedulerRepository> JobSchedulerRepository { get; set; }
     }

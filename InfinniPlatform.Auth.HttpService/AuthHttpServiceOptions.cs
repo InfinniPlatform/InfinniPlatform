@@ -1,19 +1,32 @@
 ﻿namespace InfinniPlatform.Auth.HttpService
 {
     /// <summary>
-    /// Authentication HTTP-service options.
+    /// Authentication HTTP-service configuration options.
     /// </summary>
-    public class AuthHttpServiceOptions
+    public class AuthHttpServiceOptions : IOptions
     {
-        public const string SectionName = "authHttpService";
-
+        /// <inheritdoc />
+        public string SectionName => "authHttpService";
+        
+        /// <summary>
+        /// Default callback URL on successful authentication.
+        /// </summary>
         public const string DefaultSuccessUrl = "/";
-
+        
+        /// <summary>
+        /// Default callback URL on failed authentication.
+        /// </summary>
         public const string DefaultFailureUrl = "/";
 
+        /// <summary>
+        /// Default <see cref="AuthHttpServiceOptions"/> instance.
+        /// </summary>
         public static readonly AuthHttpServiceOptions Default = new AuthHttpServiceOptions();
 
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="AuthHttpServiceOptions"/> class.
+        /// </summary>
         public AuthHttpServiceOptions()
         {
             SuccessUrl = DefaultSuccessUrl;

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-
-using InfinniPlatform.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Diagnostics
 {
@@ -18,6 +17,6 @@ namespace InfinniPlatform.Diagnostics
         /// Состояние подсистемы.
         /// </summary>
         /// <param name="request">Запрос.</param>
-        Task<object> GetStatus(IHttpRequest request);
+        Task<object> GetStatus(HttpRequest request);
     }
 }

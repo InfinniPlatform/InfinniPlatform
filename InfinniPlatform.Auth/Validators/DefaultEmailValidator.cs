@@ -9,27 +9,34 @@ using Microsoft.AspNetCore.Identity;
 namespace InfinniPlatform.Auth.Validators
 {
     /// <summary>
-    /// Проверяет корректность адреса электронной почты пользователя.
+    /// Validates user email.
     /// </summary>
     public class DefaultEmailValidator<TUser> : IUserValidator<TUser> where TUser : AppUser
     {
         private readonly IUserStore<TUser> _userStore;
         private const string EmailRegex = "^.*?@.*?\\.*.?$";
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DefaultEmailValidator{TUser}" />.
+        /// </summary>
+        /// <param name="userStore">User store.</param>
         public DefaultEmailValidator(IUserStore<TUser> userStore)
         {
             _userStore = userStore ?? throw new ArgumentNullException(nameof(userStore));
         }
 
+        /// <summary>
+        /// Validates email.
+        /// </summary>
+        /// <param name="manager">User manager.</param>
+        /// <param name="user">User information.</param>
         public async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user)
         {
             var errors = new List<IdentityError>();
             var email = user.Email;
 
-            // Если Email задан
             if (!string.IsNullOrWhiteSpace(email))
             {
-                // Проверка корректности Email
                 var match = Regex.IsMatch(email, EmailRegex);
 
                 if (!match)
@@ -37,11 +44,7 @@ namespace InfinniPlatform.Auth.Validators
                     errors.Add(new IdentityError {Description = string.Format(Resources.InvalidEmail, email)});
                 }
 
-                // Проверка уникальности Email
-
-                var store = _userStore as IUserEmailStore<TUser>;
-
-                if (store != null)
+                if (_userStore is IUserEmailStore<TUser> store)
                 {
                     var owner = await store.FindByEmailAsync(email, default(CancellationToken));
 

@@ -207,4 +207,5 @@ FakesAssemblies/
 # JetBrains Rider
 .idea/**
 *.iml
-InfinniPlatform\.ServiceHost/BlobStorage/
+
+BlobStorage/

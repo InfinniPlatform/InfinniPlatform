@@ -12,12 +12,17 @@ namespace InfinniPlatform.Aspects
         private readonly IPerformanceLoggerFactory _perfLoggerFactory;
         private readonly ConcurrentDictionary<Type, IPerformanceLogger> _perfLoggerCache;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="PerformanceLoggerInterceptor" />. 
+        /// </summary>
+        /// <param name="perfLoggerFactory">Factory for creating <see cref="IPerformanceLoggerFactory"/>.</param>
         public PerformanceLoggerInterceptor(IPerformanceLoggerFactory perfLoggerFactory)
         {
             _perfLoggerFactory = perfLoggerFactory;
             _perfLoggerCache = new ConcurrentDictionary<Type, IPerformanceLogger>();
         }
 
+        /// <inheritdoc />
         public void Intercept(IMethodInvocation invocation)
         {
             var targetType = invocation.InvocationTarget.GetType();
@@ -33,9 +38,7 @@ namespace InfinniPlatform.Aspects
 
         private IPerformanceLogger GetPerfLogger(Type targetType)
         {
-            IPerformanceLogger perfLogger;
-
-            if (!_perfLoggerCache.TryGetValue(targetType, out perfLogger))
+            if (!_perfLoggerCache.TryGetValue(targetType, out var perfLogger))
             {
                 perfLogger = _perfLoggerFactory.Create(targetType);
 

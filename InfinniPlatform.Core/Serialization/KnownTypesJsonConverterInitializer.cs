@@ -9,8 +9,15 @@ using Newtonsoft.Json.Serialization;
 
 namespace InfinniPlatform.Serialization
 {
-    internal class KnownTypesJsonConverterInitializer : IJsonPropertyInitializer
+    /// <summary>
+    /// Interface for <see cref="JsonProperty" /> set up.
+    /// </summary>
+    public class KnownTypesJsonConverterInitializer : IJsonPropertyInitializer
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="KnownTypesJsonConverterInitializer" />.
+        /// </summary>
+        /// <param name="knownTypes"></param>
         public KnownTypesJsonConverterInitializer(KnownTypesContainer knownTypes)
         {
             _knownTypes = knownTypes;
@@ -22,6 +29,7 @@ namespace InfinniPlatform.Serialization
         private readonly KnownTypesJsonConverter _knownTypesConverter;
 
 
+        /// <inheritdoc />
         public void InitializeProperty(JsonProperty property, MemberInfo member, MemberSerialization memberSerialization)
         {
             var propertyType = property.PropertyType;

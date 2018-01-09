@@ -36,6 +36,14 @@ namespace InfinniPlatform.Serialization
         public static readonly JsonObjectSerializer Formatted = new JsonObjectSerializer(true);
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="JsonObjectSerializer" />.
+        /// </summary>
+        /// <param name="withFormatting">Flag indicating if JSON-output will be formatted.</param>
+        /// <param name="encoding">Text encoding.</param>
+        /// <param name="knownTypes">Source of known types.</param>
+        /// <param name="valueConverters">Custom converters for JSON properties.</param>
+        /// <param name="errorHandlers">Serialization errors handlers.</param>
         public JsonObjectSerializer(bool withFormatting = false,
                                     Encoding encoding = null,
                                     IEnumerable<IKnownTypesSource> knownTypes = null,

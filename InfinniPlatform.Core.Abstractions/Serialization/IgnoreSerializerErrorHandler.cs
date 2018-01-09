@@ -3,10 +3,11 @@
 namespace InfinniPlatform.Serialization
 {
     /// <summary>
-    /// Игнорирует все ошибки сериализации и десериализации.
+    /// Ignores all serialization errors.
     /// </summary>
     public class IgnoreSerializerErrorHandler : ISerializerErrorHandler
     {
+        /// <inheritdoc />
         public bool Handle(object target, object member, Exception error)
         {
             return true;

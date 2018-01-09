@@ -23,6 +23,14 @@ namespace InfinniPlatform.MessageQueue.Hosting
         private readonly IMessageSerializer _messageSerializer;
         private readonly IPerformanceLogger _perfLogger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="MessageQueueConsumersManager" />.
+        /// </summary>
+        /// <param name="messageQueueThreadPool"></param>
+        /// <param name="messageSerializer">Queue message serializer.</param>
+        /// <param name="manager">RabbitMQ connection manager.</param>
+        /// <param name="logger">Logger.</param>
+        /// <param name="perfLogger">Performance logger.</param>
         public MessageQueueConsumersManager(MessageQueueThreadPool messageQueueThreadPool,
                                             IMessageSerializer messageSerializer,
                                             RabbitMqManager manager,

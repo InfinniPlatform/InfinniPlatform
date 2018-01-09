@@ -2,8 +2,15 @@
 
 namespace InfinniPlatform.Cache
 {
+    /// <inheritdoc />
     public class TwoLayerCache : ITwoLayerCache
     {
+        /// <summary>
+        /// Initialize a new instance of <see cref="TwoLayerCache"/>.
+        /// </summary>
+        /// <param name="inMemoryCacheFactory">Factory for creating <see cref="IInMemoryCacheFactory"/> instance.></param>
+        /// <param name="sharedCacheFactory">Factory for creating <see cref="ISharedCacheFactory"/> instance.></param>
+        /// <param name="сacheStateObserver">Cache data state change observer.></param>
         public TwoLayerCache(IInMemoryCacheFactory inMemoryCacheFactory, ISharedCacheFactory sharedCacheFactory, ITwoLayerCacheStateObserver сacheStateObserver)
         {
             _inMemoryCache = inMemoryCacheFactory.Create();
@@ -17,6 +24,7 @@ namespace InfinniPlatform.Cache
         private readonly ITwoLayerCacheStateObserver _сacheStateObserver;
 
 
+        /// <inheritdoc />
         public bool Contains(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -27,15 +35,15 @@ namespace InfinniPlatform.Cache
             return _inMemoryCache.Contains(key) || _sharedCache.Contains(key);
         }
 
+        /// <inheritdoc />
         public string Get(string key)
         {
-            string value;
-
-            TryGet(key, out value);
+            TryGet(key, out var value);
 
             return value;
         }
 
+        /// <inheritdoc />
         public bool TryGet(string key, out string value)
         {
             if (string.IsNullOrEmpty(key))
@@ -66,6 +74,7 @@ namespace InfinniPlatform.Cache
             return exists;
         }
 
+        /// <inheritdoc />
         public void Set(string key, string value)
         {
             if (string.IsNullOrEmpty(key))
@@ -84,6 +93,7 @@ namespace InfinniPlatform.Cache
             NotifyOnKeyChangedAsync(key);
         }
 
+        /// <inheritdoc />
         public bool Remove(string key)
         {
             if (string.IsNullOrEmpty(key))

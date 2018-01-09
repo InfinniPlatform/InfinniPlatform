@@ -5,8 +5,12 @@ using System.Linq.Expressions;
 using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
 using InfinniPlatform.DocumentStorage.TestEntities;
-using InfinniPlatform.Http;
 using InfinniPlatform.Tests;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Primitives;
 
 using Moq;
 
@@ -28,7 +32,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var queryBuilder = new DocumentQueryFactory<SimpleEntity>(SyntaxTreeParser, null);
 
-            var request = CreateGetRequest(new Dictionary<string, object>
+            var request = CreateGetRequest(new Dictionary<string, string>
                                            {
                                                { "id", null },
                                                { "search", "Full text search" },
@@ -41,7 +45,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
                                            });
 
             // When
-            var documentQuery = queryBuilder.CreateGetQuery(request);
+            var documentQuery = queryBuilder.CreateGetQuery(request, new RouteData());
 
             // Then
             Assert.IsNotNull(documentQuery);
@@ -65,7 +69,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
 
             var queryBuilder = new DocumentQueryFactory(SyntaxTreeParser, null);
 
-            var request = CreateGetRequest(new Dictionary<string, object>
+            var request = CreateGetRequest(new Dictionary<string, string>
                                            {
                                                { "id", null },
                                                { "search", "Full text search" },
@@ -78,7 +82,7 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
                                            });
 
             // When
-            var documentQuery = queryBuilder.CreateGetQuery(request);
+            var documentQuery = queryBuilder.CreateGetQuery(request,new RouteData());
 
             // Then
             Assert.IsNotNull(documentQuery);
@@ -95,11 +99,14 @@ namespace InfinniPlatform.DocumentStorage.HttpService.QueryFactories
         }
 
 
-        private static IHttpRequest CreateGetRequest(IDictionary<string, object> query)
+        private static HttpRequest CreateGetRequest(IDictionary<string, string> query)
         {
-            var request = new Mock<IHttpRequest>();
+            var queryCollection = new QueryCollection(query.ToDictionary(q => q.Key,
+                                                                         q => new StringValues(q.Value)));
+
+            var request = new Mock<HttpRequest>();
             request.SetupGet(i => i.Method).Returns("GET");
-            request.SetupGet(i => i.Query).Returns(query);
+            request.SetupGet(i => i.Query).Returns(queryCollection);
             return request.Object;
         }
     }

@@ -68,6 +68,7 @@ namespace InfinniPlatform.DocumentStorage.Metadata
         }
 
 
+        /// <inheritdoc />
         public bool Equals(DocumentIndex other)
         {
             if (ReferenceEquals(this, other))
@@ -87,6 +88,7 @@ namespace InfinniPlatform.DocumentStorage.Metadata
         }
 
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return 0;

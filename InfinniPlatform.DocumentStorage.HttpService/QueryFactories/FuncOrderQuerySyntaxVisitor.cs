@@ -20,6 +20,10 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
               };
 
 
+        /// <summary>
+        /// Create order expression.
+        /// </summary>
+        /// <param name="node">Invocation query node.</param>
         public static IEnumerable<KeyValuePair<string, DocumentSortOrder>> CreateOrderExpression(InvocationQuerySyntaxNode node)
         {
             var visitor = new FuncOrderQuerySyntaxVisitor();
@@ -30,6 +34,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         // Overrides
 
+        /// <inheritdoc />
         public override IEnumerable<KeyValuePair<string, DocumentSortOrder>> VisitInvocationExpression(InvocationQuerySyntaxNode node)
         {
             Func<FuncOrderQuerySyntaxVisitor, InvocationQuerySyntaxNode, IEnumerable<KeyValuePair<string, DocumentSortOrder>>> factory;

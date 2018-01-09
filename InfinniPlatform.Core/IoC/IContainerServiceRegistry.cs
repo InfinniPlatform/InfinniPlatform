@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace InfinniPlatform.IoC
 {
     /// <summary>
-    /// Registry for services registered in container.
+    /// Registry of services registered in container.
     /// </summary>
     public interface IContainerServiceRegistry
     {

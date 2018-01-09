@@ -3,6 +3,7 @@ using System.Text;
 
 namespace InfinniPlatform.Scheduler
 {
+    /// <inheritdoc />
     public class CronExpressionBuilder : ICronExpressionBuilder
     {
         private string _seconds;
@@ -14,6 +15,7 @@ namespace InfinniPlatform.Scheduler
         private string _year;
 
 
+        /// <inheritdoc />
         public ICronExpressionBuilder Seconds(Action<ICronExpressionSecondBuilder> seconds)
         {
             var builder = new CronExpressionSecondBuilder();
@@ -25,6 +27,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionBuilder Minutes(Action<ICronExpressionMinuteBuilder> minutes)
         {
             var builder = new CronExpressionMinuteBuilder();
@@ -36,6 +39,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionBuilder Hours(Action<ICronExpressionHourBuilder> hours)
         {
             var builder = new CronExpressionHourBuilder();
@@ -47,6 +51,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionBuilder DayOfMonth(Action<ICronExpressionDayOfMonthBuilder> dayOfMonth)
         {
             var builder = new CronExpressionDayOfMonthBuilder();
@@ -58,6 +63,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionBuilder Month(Action<ICronExpressionMonthBuilder> month)
         {
             var builder = new CronExpressionMonthBuilder();
@@ -69,6 +75,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionBuilder DayOfWeek(Action<ICronExpressionDayOfWeekBuilder> dayOfWeek)
         {
             var builder = new CronExpressionDayOfWeekBuilder();
@@ -80,6 +87,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionBuilder Year(Action<ICronExpressionYearBuilder> year)
         {
             var builder = new CronExpressionYearBuilder();
@@ -92,6 +100,9 @@ namespace InfinniPlatform.Scheduler
         }
 
 
+        /// <summary>
+        /// Returns current expression.
+        /// </summary>
         public string Build()
         {
             var expression = new StringBuilder();

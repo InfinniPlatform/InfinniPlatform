@@ -6,11 +6,17 @@ using RabbitMQ.Client.Framing;
 
 namespace InfinniPlatform.MessageQueue
 {
+    /// <inheritdoc />
     public class BasicPropertiesProvider : IBasicPropertiesProvider
     {
         private readonly AppOptions _appOptions;
         private readonly IJsonObjectSerializer _serializer;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BasicPropertiesProvider" />.
+        /// </summary>
+        /// <param name="appOptions">Common application settings.</param>
+        /// <param name="serializer">JSON objects serializer.</param>
         public BasicPropertiesProvider(AppOptions appOptions, IJsonObjectSerializer serializer)
         {
             _appOptions = appOptions;
@@ -18,6 +24,7 @@ namespace InfinniPlatform.MessageQueue
         }
 
 
+        /// <inheritdoc />
         public BasicProperties Get()
         {
             return new BasicProperties
@@ -27,6 +34,7 @@ namespace InfinniPlatform.MessageQueue
             };
         }
 
+        /// <inheritdoc />
         public BasicProperties GetPersistent()
         {
             return new BasicProperties
@@ -37,6 +45,7 @@ namespace InfinniPlatform.MessageQueue
             };
         }
 
+        /// <inheritdoc />
         public Dictionary<string, Func<string>> GetHeaders(IMessage message)
         {
             var dictionary = new Dictionary<string, Func<string>>();

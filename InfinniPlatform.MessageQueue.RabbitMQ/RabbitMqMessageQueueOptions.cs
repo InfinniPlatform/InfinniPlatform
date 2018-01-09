@@ -1,15 +1,22 @@
 ﻿namespace InfinniPlatform.MessageQueue
 {
     /// <summary>
-    /// Настройки очереди сообщений на основе RabbitMQ.
+    /// RabbitMQ message queue configuration options.
     /// </summary>
-    public class RabbitMqMessageQueueOptions
+    public class RabbitMqMessageQueueOptions : IOptions
     {
-        public const string SectionName = "rabbitmqMessageQueue";
+        /// <inheritdoc />
+        public string SectionName => "rabbitmqMessageQueue";
 
+        /// <summary>
+        /// Default instance of <see cref="RabbitMqMessageQueueOptions" />.
+        /// </summary>
         public static readonly RabbitMqMessageQueueOptions Default = new RabbitMqMessageQueueOptions();
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="AppOptions" />.
+        /// </summary>
         public RabbitMqMessageQueueOptions()
         {
             HostName = "localhost";
@@ -25,47 +32,47 @@
 
 
         /// <summary>
-        /// Имя/адрес сервера.
+        /// RabbitMQ server address.
         /// </summary>
         public string HostName { get; set; }
 
         /// <summary>
-        /// Порт, прослушиваемый сервером.
+        /// RabbitMQ server port.
         /// </summary>
         public int Port { get; set; }
 
         /// <summary>
-        /// Имя пользователя.
+        /// User name.
         /// </summary>
         public string UserName { get; set; }
 
         /// <summary>
-        /// Пароль пользователя.
+        /// Password.
         /// </summary>
         public string Password { get; set; }
 
         /// <summary>
-        /// Порт .
+        /// RabbitMQ Management API port.
         /// </summary>
         public int ManagementApiPort { get; set; }
 
         /// <summary>
-        /// Количество сообщений, единовременно передаваемых потребителю.
+        /// Amount of messages sended to consumer at once.
         /// </summary>
         public ushort PrefetchCount { get; set; }
 
         /// <summary>
-        /// Максимальное количество одновременно обрабатываемых сообщений.
+        /// Maximum concurrents threads for message processing.
         /// </summary>
         public int MaxConcurrentThreads { get; set; }
 
         /// <summary>
-        /// Время между попытками переподключения к серверу RabbitMQ в cекундах.
+        /// Reconnect timeout in seconds.
         /// </summary>
         public int ReconnectTimeout { get; set; }
 
         /// <summary>
-        /// Максимальное количество попыток переподключения к серверу RabbitMQ.
+        /// Maximum number of reconnet retries.
         /// </summary>
         public int MaxReconnectRetries { get; set; }
     }

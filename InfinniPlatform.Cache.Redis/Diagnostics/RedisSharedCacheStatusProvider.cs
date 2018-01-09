@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using InfinniPlatform.Diagnostics;
-using InfinniPlatform.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Cache.Diagnostics
 {
@@ -10,16 +10,18 @@ namespace InfinniPlatform.Cache.Diagnostics
     /// </summary>
     internal class RedisSharedCacheStatusProvider : ISubsystemStatusProvider
     {
-        public RedisSharedCacheStatusProvider(RedisConnectionFactory connectionFactory)
+        public RedisSharedCacheStatusProvider(RedisConnectionFactory connectionFactory, RedisSharedCacheOptions redisSharedCacheOptions)
         {
             _connectionFactory = connectionFactory;
+            _redisSharedCacheOptions = redisSharedCacheOptions;
         }
 
         private readonly RedisConnectionFactory _connectionFactory;
+        private readonly RedisSharedCacheOptions _redisSharedCacheOptions;
 
-        public string Name => RedisSharedCacheOptions.SectionName;
+        public string Name => _redisSharedCacheOptions.SectionName;
 
-        public async Task<object> GetStatus(IHttpRequest request)
+        public async Task<object> GetStatus(HttpRequest request)
         {
             return await _connectionFactory.RedisClient.Value.GetStatusAsync();
         }

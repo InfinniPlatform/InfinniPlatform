@@ -6,6 +6,8 @@ using InfinniPlatform.Http;
 using InfinniPlatform.Logging;
 using InfinniPlatform.Serialization;
 
+using Microsoft.AspNetCore.Http;
+
 namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
@@ -43,6 +45,13 @@ namespace InfinniPlatform.BlobStorage
     [LoggerName(nameof(FileSystemBlobStorage))]
     public class FileSystemBlobStorage : IBlobStorage
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="FileSystemBlobStorage" />.
+        /// </summary>
+        /// <param name="options">Authentication options.</param>
+        /// <param name="objectSerializer">Object serializer.</param>
+        /// <param name="mimeTypeResolver">File MIME type resolver.</param>
+        /// <param name="perfLogger">Performance logger.</param>
         public FileSystemBlobStorage(FileSystemBlobStorageOptions options,
                                      IObjectSerializer objectSerializer,
                                      IMimeTypeResolver mimeTypeResolver,
@@ -68,6 +77,7 @@ namespace InfinniPlatform.BlobStorage
         private readonly IPerformanceLogger _perfLogger;
 
 
+        /// <inheritdoc />
         public BlobInfo GetBlobInfo(string blobId)
         {
             var start = DateTime.Now;
@@ -93,6 +103,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
         public BlobData GetBlobData(string blobId)
         {
             var start = DateTime.Now;
@@ -127,6 +138,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
         public BlobInfo CreateBlob(string blobName, string blobType, Stream blobData)
         {
             var blobId = GenerateBlobId();
@@ -134,6 +146,7 @@ namespace InfinniPlatform.BlobStorage
             return UpdateBlob(blobId, blobName, blobType, blobData);
         }
 
+        /// <inheritdoc />
         public Task<BlobInfo> CreateBlobAsync(string blobName, string blobType, Stream blobData)
         {
             var blobId = GenerateBlobId();
@@ -141,6 +154,15 @@ namespace InfinniPlatform.BlobStorage
             return UpdateBlobAsync(blobId, blobName, blobType, blobData);
         }
 
+        /// <inheritdoc />
+        public Task<BlobInfo> CreateBlobAsync(string blobName, string blobType, IFormFile formFile)
+        {
+            var blobId = GenerateBlobId();
+
+            return UpdateBlobAsync(blobId, blobName, blobType, formFile);
+        }
+
+        /// <inheritdoc />
         public BlobInfo UpdateBlob(string blobId, string blobName, string blobType, Stream blobData)
         {
             var start = DateTime.Now;
@@ -186,6 +208,7 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
         public async Task<BlobInfo> UpdateBlobAsync(string blobId, string blobName, string blobType, Stream blobData)
         {
             var start = DateTime.Now;
@@ -231,6 +254,53 @@ namespace InfinniPlatform.BlobStorage
             }
         }
 
+        /// <inheritdoc />
+        public async Task<BlobInfo> UpdateBlobAsync(string blobId, string blobName, string blobType, IFormFile formFile)
+        {
+            var start = DateTime.Now;
+
+            try
+            {
+                if (string.IsNullOrEmpty(blobId))
+                {
+                    throw new ArgumentNullException(nameof(blobId));
+                }
+
+                if (formFile == null)
+                {
+                    throw new ArgumentNullException(nameof(formFile));
+                }
+
+                if (string.IsNullOrEmpty(blobType))
+                {
+                    blobType = _mimeTypeResolver.GetMimeType(blobName);
+                }
+
+                var blobInfo = new BlobInfo
+                               {
+                                   Id = blobId,
+                                   Name = blobName,
+                                   Type = blobType,
+                                   Size = formFile.Length,
+                                   Time = DateTime.UtcNow
+                               };
+
+                WriteBlobInfo(blobId, blobInfo);
+                await WriteBlobDataAsync(blobId, formFile);
+
+                _perfLogger.Log("UpdateBlob", start);
+
+                return blobInfo;
+            }
+            catch (Exception e)
+            {
+                _perfLogger.Log("UpdateBlob", start, e);
+
+                throw;
+            }
+        }
+
+        /// <inheritdoc />
         public void DeleteBlob(string blobId)
         {
             var start = DateTime.Now;
@@ -340,6 +410,19 @@ namespace InfinniPlatform.BlobStorage
             using (var dataFile = OpenWriteFileStream(dataFilePath))
             {
                 await blobData.CopyToAsync(dataFile);
+                await dataFile.FlushAsync();
+            }
+        }
+
+        private async Task WriteBlobDataAsync(string blobId, IFormFile formFile)
+        {
+            TryCreateDirectory(blobId);
+
+            var dataFilePath = GetBlobDataFilePath(blobId);
+
+            using (var dataFile = OpenWriteFileStream(dataFilePath))
+            {
+                await formFile.CopyToAsync(dataFile);
                 await dataFile.FlushAsync();
             }
         }

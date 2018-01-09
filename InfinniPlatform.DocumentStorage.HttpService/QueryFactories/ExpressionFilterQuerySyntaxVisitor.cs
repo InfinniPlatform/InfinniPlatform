@@ -56,6 +56,12 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
         }
 
 
+        /// <summary>
+        /// Creates filter expression based on filter body.
+        /// </summary>
+        /// <param name="type">Type.</param>
+        /// <param name="node">Invocation query node.</param>
+        /// <param name="level">Level.</param>
         public static Expression CreateFilterExpression(Type type, InvocationQuerySyntaxNode node, int level = 0)
         {
             var visitor = new ExpressionFilterQuerySyntaxVisitor(type, level);
@@ -66,6 +72,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
 
         // Overrides
 
+        /// <inheritdoc />
         public override Expression VisitInvocationExpression(InvocationQuerySyntaxNode node)
         {
             Func<ExpressionFilterQuerySyntaxVisitor, InvocationQuerySyntaxNode, Expression> factory;

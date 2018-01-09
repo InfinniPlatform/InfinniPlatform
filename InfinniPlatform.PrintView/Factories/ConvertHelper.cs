@@ -50,6 +50,7 @@ namespace InfinniPlatform.PrintView.Factories
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 

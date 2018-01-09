@@ -3,10 +3,14 @@
 namespace InfinniPlatform.DocumentStorage
 {
     /// <summary>
-    /// Результат выполнения проверки корректности документа.
+    /// Result of document validation.
     /// </summary>
     public class DocumentValidationResult
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentValidationResult" />.
+        /// </summary>
+        /// <param name="isValid">Flag indicating if document is valid.</param>
         public DocumentValidationResult(bool isValid = true)
         {
             IsValid = isValid;
@@ -14,12 +18,12 @@ namespace InfinniPlatform.DocumentStorage
         }
 
         /// <summary>
-        /// Признак успешности проверки.
+        /// Flag indicating if document is valid.
         /// </summary>
         public bool IsValid { get; set; }
 
         /// <summary>
-        /// Список результатов проверки свойств объекта.
+        /// Document fields validation result.
         /// </summary>
         public IList<DocumentValidationResultItem> Items { get; set; }
     }

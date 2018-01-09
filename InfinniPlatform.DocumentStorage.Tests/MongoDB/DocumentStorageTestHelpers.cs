@@ -2,9 +2,8 @@
 using System.Security.Claims;
 
 using InfinniPlatform.DocumentStorage.Metadata;
-using InfinniPlatform.Security;
 using InfinniPlatform.Session;
-
+using Microsoft.AspNetCore.Http;
 using Moq;
 
 namespace InfinniPlatform.DocumentStorage.MongoDB
@@ -115,10 +114,10 @@ namespace InfinniPlatform.DocumentStorage.MongoDB
             return tenantProvider.Object;
         }
 
-        private static IUserIdentityProvider GetUserIdentityProvider()
+        private static IHttpContextAccessor GetUserIdentityProvider()
         {
-            var userIdentityProvider = new Mock<IUserIdentityProvider>();
-            userIdentityProvider.Setup(i => i.GetUserIdentity()).Returns(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, FakeUserId), new Claim(ClaimTypes.Name, FakeUserName) }, "TestAuth"));
+            var userIdentityProvider = new Mock<IHttpContextAccessor>();
+            userIdentityProvider.Setup(i => i.HttpContext.User.Identity).Returns(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, FakeUserId), new Claim(ClaimTypes.Name, FakeUserName) }, "TestAuth"));
             return userIdentityProvider.Object;
         }
     }

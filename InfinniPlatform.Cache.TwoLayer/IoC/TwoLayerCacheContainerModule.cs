@@ -4,17 +4,22 @@ using InfinniPlatform.MessageQueue;
 
 namespace InfinniPlatform.Cache.IoC
 {
+    /// <summary>
+    /// Dependency registration module for <see cref="InfinniPlatform.Cache" />.
+    /// </summary>
     public class TwoLayerCacheContainerModule : IContainerModule
     {
+        /// <summary>
+        /// Creates new instance of <see cref="TwoLayerCacheContainerModule"/>.
+        /// </summary>
         public TwoLayerCacheContainerModule(TwoLayerCacheOptions options)
         {
             _options = options;
         }
-
-
+        
         private readonly TwoLayerCacheOptions _options;
 
-
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf().SingleInstance();

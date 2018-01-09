@@ -3,20 +3,22 @@
 using InfinniPlatform.Dynamic;
 using InfinniPlatform.Security;
 using InfinniPlatform.Session;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.DocumentStorage
 {
     internal class DocumentStorageHeaderProvider : IDocumentStorageHeaderProvider
     {
-        public DocumentStorageHeaderProvider(ITenantProvider tenantProvider, IUserIdentityProvider userIdentityProvider)
+        public DocumentStorageHeaderProvider(ITenantProvider tenantProvider, 
+                                             IHttpContextAccessor httpContextAccessor)
         {
             _tenantProvider = tenantProvider;
-            _userIdentityProvider = userIdentityProvider;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
         private readonly ITenantProvider _tenantProvider;
-        private readonly IUserIdentityProvider _userIdentityProvider;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
         public void SetInsertHeader(DynamicDocument document)
@@ -167,7 +169,7 @@ namespace InfinniPlatform.DocumentStorage
 
         private Tuple<string, string> GetCurrentUserInfo()
         {
-            var userIdentity = _userIdentityProvider.GetUserIdentity();
+            var userIdentity = _httpContextAccessor.HttpContext.User.Identity;
             var userName = DocumentStorageHelpers.AnonymousUser;
             var userId = DocumentStorageHelpers.AnonymousUser;
 

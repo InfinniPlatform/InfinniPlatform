@@ -4,6 +4,9 @@ using System.Text;
 
 namespace InfinniPlatform.Logging
 {
+    /// <summary>
+    /// Helper methods for defining logger name.
+    /// </summary>
     public static class LoggerNameHelper
     {
         /// <summary>

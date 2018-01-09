@@ -7,6 +7,10 @@ namespace InfinniPlatform.DocumentStorage.Interceptors
     /// </summary>
     public abstract class DocumentStorageInterceptor : IDocumentStorageInterceptor
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentStorageInterceptor" />.
+        /// </summary>
+        /// <param name="documentType">Document type.</param>
         protected DocumentStorageInterceptor(string documentType)
         {
             DocumentType = documentType;
@@ -193,6 +197,10 @@ namespace InfinniPlatform.DocumentStorage.Interceptors
     /// </summary>
     public abstract class DocumentStorageInterceptor<TDocument> : DocumentStorageInterceptor, IDocumentStorageInterceptor<TDocument>
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentStorageInterceptor" />.
+        /// </summary>
+        /// <param name="documentType"></param>
         protected DocumentStorageInterceptor(string documentType = null)
             : base(string.IsNullOrEmpty(documentType) ? DocumentStorageExtensions.GetDefaultDocumentTypeName<TDocument>() : documentType)
         {

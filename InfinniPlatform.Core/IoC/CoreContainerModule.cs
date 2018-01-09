@@ -1,22 +1,22 @@
 ﻿using System.Text;
 using InfinniPlatform.Aspects;
-using InfinniPlatform.Diagnostics;
 using InfinniPlatform.Http;
-using InfinniPlatform.Http.Middlewares;
 using InfinniPlatform.Logging;
-using InfinniPlatform.Security;
 using InfinniPlatform.Serialization;
 using InfinniPlatform.Session;
-
-using Nancy;
-using Nancy.Bootstrapper;
 
 using IObjectSerializer = InfinniPlatform.Serialization.IObjectSerializer;
 
 namespace InfinniPlatform.IoC
 {
+    /// <summary>
+    /// Dependency registration module for <see cref="InfinniPlatform" />.
+    /// </summary>
     public class CoreContainerModule : IContainerModule
     {
+        /// <summary>
+        /// Creates new instance of <see cref="CoreContainerModule"/>.
+        /// </summary>
         public CoreContainerModule(AppOptions options)
         {
             _options = options;
@@ -24,25 +24,16 @@ namespace InfinniPlatform.IoC
 
         private readonly AppOptions _options;
 
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterInstance(_options).AsSelf();
 
-            RegisterDiagnosticsComponents(builder);
             RegisterLoggingComponents(builder);
             RegisterAspectsComponents(builder);
             RegisterSerializationComponents(builder);
-            RegisterSecurityComponents(builder);
             RegisterSessionComponents(builder);
             RegisterHttpComponents(builder);
-        }
-
-
-        private static void RegisterDiagnosticsComponents(IContainerBuilder builder)
-        {
-            builder.RegisterType<SystemInfoHttpService>()
-                   .As<IHttpService>()
-                   .SingleInstance();
         }
 
         private static void RegisterLoggingComponents(IContainerBuilder builder)
@@ -83,13 +74,6 @@ namespace InfinniPlatform.IoC
                    .SingleInstance();
         }
 
-        private static void RegisterSecurityComponents(IContainerBuilder builder)
-        {
-            builder.RegisterType<UserIdentityProvider>()
-                   .As<IUserIdentityProvider>()
-                   .SingleInstance();
-        }
-
         private static void RegisterSessionComponents(IContainerBuilder builder)
         {
             builder.RegisterType<TenantScopeProvider>()
@@ -103,64 +87,8 @@ namespace InfinniPlatform.IoC
 
         private static void RegisterHttpComponents(IContainerBuilder builder)
         {
-            // Hosting
-
-            builder.RegisterType<HostAddressParser>()
-                   .As<IHostAddressParser>()
-                   .SingleInstance();
-
-            // Middlewares
-
-            builder.RegisterType<GlobalHandlingAppLayer>()
-                   .As<IDefaultAppLayer>()
-                   .SingleInstance();
-
-            builder.RegisterType<ErrorHandlingAppLayer>()
-                   .AsSelf()
-                   .As<IDefaultAppLayer>()
-                   .SingleInstance();
-
-            builder.RegisterType<NancyAppLayer>()
-                   .AsSelf()
-                   .As<IDefaultAppLayer>()
-                   .SingleInstance();
-
-            // Services
-
-            builder.RegisterType<HttpServiceNancyBootstrapper>()
-                   .As<INancyBootstrapper>()
-                   .SingleInstance();
-
-            builder.RegisterType<HttpServiceNancyModuleCatalog>()
-                   .As<INancyModuleCatalog>()
-                   .SingleInstance();
-
-            builder.RegisterGeneric(typeof(HttpServiceNancyModule<>))
-                   .As(typeof(HttpServiceNancyModule<>))
-                   .InstancePerDependency();
-
-            builder.RegisterType<HttpServiceNancyModuleInitializer>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<NancyMimeTypeResolver>()
+            builder.RegisterType<MimeTypeResolver>()
                    .As<IMimeTypeResolver>()
-                   .SingleInstance();
-
-            builder.RegisterType<HttpRequestExcutorFactory>()
-                   .AsSelf()
-                   .SingleInstance();
-
-            builder.RegisterType<HttpServiceSource>()
-                   .As<IHttpServiceSource>()
-                   .SingleInstance();
-
-            builder.RegisterType<HttpServiceContext>()
-                   .As<IHttpServiceContext>()
-                   .InstancePerDependency();
-
-            builder.RegisterType<HttpServiceContextProvider>()
-                   .As<IHttpServiceContextProvider>()
                    .SingleInstance();
         }
     }

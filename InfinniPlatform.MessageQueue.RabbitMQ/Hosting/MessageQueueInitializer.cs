@@ -9,6 +9,9 @@ using RabbitMQ.Client;
 
 namespace InfinniPlatform.MessageQueue.Hosting
 {
+    /// <summary>
+    /// Initializes message queue consumers.
+    /// </summary>
     public class MessageQueueInitializer : IAppStartedHandler, IAppStoppedHandler
     {
         private readonly List<IBroadcastConsumer> _broadcastConsumers;

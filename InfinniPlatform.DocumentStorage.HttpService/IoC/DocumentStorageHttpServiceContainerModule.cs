@@ -1,12 +1,17 @@
 ﻿using InfinniPlatform.DocumentStorage.QueryFactories;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
-using InfinniPlatform.Http;
 using InfinniPlatform.IoC;
+
+using Microsoft.AspNetCore.Mvc;
 
 namespace InfinniPlatform.DocumentStorage.IoC
 {
+    /// <summary>
+    /// Dependency registration module for <see cref="InfinniPlatform.DocumentStorage" />.
+    /// </summary>
     public class DocumentStorageHttpServiceContainerModule : IContainerModule
     {
+        /// <inheritdoc />
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterType<QuerySyntaxTreeParser>()
@@ -21,24 +26,21 @@ namespace InfinniPlatform.DocumentStorage.IoC
                    .As(typeof(IDocumentQueryFactory<>))
                    .SingleInstance();
 
-            builder.RegisterType<DocumentHttpService>()
+            builder.RegisterType<DocumentsController>()
+                   .As<Controller>()
                    .AsSelf()
                    .InstancePerDependency();
 
-            builder.RegisterGeneric(typeof(DocumentHttpService<>))
-                   .As(typeof(DocumentHttpService<>))
+            builder.RegisterType<DocumentRequestExecutor>()
+                   .AsSelf()
                    .InstancePerDependency();
 
-            builder.RegisterType<DocumentHttpServiceFactory>()
-                   .As<IDocumentHttpServiceFactory>()
-                   .SingleInstance();
+            builder.RegisterGeneric(typeof(DocumentRequestExecutor<>))
+                   .As(typeof(DocumentRequestExecutor<>))
+                   .InstancePerDependency();
 
-            builder.RegisterType<HttpServiceWrapperFactory>()
-                   .As<IHttpServiceWrapperFactory>()
-                   .SingleInstance();
-
-            builder.RegisterType<DocumentHttpServiceSource>()
-                   .As<IHttpServiceSource>()
+            builder.RegisterType<DocumentRequestExecutorProvider>()
+                   .As<IDocumentRequestExecutorProvider>()
                    .SingleInstance();
         }
     }

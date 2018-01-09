@@ -1,69 +1,82 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
+
 namespace InfinniPlatform.BlobStorage
 {
     /// <summary>
-    /// Сервис для работы хранилищем BLOB (Binary Large OBject).
+    /// Storage for BLOB (Binary Large OBject).
     /// </summary>
     public interface IBlobStorage
     {
         /// <summary>
-        /// Возвращает информацию о BLOB.
+        /// Returns BLOB information.
         /// </summary>
-        /// <param name="blobId">Идентификатор BLOB.</param>
-        /// <returns>Информация о BLOB.</returns>
+        /// <param name="blobId">BLOB identifier.</param>
         BlobInfo GetBlobInfo(string blobId);
 
         /// <summary>
-        /// Возвращает данные BLOB.
+        /// Returns BLOB data by identifier.
         /// </summary>
-        /// <param name="blobId">Идентификатор BLOB.</param>
-        /// <returns>Данные BLOB.</returns>
+        /// <param name="blobId">BLOB identifier.</param>
         BlobData GetBlobData(string blobId);
 
         /// <summary>
-        /// Создает BLOB.
+        /// Creates new BLOB from stream.
         /// </summary>
-        /// <param name="blobName">Наименование BLOB.</param>
-        /// <param name="blobType">Формат данных BLOB.</param>
-        /// <param name="blobData">Данные BLOB.</param>
-        /// <returns>Идентификатор BLOB. </returns>
+        /// <param name="blobName">BLOB name.</param>
+        /// <param name="blobType">BLOB data type.</param>
+        /// <param name="blobData">BLOB data.</param>
         BlobInfo CreateBlob(string blobName, string blobType, Stream blobData);
 
         /// <summary>
-        /// Создает BLOB.
+        /// Creates new BLOB from stream.
         /// </summary>
-        /// <param name="blobName">Наименование BLOB.</param>
-        /// <param name="blobType">Формат данных BLOB.</param>
-        /// <param name="blobData">Данные BLOB.</param>
-        /// <returns>Идентификатор BLOB. </returns>
+        /// <param name="blobName">BLOB name.</param>
+        /// <param name="blobType">BLOB data type.</param>
+        /// <param name="blobData">BLOB data.</param>
         Task<BlobInfo> CreateBlobAsync(string blobName, string blobType, Stream blobData);
 
         /// <summary>
-        /// Обновляет BLOB.
+        /// Creates new BLOB from form file.
         /// </summary>
-        /// <param name="blobId">Идентификатор BLOB.</param>
-        /// <param name="blobName">Наименование BLOB.</param>
-        /// <param name="blobType">Формат данных BLOB.</param>
-        /// <param name="blobData">Данные BLOB.</param>
-        /// <returns>Идентификатор BLOB. </returns>
+        /// <param name="blobName">BLOB name.</param>
+        /// <param name="blobType">BLOB data type.</param>
+        /// <param name="formFile">File from HTTP request.</param>
+        Task<BlobInfo> CreateBlobAsync(string blobName, string blobType, IFormFile formFile);
+
+        /// <summary>
+        /// Updates BLOB from stream.
+        /// </summary>
+        /// <param name="blobId">BLOB identifier.</param>
+        /// <param name="blobName">BLOB name.</param>
+        /// <param name="blobType">BLOB data type.</param>
+        /// <param name="blobData">BLOB data.</param>
         BlobInfo UpdateBlob(string blobId, string blobName, string blobType, Stream blobData);
 
         /// <summary>
-        /// Обновляет BLOB.
+        /// Updates BLOB from stream.
         /// </summary>
-        /// <param name="blobId">Идентификатор BLOB.</param>
-        /// <param name="blobName">Наименование BLOB.</param>
-        /// <param name="blobType">Формат данных BLOB.</param>
-        /// <param name="blobData">Данные BLOB.</param>
-        /// <returns>Идентификатор BLOB. </returns>
+        /// <param name="blobId">BLOB identifier.</param>
+        /// <param name="blobName">BLOB name.</param>
+        /// <param name="blobType">BLOB data type.</param>
+        /// <param name="blobData">BLOB data.</param>
         Task<BlobInfo> UpdateBlobAsync(string blobId, string blobName, string blobType, Stream blobData);
 
         /// <summary>
-        /// Удаляет BLOB.
+        /// Updates BLOB from form file.
         /// </summary>
-        /// <param name="blobId">Идентификатор BLOB.</param>
+        /// <param name="blobId">BLOB identifier.</param>
+        /// <param name="blobName">BLOB name.</param>
+        /// <param name="blobType">BLOB data type.</param>
+        /// <param name="formFile">File from htpp request.</param>
+        Task<BlobInfo> UpdateBlobAsync(string blobId, string blobName, string blobType, IFormFile formFile);
+
+        /// <summary>
+        /// Delete BLOB by identifier.
+        /// </summary>
+        /// <param name="blobId">BLOB identifier.</param>
         void DeleteBlob(string blobId);
     }
 }

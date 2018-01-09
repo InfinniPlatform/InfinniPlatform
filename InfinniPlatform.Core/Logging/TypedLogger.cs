@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace InfinniPlatform.Logging
 {
     /// <summary>
-    /// Delegates to a new <see cref="ILogger" /> instance using the <see cref="TComponent" /> for getting the logger category name.
+    /// Delegates to a new <see cref="ILogger" /> instance using the <typeparamref name="TComponent"/> for getting the logger category name.
     /// </summary>
     /// <typeparam name="TComponent">The event source.</typeparam>
     /// <remarks>
@@ -33,16 +33,19 @@ namespace InfinniPlatform.Logging
         private readonly ILogger _logger;
 
 
+        /// <inheritdoc />
         public bool IsEnabled(LogLevel logLevel)
         {
             return _logger.IsEnabled(logLevel);
         }
 
+        /// <inheritdoc />
         public IDisposable BeginScope<TState>(TState state)
         {
             return _logger.BeginScope(state);
         }
 
+        /// <inheritdoc />
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             _logger.Log(logLevel, eventId, state, exception, formatter);

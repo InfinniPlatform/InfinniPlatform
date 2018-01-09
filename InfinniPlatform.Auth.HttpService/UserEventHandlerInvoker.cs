@@ -10,11 +10,17 @@ using Microsoft.Extensions.Logging;
 namespace InfinniPlatform.Auth.HttpService
 {
     /// <summary>
-    /// Предоставляет методы для вызова зарегистрированных обработчиков событий пользователя.
+    /// Provider methods for handling user authentication events.
     /// </summary>
-    internal class UserEventHandlerInvoker
+    public class UserEventHandlerInvoker
     {
-        public UserEventHandlerInvoker(IEnumerable<IUserEventHandler> userEventHandlers, ILogger<UserEventHandlerInvoker> logger)
+        /// <summary>
+        /// Initializes a new instance of <see cref="UserEventHandlerInvoker" />.
+        /// </summary>
+        /// <param name="userEventHandlers">User authentication events handler.</param>
+        /// <param name="logger">Logger.</param>
+        public UserEventHandlerInvoker(IEnumerable<IUserEventHandler> userEventHandlers,
+                                       ILogger<UserEventHandlerInvoker> logger)
         {
             _userEventHandlers = userEventHandlers;
             _logger = logger;
@@ -26,9 +32,9 @@ namespace InfinniPlatform.Auth.HttpService
 
 
         /// <summary>
-        /// Вызывается после входа пользователя в систему.
+        /// Invokes after user sign in.
         /// </summary>
-        /// <param name="identity">Идентификационные данные пользователя.</param>
+        /// <param name="identity">User identity.</param>
         public async void OnAfterSignIn(IIdentity identity)
         {
             if (identity != null)
@@ -41,7 +47,7 @@ namespace InfinniPlatform.Auth.HttpService
                     }
                     catch (Exception exception)
                     {
-                        // Исключения игнорируются, так как они не должны нарушить работоспособность основного механизма
+                        // Exceptions from handlers are ignored, so they won't interfere with auth process.
 
                         _logger.LogError(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnAfterSignIn)), exception);
                     }
@@ -51,9 +57,9 @@ namespace InfinniPlatform.Auth.HttpService
 
 
         /// <summary>
-        /// Вызывается перед выходом пользователя из системы.
+        /// Invokes before user sign out.
         /// </summary>
-        /// <param name="identity">Идентификационные данные пользователя.</param>
+        /// <param name="identity">User identity.</param>
         public async void OnBeforeSignOut(IIdentity identity)
         {
             if (identity != null)
@@ -66,7 +72,7 @@ namespace InfinniPlatform.Auth.HttpService
                     }
                     catch (Exception exception)
                     {
-                        // Исключения игнорируются, так как они не должны нарушить работоспособность основного механизма
+                        // Exceptions from handlers are ignored, so they won't interfere with auth process.
 
                         _logger.LogError(string.Format(Resources.HandlingUserEventCompletedWithException, nameof(userEventHandler.OnBeforeSignOut)), exception);
                     }

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace InfinniPlatform.Threading
 {
+    /// <summary>
+    /// Wrapper methods to run asynchronous as synchronous.
+    /// </summary>
     public static class AsyncHelper
     {
         private static readonly TaskFactory InternalTaskFactory
@@ -14,6 +17,12 @@ namespace InfinniPlatform.Threading
                               TaskScheduler.Default);
 
 
+        /// <summary>
+        /// Runs task synchronously.
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="func">Task.</param>
+        /// <returns>Task result.</returns>
         public static TResult RunSync<TResult>(Func<Task<TResult>> func)
         {
             var culture = CultureInfo.CurrentCulture;
@@ -29,6 +38,10 @@ namespace InfinniPlatform.Threading
             return syncTask.Unwrap().GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// Runs task synchronously.
+        /// </summary>
+        /// <param name="func">Task.</param>
         public static void RunSync(Func<Task> func)
         {
             var culture = CultureInfo.CurrentCulture;

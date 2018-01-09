@@ -9,6 +9,7 @@ namespace InfinniPlatform.MessageQueue
     /// <typeparam name="T">Тип тела сообщения.</typeparam>
     public abstract class BroadcastConsumerBase<T> : IBroadcastConsumer where T : class
     {
+        /// <inheritdoc />
         public Type MessageType => typeof(T);
 
         async Task IConsumer.Consume(IMessage message)
@@ -21,8 +22,16 @@ namespace InfinniPlatform.MessageQueue
             return await OnError(exception);
         }
 
+        /// <summary>
+        /// Message consume handler.
+        /// </summary>
+        /// <param name="message">Message from queue.</param>
         protected abstract Task Consume(Message<T> message);
 
+        /// <summary>
+        /// Handles message processing exceptions.
+        /// </summary>
+        /// <param name="exception">Exception.</param>
         protected virtual Task<bool> OnError(Exception exception)
         {
             return Task.FromResult(true);

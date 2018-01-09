@@ -5,24 +5,34 @@ using System.Linq;
 using InfinniPlatform.DocumentStorage.Properties;
 using InfinniPlatform.DocumentStorage.QuerySyntax;
 using InfinniPlatform.Dynamic;
-using InfinniPlatform.Http;
 using InfinniPlatform.Serialization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace InfinniPlatform.DocumentStorage.QueryFactories
 {
+    /// <inheritdoc cref="IDocumentQueryFactory" />
     public class DocumentQueryFactory : DocumentQueryFactoryBase, IDocumentQueryFactory
     {
-        public DocumentQueryFactory(IQuerySyntaxTreeParser syntaxTreeParser, IJsonObjectSerializer objectSerializer) : base(syntaxTreeParser, objectSerializer)
+        /// <summary>
+        /// Initializes a new instance of <see cref="DocumentQueryFactory" />.
+        /// </summary>
+        /// <param name="syntaxTreeParser">Syntax analyzer for query.</param>
+        /// <param name="objectSerializer">JSON objects serializer.</param>
+        public DocumentQueryFactory(IQuerySyntaxTreeParser syntaxTreeParser,
+                                    IJsonObjectSerializer objectSerializer)
+            : base(syntaxTreeParser, objectSerializer)
         {
         }
 
 
-        public DocumentGetQuery CreateGetQuery(IHttpRequest request, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
+        /// <inheritdoc />
+        public DocumentGetQuery CreateGetQuery(HttpRequest request, RouteData routeData, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
         {
             return new DocumentGetQuery
             {
                 Search = ParseSearch(request),
-                Filter = BuildFilter(request, documentIdKey),
+                Filter = BuildFilter(request, routeData, documentIdKey),
                 Select = BuildSelect(request),
                 Order = BuildOrder(request),
                 Count = ParseCount(request),
@@ -31,7 +41,8 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             };
         }
 
-        public DocumentPostQuery CreatePostQuery(IHttpRequest request, string documentFormKey = DocumentHttpServiceConstants.DocumentFormKey)
+        /// <inheritdoc />
+        public DocumentPostQuery CreatePostQuery(HttpRequest request, RouteData routeData, string documentFormKey = DocumentHttpServiceConstants.DocumentFormKey)
         {
             var document = ReadRequestForm<DynamicDocument>(request, documentFormKey);
 
@@ -40,16 +51,17 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
                 return new DocumentPostQuery
                 {
                     Document = document,
-                    Files = request.Files
+                    Files = IsFromForm(request) ? request.Form.Files : null
                 };
             }
 
             throw new InvalidOperationException(Resources.MethodNotAllowed);
         }
 
-        public DocumentDeleteQuery CreateDeleteQuery(IHttpRequest request, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
+        /// <inheritdoc />
+        public DocumentDeleteQuery CreateDeleteQuery(HttpRequest request, RouteData routeData, string documentIdKey = DocumentHttpServiceConstants.DocumentIdKey)
         {
-            var filter = BuildFilter(request, documentIdKey);
+            var filter = BuildFilter(request, routeData, documentIdKey);
 
             if (filter != null)
             {
@@ -62,10 +74,9 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             throw new InvalidOperationException(Resources.MethodNotAllowed);
         }
 
-
-        private Func<IDocumentFilterBuilder, object> BuildFilter(IHttpRequest request, string documentIdKey)
+        private Func<IDocumentFilterBuilder, object> BuildFilter(HttpRequest request, RouteData routeData, string documentIdKey)
         {
-            var filterMethod = ParseFilter(request, documentIdKey);
+            var filterMethod = ParseFilter(request, routeData, documentIdKey);
 
             if (filterMethod != null)
             {
@@ -75,7 +86,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             return null;
         }
 
-        private Action<IDocumentProjectionBuilder> BuildSelect(IHttpRequest request)
+        private Action<IDocumentProjectionBuilder> BuildSelect(HttpRequest request)
         {
             var selectMethods = ParseSelect(request);
 
@@ -89,7 +100,7 @@ namespace InfinniPlatform.DocumentStorage.QueryFactories
             return null;
         }
 
-        private IDictionary<string, DocumentSortOrder> BuildOrder(IHttpRequest request)
+        private IDictionary<string, DocumentSortOrder> BuildOrder(HttpRequest request)
         {
             var orderMethods = ParseOrder(request);
 

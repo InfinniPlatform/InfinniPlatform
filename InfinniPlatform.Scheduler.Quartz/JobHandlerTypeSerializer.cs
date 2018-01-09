@@ -9,6 +9,7 @@ using InfinniPlatform.Scheduler.Properties;
 
 namespace InfinniPlatform.Scheduler
 {
+    /// <inheritdoc />
     public class JobHandlerTypeSerializer : IJobHandlerTypeSerializer
     {
         /// <summary>
@@ -17,6 +18,10 @@ namespace InfinniPlatform.Scheduler
         private static readonly Regex HandlerTypeRegex = new Regex(@"^\s*(?<typeName>.+?)\s*,\s*(?<assemblyName>.+?)\s*$", RegexOptions.Compiled);
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="JobHandlerTypeSerializer"/>.
+        /// </summary>
+        /// <param name="resolver">Application container resolver.</param>
         public JobHandlerTypeSerializer(IContainerResolver resolver)
         {
             _resolver = resolver;
@@ -28,6 +33,7 @@ namespace InfinniPlatform.Scheduler
         private readonly ConcurrentDictionary<string, Type> _cache;
 
 
+        /// <inheritdoc />
         public bool CanSerialize(Type type)
         {
             if (type == null)
@@ -44,6 +50,7 @@ namespace InfinniPlatform.Scheduler
                    && _resolver.Services.Any(t => t == type);
         }
 
+        /// <inheritdoc />
         public string Serialize(Type type)
         {
             if (type == null)
@@ -60,6 +67,7 @@ namespace InfinniPlatform.Scheduler
             return $"{typeName},{assemblyName}";
         }
 
+        /// <inheritdoc />
         public IJobHandler Deserialize(string value)
         {
             if (string.IsNullOrEmpty(value))

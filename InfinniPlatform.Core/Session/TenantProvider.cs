@@ -1,6 +1,7 @@
 ﻿using System.Security.Principal;
 
 using InfinniPlatform.Security;
+using Microsoft.AspNetCore.Http;
 
 namespace InfinniPlatform.Session
 {
@@ -9,15 +10,16 @@ namespace InfinniPlatform.Session
     /// </summary>
     internal class TenantProvider : ITenantProvider
     {
-        public TenantProvider(ITenantScopeProvider tenantScopeProvider, IUserIdentityProvider userIdentityProvider)
+        public TenantProvider(ITenantScopeProvider tenantScopeProvider,
+                              IHttpContextAccessor httpContextAccessor)
         {
             _tenantScopeProvider = tenantScopeProvider;
-            _userIdentityProvider = userIdentityProvider;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
         private readonly ITenantScopeProvider _tenantScopeProvider;
-        private readonly IUserIdentityProvider _userIdentityProvider;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
         public string GetTenantId()
@@ -50,14 +52,14 @@ namespace InfinniPlatform.Session
                     if (string.IsNullOrEmpty(tenantId))
                     {
                         // Организация не определена
-                        tenantId = SecurityConstants.UndefinedUserTenantId;
+                        tenantId = TenantIdConstants.UndefinedUserTenantId;
                     }
                 }
             }
             else
             {
                 // Анонимный пользователь
-                tenantId = SecurityConstants.AnonymousUserTenantId;
+                tenantId = TenantIdConstants.AnonymousUserTenantId;
             }
 
             return tenantId;
@@ -66,7 +68,7 @@ namespace InfinniPlatform.Session
 
         private IIdentity GetCurrentIdentity()
         {
-            var currentIdentity = _userIdentityProvider.GetUserIdentity();
+            var currentIdentity = _httpContextAccessor.HttpContext.User.Identity;
             var currentUserId = currentIdentity.GetUserId();
             var isNotAuthenticated = string.IsNullOrEmpty(currentUserId);
             return isNotAuthenticated ? null : currentIdentity;

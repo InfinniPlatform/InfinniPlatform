@@ -2,8 +2,12 @@
 
 namespace InfinniPlatform.Scheduler
 {
+    /// <inheritdoc />
     public class CronExpressionMonthBuilder : ICronExpressionMonthBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="CronExpressionMonthBuilder"/>.
+        /// </summary>
         public CronExpressionMonthBuilder()
         {
             _expression = CronConstants.AllValues;
@@ -13,6 +17,7 @@ namespace InfinniPlatform.Scheduler
         private string _expression;
 
 
+        /// <inheritdoc />
         public ICronExpressionMonthBuilder Every()
         {
             // Выражение '*'.
@@ -21,6 +26,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionMonthBuilder Each(Month month)
         {
             // Добавляется выражение 'M'.
@@ -29,6 +35,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionMonthBuilder Each(Month month, int interval)
         {
             CronConstants.EnsurePositive(nameof(interval), interval);
@@ -39,6 +46,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionMonthBuilder EachOfSet(params Month[] months)
         {
             // Добавляется выражение 'M1,M2,M3,...,Mn'.
@@ -47,6 +55,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionMonthBuilder EachOfRange(Month monthFrom, Month monthTo)
         {
             CronConstants.EnsureRange(nameof(monthTo), (int)monthTo, (int)monthFrom, (int)monthTo);
@@ -58,6 +67,9 @@ namespace InfinniPlatform.Scheduler
         }
 
 
+        /// <summary>
+        /// Returns current expression.
+        /// </summary>
         public string Build()
         {
             return _expression;

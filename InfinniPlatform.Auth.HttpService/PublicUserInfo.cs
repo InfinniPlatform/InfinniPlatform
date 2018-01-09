@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 
+using InfinniPlatform.Auth.HttpService.Controllers;
+
 namespace InfinniPlatform.Auth.HttpService
 {
     /// <summary>
-    /// User information available through <see cref="AuthInternalHttpService{TUser}" />.
+    /// User information available through <see cref="AuthInternalController{TUser}" />.
     /// </summary>
     internal class PublicUserInfo
     {
@@ -19,6 +21,16 @@ namespace InfinniPlatform.Auth.HttpService
             Description = description;
             Roles = roles;
             Logins = logins;
+            Claims = claims;
+        }
+
+        public PublicUserInfo(AppUser appUser, List<AppUserClaim> claims)
+        {
+            UserName = appUser.UserName;
+            DisplayName = appUser.UserName;
+            Description = appUser.UserName;
+            Roles = appUser.Roles;
+            Logins = appUser.Logins;
             Claims = claims;
         }
 

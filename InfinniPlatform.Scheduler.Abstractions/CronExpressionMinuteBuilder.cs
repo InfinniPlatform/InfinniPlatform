@@ -2,8 +2,12 @@
 
 namespace InfinniPlatform.Scheduler
 {
+    /// <inheritdoc />
     public class CronExpressionMinuteBuilder : ICronExpressionMinuteBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="CronExpressionMinuteBuilder"/>.
+        /// </summary>
         public CronExpressionMinuteBuilder()
         {
             _expression = CronConstants.AllValues;
@@ -13,6 +17,7 @@ namespace InfinniPlatform.Scheduler
         private string _expression;
 
 
+        /// <inheritdoc />
         public ICronExpressionMinuteBuilder Every()
         {
             // Выражение '*'.
@@ -21,6 +26,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionMinuteBuilder Each(int minute)
         {
             CronConstants.EnsureRange(nameof(minute), minute, CronConstants.MinuteMin, CronConstants.MinuteMax);
@@ -31,6 +37,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionMinuteBuilder Each(int minute, int interval)
         {
             CronConstants.EnsureRange(nameof(minute), minute, CronConstants.MinuteMin, CronConstants.MinuteMax);
@@ -42,6 +49,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionMinuteBuilder EachOfSet(params int[] minutes)
         {
             CronConstants.EnsureRange(nameof(minutes), minutes, CronConstants.MinuteMin, CronConstants.MinuteMax);
@@ -52,6 +60,7 @@ namespace InfinniPlatform.Scheduler
             return this;
         }
 
+        /// <inheritdoc />
         public ICronExpressionMinuteBuilder EachOfRange(int minuteFrom, int minuteTo)
         {
             CronConstants.EnsureRange(nameof(minuteFrom), minuteFrom, CronConstants.MinuteMin, CronConstants.MinuteMax);
@@ -65,6 +74,9 @@ namespace InfinniPlatform.Scheduler
         }
 
 
+        /// <summary>
+        /// Returns current expression.
+        /// </summary>
         public string Build()
         {
             return _expression;

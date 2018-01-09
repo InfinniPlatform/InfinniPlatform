@@ -10,6 +10,9 @@ using InfinniPlatform.Dynamic;
 
 namespace InfinniPlatform.DocumentStorage
 {
+    /// <summary>
+    /// Extension methods for <see cref="IDocumentStorage"/>.
+    /// </summary>
     public static class DocumentStorageExtensions
     {
         /// <summary>
@@ -34,6 +37,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static DocumentUpdateResult SaveOne(this IDocumentStorage target, DynamicDocument document)
         {
@@ -43,6 +47,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static Task<DocumentUpdateResult> SaveOneAsync(this IDocumentStorage target, DynamicDocument document)
         {
@@ -52,6 +57,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static DocumentBulkResult SaveMany(this IDocumentStorage target, IEnumerable<DynamicDocument> documents)
         {
@@ -61,6 +67,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static Task<DocumentBulkResult> SaveManyAsync(this IDocumentStorage target, IEnumerable<DynamicDocument> documents)
         {
@@ -71,6 +78,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static DocumentUpdateResult SaveOne<TDocument>(this IDocumentStorage<TDocument> target, TDocument document) where TDocument : Document
         {
@@ -80,6 +88,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static Task<DocumentUpdateResult> SaveOneAsync<TDocument>(this IDocumentStorage<TDocument> target, TDocument document) where TDocument : Document
         {
@@ -89,6 +98,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static DocumentBulkResult SaveMany<TDocument>(this IDocumentStorage<TDocument> target, IEnumerable<TDocument> documents) where TDocument : Document
         {
@@ -98,6 +108,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static Task<DocumentBulkResult> SaveManyAsync<TDocument>(this IDocumentStorage<TDocument> target, IEnumerable<TDocument> documents) where TDocument : Document
         {
@@ -108,6 +119,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static IDocumentBulkBuilder SaveOne(this IDocumentBulkBuilder target, DynamicDocument document)
         {
@@ -117,6 +129,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static IDocumentBulkBuilder SaveMany(this IDocumentBulkBuilder target, IEnumerable<DynamicDocument> documents)
         {
@@ -132,6 +145,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static IDocumentBulkBuilder<TDocument> SaveOne<TDocument>(this IDocumentBulkBuilder<TDocument> target, TDocument document) where TDocument : Document
         {
@@ -141,6 +155,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет набор документов в хранилище или заменяет их, если они уже существуют.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static IDocumentBulkBuilder<TDocument> SaveMany<TDocument>(this IDocumentBulkBuilder<TDocument> target, IEnumerable<TDocument> documents) where TDocument : Document
         {
@@ -156,6 +171,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static void SaveOne(this IUnitOfWork target, string documentType, DynamicDocument document)
@@ -167,6 +183,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
         /// <typeparam name="TDocument">Тип документа.</typeparam>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static void SaveOne<TDocument>(this IUnitOfWork target, string documentType, TDocument document) where TDocument : Document
@@ -178,6 +195,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
         /// <typeparam name="TDocument">Тип документа.</typeparam>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="document">Документ для сохранения.</param>
         public static void SaveOne<TDocument>(this IUnitOfWork target, TDocument document) where TDocument : Document
         {
@@ -187,6 +205,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static void SaveMany(this IUnitOfWork target, string documentType, IEnumerable<DynamicDocument> documents)
@@ -201,6 +220,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
         /// <typeparam name="TDocument">Тип документа.</typeparam>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documentType">Имя типа документа.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static void SaveMany<TDocument>(this IUnitOfWork target, string documentType, IEnumerable<TDocument> documents) where TDocument : Document
@@ -215,6 +235,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Вставляет один документ в хранилище или заменяет его, если он уже существует.
         /// </summary>
         /// <typeparam name="TDocument">Тип документа.</typeparam>
+        /// <param name="target">Document storage instance.</param>
         /// <param name="documents">Документы для сохранения.</param>
         public static void SaveMany<TDocument>(this IUnitOfWork target, IEnumerable<TDocument> documents) where TDocument : Document
         {

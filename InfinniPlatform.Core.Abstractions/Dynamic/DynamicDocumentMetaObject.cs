@@ -30,6 +30,11 @@ namespace InfinniPlatform.Dynamic
         }
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DynamicDocumentMetaObject" />.
+        /// </summary>
+        /// <param name="expression">Expression represents object reaction on intercepted action.</param>
+        /// <param name="value">Dynamic object instance.</param>
         public DynamicDocumentMetaObject(Expression expression, DynamicDocument value)
             : base(expression, BindingRestrictions.Empty, value)
         {

@@ -4,19 +4,22 @@ using System.Collections.Generic;
 namespace InfinniPlatform
 {
     /// <summary>
-    /// The general application settings.
+    /// General application settings configuration options.
     /// </summary>
-    public class AppOptions
+    public class AppOptions : IOptions
     {
-        public const string SectionName = "app";
-
+        /// <inheritdoc />
+        public string SectionName => "app";
 
         /// <summary>
-        /// The default application settings.
+        /// Default instance of <see cref="AppOptions" />.
         /// </summary>
         public static readonly AppOptions Default = new AppOptions();
 
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="AppOptions" />.
+        /// </summary>
         public AppOptions()
         {
             AppName = "InfinniPlatform";

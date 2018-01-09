@@ -11,6 +11,10 @@ namespace InfinniPlatform.Auth.Services
     /// </summary>
     public static class FormParser
     {
+        /// <summary>
+        /// Parse date from request form.
+        /// </summary>
+        /// <param name="text">Form text.</param>
         public static IFormCollection ParseForm(string text)
         {
             var store = new Dictionary<string, StringValues>(StringComparer.OrdinalIgnoreCase);
@@ -22,6 +26,7 @@ namespace InfinniPlatform.Auth.Services
             {
                 store.Add(keyValuePair.Key, keyValuePair.Value.ToArray());
             }
+
             return new FormCollection(store);
         }
 

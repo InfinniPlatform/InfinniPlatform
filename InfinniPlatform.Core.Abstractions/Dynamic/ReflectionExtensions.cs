@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace InfinniPlatform.Dynamic
 {
+    /// <summary>
+    /// Extensions methods for reflection.
+    /// </summary>
     public static class ReflectionExtensions
     {
         private static readonly object[] EmptyObjects = { };

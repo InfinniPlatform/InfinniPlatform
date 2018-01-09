@@ -11,6 +11,10 @@ using Microsoft.Extensions.Logging;
 
 namespace InfinniPlatform.Auth.UserCache
 {
+    /// <summary>
+    /// Application user cache.
+    /// </summary>
+    /// <typeparam name="TUser">User type.</typeparam>
     public class UserCache<TUser> : IUserCacheObserver where TUser : AppUser
     {
         private readonly AppOptions _appOptions;
@@ -26,6 +30,13 @@ namespace InfinniPlatform.Auth.UserCache
         private readonly ConcurrentDictionary<string, TUser> _usersByName;
         private readonly ConcurrentDictionary<string, TUser> _usersByPhone;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="UserCache{TUser}" />.
+        /// </summary>
+        /// <param name="options">Authentication options.</param>
+        /// <param name="logger">Logger.</param>
+        /// <param name="broadcastProducer">Broadcast messages producer.</param>
+        /// <param name="appOptions">Application options.</param>
         public UserCache(AuthOptions options,
                          ILogger<UserCache<TUser>> logger,
                          IBroadcastProducer broadcastProducer,
@@ -53,6 +64,7 @@ namespace InfinniPlatform.Auth.UserCache
         //IUserCacheObserver
 
 
+        /// <inheritdoc />
         public Task ProcessMessage(Message<string> message)
         {
             try
@@ -81,60 +93,55 @@ namespace InfinniPlatform.Auth.UserCache
 
 
         /// <summary>
-        /// Возвращает сведения о пользователе системы по его идентификатору.
+        /// Returns user information by identifier.
         /// </summary>
-        /// <param name="userId">Уникальный идентификатор пользователя.</param>
-        /// <returns>Сведения о пользователе системы.</returns>
+        /// <param name="userId">User identifier.</param>
         public TUser FindUserById(string userId)
         {
             return GetUserCache(userId);
         }
 
         /// <summary>
-        /// Возвращает сведения о пользователе системы по его имени.
+        /// Returns user information by normalized name.
         /// </summary>
-        /// <param name="normalizedUserName">Имя пользователя.</param>
-        /// <returns>Сведения о пользователе системы.</returns>
+        /// <param name="normalizedUserName">Normalized user name.</param>
         public TUser FindUserByUserName(string normalizedUserName)
         {
             return GetAdditionalUserCache(_usersByName, normalizedUserName);
         }
 
         /// <summary>
-        /// Возвращает сведения о пользователе системы по его электронной почте.
+        /// Returns user information by email.
         /// </summary>
-        /// <param name="email">Электронная почта пользователя.</param>
-        /// <returns>Сведения о пользователе системы.</returns>
+        /// <param name="email">User email.</param>
         public TUser FindUserByEmail(string email)
         {
             return GetAdditionalUserCache(_usersByEmail, email);
         }
 
         /// <summary>
-        /// Возвращает сведения о пользователе системы по его номеру телефона.
+        /// Returns user information by phone number.
         /// </summary>
-        /// <param name="phoneNumber">Номер телефона пользователя.</param>
-        /// <returns>Сведения о пользователе системы.</returns>
+        /// <param name="phoneNumber">User phone number.</param>
         public TUser FindUserByPhoneNumber(string phoneNumber)
         {
             return GetAdditionalUserCache(_usersByPhone, phoneNumber);
         }
 
         /// <summary>
-        /// Возвращает сведения о пользователе системы по его имени у внешнего провайдера.
+        /// Returns user information by external login.
         /// </summary>
-        /// <param name="loginProvider">Внешний провайдер.</param>
-        /// <param name="providerKey">Ключ внешнего провайдера.</param>
-        /// <returns>Сведения о пользователе системы.</returns>
+        /// <param name="loginProvider">External login provider.</param>
+        /// <param name="providerKey">External login provider key.</param>
         public TUser FindUserByLogin(string loginProvider, string providerKey)
         {
             return GetAdditionalUserCache(_usersByLogin, GetUserLoginKey(loginProvider, providerKey));
         }
 
         /// <summary>
-        /// Добавляет или обновляет сведения о пользователе системы.
+        /// Adds or updates user information in cache.
         /// </summary>
-        /// <param name="user">Сведения о пользователе системы.</param>
+        /// <param name="user">User information.</param>
         public void AddOrUpdateUser(TUser user)
         {
             _cacheLockSlim.EnterWriteLock();
@@ -165,9 +172,9 @@ namespace InfinniPlatform.Auth.UserCache
         }
 
         /// <summary>
-        /// Удаляет сведения о пользователе системы.
+        /// Removes user information in cache.
         /// </summary>
-        /// <param name="userId">Уникальный идентификатор пользователе системы.</param>
+        /// <param name="userId">User identifier.</param>
         public void RemoveUser(string userId)
         {
             _cacheLockSlim.EnterWriteLock();

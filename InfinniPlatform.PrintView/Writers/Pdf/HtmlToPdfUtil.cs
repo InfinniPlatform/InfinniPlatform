@@ -214,6 +214,7 @@ namespace InfinniPlatform.PrintView.Writers.Pdf
             }
             catch
             {
+                // ignored
             }
         }
     }

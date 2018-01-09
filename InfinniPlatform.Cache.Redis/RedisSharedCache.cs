@@ -40,6 +40,7 @@ namespace InfinniPlatform.Cache
         private readonly IPerformanceLogger _perfLogger;
 
 
+        /// <inheritdoc />
         public bool Contains(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -50,15 +51,15 @@ namespace InfinniPlatform.Cache
             return TryExecute((c, wk) => c.KeyExists(wk), key, CachingHelpers.PerfLogRedisContainsMethod);
         }
 
+        /// <inheritdoc />
         public string Get(string key)
         {
-            string value;
-
-            TryGet(key, out value);
+            TryGet(key, out var value);
 
             return value;
         }
 
+        /// <inheritdoc />
         public bool TryGet(string key, out string value)
         {
             if (string.IsNullOrEmpty(key))
@@ -73,6 +74,7 @@ namespace InfinniPlatform.Cache
             return !string.IsNullOrEmpty(cacheValue);
         }
 
+        /// <inheritdoc />
         public void Set(string key, string value)
         {
             if (string.IsNullOrEmpty(key))
@@ -88,6 +90,7 @@ namespace InfinniPlatform.Cache
             TryExecute((c, wk) => c.StringSet(wk, value), key, CachingHelpers.PerfLogRedisSetMethod);
         }
 
+        /// <inheritdoc />
         public bool Remove(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -98,6 +101,10 @@ namespace InfinniPlatform.Cache
             return TryExecute((c, wk) => c.KeyDelete(wk), key, CachingHelpers.PerfLogRedisRemoveMethod);
         }
 
+        // TODO Used only in test methods.
+        /// <summary>
+        /// Flushes Redis database on local server. 
+        /// </summary>
         public void Clear()
         {
             TryExecute((c, wk) =>

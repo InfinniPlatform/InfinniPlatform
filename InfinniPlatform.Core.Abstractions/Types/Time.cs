@@ -1,4 +1,5 @@
 ﻿using System;
+#pragma warning disable 1591 // for operators overrides
 
 namespace InfinniPlatform.Types
 {

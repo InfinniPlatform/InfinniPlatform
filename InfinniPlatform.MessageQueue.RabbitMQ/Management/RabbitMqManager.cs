@@ -9,11 +9,14 @@ using RabbitMQ.Client;
 namespace InfinniPlatform.MessageQueue.Management
 {
     /// <summary>
-    /// Менеджер соединения с RabbitMQ.
+    /// RabbitMQ connection manager.
     /// </summary>
     [LoggerName(nameof(RabbitMqManager))]
     public class RabbitMqManager : IDisposable
     {
+        /// <summary>
+        /// Delegate invoked on reconnect event.
+        /// </summary>
         public delegate void ReconnectEventHandler(object sender, RabbitMqReconnectEventArgs e);
 
         private readonly AppOptions _appOptions;
@@ -22,6 +25,12 @@ namespace InfinniPlatform.MessageQueue.Management
 
         private readonly RabbitMqMessageQueueOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="RabbitMqManager" />.
+        /// </summary>
+        /// <param name="options">RabbitMQ message queue configuration options.</param>
+        /// <param name="appOptions">Common application configuration options.</param>
+        /// <param name="logger">Logger.</param>
         public RabbitMqManager(RabbitMqMessageQueueOptions options,
                                AppOptions appOptions,
                                ILogger<RabbitMqManager> logger)
@@ -45,10 +54,17 @@ namespace InfinniPlatform.MessageQueue.Management
         }
 
 
+        /// <summary>
+        /// Name of exchange for broadcast queues.
+        /// </summary>
         public string BroadcastExchangeName { get; }
 
+        /// <summary>
+        /// RabbitMQ connection.
+        /// </summary>
         public IConnection Connection { get; private set; }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             Connection?.Dispose();
@@ -243,6 +259,9 @@ namespace InfinniPlatform.MessageQueue.Management
     }
 
 
+    /// <summary>
+    /// RabbitMQ reconnect event arguments.
+    /// </summary>
     public class RabbitMqReconnectEventArgs
     {
     }

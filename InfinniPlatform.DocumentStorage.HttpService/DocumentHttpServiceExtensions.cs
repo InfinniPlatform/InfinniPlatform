@@ -5,11 +5,15 @@ using InfinniPlatform.IoC;
 
 namespace InfinniPlatform.DocumentStorage
 {
+    /// <summary>
+    /// Extensions methods for components registration in <see cref="IContainerBuilder"/>.
+    /// </summary>
     public static class DocumentHttpServiceExtensions
     {
         /// <summary>
         /// Регистрирует обработчик по умолчанию для сервиса по работе с документами указанного типа.
         /// </summary>
+        /// <param name="builder">Dependency container builder.</param>
         /// <param name="documentType">Имя типа документа.</param>
         public static void RegisterDocumentHttpService(this IContainerBuilder builder, string documentType)
         {
@@ -20,6 +24,7 @@ namespace InfinniPlatform.DocumentStorage
         /// Регистрирует обработчик по умолчанию для сервиса по работе с документами указанного типа.
         /// </summary>
         /// <typeparam name="TDocument">Тип документа.</typeparam>
+        /// <param name="builder">Dependency container builder.</param>
         /// <param name="documentType">Имя типа документа.</param>
         public static void RegisterDocumentHttpService<TDocument>(this IContainerBuilder builder, string documentType = null) where TDocument : Document
         {
@@ -29,6 +34,7 @@ namespace InfinniPlatform.DocumentStorage
         /// <summary>
         /// Регистрирует тип обработчика для сервиса по работе с документами.
         /// </summary>
+        /// <param name="builder">Dependency container builder.</param>
         /// <param name="serviceHandlerType">Тип обработчика для сервиса по работе с документами.</param>
         /// <example>
         /// <code>
