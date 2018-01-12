@@ -55,7 +55,7 @@ namespace InfinniPlatform.Scheduler.Quartz
             var fireTimeUtc = context.FireTimeUtc;
             var scheduledFireTimeUtc = context.ScheduledFireTimeUtc;
 
-            if (fireTimeUtc == null || scheduledFireTimeUtc == null)
+            if (scheduledFireTimeUtc == null)
             {
                 return;
             }
@@ -78,7 +78,7 @@ namespace InfinniPlatform.Scheduler.Quartz
             var jobHandlerContext = new JobHandlerContext
             {
                 InstanceId = jobInstance,
-                FireTimeUtc = fireTimeUtc.Value,
+                FireTimeUtc = fireTimeUtc,
                 ScheduledFireTimeUtc = scheduledFireTimeUtc.Value,
                 PreviousFireTimeUtc = context.PreviousFireTimeUtc,
                 NextFireTimeUtc = context.NextFireTimeUtc,
