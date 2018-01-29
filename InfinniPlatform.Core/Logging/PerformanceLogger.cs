@@ -52,7 +52,7 @@ namespace InfinniPlatform.Logging
 
             public override string ToString()
             {
-                return string.Format("{{ \"m\":\"{0}\", \"d\": {1:N0}, \"component\":\"{2}\" }}", _method, _duration, _component);
+                return string.Format("{{ \"m\":\"{0}\", \"d\": {1:F0}, \"component\":\"{2}\" }}", _method, _duration, _component);
             }
         }
     }
