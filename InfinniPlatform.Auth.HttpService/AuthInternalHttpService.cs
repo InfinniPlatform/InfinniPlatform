@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Http;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,7 @@ namespace InfinniPlatform.Auth.HttpService
     /// <summary>
     /// Сервис внутренней аутентификации пользователей системы.
     /// </summary>
+    [LoggerName("AuthHttpService")]
     internal class AuthInternalHttpService<TUser> : IHttpService where TUser : AppUser, new()
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

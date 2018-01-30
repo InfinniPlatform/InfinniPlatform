@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using InfinniPlatform.Auth.HttpService.Properties;
 using InfinniPlatform.Http;
+using InfinniPlatform.Logging;
 using InfinniPlatform.Security;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,6 +14,7 @@ namespace InfinniPlatform.Auth.HttpService
     /// <summary>
     /// Сервис управления пользователями системы.
     /// </summary>
+    [LoggerName("AuthHttpService")]
     internal class AuthManagementHttpService<TUser> : IHttpService where TUser : AppUser, new()
     {
         private readonly IUserIdentityProvider _userIdentityProvider;
