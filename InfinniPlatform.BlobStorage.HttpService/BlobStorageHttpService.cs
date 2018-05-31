@@ -61,7 +61,8 @@ namespace InfinniPlatform.BlobStorage
                         var fileResponse = new StreamHttpResponse(blobData.Data, blobData.Info.Type)
                         {
                             FileName = blobData.Info.Name,
-                            LastWriteTimeUtc = blobData.Info.Time
+                            LastWriteTimeUtc = blobData.Info.Time,
+                            ContentLength = blobData.Info.Size
                         };
 
                         fileResponse.SetContentDispositionAttachment();
