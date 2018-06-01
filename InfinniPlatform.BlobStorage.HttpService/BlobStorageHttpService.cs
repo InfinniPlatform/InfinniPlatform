@@ -18,17 +18,20 @@ namespace InfinniPlatform.BlobStorage
 
 
         private readonly IBlobStorage _blobStorage;
+        private readonly IBlobStorageService _blobStorageService;
         private readonly ILogger _logger;
         private readonly IPerformanceLogger _perfLogger;
 
 
-        public BlobStorageHttpService(IBlobStorage blobStorage, 
-                                      IPerformanceLogger<BlobStorageHttpService> perfLogger, 
-                                      ILogger<BlobStorageHttpService> logger)
+        public BlobStorageHttpService(IBlobStorage blobStorage,
+                                      IPerformanceLogger<BlobStorageHttpService> perfLogger,
+                                      ILogger<BlobStorageHttpService> logger,
+                                      IBlobStorageService blobStorageService)
         {
             _blobStorage = blobStorage;
             _perfLogger = perfLogger;
             _logger = logger;
+            _blobStorageService = blobStorageService;
         }
 
 
@@ -54,19 +57,10 @@ namespace InfinniPlatform.BlobStorage
 
                 if (!string.IsNullOrEmpty(blobId))
                 {
-                    var blobData = _blobStorage.GetBlobData(blobId);
+                    var fileResponse = _blobStorageService.GetFileResponse(blobId);
 
-                    if (blobData != null)
+                    if (fileResponse != null)
                     {
-                        var fileResponse = new StreamHttpResponse(blobData.Data, blobData.Info.Type)
-                        {
-                            FileName = blobData.Info.Name,
-                            LastWriteTimeUtc = blobData.Info.Time,
-                            ContentLength = blobData.Info.Size
-                        };
-
-                        fileResponse.SetContentDispositionAttachment();
-
                         return Task.FromResult<object>(fileResponse);
                     }
                 }
@@ -77,7 +71,7 @@ namespace InfinniPlatform.BlobStorage
             {
                 exception = e;
 
-                _logger.LogError(Resources.RequestProcessedWithException, e, () => new Dictionary<string, object> {{"method", method}});
+                _logger.LogError(Resources.RequestProcessedWithException, e, () => new Dictionary<string, object> { { "method", method } });
 
                 throw;
             }
@@ -115,7 +109,7 @@ namespace InfinniPlatform.BlobStorage
             {
                 exception = e;
 
-                _logger.LogError(Resources.RequestProcessedWithException, e, () => new Dictionary<string, object> {{"method", method}});
+                _logger.LogError(Resources.RequestProcessedWithException, e, () => new Dictionary<string, object> { { "method", method } });
 
                 throw;
             }

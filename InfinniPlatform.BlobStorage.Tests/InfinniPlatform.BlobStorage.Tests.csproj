@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\InfinniPlatform.BlobStorage.Abstractions\InfinniPlatform.BlobStorage.Abstractions.csproj" />
     <ProjectReference Include="..\InfinniPlatform.BlobStorage.FileSystem\InfinniPlatform.BlobStorage.FileSystem.csproj" />
+    <ProjectReference Include="..\InfinniPlatform.BlobStorage.HttpService\InfinniPlatform.BlobStorage.HttpService.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Core\InfinniPlatform.Core.csproj" />
     <ProjectReference Include="..\InfinniPlatform.Tests\InfinniPlatform.Tests.csproj" />
   </ItemGroup>

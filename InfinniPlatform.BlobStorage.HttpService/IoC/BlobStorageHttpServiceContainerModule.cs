@@ -8,6 +8,7 @@ namespace InfinniPlatform.BlobStorage.IoC
         public void Load(IContainerBuilder builder)
         {
             builder.RegisterType<BlobStorageHttpService>().As<IHttpService>().SingleInstance();
+            builder.RegisterType<BlobStorageService>().As<IBlobStorageService>().SingleInstance();
         }
     }
 }
